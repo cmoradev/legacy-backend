@@ -7,10 +7,16 @@ import { LevelsService } from './levels.service';
     model: {
         type: Level,
     },
+    query: {
+        join: {
+            grades: {},
+        },
+    },
 })
 @Controller()
 export class LevelsController implements CrudController<Level> {
-    constructor(readonly service: LevelsService) { }
+    constructor(readonly service: LevelsService) {
+    }
 
     get base(): CrudController<Level> {
         return this;
