@@ -5,6 +5,7 @@ import { StudyPlansModule } from './school-colegio-ingles/study-plans/study-plan
 import { StudyPlanVariantsModule } from './school-colegio-ingles/study-plan-variants/study-plan-variants.module';
 import { LevelsModule } from './school-colegio-ingles/levels/levels.module';
 import { GradesModule } from './school-colegio-ingles/grades/grades.module';
+import { StudentsModule } from './school-colegio-ingles/students/students.module';
 
 export const routes: Routes = [
     {
@@ -16,6 +17,7 @@ export const routes: Routes = [
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },
             { path: '/levels', module: LevelsModule },
             { path: '/grades', module: GradesModule },
+            { path: '/students', module: StudentsModule },
         ],
     },
 ];
