@@ -4,7 +4,7 @@ import {Cycle} from './cycle.entity';
 import {Inscription} from './inscription.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
-import {Assignment} from './assignment.entity';
+import {Assignment} from '../../assignments/entities/assignment.entity';
 
 @Entity('grupos' )
 export class Group {

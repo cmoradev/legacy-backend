@@ -4,7 +4,7 @@ import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {Teacher} from './teacher.entity';
 import {Subject} from './subject.entity';
 import {Grade} from '../../grades/entities/grade.entity';
-import {Assignment} from './assignment.entity';
+import {Assignment} from '../../assignments/entities/assignment.entity';
 
 // import {studyPlans_subjects} from "./studyPlans_subjects";
 

@@ -1,7 +1,7 @@
 import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Subject} from '../../subjects/entities/subject.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
-import {Assignment} from '../../subjects/entities/assignment.entity';
+import {Assignment} from '../../assignments/entities/assignment.entity';
 import {AssignmentSubject} from '../../subjects/entities/assignment-subject.entity';
 import {Group} from '../../subjects/entities/group.entity';
 

@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Group} from './group.entity';
 import {Student} from './student.entity';
 import {Inscription} from './inscription.entity';
-import {Assignment} from './assignment.entity';
+import {Assignment} from '../../assignments/entities/assignment.entity';
 
 @Entity('ciclos')
 export class Cycle {

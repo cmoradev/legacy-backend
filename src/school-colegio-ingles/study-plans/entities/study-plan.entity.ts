@@ -1,7 +1,7 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
 import {Modality} from '../../subjects/entities/modality.entity';
-import {Assignment} from '../../subjects/entities/assignment.entity';
+import {Assignment} from '../../assignments/entities/assignment.entity';
 import {Group} from '../../subjects/entities/group.entity';
 import {Level} from '../../levels/entities/level.entity';
 
