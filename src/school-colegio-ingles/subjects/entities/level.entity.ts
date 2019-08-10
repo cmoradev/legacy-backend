@@ -1,0 +1,62 @@
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import {Campus} from './campus.entity';
+import {Grade} from './grade.entity';
+import {Inscription} from './inscription.entity';
+import {StudyPlan} from './study-plan.entity';
+
+@Entity('niveles')
+export class Level {
+
+    @PrimaryGeneratedColumn({
+        type: 'int',
+        name: 'id',
+    })
+    id: number;
+
+    @Column('int', {
+        nullable: false,
+        name: 'id_plantel',
+    })
+    idPlantel: number;
+
+    @Column('varchar', {
+        nullable: false,
+        length: 40,
+        name: 'nivel',
+    })
+    name: string;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt: Date;
+
+    @ManyToOne(() => Campus, (campus) => campus.levels)
+    campus: Campus;
+
+    @OneToMany(() => Grade, (grade) => grade.level)
+    grades: Grade[];
+
+    @OneToMany(() => Inscription, (inscription) => inscription.level)
+    inscriptions: Inscription[];
+
+    @OneToMany(() => StudyPlan, (studyPlan) => studyPlan.level)
+    studyPlans: StudyPlan[];
+
+}
