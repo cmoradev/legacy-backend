@@ -7,12 +7,19 @@ import { GradesService } from './grades.service';
     model: {
         type: Grade,
     },
+    query: {
+        join: {
+            level: {},
+        },
+    },
 })
 @Controller()
 export class GradesController implements CrudController<Grade> {
     constructor(
         readonly service: GradesService,
-    ) { }
+    ) {
+    }
+
     get base(): CrudController<Grade> {
         return this;
     }
