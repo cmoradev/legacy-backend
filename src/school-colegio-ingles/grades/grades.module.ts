@@ -1,0 +1,13 @@
+import { Module } from '@nestjs/common';
+import { GradesService } from './grades.service';
+import { GradesController } from './grades.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Grade } from '../subjects/entities/grade.entity';
+
+@Module({
+  imports: [ TypeOrmModule.forFeature([Grade], 'colegiodb')],
+  exports: [GradesService],
+  providers: [GradesService],
+  controllers: [GradesController],
+})
+export class GradesModule {}

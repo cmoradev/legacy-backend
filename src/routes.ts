@@ -14,6 +14,7 @@ export const routes: Routes = [
             { path: '/study-plans', module: StudyPlansModule },
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },
             { path: '/levels', module: LevelsModule },
+
         ],
     },
 ];
