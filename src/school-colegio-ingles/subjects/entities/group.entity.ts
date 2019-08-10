@@ -2,8 +2,8 @@ import { Column, Entity, ManyToOne, OneToMany,  PrimaryGeneratedColumn} from 'ty
 import {Grade} from './grade.entity';
 import {Cycle} from './cycle.entity';
 import {Inscription} from './inscription.entity';
-import {StudyPlan} from './study-plan.entity';
-import {StudyPlanVariant} from './study-plan-variants.entity';
+import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
+import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
 import {Assignment} from './assignment.entity';
 
 @Entity('grupos' )

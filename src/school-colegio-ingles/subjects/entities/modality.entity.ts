@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {StudyPlan} from './study-plan.entity';
+import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 
 @Entity()
 export class Modality {

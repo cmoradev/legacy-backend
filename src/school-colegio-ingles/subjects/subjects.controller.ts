@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { Crud } from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { Subject } from './entities/subject.entity';
 import { SubjectsService } from './subjects.service';
 
@@ -8,9 +8,10 @@ import { SubjectsService } from './subjects.service';
         type: Subject,
     },
 })
-@Controller('subjects')
-export class SubjectsController {
-    constructor(private readonly service: SubjectsService) {
+@Controller()
+export class SubjectsController implements CrudController<Subject> {
+    constructor(readonly service: SubjectsService) { }
+    get base(): CrudController<Subject> {
+        return this;
     }
-
 }

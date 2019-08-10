@@ -1,5 +1,5 @@
 import { Column, Entity,  OneToMany,  PrimaryGeneratedColumn} from 'typeorm';
-import {Level} from './level.entity';
+import {Level} from '../../levels/entities/level.entity';
 import {Student} from './student.entity';
 import {Inscription} from './inscription.entity';
 import {Family} from './family.entity';

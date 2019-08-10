@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { StudyPlanVariant } from './study-plan-variants.entity';
+import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 import { AssignmentSubject } from './assignment-subject.entity';
 
 @Entity()

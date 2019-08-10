@@ -2,7 +2,7 @@ import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {Student} from './student.entity';
 import {Group} from './group.entity';
 import {Grade} from './grade.entity';
-import {Level} from './level.entity';
+import {Level} from '../../levels/entities/level.entity';
 import {Cycle} from './cycle.entity';
 import {Campus} from './campus.entity';
 

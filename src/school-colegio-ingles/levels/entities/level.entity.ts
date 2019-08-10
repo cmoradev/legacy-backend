@@ -5,10 +5,10 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {Campus} from './campus.entity';
-import {Grade} from './grade.entity';
-import {Inscription} from './inscription.entity';
-import {StudyPlan} from './study-plan.entity';
+import {Campus} from '../../subjects/entities/campus.entity';
+import {Grade} from '../../subjects/entities/grade.entity';
+import {Inscription} from '../../subjects/entities/inscription.entity';
+import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 
 @Entity('niveles')
 export class Level {
