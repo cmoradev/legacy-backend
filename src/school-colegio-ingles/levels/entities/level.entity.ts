@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import {Campus} from '../../subjects/entities/campus.entity';
-import {Grade} from '../../subjects/entities/grade.entity';
+import {Grade} from '../../grades/entities/grade.entity';
 import {Inscription} from '../../subjects/entities/inscription.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 

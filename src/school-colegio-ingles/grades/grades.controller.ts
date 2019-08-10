@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { Grade } from '../subjects/entities/grade.entity';
+import { Grade } from './entities/grade.entity';
 import { GradesService } from './grades.service';
 
 @Crud({
