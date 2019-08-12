@@ -8,10 +8,21 @@ import { Subject } from '../subjects/entities/subject.entity';
     model: {
         type: StudyPlan,
     },
+    query: {
+        join: {
+            modality: {
+                eager: true,
+            },
+            group: {
+                eager: true,
+            },
+        },
+    },
 })
 @Controller()
 export class StudyPlansController implements CrudController<StudyPlan> {
-    constructor(readonly service: StudyPlansService) { }
+    constructor(readonly service: StudyPlansService) {
+    }
 
     get base(): CrudController<StudyPlan> {
         return this;

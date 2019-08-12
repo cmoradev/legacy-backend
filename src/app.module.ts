@@ -6,6 +6,14 @@ import { ColegioDBService } from './databases/colegiodb.service';
 import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegio-ingles.module';
 import { RouterModule } from 'nest-router';
 import { routes } from './routes';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+
+// @ts-ignore left join only
+// tslint:disable-next-line:only-arrow-functions
+TypeOrmCrudService.prototype.getJoinType = function(s: string) {
+    // tslint:disable-next-line:no-console
+    return 'leftJoin';
+};
 
 @Module({
     imports: [
