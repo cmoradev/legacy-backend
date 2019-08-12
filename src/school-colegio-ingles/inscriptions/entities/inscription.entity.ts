@@ -3,7 +3,7 @@ import {Student} from '../../students/entities/student.entity';
 import {Group} from '../../groups/entities/group.entity';
 import {Grade} from '../../grades/entities/grade.entity';
 import {Level} from '../../levels/entities/level.entity';
-import {Cycle} from '../../subjects/entities/cycle.entity';
+import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Campus} from '../../subjects/entities/campus.entity';
 
 @Entity('inscripciones')

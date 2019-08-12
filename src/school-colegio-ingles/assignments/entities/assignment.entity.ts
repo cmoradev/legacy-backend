@@ -3,7 +3,7 @@ import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-va
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {Teacher} from '../../teachers/entities/teacher.entity';
 import { Group} from '../../groups/entities/group.entity';
-import {Cycle} from '../../subjects/entities/cycle.entity';
+import {Cycle} from '../../cycles/entities/cycle.entity';
 import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
 
 @Entity()

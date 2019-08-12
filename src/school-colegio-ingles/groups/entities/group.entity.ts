@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany,  PrimaryGeneratedColumn} from 'typeorm';
 import {Grade} from '../../grades/entities/grade.entity';
-import {Cycle} from '../../subjects/entities/cycle.entity';
+import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
