@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {Student} from './student.entity';
+import {Student} from '../../students/entities/student.entity';
 import {Group} from './group.entity';
 import {Grade} from '../../grades/entities/grade.entity';
 import {Level} from '../../levels/entities/level.entity';

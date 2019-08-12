@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { StudentsController } from './students.controller';
 import { StudentsService } from './students.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Student } from '../subjects/entities/student.entity';
+import { Student } from './entities/student.entity';
 
 @Module({
   imports: [

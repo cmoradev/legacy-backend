@@ -3,10 +3,10 @@ import {
     Entity, ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {Inscription} from './inscription.entity';
-import {Campus} from './campus.entity';
-import {AcademiesModality} from './academies-modality.entity';
-import {Family} from './family.entity';
+import {Inscription} from '../../subjects/entities/inscription.entity';
+import {Campus} from '../../subjects/entities/campus.entity';
+import {AcademiesModality} from '../../subjects/entities/academies-modality.entity';
+import {Family} from '../../subjects/entities/family.entity';
 
 @Entity('alumnos')
 export class Student {

@@ -6,8 +6,14 @@ import { LevelsModule } from './levels/levels.module';
 import { GradesModule } from './grades/grades.module';
 import { StudentsModule } from './students/students.module';
 import { AssignmentsModule } from './assignments/assignments.module';
+import { ModalitiesModule } from './modalities/modalities.module';
 
 @Module({
-  imports: [SubjectsModule, StudyPlansModule, StudyPlanVariantsModule, LevelsModule, GradesModule, StudentsModule, AssignmentsModule],
+  imports: [SubjectsModule,
+    StudyPlansModule,
+    StudyPlanVariantsModule,
+    LevelsModule, GradesModule,
+    StudentsModule, AssignmentsModule,
+    ModalitiesModule],
 })
 export class SchoolColegioInglesModule {}

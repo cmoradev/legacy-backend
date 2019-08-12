@@ -5,45 +5,45 @@ import { AssignmentSubject } from './assignment-subject.entity';
 @Entity()
 export class Subject {
 
-  @PrimaryGeneratedColumn({
-    type: 'int',
-  })
-  id: number;
+    @PrimaryGeneratedColumn({
+        type: 'int',
+    })
+    id: number;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 45,
-  })
-  name: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 45,
+    })
+    name: string;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 45,
-  })
-  shortName: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 45,
+    })
+    shortName: string;
 
-  @Column('int', {
-    nullable: true,
-  })
-  credits: number | null;
+    @Column('int', {
+        nullable: true,
+    })
+    credits: number | null;
 
-  @ManyToMany(() => StudyPlanVariant, studyPlanVariant => studyPlanVariant.subjects)
-  studyPlansVariant: StudyPlanVariant[];
+    @ManyToMany(() => StudyPlanVariant, studyPlanVariant => studyPlanVariant.subjects)
+    studyPlansVariant: StudyPlanVariant[];
 
-  @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.subject)
-  assignmentsSubjects: AssignmentSubject[];
+    @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.subject)
+    assignmentsSubjects: AssignmentSubject[];
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+    })
+    createdAt: Date;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+    })
+    updatedAt: Date;
 
 }

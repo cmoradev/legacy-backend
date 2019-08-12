@@ -7,6 +7,7 @@ import { LevelsModule } from './school-colegio-ingles/levels/levels.module';
 import { GradesModule } from './school-colegio-ingles/grades/grades.module';
 import { StudentsModule } from './school-colegio-ingles/students/students.module';
 import { AssignmentsModule } from './school-colegio-ingles/assignments/assignments.module';
+import { ModalitiesModule } from './school-colegio-ingles/modalities/modalities.module';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,7 @@ export const routes: Routes = [
             { path: '/grades', module: GradesModule },
             { path: '/students', module: StudentsModule },
             { path: '/assignments', module: AssignmentsModule },
+            { path: '/modalities', module: ModalitiesModule },
 
         ],
     },

@@ -13,7 +13,7 @@ import {
     PrimaryGeneratedColumn,
     RelationId,
 } from 'typeorm';
-import { Student } from './student.entity';
+import { Student } from '../../students/entities/student.entity';
 
 @Entity('ac_modalidades')
 export class AcademiesModality {

@@ -1,9 +1,9 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
-import {Modality} from '../../subjects/entities/modality.entity';
 import {Assignment} from '../../assignments/entities/assignment.entity';
 import {Group} from '../../subjects/entities/group.entity';
 import {Level} from '../../levels/entities/level.entity';
+import { Modality } from '../../modalities/entities/modality.entity';
 
 @Entity()
 export class StudyPlan {

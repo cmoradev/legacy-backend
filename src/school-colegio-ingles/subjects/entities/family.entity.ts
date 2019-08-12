@@ -1,6 +1,6 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Campus} from './campus.entity';
-import {Student} from './student.entity';
+import {Student} from '../../students/entities/student.entity';
 
 @Entity('familias' )
 export class Family {
