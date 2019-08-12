@@ -1,10 +1,10 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {Student} from '../../students/entities/student.entity';
-import {Group} from './group.entity';
+import {Group} from '../../groups/entities/group.entity';
 import {Grade} from '../../grades/entities/grade.entity';
 import {Level} from '../../levels/entities/level.entity';
-import {Cycle} from './cycle.entity';
-import {Campus} from './campus.entity';
+import {Cycle} from '../../subjects/entities/cycle.entity';
+import {Campus} from '../../subjects/entities/campus.entity';
 
 @Entity('inscripciones')
 export class Inscription {

@@ -1,8 +1,8 @@
 import { Column, Entity,  ManyToOne, OneToMany,  PrimaryGeneratedColumn } from 'typeorm';
 import {Level} from '../../levels/entities/level.entity';
-import {Group} from '../../subjects/entities/group.entity';
-import {Inscription} from '../../subjects/entities/inscription.entity';
-import {AssignmentSubject} from '../../subjects/entities/assignment-subject.entity';
+import {Group} from '../../groups/entities/group.entity';
+import {Inscription} from '../../inscriptions/entities/inscription.entity';
+import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
 
 @Entity('grados' )
 export class Grade {

@@ -8,12 +8,19 @@ import { StudyPlan } from '../study-plans/entities/study-plan.entity';
     model: {
         type: StudyPlanVariant,
     },
+    query: {
+        join: {
+            studyPlan: {},
+        },
+    },
 })
 @Controller()
 export class StudyPlanVariantsController implements CrudController<StudyPlanVariant> {
     constructor(
         readonly service: StudyPlanVariantsService,
-    ) { }
+    ) {
+    }
+
     get base(): CrudController<StudyPlanVariant> {
         return this;
     }

@@ -10,6 +10,9 @@ import { Subject } from '../subjects/entities/subject.entity';
     },
     query: {
         join: {
+            studyPlansVariants: {
+              eager: true,
+            },
             modality: {
                 eager: true,
             },

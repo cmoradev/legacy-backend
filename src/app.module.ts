@@ -7,6 +7,7 @@ import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegi
 import { RouterModule } from 'nest-router';
 import { routes } from './routes';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { TeachersModule } from './school-colegio-ingles/teachers/teachers.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
