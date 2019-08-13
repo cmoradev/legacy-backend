@@ -1,10 +1,10 @@
-import { Column, Entity,  ManyToOne, OneToMany,  PrimaryGeneratedColumn } from 'typeorm';
-import {Level} from '../../levels/entities/level.entity';
-import {Group} from '../../groups/entities/group.entity';
-import {Inscription} from '../../inscriptions/entities/inscription.entity';
-import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Level } from '../../levels/entities/level.entity';
+import { Group } from '../../groups/entities/group.entity';
+import { Inscription } from '../../inscriptions/entities/inscription.entity';
+import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 
-@Entity('grados' )
+@Entity('grados')
 export class Grade {
 
     @PrimaryGeneratedColumn({
@@ -41,7 +41,7 @@ export class Grade {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => Level, (level) =>  level.grades)
+    @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
 
     @OneToMany(() => Group, (group) => group.grade)
@@ -50,5 +50,5 @@ export class Grade {
     @OneToMany(() => Inscription, (inscription) => inscription.grade)
     inscriptions: Inscription[];
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.grade)
-    assignmentsSubjects: AssignmentSubject;
+    assignmentsSubjects: AssignmentSubject[];
 }

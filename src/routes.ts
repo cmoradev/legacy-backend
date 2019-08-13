@@ -20,7 +20,9 @@ import { MiniStoreClassificationsModule } from './mini-store/mini-store-classifi
 import { MiniStorePricesListsModule } from './mini-store/mini-store-prices-lists/mini-store-prices-lists.module';
 import { MiniStoreInvoicesKeysModule } from './mini-store/mini-store-invoices-keys/mini-store-invoices-keys.module';
 import { MiniStoreInvoicesModule } from './mini-store/mini-store-invoices/mini-store-invoices.module';
+import { AssignmentsSubjectsModule } from './school-colegio-ingles/assignments-subjects/assignments-subjects.module';
 import { MiniStoreSalesModule } from './mini-store/mini-store-sales/mini-store-sales.module';
+import { MiniStorePaymentsStatusModule } from './mini-store/mini-store-payments-status/mini-store-payments-status.module';
 
 export const routes: Routes = [
     {
@@ -36,7 +38,7 @@ export const routes: Routes = [
             { path: '/assignments', module: AssignmentsModule },
             { path: '/modalities', module: ModalitiesModule },
             { path: '/teachers', module: TeachersModule },
-            { path: '/assignments-subjects', module: AssignmentsModule },
+            { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
             { path: '/groups', module: GroupsModule },
             { path: '/inscriptions', module: InscriptionsModule },
             { path: '/cycles', module: CyclesModule },
@@ -53,7 +55,7 @@ export const routes: Routes = [
             { path: '/prices-lists', module:  MiniStorePricesListsModule  },
             { path: '/invoices-keys', module:  MiniStoreInvoicesKeysModule  },
             { path: '/invoices', module: MiniStoreInvoicesModule },
-            { path: '/sales', module: MiniStoreSalesModule },
+            { path: '/payments-status', module: MiniStorePaymentsStatusModule },
             { path: '/sales', module: MiniStoreSalesModule },
         ],
     },
