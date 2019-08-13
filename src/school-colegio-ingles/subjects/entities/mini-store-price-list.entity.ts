@@ -4,7 +4,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from './mini-store-product.entity';
+import {MiniStoreProduct} from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 
 @Entity('tie_listaprecios')
 export class MiniStorePriceList {

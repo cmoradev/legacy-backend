@@ -14,6 +14,8 @@ import { InscriptionsModule } from './school-colegio-ingles/inscriptions/inscrip
 import { CyclesModule } from './school-colegio-ingles/cycles/cycles.module';
 import { CampusesModule } from './school-colegio-ingles/campuses/campuses.module';
 import { FamiliesModule } from './school-colegio-ingles/families/families.module';
+import { MiniStoreModule } from './mini-store/mini-store.module';
+import { MiniStoreProductsModule } from './mini-store/mini-store-products/mini-store-products.module';
 
 export const routes: Routes = [
     {
@@ -35,6 +37,13 @@ export const routes: Routes = [
             { path: '/cycles', module: CyclesModule },
             { path: '/campuses', module: CampusesModule },
             { path: '/families', module: FamiliesModule },
+        ],
+    },
+    {
+        path: '/mini-store',
+        module: MiniStoreModule,
+        childrens: [
+            { path: '/products', module:  MiniStoreProductsModule  },
         ],
     },
 ];

@@ -1,6 +1,6 @@
 import {Column, Entity,  ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {MiniStoreSale} from './mini-store-sale.entity';
-import {MiniStoreProduct} from './mini-store-product.entity';
+import {MiniStoreProduct} from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 import {MiniStoreClassification} from './mini-store-classification.entity';
 
 @Entity('tie_venta_detalle' )
