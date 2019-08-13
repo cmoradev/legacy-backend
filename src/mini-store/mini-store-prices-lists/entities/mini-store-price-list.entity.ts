@@ -4,11 +4,10 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from './mini-store-product.entity';
-import {MiniStoreSaleDetail} from './mini-store-sale-detail.entity';
+import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
 
-@Entity('tie_clasificaciones')
-export class MiniStoreClassification {
+@Entity('tie_listaprecios')
+export class MiniStorePriceList {
 
     @PrimaryGeneratedColumn({
         type: 'int',
@@ -18,15 +17,21 @@ export class MiniStoreClassification {
 
     @Column('varchar', {
         nullable: false,
-        length: 45,
+        length: 250,
         name: 'nombre',
     })
     name: string;
 
+    @Column('int', {
+        nullable: false,
+        name: 'ciclo',
+    })
+    cycle: number;
+
     @Column('tinyint', {
         nullable: false,
         width: 1,
-        default: () => '\'1\'',
+        default: () => '\'0\'',
         name: 'active',
     })
     isActive: boolean;
@@ -46,10 +51,7 @@ export class MiniStoreClassification {
     })
     updatedAt: Date;
 
-    @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storeClassification)
+    @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storePriceList)
     storeProducts: MiniStoreProduct[];
-
-    @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreClassification)
-    miniStoreSaleDetails: MiniStoreSaleDetail[];
 
 }

@@ -5,11 +5,11 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStorePriceList} from './mini-store-price-list.entity';
-import {MiniStoreClassification} from './mini-store-classification.entity';
-import {MiniStoreInvoiceKey} from './mini-store-invoice-key.entity';
-import {MiniStoreWarehouseOrderProduct} from './mini-store-warehouse-order-product.entity';
-import {MiniStoreSaleDetail} from './mini-store-sale-detail.entity';
+import {MiniStorePriceList} from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
+import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
+import {MiniStoreInvoiceKey} from '../../mini-store-invoices-keys/entities/mini-store-invoice-key.entity';
+import {MiniStoreWarehouseOrderProduct} from '../../../school-colegio-ingles/subjects/entities/mini-store-warehouse-order-product.entity';
+import {MiniStoreSaleDetail} from '../../../school-colegio-ingles/subjects/entities/mini-store-sale-detail.entity';
 
 @Entity('tie_productos')
 export class MiniStoreProduct {
