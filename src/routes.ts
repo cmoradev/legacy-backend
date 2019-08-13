@@ -17,6 +17,7 @@ import { FamiliesModule } from './school-colegio-ingles/families/families.module
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { MiniStoreProductsModule } from './mini-store/mini-store-products/mini-store-products.module';
 import { MiniStoreClassificationsModule } from './mini-store/mini-store-classifications/mini-store-classifications.module';
+import { MiniStorePricesListsModule } from './mini-store/mini-store-prices-lists/mini-store-prices-lists.module';
 
 export const routes: Routes = [
     {
@@ -43,9 +44,10 @@ export const routes: Routes = [
     {
         path: '/mini-store',
         module: MiniStoreModule,
-        childrens: [
+        children: [
             { path: '/products', module:  MiniStoreProductsModule  },
             { path: '/classifications', module:  MiniStoreClassificationsModule  },
+            { path: '/prices-lists', module:  MiniStorePricesListsModule  },
 
         ],
     },

@@ -5,7 +5,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStorePriceList} from '../../../school-colegio-ingles/subjects/entities/mini-store-price-list.entity';
+import {MiniStorePriceList} from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
 import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
 import {MiniStoreInvoiceKey} from '../../../school-colegio-ingles/subjects/entities/mini-store-invoice-key.entity';
 import {MiniStoreWarehouseOrderProduct} from '../../../school-colegio-ingles/subjects/entities/mini-store-warehouse-order-product.entity';
