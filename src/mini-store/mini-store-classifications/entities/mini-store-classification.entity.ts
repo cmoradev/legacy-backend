@@ -4,8 +4,8 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreSaleDetail} from './mini-store-sale-detail.entity';
+import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
+import {MiniStoreSaleDetail} from '../../../school-colegio-ingles/subjects/entities/mini-store-sale-detail.entity';
 
 @Entity('tie_clasificaciones')
 export class MiniStoreClassification {
