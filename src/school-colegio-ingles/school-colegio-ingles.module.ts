@@ -7,6 +7,11 @@ import { GradesModule } from './grades/grades.module';
 import { StudentsModule } from './students/students.module';
 import { AssignmentsModule } from './assignments/assignments.module';
 import { ModalitiesModule } from './modalities/modalities.module';
+import { TeachersModule } from './teachers/teachers.module';
+import { AssignmentsSubjectsModule } from './assignments-subjects/assignments-subjects.module';
+import { GroupsModule } from './groups/groups.module';
+import { InscriptionsModule } from './inscriptions/inscriptions.module';
+import { CyclesModule } from './cycles/cycles.module';
 
 @Module({
   imports: [SubjectsModule,
@@ -14,6 +19,6 @@ import { ModalitiesModule } from './modalities/modalities.module';
     StudyPlanVariantsModule,
     LevelsModule, GradesModule,
     StudentsModule, AssignmentsModule,
-    ModalitiesModule],
+    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule],
 })
 export class SchoolColegioInglesModule {}

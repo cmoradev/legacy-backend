@@ -1,12 +1,10 @@
-import {Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
-import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
-import {Teacher} from './teacher.entity';
-import {Subject} from './subject.entity';
-import {Grade} from '../../grades/entities/grade.entity';
-import {Assignment} from '../../assignments/entities/assignment.entity';
-
-// import {studyPlans_subjects} from "./studyPlans_subjects";
+import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
+import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
+import { Teacher } from '../../teachers/entities/teacher.entity';
+import { Subject } from '../../subjects/entities/subject.entity';
+import { Grade } from '../../grades/entities/grade.entity';
+import { Assignment } from '../../assignments/entities/assignment.entity';
 
 @Entity()
 export class AssignmentSubject {
@@ -28,7 +26,7 @@ export class AssignmentSubject {
     @ManyToOne(() => Subject, (subject) => subject.assignmentsSubjects)
     subject: Subject;
 
-    @ManyToOne(() => Grade, (grade) => grade.assignmentsSubjects )
+    @ManyToOne(() => Grade, (grade) => grade.assignmentsSubjects)
     grade: Grade;
 
     @ManyToOne(() => Assignment, (assignment) => assignment.assignmentsSubjects)

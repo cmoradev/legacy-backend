@@ -4,7 +4,6 @@ import { StudyPlan } from './entities/study-plan.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-
 @Injectable()
 export class StudyPlansService extends TypeOrmCrudService<StudyPlan> {
     constructor(

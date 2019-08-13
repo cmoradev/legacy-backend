@@ -1,10 +1,10 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
-import {Teacher} from '../../subjects/entities/teacher.entity';
-import { Group} from '../../subjects/entities/group.entity';
-import {Cycle} from '../../subjects/entities/cycle.entity';
-import {AssignmentSubject} from '../../subjects/entities/assignment-subject.entity';
+import {Teacher} from '../../teachers/entities/teacher.entity';
+import { Group} from '../../groups/entities/group.entity';
+import {Cycle} from '../../cycles/entities/cycle.entity';
+import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
 
 @Entity()
 export class Assignment {

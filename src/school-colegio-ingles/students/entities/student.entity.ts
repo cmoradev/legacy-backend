@@ -3,7 +3,7 @@ import {
     Entity, ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {Inscription} from '../../subjects/entities/inscription.entity';
+import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Campus} from '../../subjects/entities/campus.entity';
 import {AcademiesModality} from '../../subjects/entities/academies-modality.entity';
 import {Family} from '../../subjects/entities/family.entity';
