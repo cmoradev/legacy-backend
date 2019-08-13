@@ -12,6 +12,7 @@ import { AssignmentsSubjectsModule } from './assignments-subjects/assignments-su
 import { GroupsModule } from './groups/groups.module';
 import { InscriptionsModule } from './inscriptions/inscriptions.module';
 import { CyclesModule } from './cycles/cycles.module';
+import { CampusesModule } from './campuses/campuses.module';
 
 @Module({
   imports: [SubjectsModule,
@@ -19,6 +20,6 @@ import { CyclesModule } from './cycles/cycles.module';
     StudyPlanVariantsModule,
     LevelsModule, GradesModule,
     StudentsModule, AssignmentsModule,
-    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule],
+    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule, CampusesModule],
 })
 export class SchoolColegioInglesModule {}

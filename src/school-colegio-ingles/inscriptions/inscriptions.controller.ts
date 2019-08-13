@@ -8,7 +8,7 @@ import { InscriptionsService } from './inscriptions.service';
         type: Inscription,
     },
 })
-@Controller('inscriptions')
+@Controller()
 export class InscriptionsController implements CrudController<Inscription> {
     constructor(
         readonly service: InscriptionsService,

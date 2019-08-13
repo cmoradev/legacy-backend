@@ -7,7 +7,7 @@ import { CyclesService } from './cycles.service';
         type: Cycle,
     },
 })
-@Controller('cycles')
+@Controller()
 export class CyclesController implements CrudController<Cycle> {
     constructor(readonly service: CyclesService) {}
     get base(): CrudController<Cycle> {
