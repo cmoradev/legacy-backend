@@ -2,7 +2,7 @@ import { Column, Entity,  OneToMany,  PrimaryGeneratedColumn} from 'typeorm';
 import {Level} from '../../levels/entities/level.entity';
 import {Student} from '../../students/entities/student.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
-import {Family} from '../../subjects/entities/family.entity';
+import {Family} from '../../families/entities/family.entity';
 
 @Entity('planteles')
 export class Campus {

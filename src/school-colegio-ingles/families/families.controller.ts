@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { Family } from '../subjects/entities/family.entity';
+import { Family } from './entities/family.entity';
 import { FamiliesService } from './families.service';
 @Crud({
     model: {
