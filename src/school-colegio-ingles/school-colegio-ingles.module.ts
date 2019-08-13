@@ -13,6 +13,7 @@ import { GroupsModule } from './groups/groups.module';
 import { InscriptionsModule } from './inscriptions/inscriptions.module';
 import { CyclesModule } from './cycles/cycles.module';
 import { CampusesModule } from './campuses/campuses.module';
+import { FamiliesModule } from './families/families.module';
 
 @Module({
   imports: [SubjectsModule,
@@ -20,6 +21,6 @@ import { CampusesModule } from './campuses/campuses.module';
     StudyPlanVariantsModule,
     LevelsModule, GradesModule,
     StudentsModule, AssignmentsModule,
-    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule, CampusesModule],
+    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule, CampusesModule, FamiliesModule],
 })
 export class SchoolColegioInglesModule {}
