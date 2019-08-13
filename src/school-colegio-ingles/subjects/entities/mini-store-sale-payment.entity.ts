@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSale} from './mini-store-sale.entity';
+import {MiniStoreSale} from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
 import {MiniStoreSaleMethodPayment} from './mini-store-sale-method-payment.entity';
 import {MiniStoreInvoice} from '../../../mini-store/mini-store-invoices/entities/mini-store-invoice.entity';
 import {MiniStorePaymentStatus} from './mini-store-payment-status.entity';

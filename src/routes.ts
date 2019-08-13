@@ -20,6 +20,7 @@ import { MiniStoreClassificationsModule } from './mini-store/mini-store-classifi
 import { MiniStorePricesListsModule } from './mini-store/mini-store-prices-lists/mini-store-prices-lists.module';
 import { MiniStoreInvoicesKeysModule } from './mini-store/mini-store-invoices-keys/mini-store-invoices-keys.module';
 import { MiniStoreInvoicesModule } from './mini-store/mini-store-invoices/mini-store-invoices.module';
+import { MiniStoreSalesModule } from './mini-store/mini-store-sales/mini-store-sales.module';
 
 export const routes: Routes = [
     {
@@ -52,6 +53,8 @@ export const routes: Routes = [
             { path: '/prices-lists', module:  MiniStorePricesListsModule  },
             { path: '/invoices-keys', module:  MiniStoreInvoicesKeysModule  },
             { path: '/invoices', module: MiniStoreInvoicesModule },
+            { path: '/sales', module: MiniStoreSalesModule },
+            { path: '/sales', module: MiniStoreSalesModule },
         ],
     },
 ];
