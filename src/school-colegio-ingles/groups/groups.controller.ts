@@ -8,7 +8,7 @@ import { GroupsService } from './groups.service';
         type: Group,
     },
 })
-@Controller('groups')
+@Controller()
 export class GroupsController implements CrudController<Group> {
     constructor(
         readonly service: GroupsService,

@@ -8,7 +8,7 @@ import { AssignmentsSubjectsService } from './assignments-subjects.service';
         type: AssignmentSubject,
     },
 })
-@Controller('assignments-subjects')
+@Controller()
 export class AssignmentsSubjectsController implements CrudController<AssignmentSubject> {
     constructor(
        readonly service: AssignmentsSubjectsService,

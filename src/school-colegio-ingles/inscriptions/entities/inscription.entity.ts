@@ -4,7 +4,7 @@ import {Group} from '../../groups/entities/group.entity';
 import {Grade} from '../../grades/entities/grade.entity';
 import {Level} from '../../levels/entities/level.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
-import {Campus} from '../../subjects/entities/campus.entity';
+import {Campus} from '../../campuses/entities/campus.entity';
 
 @Entity('inscripciones')
 export class Inscription {

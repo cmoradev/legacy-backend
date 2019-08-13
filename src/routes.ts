@@ -12,6 +12,8 @@ import { TeachersModule } from './school-colegio-ingles/teachers/teachers.module
 import { GroupsModule } from './school-colegio-ingles/groups/groups.module';
 import { InscriptionsModule } from './school-colegio-ingles/inscriptions/inscriptions.module';
 import { CyclesModule } from './school-colegio-ingles/cycles/cycles.module';
+import { CampusesModule } from './school-colegio-ingles/campuses/campuses.module';
+import { FamiliesModule } from './school-colegio-ingles/families/families.module';
 
 export const routes: Routes = [
     {
@@ -31,6 +33,8 @@ export const routes: Routes = [
             { path: '/groups', module: GroupsModule },
             { path: '/inscriptions', module: InscriptionsModule },
             { path: '/cycles', module: CyclesModule },
+            { path: '/campuses', module: CampusesModule },
+            { path: '/families', module: FamiliesModule },
         ],
     },
 ];
