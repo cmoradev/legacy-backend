@@ -14,13 +14,21 @@ import { InscriptionsModule } from './inscriptions/inscriptions.module';
 import { CyclesModule } from './cycles/cycles.module';
 import { CampusesModule } from './campuses/campuses.module';
 import { FamiliesModule } from './families/families.module';
+import { AcademiesModalitiesModule } from './academies-modalities/academies-modalities.module';
 
 @Module({
-  imports: [SubjectsModule,
-    StudyPlansModule,
-    StudyPlanVariantsModule,
-    LevelsModule, GradesModule,
-    StudentsModule, AssignmentsModule,
-    ModalitiesModule, TeachersModule, AssignmentsSubjectsModule, GroupsModule, InscriptionsModule, CyclesModule, CampusesModule, FamiliesModule],
+    imports: [
+        SubjectsModule,
+        StudyPlansModule,
+        StudyPlanVariantsModule,
+        LevelsModule, GradesModule,
+        StudentsModule, AssignmentsModule,
+        ModalitiesModule,
+        TeachersModule,
+        AssignmentsSubjectsModule,
+        GroupsModule, InscriptionsModule,
+        CyclesModule, CampusesModule, FamiliesModule, AcademiesModalitiesModule,
+    ],
 })
-export class SchoolColegioInglesModule {}
+export class SchoolColegioInglesModule {
+}

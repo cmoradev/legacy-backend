@@ -1,6 +1,6 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSalePayment} from './mini-store-sale-payment.entity';
-import {InvoiceMethodPayment} from './invoice-method-payment.entity';
+import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import {InvoiceMethodPayment} from '../../invoices-methods-payments/entities/invoice-method-payment.entity';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago

@@ -5,8 +5,8 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import {MiniStoreSalePayment} from '../../../school-colegio-ingles/subjects/entities/mini-store-sale-payment.entity';
-import {MiniStoreSaleDetail} from '../../../school-colegio-ingles/subjects/entities/mini-store-sale-detail.entity';
+import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import {MiniStoreSaleDetail} from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {

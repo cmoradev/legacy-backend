@@ -23,6 +23,16 @@ import { MiniStoreInvoicesModule } from './mini-store/mini-store-invoices/mini-s
 import { AssignmentsSubjectsModule } from './school-colegio-ingles/assignments-subjects/assignments-subjects.module';
 import { MiniStoreSalesModule } from './mini-store/mini-store-sales/mini-store-sales.module';
 import { MiniStorePaymentsStatusModule } from './mini-store/mini-store-payments-status/mini-store-payments-status.module';
+import { MiniStoreSalesPaymentsModule } from './mini-store/mini-store-sales-payments/mini-store-sales-payments.module';
+import { MiniStoreSalesMethodsPaymentsModule } from './mini-store/mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
+import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-details/mini-store-sales-details.module';
+import { InvoicesMethodsPaymentsModule } from './mini-store/invoices-methods-payments/invoices-methods-payments.module';
+import { AcademiesModalitiesModule } from './school-colegio-ingles/academies-modalities/academies-modalities.module';
+import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehouse-orders/mini-store-warehouse-orders.module';
+import {
+    MiniStoreWarehouseOrdersProductsModule,
+} from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
+import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 
 export const routes: Routes = [
     {
@@ -43,6 +53,7 @@ export const routes: Routes = [
             { path: '/inscriptions', module: InscriptionsModule },
             { path: '/cycles', module: CyclesModule },
             { path: '/campuses', module: CampusesModule },
+            { path: '/academies-modalities', module: AcademiesModalitiesModule },
             { path: '/families', module: FamiliesModule },
         ],
     },
@@ -57,6 +68,16 @@ export const routes: Routes = [
             { path: '/invoices', module: MiniStoreInvoicesModule },
             { path: '/payments-status', module: MiniStorePaymentsStatusModule },
             { path: '/sales', module: MiniStoreSalesModule },
+            { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
+            { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
+            { path: '/sales-details', module: MiniStoreSalesDetailsModule },
+            { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
+            { path: '/warehouse', children: [
+                    {path: '/orders', module: MiniStoreWarehouseOrdersModule},
+                    { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
+                    { path: '/providers', module: MiniStoreWarehouseProvidersModule },
+
+                ] },
         ],
     },
 ];

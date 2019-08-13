@@ -5,7 +5,7 @@ import {
 } from 'typeorm';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Campus} from '../../campuses/entities/campus.entity';
-import {AcademiesModality} from '../../subjects/entities/academies-modality.entity';
+import {AcademiesModality} from '../../academies-modalities/entities/academies-modality.entity';
 import {Family} from '../../families/entities/family.entity';
 
 @Entity('alumnos')

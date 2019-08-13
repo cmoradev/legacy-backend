@@ -1,0 +1,23 @@
+import { Controller } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { MiniStoreWarehouseOrdersProductsService } from './mini-store-warehouse-orders-products.service';
+import { MiniStoreWarehouseOrderProduct } from './entities/mini-store-warehouse-order-product.entity';
+
+@Crud({
+    model: {
+        type: MiniStoreWarehouseOrderProduct,
+    },
+    query: {
+        join: {
+            miniStoreProduct: {},
+            miniStoreWarehouseOrder: {},
+        },
+    },
+})
+@Controller()
+export class MiniStoreWarehouseOrdersProductsController implements CrudController<MiniStoreWarehouseOrderProduct> {
+    constructor(
+        readonly service: MiniStoreWarehouseOrdersProductsService,
+    ) {
+    }
+}

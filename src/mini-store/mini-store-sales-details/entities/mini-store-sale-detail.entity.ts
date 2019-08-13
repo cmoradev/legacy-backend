@@ -1,7 +1,7 @@
 import {Column, Entity,  ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSale} from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
-import {MiniStoreProduct} from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreClassification} from '../../../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
+import {MiniStoreSale} from '../../mini-store-sales/entities/mini-store-sale.entity';
+import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
+import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
 
 @Entity('tie_venta_detalle' )
 export class MiniStoreSaleDetail {

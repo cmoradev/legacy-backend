@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSalePayment} from '../../../school-colegio-ingles/subjects/entities/mini-store-sale-payment.entity';
+import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice {

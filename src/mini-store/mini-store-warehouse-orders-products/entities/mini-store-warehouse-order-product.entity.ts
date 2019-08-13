@@ -4,8 +4,8 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreWarehouseOrder} from './mini-store-warehouse-order.entity';
+import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
+import {MiniStoreWarehouseOrder} from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 
 @Entity('tie_almacen_pedidos_productos')
 export class MiniStoreWarehouseOrderProduct {
