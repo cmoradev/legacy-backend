@@ -7,6 +7,7 @@ import {
 
 import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import {MiniStoreSaleDetail} from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import {MiniStoreInvoice} from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {
@@ -193,5 +194,8 @@ export class MiniStoreSale {
 
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
+
+    @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale )
+    miniStoreInvoices: MiniStoreInvoice[];
 
 }
