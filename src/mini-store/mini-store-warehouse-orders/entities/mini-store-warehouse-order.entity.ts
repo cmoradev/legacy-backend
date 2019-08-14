@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import {MiniStoreWarehouseOrderProduct} from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import {MiniStoreWarehouseProvider} from '../../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
+import { User } from '../../../school-colegio-ingles/users/entities/user.entity';
 
 @Entity('tie_almacen_pedidos')
 export class MiniStoreWarehouseOrder {
@@ -103,4 +104,10 @@ export class MiniStoreWarehouseOrder {
 
     @ManyToOne(() => MiniStoreWarehouseProvider, (miniStoreWarehouseProvider) => miniStoreWarehouseProvider.miniStoreWarehouseOrders)
     miniStoreWarehouseProvider: MiniStoreWarehouseProvider;
+
+    @ManyToOne(() => User, (user) => user.miniStoreCreatorWareHouseOrder)
+    agentCreator: User;
+
+    @ManyToOne(() => User, (user) => user.miniStoreEditorWareHouseOrder)
+    agentEditor: User;
 }

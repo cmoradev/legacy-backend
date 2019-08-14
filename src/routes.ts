@@ -33,12 +33,14 @@ import {
     MiniStoreWarehouseOrdersProductsModule,
 } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
+import { UsersModule } from './school-colegio-ingles/users/users.module';
 
 export const routes: Routes = [
     {
         path: '/school',
         module: SchoolColegioInglesModule,
         children: [
+            { path: '/users', module: UsersModule },
             { path: '/subjects', module: SubjectsModule },
             { path: '/study-plans', module: StudyPlansModule },
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },

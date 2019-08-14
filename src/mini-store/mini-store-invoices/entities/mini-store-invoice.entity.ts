@@ -1,5 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { User } from 'src/school-colegio-ingles/users/entities/user.entity';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice {
@@ -124,4 +126,12 @@ export class MiniStoreInvoice {
     @ManyToOne(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreInvoices)
     miniStoreSalePayment: MiniStoreSalePayment;
 
+    @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreInvoices )
+    miniStoreSale: MiniStoreSale;
+
+    @ManyToOne(() => User, (user) => user.miniStoreBillingInvoices)
+    agentBilling: User;
+
+    @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
+    agentCanceling: User;
 }
