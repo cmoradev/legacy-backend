@@ -7,12 +7,24 @@ import { AssignmentsSubjectsService } from './assignments-subjects.service';
     model: {
         type: AssignmentSubject,
     },
+    query: {
+        join: {
+            studyPlanVariant: { eager: true, allow: ['name', 'code'] },
+            subject: {
+                eager: true, allow: ['name', 'shortName', 'code'],
+            },
+            grade: { eager: true },
+            assignment: {},
+        },
+    },
 })
 @Controller()
 export class AssignmentsSubjectsController implements CrudController<AssignmentSubject> {
     constructor(
-       readonly service: AssignmentsSubjectsService,
-    ) { }
+        readonly service: AssignmentsSubjectsService,
+    ) {
+    }
+
     get base(): CrudController<AssignmentSubject> {
         return this;
     }

@@ -22,6 +22,14 @@ export class Subject {
     })
     shortName: string;
 
+    @Column(
+        'varchar', {
+            nullable: false,
+            length: 20,
+        },
+    )
+    code: string;
+
     @Column('int', {
         nullable: true,
     })
