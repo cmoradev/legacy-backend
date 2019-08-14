@@ -16,6 +16,14 @@ export class Subject {
     })
     name: string;
 
+    @Column(
+        'varchar', {
+            nullable: false,
+            length: 20,
+        },
+    )
+    code: string;
+
     @Column('varchar', {
         nullable: false,
         length: 45,
