@@ -8,7 +8,7 @@ import { ClassroomsService } from './classrooms.service';
         type: Classroom,
     },
 })
-@Controller('classrooms')
+@Controller()
 export class ClassroomsController implements CrudController<Classroom> {
     constructor(readonly service: ClassroomsService) { }
     get base(): CrudController<Classroom> {

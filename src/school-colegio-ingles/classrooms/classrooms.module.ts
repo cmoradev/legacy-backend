@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Classroom } from './entities/classroom.entity';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([Classroom]) ],
+  imports: [ TypeOrmModule.forFeature([Classroom], 'colegiodb') ],
   exports: [ ClassroomsService ],
   controllers: [ ClassroomsController ],
   providers: [ ClassroomsService ],
