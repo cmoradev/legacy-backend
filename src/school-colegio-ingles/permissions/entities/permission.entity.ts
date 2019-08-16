@@ -26,10 +26,11 @@ export class Permission {
     })
     isFather: boolean;
 
-    @Column('int', {
+    @Column('varchar', {
         nullable: false,
+        length: 20,
     })
-    level: number;
+    level: string;
 
     @Column('varchar', {
         nullable: true,

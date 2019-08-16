@@ -12,4 +12,8 @@ export class PermissionsService extends TypeOrmCrudService<Permission> {
         super(repo);
     }
 
+    public getRoots() {
+        return this.repo.manager.getTreeRepository(Permission).findRoots();
+    }
+
 }
