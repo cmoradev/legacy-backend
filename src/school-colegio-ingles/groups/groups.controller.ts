@@ -7,12 +7,19 @@ import { GroupsService } from './groups.service';
     model: {
         type: Group,
     },
+    query: {
+        join: {
+            grade: {},
+        },
+    },
 })
 @Controller()
 export class GroupsController implements CrudController<Group> {
     constructor(
         readonly service: GroupsService,
-    ) {}
+    ) {
+    }
+
     get base(): CrudController<Group> {
         return this;
     }
