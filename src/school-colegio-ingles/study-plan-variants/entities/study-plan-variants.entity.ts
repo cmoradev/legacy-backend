@@ -4,6 +4,7 @@ import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Assignment } from '../../assignments/entities/assignment.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Group } from '../../groups/entities/group.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity()
 export class StudyPlanVariant {
@@ -42,8 +43,10 @@ export class StudyPlanVariant {
      * StudyPlanVariant-> Groups[]
      * Group-> StudyPlanVariant
      */
-    @OneToMany(() => Group, group => group.studyPlanVariant)
-    groups: Group[];
+    /*@OneToMany(() => Group, group => group.studyPlanVariant)
+    groups: Group[];*/
+    @OneToMany(() => Classroom, classroom => classroom.studyPlanVariant)
+    classrooms: Classroom[];
 
     @ManyToOne(() => StudyPlan, studyPlanGeneral => studyPlanGeneral.studyPlansVariants)
     studyPlan: StudyPlan;

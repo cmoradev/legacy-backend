@@ -4,6 +4,7 @@ import {Assignment} from '../../assignments/entities/assignment.entity';
 import {Group} from '../../groups/entities/group.entity';
 import {Level} from '../../levels/entities/level.entity';
 import { Modality } from '../../modalities/entities/modality.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity()
 export class StudyPlan {
@@ -22,9 +23,6 @@ export class StudyPlan {
         nullable: false,
     })
     status: string;
-
-    @OneToMany(() => Group, (group) => group.studyPlan)
-    group: Group;
 
     @OneToMany(type => StudyPlanVariant, (studyPlanVariants) => studyPlanVariants.studyPlan)
     studyPlansVariants: StudyPlanVariant[];
@@ -62,4 +60,7 @@ export class StudyPlan {
 
     @ManyToOne(() => Level, (level) => level.studyPlans)
     level: Level;
+    @OneToMany(() => Classroom, (classroom) => classroom.studyPlan )
+    classrooms: Classroom[];
+
 }

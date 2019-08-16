@@ -5,6 +5,7 @@ import {Teacher} from '../../teachers/entities/teacher.entity';
 import { Group} from '../../groups/entities/group.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
 import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity()
 export class Assignment {
@@ -26,8 +27,8 @@ export class Assignment {
     @ManyToOne(() => Teacher, teacher => teacher.assignments)
     teacher: Teacher;
 
-    @ManyToOne(() => Group, group => group.assignments)
-    group: Group;
+    @ManyToOne(() => Classroom, classroom => classroom.assignments)
+    classroom: Classroom;
 
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.assignment)
     assignmentsSubjects: AssignmentSubject[];

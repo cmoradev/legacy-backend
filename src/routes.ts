@@ -34,6 +34,8 @@ import {
 } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 import { UsersModule } from './school-colegio-ingles/users/users.module';
+import { Classroom } from './school-colegio-ingles/classrooms/entities/classroom.entity';
+import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.module';
 
 export const routes: Routes = [
     {
@@ -57,6 +59,7 @@ export const routes: Routes = [
             { path: '/campuses', module: CampusesModule },
             { path: '/academies-modalities', module: AcademiesModalitiesModule },
             { path: '/families', module: FamiliesModule },
+            { path: '/classrooms', module: ClassroomsModule },
         ],
     },
     {

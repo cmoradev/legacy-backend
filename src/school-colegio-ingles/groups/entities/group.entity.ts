@@ -5,6 +5,7 @@ import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
 import {Assignment} from '../../assignments/entities/assignment.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity('grupos' )
 export class Group {
@@ -70,12 +71,6 @@ export class Group {
     @OneToMany(() => Inscription, (inscription) => inscription.group)
     inscriptions: Inscription[];
 
-    @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.group)
-    studyPlan: StudyPlan;
-
-    @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.groups)
-    studyPlanVariant: StudyPlanVariant;
-
-    @OneToMany(() => Assignment, (assignment) => assignment.group)
-    assignments: Assignment[];
+    @OneToMany(() => Classroom, (classroom) => classroom.group )
+    classrooms: Classroom[];
 }

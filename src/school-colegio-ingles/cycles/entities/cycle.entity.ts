@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Group} from '../../groups/entities/group.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Assignment} from '../../assignments/entities/assignment.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity('ciclos')
 export class Cycle {
@@ -54,6 +55,9 @@ export class Cycle {
 
     @OneToMany(() => Group, (group) => group.cycle)
     groups: Group[];
+
+    @OneToMany(() => Classroom, (classroom) => classroom.cycle)
+    classrooms: Classroom[];
 
     @OneToMany(() => Inscription, (inscription) => inscription.cycle)
     inscriptions: Inscription[];

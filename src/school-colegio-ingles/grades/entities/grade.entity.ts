@@ -3,6 +3,7 @@ import { Level } from '../../levels/entities/level.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity('grados')
 export class Grade {
@@ -46,6 +47,9 @@ export class Grade {
 
     @OneToMany(() => Group, (group) => group.grade)
     groups: Group[];
+
+    @OneToMany(() => Classroom, (classroom) => classroom.grade)
+    classrooms: Classroom[];
 
     @OneToMany(() => Inscription, (inscription) => inscription.grade)
     inscriptions: Inscription[];

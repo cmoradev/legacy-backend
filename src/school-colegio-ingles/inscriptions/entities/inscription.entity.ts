@@ -6,6 +6,7 @@ import {Level} from '../../levels/entities/level.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Campus} from '../../campuses/entities/campus.entity';
 import { User } from '../../users/entities/user.entity';
+import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity('inscripciones')
 export class Inscription {
@@ -95,5 +96,8 @@ export class Inscription {
 
     @ManyToOne(() => User, (user) => user.schoolEditorInscription)
     agentEditor: User;
+
+    @ManyToOne(() => Classroom, (classroom) => classroom.inscriptions)
+    classroom: Classroom;
 
 }
