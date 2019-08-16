@@ -34,8 +34,11 @@ import {
 } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 import { UsersModule } from './school-colegio-ingles/users/users.module';
-import { Classroom } from './school-colegio-ingles/classrooms/entities/classroom.entity';
 import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.module';
+import { RoutesModule } from './school-colegio-ingles/routes/routes.module';
+import { PermissionsModule } from './school-colegio-ingles/permissions/permissions.module';
+import { RolesModule } from './school-colegio-ingles/roles/roles.module';
+import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
 
 export const routes: Routes = [
     {
@@ -60,6 +63,10 @@ export const routes: Routes = [
             { path: '/academies-modalities', module: AcademiesModalitiesModule },
             { path: '/families', module: FamiliesModule },
             { path: '/classrooms', module: ClassroomsModule },
+            { path: '/routes', module: RoutesModule },
+            { path: '/permissions', module: PermissionsModule },
+            { path: '/roles', module: RolesModule },
+            { path: '/actions', module: ActionsModule },
         ],
     },
     {

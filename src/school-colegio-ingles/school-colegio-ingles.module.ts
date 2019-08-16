@@ -17,6 +17,10 @@ import { FamiliesModule } from './families/families.module';
 import { AcademiesModalitiesModule } from './academies-modalities/academies-modalities.module';
 import { UsersModule } from './users/users.module';
 import { ClassroomsModule } from './classrooms/classrooms.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { RoutesModule } from './routes/routes.module';
+import { ActionsModule } from './actions/actions.module';
 
 @Module({
     imports: [
@@ -29,7 +33,10 @@ import { ClassroomsModule } from './classrooms/classrooms.module';
         TeachersModule,
         AssignmentsSubjectsModule,
         GroupsModule, InscriptionsModule,
-        CyclesModule, CampusesModule, FamiliesModule, AcademiesModalitiesModule, UsersModule, ClassroomsModule,
+        CyclesModule, CampusesModule,
+        FamiliesModule, AcademiesModalitiesModule,
+        UsersModule, ClassroomsModule, PermissionsModule,
+        RolesModule, RoutesModule, ActionsModule,
     ],
 })
 export class SchoolColegioInglesModule {
