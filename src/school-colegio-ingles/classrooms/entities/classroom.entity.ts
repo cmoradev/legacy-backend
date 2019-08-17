@@ -12,6 +12,7 @@ import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 import { Assignment } from '../../assignments/entities/assignment.entity';
 import { Group } from '../../groups/entities/group.entity';
+import { Level } from '../../levels/entities/level.entity';
 
 @Entity()
 export class Classroom {
@@ -75,4 +76,7 @@ export class Classroom {
 
     @ManyToOne(() => Group, (group) => group.classrooms)
     group: Group;
+
+    @ManyToOne(() => Level, (level) => level.classrooms)
+    level: Level;
 }
