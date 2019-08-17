@@ -1,6 +1,6 @@
 import {
     Column,
-    Entity,
+    Entity, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -9,6 +9,7 @@ import { MiniStoreSale } from '../../../mini-store/mini-store-sales/entities/min
 import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
+import { Role } from '../../roles/entities/role.entity';
 
 @Entity('usuarios')
 export class User {
@@ -107,6 +108,9 @@ export class User {
         name: 'updated_at',
     })
     updatedAt: Date;
+
+    @ManyToOne(() => Role, (role) => role.users)
+    role: Role;
 
     @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.agentBilling)
     miniStoreBillingInvoices: MiniStoreInvoice[];

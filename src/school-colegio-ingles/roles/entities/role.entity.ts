@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Role {
@@ -34,4 +35,7 @@ export class Role {
         onUpdate: 'CURRENT_TIMESTAMP',
     })
     updatedAt: Date;
+
+    @OneToMany(() => User, (user) => user.role )
+    users: User[];
 }
