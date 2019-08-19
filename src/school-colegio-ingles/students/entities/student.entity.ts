@@ -111,6 +111,12 @@ export class Student {
     })
     idCampus: number;
 
+    @Column('text', {
+            nullable: true,
+            name: 'profile_picture',
+    })
+    profilePicture: string | null;
+
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
