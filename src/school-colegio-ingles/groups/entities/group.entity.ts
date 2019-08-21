@@ -2,9 +2,6 @@ import { Column, Entity, ManyToOne, OneToMany,  PrimaryGeneratedColumn} from 'ty
 import {Grade} from '../../grades/entities/grade.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
-import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
-import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
-import {Assignment} from '../../assignments/entities/assignment.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity('grupos' )

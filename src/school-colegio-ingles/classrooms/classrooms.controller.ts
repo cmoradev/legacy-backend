@@ -7,6 +7,18 @@ import { ClassroomsService } from './classrooms.service';
     model: {
         type: Classroom,
     },
+    query: {
+        join: {
+            grade: {  },
+            cycle: {  },
+            studyPlan: {  },
+            studyPlanVariant: {  },
+            group: {  },
+            level: {  },
+            assignments: {},
+            inscriptions: {},
+        },
+    },
 })
 @Controller()
 export class ClassroomsController implements CrudController<Classroom> {

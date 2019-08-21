@@ -15,6 +15,11 @@ import { sheetToObjPage } from '../../common/sheets';
     model: {
         type: Inscription,
     },
+    query: {
+        join: {
+            student: {},
+        },
+    },
 })
 @Controller()
 export class InscriptionsController implements CrudController<Inscription> {
@@ -34,7 +39,7 @@ export class InscriptionsController implements CrudController<Inscription> {
                 cb(null, './uploads');
             },
             filename: (req, file, cb) => {
-                cb(null,  Date.now() + '_' + file.originalname);
+                cb(null, Date.now() + '_' + file.originalname);
             },
         }),
     }))
@@ -42,6 +47,6 @@ export class InscriptionsController implements CrudController<Inscription> {
         const pathfile = path.join(__dirname, `../../../uploads/` + file.filename);
         const Sheets: ExcelSheet[] = xlsx.parse(pathfile);
         const inscripcion: VerificarInscriprions = await sheetToObjPage(Sheets);
-        return  await this.service.verificarInscription(inscripcion, data);
+        return await this.service.verificarInscription(inscripcion, data);
     }
 }
