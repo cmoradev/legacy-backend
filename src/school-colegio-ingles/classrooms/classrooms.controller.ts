@@ -9,12 +9,12 @@ import { ClassroomsService } from './classrooms.service';
     },
     query: {
         join: {
-            grade: {  },
-            cycle: {  },
-            studyPlan: {  },
-            studyPlanVariant: {  },
-            group: {  },
-            level: {  },
+            grade: {},
+            cycle: {},
+            studyPlan: {},
+            studyPlanVariant: {},
+            group: {},
+            level: {},
             assignments: {},
             inscriptions: {},
         },
@@ -22,7 +22,9 @@ import { ClassroomsService } from './classrooms.service';
 })
 @Controller()
 export class ClassroomsController implements CrudController<Classroom> {
-    constructor(readonly service: ClassroomsService) { }
+    constructor(readonly service: ClassroomsService) {
+    }
+
     get base(): CrudController<Classroom> {
         return this;
     }

@@ -1,10 +1,10 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
-import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
-import {Teacher} from '../../teachers/entities/teacher.entity';
-import { Group} from '../../groups/entities/group.entity';
-import {Cycle} from '../../cycles/entities/cycle.entity';
-import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
+import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
+import { Teacher } from '../../teachers/entities/teacher.entity';
+import { Group } from '../../groups/entities/group.entity';
+import { Cycle } from '../../cycles/entities/cycle.entity';
+import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 
 @Entity()
@@ -30,8 +30,8 @@ export class Assignment {
     @ManyToOne(() => Classroom, classroom => classroom.assignments)
     classroom: Classroom;
 
-    @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.assignment)
-    assignmentsSubjects: AssignmentSubject[];
+    @ManyToOne(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.assignments)
+    assignmentSubject: AssignmentSubject;
 
     @Column('timestamp', {
         nullable: false,

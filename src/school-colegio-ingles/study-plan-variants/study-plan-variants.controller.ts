@@ -11,6 +11,7 @@ import { StudyPlan } from '../study-plans/entities/study-plan.entity';
     query: {
         join: {
             studyPlan: {},
+            assignmentSubjects: {},
         },
     },
 })
