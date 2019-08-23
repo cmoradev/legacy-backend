@@ -15,8 +15,8 @@ import { ClassroomsService } from './classrooms.service';
             studyPlanVariant: {  },
             group: {  },
             level: {  },
-            assignments: {},
-            inscriptions: {},
+            assignments: {  },
+            inscriptions: { },
         },
     },
 })

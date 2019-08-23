@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import {Student} from '../../students/entities/student.entity';
 import {Group} from '../../groups/entities/group.entity';
 import {Grade} from '../../grades/entities/grade.entity';
@@ -7,6 +7,7 @@ import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Campus} from '../../campuses/entities/campus.entity';
 import { User } from '../../users/entities/user.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
 
 @Entity('inscripciones')
 export class Inscription {
@@ -99,5 +100,8 @@ export class Inscription {
 
     @ManyToOne(() => Classroom, (classroom) => classroom.inscriptions)
     classroom: Classroom;
+
+    @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.inscription)
+    assignmentsInscription: AssignmentInscription[];
 
 }

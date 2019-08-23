@@ -2,10 +2,10 @@ import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'type
 import {StudyPlanVariant} from '../../study-plan-variants/entities/study-plan-variants.entity';
 import {StudyPlan} from '../../study-plans/entities/study-plan.entity';
 import {Teacher} from '../../teachers/entities/teacher.entity';
-import { Group} from '../../groups/entities/group.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
 import {AssignmentSubject} from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
 
 @Entity()
 export class Assignment {
@@ -32,6 +32,9 @@ export class Assignment {
 
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.assignment)
     assignmentsSubjects: AssignmentSubject[];
+
+    @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.assignment)
+    assignmentsInscription: AssignmentInscription[];
 
     @Column('timestamp', {
         nullable: false,

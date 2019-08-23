@@ -39,6 +39,7 @@ import { RoutesModule } from './school-colegio-ingles/routes/routes.module';
 import { PermissionsModule } from './school-colegio-ingles/permissions/permissions.module';
 import { RolesModule } from './school-colegio-ingles/roles/roles.module';
 import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
+import { AssignmentIncriptionModule } from './school-colegio-ingles/assignment-incription/assignment-incription.module';
 
 export const routes: Routes = [
     {
@@ -58,6 +59,7 @@ export const routes: Routes = [
             { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
             { path: '/groups', module: GroupsModule },
             { path: '/inscriptions', module: InscriptionsModule },
+            { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
             { path: '/cycles', module: CyclesModule },
             { path: '/campuses', module: CampusesModule },
             { path: '/academies-modalities', module: AcademiesModalitiesModule },

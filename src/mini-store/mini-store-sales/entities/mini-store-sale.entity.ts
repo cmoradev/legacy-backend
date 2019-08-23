@@ -127,6 +127,12 @@ export class MiniStoreSale {
         name: 'iva',
     })
     iva: number;
+    @Column('tinyint', {
+        nullable: false,
+        default: () => '\'0\'',
+        name: 'is_iva',
+    })
+    isIVA: boolean;
 
     @Column('tinyint', {
         nullable: false,
