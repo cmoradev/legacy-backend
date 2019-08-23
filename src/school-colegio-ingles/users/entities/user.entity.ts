@@ -10,6 +10,7 @@ import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payme
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { Role } from '../../roles/entities/role.entity';
+import { ClassroomPermission } from '../../classroom-permission/entities/classroom-permission.entity';
 
 @Entity('usuarios')
 export class User {
@@ -141,4 +142,6 @@ export class User {
 
     @OneToMany(() => Inscription, (inscription) => inscription.agentEditor)
     schoolEditorInscription: Inscription[];
+    @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.user)
+    classroomPermissions: ClassroomPermission[];
 }

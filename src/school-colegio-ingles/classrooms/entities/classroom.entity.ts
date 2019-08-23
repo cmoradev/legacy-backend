@@ -13,6 +13,7 @@ import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-
 import { Assignment } from '../../assignments/entities/assignment.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Level } from '../../levels/entities/level.entity';
+import { ClassroomPermission } from '../../classroom-permission/entities/classroom-permission.entity';
 
 @Entity()
 export class Classroom {
@@ -79,4 +80,6 @@ export class Classroom {
 
     @ManyToOne(() => Level, (level) => level.classrooms)
     level: Level;
+    @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.classroom)
+    classroomPermissions: ClassroomPermission[];
 }

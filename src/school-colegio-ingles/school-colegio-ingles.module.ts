@@ -22,6 +22,7 @@ import { RolesModule } from './roles/roles.module';
 import { RoutesModule } from './routes/routes.module';
 import { ActionsModule } from './actions/actions.module';
 import { AssignmentIncriptionModule } from './assignment-incription/assignment-incription.module';
+import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
 
 @Module({
     imports: [
@@ -37,7 +38,7 @@ import { AssignmentIncriptionModule } from './assignment-incription/assignment-i
         CyclesModule, CampusesModule,
         FamiliesModule, AcademiesModalitiesModule,
         UsersModule, ClassroomsModule, PermissionsModule,
-        RolesModule, RoutesModule, ActionsModule, AssignmentIncriptionModule,
+        RolesModule, RoutesModule, ActionsModule, AssignmentIncriptionModule, ClassroomPermissionModule,
     ],
 })
 export class SchoolColegioInglesModule {
