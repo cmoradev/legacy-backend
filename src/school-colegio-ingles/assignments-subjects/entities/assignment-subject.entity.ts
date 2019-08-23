@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Teacher } from '../../teachers/entities/teacher.entity';
@@ -29,8 +29,8 @@ export class AssignmentSubject {
     @ManyToOne(() => Grade, (grade) => grade.assignmentsSubjects)
     grade: Grade;
 
-    @ManyToOne(() => Assignment, (assignment) => assignment.assignmentsSubjects)
-    assignment: Assignment;
+    @OneToMany(() => Assignment, (assignment) => assignment.assignmentSubject)
+    assignments: Assignment[];
 
     @Column('timestamp', {
         nullable: false,
