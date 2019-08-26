@@ -1,9 +1,9 @@
-import {Column, Entity,  ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSale} from '../../mini-store-sales/entities/mini-store-sale.entity';
-import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
+import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
 
-@Entity('tie_venta_detalle' )
+@Entity('tie_venta_detalle')
 export class MiniStoreSaleDetail {
 
     @PrimaryGeneratedColumn({
@@ -65,6 +65,19 @@ export class MiniStoreSaleDetail {
         name: 'updated_at',
     })
     updatedAt: Date | null;
+
+    @Column('int', {
+        nullable: false,
+        default: () => '\'1\'',
+    })
+    unitMeasurement: number;
+
+    @Column('decimal', {
+        nullable: false,
+        precision: 15,
+        scale: 6,
+    })
+    priceWithIVA: string;
 
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSaleDetails)
     miniStoreSale: MiniStoreSale;

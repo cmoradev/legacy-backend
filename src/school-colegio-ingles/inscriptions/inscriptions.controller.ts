@@ -18,6 +18,11 @@ import { sheetToObjPage } from '../../common/sheets';
     query: {
         join: {
             student: {},
+            cycle: {},
+            campus: {},
+            grade: {},
+            group: {},
+            level: {},
         },
     },
 })

@@ -10,9 +10,9 @@ import { StudentsService } from './students.service';
     query: {
         join: {
             inscriptions: {},
-            cycle: {},
-            grade: {},
-            group: {},
+            family: {},
+            academiesModality: {},
+            campus: {},
         },
     },
 })

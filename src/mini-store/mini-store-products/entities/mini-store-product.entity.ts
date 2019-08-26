@@ -120,6 +120,12 @@ export class MiniStoreProduct {
 
     @Column('int', {
         nullable: false,
+        default: () => '\'1\'',
+    })
+    unitMeasurement: number;
+
+    @Column('int', {
+        nullable: false,
         default: () => '\'0\'',
         name: 'id_listaprecios',
     })
