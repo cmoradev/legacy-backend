@@ -9,59 +9,59 @@ import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
 
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
-    constructor(
-        @InjectRepository(Inscription, 'colegiodb') readonly repo: Repository<Inscription>,
-        @InjectRepository(Student, 'colegiodb') readonly student: Repository<Student>,
-    ) {
-        super(repo);
-    }
+  constructor(
+    @InjectRepository(Inscription, 'colegiodb') readonly inscriptions: Repository<Inscription>,
+    @InjectRepository(Student, 'colegiodb') readonly student: Repository<Student>,
+  ) {
+    super(inscriptions);
+  }
 
-    async verificarInscription(data: VerificarInscriprions, datainsc: VerifyregistratioDto): Promise<any> {
-        const result: any = {
-            registered: [],
-            notregistered: [],
-            nonstudent: [],
-        };
-        for (const student of data.data) {
+  public async verificarInscription(data: VerificarInscriprions, datainsc: VerifyregistratioDto): Promise<any> {
+    const result: any = {
+      registered: [],
+      notregistered: [],
+      nonstudent: [],
+      enrolledStudents: [],
+    };
+    result.enrolledStudents = await this.inscriptions.find({
+      relations: ['student'],
+      where: {
+        idPlantel: datainsc.plantel,
+        idLevel: datainsc.nivel,
+        idGrade: datainsc.grado,
+        idGroup: datainsc.grupo,
+        idCycle: datainsc.ciclo,
+      },
+    });
 
-            const studentR: any = await this.student.findOne({ matricula: student.matricula });
-            if (studentR) {
-                const inscripcionalumno = await this.repo.findOne({
-                        student: {
-                            id: studentR.id,
-                        },
-                        campus: {
-                            id: datainsc.plantel,
-                        },
-                        level: {
-                            id: datainsc.nivel,
-                        },
-                        grade: {
-                            id: datainsc.grado,
-                        },
-                        group: {
-                            id: datainsc.grupo,
-                        },
-                        cycle: {
-                            id: datainsc.ciclo,
-                        },
-                    },
-                );
+    for (const student of data.data) {
 
-                if (inscripcionalumno) {
-                    studentR.inscripcion = inscripcionalumno;
-                    // inscritor y registrado en el grupo grado nivel
-                    result.registered.push(studentR);
-                } else {
-                    // regitrado pero no inscrito en la seecion selecionada
-                    result.notregistered.push(studentR);
-                }
-            } else {
-                // no regitrado en el sistema
-                result.nonstudent.push(student);
-            }
+      const studentR: any = await this.student.findOne({ matricula: student.matricula });
+      if (studentR) {
+        const inscripcionalumno = await this.inscriptions.findOne({
+            idStudent: studentR.id,
+            idPlantel: datainsc.plantel,
+            idLevel: datainsc.nivel,
+            idGrade: datainsc.grado,
+            idGroup: datainsc.grupo,
+            idCycle: datainsc.ciclo,
+          },
+        );
 
+        if (inscripcionalumno) {
+          studentR.inscripcion = inscripcionalumno;
+          // inscritor y registrado en el grupo grado nivel
+          result.registered.push(studentR);
+        } else {
+          // regitrado pero no inscrito en la seecion selecionada
+          result.notregistered.push(studentR);
         }
-        return result;
+      } else {
+        // no regitrado en el sistema
+        result.nonstudent.push(student);
+      }
+
     }
+    return result;
+  }
 }
