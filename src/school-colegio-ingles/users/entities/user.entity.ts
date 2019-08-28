@@ -32,6 +32,7 @@ export class User {
         nullable: false,
         length: 60,
         name: 'ap_paterno',
+        default: () => '\'\'',
     })
     lastnameFather: string;
 
@@ -39,6 +40,7 @@ export class User {
         nullable: false,
         length: 60,
         name: 'ap_materno',
+        default: () => '\'\'',
     })
     lastnameMother: string;
 

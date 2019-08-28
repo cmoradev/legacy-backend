@@ -57,6 +57,7 @@ export class MiniStoreSaleMethodPayment {
         nullable: false,
         length: 90,
         name: 'cuenta',
+        default: () => '\'\'',
     })
     account: string;
 
