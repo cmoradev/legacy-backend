@@ -11,11 +11,11 @@ export class ColegioDBService implements TypeOrmOptionsFactory {
     return {
       type: 'mysql',
       name: 'colegiodb',
-      host: '138.68.253.42',
+      host: '0.0.0.0',
       port: 3399,
-      username: 'test',
-      password: 'test',
-      database: 'colegio_pdc_test',
+      username: 'produccion',
+      password: 'kgjhld2019',
+      database: 'colegio_pdc',
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: false,
     };
