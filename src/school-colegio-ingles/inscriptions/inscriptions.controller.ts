@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -36,7 +36,10 @@ export class InscriptionsController implements CrudController<Inscription> {
     get base(): CrudController<Inscription> {
         return this;
     }
-
+    @Get('/amir')
+    async verify(): Promise<any> {
+        return 'amir';
+    }
     @Post('/verifyinscription')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
