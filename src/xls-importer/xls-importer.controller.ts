@@ -5,6 +5,9 @@ import * as fs from 'fs';
 import * as xlsx from 'xlsx';
 import { WorkBook } from 'xlsx';
 
+/**
+ * TODO: borrar, es solo para pruebas
+ */
 interface Person {
     firstName: string;
     lastName: string;
