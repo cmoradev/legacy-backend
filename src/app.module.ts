@@ -9,6 +9,7 @@ import { routes } from './routes';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { TeachersModule } from './school-colegio-ingles/teachers/teachers.module';
 import { MiniStoreModule } from './mini-store/mini-store.module';
+import { XlsImporterModule } from './xls-importer/xls-importer.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -27,6 +28,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         RouterModule.forRoutes(routes),
         SchoolColegioInglesModule,
         MiniStoreModule,
+        XlsImporterModule,
     ],
     controllers: [AppController],
     providers: [AppService],
