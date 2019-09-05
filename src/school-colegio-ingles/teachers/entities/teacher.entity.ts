@@ -1,5 +1,6 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {Assignment} from '../../assignments/entities/assignment.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Teacher {
@@ -21,6 +22,10 @@ export class Teacher {
 
     @OneToMany(type => Assignment, (assignment) => assignment.teacher )
     assignments: Assignment[];
+
+    @OneToOne(() => User, (user) => user.teacher)
+    @JoinColumn()
+    user: User;
 
     @Column('timestamp', {
         nullable: false,
