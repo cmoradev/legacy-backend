@@ -13,7 +13,8 @@
     "interface-name": [false],
     "indent": [true, "spaces", 4],
     "arrow-parens": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": false
   },
   "rulesDirectory": []
 }
