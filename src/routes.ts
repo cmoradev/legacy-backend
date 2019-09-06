@@ -41,6 +41,9 @@ import { RolesModule } from './school-colegio-ingles/roles/roles.module';
 import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
 import { AssignmentIncriptionModule } from './school-colegio-ingles/assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-permission/classroom-permission.module';
+import { IncidentClassification } from './school-colegio-ingles/incident-classification/entities/incident-classification.entity';
+import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
+import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
 
 export const routes: Routes = [
     {
@@ -70,6 +73,8 @@ export const routes: Routes = [
             { path: '/routes', module: RoutesModule },
             { path: '/permissions', module: PermissionsModule },
             { path: '/roles', module: RolesModule },
+            { path: '/incident-classifications', module: IncidentClassificationModule },
+            { path: '/incidents', module: IncidentsModule },
             { path: '/actions', module: ActionsModule },
         ],
     },

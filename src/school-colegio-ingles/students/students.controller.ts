@@ -13,6 +13,7 @@ import { StudentsService } from './students.service';
             family: {},
             academiesModality: {},
             campus: {},
+            incidents: {},
         },
     },
 })

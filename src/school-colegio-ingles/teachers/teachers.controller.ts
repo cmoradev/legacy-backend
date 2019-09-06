@@ -7,6 +7,11 @@ import { TeachersService } from './teachers.service';
     model: {
         type: Teacher,
     },
+    query: {
+        join: {
+            incidents: {},
+        },
+    },
 })
 @Controller()
 export class TeachersController implements CrudController<Teacher> {
