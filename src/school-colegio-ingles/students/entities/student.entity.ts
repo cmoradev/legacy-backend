@@ -7,6 +7,7 @@ import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Campus} from '../../campuses/entities/campus.entity';
 import {AcademiesModality} from '../../academies-modalities/entities/academies-modality.entity';
 import {Family} from '../../families/entities/family.entity';
+import { Incident } from '../../incidents/entities/incident.entity';
 
 @Entity('alumnos')
 export class Student {
@@ -143,5 +144,7 @@ export class Student {
 
     @OneToMany(() => Inscription, (inscription) => inscription.student)
     inscriptions: Inscription[];
+    @OneToMany(() => Incident, (incident) => incident.student)
+    incidents: Incident[];
 
 }
