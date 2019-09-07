@@ -47,10 +47,19 @@ import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.mod
 
 export const routes: Routes = [
     {
+        path: '/system',
+        children: [
+            { path: '/users', module: UsersModule },
+            { path: '/routes', module: RoutesModule },
+            { path: '/permissions', module: PermissionsModule },
+            { path: '/roles', module: RolesModule },
+            { path: '/actions', module: ActionsModule },
+        ],
+    },
+    {
         path: '/school',
         module: SchoolColegioInglesModule,
         children: [
-            { path: '/users', module: UsersModule },
             { path: '/subjects', module: SubjectsModule },
             { path: '/study-plans', module: StudyPlansModule },
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },
@@ -70,12 +79,8 @@ export const routes: Routes = [
             { path: '/families', module: FamiliesModule },
             { path: '/classrooms', module: ClassroomsModule },
             { path: '/classrooms-permissions', module: ClassroomPermissionModule },
-            { path: '/routes', module: RoutesModule },
-            { path: '/permissions', module: PermissionsModule },
-            { path: '/roles', module: RolesModule },
             { path: '/incident-classifications', module: IncidentClassificationModule },
             { path: '/incidents', module: IncidentsModule },
-            { path: '/actions', module: ActionsModule },
         ],
     },
     {
