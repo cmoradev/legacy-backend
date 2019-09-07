@@ -9,11 +9,12 @@ import { StudentsService } from './students.service';
     },
     query: {
         join: {
-            inscriptions: {},
             family: {},
             academiesModality: {},
             campus: {},
             incidents: {},
+            inscriptions: {},
+            'inscriptions.cycle': { },
         },
     },
 })
