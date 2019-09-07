@@ -13,9 +13,9 @@ export class ColegioDBService implements TypeOrmOptionsFactory {
       name: 'colegiodb',
       host: '138.68.253.42',
       port: 3399,
-      username: 'produccion',
-      password: 'kgjhld2019',
-      database: 'colegio_pdc',
+      username: 'staging',
+      password: 'staging',
+      database: 'colegio_pdc_staging',
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: false,
     };

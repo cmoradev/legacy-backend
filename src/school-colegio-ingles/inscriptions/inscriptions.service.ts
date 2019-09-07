@@ -58,6 +58,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         }
       } else {
         // no regitrado en el sistema
+        console.log(student)
         result.nonstudent.push(student);
       }
 
