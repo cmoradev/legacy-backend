@@ -15,6 +15,9 @@ import { StudentsService } from './students.service';
             incidents: {},
             inscriptions: {},
             'inscriptions.cycle': { },
+            'inscriptions.classroom': {},
+            'inscriptions.level': {},
+            'inscriptions.grade': {},
         },
     },
 })
