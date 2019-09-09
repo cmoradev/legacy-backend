@@ -62,7 +62,7 @@ export class Permission {
     @ManyToOne(() => Route, (route) => route.permissions )
     route: Route;
 
-    @TreeChildren()
+    @TreeChildren({ cascade: ['update', 'insert', 'remove'] })
     children: Permission[];
 
     @TreeParent()
