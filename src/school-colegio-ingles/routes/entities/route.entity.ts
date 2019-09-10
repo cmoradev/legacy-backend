@@ -21,10 +21,10 @@ export class Route {
     })
     name: string;
 
-    @Column('boolean', {
-        nullable: false,
+    @Column('int', {
+        nullable: true,
     })
-    isFather: boolean;
+    fatherID: number;
 
     @Column('varchar', {
         nullable: false,
@@ -62,7 +62,7 @@ export class Route {
     @JoinTable()
     actions: Action[];
 
-    @TreeChildren()
+    @TreeChildren({ cascade: true })
     children: Route[];
 
     @TreeParent()
