@@ -11,4 +11,8 @@ export class RoutesService extends TypeOrmCrudService<Route> {
     ) {
         super(repo);
     }
+
+    public getRoots() {
+        return this.repo.manager.getTreeRepository(Route).findTrees();
+    }
 }
