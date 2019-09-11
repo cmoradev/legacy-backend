@@ -26,11 +26,10 @@ export class Route {
     })
     fatherID: number;
 
-    @Column('varchar', {
+    @Column('int', {
         nullable: false,
-        length: 20,
     })
-    level: string;
+    level: number;
 
     @Column('varchar', {
         nullable: true,
