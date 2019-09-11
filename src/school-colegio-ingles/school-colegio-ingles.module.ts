@@ -25,6 +25,8 @@ import { AssignmentIncriptionModule } from './assignment-incription/assignment-i
 import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
 import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
+import { DepartmentsModule } from './departments/departments.module';
+import { CheckInModule } from './check-in/check-in.module';
 
 @Module({
     imports: [
@@ -42,7 +44,7 @@ import { IncidentClassificationModule } from './incident-classification/incident
         UsersModule, ClassroomsModule, PermissionsModule,
         RolesModule, RoutesModule, ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,
-        IncidentsModule, IncidentClassificationModule,
+        IncidentsModule, IncidentClassificationModule, DepartmentsModule, CheckInModule,
     ],
 })
 export class SchoolColegioInglesModule {
