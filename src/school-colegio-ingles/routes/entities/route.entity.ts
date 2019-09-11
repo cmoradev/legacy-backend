@@ -3,7 +3,7 @@ import { Permission } from '../../permissions/entities/permission.entity';
 import { Action } from '../../actions/entities/action.entity';
 
 @Entity()
-@Tree('closure-table')
+@Tree('materialized-path')
 export class Route {
     @PrimaryGeneratedColumn({
         type: 'int',
@@ -62,7 +62,7 @@ export class Route {
     @JoinTable()
     actions: Action[];
 
-    @TreeChildren({ cascade: true })
+    @TreeChildren()
     children: Route[];
 
     @TreeParent()
