@@ -7,7 +7,6 @@ import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegi
 import { RouterModule } from 'nest-router';
 import { routes } from './routes';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { TeachersModule } from './school-colegio-ingles/teachers/teachers.module';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
 

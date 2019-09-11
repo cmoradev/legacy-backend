@@ -44,6 +44,7 @@ import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-per
 import { IncidentClassification } from './school-colegio-ingles/incident-classification/entities/incident-classification.entity';
 import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
 import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
+import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
 
 export const routes: Routes = [
     {
@@ -81,6 +82,7 @@ export const routes: Routes = [
             { path: '/classrooms-permissions', module: ClassroomPermissionModule },
             { path: '/incident-classifications', module: IncidentClassificationModule },
             { path: '/incidents', module: IncidentsModule },
+            { path: '/departments', module: DepartmentsModule },
         ],
     },
     {
