@@ -1,8 +1,9 @@
 import {
     Column,
-    Entity,
+    Entity, OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { CheckIn } from '../../check-in/entities/check-in.entity';
 
 @Entity('departamentos')
 export class Department {
@@ -36,8 +37,12 @@ export class Department {
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
         name: 'updated_at',
     })
     updatedAt: Date;
+
+    @OneToMany(() => CheckIn, (checkin) => checkin.department)
+    inputRecords: CheckIn;
 
 }
