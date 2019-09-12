@@ -34,13 +34,13 @@ export class CheckIn {
     signature: string;
 
     @Column({
-        type: 'date',
+        type: 'timestamp',
         nullable: true,
     })
     entryHour: Date;
 
     @Column({
-        type: 'date',
+        type: 'timestamp',
         nullable: true,
     })
     exitHour: Date;
