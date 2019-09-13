@@ -12,5 +12,10 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
     ) {
         super(checkinRepository);
     }
+    async updateSignatureCheckIn(idCheckIn: number, fileName: string) {
+        const checkIn = await this.checkinRepository.findOne({ id: idCheckIn });
+        checkIn.signature = fileName;
+        return await this.checkinRepository.save(checkIn);
+    }
 
 }

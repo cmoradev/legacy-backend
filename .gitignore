@@ -4,6 +4,8 @@
 
 # Carga de archivos
 /uploads
+/xls-imports
+/signatures
 
 # Logs
 logs
