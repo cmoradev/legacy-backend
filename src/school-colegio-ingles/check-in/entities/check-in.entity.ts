@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Department } from '../../departments/entities/department.entity';
 
 enum StatusCheckIn {
@@ -29,19 +29,19 @@ export class CheckIn {
 
     @Column({
         type: 'varchar',
-        nullable: false,
+        nullable: true,
     })
     signature: string;
 
     @Column({
-        type: 'date',
-        nullable: false,
+        type: 'timestamp',
+        nullable: true,
     })
     entryHour: Date;
 
     @Column({
-        type: 'date',
-        nullable: false,
+        type: 'timestamp',
+        nullable: true,
     })
     exitHour: Date;
 
@@ -67,4 +67,11 @@ export class CheckIn {
         onUpdate: 'CURRENT_TIMESTAMP',
     })
     updatedAt: Date;
+
+    @BeforeInsert()
+    checkInEntryHour() {
+        this.entryHour = new Date();
+        this.status = StatusCheckIn.Inside;
+    }
+
 }

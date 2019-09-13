@@ -3,45 +3,12 @@ import { Role } from '../../roles/entities/role.entity';
 import { Route } from '../../routes/entities/route.entity';
 
 @Entity()
-@Tree('closure-table')
+@Tree('materialized-path')
 export class Permission {
     @PrimaryGeneratedColumn({
         type: 'int',
     })
     id: number;
-
-    @Column('boolean', {
-        nullable: false,
-    })
-    isActive: boolean;
-
-    @Column('varchar', {
-        nullable: false,
-        length: 60,
-    })
-    name: string;
-
-    @Column('boolean', {
-        nullable: false,
-    })
-    isFather: boolean;
-
-    @Column('varchar', {
-        nullable: false,
-        length: 20,
-    })
-    level: string;
-
-    @Column('varchar', {
-        nullable: true,
-    })
-    url: string | null;
-
-    @Column('varchar', {
-        nullable: false,
-        length: 50,
-    })
-    icon: string;
 
     @Column('timestamp', {
         nullable: false,
