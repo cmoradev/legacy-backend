@@ -3,6 +3,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { Permission } from './entities/permission.entity';
 import { PermissionsService } from './permissions.service';
 import { PermissionDto } from './DTO/permission.dto';
+import { Equal } from 'typeorm';
 
 @Crud({
   model: {
@@ -63,18 +64,36 @@ export class PermissionsController implements CrudController<Permission> {
   }
 
   @Get('assignpermissions/:id')
-  async getFlatPermission(@Param('id') idrol: string) {
-     const permissions = await this.service.repo.find({
+  async getFlatPermission(@Param('id') idrol: any) {
+    const permissions = await this.service.repo.find({
       where: {
         role: {
           id: idrol,
         },
       },
       select: ['routeId'],
-      });
-     return permissions.map((data) => {
-        return data.routeId;
-     });
+    });
+    return permissions.map((data) => {
+      return data.routeId;
+    });
+  }
+
+  @Get('pruebas/:id')
+  async getTreePermission(@Param('id') idrol: string) {
+    return await this.service.repo.find({
+      where: {
+          role: {
+            id: idrol,
+          },
+          route: {
+            'name': 'Tienda',
+          },
+        },
+      relations: ['route', 'role'],
+    });
+    /*return permissions.map((data) => {
+      return data.route;
+    });*/
   }
 
 }
