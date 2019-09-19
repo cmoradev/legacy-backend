@@ -29,4 +29,5 @@ export class Permission {
 
     @ManyToOne(() => Route, (route) => route.permissions )
     route: Route;
+
 }

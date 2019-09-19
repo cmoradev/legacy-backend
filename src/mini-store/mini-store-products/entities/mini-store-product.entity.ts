@@ -89,23 +89,29 @@ export class MiniStoreProduct {
     })
     IVA: boolean;
 
-    @Column('int', {
+    @Column('decimal', {
         nullable: false,
-        default: () => '\'0\'',
+        default: () => '\'0.000\'',
+        precision: 15,
+        scale: 3,
         name: 'stock',
     })
     stock: number;
 
-    @Column('int', {
+    @Column('decimal', {
         nullable: true,
-        default: () => '\'0\'',
+        default: () => '\'0.000\'',
+        precision: 15,
+        scale: 3,
         name: 'minstock',
     })
     minStock: number | null;
 
-    @Column('int', {
+    @Column('decimal', {
         nullable: true,
-        default: () => '\'0\'',
+        default: () => '\'0.000\'',
+        precision: 15,
+        scale: 3,
         name: 'maxstock',
     })
     maxStock: number | null;

@@ -36,7 +36,7 @@ export class MiniStoreSaleDetail {
         name: 'cantidad',
         precision: 15,
         scale: 2,
-        default: () => '\'0\'',
+        default: () => '\'0.000\'',
     })
     quantity: number;
 
