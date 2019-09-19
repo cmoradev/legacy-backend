@@ -3,7 +3,6 @@ import { Role } from '../../roles/entities/role.entity';
 import { Route } from '../../routes/entities/route.entity';
 
 @Entity()
-@Tree('materialized-path')
 export class Permission {
     @PrimaryGeneratedColumn({
         type: 'int',
@@ -30,10 +29,4 @@ export class Permission {
 
     @ManyToOne(() => Route, (route) => route.permissions )
     route: Route;
-
-    @TreeChildren({ cascade: true })
-    children: Permission[];
-
-    @TreeParent()
-    parent: Permission;
 }
