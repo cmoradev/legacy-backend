@@ -10,10 +10,10 @@ export class Route {
     })
     id: number;
 
-    @Column('boolean', {
+    @Column('tinyint', {
         nullable: false,
     })
-    isActive: boolean;
+    isActive: number;
 
     @Column('varchar', {
         nullable: false,

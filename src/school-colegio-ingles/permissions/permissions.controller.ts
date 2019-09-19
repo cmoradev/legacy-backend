@@ -3,7 +3,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { Permission } from './entities/permission.entity';
 import { PermissionsService } from './permissions.service';
 import { PermissionDto } from './DTO/permission.dto';
-import { Equal, Like } from 'typeorm';
 
 @Crud({
     model: {
@@ -13,8 +12,6 @@ import { Equal, Like } from 'typeorm';
         join: {
             role: {},
             route: {},
-            parent: {},
-            children: {},
         },
     },
 })
@@ -79,9 +76,29 @@ export class PermissionsController implements CrudController<Permission> {
         });
     }
 
-    @Get('pruebas/:id')
-    async getTreePermission(@Param('id') idrol: string) {
-        return true;
-    }
+  @Get('pruebas/:id')
+  async getTreePermission(@Param('id') idrol: number) {
+    /*await this.service.repo.find({
+       where: {
+         role: {
+           id: idrol,
+         },
+         route: {
+           isActive: 0,
+         },
+       },
+       relations: ['route', 'role'],
+     });*/
+    const permissions =  await this.service.repo.createQueryBuilder('permission')
+      .leftJoinAndSelect('permission.route', 'route', 'permission.route = route.id')
+      .leftJoinAndSelect('permission.role', 'role', 'permission.role = role.id')
+      .where('permission.role = :id', { id: idrol })
+      .andWhere('role.isActive = :active', { active: true })
+      .andWhere('route.isActive = :active', { active: 1 })
+      .getMany() ;
+    return permissions.map((data) => {
+      return data.route;
+    });
+  }
 
 }
