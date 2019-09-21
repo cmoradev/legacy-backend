@@ -44,4 +44,8 @@ export class CheckInController implements CrudController<CheckIn> {
         return await this.service.updateSignatureCheckIn(idCheckIn, file.originalname);
 
     }
+    @Post('out')
+    async makeCheckOut(@Body('guestBadgeCode') guestBadgeCode: string) {
+        return this.service.makeCheckOut(parseInt(guestBadgeCode, 10));
+    }
 }
