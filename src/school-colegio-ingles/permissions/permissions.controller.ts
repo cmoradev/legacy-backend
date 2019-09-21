@@ -76,7 +76,7 @@ export class PermissionsController implements CrudController<Permission> {
         });
     }
 
-  @Get('pruebas/:id')
+  @Get('getpermission/:id')
   async getTreePermission(@Param('id') idrol: number) {
     /*await this.service.repo.find({
        where: {
