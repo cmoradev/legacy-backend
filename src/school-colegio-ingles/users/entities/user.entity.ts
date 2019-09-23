@@ -1,7 +1,7 @@
 import {
     Column,
     Entity, ManyToOne,
-    OneToMany,
+    OneToMany, OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MiniStoreInvoice } from '../../../mini-store/mini-store-invoices/entities/mini-store-invoice.entity';
@@ -11,6 +11,7 @@ import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehous
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { Role } from '../../roles/entities/role.entity';
 import { ClassroomPermission } from '../../classroom-permission/entities/classroom-permission.entity';
+import { Teacher } from '../../teachers/entities/teacher.entity';
 
 @Entity('usuarios')
 export class User {
@@ -32,6 +33,7 @@ export class User {
         nullable: false,
         length: 60,
         name: 'ap_paterno',
+        default: () => '\'\'',
     })
     lastnameFather: string;
 
@@ -39,6 +41,7 @@ export class User {
         nullable: false,
         length: 60,
         name: 'ap_materno',
+        default: () => '\'\'',
     })
     lastnameMother: string;
 
@@ -95,6 +98,9 @@ export class User {
         name: 'img',
     })
     img: string | null;
+
+    @OneToOne(() => Teacher, (teacher) => teacher.user)
+    teacher: Teacher;
 
     @Column('timestamp', {
         nullable: false,

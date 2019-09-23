@@ -9,10 +9,18 @@ import { StudentsService } from './students.service';
     },
     query: {
         join: {
-            inscriptions: {},
             family: {},
             academiesModality: {},
             campus: {},
+            incidents: {},
+            'incidents.teacher': { },
+            'incidents.classroom': { },
+            'incidents.incidentClassification': { },
+            inscriptions: {},
+            'inscriptions.cycle': { },
+            'inscriptions.classroom': {},
+            'inscriptions.level': {},
+            'inscriptions.grade': {},
         },
     },
 })

@@ -23,6 +23,10 @@ import { RoutesModule } from './routes/routes.module';
 import { ActionsModule } from './actions/actions.module';
 import { AssignmentIncriptionModule } from './assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
+import { IncidentsModule } from './incidents/incidents.module';
+import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
+import { DepartmentsModule } from './departments/departments.module';
+import { CheckInModule } from './check-in/check-in.module';
 
 @Module({
     imports: [
@@ -38,7 +42,9 @@ import { ClassroomPermissionModule } from './classroom-permission/classroom-perm
         CyclesModule, CampusesModule,
         FamiliesModule, AcademiesModalitiesModule,
         UsersModule, ClassroomsModule, PermissionsModule,
-        RolesModule, RoutesModule, ActionsModule, AssignmentIncriptionModule, ClassroomPermissionModule,
+        RolesModule, RoutesModule, ActionsModule,
+        AssignmentIncriptionModule, ClassroomPermissionModule,
+        IncidentsModule, IncidentClassificationModule, DepartmentsModule, CheckInModule,
     ],
 })
 export class SchoolColegioInglesModule {

@@ -31,12 +31,27 @@ export class MiniStoreSaleDetail {
     })
     productCode: string;
 
-    @Column('int', {
+    @Column('decimal', {
         nullable: false,
         name: 'cantidad',
+        precision: 15,
+        scale: 2,
+        default: () => '\'0.000\'',
     })
     quantity: number;
 
+    @Column('int', {
+        nullable: false,
+        default: () => '\'1\'',
+    })
+    unitMeasurement: number;
+
+    @Column('decimal', {
+        nullable: false,
+        precision: 15,
+        scale: 6,
+    })
+    priceWithIVA: number;
     @Column('decimal', {
         nullable: false,
         precision: 15,
@@ -65,19 +80,6 @@ export class MiniStoreSaleDetail {
         name: 'updated_at',
     })
     updatedAt: Date | null;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'1\'',
-    })
-    unitMeasurement: number;
-
-    @Column('decimal', {
-        nullable: false,
-        precision: 15,
-        scale: 6,
-    })
-    priceWithIVA: string;
 
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSaleDetails)
     miniStoreSale: MiniStoreSale;

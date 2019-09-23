@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Route } from './entities/route.entity';
 import { RoutesService } from './routes.service';
@@ -15,5 +15,9 @@ export class RoutesController implements CrudController<Route> {
     ) {}
     get base(): CrudController<Route> {
         return this;
+    }
+    @Get('roots')
+    async getRoots() {
+        return await this.service.getRoots();
     }
 }

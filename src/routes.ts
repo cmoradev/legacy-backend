@@ -41,13 +41,26 @@ import { RolesModule } from './school-colegio-ingles/roles/roles.module';
 import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
 import { AssignmentIncriptionModule } from './school-colegio-ingles/assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-permission/classroom-permission.module';
+import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
+import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
+import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
+import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 
 export const routes: Routes = [
+    {
+        path: '/system',
+        children: [
+            { path: '/users', module: UsersModule },
+            { path: '/routes', module: RoutesModule },
+            { path: '/permissions', module: PermissionsModule },
+            { path: '/roles', module: RolesModule },
+            { path: '/actions', module: ActionsModule },
+        ],
+    },
     {
         path: '/school',
         module: SchoolColegioInglesModule,
         children: [
-            { path: '/users', module: UsersModule },
             { path: '/subjects', module: SubjectsModule },
             { path: '/study-plans', module: StudyPlansModule },
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },
@@ -67,10 +80,10 @@ export const routes: Routes = [
             { path: '/families', module: FamiliesModule },
             { path: '/classrooms', module: ClassroomsModule },
             { path: '/classrooms-permissions', module: ClassroomPermissionModule },
-            { path: '/routes', module: RoutesModule },
-            { path: '/permissions', module: PermissionsModule },
-            { path: '/roles', module: RolesModule },
-            { path: '/actions', module: ActionsModule },
+            { path: '/incident-classifications', module: IncidentClassificationModule },
+            { path: '/incidents', module: IncidentsModule },
+            { path: '/departments', module: DepartmentsModule },
+            { path: '/check-in', module: CheckInModule },
         ],
     },
     {

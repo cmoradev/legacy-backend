@@ -17,6 +17,9 @@ import { ClassroomsService } from './classrooms.service';
             level: {},
             assignments: {},
             inscriptions: {},
+            'inscriptions.student': {},
+            'inscriptions.student.family': {},
+            'inscriptions.student.incidents': {},
         },
     },
 })
