@@ -47,7 +47,7 @@ export class AuthModule {
             cookie: {
                 httpOnly: true,
                 expires: true,
-                maxAge: 1000 * 60,
+                maxAge: 1000 * 60 * 60 * 24 * 7,
             },
             resave: false,
             saveUninitialized: false,
