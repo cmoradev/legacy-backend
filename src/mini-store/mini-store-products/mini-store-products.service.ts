@@ -8,5 +8,13 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduct> {
     constructor(
         @InjectRepository(MiniStoreProduct, 'colegiodb') readonly repo: Repository<MiniStoreProduct>,
-    ) { super(repo); }
+    ) {
+        super(repo);
+    }
+
+    async createProduct(product: MiniStoreProduct): Promise<MiniStoreProduct> {
+        const createdProduct = await this.repo.create(product);
+        return await this.repo.save<MiniStoreProduct>(createdProduct);
+
+    }
 }

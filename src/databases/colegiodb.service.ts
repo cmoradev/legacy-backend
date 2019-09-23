@@ -1,17 +1,13 @@
-import {Injectable} from '@nestjs/common';
-import {
-  TypeOrmOptionsFactory,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
+import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class ColegioDBService implements TypeOrmOptionsFactory {
-
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'mysql',
       name: 'colegiodb',
-      host: '0.0.0.0',
+      host: '138.68.253.42',
       port: 3399,
       username: 'produccion',
       password: 'kgjhld2019',
