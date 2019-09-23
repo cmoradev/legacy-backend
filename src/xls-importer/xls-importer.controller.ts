@@ -4,18 +4,34 @@ import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import * as xlsx from 'xlsx';
 import { WorkBook } from 'xlsx';
+import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini-store-products.service';
+import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
+import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
+import { MiniStoreInvoiceKey } from '../mini-store/mini-store-invoices-keys/entities/mini-store-invoice-key.entity';
 
 /**
  * TODO: borrar, es solo para pruebas
  */
-interface Person {
-    firstName: string;
-    lastName: string;
-    age: number;
+interface Product {
+    unitMeasurement: number;
+    productName: string;
+    classification: string;
+    barcode: string;
+    stock: number;
+    minStock: number;
+    maxStock: number;
+    price: string;
+    providerPrice: string;
+    priceList: number;
+    serieFact: number;
 }
 
 @Controller('xls-importer')
 export class XlsImporterController {
+
+    constructor(readonly miniStoreProductsService: MiniStoreProductsService) {
+    }
+
     @Post('upload')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
@@ -30,11 +46,61 @@ export class XlsImporterController {
     async uploadFile(@UploadedFile() file) {
         const uploadedFile = fs.readFileSync(file.path);
         const workBook = xlsx.read(uploadedFile);
-        const persons = this.xlsWorkbookToJSON<Person>(workBook, {
+        const products = this.xlsWorkbookToJSON<Product>(workBook, {
             defaultValue: null,
-            range: 'C11:E14',
-            headers: ['firstName', 'lastName', 'age'],
+            range: 'A2:K265',
+            headers: [
+                'unitMeasurement',
+                'productName',
+                'classification',
+                'barcode',
+                'stock',
+                'minStock',
+                'maxStock',
+                'price',
+                'providerPrice',
+                'priceList',
+                'serieFact',
+            ],
         });
+        for (const product of products['Hoja1']) {
+            const classifications = {
+                'PANES Y GALLETAS': 1,
+                'BOTANAS': 2,
+                'GOLOCINAS': 3,
+                'LACTEOS': 4,
+                'REFRESCOS, AGUAS Y JUGOS': 5,
+                'ABARROTES': 6,
+                'CARNES FRIAS': 7,
+                'CARNES FRESCAS': 8,
+            };
+            const classification = classifications[product.classification];
+            this.miniStoreProductsService.createProduct({
+                name: product.productName,
+                description: product.productName,
+                code: 'NOCODE',
+                codeBar: product.barcode ? product.barcode : 'NOCODE',
+                isActive: true,
+                price: '0.000000',
+                priceWithIVA: '0.000000',
+                priceProvider: '0.000000',
+                IVA: true,
+                stock: 500,
+                minStock: 10,
+                maxStock: 1200,
+                unity: 'Pieza',
+                unitMeasurement: product.unitMeasurement,
+                idPriceList: 4,
+                idClassification: classification,
+                idInvoiceKey: 1,
+                storePriceList: { id: 4 } as MiniStorePriceList,
+                storeClassification: { id: classification } as MiniStoreClassification,
+                miniStoreWarehouseOrdersProducts: [],
+                storeInvoiceKey: { id: 1 } as MiniStoreInvoiceKey,
+                miniStoreSaleDetails: [],
+            });
+        }
+
     }
 
     xlsWorkbookToJSON<T = any>(workBook: WorkBook, options: {
