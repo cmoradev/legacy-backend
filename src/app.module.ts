@@ -9,6 +9,8 @@ import { routes } from './routes';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
+import { ConfigModule } from './config/config.module';
+import { ConfigService } from './config/config.service';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -20,7 +22,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
-            imports: [],
+            imports: [ConfigModule],
             name: 'colegiodb',
             useClass: ColegioDBService,
         }),
@@ -28,6 +30,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         SchoolColegioInglesModule,
         MiniStoreModule,
         XlsImporterModule,
+        ConfigModule,
     ],
     controllers: [AppController],
     providers: [AppService],

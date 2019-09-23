@@ -22,12 +22,6 @@ export class CheckInController implements CrudController<CheckIn> {
     get base(): CrudController<CheckIn> {
         return this;
     }
-    @Post('uploadSignature')
-    async uploadSignature(@Body('signature') signature: string, @Body('idCheckIn') idCheckIn: number) {
-        const dateImage = new Date().toLocaleString().replace(/\s/g, '_').replace(/\//g, '-').replace(/:/g, '-');
-        const result = base64ToImage(signature, '/var/tmp/', { type: 'png', fileName: `signature-${dateImage}` });
-        return await this.service.updateSignatureCheckIn(idCheckIn, result.fileName);
-    }
 
     @Post('upload')
     @UseInterceptors(FileInterceptor('image', {

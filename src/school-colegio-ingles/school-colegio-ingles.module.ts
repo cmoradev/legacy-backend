@@ -27,6 +27,7 @@ import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { CheckInModule } from './check-in/check-in.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -44,7 +45,8 @@ import { CheckInModule } from './check-in/check-in.module';
         UsersModule, ClassroomsModule, PermissionsModule,
         RolesModule, RoutesModule, ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,
-        IncidentsModule, IncidentClassificationModule, DepartmentsModule, CheckInModule,
+        IncidentsModule, IncidentClassificationModule, DepartmentsModule,
+        CheckInModule, AuthModule,
     ],
 })
 export class SchoolColegioInglesModule {

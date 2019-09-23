@@ -1,4 +1,5 @@
 import {
+    BeforeInsert,
     Column,
     Entity, ManyToOne,
     OneToMany, OneToOne,
@@ -150,4 +151,5 @@ export class User {
     schoolEditorInscription: Inscription[];
     @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.user)
     classroomPermissions: ClassroomPermission[];
+
 }
