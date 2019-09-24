@@ -1,5 +1,4 @@
 import {
-    BeforeInsert,
     Column,
     Entity, ManyToOne,
     OneToMany, OneToOne,
@@ -99,6 +98,12 @@ export class User {
         name: 'img',
     })
     img: string | null;
+
+    @Column({
+        type: 'tinyint',
+        default: () => 0,
+    })
+    canAccessAnecdoticos: boolean;
 
     @OneToOne(() => Teacher, (teacher) => teacher.user)
     teacher: Teacher;
