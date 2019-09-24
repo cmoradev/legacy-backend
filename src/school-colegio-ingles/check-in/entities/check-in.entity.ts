@@ -55,6 +55,11 @@ export class CheckIn {
     @ManyToOne(() => Department, (department) => department.inputRecords)
     department: Department;
 
+    @Column('int', {
+        nullable: true,
+    })
+    guestBadgeCode: number;
+
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',

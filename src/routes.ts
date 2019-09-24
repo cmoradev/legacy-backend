@@ -45,6 +45,7 @@ import { IncidentClassificationModule } from './school-colegio-ingles/incident-c
 import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
 import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
+import { AuthModule } from './school-colegio-ingles/auth/auth.module';
 
 export const routes: Routes = [
     {
@@ -53,6 +54,7 @@ export const routes: Routes = [
             { path: '/users', module: UsersModule },
             { path: '/routes', module: RoutesModule },
             { path: '/permissions', module: PermissionsModule },
+            { path: '/auth', module: AuthModule },
             { path: '/roles', module: RolesModule },
             { path: '/actions', module: ActionsModule },
         ],

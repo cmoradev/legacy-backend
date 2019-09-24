@@ -18,7 +18,7 @@ export class MiniStoreProduct {
         type: 'int',
         name: 'id',
     })
-    id: number;
+    id?: number;
 
     @Column('varchar', {
         nullable: false,
@@ -119,7 +119,7 @@ export class MiniStoreProduct {
     @Column('varchar', {
         nullable: false,
         length: 20,
-        default: () => '\'Peiza\'',
+        default: () => '\'Pieza\'',
         name: 'unidad',
     })
     unity: string;
@@ -154,7 +154,7 @@ export class MiniStoreProduct {
         default: () => 'CURRENT_TIMESTAMP',
         name: 'created_at',
     })
-    createdAt: Date;
+    createdAt?: Date;
 
     @Column('timestamp', {
         nullable: false,
@@ -162,7 +162,7 @@ export class MiniStoreProduct {
         onUpdate: 'CURRENT_TIMESTAMP',
         name: 'updated_at',
     })
-    updatedAt: Date;
+    updatedAt?: Date;
 
     @ManyToOne(() => MiniStorePriceList, (storePriceList) => storePriceList.storeProducts)
     storePriceList: MiniStorePriceList;
