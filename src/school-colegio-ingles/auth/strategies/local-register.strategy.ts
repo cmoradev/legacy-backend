@@ -20,8 +20,18 @@ export class LocalRegisterStrategy extends Strategy {
                 passReqToCallback: true,
             },
             async (req: Request, email: string, password: string, done: (err: any, user?: any) => void): Promise<void> => {
-                const { name } = req.body;
-                const user: any = await this.authService.registerUserIfNotExist(name, email, password );
+                const { name, role, lastnameMother, lastnameFather, campus, department, status  } = req.body;
+                const user: any = await this.authService.registerUserIfNotExist({
+                    name,
+                    email,
+                    passw: password,
+                    role,
+                    status,
+                    lastnameMother,
+                    lastnameFather,
+                    campus,
+                    department,
+                });
                 if (!user) {
                     // tslint:disable-next-line:new-parens
                     return done(new UnauthorizedException, user);

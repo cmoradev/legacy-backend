@@ -5,6 +5,7 @@ import { Assignment } from '../../assignments/entities/assignment.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { Inscription } from '../../inscriptions/entities/inscription.entity';
 
 @Entity()
 export class StudyPlanVariant {
@@ -47,12 +48,14 @@ export class StudyPlanVariant {
     groups: Group[];*/
     @OneToMany(() => Classroom, classroom => classroom.studyPlanVariant)
     classrooms: Classroom[];
+    @OneToMany(() => Inscription, (inscription) => inscription.studyPlanVariant)
+    inscriptions: Inscription[];
 
     @ManyToOne(() => StudyPlan, studyPlanGeneral => studyPlanGeneral.studyPlansVariants)
     studyPlan: StudyPlan;
 
     @OneToMany(() => Assignment, (assignment) => assignment.studyPlanVariant)
-    assignment: Assignment[];
+    assignments: Assignment[];
 
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.studyPlanVariant)
     assignmentSubjects: AssignmentSubject[];

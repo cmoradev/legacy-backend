@@ -10,6 +10,10 @@ import { PassportModule } from '@nestjs/passport';
 import * as passport from 'passport';
 import * as session from 'express-session';
 import { ConfigService } from '../../config/config.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Department } from '../departments/entities/department.entity';
+import { Role } from '../roles/entities/role.entity';
+import { Campus } from '../campuses/entities/campus.entity';
 // tslint:disable-next-line:no-var-requires
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -18,8 +22,12 @@ const MySQLStore = require('express-mysql-session')(session);
         UsersModule,
         PassportModule,
         ConfigModule,
+        TypeOrmModule.forFeature([ Department, Role, Campus ], 'colegiodb'),
     ],
-    providers: [AuthService, LocalLoginStrategy],
+    providers: [
+        AuthService,
+        LocalLoginStrategy,
+    ],
     controllers: [AuthController],
     exports: [ AuthService ],
 })

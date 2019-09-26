@@ -2,15 +2,39 @@ import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
+import { Role } from '../roles/entities/role.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Department } from '../departments/entities/department.entity';
+import { Campus } from '../campuses/entities/campus.entity';
+
+interface UserBody {
+    name: string;
+    email: string;
+    passw: string;
+    lastnameFather: string;
+    lastnameMother: string;
+    department: number;
+    role: number;
+    campus: number;
+    status: number;
+}
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly usersService: UsersService,
-    ) {}
+        @InjectRepository(Role, 'colegiodb')
+        private readonly roleRepository: Repository<Role>,
+        @InjectRepository(Department, 'colegiodb')
+        private readonly departmentRepository: Repository<Department>,
+        @InjectRepository(Campus, 'colegiodb')
+        private readonly campusRepository: Repository<Campus>,
+    ) {
+    }
 
-    public async registerUserIfNotExist(name: string, email: string, passw: string): Promise<any> {
+    public async registerUserIfNotExist(userBody: UserBody): Promise<any> {
+        const { name, email, passw, lastnameMother, lastnameFather, department, role, campus, status } = userBody;
         let user: User | undefined = await this.usersService.findOne({ email });
 
         if (user && await bcrypt.compare(passw, user.password)) {
@@ -18,7 +42,22 @@ export class AuthService {
             return result;
         }
 
+        const newRole = this.roleRepository.create();
+        newRole.id = role;
+
+        const newDepartment = this.departmentRepository.create();
+        newDepartment.id = department;
+
+        const newCampus = this.campusRepository.create();
+        newCampus.id = campus;
+
         user = await this.usersService.save(await this.usersService.create({
+            lastnameFather,
+            isActive: status,
+            role: newRole,
+            department: newDepartment,
+            campus: newCampus,
+            lastnameMother,
             name,
             email,
             password: passw,
@@ -30,9 +69,13 @@ export class AuthService {
 
         return null;
     }
+
     async validateUser(email: string, passw: string): Promise<Partial<User> | null> {
         const user: User | undefined = await this.usersService
-            .findOne({ email }, { relations: ['role', 'role.permissions', 'role.permissions.route', 'role.permissions.route.actions'] });
+            .findOne({ email }, { relations: [
+                'role', 'campus', 'department', 'role.permissions', 'role.permissions.route', 'role.permissions.route.actions',
+                ],
+            });
         if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
             const { password, ...result } = user;
             return result;

@@ -51,6 +51,12 @@ export class CheckIn {
         nullable: false,
     })
     status: StatusCheckIn;
+    @Column({
+        type: 'tinyint',
+        nullable: false,
+        default: () => 0,
+    })
+    isDating: boolean;
 
     @ManyToOne(() => Department, (department) => department.inputRecords)
     department: Department;

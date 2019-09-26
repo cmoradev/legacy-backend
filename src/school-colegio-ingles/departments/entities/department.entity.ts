@@ -4,6 +4,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CheckIn } from '../../check-in/entities/check-in.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('departamentos')
 export class Department {
@@ -44,5 +45,8 @@ export class Department {
 
     @OneToMany(() => CheckIn, (checkin) => checkin.department)
     inputRecords: CheckIn;
+
+    @OneToMany(() => User, (user) => user.department)
+    users: User[];
 
 }

@@ -19,7 +19,7 @@ export class Assignment {
     @ManyToOne(() => Cycle, (cycle) => cycle.assignments)
     cycle: Cycle;
 
-    @ManyToOne(() => StudyPlanVariant, studyPlanVariant => studyPlanVariant.assignment)
+    @ManyToOne(() => StudyPlanVariant, studyPlanVariant => studyPlanVariant.assignments)
     studyPlanVariant: StudyPlanVariant;
 
     @ManyToOne(() => StudyPlan, studyPlan => studyPlan.assignment)

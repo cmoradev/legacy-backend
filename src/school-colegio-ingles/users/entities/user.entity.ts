@@ -1,5 +1,4 @@
 import {
-    BeforeInsert,
     Column,
     Entity, ManyToOne,
     OneToMany, OneToOne,
@@ -13,6 +12,8 @@ import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { Role } from '../../roles/entities/role.entity';
 import { ClassroomPermission } from '../../classroom-permission/entities/classroom-permission.entity';
 import { Teacher } from '../../teachers/entities/teacher.entity';
+import { Department } from '../../departments/entities/department.entity';
+import { Campus } from '../../campuses/entities/campus.entity';
 
 @Entity('usuarios')
 export class User {
@@ -100,6 +101,12 @@ export class User {
     })
     img: string | null;
 
+    @Column({
+        type: 'tinyint',
+        default: () => 0,
+    })
+    canAccessAnecdoticos: boolean;
+
     @OneToOne(() => Teacher, (teacher) => teacher.user)
     teacher: Teacher;
 
@@ -119,6 +126,12 @@ export class User {
 
     @ManyToOne(() => Role, (role) => role.users)
     role: Role;
+
+    @ManyToOne(() => Department, (department) => department.users)
+    department: Department;
+
+    @ManyToOne(() => Campus, (campus) => campus.users)
+    campus: Campus;
 
     @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.agentBilling)
     miniStoreBillingInvoices: MiniStoreInvoice[];
