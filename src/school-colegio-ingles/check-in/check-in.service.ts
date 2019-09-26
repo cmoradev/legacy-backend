@@ -29,5 +29,8 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
         checkIn.status = StatusCheckIn.Outside;
         return await this.checkinRepository.save(checkIn);
     }
+    async getCheckInWithStatusInside(gaffete: number) {
+        return await this.checkinRepository.find({ guestBadgeCode: gaffete, status: StatusCheckIn.Inside });
+    }
 
 }
