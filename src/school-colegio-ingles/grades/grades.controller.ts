@@ -10,6 +10,7 @@ import { GradesService } from './grades.service';
     query: {
         join: {
             level: {},
+            'level.campus': {},
         },
     },
 })

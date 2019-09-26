@@ -16,9 +16,7 @@ import { LevelsService } from './levels.service';
 })
 @Controller()
 export class LevelsController implements CrudController<Level> {
-    constructor(readonly service: LevelsService) {
-    }
-
+    constructor(readonly service: LevelsService) {}
     get base(): CrudController<Level> {
         return this;
     }
