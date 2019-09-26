@@ -8,6 +8,7 @@ import {Campus} from '../../campuses/entities/campus.entity';
 import { User } from '../../users/entities/user.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
+import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 
 @Entity('inscripciones')
 export class Inscription {
@@ -103,5 +104,7 @@ export class Inscription {
 
     @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.inscription)
     assignmentsInscription: AssignmentInscription[];
+    @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.inscriptions)
+    studyPlanVariant: StudyPlanVariant;
 
 }
