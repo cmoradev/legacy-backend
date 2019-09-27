@@ -10,7 +10,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { ConfigModule } from './config/config.module';
-import { ConfigService } from './config/config.service';
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -36,4 +36,9 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
     providers: [AppService],
 })
 export class AppModule {
+    constructor() {
+        RequestQueryBuilder.setOptions({
+            delim: '$$',
+        });
+    }
 }
