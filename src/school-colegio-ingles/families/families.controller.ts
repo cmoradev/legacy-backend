@@ -6,6 +6,11 @@ import { FamiliesService } from './families.service';
     model: {
         type: Family,
     },
+    query: {
+        join: {
+            students: {},
+        },
+    },
 })
 @Controller()
 export class FamiliesController implements CrudController<Family> {
