@@ -24,7 +24,7 @@ export class Teacher {
     @OneToMany(() => Assignment, (assignment) => assignment.teacher )
     assignments: Assignment[];
 
-    @OneToOne(() => User, (user) => user.teacher)
+    @OneToOne(() => User, (user) => user.teacher, { cascade: ['update'] })
     @JoinColumn()
     user: User;
 
