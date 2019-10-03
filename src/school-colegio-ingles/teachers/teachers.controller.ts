@@ -10,7 +10,9 @@ import { TeachersService } from './teachers.service';
     query: {
         join: {
             incidents: {},
-            user: {},
+            user: {
+                exclude: ['password', 'rememberToken'],
+            },
         },
     },
 })

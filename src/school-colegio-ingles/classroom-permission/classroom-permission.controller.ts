@@ -7,10 +7,19 @@ import { ClassroomPermissionService } from './classroom-permission.service';
     model: {
         type: ClassroomPermission,
     },
+    query: {
+        join: {
+            classroom: {},
+            user: {
+                exclude: ['password', 'rememberToken'],
+            },
+        },
+    },
 })
 @Controller()
 export class ClassroomPermissionController implements CrudController<ClassroomPermission> {
     constructor(
         readonly service: ClassroomPermissionService,
-    ) { }
+    ) {
+    }
 }
