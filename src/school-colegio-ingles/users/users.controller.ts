@@ -37,7 +37,7 @@ export class UsersController implements CrudController<User> {
                     successful: false,
                     code: 'USER/ERROR/ASSIGN-TEACHER/NOT_USER',
                     message: 'No hay un ID de usuario',
-                    data: null,
+                    error: null,
                 });
             }
             if (!teacherPayload || !teacherPayload.id) {
@@ -45,7 +45,7 @@ export class UsersController implements CrudController<User> {
                     successful: false,
                     code: 'USER/ERROR/ASSIGN-TEACHER/NOT_TEACHER',
                     message: 'No hay un maestro En la solicitud',
-                    data: null,
+                    error: null,
                 });
             }
             const user = await this.service.repo.findOneOrFail(idUser, { relations: ['teacher'] });
@@ -64,14 +64,14 @@ export class UsersController implements CrudController<User> {
                     successful: true,
                     code: 'USER/SUCCESSFUL/ASSIGN-TEACHER/NEW',
                     message: 'Se ha actualizado el docente con exito',
-                    data: teacherUpdated,
+                    teacher: teacherUpdated,
                 });
         } catch (e) {
             res.status(HttpStatus.BAD_REQUEST).send({
                 successful: false,
                 code: 'USER/ERROR/ASSIGN-TEACHER/REQUEST_TEACHER',
                 message: 'Ha ocurrido un error',
-                data: e,
+                error: e,
             });
         }
     }

@@ -5,7 +5,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
 import { ConfigModule } from '../../config/config.module';
-import { JwtStrategy, LocalLoginStrategy, LocalRegisterStrategy } from './strategies';
+import { JwtStrategy, LocalLoginStrategy } from './strategies';
 import { PassportModule } from '@nestjs/passport';
 import * as passport from 'passport';
 import * as session from 'express-session';
@@ -22,20 +22,27 @@ const MySQLStore = require('express-mysql-session')(session);
         UsersModule,
         PassportModule,
         ConfigModule,
-        TypeOrmModule.forFeature([ Department, Role, Campus ], 'colegiodb'),
+        TypeOrmModule.forFeature([Department, Role, Campus], 'colegiodb'),
+      JwtModule.registerAsync({
+          useClass: JwtConfigService,
+          imports: [ConfigModule],
+      }),
     ],
     providers: [
         AuthService,
         LocalLoginStrategy,
+        JwtStrategy,
     ],
     controllers: [AuthController],
-    exports: [ AuthService ],
+    exports: [AuthService],
 })
 export class AuthModule {
     constructor(
-        private readonly authService: AuthService,
-        private readonly configService: ConfigService,
-    ) {}
+      private readonly authService: AuthService,
+      private readonly configService: ConfigService,
+    ) {
+    }
+
     public initialize(app: INestApplication) {
 
         const options = {

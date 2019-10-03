@@ -1,14 +1,15 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import {Student} from '../../students/entities/student.entity';
-import {Group} from '../../groups/entities/group.entity';
-import {Grade} from '../../grades/entities/grade.entity';
-import {Level} from '../../levels/entities/level.entity';
-import {Cycle} from '../../cycles/entities/cycle.entity';
-import {Campus} from '../../campuses/entities/campus.entity';
+import { Student } from '../../students/entities/student.entity';
+import { Group } from '../../groups/entities/group.entity';
+import { Grade } from '../../grades/entities/grade.entity';
+import { Level } from '../../levels/entities/level.entity';
+import { Cycle } from '../../cycles/entities/cycle.entity';
+import { Campus } from '../../campuses/entities/campus.entity';
 import { User } from '../../users/entities/user.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
+import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 
 @Entity('inscripciones')
 export class Inscription {
@@ -75,7 +76,7 @@ export class Inscription {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => Student, (student) => student.inscriptions )
+    @ManyToOne(() => Student, (student) => student.inscriptions)
     student: Student;
 
     @ManyToOne(() => Group, (group) => group.inscriptions)
@@ -106,5 +107,7 @@ export class Inscription {
     assignmentsInscription: AssignmentInscription[];
     @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.inscriptions)
     studyPlanVariant: StudyPlanVariant;
+    @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.inscriptions)
+    studyPlan: StudyPlan;
 
 }

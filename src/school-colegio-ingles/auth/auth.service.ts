@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Department } from '../departments/entities/department.entity';
 import { Campus } from '../campuses/entities/campus.entity';
+import { JwtService } from '@nestjs/jwt';
 
 interface UserBody {
     name: string;
@@ -30,6 +31,8 @@ export class AuthService {
         private readonly departmentRepository: Repository<Department>,
         @InjectRepository(Campus, 'colegiodb')
         private readonly campusRepository: Repository<Campus>,
+        private readonly jwtService: JwtService,
+
     ) {
     }
 
@@ -82,5 +85,12 @@ export class AuthService {
         }
 
         return null;
+    }
+
+    async generateJWT(user: Partial<User>) {
+        const payload = { username: user.email, sub: user.id };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
 }
