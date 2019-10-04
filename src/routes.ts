@@ -47,7 +47,8 @@ import { DepartmentsModule } from './school-colegio-ingles/departments/departmen
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 import { AuthModule } from './school-colegio-ingles/auth/auth.module';
 import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
-import { MatrixCompanyModule } from './fixed-assets/matrix-company/matrix-company.module';
+import { MatrixCompaniesModule } from './fixed-assets/matrix-companies/matrix-companies.module';
+import { BranchCompaniesModule } from './fixed-assets/branch-companies/branch-companies.module';
 
 export const routes: Routes = [
     {
@@ -119,10 +120,8 @@ export const routes: Routes = [
         path: '/fixed-assets',
         module: FixedAssetsModule,
         children: [
-            {
-                path: 'matrix-company',
-                module: MatrixCompanyModule,
-            },
+            { path: 'matrix-companies', module: MatrixCompaniesModule },
+            { path: 'branch-companies', module: BranchCompaniesModule },
         ],
     },
 ];
