@@ -11,6 +11,11 @@ import { Repository } from 'typeorm';
     model: {
         type: User,
     },
+    query: {
+        join: {
+            teacher: {},
+        },
+    },
 })
 @Controller()
 export class UsersController implements CrudController<User> {
