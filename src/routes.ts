@@ -46,6 +46,8 @@ import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.mod
 import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 import { AuthModule } from './school-colegio-ingles/auth/auth.module';
+import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
+import { MatrixCompanyModule } from './fixed-assets/matrix-company/matrix-company.module';
 
 export const routes: Routes = [
     {
@@ -92,10 +94,10 @@ export const routes: Routes = [
         path: '/mini-store',
         module: MiniStoreModule,
         children: [
-            { path: '/products', module:  MiniStoreProductsModule  },
-            { path: '/classifications', module:  MiniStoreClassificationsModule  },
-            { path: '/prices-lists', module:  MiniStorePricesListsModule  },
-            { path: '/invoices-keys', module:  MiniStoreInvoicesKeysModule  },
+            { path: '/products', module: MiniStoreProductsModule },
+            { path: '/classifications', module: MiniStoreClassificationsModule },
+            { path: '/prices-lists', module: MiniStorePricesListsModule },
+            { path: '/invoices-keys', module: MiniStoreInvoicesKeysModule },
             { path: '/invoices', module: MiniStoreInvoicesModule },
             { path: '/payments-status', module: MiniStorePaymentsStatusModule },
             { path: '/sales', module: MiniStoreSalesModule },
@@ -103,12 +105,24 @@ export const routes: Routes = [
             { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
             { path: '/sales-details', module: MiniStoreSalesDetailsModule },
             { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
-            { path: '/warehouse', children: [
-                    {path: '/orders', module: MiniStoreWarehouseOrdersModule},
+            {
+                path: '/warehouse', children: [
+                    { path: '/orders', module: MiniStoreWarehouseOrdersModule },
                     { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
                     { path: '/providers', module: MiniStoreWarehouseProvidersModule },
 
-                ] },
+                ],
+            },
+        ],
+    },
+    {
+        path: '/fixed-assets',
+        module: FixedAssetsModule,
+        children: [
+            {
+                path: 'matrix-company',
+                module: MatrixCompanyModule,
+            },
         ],
     },
 ];
