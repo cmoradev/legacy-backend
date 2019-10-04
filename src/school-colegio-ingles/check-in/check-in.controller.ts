@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CheckIn } from './entities/check-in.entity';
 import { CheckInService } from './check-in.service';
@@ -35,7 +35,7 @@ export class CheckInController implements CrudController<CheckIn> {
         }),
     }))
     async uploadFile(@UploadedFile() file, @Body('idCheckIn') idCheckIn: number) {
-        return await this.service.updateSignatureCheckIn(idCheckIn, file.originalname);
+        return await this.service.updateSignatureCheckIn(idCheckIn, file.filename);
 
     }
     @Post('out')
@@ -80,5 +80,10 @@ export class CheckInController implements CrudController<CheckIn> {
                 data: e,
             });
         }
+    }
+
+    @Get('stats')
+    async getStatsOfBusiness() {
+        return await this.service.getStats();
     }
 }

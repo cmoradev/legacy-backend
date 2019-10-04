@@ -1,5 +1,6 @@
 import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Department } from '../../departments/entities/department.entity';
+import * as moment from 'moment';
 
 enum StatusCheckIn {
     Inside = 'Inside',
@@ -37,13 +38,13 @@ export class CheckIn {
         type: 'timestamp',
         nullable: true,
     })
-    entryHour: Date;
+    entryHour: Date | string;
 
     @Column({
         type: 'timestamp',
         nullable: true,
     })
-    exitHour: Date;
+    exitHour: Date | string;
 
     @Column({
         type: 'enum',
@@ -54,7 +55,7 @@ export class CheckIn {
     @Column({
         type: 'tinyint',
         nullable: false,
-        default: () => 0,
+        default: () => '\'0\'',
     })
     isDating: boolean;
 
@@ -81,7 +82,7 @@ export class CheckIn {
 
     @BeforeInsert()
     checkInEntryHour() {
-        this.entryHour = new Date();
+        this.entryHour = moment().toISOString();
         this.status = StatusCheckIn.Inside;
     }
 
