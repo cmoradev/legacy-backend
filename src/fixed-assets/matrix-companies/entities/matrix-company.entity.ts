@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { BranchCompany } from '../../branch-company/entities/branch-company.entity';
+import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 
 @Entity()
 export class MatrixCompany {

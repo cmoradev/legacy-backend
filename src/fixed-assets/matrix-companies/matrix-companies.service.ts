@@ -6,7 +6,7 @@ import { MatrixCompany } from './entities/matrix-company.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
-export class MatrixCompanyService extends TypeOrmCrudService<MatrixCompany> {
+export class MatrixCompaniesService extends TypeOrmCrudService<MatrixCompany> {
     constructor(@InjectRepository(MatrixCompany, ColegioDBNameConnection) repo) {
         super(repo);
     }

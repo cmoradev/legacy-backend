@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { BranchCompanyService } from './branch-company.service';
-import { BranchCompanyController } from './branch-company.controller';
+import { BranchCompaniesService } from './branch-companies.service';
+import { BranchCompaniesController } from './branch-companies.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BranchCompany } from './entities/branch-company.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([BranchCompany], ColegioDBNameConnection)],
-    providers: [BranchCompanyService],
-    controllers: [BranchCompanyController],
-    exports: [BranchCompanyService],
+    providers: [BranchCompaniesService],
+    controllers: [BranchCompaniesController],
+    exports: [BranchCompaniesService],
 })
-export class BranchCompanyModule {
+export class BranchCompaniesModule {
 }

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MatrixCompanyModule } from './matrix-company/matrix-company.module';
-import { BranchCompanyModule } from './branch-company/branch-company.module';
+import { MatrixCompaniesModule } from './matrix-companies/matrix-companies.module';
+import { BranchCompaniesModule } from './branch-companies/branch-companies.module';
 
 @Module({
     imports: [
-        MatrixCompanyModule,
-        BranchCompanyModule,
+        MatrixCompaniesModule,
+        BranchCompaniesModule,
     ],
 })
 export class FixedAssetsModule {

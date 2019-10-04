@@ -6,7 +6,7 @@ import { BranchCompany } from './entities/branch-company.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
-export class BranchCompanyService extends TypeOrmCrudService<BranchCompany> {
+export class BranchCompaniesService extends TypeOrmCrudService<BranchCompany> {
     constructor(@InjectRepository(BranchCompany, ColegioDBNameConnection) repo) {
         super(repo);
     }

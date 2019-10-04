@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { MatrixCompany } from './entities/matrix-company.entity';
-import { MatrixCompanyService } from './matrix-company.service';
-import { MatrixCompanyController } from './matrix-company.controller';
+import { MatrixCompaniesService } from './matrix-companies.service';
+import { MatrixCompaniesController } from './matrix-companies.controller';
 
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([MatrixCompany], ColegioDBNameConnection)],
-    providers: [MatrixCompanyService],
-    exports: [MatrixCompanyService],
-    controllers: [MatrixCompanyController],
+    providers: [MatrixCompaniesService],
+    exports: [MatrixCompaniesService],
+    controllers: [MatrixCompaniesController],
 })
-export class MatrixCompanyModule {
+export class MatrixCompaniesModule {
 }
