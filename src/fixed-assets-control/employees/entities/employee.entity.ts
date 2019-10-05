@@ -20,7 +20,7 @@ export class Employee {
     @ManyToMany(type => JobPosition, jobPosition => jobPosition.employees)
     jobPositions: JobPosition[];
 
-    @OneToMany(type => FixedAssetAssignment, assigment => assigment.employee)
+    @OneToMany(type => FixedAssetAssignment, assignment => assignment.employee)
     assignments: FixedAssetAssignment[];
 
     @OneToMany(type => ResponsiveLetter,
