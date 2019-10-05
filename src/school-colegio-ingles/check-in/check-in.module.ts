@@ -4,10 +4,11 @@ import { CheckInController } from './check-in.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CheckIn } from './entities/check-in.entity';
 import { MulterModule } from '@nestjs/platform-express';
+import { Department } from '../departments/entities/department.entity';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([CheckIn], 'colegiodb'),
+      TypeOrmModule.forFeature([CheckIn, Department], 'colegiodb'),
       MulterModule.register({
         dest: '/signatures',
       }),
