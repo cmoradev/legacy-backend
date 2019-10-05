@@ -103,7 +103,7 @@ export class User {
 
     @Column({
         type: 'tinyint',
-        default: () => 0,
+        default: () => '\'0\'',
     })
     canAccessAnecdoticos: boolean;
 
