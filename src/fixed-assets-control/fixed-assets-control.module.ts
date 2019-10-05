@@ -3,6 +3,7 @@ import { MatrixCompaniesModule } from './matrix-companies/matrix-companies.modul
 import { BranchCompaniesModule } from './branch-companies/branch-companies.module';
 import { EmployeesModule } from './employees/employees.module';
 import { JobPositionsModule } from './job-positions/job-positions.module';
+import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 
 @Module({
     imports: [
@@ -10,7 +11,8 @@ import { JobPositionsModule } from './job-positions/job-positions.module';
         BranchCompaniesModule,
         EmployeesModule,
         JobPositionsModule,
+        FixedAssetsModule,
     ],
 })
-export class FixedAssetsModule {
+export class FixedAssetsControlModule {
 }
