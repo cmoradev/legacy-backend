@@ -1,10 +1,12 @@
-import { Body, Controller, Get, HttpStatus, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CheckIn } from './entities/check-in.entity';
 import { CheckInService } from './check-in.service';
 import {Response} from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { TypeFilterDate } from '../../common/time-utils';
+import { filter } from 'rxjs/operators';
 
 @Crud({
     model: {
@@ -82,8 +84,29 @@ export class CheckInController implements CrudController<CheckIn> {
         }
     }
 
-    @Get('stats')
-    async getStatsOfBusiness() {
-        return await this.service.getStats();
+    @Get('stats/total')
+    async getStatsOfBusiness(@Query() query: { filter: TypeFilterDate }) {
+        const dates = this.service.getDateTime({filter: query.filter});
+        return await this.service.getStatsTotalCheckIn(dates);
+    }
+    @Get('stats/total-department')
+    async getStatsByDepartment(@Query() query: { filter: TypeFilterDate }) {
+        const dates = this.service.getDateTime({filter: query.filter});
+        return await this.service.getStatsByDepartment(dates);
+    }
+    @Get('stats/total-status')
+    async getStatsByStatus(@Query() query: { filter: TypeFilterDate }) {
+        const dates = this.service.getDateTime({filter: query.filter});
+        return await this.service.getStatsByStatus(dates);
+    }
+    @Get('stats/total-dating')
+    async getStatsByDating(@Query() query: { filter: TypeFilterDate }) {
+        const dates = this.service.getDateTime({filter: query.filter});
+        return await this.service.getStatsInDating(dates);
+    }
+    @Get('now/people-check-in')
+    async getNowPeopleByStatus(@Query() query: { filter: TypeFilterDate, limit: string  }) {
+        const dates = this.service.getDateTime({filter: query.filter});
+        return await this.service.getPeopleByStatus(dates, parseInt(query.limit, 10));
     }
 }
