@@ -4,6 +4,8 @@ import { BranchCompaniesModule } from './branch-companies/branch-companies.modul
 import { EmployeesModule } from './employees/employees.module';
 import { JobPositionsModule } from './job-positions/job-positions.module';
 import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
+import { FixedAssetsAssignmentsModule } from './fixed-assets-assignments/fixed-assets-assignments.module';
+import { ResponsiveLettersModule } from './responsive-letters/responsive-letters.module';
 
 @Module({
     imports: [
@@ -12,6 +14,8 @@ import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
         EmployeesModule,
         JobPositionsModule,
         FixedAssetsModule,
+        FixedAssetsAssignmentsModule,
+        ResponsiveLettersModule,
     ],
 })
 export class FixedAssetsControlModule {

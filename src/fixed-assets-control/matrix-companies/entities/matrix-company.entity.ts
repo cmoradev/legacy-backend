@@ -12,4 +12,19 @@ export class MatrixCompany {
 
     @OneToMany(type => BranchCompany, branch => branch.matrixCompany)
     branches: BranchCompany[];
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt?: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt?: Date;
 }

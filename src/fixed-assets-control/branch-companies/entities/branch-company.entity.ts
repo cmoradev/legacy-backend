@@ -20,4 +20,19 @@ export class BranchCompany {
 
     @OneToMany(type => JobPosition, jobPosition => jobPosition.branchCompany)
     jobPositions: JobPosition[];
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt?: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt?: Date;
 }

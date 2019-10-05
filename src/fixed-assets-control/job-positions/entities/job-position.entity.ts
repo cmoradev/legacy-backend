@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTabl
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Department } from '../../../school-colegio-ingles/departments/entities/department.entity';
+import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
 
 @Entity()
 export class JobPosition {
@@ -21,5 +22,23 @@ export class JobPosition {
 
     @ManyToOne(type => Department, department => department.jobPositions)
     department: Department;
+
+    @OneToMany(type => ResponsiveLetter, responsiveLetter => responsiveLetter.jobPosition)
+    responsiveLetters: ResponsiveLetter[];
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt?: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt?: Date;
 
 }

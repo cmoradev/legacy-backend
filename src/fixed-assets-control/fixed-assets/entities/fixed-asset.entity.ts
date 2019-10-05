@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
+
+enum FixedAssetStatus {
+    Available = 'Available',
+    Assigned = 'Assigned',
+    NotAvailable = 'NotAvailable',
+}
 
 @Entity()
 export class FixedAsset {
@@ -36,6 +43,17 @@ export class FixedAsset {
 
     @Column()
     photoUrl: string;
+
+    @Column({
+        type: 'enum',
+        enum: FixedAssetStatus,
+        default: FixedAssetStatus.Available,
+        nullable: false,
+    })
+    status: FixedAssetStatus;
+
+    @OneToMany(type => FixedAssetAssignment, assignment => assignment.fixedAsset)
+    assignmentHistory: FixedAssetAssignment[];
 
     @Column('timestamp', {
         nullable: false,
