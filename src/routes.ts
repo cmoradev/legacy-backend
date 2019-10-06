@@ -46,8 +46,9 @@ import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.mod
 import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 import { AuthModule } from './school-colegio-ingles/auth/auth.module';
-import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
-import { MatrixCompanyModule } from './fixed-assets/matrix-company/matrix-company.module';
+import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
+import { MatrixCompaniesModule } from './fixed-assets-control/matrix-companies/matrix-companies.module';
+import { BranchCompaniesModule } from './fixed-assets-control/branch-companies/branch-companies.module';
 
 export const routes: Routes = [
     {
@@ -116,13 +117,11 @@ export const routes: Routes = [
         ],
     },
     {
-        path: '/fixed-assets',
-        module: FixedAssetsModule,
+        path: '/fixed-assets-control',
+        module: FixedAssetsControlModule,
         children: [
-            {
-                path: 'matrix-company',
-                module: MatrixCompanyModule,
-            },
+            { path: 'matrix-companies', module: MatrixCompaniesModule },
+            { path: 'branch-companies', module: BranchCompaniesModule },
         ],
     },
 ];

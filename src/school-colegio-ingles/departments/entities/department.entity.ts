@@ -5,6 +5,7 @@ import {
 } from 'typeorm';
 import { CheckIn } from '../../check-in/entities/check-in.entity';
 import { User } from '../../users/entities/user.entity';
+import { JobPosition } from '../../../fixed-assets-control/job-positions/entities/job-position.entity';
 
 @Entity('departamentos')
 export class Department {
@@ -22,7 +23,7 @@ export class Department {
     })
     name: string;
 
-    @Column( {
+    @Column({
         type: 'text',
         nullable: true,
     })
@@ -49,4 +50,6 @@ export class Department {
     @OneToMany(() => User, (user) => user.department)
     users: User[];
 
+    @OneToMany(type => JobPosition, jobPosition => jobPosition.department)
+    jobPositions: JobPosition[];
 }
