@@ -5,20 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
 
 import { Department } from '../departments/entities/department.entity';
-import { getDay, getHour, getMonth, getWeek, getYear, TypeFilterDate, DateQueryObject } from '../../common/time-utils';
-import moment = require('moment');
+import { DateQueryObject } from '../../common/time-utils';
 
-enum StatusCheckIn {
+export enum StatusCheckIn {
     Inside = 'Inside',
     Outside = 'Outside',
     NotRecognized = 'NotRecognized',
     Processing = 'Processing',
-}
-
-interface StatsByDepartments {
-    id: string;
-    name: string;
-    quantity: string;
 }
 
 @Injectable()
@@ -49,25 +42,6 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
         return await this.checkinRepository.find({ guestBadgeCode: gaffete, status: StatusCheckIn.Inside });
     }
 
-    getDateTime({ filter }: { filter: TypeFilterDate }): DateQueryObject {
-        switch (filter) {
-            case  TypeFilterDate.Day:
-                return getDay();
-            case  TypeFilterDate.Month:
-                return getMonth();
-            case  TypeFilterDate.Week:
-                return getWeek();
-            case  TypeFilterDate.Year:
-                return getYear();
-            case TypeFilterDate.Hour:
-                return getHour();
-            case TypeFilterDate.Total:
-                return null;
-            default:
-                return null;
-        }
-    }
-
     getStatsTotalCheckIn(dates: DateQueryObject) {
         if (!dates) {
             return this.checkinRepository
@@ -80,8 +54,8 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
                 where:
                   {
                       createdAt: Between(
-                        dates.dateStart.toISOString(),
-                        dates.dateEnd.toISOString()),
+                        dates.dateStart.toDate(),
+                        dates.dateEnd.toDate()),
                   },
             });
     }
@@ -102,8 +76,8 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
           .addSelect('department.name', 'name')
           .addSelect('COUNT(*) AS quantity')
           .where('checkin.entryHour BETWEEN :startDate AND :endDate', {
-              startDate: dates.dateStart.toDate().toISOString(),
-              endDate: dates.dateEnd.toDate().toISOString(),
+              startDate: dates.dateStart.toDate(),
+              endDate: dates.dateEnd.toDate(),
           })
           .groupBy('department.id')
           .getRawMany();
@@ -112,19 +86,17 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
     getStatsInDating(dates: DateQueryObject) {
         if (!dates) {
             return this.checkinRepository.createQueryBuilder('checkIn')
-              .select('checkIn.id', 'id')
               .select('checkIn.isDating', 'isDating')
               .addSelect('COUNT(*) AS quantity')
               .groupBy('checkIn.isDating')
               .getRawMany();
         }
         return this.checkinRepository.createQueryBuilder('checkIn')
-          .select('checkIn.id', 'id')
           .select('checkIn.isDating', 'isDating')
           .addSelect('COUNT(*) AS quantity')
           .where('checkIn.entryHour BETWEEN :startDate AND :endDate', {
-              startDate: dates.dateStart.toDate().toISOString(),
-              endDate: dates.dateEnd.toDate().toISOString(),
+              startDate: dates.dateStart.toDate(),
+              endDate: dates.dateEnd.toDate(),
           })
           .groupBy('checkIn.isDating')
           .getRawMany();
