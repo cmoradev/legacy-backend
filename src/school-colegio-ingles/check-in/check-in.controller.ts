@@ -116,7 +116,7 @@ export class CheckInController implements CrudController<CheckIn> {
         const statsStatus = await this.service.getStatsByStatus(dates);
         const stats = Object.keys(StatusCheckIn).filter(x => !(parseInt(x, 10) >= 0));
         return stats.map((nameStat) => {
-            const newStat = { status: nameStat, quantity: 0 };
+            const newStat = { name: nameStat, quantity: 0 };
             for (const stat of statsStatus) {
                 if (stat.status === nameStat) {
                     newStat.quantity = parseInt(stat.quantity, 10);
