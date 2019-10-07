@@ -53,7 +53,7 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
             {
                 where:
                   {
-                      createdAt: Between(
+                      entryHour: Between(
                         dates.dateStart.toDate(),
                         dates.dateEnd.toDate()),
                   },
@@ -66,7 +66,7 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
               .leftJoinAndSelect('department.inputRecords', 'checkin', 'checkin.department = department.id')
               .select('department.id', 'id')
               .addSelect('department.name', 'name')
-              .addSelect('COUNT(*) AS quantity')
+              .addSelect('COUNT(checkin.id) AS quantity')
               .groupBy('department.id')
               .getRawMany();
         }
@@ -74,7 +74,7 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
           .leftJoinAndSelect('department.inputRecords', 'checkin', 'checkin.department = department.id')
           .select('department.id', 'id')
           .addSelect('department.name', 'name')
-          .addSelect('COUNT(*) AS quantity')
+          .addSelect('COUNT(checkin.id) AS quantity')
           .where('checkin.entryHour BETWEEN :startDate AND :endDate', {
               startDate: dates.dateStart.toDate(),
               endDate: dates.dateEnd.toDate(),
@@ -87,13 +87,13 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
         if (!dates) {
             return this.checkinRepository.createQueryBuilder('checkIn')
               .select('checkIn.isDating', 'isDating')
-              .addSelect('COUNT(*) AS quantity')
+              .addSelect('COUNT(isDating) AS quantity')
               .groupBy('checkIn.isDating')
               .getRawMany();
         }
         return this.checkinRepository.createQueryBuilder('checkIn')
           .select('checkIn.isDating', 'isDating')
-          .addSelect('COUNT(*) AS quantity')
+          .addSelect('COUNT(isDating) AS quantity')
           .where('checkIn.entryHour BETWEEN :startDate AND :endDate', {
               startDate: dates.dateStart.toDate(),
               endDate: dates.dateEnd.toDate(),
@@ -105,19 +105,17 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
     getStatsByStatus(dates: DateQueryObject) {
         if (!dates) {
             return this.checkinRepository.createQueryBuilder('checkIn')
-              .select('checkIn.id', 'id')
               .select('checkIn.status', 'status')
-              .addSelect('COUNT(*) AS quantity')
+              .addSelect('COUNT(checkIn.status) AS quantity')
               .groupBy('checkIn.status')
               .getRawMany();
         }
         return this.checkinRepository.createQueryBuilder('checkIn')
-          .select('checkIn.id', 'id')
           .select('checkIn.status', 'status')
-          .addSelect('COUNT(*) AS quantity')
+          .addSelect('COUNT(checkIn.status) AS quantity')
           .where('checkIn.entryHour BETWEEN :startDate AND :endDate', {
-              startDate: dates.dateStart.toDate().toISOString(),
-              endDate: dates.dateEnd.toDate().toISOString(),
+              startDate: dates.dateStart.toDate(),
+              endDate: dates.dateEnd.toDate(),
           })
           .groupBy('checkIn.status')
           .getRawMany();
@@ -133,9 +131,9 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
           .find(
             {
                 select: [ 'id', 'name', 'entryHour', 'status', 'guestBadgeCode', 'department'],
-                where: { createdAt: Between(
-                      dates.dateStart.toISOString(),
-                      dates.dateEnd.toISOString()) },
+                where: { entryHour: Between(
+                      dates.dateStart.toDate(),
+                      dates.dateEnd.toDate()) },
                 order: {
                     entryHour: 'DESC',
                 },
