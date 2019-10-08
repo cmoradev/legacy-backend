@@ -49,6 +49,11 @@ import { AuthModule } from './school-colegio-ingles/auth/auth.module';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
 import { MatrixCompaniesModule } from './fixed-assets-control/matrix-companies/matrix-companies.module';
 import { BranchCompaniesModule } from './fixed-assets-control/branch-companies/branch-companies.module';
+import { EmployeesModule } from './fixed-assets-control/employees/employees.module';
+import { FixedAssetsModule } from './fixed-assets-control/fixed-assets/fixed-assets.module';
+import { FixedAssetsAssignmentsModule } from './fixed-assets-control/fixed-assets-assignments/fixed-assets-assignments.module';
+import { JobPositionsModule } from './fixed-assets-control/job-positions/job-positions.module';
+import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
 
 export const routes: Routes = [
     {
@@ -120,8 +125,13 @@ export const routes: Routes = [
         path: '/fixed-assets-control',
         module: FixedAssetsControlModule,
         children: [
-            { path: 'matrix-companies', module: MatrixCompaniesModule },
             { path: 'branch-companies', module: BranchCompaniesModule },
+            { path: 'employees', module: EmployeesModule },
+            { path: 'fixed-assets', module: FixedAssetsModule },
+            { path: 'fixed-assets-assignments', module: FixedAssetsAssignmentsModule },
+            { path: 'job-positions', module: JobPositionsModule },
+            { path: 'matrix-companies', module: MatrixCompaniesModule },
+            { path: 'responsive-letters', module: ResponsiveLettersModule },
         ],
     },
 ];
