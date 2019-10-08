@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMan
 import { MatrixCompany } from '../../matrix-companies/entities/matrix-company.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { JobPosition } from '../../job-positions/entities/job-position.entity';
+import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 
 @Entity()
 export class BranchCompany {
@@ -20,6 +21,9 @@ export class BranchCompany {
 
     @OneToMany(type => JobPosition, jobPosition => jobPosition.branchCompany)
     jobPositions: JobPosition[];
+
+    @OneToMany(type => FixedAsset, fixedAsset => fixedAsset.branchCompany)
+    fixedAssets: FixedAsset[];
 
     @Column('timestamp', {
         nullable: false,
