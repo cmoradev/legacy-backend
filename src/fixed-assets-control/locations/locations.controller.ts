@@ -1,0 +1,15 @@
+import { Controller } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { Location } from './entities/location.entity';
+import { LocationsService } from './locations.service';
+
+@Crud({
+    model: {
+        type: Location,
+    },
+})
+@Controller()
+export class LocationsController implements CrudController<Location> {
+    constructor(public service: LocationsService) {
+    }
+}
