@@ -4,8 +4,8 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreWarehouseOrder} from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
+import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 
 @Entity('tie_almacen_pedidos_productos')
 export class MiniStoreWarehouseOrderProduct {
@@ -34,23 +34,30 @@ export class MiniStoreWarehouseOrderProduct {
     })
     requestedAmount: number;
 
-    @Column('double', {
+    @Column('decimal', {
         nullable: false,
-        default: () => '\'0\'',
         name: 'precio_proveedor_solicitud',
+        precision: 15,
+        scale: 2,
+        default: () => '\'0.00\'',
     })
     providerPriceRequest: number;
 
-    @Column('double', {
+    @Column('decimal', {
         nullable: false,
-        default: () => '\'0\'',
         name: 'precio_proveedor_recibido',
+        precision: 15,
+        scale: 2,
+        default: () => '\'0.00\'',
     })
     providerPriceReceived: number;
 
-    @Column('double', {
+    @Column('decimal', {
         nullable: false,
         name: 'neto_solicitud',
+        precision: 15,
+        scale: 2,
+        default: () => '\'0.00\'',
     })
     netRequest: number;
 
@@ -61,10 +68,12 @@ export class MiniStoreWarehouseOrderProduct {
     })
     receivedAmount: number;
 
-    @Column('double', {
+    @Column('decimal', {
         nullable: false,
-        default: () => '\'0\'',
         name: 'neto_recibido',
+        precision: 15,
+        scale: 2,
+        default: () => '\'0.00\'',
     })
     netReceived: number;
 
