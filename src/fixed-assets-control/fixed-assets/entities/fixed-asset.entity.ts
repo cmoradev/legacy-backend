@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 
-enum FixedAssetStatus {
+export enum FixedAssetStatus {
     Available = 'Available',
     Assigned = 'Assigned',
     NotAvailable = 'NotAvailable',
@@ -38,10 +38,14 @@ export class FixedAsset {
     @Column()
     purchaseDate: Date;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     invoiceUrl: string;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     photoUrl: string;
 
     @Column({

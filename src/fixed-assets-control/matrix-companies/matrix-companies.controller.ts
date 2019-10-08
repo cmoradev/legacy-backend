@@ -7,6 +7,11 @@ import { MatrixCompaniesService } from './matrix-companies.service';
     model: {
         type: MatrixCompany,
     },
+    query: {
+        join: {
+            branches: {},
+        },
+    },
 })
 @Controller()
 export class MatrixCompaniesController implements CrudController<MatrixCompany> {
