@@ -22,6 +22,7 @@ export class ColegioDBService implements TypeOrmOptionsFactory {
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: this.configService.isSynchronizeDBEnabled,
       migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+      subscribers: [__dirname + '/../**/*.subscriber{.ts,.js}'],
       cli: {
         migrationsDir: 'src/migrations',
       },
