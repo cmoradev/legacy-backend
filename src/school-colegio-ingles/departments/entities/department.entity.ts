@@ -6,6 +6,7 @@ import {
 import { CheckIn } from '../../check-in/entities/check-in.entity';
 import { User } from '../../users/entities/user.entity';
 import { JobPosition } from '../../../fixed-assets-control/job-positions/entities/job-position.entity';
+import { Location } from '../../../fixed-assets-control/locations/entities/location.entity';
 
 @Entity('departamentos')
 export class Department {
@@ -52,4 +53,7 @@ export class Department {
 
     @OneToMany(type => JobPosition, jobPosition => jobPosition.department)
     jobPositions: JobPosition[];
+
+    @OneToMany(type => Location, location => location.department)
+    locations: Location[];
 }

@@ -6,6 +6,7 @@ import { JobPositionsModule } from './job-positions/job-positions.module';
 import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 import { FixedAssetsAssignmentsModule } from './fixed-assets-assignments/fixed-assets-assignments.module';
 import { ResponsiveLettersModule } from './responsive-letters/responsive-letters.module';
+import { LocationsModule } from './locations/locations.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { ResponsiveLettersModule } from './responsive-letters/responsive-letters
         FixedAssetsModule,
         FixedAssetsAssignmentsModule,
         ResponsiveLettersModule,
+        LocationsModule,
     ],
 })
 export class FixedAssetsControlModule {

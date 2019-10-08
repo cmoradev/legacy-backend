@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 't
 import { Employee } from '../../employees/entities/employee.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
+import { Location } from '../../locations/entities/location.entity';
 
 export enum FixedAssetAssignmentStatus {
     Assigned = 'Assigned',
@@ -38,6 +39,12 @@ export class FixedAssetAssignment {
             nullable: false,
         })
     responsiveLetter: ResponsiveLetter;
+
+    @ManyToOne(type => Location,
+        location => location.fixedAssetAssignments, {
+            nullable: false,
+        })
+    location: Location;
 
     @Column({
         type: 'timestamp',
