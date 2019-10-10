@@ -19,4 +19,19 @@ export class Location {
     @OneToMany(type => FixedAssetAssignment,
         fixedAssetAssignmet => fixedAssetAssignmet.location)
     fixedAssetAssignments: FixedAssetAssignment[];
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt?: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt?: Date;
 }

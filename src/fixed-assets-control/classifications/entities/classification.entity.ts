@@ -11,4 +11,19 @@ export class Classification {
 
     @OneToMany(type => FixedAsset, fixedAsset => fixedAsset.classification)
     fixedAssets: FixedAsset[];
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt?: Date;
+
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt?: Date;
 }
