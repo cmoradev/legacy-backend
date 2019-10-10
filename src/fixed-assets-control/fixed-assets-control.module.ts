@@ -7,6 +7,7 @@ import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 import { FixedAssetsAssignmentsModule } from './fixed-assets-assignments/fixed-assets-assignments.module';
 import { ResponsiveLettersModule } from './responsive-letters/responsive-letters.module';
 import { LocationsModule } from './locations/locations.module';
+import { ClassificationsModule } from './classifications/classifications.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { LocationsModule } from './locations/locations.module';
         FixedAssetsAssignmentsModule,
         ResponsiveLettersModule,
         LocationsModule,
+        ClassificationsModule,
     ],
 })
 export class FixedAssetsControlModule {
