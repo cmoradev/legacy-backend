@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
+import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
+import { Classification } from '../../classifications/entities/classification.entity';
 
 export enum FixedAssetStatus {
     Available = 'Available',
@@ -56,8 +58,16 @@ export class FixedAsset {
     })
     status: FixedAssetStatus;
 
+    @ManyToOne(type => BranchCompany, branchCompany => branchCompany.fixedAssets,
+        { nullable: false },
+    )
+    branchCompany: BranchCompany;
+
     @OneToMany(type => FixedAssetAssignment, assignment => assignment.fixedAsset)
     assignmentHistory: FixedAssetAssignment[];
+
+    @ManyToOne(type => Classification, classification => classification.fixedAssets)
+    classification: Classification;
 
     @Column('timestamp', {
         nullable: false,
