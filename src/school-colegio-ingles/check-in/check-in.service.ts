@@ -31,14 +31,14 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
         return await this.checkinRepository.save(checkIn);
     }
 
-    async makeCheckOut(guestBadgeCode: number) {
+    async makeCheckOut(guestBadgeCode: string) {
         const checkIn = await this.checkinRepository.findOneOrFail({ guestBadgeCode, status: StatusCheckIn.Inside });
         checkIn.exitHour = new Date();
         checkIn.status = StatusCheckIn.Outside;
         return await this.checkinRepository.save(checkIn);
     }
 
-    async getCheckInWithStatusInside(gaffete: number) {
+    async getCheckInWithStatusInside(gaffete: string) {
         return await this.checkinRepository.find({ guestBadgeCode: gaffete, status: StatusCheckIn.Inside });
     }
 

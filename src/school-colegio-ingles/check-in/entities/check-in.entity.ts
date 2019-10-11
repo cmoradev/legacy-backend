@@ -62,10 +62,10 @@ export class CheckIn {
     @ManyToOne(() => Department, (department) => department.inputRecords)
     department: Department;
 
-    @Column('int', {
+    @Column('varchar', {
         nullable: true,
     })
-    guestBadgeCode: number;
+    guestBadgeCode: string;
 
     @Column('timestamp', {
         nullable: false,

@@ -47,7 +47,7 @@ export class CheckInController implements CrudController<CheckIn> {
     }
     @Post('out')
     async makeCheckOut(@Body('guestBadgeCode') guestBadgeCode: string) {
-        return this.service.makeCheckOut(parseInt(guestBadgeCode, 10));
+        return this.service.makeCheckOut(guestBadgeCode);
     }
     @Post('statusGaffete')
     async checkStatusGaffete(@Res() res: Response, @Body('gaffete') gaffete: string) {
@@ -58,7 +58,7 @@ export class CheckInController implements CrudController<CheckIn> {
             });
         }
         try {
-            const checkIns = await this.service.getCheckInWithStatusInside(parseInt(gaffete, 10));
+            const checkIns = await this.service.getCheckInWithStatusInside(gaffete);
             if (checkIns.length === 1) {
                 res.status(HttpStatus.ACCEPTED).send({
                     inside: true,
