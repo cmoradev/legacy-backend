@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
+import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
 
 @Entity()
 export class MatrixCompany {
@@ -12,6 +13,8 @@ export class MatrixCompany {
 
     @OneToMany(type => BranchCompany, branch => branch.matrixCompany)
     branches: BranchCompany[];
+    @OneToMany(type => ResponsiveLetter, responsiveLetter => responsiveLetter.matrixCompany)
+    responsiveLetters: ResponsiveLetter[];
 
     @Column('timestamp', {
         nullable: false,
