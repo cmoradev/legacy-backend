@@ -9,6 +9,7 @@ import { FamiliesService } from './families.service';
     query: {
         join: {
             students: {},
+            campus: {},
         },
     },
 })
