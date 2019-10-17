@@ -9,7 +9,6 @@ import { MiniStorePaymentsStatusModule } from './mini-store-payments-status/mini
 import { MiniStoreSalesPaymentsModule } from './mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreSalesMethodsPaymentsModule } from './mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
 import { MiniStoreSalesDetailsModule } from './mini-store-sales-details/mini-store-sales-details.module';
-import { InvoicesMethodsPaymentsModule } from './invoices-methods-payments/invoices-methods-payments.module';
 import { MiniStoreWarehouseOrdersModule } from './mini-store-warehouse-orders/mini-store-warehouse-orders.module';
 import { MiniStoreWarehouseOrdersProductsModule } from './mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store-warehouse-providers/mini-store-warehouse-providers.module';
@@ -26,7 +25,6 @@ import { MiniStoreWarehouseProvidersModule } from './mini-store-warehouse-provid
         MiniStoreSalesPaymentsModule,
         MiniStoreSalesMethodsPaymentsModule,
         MiniStoreSalesDetailsModule,
-        InvoicesMethodsPaymentsModule,
         MiniStoreWarehouseOrdersModule,
         MiniStoreWarehouseOrdersProductsModule,
         MiniStoreWarehouseProvidersModule,

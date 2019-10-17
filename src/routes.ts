@@ -26,7 +26,6 @@ import { MiniStorePaymentsStatusModule } from './mini-store/mini-store-payments-
 import { MiniStoreSalesPaymentsModule } from './mini-store/mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreSalesMethodsPaymentsModule } from './mini-store/mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
 import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-details/mini-store-sales-details.module';
-import { InvoicesMethodsPaymentsModule } from './mini-store/invoices-methods-payments/invoices-methods-payments.module';
 import { AcademiesModalitiesModule } from './school-colegio-ingles/academies-modalities/academies-modalities.module';
 import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehouse-orders/mini-store-warehouse-orders.module';
 import {
@@ -54,6 +53,7 @@ import { FixedAssetsModule } from './fixed-assets-control/fixed-assets/fixed-ass
 import { FixedAssetsAssignmentsModule } from './fixed-assets-control/fixed-assets-assignments/fixed-assets-assignments.module';
 import { JobPositionsModule } from './fixed-assets-control/job-positions/job-positions.module';
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
+import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 
 export const routes: Routes = [
     {
@@ -65,6 +65,7 @@ export const routes: Routes = [
             { path: '/auth', module: AuthModule },
             { path: '/roles', module: RolesModule },
             { path: '/actions', module: ActionsModule },
+            { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
         ],
     },
     {
@@ -110,7 +111,6 @@ export const routes: Routes = [
             { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
             { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
             { path: '/sales-details', module: MiniStoreSalesDetailsModule },
-            { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
             {
                 path: '/warehouse', children: [
                     { path: '/orders', module: MiniStoreWarehouseOrdersModule },

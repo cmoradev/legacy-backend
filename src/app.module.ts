@@ -12,6 +12,7 @@ import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { ConfigModule } from './config/config.module';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
+import { SystemModule } from './system/system.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -33,6 +34,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         MiniStoreModule,
         XlsImporterModule,
         FixedAssetsControlModule,
+        SystemModule,
     ],
     controllers: [AppController],
     providers: [AppService],
