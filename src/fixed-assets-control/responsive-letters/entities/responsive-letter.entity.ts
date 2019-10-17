@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, OneToMan
 import { Employee } from '../../employees/entities/employee.entity';
 import { JobPosition } from '../../job-positions/entities/job-position.entity';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
+import { MatrixCompany } from '../../matrix-companies/entities/matrix-company.entity';
+import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 
 @Entity()
 export class ResponsiveLetter {
@@ -15,6 +17,18 @@ export class ResponsiveLetter {
 
     @Column()
     signatureUrl: string;
+
+    @ManyToOne(type => MatrixCompany, matrixCompany => matrixCompany.responsiveLetters,
+        {
+            nullable: false,
+        })
+    matrixCompany: MatrixCompany;
+
+    @ManyToOne(type => BranchCompany, branchCompany => branchCompany.responsiveLetters,
+        {
+            nullable: false,
+        })
+    branchCompany: BranchCompany;
 
     @ManyToOne(type => JobPosition, jobPosition => jobPosition.responsiveLetters)
     jobPosition: JobPosition;
