@@ -54,6 +54,7 @@ import { FixedAssetsAssignmentsModule } from './fixed-assets-control/fixed-asset
 import { JobPositionsModule } from './fixed-assets-control/job-positions/job-positions.module';
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
 import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
+import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
 
 export const routes: Routes = [
     {
@@ -66,6 +67,7 @@ export const routes: Routes = [
             { path: '/roles', module: RolesModule },
             { path: '/actions', module: ActionsModule },
             { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
+            { path: '/invoices-bank', module: InvoicesBankModule },
         ],
     },
     {
