@@ -32,6 +32,14 @@ export class InvoiceMethodPayment {
   })
   code: string;
 
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'1\'',
+    name: 'isActive',
+  })
+  isActive: string;
+
   @Column('timestamp', {
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP',
