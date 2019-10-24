@@ -4,41 +4,49 @@ import { MiniStoreSaleMethodPayment } from '../../../mini-store/mini-store-sales
 @Entity('facturacion_formas_pago')
 export class InvoiceMethodPayment {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+  @PrimaryGeneratedColumn({
+    type: 'int',
+    name: 'id',
+  })
+  id: number;
 
-    @Column('varchar', {
-        nullable: false,
-        length: 200,
-        name: 'nombre',
-    })
-    name: string;
+  @Column('varchar', {
+    nullable: false,
+    length: 200,
+    name: 'nombre',
+  })
+  name: string;
 
-    @Column('varchar', {
-        nullable: false,
-        length: 3,
-        name: 'codigo',
-    })
-    code: string;
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'1\'',
+    name: 'showReport',
+  })
+  showReport: string;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
+  @Column('varchar', {
+    nullable: false,
+    length: 3,
+    name: 'codigo',
+  })
+  code: string;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+  @Column('timestamp', {
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'created_at',
+  })
+  createdAt: Date;
 
-    @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.invoiceMethodPayment)
-    miniStoreSaleMethodPayments: MiniStoreSaleMethodPayment[];
+  @Column('timestamp', {
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+
+  @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.invoiceMethodPayment)
+  miniStoreSaleMethodPayments: MiniStoreSaleMethodPayment[];
 }
