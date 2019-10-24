@@ -8,7 +8,8 @@ import * as favicon from 'serve-favicon';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.use(favicon(path.join(__dirname, '..' , 'public', 'favicon.ico')))
+  app.use(favicon(path.join(__dirname, '..' , 'public', 'favicon.ico')));
+
   const options = new DocumentBuilder()
       .setTitle('Apps')
       .setDescription('Es la aplicación de escuela')
