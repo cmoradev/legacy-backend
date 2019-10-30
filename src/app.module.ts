@@ -13,6 +13,7 @@ import { ConfigModule } from './config/config.module';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
 import { SystemModule } from './system/system.module';
+import { FacturacionModule } from './facturacion/facturacion.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -35,6 +36,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         XlsImporterModule,
         FixedAssetsControlModule,
         SystemModule,
+        FacturacionModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -55,8 +55,13 @@ import { JobPositionsModule } from './fixed-assets-control/job-positions/job-pos
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
 import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
+import { FacturacionModule } from './facturacion/facturacion.module';
 
 export const routes: Routes = [
+    {
+        path: '/facturacion',
+        module: FacturacionModule,
+    },
     {
         path: '/system',
         children: [
