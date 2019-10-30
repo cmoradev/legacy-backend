@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Post, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Query,
+    Res,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CheckIn } from './entities/check-in.entity';
 import { CheckInService, StatusCheckIn } from './check-in.service';
@@ -9,7 +20,9 @@ import { getDates, TypeFilterDate } from '../../common/time-utils';
 import { Repository } from 'typeorm';
 import { Department } from '../departments/entities/department.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { AcademicService } from '../../integrations/academic/academic.service';
+import {List} from 'immutable';
+import { AcademicStudent } from '../../integrations/academic/interfaces/academic-student.interface';
 @Crud({
     model: {
         type: CheckIn,
@@ -25,7 +38,9 @@ export class CheckInController implements CrudController<CheckIn> {
     constructor(
       readonly service: CheckInService,
       @InjectRepository(Department, 'colegiodb')
-      private readonly departmentRepository: Repository<Department>) {}
+      private readonly departmentRepository: Repository<Department>,
+      private readonly academicService: AcademicService,
+      ) {}
     get base(): CrudController<CheckIn> {
         return this;
     }
@@ -147,5 +162,12 @@ export class CheckInController implements CrudController<CheckIn> {
     async getNowPeopleByStatus(@Query() query: { filter: TypeFilterDate, limit: string  }) {
         const dates = getDates({ filter: query.filter });
         return await this.service.getPeopleByStatus(dates, parseInt(query.limit, 10));
+    }
+    @Get('status/student/:matricula')
+    async getStatusStudent(@Param('matricula') code: string) {
+        const students = await this.academicService.getAllStudents();
+        const studentsList = List(students);
+        console.log(code);
+        return students;
     }
 }
