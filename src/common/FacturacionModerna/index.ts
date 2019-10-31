@@ -1,5 +1,10 @@
 import { createClientAsync } from 'soap';
 import * as fs from 'fs';
+import * as path from 'path';
+// import * as moment from 'moment';
+import * as moment from 'moment-timezone';
+import { WriteStream } from 'fs';
+import * as os from 'os';
 
 const defaults = {
   user: 'UsuarioPruebasWS',
@@ -10,8 +15,11 @@ const defaults = {
 export interface Options {
   UserPass: string;
   UserID: string;
-  emisorRFC: string;
+  emisorRFC?: string;
   receptorRFC?: string;
+  UUID?: string;
+  RFC?: string;
+  uuid?: string;
   total?: string;
 }
 
@@ -23,33 +31,33 @@ export class FacturacionModerna {
   generarTXT: boolean;
   path: string;
   public options: Options = {} as Options;
-  public debug: number = 1;
+  public debug: number = 0;
 
-  constructor(url: string, options: Options) {
+  constructor(url: string, options: Options, debug: number = 0) {
     this.url = url;
     for (const key in options) {
       if (options.hasOwnProperty(key)) {
         this.options[key] = options[key];
       }
     }
+    this.debug = debug;
   }
 
-  public timbrar(cfdi: any, opciones: any[] = [{ 'generarCBB': false }, { 'generarTXT': false }, { 'generarPDF': false }]) {
+  public consultarSaldo(rfc: string) {
     return new Promise(async (resolve, reject) => {
-      resolve(9);
+      const cliente = await createClientAsync(this.url);
+      try {
+        this.options.RFC = rfc;
+        const le = await cliente.consultarSaldoAsync({ parameter: this.options });
+        resolve(le);
+      } catch (e) {
+        if (this.debug === 1) {
+          this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
+          this.log('SOAP response:\t' + cliente.lastResponse.toString('utf8'));
+        }
+        reject(e);
+      }
     });
-  }
-
-  public consultarSaldo() {
-    return new Promise(async (resolve, reject) => {
-      const cliente = await createClientAsync(this.url)
-      console.log(cliente);
-      resolve(9);
-    });
-  }
-
-  public activarCancelacion(rfc: any, pathCer: any, pathKey: any, password: any, callback: any) {
-    const amir = 0;
   }
 
   /**
@@ -57,97 +65,59 @@ export class FacturacionModerna {
    * @param {String} rfcEmisor
    * @param {String} uuid
    */
-  cancelar(rfc: any, uuid: any, callback: any) {
-    const amir = 0;
-  }
-
-  /**
-   * Indicar el directorio en donde se almacenarán los archivos
-   * @param {String} path
-   * @return void
-   */
-  establecerDirectorio(path: any) {
-    this.path = path;
-  }
-
-  /**
-   * Indicar si se escribiran los archivos al finalizar el timbrado
-   * @param {Boolean} flag
-   * @return void
-   */
-  escribirArchivos(flag: any) {
-    this.escribirArchivos = flag;
-  }
-
-  /**
-   * Indicar si se guardara el archivo PDF
-   * @param {Boolean} flag
-   * @return void
-   */
-  generarpdf(flag: any) {
-    this.generarPDF = flag;
-  }
-
-  /**
-   * Indicar si se guardara el archivo CBB (png)
-   * @param {Boolean} flag
-   * @return void
-   */
-  generarcbb(flag) {
-    this.generarCBB = flag;
-  }
-
-  /**
-   * Indicar si se guardara el archivo TXT
-   * @param {Boolean} flag
-   * @return void
-   */
-  generartxt(flag: any) {
-    this.generarTXT = flag;
-  }
-
-  /**
-   * Decodificar los errores del soap fault
-   * @param {String} body
-   * @return {Object}
-   */
-  decodeErrors(body: any) {
-    const fcode = /\<faultcode\>(.*)\<\/faultcode\>/g;
-    const fstring = /\<faultstring\>(.*)\<\/faultstring\>/g;
-
-    const matchcode: any = fcode.exec(body);
-    const matchstring: any = fstring.exec(body);
-
-    return {
-      code: matchcode[0].replace('<faultcode>', '').replace('</faultcode>', ''),
-      string: matchstring[0].replace('<faultstring>', '').replace('</faultstring>', ''),
-    };
-  }
-
-  /**
-   * Escribir archivos
-   * @param {String} filename
-   * @param {String} conent
-   * @return void
-   */
-  _writeFile(filename, content) {
-    if (!this.escribirArchivos) {
-      return false;
-    }
-
-    fs.writeFile(this.path + filename, new Buffer(content, 'base64'), (err) => {
-      if (err) {
-        console.log(`Ocurrio un error al escribir el archivo ${filename}`);
+  cancelar(emisorRFC: string, uuid: string) {
+    return new Promise(async (resolve, reject) => {
+      const cliente = await createClientAsync(this.url);
+      try {
+        this.options.emisorRFC = emisorRFC;
+        this.options.uuid = uuid;
+        const le = await cliente.requestCancelarCFDIAsync({ parameter: this.options });
+        resolve(le);
+      } catch (e) {
+        if (this.debug === 1) {
+          this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
+          this.log('SOAP response:\t' + cliente.lastResponse.toString('utf8'));
+        }
+        reject(e);
       }
     });
   }
 
-  /**
-   * Leer un archivo y convertirlo a base64
-   * @param {String} path
-   * @return {String}
-   */
-  _readFile(path: any) {
-    return fs.readFileSync(path).toString('base64');
+  async estadoCancelacion(emisorRFC: string, receptorRFC: string, UUID: string, total: string) {
+    return new Promise(async (resolve, reject) => {
+      const cliente = await createClientAsync(this.url);
+      try {
+        this.options.emisorRFC = emisorRFC;
+        this.options.receptorRFC = receptorRFC;
+        this.options.UUID = UUID;
+        this.options.total = total;
+        const le: any[] = await cliente.consultarEstatusCFDIAsync({ parameter: this.options });
+        const data = le[0].return;
+        const result: any = {};
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            result[key] = data[key]['$value'];
+          }
+        }
+        resolve(result);
+      } catch (e) {
+        if (this.debug === 1) {
+          this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
+          this.log('SOAP response:\t' + cliente.lastResponse.toString('utf8'));
+        }
+        reject(e);
+      }
+    });
   }
+
+  async log(text: string) {
+    const log = path.join(__dirname, '..', '..', '..', 'src', 'common', 'FacturacionModerna', 'log.log');
+    if (!fs.existsSync(log)) {
+      const fullPath = path.join(os.tmpdir(), `amir.xml`);
+      fs.writeFileSync(log, '', 'utf8');
+    }
+    const fecha = moment().tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss') + '\t' + text + '\n\n';
+    fs.appendFileSync(log, fecha);
+  }
+
 }

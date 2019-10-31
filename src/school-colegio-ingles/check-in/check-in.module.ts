@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CheckIn } from './entities/check-in.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { Department } from '../departments/entities/department.entity';
+import { IntegrationsModule } from '../../integrations/integrations.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { Department } from '../departments/entities/department.entity';
       MulterModule.register({
         dest: '/signatures',
       }),
+    IntegrationsModule,
   ],
   providers: [CheckInService],
   controllers: [CheckInController],
