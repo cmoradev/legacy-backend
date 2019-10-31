@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'ty
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 import { Classification } from '../../classifications/entities/classification.entity';
+import { Location } from '../../locations/entities/location.entity';
 
 export enum FixedAssetStatus {
     Available = 'Available',
@@ -69,12 +70,18 @@ export class FixedAsset {
     @ManyToOne(type => Classification, classification => classification.fixedAssets)
     classification: Classification;
 
+    @ManyToOne(type => Location, location => location.fixedAssets,
+        {
+            nullable: true,
+        })
+    location: Location;
+
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'created_at',
     })
-    createdAt?: Date;
+    createdAt: Date;
 
     @Column('timestamp', {
         nullable: false,
@@ -82,5 +89,5 @@ export class FixedAsset {
         onUpdate: 'CURRENT_TIMESTAMP',
         name: 'updated_at',
     })
-    updatedAt?: Date;
+    updatedAt: Date;
 }

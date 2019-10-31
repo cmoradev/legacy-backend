@@ -28,9 +28,7 @@ import { MiniStoreSalesMethodsPaymentsModule } from './mini-store/mini-store-sal
 import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-details/mini-store-sales-details.module';
 import { AcademiesModalitiesModule } from './school-colegio-ingles/academies-modalities/academies-modalities.module';
 import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehouse-orders/mini-store-warehouse-orders.module';
-import {
-    MiniStoreWarehouseOrdersProductsModule,
-} from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
+import { MiniStoreWarehouseOrdersProductsModule } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 import { UsersModule } from './school-colegio-ingles/users/users.module';
 import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.module';
@@ -56,6 +54,8 @@ import { ResponsiveLettersModule } from './fixed-assets-control/responsive-lette
 import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
 import { FacturacionModule } from './facturacion/facturacion.module';
+import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
+import { LocationsModule } from './fixed-assets-control/locations/locations.module';
 
 export const routes: Routes = [
     {
@@ -139,6 +139,9 @@ export const routes: Routes = [
             { path: 'job-positions', module: JobPositionsModule },
             { path: 'matrix-companies', module: MatrixCompaniesModule },
             { path: 'responsive-letters', module: ResponsiveLettersModule },
+            { path: 'classifications', module: ClassificationsModule },
+            { path: 'locations', module: LocationsModule },
+
         ],
     },
 ];
