@@ -96,7 +96,7 @@ export class FacturacionModerna {
         const result: any = {};
         for (const key in data) {
           if (data.hasOwnProperty(key)) {
-            result[key] = data[key]['$value'];
+            result[key] = data[key].$value;
           }
         }
         resolve(result);
