@@ -7,6 +7,13 @@ import { FixedAssetsService } from './fixed-assets.service';
     model: {
         type: FixedAsset,
     },
+    query: {
+        join: {
+            classification: {},
+            location: {},
+            branchCompany: {},
+        },
+    },
 })
 @Controller()
 export class FixedAssetsController implements CrudController<FixedAsset> {

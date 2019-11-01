@@ -14,6 +14,9 @@ export class Employee {
     @Column()
     lastName: string;
 
+    @Column()
+    badgeNumber: string;
+
     @ManyToMany(type => BranchCompany, branchCompany => branchCompany.employees)
     branchCompanies: BranchCompany[];
 
