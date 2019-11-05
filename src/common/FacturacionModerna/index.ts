@@ -23,6 +23,28 @@ export interface Options {
   total?: string;
 }
 
+interface SaldoXml {
+  key: {
+    '$value': 'status';
+  };
+  value: {
+    '$value': '1';
+  };
+}
+
+interface ObjecErroreCacelar {
+  faultcode: string;
+  faultstring: string;
+}
+
+interface Saldo {
+  status: number;
+  timbres_asignados: number;
+  fecha_alta: string;
+  consumidos: number;
+  restante: number;
+}
+
 export class FacturacionModerna {
   url: string;
   credenciales: object;
@@ -49,7 +71,13 @@ export class FacturacionModerna {
       try {
         this.options.RFC = rfc;
         const le = await cliente.consultarSaldoAsync({ parameter: this.options });
-        resolve(le);
+        const saldo: SaldoXml[] = le[0].return.item;
+        const obj: Saldo | any = {} as Saldo;
+        for (const dato of saldo) {
+          obj[dato.key.$value] = dato.value.$value;
+        }
+        obj.restante = obj.timbres_asignados - obj.consumidos;
+        resolve(obj);
       } catch (e) {
         if (this.debug === 1) {
           this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
@@ -65,20 +93,38 @@ export class FacturacionModerna {
    * @param {String} rfcEmisor
    * @param {String} uuid
    */
-  cancelar(emisorRFC: string, uuid: string) {
+  cancelar(emisorRFC: string, uuid: string): Promise<{ Code, Message }> {
     return new Promise(async (resolve, reject) => {
       const cliente = await createClientAsync(this.url);
       try {
         this.options.emisorRFC = emisorRFC;
         this.options.uuid = uuid;
-        const le = await cliente.requestCancelarCFDIAsync({ parameter: this.options });
-        resolve(le);
+        const resultado = await cliente.requestCancelarCFDIAsync({ parameter: this.options });
+        const data = resultado[0].return;
+        const result: any = {};
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            result[key] = data[key].$value;
+          }
+        }
+        resolve(result);
       } catch (e) {
         if (this.debug === 1) {
           this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
           this.log('SOAP response:\t' + cliente.lastResponse.toString('utf8'));
         }
-        reject(e);
+        let error: any;
+
+        if (e.root) {
+          error = e.root;
+          error = error.Envelope;
+          error = error.Body;
+          error = error.Fault;
+        } else {
+          console.log(e);
+          error = 'desconocido';
+        }
+        reject({ message: error });
       }
     });
   }
@@ -91,8 +137,8 @@ export class FacturacionModerna {
         this.options.receptorRFC = receptorRFC;
         this.options.UUID = UUID;
         this.options.total = total;
-        const le: any[] = await cliente.consultarEstatusCFDIAsync({ parameter: this.options });
-        const data = le[0].return;
+        const resultado: any[] = await cliente.consultarEstatusCFDIAsync({ parameter: this.options });
+        const data = resultado[0].return;
         const result: any = {};
         for (const key in data) {
           if (data.hasOwnProperty(key)) {
