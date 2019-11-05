@@ -11,6 +11,9 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
     join: {
       miniStoreSalePayments: {},
       miniStoreSaleDetails: {},
+      miniStoreInvoices: {},
+      agentBilling: {},
+      agentCanceling: {},
     },
   },
 })
@@ -25,7 +28,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     return this;
   }
 
-  @Get('/')
+  @Get('/aslals')
   async prueba() {
     return await this.service.repo.find({
       where: {

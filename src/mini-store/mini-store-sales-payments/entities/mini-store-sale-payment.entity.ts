@@ -91,7 +91,7 @@ export class MiniStoreSalePayment {
         default: () => '\'0\'',
         name: 'timbrado',
     })
-    stamping: boolean;
+    stamping: number;
 
     @Column('timestamp', {
         nullable: false,
