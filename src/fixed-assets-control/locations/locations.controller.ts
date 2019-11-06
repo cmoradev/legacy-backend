@@ -7,6 +7,11 @@ import { LocationsService } from './locations.service';
     model: {
         type: Location,
     },
+    query: {
+        join: {
+            department: {},
+        },
+    },
 })
 @Controller()
 export class LocationsController implements CrudController<Location> {
