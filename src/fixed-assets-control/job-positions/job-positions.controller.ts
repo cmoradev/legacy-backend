@@ -7,6 +7,12 @@ import { JobPositionsService } from './job-positions.service';
     model: {
         type: JobPosition,
     },
+    query: {
+        join: {
+            department: {},
+            'department.locations': {},
+        },
+    },
 })
 @Controller()
 export class JobPositionsController implements CrudController<JobPosition> {
