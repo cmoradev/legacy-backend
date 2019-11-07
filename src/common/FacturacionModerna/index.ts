@@ -6,6 +6,8 @@ import * as moment from 'moment-timezone';
 import { WriteStream } from 'fs';
 import * as os from 'os';
 
+import { js2xml, xml2json } from 'xml-js'; // using this syntax, it does work
+
 const defaults = {
   user: 'UsuarioPruebasWS',
   password: 'b9ec2afa3361a59af4b4d102d3f704eabdf097d4',
@@ -165,4 +167,19 @@ export class FacturacionModerna {
     fs.appendFileSync(log, fecha);
   }
 
+  async getTotalXml(pathXml: string) {
+    if (fs.existsSync(pathXml)) {
+      const route = fs.readFileSync(pathXml).toString('utf8');
+      const xml: any = await xml2json(route, {
+        sanitize: true,
+        addParent: true,
+        compact: true,
+        ignoreComment: true,
+      });
+      const a: any = { data: JSON.parse(xml) }; // JSON.stringify(xml);
+      return await a.data['cfdi:Comprobante']._attributes.Total.toString();
+    } else {
+      return '0';
+    }
+  }
 }
