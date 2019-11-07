@@ -25,10 +25,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
   //  url: string = 'https://t2.facturacionmoderna.com/timbrado/wsdl';
   url: string = 'https://t1demo.facturacionmoderna.com/timbrado/wsdl';
   option = {
-    'UserPass': 'b9ec2afa3361a59af4b4d102d3f704eabdf097d4',
-    // 'UserPass': '4a63456b4d5113c4fdd8f9c9539295db37bb0982',
-    // 'UserID': 'WSI1503194J6',
-    'UserID': 'UsuarioPruebasWS',
+    'UserPass': '4a63456b4d5113c4fdd8f9c9539295db37bb0982',
+    'UserID': 'WSI1503194J6',
+    // 'UserPass': 'b9ec2afa3361a59af4b4d102d3f704eabdf097d4',
+    // 'UserID': 'UsuarioPruebasWS',
     // 'emisorRFC': 'WSI1503194J6',
     // 'RFC': 'GUCE910701NHA',
   };
@@ -47,7 +47,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     try {
 
       const factura = new FacturacionModerna(this.url, this.option, 1);
-      const response = await factura.cancelar('TCM970625MB1', cancelInvoice.uuid);
+      const response = await factura.cancelar('GUCE910701NHA', cancelInvoice.uuid);
       let status = 1; // factura activa
       if (response.Code === 'GT05') {
         status = 2; // factura cancelada
@@ -89,7 +89,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
   async CheckStatusInvoice(@Body() checkInvoice: CheckInvoiceMinistoreDto, @Res() res: Response) {
     try {
       const factura = new FacturacionModerna(this.url, this.option, 1);
-      const response = await factura.estadoCancelacion('TCM970625MB1', checkInvoice.receptorRFC, checkInvoice.uuid, checkInvoice.total);
+      let total = '0';
+      const totalxml = await factura.getTotalXml(`/var/www/pdc/comprobantes/tienda/${checkInvoice.uuid}.xml`);
+      total = totalxml === checkInvoice.total ? checkInvoice.total : totalxml;
+      const response = await factura.estadoCancelacion('GUCE910701NHA', checkInvoice.receptorRFC, checkInvoice.uuid, total);
       let status = 3;
       if (response.estado === 'Cancelado') {
         status = 2;
