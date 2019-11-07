@@ -22,8 +22,8 @@ import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
 })
 @Controller()
 export class MiniStoreInvoicesController implements CrudController<MiniStoreInvoice> {
-  //  url: string = 'https://t2.facturacionmoderna.com/timbrado/wsdl';
-  url: string = 'https://t1demo.facturacionmoderna.com/timbrado/wsdl';
+  url: string = 'https://t2.facturacionmoderna.com/timbrado/wsdl';
+  // url: string = 'https://t1demo.facturacionmoderna.com/timbrado/wsdl';
   option = {
     'UserPass': '4a63456b4d5113c4fdd8f9c9539295db37bb0982',
     'UserID': 'WSI1503194J6',
