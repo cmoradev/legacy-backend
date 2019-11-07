@@ -121,7 +121,6 @@ export class FacturacionModerna {
           error = error.Body;
           error = error.Fault;
         } else {
-          console.log(e);
           error = 'desconocido';
         }
         reject({ message: error });
@@ -129,7 +128,7 @@ export class FacturacionModerna {
     });
   }
 
-  async estadoCancelacion(emisorRFC: string, receptorRFC: string, UUID: string, total: string) {
+  async estadoCancelacion(emisorRFC: string, receptorRFC: string, UUID: string, total: string): Promise<{ http_code, estado, esCancelable, estatusCancelacion, EstatusFM }> {
     return new Promise(async (resolve, reject) => {
       const cliente = await createClientAsync(this.url);
       try {
@@ -142,16 +141,16 @@ export class FacturacionModerna {
         const result: any = {};
         for (const key in data) {
           if (data.hasOwnProperty(key)) {
-            result[key] = data[key].$value;
+            result[key] = data[key].$value ? data[key].$value : 'No disponible';
           }
         }
         resolve(result);
-      } catch (e) {
+      } catch (error) {
         if (this.debug === 1) {
           this.log('SOAP request:\t' + cliente.lastRequest.toString('utf8'));
           this.log('SOAP response:\t' + cliente.lastResponse.toString('utf8'));
         }
-        reject(e);
+        reject({ message: error });
       }
     });
   }
