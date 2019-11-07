@@ -5,6 +5,7 @@ import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
 import { FacturacionModerna } from '../../common/FacturacionModerna';
+import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
 
 @Crud({
   model: {
@@ -47,12 +48,12 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
       const factura = new FacturacionModerna(this.url, this.option, 1);
       const response = await factura.cancelar('TCM970625MB1', cancelInvoice.uuid);
-      let status = 0;
+      let status = 1; // factura activa
       if (response.Code === 'GT05') {
-        status = 2;
+        status = 2; // factura cancelada
       }
       if (response.Code === 'GT11') {
-        status = 3;
+        status = 3; // factura en proceso
       }
       const obj = {
         id: cancelInvoice.idInvoice,
@@ -66,7 +67,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         idinvoice: cancelInvoice.idInvoice,
         status,
         message: response.Message,
-        invoiceMiniStore: invoice,
+        invoice,
         payment,
       };
       res.status(200);
@@ -85,8 +86,36 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
   }
 
   @Post('/checkstatusinvoice')
-  public CheckStatusInvoice() {
-    return 'estatus';
+  async CheckStatusInvoice(@Body() checkInvoice: CheckInvoiceMinistoreDto, @Res() res: Response) {
+    try {
+      const factura = new FacturacionModerna(this.url, this.option, 1);
+      const response = await factura.estadoCancelacion('TCM970625MB1', checkInvoice.receptorRFC, checkInvoice.uuid, checkInvoice.total);
+      let status = 3;
+      if (response.estado === 'Cancelado') {
+        status = 2;
+      }
+      if (response.estado === 'Vigente') {
+        // if (response.estatusCancelacion === 'Solicitud rechazada') {
+        // status = 4;
+        // }
+      }
+      const invoice = this.service.changeStautsInvoiceC(checkInvoice.idInvoice, status);
+      const payment = await this.service.changeStautsPayment(checkInvoice.idSalePayment, status);
+
+      const objresult = {
+        idinvoice: checkInvoice.idInvoice,
+        status,
+        message: response,
+        invoice,
+        payment,
+      };
+      res.status(200);
+      res.send(objresult);
+    } catch (e) {
+
+      res.status(400);
+      res.send(e.message);
+    }
   }
 
 }

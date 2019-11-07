@@ -29,6 +29,12 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     return await this.repo.save(invoice);
   }
 
+  async changeStautsInvoiceC(id: number, status: number) {
+    const invoice = await this.repo.findOne({ id });
+    invoice.status = status;
+    return await this.repo.save(invoice);
+  }
+
   async changeStautsPayment(id: number, status: number) {
     const payment = await this.salesPaymentService.findOne({ id });
     payment.stamping = status;
