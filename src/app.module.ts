@@ -15,6 +15,7 @@ import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-co
 import { SystemModule } from './system/system.module';
 import { IntegrationsModule } from './integrations/integrations.module';
 import { FacturacionModule } from './facturacion/facturacion.module';
+import { AcademyModule } from './academy/academy.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -39,6 +40,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         SystemModule,
         FacturacionModule,
         IntegrationsModule,
+        AcademyModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -56,92 +56,102 @@ import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module'
 import { FacturacionModule } from './facturacion/facturacion.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
 import { LocationsModule } from './fixed-assets-control/locations/locations.module';
+import { CountriesModule } from './system/countries/countries.module';
+import { StatesModule } from './system/states/states.module';
+import { CitiesModule } from './system/cities/cities.module';
+import { MunicipalitiesModule } from './system/municipalities/municipalities.module';
+import { SystemModule } from './system/system.module';
 
 export const routes: Routes = [
-    {
-        path: '/facturacion',
-        module: FacturacionModule,
-    },
-    {
-        path: '/system',
-        children: [
-            { path: '/users', module: UsersModule },
-            { path: '/routes', module: RoutesModule },
-            { path: '/permissions', module: PermissionsModule },
-            { path: '/auth', module: AuthModule },
-            { path: '/roles', module: RolesModule },
-            { path: '/actions', module: ActionsModule },
-            { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
-            { path: '/invoices-bank', module: InvoicesBankModule },
-        ],
-    },
-    {
-        path: '/school',
-        module: SchoolColegioInglesModule,
-        children: [
-            { path: '/subjects', module: SubjectsModule },
-            { path: '/study-plans', module: StudyPlansModule },
-            { path: '/study-plan-variants', module: StudyPlanVariantsModule },
-            { path: '/levels', module: LevelsModule },
-            { path: '/grades', module: GradesModule },
-            { path: '/students', module: StudentsModule },
-            { path: '/assignments', module: AssignmentsModule },
-            { path: '/modalities', module: ModalitiesModule },
-            { path: '/teachers', module: TeachersModule },
-            { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
-            { path: '/groups', module: GroupsModule },
-            { path: '/inscriptions', module: InscriptionsModule },
-            { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
-            { path: '/cycles', module: CyclesModule },
-            { path: '/campuses', module: CampusesModule },
-            { path: '/academies-modalities', module: AcademiesModalitiesModule },
-            { path: '/families', module: FamiliesModule },
-            { path: '/classrooms', module: ClassroomsModule },
-            { path: '/classrooms-permissions', module: ClassroomPermissionModule },
-            { path: '/incident-classifications', module: IncidentClassificationModule },
-            { path: '/incidents', module: IncidentsModule },
-            { path: '/departments', module: DepartmentsModule },
-            { path: '/check-in', module: CheckInModule },
-        ],
-    },
-    {
-        path: '/mini-store',
-        module: MiniStoreModule,
-        children: [
-            { path: '/products', module: MiniStoreProductsModule },
-            { path: '/classifications', module: MiniStoreClassificationsModule },
-            { path: '/prices-lists', module: MiniStorePricesListsModule },
-            { path: '/invoices-keys', module: MiniStoreInvoicesKeysModule },
-            { path: '/invoices', module: MiniStoreInvoicesModule },
-            { path: '/payments-status', module: MiniStorePaymentsStatusModule },
-            { path: '/sales', module: MiniStoreSalesModule },
-            { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
-            { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
-            { path: '/sales-details', module: MiniStoreSalesDetailsModule },
-            {
-                path: '/warehouse', children: [
-                    { path: '/orders', module: MiniStoreWarehouseOrdersModule },
-                    { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
-                    { path: '/providers', module: MiniStoreWarehouseProvidersModule },
-
-                ],
-            },
-        ],
-    },
-    {
-        path: '/fixed-assets-control',
-        module: FixedAssetsControlModule,
-        children: [
-            { path: 'branch-companies', module: BranchCompaniesModule },
-            { path: 'employees', module: EmployeesModule },
-            { path: 'fixed-assets', module: FixedAssetsModule },
-            { path: 'fixed-assets-assignments', module: FixedAssetsAssignmentsModule },
-            { path: 'job-positions', module: JobPositionsModule },
-            { path: 'matrix-companies', module: MatrixCompaniesModule },
-            { path: 'responsive-letters', module: ResponsiveLettersModule },
-            { path: 'classifications', module: ClassificationsModule },
-            { path: 'locations', module: LocationsModule },
+  {
+    path: '/facturacion',
+    module: FacturacionModule,
+  },
+  {
+    path: '/system',
+    module: SystemModule,
+    children: [
+      { path: '/users', module: UsersModule },
+      { path: '/routes', module: RoutesModule },
+      { path: '/permissions', module: PermissionsModule },
+      { path: '/auth', module: AuthModule },
+      { path: '/roles', module: RolesModule },
+      { path: '/actions', module: ActionsModule },
+      { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
+      { path: '/invoices-bank', module: InvoicesBankModule },
+      { path: '/countries', module: CountriesModule },
+      { path: '/states', module: StatesModule },
+      { path: '/cities', module: CitiesModule },
+      { path: '/municipalities', module: MunicipalitiesModule },
+    ],
+  },
+  {
+    path: '/school',
+    module: SchoolColegioInglesModule,
+    children: [
+      { path: '/subjects', module: SubjectsModule },
+      { path: '/study-plans', module: StudyPlansModule },
+      { path: '/study-plan-variants', module: StudyPlanVariantsModule },
+      { path: '/levels', module: LevelsModule },
+      { path: '/grades', module: GradesModule },
+      { path: '/students', module: StudentsModule },
+      { path: '/assignments', module: AssignmentsModule },
+      { path: '/modalities', module: ModalitiesModule },
+      { path: '/teachers', module: TeachersModule },
+      { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
+      { path: '/groups', module: GroupsModule },
+      { path: '/inscriptions', module: InscriptionsModule },
+      { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
+      { path: '/cycles', module: CyclesModule },
+      { path: '/campuses', module: CampusesModule },
+      { path: '/academies-modalities', module: AcademiesModalitiesModule },
+      { path: '/families', module: FamiliesModule },
+      { path: '/classrooms', module: ClassroomsModule },
+      { path: '/classrooms-permissions', module: ClassroomPermissionModule },
+      { path: '/incident-classifications', module: IncidentClassificationModule },
+      { path: '/incidents', module: IncidentsModule },
+      { path: '/departments', module: DepartmentsModule },
+      { path: '/check-in', module: CheckInModule },
+    ],
+  },
+  {
+    path: '/mini-store',
+    module: MiniStoreModule,
+    children: [
+      { path: '/products', module: MiniStoreProductsModule },
+      { path: '/classifications', module: MiniStoreClassificationsModule },
+      { path: '/prices-lists', module: MiniStorePricesListsModule },
+      { path: '/invoices-keys', module: MiniStoreInvoicesKeysModule },
+      { path: '/invoices', module: MiniStoreInvoicesModule },
+      { path: '/payments-status', module: MiniStorePaymentsStatusModule },
+      { path: '/sales', module: MiniStoreSalesModule },
+      { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
+      { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
+      { path: '/sales-details', module: MiniStoreSalesDetailsModule },
+      {
+        path: '/warehouse', children: [
+          { path: '/orders', module: MiniStoreWarehouseOrdersModule },
+          { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
+          { path: '/providers', module: MiniStoreWarehouseProvidersModule },
 
         ],
-    },
+      },
+    ],
+  },
+  {
+    path: '/fixed-assets-control',
+    module: FixedAssetsControlModule,
+    children: [
+      { path: 'branch-companies', module: BranchCompaniesModule },
+      { path: 'employees', module: EmployeesModule },
+      { path: 'fixed-assets', module: FixedAssetsModule },
+      { path: 'fixed-assets-assignments', module: FixedAssetsAssignmentsModule },
+      { path: 'job-positions', module: JobPositionsModule },
+      { path: 'matrix-companies', module: MatrixCompaniesModule },
+      { path: 'responsive-letters', module: ResponsiveLettersModule },
+      { path: 'classifications', module: ClassificationsModule },
+      { path: 'locations', module: LocationsModule },
+
+    ],
+  },
 ];
