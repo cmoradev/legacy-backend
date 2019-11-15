@@ -20,19 +20,19 @@ export class Cycle {
     })
     name: string;
 
-    @Column('date', {
+    @Column('timestamp', {
         nullable: false,
         name: 'fecha_inicio',
     })
-    dateStart: string;
+    dateStart: Date;
 
-    @Column('date', {
+    @Column('timestamp', {
         nullable: false,
         name: 'fecha_fin',
     })
-    dateEnd: string;
+    dateEnd: Date;
 
-    @Column('int', {
+    @Column('tinyint', {
         nullable: false,
         name: 'active',
     })
