@@ -14,7 +14,6 @@ import { InscriptionsModule } from './inscriptions/inscriptions.module';
 import { CyclesModule } from './cycles/cycles.module';
 import { CampusesModule } from './campuses/campuses.module';
 import { FamiliesModule } from './families/families.module';
-import { AcademiesModalitiesModule } from './academies-modalities/academies-modalities.module';
 import { UsersModule } from './users/users.module';
 import { ClassroomsModule } from './classrooms/classrooms.module';
 import { PermissionsModule } from './permissions/permissions.module';
@@ -41,7 +40,7 @@ import { AuthModule } from './auth/auth.module';
         AssignmentsSubjectsModule,
         GroupsModule, InscriptionsModule,
         CyclesModule, CampusesModule,
-        FamiliesModule, AcademiesModalitiesModule,
+        FamiliesModule,
         UsersModule, ClassroomsModule, PermissionsModule,
         RolesModule, RoutesModule, ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,

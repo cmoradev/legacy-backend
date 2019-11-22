@@ -7,7 +7,18 @@ import { CountriesService } from './countries.service';
   model: {
     type: Country,
   },
-  query: {},
+  params: {
+    countryId: {
+      field: 'country_id',
+      primary: true,
+      type: 'number',
+    },
+  },
+  query: {
+    join: {
+      states: {},
+    },
+  },
 })
 @Controller()
 export class CountriesController implements CrudController<Country> {

@@ -26,7 +26,6 @@ import { MiniStorePaymentsStatusModule } from './mini-store/mini-store-payments-
 import { MiniStoreSalesPaymentsModule } from './mini-store/mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreSalesMethodsPaymentsModule } from './mini-store/mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
 import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-details/mini-store-sales-details.module';
-import { AcademiesModalitiesModule } from './school-colegio-ingles/academies-modalities/academies-modalities.module';
 import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehouse-orders/mini-store-warehouse-orders.module';
 import { MiniStoreWarehouseOrdersProductsModule } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
@@ -61,6 +60,10 @@ import { StatesModule } from './system/states/states.module';
 import { CitiesModule } from './system/cities/cities.module';
 import { MunicipalitiesModule } from './system/municipalities/municipalities.module';
 import { SystemModule } from './system/system.module';
+import { AcademyModule } from './academy/academy.module';
+import { AcademiesModalitiesModule } from './academy/academies-modalities/academies-modalities.module';
+import { ActivitiesModule } from './academy/activities/activities.module';
+import { ConceptsModule } from './academy/concepts/concepts.module';
 
 export const routes: Routes = [
   {
@@ -104,7 +107,6 @@ export const routes: Routes = [
       { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
       { path: '/cycles', module: CyclesModule },
       { path: '/campuses', module: CampusesModule },
-      { path: '/academies-modalities', module: AcademiesModalitiesModule },
       { path: '/families', module: FamiliesModule },
       { path: '/classrooms', module: ClassroomsModule },
       { path: '/classrooms-permissions', module: ClassroomPermissionModule },
@@ -136,6 +138,15 @@ export const routes: Routes = [
 
         ],
       },
+    ],
+  },
+  {
+    path: '/academies',
+    module: AcademyModule,
+    children: [
+      { path: '/activities', module: ActivitiesModule },
+      { path: '/concepts', module: ConceptsModule },
+      { path: '/academies-modalities', module: AcademiesModalitiesModule },
     ],
   },
   {

@@ -1,18 +1,10 @@
 import {
-  BaseEntity,
   Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
+  Entity, JoinColumn, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
-  RelationId,
 } from 'typeorm';
+import { Country } from '../../countries/entities/country.entity';
+import { Cities } from '../../cities/entities/cities.entity';
 
 @Entity('states')
 export class States {
@@ -31,9 +23,19 @@ export class States {
   name: string;
   @Column('int', {
     nullable: false,
-    default: () => '\'1\'',
     name: 'country_id',
   })
-  countryId: number;
+  countryID: number;
+
+  @ManyToOne(type => Country, country => country.states)
+  @JoinColumn({
+    name: 'country_id',
+    referencedColumnName: 'id',
+  })
+  country: Country;
+
+  @OneToMany(type => Cities, city => city.state)
+    // @JoinColumn({ name: 'id', referencedColumnName: 'country_id' })
+  cities: Cities[];
 
 }

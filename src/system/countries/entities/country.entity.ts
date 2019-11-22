@@ -1,18 +1,10 @@
 import {
-  BaseEntity,
   Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
+  Entity, JoinColumn,
   OneToMany,
-  OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  RelationId,
 } from 'typeorm';
+import { States } from '../../states/entities/states.entity';
 
 @Entity('countries')
 export class Country {
@@ -42,5 +34,9 @@ export class Country {
     name: 'phonecode',
   })
   phonecode: number;
+
+  @OneToMany(type => States, state => state.country)
+    // @JoinColumn({ name: 'id', referencedColumnName: 'country_id' })
+  states: States[];
 
 }

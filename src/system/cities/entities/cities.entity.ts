@@ -13,6 +13,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { Country } from '../../countries/entities/country.entity';
+import { States } from '../../states/entities/states.entity';
 
 @Entity('cities')
 export class Cities {
@@ -35,5 +37,12 @@ export class Cities {
     name: 'state_id',
   })
   stateId: number;
+
+  @ManyToOne(type => States, state => state.cities)
+  @JoinColumn({
+    name: 'state_id',
+    referencedColumnName: 'id',
+  })
+  state: States;
 
 }

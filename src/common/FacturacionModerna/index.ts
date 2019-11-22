@@ -22,7 +22,12 @@ export interface Options {
   UUID?: string;
   RFC?: string;
   uuid?: string;
+  generarCBB?: string;
+  generarPDF?: string;
+  generarTXT?: string;
+  text2CFDI?: string;
   total?: string;
+
 }
 
 interface SaldoXml {
@@ -48,14 +53,13 @@ interface Saldo {
 }
 
 export class FacturacionModerna {
-  url: string;
-  credenciales: object;
-  generarCBB: boolean;
-  generarPDF: boolean;
-  generarTXT: boolean;
-  path: string;
-  public options: Options = {} as Options;
-  public debug: number = 0;
+  private url: string;
+  private credenciales: object;
+  private generarCBB: boolean;
+  private generarPDF: boolean;
+  private generarTXT: boolean;
+  private options: Options = {} as Options;
+  private debug: number = 0;
 
   constructor(url: string, options: Options, debug: number = 0) {
     this.url = url;
@@ -65,6 +69,37 @@ export class FacturacionModerna {
       }
     }
     this.debug = debug;
+  }
+
+  public timbrar({
+                   emisorRFC,
+                   generarCBB,
+                   generarPDF,
+                   generarTXT,
+                   text2CFDI,
+                 }: any) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        this.options.emisorRFC = emisorRFC;
+        this.options.generarCBB = generarCBB;
+        this.options.generarPDF = generarPDF;
+        this.options.generarTXT = generarTXT;
+        this.options.text2CFDI = Buffer.from(text2CFDI).toString('base64');
+        const cliente = await createClientAsync(this.url, { wsdl_options: { trace: 1 } });
+        const timbre = await cliente.requestTimbrarCFDIAsync({ parameter: this.options});
+        const data = timbre[0].return;
+        const result: any = {};
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            result[key] = data[key].$value;
+          }
+        }
+        resolve(result);
+      } catch (e) {
+        console.log(e)
+        reject(e);
+      }
+    });
   }
 
   public consultarSaldo(rfc: string) {
@@ -95,6 +130,13 @@ export class FacturacionModerna {
    * @param {String} rfcEmisor
    * @param {String} uuid
    */
+
+  /*
+     *
+     * GT05: Cancelacion directa
+     * GT11: Cancelacion con aceptacion de recepto
+     *
+     */
   cancelar(emisorRFC: string, uuid: string): Promise<{ Code, Message }> {
     return new Promise(async (resolve, reject) => {
       const cliente = await createClientAsync(this.url);

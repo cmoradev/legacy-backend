@@ -7,7 +7,12 @@ import { StatesService } from './states.service';
   model: {
     type: States,
   },
-  query: {},
+  query: {
+    join: {
+      country: {},
+      cities: {},
+    },
+  },
 })
 @Controller()
 export class StatesController implements CrudController<States> {
