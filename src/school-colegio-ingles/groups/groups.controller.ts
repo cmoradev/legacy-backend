@@ -10,6 +10,8 @@ import { GroupsService } from './groups.service';
   query: {
     join: {
       grade: {},
+      'grade.level': {},
+      'grade.level.campus': {},
       cycle: {},
       inscriptions: {},
       classrooms: {},
