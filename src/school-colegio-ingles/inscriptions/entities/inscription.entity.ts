@@ -13,101 +13,117 @@ import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 
 @Entity('inscripciones')
 export class Inscription {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+  @PrimaryGeneratedColumn({
+    type: 'int',
+    name: 'id',
+  })
+  id: number;
 
+  @Column('int', {
+    nullable: false,
+    name: 'id_alumnos',
+  })
+  idStudent: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_plantel',
+  })
+  idPlantel: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_ciclos',
+  })
+  idCycle: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_nivel',
+  })
+  idLevel: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_grados',
+  })
+  idGrade: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_grupos',
+  })
+  idGroup: number;
+
+  @Column('int', {
+    nullable: false,
+    name: 'id_status',
+  })
+  idStatus: number;
+
+  @Column('timestamp', {
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'created_at',
+  })
+  createdAt: Date;
+
+  @Column('timestamp', {
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+
+  @Column('int', {
+    nullable: false,
+  })
+  campusId: number;
+  @Column('int', {
+    nullable: false,
+  })
+  levelId: number;
+  @Column('int', {
+    nullable: false,
+  })
+  gradeId: number;
     @Column('int', {
         nullable: false,
-        name: 'id_alumnos',
     })
-    idStudent: number;
+    cycleId: number;
+  @ManyToOne(() => Student, (student) => student.inscriptions)
+  student: Student;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_plantel',
-    })
-    idPlantel: number;
+  @ManyToOne(() => Group, (group) => group.inscriptions)
+  group: Group;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_ciclos',
-    })
-    idCycle: number;
+  @ManyToOne(() => Grade, (grade) => grade.inscriptions)
+  grade: Grade;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_nivel',
-    })
-    idLevel: number;
+  @ManyToOne(() => Level, (level) => level.inscriptions)
+  level: Level;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_grados',
-    })
-    idGrade: number;
+  @ManyToOne(() => Cycle, (cycle) => cycle.inscriptions)
+  cycle: Cycle;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_grupos',
-    })
-    idGroup: number;
+  @ManyToOne(() => Campus, (campus) => campus.inscriptions)
+  campus: Campus;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_status',
-    })
-    idStatus: number;
+  @ManyToOne(() => User, (user) => user.schoolCreatorInscription)
+  agentCreator: User;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
+  @ManyToOne(() => User, (user) => user.schoolEditorInscription)
+  agentEditor: User;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+  @ManyToOne(() => Classroom, (classroom) => classroom.inscriptions)
+  classroom: Classroom;
 
-    @ManyToOne(() => Student, (student) => student.inscriptions)
-    student: Student;
-
-    @ManyToOne(() => Group, (group) => group.inscriptions)
-    group: Group;
-
-    @ManyToOne(() => Grade, (grade) => grade.inscriptions)
-    grade: Grade;
-
-    @ManyToOne(() => Level, (level) => level.inscriptions)
-    level: Level;
-
-    @ManyToOne(() => Cycle, (cycle) => cycle.inscriptions)
-    cycle: Cycle;
-
-    @ManyToOne(() => Campus, (campus) => campus.inscriptions)
-    campus: Campus;
-
-    @ManyToOne(() => User, (user) => user.schoolCreatorInscription)
-    agentCreator: User;
-
-    @ManyToOne(() => User, (user) => user.schoolEditorInscription)
-    agentEditor: User;
-
-    @ManyToOne(() => Classroom, (classroom) => classroom.inscriptions)
-    classroom: Classroom;
-
-    @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.inscription)
-    assignmentsInscription: AssignmentInscription[];
-    @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.inscriptions)
-    studyPlanVariant: StudyPlanVariant;
-    @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.inscriptions)
-    studyPlan: StudyPlan;
+  @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.inscription)
+  assignmentsInscription: AssignmentInscription[];
+  @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.inscriptions)
+  studyPlanVariant: StudyPlanVariant;
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.inscriptions)
+  studyPlan: StudyPlan;
 
 }
