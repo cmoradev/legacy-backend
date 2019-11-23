@@ -16,6 +16,7 @@ import { sheetToObjPage } from '../../common/sheets';
         type: Inscription,
     },
     query: {
+        maxLimit: 200,
         join: {
             student: {},
             cycle: {},

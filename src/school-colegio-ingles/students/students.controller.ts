@@ -17,10 +17,12 @@ import { StudentsService } from './students.service';
             'incidents.classroom': { },
             'incidents.incidentClassification': { },
             inscriptions: {},
-            'inscriptions.cycle': { },
             'inscriptions.classroom': {},
+            'inscriptions.cycle': { },
+            'inscriptions.campus': { },
             'inscriptions.level': {},
             'inscriptions.grade': {},
+            'inscriptions.group': {},
         },
     },
 })
