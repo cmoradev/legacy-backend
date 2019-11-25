@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { FacturacionModerna } from '../common/FacturacionModerna';
 import * as moment from 'moment-timezone';
 
-@Controller('facturacion')
+@Controller('invoice')
 export class FacturacionController {
   @Get('/')
   async index() {

@@ -1,13 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/entities/user.entity';
-import { Role } from '../roles/entities/role.entity';
+import { Role } from '../../school-colegio-ingles/roles/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Department } from '../departments/entities/department.entity';
-import { Campus } from '../campuses/entities/campus.entity';
+import { Department } from '../../school-colegio-ingles/departments/entities/department.entity';
+import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/entities/user.entity';
 
 interface UserBody {
     name: string;

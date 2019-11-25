@@ -5,11 +5,11 @@ import { Grade } from '../../grades/entities/grade.entity';
 import { Level } from '../../levels/entities/level.entity';
 import { Cycle } from '../../cycles/entities/cycle.entity';
 import { Campus } from '../../campuses/entities/campus.entity';
-import { User } from '../../users/entities/user.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
+import { User } from '../../../system/users/entities/user.entity';
 
 @Entity('inscripciones')
 export class Inscription {

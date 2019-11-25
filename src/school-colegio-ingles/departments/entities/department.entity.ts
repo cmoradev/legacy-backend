@@ -4,9 +4,9 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CheckIn } from '../../check-in/entities/check-in.entity';
-import { User } from '../../users/entities/user.entity';
 import { JobPosition } from '../../../fixed-assets-control/job-positions/entities/job-position.entity';
 import { Location } from '../../../fixed-assets-control/locations/entities/location.entity';
+import { User } from '../../../system/users/entities/user.entity';
 
 @Entity('departamentos')
 export class Department {

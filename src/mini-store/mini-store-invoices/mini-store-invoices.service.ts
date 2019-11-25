@@ -6,7 +6,8 @@ import { Repository } from 'typeorm';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import * as moment from 'moment-timezone';
 import { ChangeStatusInvoiceMiniStoreInterface } from './interface/ChangeStatusInvoiceMiniStore.interface';
-import { UsersService } from '../../school-colegio-ingles/users/users.service';
+import { UsersService } from '../../system/users/users.service';
+
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {

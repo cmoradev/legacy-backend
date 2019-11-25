@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
-import { User } from '../../users/entities/user.entity';
+import { User } from '../../../system/users/entities/user.entity';
 
 @Entity()
 export class ClassroomPermission {

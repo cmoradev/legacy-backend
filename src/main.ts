@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AuthModule } from './school-colegio-ingles/auth/auth.module';
+import { AuthModule } from './system/auth/auth.module';
 import * as path from 'path';
 import * as favicon from 'serve-favicon';
 async function bootstrap() {

@@ -3,7 +3,7 @@ import {MiniStoreSale} from '../../mini-store-sales/entities/mini-store-sale.ent
 import {MiniStoreSaleMethodPayment} from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import {MiniStoreInvoice} from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import {MiniStorePaymentStatus} from '../../mini-store-payments-status/entities/mini-store-payment-status.entity';
-import { User } from '../../../school-colegio-ingles/users/entities/user.entity';
+import { User } from '../../../system/users/entities/user.entity';
 
 @Entity('tie_venta_pagos' )
 export class MiniStoreSalePayment {

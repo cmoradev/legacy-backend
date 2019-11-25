@@ -1,7 +1,6 @@
 import { INestApplication, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
 import { ConfigModule } from '../../config/config.module';
@@ -11,9 +10,10 @@ import * as passport from 'passport';
 import * as session from 'express-session';
 import { ConfigService } from '../../config/config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Department } from '../departments/entities/department.entity';
-import { Role } from '../roles/entities/role.entity';
-import { Campus } from '../campuses/entities/campus.entity';
+import { Department } from '../../school-colegio-ingles/departments/entities/department.entity';
+import { Role } from '../../school-colegio-ingles/roles/entities/role.entity';
+import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
+import { UsersModule } from '../users/users.module';
 // tslint:disable-next-line:no-var-requires
 const MySQLStore = require('express-mysql-session')(session);
 

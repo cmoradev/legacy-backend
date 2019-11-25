@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {Assignment} from '../../assignments/entities/assignment.entity';
-import { User } from '../../users/entities/user.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
+import { User } from '../../../system/users/entities/user.entity';
 
 @Entity()
 export class Teacher {

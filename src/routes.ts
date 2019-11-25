@@ -29,7 +29,6 @@ import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-detai
 import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehouse-orders/mini-store-warehouse-orders.module';
 import { MiniStoreWarehouseOrdersProductsModule } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
-import { UsersModule } from './school-colegio-ingles/users/users.module';
 import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.module';
 import { RoutesModule } from './school-colegio-ingles/routes/routes.module';
 import { PermissionsModule } from './school-colegio-ingles/permissions/permissions.module';
@@ -41,7 +40,7 @@ import { IncidentClassificationModule } from './school-colegio-ingles/incident-c
 import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
 import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
-import { AuthModule } from './school-colegio-ingles/auth/auth.module';
+import { AuthModule } from './system/auth/auth.module';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
 import { MatrixCompaniesModule } from './fixed-assets-control/matrix-companies/matrix-companies.module';
 import { BranchCompaniesModule } from './fixed-assets-control/branch-companies/branch-companies.module';
@@ -52,7 +51,7 @@ import { JobPositionsModule } from './fixed-assets-control/job-positions/job-pos
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
 import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
-import { FacturacionModule } from './facturacion/facturacion.module';
+import { FacturacionModule } from './invoice/facturacion.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
 import { LocationsModule } from './fixed-assets-control/locations/locations.module';
 import { CountriesModule } from './system/countries/countries.module';
@@ -64,16 +63,21 @@ import { AcademyModule } from './academy/academy.module';
 import { AcademiesModalitiesModule } from './academy/academies-modalities/academies-modalities.module';
 import { ActivitiesModule } from './academy/activities/activities.module';
 import { ConceptsModule } from './academy/concepts/concepts.module';
+import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/mini-store-dash-board.module';
+import { SystemDashBoardModule } from './system/system-dash-board/system-dash-board.module';
+import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
+import { UsersModule } from './system/users/users.module';
 
 export const routes: Routes = [
   {
-    path: '/facturacion',
+    path: '/invoice',
     module: FacturacionModule,
   },
   {
     path: '/system',
     module: SystemModule,
     children: [
+      { path: '/dashboard', module: SystemDashBoardModule },
       { path: '/users', module: UsersModule },
       { path: '/routes', module: RoutesModule },
       { path: '/permissions', module: PermissionsModule },
@@ -92,6 +96,7 @@ export const routes: Routes = [
     path: '/school',
     module: SchoolColegioInglesModule,
     children: [
+      { path: '/dashboard', module: SystemDashBoardModule },
       { path: '/subjects', module: SubjectsModule },
       { path: '/study-plans', module: StudyPlansModule },
       { path: '/study-plan-variants', module: StudyPlanVariantsModule },
@@ -120,6 +125,11 @@ export const routes: Routes = [
     path: '/mini-store',
     module: MiniStoreModule,
     children: [
+      {
+        path: '/dash-board',
+        module: MiniStoreDashBoardModule,
+        children: [],
+      },
       { path: '/products', module: MiniStoreProductsModule },
       { path: '/classifications', module: MiniStoreClassificationsModule },
       { path: '/prices-lists', module: MiniStorePricesListsModule },
@@ -144,6 +154,7 @@ export const routes: Routes = [
     path: '/academies',
     module: AcademyModule,
     children: [
+      { path: '/dashboard', module: AcademyDashBoardModule },
       { path: '/activities', module: ActivitiesModule },
       { path: '/concepts', module: ConceptsModule },
       { path: '/academies-modalities', module: AcademiesModalitiesModule },

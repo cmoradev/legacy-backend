@@ -14,7 +14,6 @@ import { InscriptionsModule } from './inscriptions/inscriptions.module';
 import { CyclesModule } from './cycles/cycles.module';
 import { CampusesModule } from './campuses/campuses.module';
 import { FamiliesModule } from './families/families.module';
-import { UsersModule } from './users/users.module';
 import { ClassroomsModule } from './classrooms/classrooms.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
@@ -26,7 +25,7 @@ import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { CheckInModule } from './check-in/check-in.module';
-import { AuthModule } from './auth/auth.module';
+import { SchoolDashBoardModule } from './school-dash-board/school-dash-board.module';
 
 @Module({
     imports: [
@@ -41,11 +40,11 @@ import { AuthModule } from './auth/auth.module';
         GroupsModule, InscriptionsModule,
         CyclesModule, CampusesModule,
         FamiliesModule,
-        UsersModule, ClassroomsModule, PermissionsModule,
+        ClassroomsModule, PermissionsModule,
         RolesModule, RoutesModule, ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,
         IncidentsModule, IncidentClassificationModule, DepartmentsModule,
-        CheckInModule, AuthModule,
+        CheckInModule, SchoolDashBoardModule,
     ],
 })
 export class SchoolColegioInglesModule {

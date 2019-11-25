@@ -2,10 +2,10 @@ import { Body, Controller, HttpStatus, Param, Patch, Res } from '@nestjs/common'
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { Teacher } from '../teachers/entities/teacher.entity';
 import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
 
 @Crud({
     model: {
