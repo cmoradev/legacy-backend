@@ -25,7 +25,7 @@ export class UsersService extends TypeOrmCrudService<User> {
     return this.repo.save(user);
   }
 
-  public async forDepartament(id: User): Promise<number> {
+  public async forDepartament(id: number): Promise<number> {
     return this.repo.count({
       where: {
         department: {

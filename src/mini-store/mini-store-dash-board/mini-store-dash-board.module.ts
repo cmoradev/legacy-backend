@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MiniStoreDashBoardService } from './mini-store-dash-board.service';
 import { MiniStoreDashBoardController } from './mini-store-dash-board.controller';
+import { UsersModule } from '../../system/users/users.module';
 import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoices.module';
+import { MiniStoreSalesPaymentsModule } from '../mini-store-sales-payments/mini-store-sales-payments.module';
 
 @Module({
-  imports: [MiniStoreInvoicesModule],
+  imports: [
+    UsersModule,
+    MiniStoreInvoicesModule,
+    MiniStoreSalesPaymentsModule,
+  ],
   providers: [MiniStoreDashBoardService],
   controllers: [MiniStoreDashBoardController],
 })
