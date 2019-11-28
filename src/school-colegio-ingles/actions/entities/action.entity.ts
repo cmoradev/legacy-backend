@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
-import { Route } from '../../routes/entities/route.entity';
+import { Route } from '../../../system/routes/entities/route.entity';
 
 @Entity()
 export class Action {

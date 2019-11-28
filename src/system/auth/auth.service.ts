@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
-import { Role } from '../../school-colegio-ingles/roles/entities/role.entity';
+import { Role } from '../roles/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Department } from '../../school-colegio-ingles/departments/entities/department.entity';
+import { Department } from '../departments/entities/department.entity';
 import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';

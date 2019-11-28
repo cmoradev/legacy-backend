@@ -30,15 +30,15 @@ import { MiniStoreWarehouseOrdersModule } from './mini-store/mini-store-warehous
 import { MiniStoreWarehouseOrdersProductsModule } from './mini-store/mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store/mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.module';
-import { RoutesModule } from './school-colegio-ingles/routes/routes.module';
-import { PermissionsModule } from './school-colegio-ingles/permissions/permissions.module';
-import { RolesModule } from './school-colegio-ingles/roles/roles.module';
+import { RoutesModule } from './system/routes/routes.module';
+import { PermissionsModule } from './system/permissions/permissions.module';
+import { RolesModule } from './system/roles/roles.module';
 import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
 import { AssignmentIncriptionModule } from './school-colegio-ingles/assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-permission/classroom-permission.module';
 import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
 import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
-import { DepartmentsModule } from './school-colegio-ingles/departments/departments.module';
+import { DepartmentsModule } from './system/departments/departments.module';
 import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 import { AuthModule } from './system/auth/auth.module';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
@@ -51,7 +51,7 @@ import { JobPositionsModule } from './fixed-assets-control/job-positions/job-pos
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
 import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
-import { FacturacionModule } from './invoice/facturacion.module';
+import { InvoiceModule } from './invoice/invoice.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
 import { LocationsModule } from './fixed-assets-control/locations/locations.module';
 import { CountriesModule } from './system/countries/countries.module';
@@ -60,9 +60,9 @@ import { CitiesModule } from './system/cities/cities.module';
 import { MunicipalitiesModule } from './system/municipalities/municipalities.module';
 import { SystemModule } from './system/system.module';
 import { AcademyModule } from './academy/academy.module';
-import { AcademiesModalitiesModule } from './academy/academies-modalities/academies-modalities.module';
-import { ActivitiesModule } from './academy/activities/activities.module';
-import { ConceptsModule } from './academy/concepts/concepts.module';
+import { AcademyModalitiesModule } from './academy/academy-modalities/academy-modalities.module';
+import { AcademyActivitiesModule } from './academy/academy-activities/academy-activities.module';
+import { AcademyConceptsModule } from './academy/academy-concepts/academy-concepts.module';
 import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/mini-store-dash-board.module';
 import { SystemDashBoardModule } from './system/system-dash-board/system-dash-board.module';
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
@@ -71,7 +71,7 @@ import { UsersModule } from './system/users/users.module';
 export const routes: Routes = [
   {
     path: '/invoice',
-    module: FacturacionModule,
+    module: InvoiceModule,
   },
   {
     path: '/system',
@@ -83,6 +83,7 @@ export const routes: Routes = [
       { path: '/permissions', module: PermissionsModule },
       { path: '/auth', module: AuthModule },
       { path: '/roles', module: RolesModule },
+      { path: '/departments', module: DepartmentsModule },
       { path: '/actions', module: ActionsModule },
       { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
       { path: '/invoices-bank', module: InvoicesBankModule },
@@ -117,7 +118,6 @@ export const routes: Routes = [
       { path: '/classrooms-permissions', module: ClassroomPermissionModule },
       { path: '/incident-classifications', module: IncidentClassificationModule },
       { path: '/incidents', module: IncidentsModule },
-      { path: '/departments', module: DepartmentsModule },
       { path: '/check-in', module: CheckInModule },
     ],
   },
@@ -155,9 +155,9 @@ export const routes: Routes = [
     module: AcademyModule,
     children: [
       { path: '/dashboard', module: AcademyDashBoardModule },
-      { path: '/activities', module: ActivitiesModule },
-      { path: '/concepts', module: ConceptsModule },
-      { path: '/academies-modalities', module: AcademiesModalitiesModule },
+      { path: '/academy-activities', module: AcademyActivitiesModule },
+      { path: '/academy-concepts', module: AcademyConceptsModule },
+      { path: '/academy-modalities', module: AcademyModalitiesModule },
     ],
   },
   {

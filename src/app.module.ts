@@ -14,7 +14,7 @@ import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
 import { SystemModule } from './system/system.module';
 import { IntegrationsModule } from './integrations/integrations.module';
-import { FacturacionModule } from './invoice/facturacion.module';
+import { InvoiceModule } from './invoice/invoice.module';
 import { AcademyModule } from './academy/academy.module';
 
 // @ts-ignore left join only
@@ -38,7 +38,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         XlsImporterModule,
         FixedAssetsControlModule,
         SystemModule,
-        FacturacionModule,
+        InvoiceModule,
         IntegrationsModule,
         AcademyModule,
     ],

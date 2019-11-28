@@ -11,8 +11,8 @@ import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehous
 import { ClassroomPermission } from '../../../school-colegio-ingles/classroom-permission/entities/classroom-permission.entity';
 import { Inscription } from '../../../school-colegio-ingles/inscriptions/entities/inscription.entity';
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
-import { Role } from '../../../school-colegio-ingles/roles/entities/role.entity';
-import { Department } from '../../../school-colegio-ingles/departments/entities/department.entity';
+import { Role } from '../../roles/entities/role.entity';
+import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
 
 @Entity('usuarios')

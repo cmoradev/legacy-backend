@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Department } from '../../../school-colegio-ingles/departments/entities/department.entity';
+import { Department } from '../../../system/departments/entities/department.entity';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 

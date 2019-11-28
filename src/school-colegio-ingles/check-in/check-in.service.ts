@@ -4,7 +4,7 @@ import { CheckIn } from './entities/check-in.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
 
-import { Department } from '../departments/entities/department.entity';
+import { Department } from '../../system/departments/entities/department.entity';
 import { DateQueryObject } from '../../common/time-utils';
 
 export enum StatusCheckIn {

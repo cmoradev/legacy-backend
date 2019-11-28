@@ -15,17 +15,16 @@ import { CyclesModule } from './cycles/cycles.module';
 import { CampusesModule } from './campuses/campuses.module';
 import { FamiliesModule } from './families/families.module';
 import { ClassroomsModule } from './classrooms/classrooms.module';
-import { PermissionsModule } from './permissions/permissions.module';
-import { RolesModule } from './roles/roles.module';
-import { RoutesModule } from './routes/routes.module';
+
 import { ActionsModule } from './actions/actions.module';
 import { AssignmentIncriptionModule } from './assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
 import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
-import { DepartmentsModule } from './departments/departments.module';
 import { CheckInModule } from './check-in/check-in.module';
 import { SchoolDashBoardModule } from './school-dash-board/school-dash-board.module';
+import { FamilyFiscalModule } from './family-fiscal/family-fiscal.module';
+import { FamilyMembersModule } from './family-members/family-members.module';
 
 @Module({
     imports: [
@@ -40,11 +39,11 @@ import { SchoolDashBoardModule } from './school-dash-board/school-dash-board.mod
         GroupsModule, InscriptionsModule,
         CyclesModule, CampusesModule,
         FamiliesModule,
-        ClassroomsModule, PermissionsModule,
-        RolesModule, RoutesModule, ActionsModule,
+        ClassroomsModule,
+        ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,
-        IncidentsModule, IncidentClassificationModule, DepartmentsModule,
-        CheckInModule, SchoolDashBoardModule,
+        IncidentsModule, IncidentClassificationModule,
+        CheckInModule, SchoolDashBoardModule, FamilyFiscalModule, FamilyMembersModule,
     ],
 })
 export class SchoolColegioInglesModule {

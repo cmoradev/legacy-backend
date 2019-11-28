@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Department } from '../../departments/entities/department.entity';
+import { Department } from '../../../system/departments/entities/department.entity';
 import * as moment from 'moment';
 
 enum StatusCheckIn {

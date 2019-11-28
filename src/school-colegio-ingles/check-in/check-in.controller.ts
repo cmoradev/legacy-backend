@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { getDates, TypeFilterDate } from '../../common/time-utils';
 import { Repository } from 'typeorm';
-import { Department } from '../departments/entities/department.entity';
+import { Department } from '../../system/departments/entities/department.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AcademicService } from '../../integrations/academic/academic.service';
 import {List} from 'immutable';

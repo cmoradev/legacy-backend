@@ -7,7 +7,7 @@ import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Campus} from '../../campuses/entities/campus.entity';
 import {Family} from '../../families/entities/family.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
-import { AcademiesModality } from '../../../academy/academies-modalities/entities/academies-modality.entity';
+import { AcademiesModality } from '../../../academy/academy-modalities/entities/academy-modality.entity';
 
 @Entity('alumnos')
 export class Student {

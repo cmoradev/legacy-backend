@@ -10,8 +10,8 @@ import * as passport from 'passport';
 import * as session from 'express-session';
 import { ConfigService } from '../../config/config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Department } from '../../school-colegio-ingles/departments/entities/department.entity';
-import { Role } from '../../school-colegio-ingles/roles/entities/role.entity';
+import { Department } from '../departments/entities/department.entity';
+import { Role } from '../roles/entities/role.entity';
 import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
 import { UsersModule } from '../users/users.module';
 // tslint:disable-next-line:no-var-requires
