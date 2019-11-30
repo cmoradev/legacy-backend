@@ -5,7 +5,6 @@ import { MiniStorePricesListsModule } from './mini-store-prices-lists/mini-store
 import { MiniStoreInvoicesKeysModule } from './mini-store-invoices-keys/mini-store-invoices-keys.module';
 import { MiniStoreInvoicesModule } from './mini-store-invoices/mini-store-invoices.module';
 import { MiniStoreSalesModule } from './mini-store-sales/mini-store-sales.module';
-import { MiniStorePaymentsStatusModule } from './mini-store-payments-status/mini-store-payments-status.module';
 import { MiniStoreSalesPaymentsModule } from './mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreSalesMethodsPaymentsModule } from './mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
 import { MiniStoreSalesDetailsModule } from './mini-store-sales-details/mini-store-sales-details.module';
@@ -22,7 +21,6 @@ import { MiniStoreDashBoardModule } from './mini-store-dash-board/mini-store-das
         MiniStoreInvoicesKeysModule,
         MiniStoreInvoicesModule,
         MiniStoreSalesModule,
-        MiniStorePaymentsStatusModule,
         MiniStoreSalesPaymentsModule,
         MiniStoreSalesMethodsPaymentsModule,
         MiniStoreSalesDetailsModule,

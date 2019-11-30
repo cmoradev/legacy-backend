@@ -14,6 +14,7 @@ import { RoutesModule } from '../system/routes/routes.module';
 import { DepartmentsModule } from '../system/departments/departments.module';
 import { TaxModule } from './tax/tax.module';
 import { PaymentStatusModule } from './payment-status/payment-status.module';
+import { SystemPaymentsStatusModule } from './system-payments-status/system-payments-status.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -22,6 +23,7 @@ import { PaymentStatusModule } from './payment-status/payment-status.module';
     InvoicesMethodsPaymentsModule,
     InvoicesBankModule,
     CountriesModule,
+    SystemPaymentsStatusModule,
     StatesModule,
     DepartmentsModule,
     CitiesModule,

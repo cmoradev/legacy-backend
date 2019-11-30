@@ -2,7 +2,7 @@ import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'type
 import {MiniStoreSale} from '../../mini-store-sales/entities/mini-store-sale.entity';
 import {MiniStoreSaleMethodPayment} from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import {MiniStoreInvoice} from '../../mini-store-invoices/entities/mini-store-invoice.entity';
-import {MiniStorePaymentStatus} from '../../mini-store-payments-status/entities/mini-store-payment-status.entity';
+import {SystemPaymentStatus} from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../system/users/entities/user.entity';
 
 @Entity('tie_venta_pagos' )
@@ -125,8 +125,8 @@ export class MiniStoreSalePayment {
     /**
      * Relación de un pago con un status de pago
      */
-    @ManyToOne(() => MiniStorePaymentStatus, (miniStorePaymentStatus) => miniStorePaymentStatus.miniStoreSalePayments )
-    miniStorePaymentStatus: MiniStorePaymentStatus;
+    @ManyToOne(() => SystemPaymentStatus, (systemPaymentStatus) => systemPaymentStatus.miniStoreSalePayments )
+    systemPaymentStatus: SystemPaymentStatus;
 
     /**
      * Relación de un pago con sus metodos de pago

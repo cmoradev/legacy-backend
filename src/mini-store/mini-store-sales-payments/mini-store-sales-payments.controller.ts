@@ -10,7 +10,7 @@ import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.servi
     query: {
         join: {
             miniStoreSale: {},
-            miniStorePaymentStatus: {},
+            SystemPaymentStatus: {},
             miniStoreSaleMethodPayments: {},
             miniStoreInvoices: {},
         },

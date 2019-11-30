@@ -22,7 +22,7 @@ import { MiniStoreInvoicesKeysModule } from './mini-store/mini-store-invoices-ke
 import { MiniStoreInvoicesModule } from './mini-store/mini-store-invoices/mini-store-invoices.module';
 import { AssignmentsSubjectsModule } from './school-colegio-ingles/assignments-subjects/assignments-subjects.module';
 import { MiniStoreSalesModule } from './mini-store/mini-store-sales/mini-store-sales.module';
-import { MiniStorePaymentsStatusModule } from './mini-store/mini-store-payments-status/mini-store-payments-status.module';
+import { SystemPaymentsStatusModule } from './system/system-payments-status/system-payments-status.module';
 import { MiniStoreSalesPaymentsModule } from './mini-store/mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreSalesMethodsPaymentsModule } from './mini-store/mini-store-sales-methods-payments/mini-store-sales-methods-payments.module';
 import { MiniStoreSalesDetailsModule } from './mini-store/mini-store-sales-details/mini-store-sales-details.module';
@@ -91,6 +91,7 @@ export const routes: Routes = [
       { path: '/states', module: StatesModule },
       { path: '/cities', module: CitiesModule },
       { path: '/municipalities', module: MunicipalitiesModule },
+      { path: '/payments-status', module: SystemPaymentsStatusModule },
     ],
   },
   {
@@ -135,7 +136,6 @@ export const routes: Routes = [
       { path: '/prices-lists', module: MiniStorePricesListsModule },
       { path: '/invoices-keys', module: MiniStoreInvoicesKeysModule },
       { path: '/invoices', module: MiniStoreInvoicesModule },
-      { path: '/payments-status', module: MiniStorePaymentsStatusModule },
       { path: '/sales', module: MiniStoreSalesModule },
       { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
       { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
