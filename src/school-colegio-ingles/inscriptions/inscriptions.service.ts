@@ -17,7 +17,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
   }
 
   public async verificarInscription(data: VerificarInscriprions, datainsc: VerifyregistratioDto): Promise<any> {
-    const result: any = {
+  /*  const result: any = {
       registered: [],
       notregistered: [],
       nonstudent: [],
@@ -63,6 +63,6 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
       }
 
     }
-    return result;
+    return result;*/
   }
 }

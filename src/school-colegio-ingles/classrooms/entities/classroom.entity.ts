@@ -64,8 +64,8 @@ export class Classroom {
     @ManyToOne(() => Cycle, (cycle) => cycle.classrooms)
     cycle: Cycle;
 
-    @OneToMany(() => Inscription, (inscription) => inscription.classroom)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripClassroom)
+    classroomInscriptions: Inscription[];
 
     @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.classrooms)
     studyPlan: StudyPlan;
@@ -76,7 +76,7 @@ export class Classroom {
     @OneToMany(() => Assignment, (assignment) => assignment.classroom)
     assignments: Assignment[];
 
-    @ManyToOne(() => Group, (group) => group.classrooms)
+    @ManyToOne(() => Group, (group) => group.groupClassrooms)
     group: Group;
 
     @ManyToOne(() => Level, (level) => level.classrooms)

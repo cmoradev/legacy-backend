@@ -45,14 +45,14 @@ export class Grade {
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
 
-    @OneToMany(() => Group, (group) => group.grade)
+    @OneToMany(() => Group, (group) => group.groupGrade)
     groups: Group[];
 
     @OneToMany(() => Classroom, (classroom) => classroom.grade)
     classrooms: Classroom[];
 
-    @OneToMany(() => Inscription, (inscription) => inscription.grade)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripGrade)
+    gradeInscriptions: Inscription[];
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.grade)
     assignmentsSubjects: AssignmentSubject[];
 }

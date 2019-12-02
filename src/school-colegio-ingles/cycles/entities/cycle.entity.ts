@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import {Group} from '../../groups/entities/group.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import {Assignment} from '../../assignments/entities/assignment.entity';
@@ -53,14 +53,14 @@ export class Cycle {
     })
     updatedAt: Date;
 
-    @OneToMany(() => Group, (group) => group.cycle)
+    @OneToMany(() => Group, (group) => group.groupCycle)
     groups: Group[];
 
     @OneToMany(() => Classroom, (classroom) => classroom.cycle)
     classrooms: Classroom[];
 
-    @OneToMany(() => Inscription, (inscription) => inscription.cycle)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripCycle)
+    ciclyeInscriptions: Inscription[];
     @OneToMany(() => Assignment, (assignment) => assignment.cycle)
     assignments: Assignment[];
 }

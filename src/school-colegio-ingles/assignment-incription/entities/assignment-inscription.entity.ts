@@ -10,8 +10,8 @@ export class AssignmentInscription {
     })
     id: number;
 
-    @ManyToOne(() => Inscription, (inscription) => inscription.assignmentsInscription)
-    inscription: Inscription;
+    @ManyToOne(() => Inscription, (inscription) => inscription.inscripAssignmentsInscription)
+    assignmentsInscription: Inscription;
 
     @ManyToOne(() => Assignment, (assignment) => assignment.assignmentsInscription)
     assignment: Assignment;

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Student } from '../../students/entities/student.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Grade } from '../../grades/entities/grade.entity';
@@ -18,7 +18,6 @@ export class Inscription {
     name: 'id',
   })
   id: number;
-
   @Column('int', {
     nullable: false,
     name: 'id_alumnos',
@@ -75,7 +74,7 @@ export class Inscription {
     name: 'updated_at',
   })
   updatedAt: Date;
-
+  /*
   @Column('int', {
     nullable: false,
   })
@@ -88,42 +87,44 @@ export class Inscription {
     nullable: false,
   })
   gradeId: number;
-    @Column('int', {
-        nullable: false,
-    })
-    cycleId: number;
-  @ManyToOne(() => Student, (student) => student.inscriptions)
-  student: Student;
+  @Column('int', {
+    nullable: false,
+    name: 'cycleId',
+  })
+  cycleId: number;*/
 
-  @ManyToOne(() => Group, (group) => group.inscriptions)
-  group: Group;
+  @ManyToOne(() => Student, (student) => student.StudentInscriptions)
+  inscripStudent: Student;
 
-  @ManyToOne(() => Grade, (grade) => grade.inscriptions)
-  grade: Grade;
+  @ManyToOne(() => Group, (group) => group.groupInscriptions)
+  inscripGroup: Group;
 
-  @ManyToOne(() => Level, (level) => level.inscriptions)
-  level: Level;
+  @ManyToOne(() => Grade, (grade) => grade.gradeInscriptions)
+  inscripGrade: Grade;
 
-  @ManyToOne(() => Cycle, (cycle) => cycle.inscriptions)
-  cycle: Cycle;
+  @ManyToOne(() => Level, (level) => level.levelInscriptions)
+  inscripLevel: Level;
 
-  @ManyToOne(() => Campus, (campus) => campus.inscriptions)
-  campus: Campus;
+  @ManyToOne(() => Cycle, (cycle) => cycle.ciclyeInscriptions)
+  inscripCycle: Cycle;
 
-  @ManyToOne(() => User, (user) => user.schoolCreatorInscription)
-  agentCreator: User;
+  @ManyToOne(() => Campus, (campus) => campus.campusInscriptions)
+  inscripCampus: Campus;
 
-  @ManyToOne(() => User, (user) => user.schoolEditorInscription)
-  agentEditor: User;
+  @ManyToOne(() => User, (user) => user.userCchoolCreatorInscription)
+  inscripAgentCreator: User;
 
-  @ManyToOne(() => Classroom, (classroom) => classroom.inscriptions)
-  classroom: Classroom;
+  @ManyToOne(() => User, (user) => user.userCchoolEditorInscription)
+  inscripAgentEditor: User;
 
-  @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.inscription)
-  assignmentsInscription: AssignmentInscription[];
-  @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.inscriptions)
-  studyPlanVariant: StudyPlanVariant;
-  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.inscriptions)
-  studyPlan: StudyPlan;
+  @ManyToOne(() => Classroom, (classroom) => classroom.classroomInscriptions)
+  inscripClassroom: Classroom;
+
+  @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.assignmentsInscription)
+  inscripAssignmentsInscription: AssignmentInscription[];
+  @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.studyPlanVaInscriptions)
+  inscripStudyPlanVariant: StudyPlanVariant;
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlaninscriptions)
+  inscripStudyPlan: StudyPlan;
 
 }

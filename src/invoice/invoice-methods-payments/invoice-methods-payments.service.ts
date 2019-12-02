@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class InvoicesMethodsPaymentsService extends TypeOrmCrudService<InvoiceMethodPayment> {
+export class InvoiceMethodsPaymentsService extends TypeOrmCrudService<InvoiceMethodPayment> {
     constructor(
         @InjectRepository(InvoiceMethodPayment, 'colegiodb') readonly repo: Repository<InvoiceMethodPayment>,
     ) {

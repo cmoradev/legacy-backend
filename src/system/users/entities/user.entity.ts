@@ -157,11 +157,11 @@ export class User {
   @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.agentEditor)
   miniStoreEditorWareHouseOrder: MiniStoreWarehouseOrder[];
 
-  @OneToMany(() => Inscription, (inscription) => inscription.agentCreator)
-  schoolCreatorInscription: Inscription[];
+  @OneToMany(() => Inscription, (inscription) => inscription.inscripAgentCreator)
+  userCchoolCreatorInscription: Inscription[];
 
-  @OneToMany(() => Inscription, (inscription) => inscription.agentEditor)
-  schoolEditorInscription: Inscription[];
+  @OneToMany(() => Inscription, (inscription) => inscription.inscripAgentEditor)
+  userCchoolEditorInscription: Inscription[];
   @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.user)
   classroomPermissions: ClassroomPermission[];
 

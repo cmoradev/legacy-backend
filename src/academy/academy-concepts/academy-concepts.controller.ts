@@ -11,7 +11,7 @@ import { AcademyConceptsService } from './academy-concepts.service';
     join: {},
   },
 })
-@Controller('academy-concepts')
+@Controller()
 export class AcademyConceptsController implements CrudController<AcademyConcepts> {
   constructor(
     readonly service: AcademyConceptsService,

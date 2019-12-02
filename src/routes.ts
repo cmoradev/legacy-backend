@@ -49,7 +49,6 @@ import { FixedAssetsModule } from './fixed-assets-control/fixed-assets/fixed-ass
 import { FixedAssetsAssignmentsModule } from './fixed-assets-control/fixed-assets-assignments/fixed-assets-assignments.module';
 import { JobPositionsModule } from './fixed-assets-control/job-positions/job-positions.module';
 import { ResponsiveLettersModule } from './fixed-assets-control/responsive-letters/responsive-letters.module';
-import { InvoicesMethodsPaymentsModule } from './system/invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
@@ -67,6 +66,7 @@ import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/min
 import { SystemDashBoardModule } from './system/system-dash-board/system-dash-board.module';
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
 import { UsersModule } from './system/users/users.module';
+import { InvoiceMethodsPaymentsModule } from './invoice/invoice-methods-payments/invoice-methods-payments.module';
 
 export const routes: Routes = [
   {
@@ -85,7 +85,7 @@ export const routes: Routes = [
       { path: '/roles', module: RolesModule },
       { path: '/departments', module: DepartmentsModule },
       { path: '/actions', module: ActionsModule },
-      { path: '/invoices-methods-payments', module: InvoicesMethodsPaymentsModule },
+      { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
       { path: '/invoices-bank', module: InvoicesBankModule },
       { path: '/countries', module: CountriesModule },
       { path: '/states', module: StatesModule },

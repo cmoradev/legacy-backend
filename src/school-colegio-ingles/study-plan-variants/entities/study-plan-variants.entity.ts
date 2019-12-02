@@ -48,8 +48,8 @@ export class StudyPlanVariant {
     groups: Group[];*/
     @OneToMany(() => Classroom, classroom => classroom.studyPlanVariant)
     classrooms: Classroom[];
-    @OneToMany(() => Inscription, (inscription) => inscription.studyPlanVariant)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripStudyPlanVariant)
+    studyPlanVaInscriptions: Inscription[];
 
     @ManyToOne(() => StudyPlan, studyPlanGeneral => studyPlanGeneral.studyPlansVariants)
     studyPlan: StudyPlan;

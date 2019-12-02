@@ -60,14 +60,14 @@ export class Group {
     updatedAt: Date;
 
     @ManyToOne(() => Grade, (grade) => grade.groups)
-    grade: Grade;
+    groupGrade: Grade;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.groups)
-    cycle: Cycle;
+    groupCycle: Cycle;
 
-    @OneToMany(() => Inscription, (inscription) => inscription.group)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripGroup)
+    groupInscriptions: Inscription[];
 
     @OneToMany(() => Classroom, (classroom) => classroom.group )
-    classrooms: Classroom[];
+    groupClassrooms: Classroom[];
 }

@@ -64,7 +64,7 @@ export class StudyPlan {
     @OneToMany(() => Classroom, (classroom) => classroom.studyPlan)
     classrooms: Classroom[];
 
-    @OneToMany(() => Inscription, (inscription) => inscription.studyPlan)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripStudyPlan)
+    studyPlaninscriptions: Inscription[];
 
 }

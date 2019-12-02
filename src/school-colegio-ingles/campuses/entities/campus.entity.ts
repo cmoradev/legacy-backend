@@ -45,11 +45,11 @@ export class Campus {
     @OneToMany(() => Level, (level) => level.campus)
     levels: Level[];
 
-    @OneToMany(() => Student, (student) => student.campus)
+    @OneToMany(() => Student, (student) => student.studentCampus)
     students: Student[];
 
-    @OneToMany(() => Inscription, (inscription) => inscription.campus)
-    inscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
+    campusInscriptions: Inscription[];
 
     @OneToMany(() => Family, (family) => family.campus)
     families: Family[];

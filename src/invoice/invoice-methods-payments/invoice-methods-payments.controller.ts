@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { InvoiceMethodPayment } from './entities/invoice-method-payment.entity';
-import { InvoicesMethodsPaymentsService } from './invoices-methods-payments.service';
+import { InvoiceMethodsPaymentsService } from './invoice-methods-payments.service';
 
 @Crud({
     model: {
@@ -14,9 +14,9 @@ import { InvoicesMethodsPaymentsService } from './invoices-methods-payments.serv
     },
 })
 @Controller()
-export class InvoicesMethodsPaymentsController implements CrudController<InvoiceMethodPayment> {
+export class InvoiceMethodsPaymentsController implements CrudController<InvoiceMethodPayment> {
     constructor(
-        readonly service: InvoicesMethodsPaymentsService,
+        readonly service: InvoiceMethodsPaymentsService,
     ) {}
     get base(): CrudController<InvoiceMethodPayment> {
         return this;

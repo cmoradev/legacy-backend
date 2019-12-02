@@ -47,20 +47,14 @@ export class Level {
     name: 'updated_at',
   })
   updatedAt: Date;
-
-  @Column('int', {
-    nullable: false,
-  })
-  campusId: number;
-
   @ManyToOne(() => Campus, (campus) => campus.levels)
   campus: Campus;
 
   @OneToMany(() => Grade, (grade) => grade.level)
   grades: Grade[];
 
-  @OneToMany(() => Inscription, (inscription) => inscription.level)
-  inscriptions: Inscription[];
+  @OneToMany(() => Inscription, (inscription) => inscription.inscripLevel)
+  levelInscriptions: Inscription[];
 
   @OneToMany(() => StudyPlan, (studyPlan) => studyPlan.level)
   studyPlans: StudyPlan[];

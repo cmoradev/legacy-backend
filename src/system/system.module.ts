@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { InvoicesMethodsPaymentsModule } from './invoices-methods-payments/invoices-methods-payments.module';
 import { InvoicesBankModule } from './invoices-bank/invoices-bank.module';
 import { CountriesModule } from './countries/countries.module';
 import { StatesModule } from './states/states.module';
@@ -20,7 +19,6 @@ import { SystemPaymentsStatusModule } from './system-payments-status/system-paym
     PermissionsModule,
     RolesModule,
     RoutesModule,
-    InvoicesMethodsPaymentsModule,
     InvoicesBankModule,
     CountriesModule,
     SystemPaymentsStatusModule,
