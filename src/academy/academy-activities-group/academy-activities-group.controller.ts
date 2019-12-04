@@ -8,7 +8,12 @@ import { AcademyActivitiesGroupService } from './academy-activities-group.servic
     type: AcademyActivitiesGroup,
   },
   query: {
-    join: {},
+    join: {
+      academyGroupShift: {},
+      academyGroupActivity: {},
+      academyGroupCycle: {},
+      academyGroupCampus: {},
+    },
   },
 })
 @Controller()
