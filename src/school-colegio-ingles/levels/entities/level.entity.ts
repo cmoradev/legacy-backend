@@ -10,6 +10,7 @@ import { Grade } from '../../grades/entities/grade.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 
 @Entity('niveles')
 export class Level {
@@ -61,5 +62,8 @@ export class Level {
 
   @OneToMany(() => Classroom, (classroom) => classroom.level)
   classrooms: Classroom[];
+
+  @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsLevel)
+  levelAcademyConcepts: AcademyConcepts[];
 
 }

@@ -67,11 +67,21 @@ import { SystemDashBoardModule } from './system/system-dash-board/system-dash-bo
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
 import { UsersModule } from './system/users/users.module';
 import { InvoiceMethodsPaymentsModule } from './invoice/invoice-methods-payments/invoice-methods-payments.module';
+import { InvoiceKeysModule } from './invoice/invoice-keys/invoice-keys.module';
+import { SystemConceptsTypeModule } from './system/system-concepts-type/system-concepts-type.module';
+import { AcademyActivitiesGroupModule } from './academy/academy-activities-group/academy-activities-group.module';
+import { ShiftModule } from './system/shift/shift.module';
 
 export const routes: Routes = [
   {
     path: '/invoice',
     module: InvoiceModule,
+    children: [
+      {
+        path: '/keys',
+        module: InvoiceKeysModule,
+      },
+    ],
   },
   {
     path: '/system',
@@ -92,6 +102,8 @@ export const routes: Routes = [
       { path: '/cities', module: CitiesModule },
       { path: '/municipalities', module: MunicipalitiesModule },
       { path: '/payments-status', module: SystemPaymentsStatusModule },
+      { path: '/concepts-type', module: SystemConceptsTypeModule },
+      { path: '/shift', module: ShiftModule },
     ],
   },
   {
@@ -156,6 +168,7 @@ export const routes: Routes = [
     children: [
       { path: '/dashboard', module: AcademyDashBoardModule },
       { path: '/academy-activities', module: AcademyActivitiesModule },
+      { path: '/academy-activities-group', module: AcademyActivitiesGroupModule },
       { path: '/academy-concepts', module: AcademyConceptsModule },
       { path: '/academy-modalities', module: AcademyModalitiesModule },
     ],

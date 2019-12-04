@@ -8,7 +8,14 @@ import { AcademyConceptsService } from './academy-concepts.service';
     type: AcademyConcepts,
   },
   query: {
-    join: {},
+    limit: 200,
+    join: {
+      academyConceptsCycle: {},
+      academyConceptsCampus: {},
+      academyConceptsLevel: {},
+      academyConceptsType: {},
+      academyConceptsActivity: {},
+    },
   },
 })
 @Controller()

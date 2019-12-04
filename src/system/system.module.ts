@@ -14,6 +14,8 @@ import { DepartmentsModule } from '../system/departments/departments.module';
 import { TaxModule } from './tax/tax.module';
 import { PaymentStatusModule } from './payment-status/payment-status.module';
 import { SystemPaymentsStatusModule } from './system-payments-status/system-payments-status.module';
+import { SystemConceptsTypeModule } from './system-concepts-type/system-concepts-type.module';
+import { ShiftModule } from './shift/shift.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -26,11 +28,13 @@ import { SystemPaymentsStatusModule } from './system-payments-status/system-paym
     DepartmentsModule,
     CitiesModule,
     MunicipalitiesModule,
+    SystemConceptsTypeModule,
     SystemDashBoardModule,
     AuthModule,
     UsersModule,
     TaxModule,
     PaymentStatusModule,
+    ShiftModule,
   ],
 })
 export class SystemModule {

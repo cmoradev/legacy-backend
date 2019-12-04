@@ -1,8 +1,10 @@
 import {
   Column,
-  Entity,
+  Entity, OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AcademyConcepts } from '../../academy-concepts/entities/academy-concepts.entity';
+import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 
 @Entity('ac_academias')
 export class AcademyActivity {
@@ -66,4 +68,9 @@ export class AcademyActivity {
   })
   updatedAt: Date;
 
+  @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsActivity)
+  academyActivityConcepts: AcademyConcepts[];
+
+  @OneToMany(() => AcademyActivitiesGroup, (academyActivitiesGroup) => academyActivitiesGroup.academyGroupActivity)
+  academyActivityGroups: AcademyActivitiesGroup[];
 }

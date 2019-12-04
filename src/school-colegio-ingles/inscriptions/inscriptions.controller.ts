@@ -23,6 +23,7 @@ import { sheetToObjPage } from '../../common/sheets';
       inscripGrade: {},
       inscripGroup: {},
       inscripLevel: {},
+      inscripCycle: {},
       inscripAgentCreator: {},
     },
   },

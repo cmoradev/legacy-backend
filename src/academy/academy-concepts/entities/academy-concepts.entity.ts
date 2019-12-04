@@ -13,8 +13,14 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { States } from '../../../system/states/entities/states.entity';
+import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
+import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
+import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
+import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 
-@Entity('ac_aconceptos', { schema: 'colegio_pdc' })
+@Entity('ac_aconceptos')
 export class AcademyConcepts {
 
   @PrimaryGeneratedColumn({
@@ -64,38 +70,40 @@ export class AcademyConcepts {
   })
   unity: string | null;
 
-  @Column('int', {
-    nullable: false,
+  @ManyToOne(type => Cycle, cycle => cycle.cycleAcademyConcepts)
+  @JoinColumn({
     name: 'id_ciclo',
+    referencedColumnName: 'id',
   })
-  idCycle: number;
+  academyConceptsCycle: Cycle;
 
-  @Column('int', {
-    nullable: false,
+  @ManyToOne(type => Campus, campus => campus.campusAcademyConcepts)
+  @JoinColumn({
     name: 'id_plantel',
+    referencedColumnName: 'id',
   })
-  idCampus: number;
+  academyConceptsCampus: Campus;
 
-  @Column('int', {
-    nullable: true,
-    default: () => '\'0\'',
+  @ManyToOne(type => Level, level => level.levelAcademyConcepts)
+  @JoinColumn({
     name: 'id_nivel',
+    referencedColumnName: 'id',
   })
-  idLevel: number | null;
+  academyConceptsLevel: Level;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
+  @ManyToOne(type => SystemConceptsType, state => state.systemConceptAcademy)
+  @JoinColumn({
     name: 'id_tipo_concepto',
+    referencedColumnName: 'id',
   })
-  idTipoConcepto: number;
+  academyConceptsType: SystemConceptsType;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
+  @ManyToOne(type => AcademyActivity, activity => activity.academyActivityConcepts)
+  @JoinColumn({
     name: 'id_academia',
+    referencedColumnName: 'id',
   })
-  idAcademy: number;
+  academyConceptsActivity: AcademyActivity;
 
   @Column('int', {
     nullable: true,
