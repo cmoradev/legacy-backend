@@ -16,6 +16,8 @@ import { PaymentStatusModule } from './payment-status/payment-status.module';
 import { SystemPaymentsStatusModule } from './system-payments-status/system-payments-status.module';
 import { SystemConceptsTypeModule } from './system-concepts-type/system-concepts-type.module';
 import { ShiftModule } from './shift/shift.module';
+import { SystemExtraChargesModule } from './system-extra-charges/system-extra-charges.module';
+import { SystemTypeExtraChargesModule } from './system-type-extra-charges/system-type-extra-charges.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -35,6 +37,8 @@ import { ShiftModule } from './shift/shift.module';
     TaxModule,
     PaymentStatusModule,
     ShiftModule,
+    SystemExtraChargesModule,
+    SystemTypeExtraChargesModule,
   ],
 })
 export class SystemModule {

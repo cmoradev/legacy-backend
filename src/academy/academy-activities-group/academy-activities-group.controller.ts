@@ -8,6 +8,7 @@ import { AcademyActivitiesGroupService } from './academy-activities-group.servic
     type: AcademyActivitiesGroup,
   },
   query: {
+    limit: 200,
     join: {
       academyGroupShift: {},
       academyGroupActivity: {},

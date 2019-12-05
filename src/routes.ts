@@ -71,6 +71,8 @@ import { InvoiceKeysModule } from './invoice/invoice-keys/invoice-keys.module';
 import { SystemConceptsTypeModule } from './system/system-concepts-type/system-concepts-type.module';
 import { AcademyActivitiesGroupModule } from './academy/academy-activities-group/academy-activities-group.module';
 import { ShiftModule } from './system/shift/shift.module';
+import { SystemExtraChargesModule } from './system/system-extra-charges/system-extra-charges.module';
+import { SystemTypeExtraChargesModule } from './system/system-type-extra-charges/system-type-extra-charges.module';
 
 export const routes: Routes = [
   {
@@ -104,6 +106,8 @@ export const routes: Routes = [
       { path: '/payments-status', module: SystemPaymentsStatusModule },
       { path: '/concepts-type', module: SystemConceptsTypeModule },
       { path: '/shift', module: ShiftModule },
+      { path: '/extra-charges', module: SystemExtraChargesModule },
+      { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
     ],
   },
   {

@@ -8,6 +8,7 @@ import { AcademyActivitiesService } from './academy-activities.service';
     type: AcademyActivity,
   },
   query: {
+    limit: 200,
     join: {},
   },
 })
