@@ -13,6 +13,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 
 @Entity('ac_descuentos')
 export class SystemExtraCharges {
@@ -72,18 +74,19 @@ export class SystemExtraCharges {
   })
   idTipoDescuento: number;
 
-  @Column('int', {
-    nullable: false,
+  @ManyToOne(type => Campus, campus => campus.campusExtraCharges)
+  @JoinColumn({
     name: 'id_plantel',
+    referencedColumnName: 'id',
   })
-  idPlantel: number;
+  extraChargesCampus: Campus;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
+  @ManyToOne(type => Cycle, cycle => cycle.cycleSystemExtraCharges)
+  @JoinColumn({
     name: 'id_ciclo',
+    referencedColumnName: 'id',
   })
-  idCiclo: number;
+  extraChargesCycle: Cycle;
 
   @Column('tinyint', {
     nullable: false,

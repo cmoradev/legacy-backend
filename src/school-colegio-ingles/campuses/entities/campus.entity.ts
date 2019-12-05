@@ -6,6 +6,7 @@ import { Family } from '../../families/entities/family.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
+import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 
 @Entity('planteles')
 export class Campus {
@@ -58,6 +59,9 @@ export class Campus {
 
   @OneToMany(() => AcademyActivitiesGroup, (academygroup) => academygroup.academyGroupCampus)
   campusAcademyGroups: AcademyActivitiesGroup[];
+
+  @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesCampus)
+  campusExtraCharges: SystemExtraCharges[];
 
   @OneToMany(() => Family, (family) => family.campus)
   families: Family[];
