@@ -13,6 +13,7 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
 
 @Entity('ac_formas_aplicacion')
 export class SystemApplicationForms {
@@ -44,4 +45,6 @@ export class SystemApplicationForms {
   })
   updatedAt: Date;
 
+  @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesAppForms)
+  systemAppFormsExChages: SystemExtraCharges[];
 }

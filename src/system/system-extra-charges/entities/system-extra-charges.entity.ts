@@ -15,6 +15,20 @@ import {
 } from 'typeorm';
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
+import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { SystemApplicationForms } from '../../system-application-forms/entities/system-application-forms.entity';
+
+export enum OperationApplicationEnum {
+  sum = 1,
+  subtraction = 2,
+  division = 3,
+  multiplication = 4,
+}
+
+export enum TypeChargeApplicationEnum {
+  percentage = 1,
+  quantity = 2,
+}
 
 @Entity('ac_descuentos')
 export class SystemExtraCharges {
@@ -36,7 +50,23 @@ export class SystemExtraCharges {
     nullable: false,
     name: 'porcentaje',
   })
-  percentage: number;
+  quantity: number;
+
+  @Column({
+    type: 'enum',
+    nullable: false,
+    enum: TypeChargeApplicationEnum,
+    default: TypeChargeApplicationEnum.percentage,
+  })
+  typeApplication: OperationApplicationEnum;
+
+  @Column({
+    type: 'enum',
+    nullable: false,
+    enum: OperationApplicationEnum,
+    default: OperationApplicationEnum.sum,
+  })
+  operation: OperationApplicationEnum;
 
   @Column('int', {
     nullable: true,
@@ -62,17 +92,19 @@ export class SystemExtraCharges {
   })
   endDate: string | null;
 
-  @Column('int', {
-    nullable: true,
+  @ManyToOne(type => SystemApplicationForms, systemApplicationForms => systemApplicationForms.systemAppFormsExChages)
+  @JoinColumn({
     name: 'id_formaplicacion',
+    referencedColumnName: 'id',
   })
-  idFormaplicacion: number | null;
+  extraChargesAppForms: SystemApplicationForms;
 
-  @Column('int', {
-    nullable: false,
+  @ManyToOne(type => SystemTypeExtraCharges, systemTypeExtraCharges => systemTypeExtraCharges.systemTyExCharCharge)
+  @JoinColumn({
     name: 'id_tipo_descuento',
+    referencedColumnName: 'id',
   })
-  idTipoDescuento: number;
+  extraChargesType: SystemTypeExtraCharges;
 
   @ManyToOne(type => Campus, campus => campus.campusExtraCharges)
   @JoinColumn({

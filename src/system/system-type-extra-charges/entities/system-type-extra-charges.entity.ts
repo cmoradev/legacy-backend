@@ -13,6 +13,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
+import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
 
 @Entity('ac_tipo_descuento')
 export class SystemTypeExtraCharges {
@@ -43,5 +45,8 @@ export class SystemTypeExtraCharges {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesType)
+  systemTyExCharCharge: SystemExtraCharges[];
 
 }
