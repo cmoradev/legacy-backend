@@ -36,13 +36,13 @@ export class SystemExtraCharges {
   })
   percentage: number;
 
-  @Column('tinyint', {
+  @Column('int', {
     nullable: true,
     name: 'dia_inicio',
   })
   startDay: number | null;
 
-  @Column('tinyint', {
+  @Column('int', {
     nullable: true,
     name: 'dia_fin',
   })
