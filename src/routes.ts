@@ -73,8 +73,6 @@ import { AcademyActivitiesGroupModule } from './academy/academy-activities-group
 import { ShiftModule } from './system/shift/shift.module';
 import { SystemExtraChargesModule } from './system/system-extra-charges/system-extra-charges.module';
 import { SystemTypeExtraChargesModule } from './system/system-type-extra-charges/system-type-extra-charges.module';
-import { SystemApplicationForms } from './system/system-application-forms/entities/system-application-forms.entity';
-import { SystemApplicationFormsModule } from './system/system-application-forms/system-application-forms.module';
 
 export const routes: Routes = [
   {
@@ -110,7 +108,6 @@ export const routes: Routes = [
       { path: '/shift', module: ShiftModule },
       { path: '/extra-charges', module: SystemExtraChargesModule },
       { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
-      { path: '/application-forms', module: SystemApplicationFormsModule },
     ],
   },
   {

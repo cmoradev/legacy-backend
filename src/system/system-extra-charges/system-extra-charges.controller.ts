@@ -8,7 +8,12 @@ import { SystemExtraChargesService } from './system-extra-charges.service';
     type: SystemExtraCharges,
   },
   query: {
-    join: {},
+    join: {
+      extraChargesAppForms: {},
+      extraChargesType: {},
+      extraChargesCampus: {},
+      extraChargesCycle: {},
+    },
   },
 })
 @Controller()

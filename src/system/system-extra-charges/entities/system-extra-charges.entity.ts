@@ -16,7 +16,6 @@ import {
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
-import { SystemApplicationForms } from '../../system-application-forms/entities/system-application-forms.entity';
 
 export enum OperationApplicationEnum {
   sum = 1,
@@ -28,6 +27,11 @@ export enum OperationApplicationEnum {
 export enum TypeChargeApplicationEnum {
   percentage = 1,
   quantity = 2,
+}
+
+export enum ApplicationFormEnum {
+  Manual = 1,
+  Automatic = 2,
 }
 
 @Entity('ac_descuentos')
@@ -80,24 +84,26 @@ export class SystemExtraCharges {
   })
   endDay: number | null;
 
-  @Column('date', {
+  @Column('timestamp', {
     nullable: true,
     name: 'fecha_inicio',
   })
-  startDate: string | null;
+  startDate: Date;
 
-  @Column('date', {
+  @Column('timestamp', {
     nullable: true,
     name: 'fecha_fin',
   })
-  endDate: string | null;
+  endDate: Date;
 
-  @ManyToOne(type => SystemApplicationForms, systemApplicationForms => systemApplicationForms.systemAppFormsExChages)
-  @JoinColumn({
+  @Column({
+    type: 'enum',
     name: 'id_formaplicacion',
-    referencedColumnName: 'id',
+    nullable: false,
+    enum: ApplicationFormEnum,
+    default: ApplicationFormEnum.Manual,
   })
-  extraChargesAppForms: SystemApplicationForms;
+  applicationForm: ApplicationFormEnum;
 
   @ManyToOne(type => SystemTypeExtraCharges, systemTypeExtraCharges => systemTypeExtraCharges.systemTyExCharCharge)
   @JoinColumn({

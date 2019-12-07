@@ -18,7 +18,6 @@ import { SystemConceptsTypeModule } from './system-concepts-type/system-concepts
 import { ShiftModule } from './shift/shift.module';
 import { SystemExtraChargesModule } from './system-extra-charges/system-extra-charges.module';
 import { SystemTypeExtraChargesModule } from './system-type-extra-charges/system-type-extra-charges.module';
-import { SystemApplicationFormsModule } from './system-application-forms/system-application-forms.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -40,7 +39,6 @@ import { SystemApplicationFormsModule } from './system-application-forms/system-
     ShiftModule,
     SystemExtraChargesModule,
     SystemTypeExtraChargesModule,
-    SystemApplicationFormsModule,
   ],
 })
 export class SystemModule {
