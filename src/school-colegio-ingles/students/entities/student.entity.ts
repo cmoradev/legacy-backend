@@ -8,6 +8,8 @@ import { Campus } from '../../campuses/entities/campus.entity';
 import { Family } from '../../families/entities/family.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
 import { AcademiesModality } from '../../../academy/academy-modalities/entities/academy-modality.entity';
+import { OperationApplicationEnum } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
+import { TypeStudent } from '../interface/studentsSchool.interface';
 
 @Entity('alumnos')
 export class Student {
@@ -99,12 +101,14 @@ export class Student {
   })
   idFamily: number;
 
-  @Column('int', {
+  @Column({
+    type: 'enum',
     nullable: false,
-    default: () => '\'1\'',
     name: 'id_modalidad',
+    enum: TypeStudent,
+    default: TypeStudent.student,
   })
-  idModality: number;
+  typeStudent: TypeStudent;
 
   @Column('int', {
     nullable: false,
