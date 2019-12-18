@@ -4,36 +4,37 @@ import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 
 @Crud({
-    model: {
-        type: Student,
+  model: {
+    type: Student,
+  },
+  query: {
+    limit: 200,
+    join: {
+      family: {},
+      academiesModality: {},
+      studentCampus: {},
+      incidents: {},
+      'incidents.teacher': {},
+      'incidents.classroom': {},
+      'incidents.incidentClassification': {},
+      StudentInscriptions: {},
+      'StudentInscriptions.classroom': {},
+      'StudentInscriptions.cycle': {},
+      'StudentInscriptions.campus': {},
+      'StudentInscriptions.level': {},
+      'StudentInscriptions.grade': {},
+      'StudentInscriptions.group': {},
     },
-    query: {
-        join: {
-            family: {},
-            academiesModality: {},
-            campus: {},
-            incidents: {},
-            'incidents.teacher': { },
-            'incidents.classroom': { },
-            'incidents.incidentClassification': { },
-            inscriptions: {},
-            'inscriptions.classroom': {},
-            'inscriptions.cycle': { },
-            'inscriptions.campus': { },
-            'inscriptions.level': {},
-            'inscriptions.grade': {},
-            'inscriptions.group': {},
-        },
-    },
+  },
 })
 @Controller()
 export class StudentsController implements CrudController<Student> {
-    constructor(
-        readonly service: StudentsService,
-    ) {
-    }
+  constructor(
+    readonly service: StudentsService,
+  ) {
+  }
 
-    get base(): CrudController<Student> {
-        return this;
-    }
+  get base(): CrudController<Student> {
+    return this;
+  }
 }
