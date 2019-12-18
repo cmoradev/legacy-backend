@@ -14,6 +14,7 @@ import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.
 import { Role } from '../../roles/entities/role.entity';
 import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
+import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 
 @Entity('usuarios')
 export class User {
@@ -162,7 +163,14 @@ export class User {
 
   @OneToMany(() => Inscription, (inscription) => inscription.inscripAgentEditor)
   userCchoolEditorInscription: Inscription[];
+
   @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.user)
   classroomPermissions: ClassroomPermission[];
+
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsAgentCreator)
+  userAcInsHigh: AcademyInscription[];
+
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsAgentDown)
+  userAcInsDown: AcademyInscription[];
 
 }

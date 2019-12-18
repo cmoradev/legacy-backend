@@ -73,6 +73,8 @@ import { AcademyActivitiesGroupModule } from './academy/academy-activities-group
 import { ShiftModule } from './system/shift/shift.module';
 import { SystemExtraChargesModule } from './system/system-extra-charges/system-extra-charges.module';
 import { SystemTypeExtraChargesModule } from './system/system-type-extra-charges/system-type-extra-charges.module';
+import { AcademyInscriptionModule } from './academy/academy-inscription/academy-inscription.module';
+import { InscriptionStatusModule } from './system/inscription-status/inscription-status.module';
 
 export const routes: Routes = [
   {
@@ -104,6 +106,7 @@ export const routes: Routes = [
       { path: '/cities', module: CitiesModule },
       { path: '/municipalities', module: MunicipalitiesModule },
       { path: '/payments-status', module: SystemPaymentsStatusModule },
+      { path: '/inscription-status', module: InscriptionStatusModule },
       { path: '/concepts-type', module: SystemConceptsTypeModule },
       { path: '/shift', module: ShiftModule },
       { path: '/extra-charges', module: SystemExtraChargesModule },
@@ -175,6 +178,7 @@ export const routes: Routes = [
       { path: '/academy-activities-group', module: AcademyActivitiesGroupModule },
       { path: '/academy-concepts', module: AcademyConceptsModule },
       { path: '/academy-modalities', module: AcademyModalitiesModule },
+      { path: '/academy-inscription', module: AcademyInscriptionModule },
     ],
   },
   {

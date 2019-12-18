@@ -5,6 +5,7 @@ import {
 } from 'typeorm';
 import { AcademyConcepts } from '../../academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
+import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 
 @Entity('ac_academias')
 export class AcademyActivity {
@@ -73,4 +74,7 @@ export class AcademyActivity {
 
   @OneToMany(() => AcademyActivitiesGroup, (academyActivitiesGroup) => academyActivitiesGroup.academyGroupActivity)
   academyActivityGroups: AcademyActivitiesGroup[];
+
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsActivity)
+  academyActInscription: AcademyInscription[];
 }

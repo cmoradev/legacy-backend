@@ -10,6 +10,7 @@ import { Incident } from '../../incidents/entities/incident.entity';
 import { AcademiesModality } from '../../../academy/academy-modalities/entities/academy-modality.entity';
 import { OperationApplicationEnum } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { TypeStudent } from '../interface/studentsSchool.interface';
+import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 
 @Entity('alumnos')
 export class Student {
@@ -147,8 +148,12 @@ export class Student {
   family: Family;
 
   @OneToMany(() => Inscription, (inscription) => inscription.inscripStudent)
-  StudentInscriptions: Inscription[];
+  studentInscriptions: Inscription[];
+
   @OneToMany(() => Incident, (incident) => incident.student)
   incidents: Incident[];
+
+  @OneToMany(() => AcademyInscription, (inscription) => inscription.acInsStudent)
+  studentAcInscriptions: AcademyInscription[];
 
 }

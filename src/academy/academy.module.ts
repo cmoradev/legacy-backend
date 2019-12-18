@@ -10,9 +10,7 @@ import { AcademyChargeSurchargesModule } from './academy-charge-surcharges/acade
 import { AcademyChargeWayOfPayingModule } from './academy-charge-way-of-paying/academy-charge-way-of-paying.module';
 import { AcademyChargeInvoiceModule } from './academy-charge-invoice/academy-charge-invoice.module';
 import { AcademyActivitiesGroupModule } from './academy-activities-group/academy-activities-group.module';
-import { AcademyInscriptionStatusModule } from './academy-inscription-status/academy-inscription-status.module';
-import { AcademyInscriptionStudentsModule } from './academy-inscription-students/academy-inscription-students.module';
-import { AcademyInscriptionExternalModule } from './academy-inscription-external/academy-inscription-external.module';
+import { AcademyInscriptionModule } from './academy-inscription/academy-inscription.module';
 import { AcademyInscriptionConceptsModule } from './academy-inscription-concepts/academy-inscription-concepts.module';
 
 @Module({
@@ -28,9 +26,7 @@ import { AcademyInscriptionConceptsModule } from './academy-inscription-concepts
     AcademyChargeWayOfPayingModule,
     AcademyChargeInvoiceModule,
     AcademyActivitiesGroupModule,
-    AcademyInscriptionStatusModule,
-    AcademyInscriptionStudentsModule,
-    AcademyInscriptionExternalModule,
+    AcademyInscriptionModule,
     AcademyInscriptionConceptsModule,
   ],
 })

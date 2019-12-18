@@ -93,7 +93,7 @@ export class Inscription {
   })
   cycleId: number;*/
 
-  @ManyToOne(() => Student, (student) => student.StudentInscriptions)
+  @ManyToOne(() => Student, (student) => student.studentInscriptions)
   inscripStudent: Student;
 
   @ManyToOne(() => Group, (group) => group.groupInscriptions)

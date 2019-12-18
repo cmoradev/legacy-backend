@@ -18,6 +18,7 @@ import { SystemConceptsTypeModule } from './system-concepts-type/system-concepts
 import { ShiftModule } from './shift/shift.module';
 import { SystemExtraChargesModule } from './system-extra-charges/system-extra-charges.module';
 import { SystemTypeExtraChargesModule } from './system-type-extra-charges/system-type-extra-charges.module';
+import { InscriptionStatusModule } from './inscription-status/inscription-status.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -39,6 +40,7 @@ import { SystemTypeExtraChargesModule } from './system-type-extra-charges/system
     ShiftModule,
     SystemExtraChargesModule,
     SystemTypeExtraChargesModule,
+    InscriptionStatusModule,
   ],
 })
 export class SystemModule {
