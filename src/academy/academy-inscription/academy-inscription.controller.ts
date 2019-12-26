@@ -9,7 +9,16 @@ import { AcademyInscriptionService } from './academy-inscription.service';
   },
   query: {
     limit: 200,
-    join: {},
+    join: {
+      acInsActivity: {},
+      acInsStudent: {},
+      acInsCampus: {},
+      acInsActGroup: {},
+      acInsAgentCreator: {},
+      acInsAgentDown: {},
+      acInsStatusIns: {},
+      acInsCycle: {},
+    },
   },
 })
 @Controller()

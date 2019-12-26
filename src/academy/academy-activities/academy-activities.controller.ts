@@ -9,7 +9,12 @@ import { AcademyActivitiesService } from './academy-activities.service';
   },
   query: {
     limit: 200,
-    join: {},
+    join: {
+      academyActivityConcepts: {},
+      academyActivityGroups: {},
+      'academyActivityGroups.academyGroupCycle': {},
+      academyActInscription: {},
+    },
   },
 })
 @Controller()

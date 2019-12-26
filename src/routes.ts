@@ -75,6 +75,7 @@ import { SystemExtraChargesModule } from './system/system-extra-charges/system-e
 import { SystemTypeExtraChargesModule } from './system/system-type-extra-charges/system-type-extra-charges.module';
 import { AcademyInscriptionModule } from './academy/academy-inscription/academy-inscription.module';
 import { InscriptionStatusModule } from './system/inscription-status/inscription-status.module';
+import { AcademyInscriptionConceptsModule } from './academy/academy-inscription-concepts/academy-inscription-concepts.module';
 
 export const routes: Routes = [
   {
@@ -179,6 +180,7 @@ export const routes: Routes = [
       { path: '/academy-concepts', module: AcademyConceptsModule },
       { path: '/academy-modalities', module: AcademyModalitiesModule },
       { path: '/academy-inscription', module: AcademyInscriptionModule },
+      { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
     ],
   },
   {
