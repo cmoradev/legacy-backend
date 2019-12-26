@@ -52,6 +52,7 @@ export class InvoiceKeys {
   @Column('timestamp', {
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
     name: 'updated_at',
   })
   updatedAt: Date;
