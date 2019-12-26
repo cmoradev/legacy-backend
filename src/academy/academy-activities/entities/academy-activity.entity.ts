@@ -6,6 +6,7 @@ import {
 import { AcademyConcepts } from '../../academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
+import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Entity('ac_academias')
 export class AcademyActivity {
@@ -77,4 +78,7 @@ export class AcademyActivity {
 
   @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsActivity)
   academyActInscription: AcademyInscription[];
+
+  @OneToMany(() => AcademyInscriptionConcepts, (AcInsConcepts) => AcInsConcepts.acInsConActivity)
+  academyActAcInsConcept: AcademyInscriptionConcepts[];
 }

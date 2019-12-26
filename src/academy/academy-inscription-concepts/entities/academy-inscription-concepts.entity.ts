@@ -13,6 +13,9 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
+import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
+import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
 
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts {
@@ -51,25 +54,26 @@ export class AcademyInscriptionConcepts {
   })
   unit: string | null;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
+  @ManyToOne(type => AcademyActivity, activity => activity.academyActAcInsConcept)
+  @JoinColumn({
     name: 'id_academia',
+    referencedColumnName: 'id',
   })
-  idAcademia: number;
+  acInsConActivity: AcademyActivity;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
+  @ManyToOne(type => SystemConceptsType, sysConType => sysConType.systemConceptAcInsConcept)
+  @JoinColumn({
     name: 'id_concepto_cobro',
+    referencedColumnName: 'id',
   })
-  idConceptoCobro: number;
+  acInsConConcepType: SystemConceptsType;
 
-  @Column('int', {
-    nullable: false,
+  @ManyToOne(type => SystemPaymentStatus, systemPayStatus => systemPayStatus.sysPayStaAcInsConcept)
+  @JoinColumn({
     name: 'id_estado_pago',
+    referencedColumnName: 'id',
   })
-  idEstadoPago: number;
+  acInsConStatusPayment: SystemPaymentStatus;
 
   @Column('varchar', {
     nullable: true,

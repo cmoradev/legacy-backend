@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { AcademyInscriptionConcepts } from '../../../academy/academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Entity('estado_pagos')
 export class SystemPaymentStatus {
@@ -34,4 +35,7 @@ export class SystemPaymentStatus {
 
   @OneToMany(() => MiniStoreSalePayment, (miniStorePayment) => miniStorePayment.systemPaymentStatus)
   miniStoreSalePayments: MiniStoreSalePayment[];
+
+  @OneToMany(() => AcademyInscriptionConcepts, (acInscripConceptos) => acInscripConceptos.acInsConStatusPayment)
+  sysPayStaAcInsConcept: AcademyInscriptionConcepts[];
 }

@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
+import { AcademyInscriptionConcepts } from '../../../academy/academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Entity('ac_conceptos_cobro')
 export class SystemConceptsType {
@@ -38,5 +39,9 @@ export class SystemConceptsType {
   @OneToMany(type => AcademyConcepts, concepts => concepts.academyConceptsType)
     // @JoinColumn({ name: 'id', referencedColumnName: 'country_id' })
   systemConceptAcademy: AcademyConcepts[];
+
+  @OneToMany(type => AcademyInscriptionConcepts, concepts => concepts.acInsConConcepType)
+    // @JoinColumn({ name: 'id', referencedColumnName: 'country_id' })
+  systemConceptAcInsConcept: AcademyInscriptionConcepts[];
 
 }
