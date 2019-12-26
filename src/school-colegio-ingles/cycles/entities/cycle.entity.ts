@@ -25,13 +25,15 @@ export class Cycle {
   name: string;
 
   @Column('timestamp', {
-    nullable: false,
+    nullable: true,
+    default: () => 'CURRENT_TIMESTAMP',
     name: 'fecha_inicio',
   })
   dateStart: Date;
 
   @Column('timestamp', {
-    nullable: false,
+    nullable: true,
+    default: () => 'CURRENT_TIMESTAMP',
     name: 'fecha_fin',
   })
   dateEnd: Date;

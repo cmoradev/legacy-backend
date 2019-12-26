@@ -1,5 +1,7 @@
-import { EventSubscriber, EntitySubscriberInterface, UpdateEvent, InsertEvent } from 'typeorm';
+import { EventSubscriber, EntitySubscriberInterface, UpdateEvent, InsertEvent, getRepository } from 'typeorm';
 import { AcademyInscription } from '../entities/academy-inscription.entity';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import moment = require('moment');
 
 @EventSubscriber()
 export class AcademyInscriptionSubscriber implements EntitySubscriberInterface<AcademyInscription> {
@@ -11,8 +13,8 @@ export class AcademyInscriptionSubscriber implements EntitySubscriberInterface<A
 
   async afterInsert(insertEvent: InsertEvent<AcademyInscription>) {
     const { entity: order } = insertEvent;
-    console.log('sucripcion amir: ' + order);
-    // this.registerOrderStatus(order);
+    console.log('sucripcion amir: ' + order.acInsStudent.typeStudent + '-' + order.id);
+    this.registerKeyInscription(order.id, order.acInsStudent.typeStudent + '-' + order.id);
   }
 
   async beforeUpdate(updateEvent: UpdateEvent<AcademyInscription>) {
@@ -22,5 +24,13 @@ export class AcademyInscriptionSubscriber implements EntitySubscriberInterface<A
 
   async afterUpdate(updateEvent: UpdateEvent<AcademyInscription>) {
     const { entity: order } = updateEvent;
+  }
+
+  async registerKeyInscription(idInscription: number, keyInscription: string): Promise<AcademyInscription> {
+    const insRepository = getRepository(AcademyInscription, ColegioDBNameConnection);
+    const updateIns = await insRepository.findOne({ id: idInscription });
+    updateIns.keyInscription = keyInscription;
+    updateIns.startDate = moment().format('YYYY-MM-DD');
+    return insRepository.save(updateIns);
   }
 }
