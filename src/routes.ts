@@ -76,6 +76,12 @@ import { SystemTypeExtraChargesModule } from './system/system-type-extra-charges
 import { AcademyInscriptionModule } from './academy/academy-inscription/academy-inscription.module';
 import { InscriptionStatusModule } from './system/inscription-status/inscription-status.module';
 import { AcademyInscriptionConceptsModule } from './academy/academy-inscription-concepts/academy-inscription-concepts.module';
+import { AcademyChargeDetailsModule } from './academy/academy-charge-details/academy-charge-details.module';
+import { AcademyChargeDiscountsModule } from './academy/academy-charge-discounts/academy-charge-discounts.module';
+import { AcademyChargeInvoiceModule } from './academy/academy-charge-invoice/academy-charge-invoice.module';
+import { AcademyChargeSurchargesModule } from './academy/academy-charge-surcharges/academy-charge-surcharges.module';
+import { AcademyChargeWayOfPayingModule } from './academy/academy-charge-way-of-paying/academy-charge-way-of-paying.module';
+import { AcademyChargeModule } from './academy/academy-charge/academy-charge.module';
 
 export const routes: Routes = [
   {
@@ -181,6 +187,12 @@ export const routes: Routes = [
       { path: '/academy-modalities', module: AcademyModalitiesModule },
       { path: '/academy-inscription', module: AcademyInscriptionModule },
       { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
+      { path: '/academy-charge', module: AcademyChargeModule },
+      { path: '/academy-charge-details', module: AcademyChargeDetailsModule },
+      { path: '/academy-charge-discounts', module: AcademyChargeDiscountsModule },
+      { path: '/academy-charge-invoice', module: AcademyChargeInvoiceModule },
+      { path: '/academy-charge-surcharges', module: AcademyChargeSurchargesModule },
+      { path: '/academy-charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
     ],
   },
   {

@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AcademyChargeService } from './academy-charge.service';
 import { AcademyChargeController } from './academy-charge.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { AcademyCharge } from './entities/academy-charge.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([AcademyCharge], ColegioDBNameConnection)],
   providers: [AcademyChargeService],
-  controllers: [AcademyChargeController]
+  controllers: [AcademyChargeController],
 })
-export class AcademyChargeModule {}
+export class AcademyChargeModule {
+}

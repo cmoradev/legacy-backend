@@ -1,4 +1,25 @@
 import { Controller } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { AcademyCharge } from './entities/academy-charge.entity';
+import { AcademyChargeService } from './academy-charge.service';
 
-@Controller('academy-charge')
-export class AcademyChargeController {}
+@Crud({
+  model: {
+    type: AcademyCharge,
+  },
+  query: {
+    limit: 200,
+    join: {},
+  },
+})
+@Controller()
+export class AcademyChargeController implements CrudController<AcademyCharge> {
+  constructor(
+    readonly service: AcademyChargeService,
+  ) {
+  }
+
+  get base(): CrudController<AcademyCharge> {
+    return this;
+  }
+}

@@ -14,8 +14,8 @@ import {
   RelationId,
 } from 'typeorm';
 
-@Entity('ac_cobros', { schema: 'colegio_pdc' })
-export class AcCobros {
+@Entity('ac_cobros')
+export class AcademyCharge {
 
   @PrimaryGeneratedColumn({
     type: 'int',
@@ -174,6 +174,7 @@ export class AcCobros {
   @Column('timestamp', {
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
     name: 'updated_at',
   })
   updatedAt: Date;
