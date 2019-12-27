@@ -16,6 +16,8 @@ import {
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
+import { MiniStoreSale } from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
+import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts {
@@ -163,5 +165,8 @@ export class AcademyInscriptionConcepts {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.acInsConcepts)
+  AcInscription: AcademyInscription;
 
 }
