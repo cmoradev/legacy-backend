@@ -18,6 +18,10 @@ import { AcademyInscriptionService } from './academy-inscription.service';
       acInsAgentDown: {},
       acInsStatusIns: {},
       acInsCycle: {},
+      acInsConcepts: {},
+      'acInsConcepts.acInsConActivity': {},
+      'acInsConcepts.acInsConConcepType': {},
+      'acInsConcepts.acInsConStatusPayment': {},
     },
   },
 })
