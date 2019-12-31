@@ -101,7 +101,7 @@ export class AcademyInscriptionConcepts {
     nullable: true,
     name: 'fecha_pagado',
   })
-  datePay: string | null;
+  payDate: string | null;
 
   @Column('float', {
     nullable: false,
