@@ -7,7 +7,7 @@ import { WorkBook } from 'xlsx';
 import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini-store-products.service';
 import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
-import { MiniStoreInvoiceKey } from '../mini-store/mini-store-invoices-keys/entities/mini-store-invoice-key.entity';
+import { InvoiceKeys } from '../invoice/invoice-keys/entities/invoice-keys.entity';
 
 /**
  * TODO: borrar, es solo para pruebas
@@ -46,7 +46,7 @@ export class XlsImporterController {
     async uploadFile(@UploadedFile() file) {
         const uploadedFile = fs.readFileSync(file.path);
         const workBook = xlsx.read(uploadedFile);
-        const products = this.xlsWorkbookToJSON<Product>(workBook, {
+        const products: any = this.xlsWorkbookToJSON<Product>(workBook, {
             defaultValue: null,
             range: 'A2:K265',
             headers: [
@@ -63,7 +63,7 @@ export class XlsImporterController {
                 'serieFact',
             ],
         });
-        for (const product of products['Hoja1']) {
+        for (const product of products.Hoja1) {
             const classifications = {
                 'PANES Y GALLETAS': 1,
                 'BOTANAS': 2,
@@ -96,7 +96,7 @@ export class XlsImporterController {
                 storePriceList: { id: 4 } as MiniStorePriceList,
                 storeClassification: { id: classification } as MiniStoreClassification,
                 miniStoreWarehouseOrdersProducts: [],
-                storeInvoiceKey: { id: 1 } as MiniStoreInvoiceKey,
+                storeInvoiceKey: { id: 1 } as InvoiceKeys,
                 miniStoreSaleDetails: [],
             });
         }

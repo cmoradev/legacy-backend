@@ -7,9 +7,9 @@ import {
 } from 'typeorm';
 import {MiniStorePriceList} from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
 import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
-import {MiniStoreInvoiceKey} from '../../mini-store-invoices-keys/entities/mini-store-invoice-key.entity';
 import {MiniStoreWarehouseOrderProduct} from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import {MiniStoreSaleDetail} from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 
 @Entity('tie_productos')
 export class MiniStoreProduct {
@@ -170,8 +170,8 @@ export class MiniStoreProduct {
     @ManyToOne(() => MiniStoreClassification, (storeClassification) => storeClassification.storeProducts)
     storeClassification: MiniStoreClassification;
 
-    @ManyToOne(() => MiniStoreInvoiceKey, (storeInvoiceKey) => storeInvoiceKey.storeProducts)
-    storeInvoiceKey: MiniStoreInvoiceKey;
+    @ManyToOne(() => InvoiceKeys, (invoiceKeys) => invoiceKeys.storeProducts)
+    storeInvoiceKey: InvoiceKeys;
 
     @OneToMany(() => MiniStoreWarehouseOrderProduct, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreProduct)
     miniStoreWarehouseOrdersProducts: MiniStoreWarehouseOrderProduct[];

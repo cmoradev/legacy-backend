@@ -1,9 +1,10 @@
 import {
   Column,
-  Entity,
+  Entity, OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 
 @Entity('facturacion_claves')
 export class InvoiceKeys {
@@ -57,4 +58,6 @@ export class InvoiceKeys {
   })
   updatedAt: Date;
 
+  @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storeInvoiceKey)
+  storeProducts: MiniStoreProduct[];
 }
