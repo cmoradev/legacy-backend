@@ -1,11 +1,14 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
-import { FacturacionModerna } from '../../common/FacturacionModerna';
+import { FacturacionModerna } from 'invoice-modern';
 import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
+import { CfdiClass, Concepto, Impuesto } from '@signati/signati-sdk-node';
+import axios from 'axios';
+import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 
 @Crud({
   model: {
@@ -22,11 +25,11 @@ import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
 })
 @Controller()
 export class MiniStoreInvoicesController implements CrudController<MiniStoreInvoice> {
-  url: string = 'https://t2.facturacionmoderna.com/timbrado/wsdl';
-  // url: string = 'https://t1demo.facturacionmoderna.com/timbrado/wsdl';
-  option = {
+  option: OptionsFactMod = {
     'UserPass': '4a63456b4d5113c4fdd8f9c9539295db37bb0982',
     'UserID': 'WSI1503194J6',
+    debug: 1,
+    develoment: false,
     // 'UserPass': 'b9ec2afa3361a59af4b4d102d3f704eabdf097d4',
     // 'UserID': 'UsuarioPruebasWS',
     // 'emisorRFC': 'WSI1503194J6',
@@ -42,11 +45,102 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     return this;
   }
 
+  @Get('/prueba')
+  public async prueba(@Res() res: Response) {
+
+    const cfdi = new CfdiClass({
+      Serie: 'A',
+      Folio: '2303240',
+      // Fecha: 'asdasdasd',
+      FormaPago: '01',
+      // condicionesDePago: 'PUE',
+      SubTotal: '10',
+      Descuento: '00.00',
+      Moneda: 'MXN',
+      Total: '100',
+      TipoDeComprobante: 'I',
+      MetodoPago: '01',
+      LugarExpedicion: '77728',
+    });
+    /*cfdi.relacion({
+      TipoRelacion: '01',
+      UUID: [
+        'sadas-12132-assddasfds2312-1323-234',
+        '1231-12312-sdfs-23432-21',
+      ],
+    });*/
+    cfdi.emisor({
+      Nombre: 'MARIA EUGENIA GUZMAN CARRASCO',
+      RegimenFiscal: '612',
+      Rfc: 'GUCE910701NHA',
+    });
+    cfdi.receptor({
+      Rfc: 'XAXX010101000',
+      Nombre: 'PUBLICO EN GENERAL',
+      UsoCFDI: 'G01',
+    });
+    const concept = new Concepto({
+      ClaveProdServ: '',
+      NoIdentificacion: '',
+      Cantidad: '',
+      ClaveUnidad: '',
+      Unidad: '',
+      Descripcion: '',
+      ValorUnitario: '',
+      Importe: '',
+      Descuento: '',
+    });
+    concept.traslado({
+      Impuesto: '200',
+      TipoFactor: '300',
+      TasaOCuota: '400',
+      Importe: '600',
+    });
+    cfdi.concepto(concept);
+
+    const concept2 = new Concepto({
+      ClaveProdServ: '',
+      NoIdentificacion: '',
+      Cantidad: '',
+      ClaveUnidad: '',
+      Unidad: '',
+      Descripcion: '',
+      ValorUnitario: '',
+      Importe: '',
+      Descuento: '',
+    });
+    concept2.traslado({
+      Impuesto: '200',
+      TipoFactor: '300',
+      TasaOCuota: '400',
+      Importe: '600',
+    });
+    cfdi.concepto(concept2);
+    const impuesto = new Impuesto({
+      totalImpuestosTrasladados: '100',
+    });
+    impuesto.addTraslados([{
+      Base: '0002',
+      Impuesto: '200',
+      TipoFactor: '300',
+      TasaOCuota: '400',
+      Importe: '600',
+    }]);
+    cfdi.impuesto(impuesto);
+
+    // tslint:disable-next-line:no-shadowed-variable
+    const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res: any) => {
+      return res.data;
+    });
+    res.contentType('application/xml');
+    res.send(data);
+  }
+
   @Post('/cancelar')
   public async cancelInvoice(@Body() cancelInvoice: CancelInvoiceMinistoreDto, @Res() res: Response) {
     try {
 
-      const factura = new FacturacionModerna(this.url, this.option, 1);
+      const factura = new FacturacionModerna(this.option);
       const response = await factura.cancelar('GUCE910701NHA', cancelInvoice.uuid);
       let status = 1; // factura activa
       if (response.Code === 'GT05') {
@@ -88,7 +182,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
   @Post('/checkstatusinvoice')
   async CheckStatusInvoice(@Body() checkInvoice: CheckInvoiceMinistoreDto, @Res() res: Response) {
     try {
-      const factura = new FacturacionModerna(this.url, this.option, 1);
+      const factura = new FacturacionModerna(this.option);
       let total = '0';
       const totalxml = await factura.getTotalXml(`/var/www/pdc/comprobantes/tienda/${checkInvoice.uuid}.xml`);
       total = totalxml === checkInvoice.total ? checkInvoice.total : totalxml;
