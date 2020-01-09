@@ -63,13 +63,13 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       MetodoPago: 'PUE',
       LugarExpedicion: '77728',
     });
-    /*cfdi.relacion({
-      TipoRelacion: '01',
+    cfdi.relacion({
+      TipoRelacion: '04',
       UUID: [
-        'sadas-12132-assddasfds2312-1323-234',
-        '1231-12312-sdfs-23432-21',
+        '9C67E772-318E-11EA-B788-ADCD358BE878',
+        'AAC9D1BC-3243-11EA-826E-15874F0FD22E',
       ],
-    });*/
+    });
     cfdi.emisor({
       Rfc: 'TCM970625MB1',
       Nombre: 'FACTURACION MODERNA SA DE CV',
