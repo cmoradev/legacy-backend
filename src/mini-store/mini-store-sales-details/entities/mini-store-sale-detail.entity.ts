@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
+import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
 
 @Entity('tie_venta_detalle')
 export class MiniStoreSaleDetail {
@@ -52,6 +53,7 @@ export class MiniStoreSaleDetail {
         scale: 6,
     })
     priceWithIVA: number;
+
     @Column('decimal', {
         nullable: false,
         precision: 15,
@@ -89,4 +91,8 @@ export class MiniStoreSaleDetail {
 
     @ManyToOne(() => MiniStoreClassification, (miniStoreClassification) => miniStoreClassification.miniStoreSaleDetails)
     miniStoreClassification: MiniStoreClassification;
+
+    @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
+    returnedProducts: SalesReturnsProducts;
+
 }

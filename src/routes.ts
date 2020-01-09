@@ -81,6 +81,7 @@ import { AcademyChargeInvoiceModule } from './academy/academy-charge-invoice/aca
 import { AcademyChargeSurchargesModule } from './academy/academy-charge-surcharges/academy-charge-surcharges.module';
 import { AcademyChargeWayOfPayingModule } from './academy/academy-charge-way-of-paying/academy-charge-way-of-paying.module';
 import { AcademyChargeModule } from './academy/academy-charge/academy-charge.module';
+import { MiniStoreSalesReturnsModule } from './mini-store/mini-store-sales-returns/mini-store-sales-returns.module';
 
 export const routes: Routes = [
   {
@@ -172,6 +173,7 @@ export const routes: Routes = [
 
         ],
       },
+      {path: '/sales-returns', module: MiniStoreSalesReturnsModule},
     ],
   },
   {

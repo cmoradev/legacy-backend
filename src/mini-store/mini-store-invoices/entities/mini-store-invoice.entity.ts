@@ -1,7 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { InvoiceType } from '../enums/invoice-type.enum';
+import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice {
@@ -120,13 +122,21 @@ export class MiniStoreInvoice {
     })
     updatedAt: Date;
 
+    @Column({
+        type: 'enum',
+        nullable: false,
+        default: InvoiceType.income,
+        enum: InvoiceType,
+    })
+    invoiceType: InvoiceType;
+
     /**
      * Relación que corresponde al la factura al pago de una venta
      */
     @ManyToOne(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreInvoices)
     miniStoreSalePayment: MiniStoreSalePayment;
 
-    @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreInvoices )
+    @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreInvoices)
     miniStoreSale: MiniStoreSale;
 
     @ManyToOne(() => User, (user) => user.miniStoreBillingInvoices)
@@ -134,4 +144,7 @@ export class MiniStoreInvoice {
 
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
+
+    @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
+    saleReturn: SalesReturns;
 }

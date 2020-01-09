@@ -5,10 +5,11 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import {MiniStoreSaleDetail} from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
-import {MiniStoreInvoice} from '../../mini-store-invoices/entities/mini-store-invoice.entity';
+import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {
@@ -202,7 +203,7 @@ export class MiniStoreSale {
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
-    @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale )
+    @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale)
     miniStoreInvoices: MiniStoreInvoice[];
 
     @ManyToOne(() => User, (user) => user.miniStoreBillingSales)
@@ -210,5 +211,8 @@ export class MiniStoreSale {
 
     @ManyToOne(() => User, (user) => user.miniStoreCancelingSales)
     agentCanceling: User;
+
+    @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale)
+    returnedProducts: SalesReturns[];
 
 }

@@ -11,6 +11,7 @@ import { MiniStoreWarehouseOrdersModule } from './mini-store-warehouse-orders/mi
 import { MiniStoreWarehouseOrdersProductsModule } from './mini-store-warehouse-orders-products/mini-store-warehouse-orders-products.module';
 import { MiniStoreWarehouseProvidersModule } from './mini-store-warehouse-providers/mini-store-warehouse-providers.module';
 import { MiniStoreDashBoardModule } from './mini-store-dash-board/mini-store-dash-board.module';
+import { MiniStoreSalesReturnsModule } from './mini-store-sales-returns/mini-store-sales-returns.module';
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { MiniStoreDashBoardModule } from './mini-store-dash-board/mini-store-das
         MiniStoreWarehouseOrdersProductsModule,
         MiniStoreWarehouseProvidersModule,
         MiniStoreDashBoardModule,
+        MiniStoreSalesReturnsModule,
     ],
 })
 export class MiniStoreModule {
