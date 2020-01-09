@@ -52,27 +52,28 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       Serie: 'A',
       Folio: '2303240',
       // Fecha: 'asdasdasd',
-      FormaPago: '01',
+      FormaPago: '03',
+      // condicionesDePago: 'CONTADO',
       // condicionesDePago: 'PUE',
-      SubTotal: '10',
-      Descuento: '00.00',
+      SubTotal: '1850',
+      Descuento: '175.00',
       Moneda: 'MXN',
-      Total: '100',
+      Total: '1943.00',
       TipoDeComprobante: 'I',
-      MetodoPago: '01',
+      MetodoPago: 'PUE',
       LugarExpedicion: '77728',
     });
-    /*cfdi.relacion({
-      TipoRelacion: '01',
+    cfdi.relacion({
+      TipoRelacion: '04',
       UUID: [
-        'sadas-12132-assddasfds2312-1323-234',
-        '1231-12312-sdfs-23432-21',
+        '9C67E772-318E-11EA-B788-ADCD358BE878',
+        'AAC9D1BC-3243-11EA-826E-15874F0FD22E',
       ],
-    });*/
+    });
     cfdi.emisor({
-      Nombre: 'MARIA EUGENIA GUZMAN CARRASCO',
-      RegimenFiscal: '612',
-      Rfc: 'GUCE910701NHA',
+      Rfc: 'TCM970625MB1',
+      Nombre: 'FACTURACION MODERNA SA DE CV',
+      RegimenFiscal: '601',
     });
     cfdi.receptor({
       Rfc: 'XAXX010101000',
@@ -80,51 +81,52 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       UsoCFDI: 'G01',
     });
     const concept = new Concepto({
-      ClaveProdServ: '',
-      NoIdentificacion: '',
-      Cantidad: '',
-      ClaveUnidad: '',
-      Unidad: '',
-      Descripcion: '',
-      ValorUnitario: '',
-      Importe: '',
-      Descuento: '',
+      ClaveProdServ: '01010101',
+      NoIdentificacion: 'AULOG001',
+      Cantidad: '5',
+      ClaveUnidad: 'H87',
+      Unidad: 'Pieza',
+      Descripcion: 'Aurriculares USB Logitech',
+      ValorUnitario: '350.00',
+      Importe: '1750.00',
+      Descuento: '175.00',
     });
     concept.traslado({
-      Impuesto: '200',
-      TipoFactor: '300',
-      TasaOCuota: '400',
-      Importe: '600',
+      Base: '1575.00',
+      Impuesto: '002',
+      TipoFactor: 'Tasa',
+      TasaOCuota: '0.160000',
+      Importe: '252.00',
     });
     cfdi.concepto(concept);
 
     const concept2 = new Concepto({
-      ClaveProdServ: '',
-      NoIdentificacion: '',
-      Cantidad: '',
-      ClaveUnidad: '',
-      Unidad: '',
-      Descripcion: '',
-      ValorUnitario: '',
-      Importe: '',
-      Descuento: '',
+      ClaveProdServ: '43201800',
+      NoIdentificacion: 'USB',
+      Cantidad: '1',
+      ClaveUnidad: 'H87',
+      Unidad: 'Pieza',
+      Descripcion: 'Memoria USB 32gb marca Kingston',
+      ValorUnitario: '100.00',
+      Importe: '100.00',
     });
     concept2.traslado({
-      Impuesto: '200',
-      TipoFactor: '300',
-      TasaOCuota: '400',
-      Importe: '600',
+      Base: '100.00',
+      Impuesto: '002',
+      TipoFactor: 'Tasa',
+      TasaOCuota: '0.160000',
+      Importe: '16.00',
     });
     cfdi.concepto(concept2);
+
     const impuesto = new Impuesto({
-      totalImpuestosTrasladados: '100',
+      totalImpuestosTrasladados: '268.00',
     });
     impuesto.addTraslados([{
-      Base: '0002',
-      Impuesto: '200',
-      TipoFactor: '300',
-      TasaOCuota: '400',
-      Importe: '600',
+      Impuesto: '002',
+      TipoFactor: 'Tasa',
+      TasaOCuota: '0.160000',
+      Importe: '268.00',
     }]);
     cfdi.impuesto(impuesto);
 
@@ -132,7 +134,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res: any) => {
       return res.data;
     });
-    res.contentType('application/xml');
+  //  res.contentType('application/xml');
     res.send(data);
   }
 
