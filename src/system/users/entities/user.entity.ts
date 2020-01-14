@@ -177,4 +177,7 @@ export class User {
     @OneToMany(type => SalesReturns, saleReturns => saleReturns.agent)
     salesReturns: SalesReturns[];
 
+    @OneToMany(type => MiniStoreSalePayment, mssp => mssp.agent)
+    salePayments: MiniStoreSalePayment[];
+
 }

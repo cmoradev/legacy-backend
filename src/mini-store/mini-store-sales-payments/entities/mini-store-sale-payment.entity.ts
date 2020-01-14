@@ -1,11 +1,12 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSale} from '../../mini-store-sales/entities/mini-store-sale.entity';
-import {MiniStoreSaleMethodPayment} from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
-import {MiniStoreInvoice} from '../../mini-store-invoices/entities/mini-store-invoice.entity';
-import {SystemPaymentStatus} from '../../../system/system-payments-status/entities/system-payment-status.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
+import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 
-@Entity('tie_venta_pagos' )
+@Entity('tie_venta_pagos')
 export class MiniStoreSalePayment {
 
     @PrimaryGeneratedColumn({
@@ -50,12 +51,12 @@ export class MiniStoreSalePayment {
     })
     idStatusPayment: number | null;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
+    @ManyToOne(type => User, user => user.salePayments)
+    @JoinColumn({
         name: 'id_agente',
+        referencedColumnName: 'id',
     })
-    idAgent: number;
+    agent: User;
 
     @Column('int', {
         nullable: true,
@@ -125,7 +126,7 @@ export class MiniStoreSalePayment {
     /**
      * Relación de un pago con un status de pago
      */
-    @ManyToOne(() => SystemPaymentStatus, (systemPaymentStatus) => systemPaymentStatus.miniStoreSalePayments )
+    @ManyToOne(() => SystemPaymentStatus, (systemPaymentStatus) => systemPaymentStatus.miniStoreSalePayments)
     systemPaymentStatus: SystemPaymentStatus;
 
     /**

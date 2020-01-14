@@ -1,7 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
+import { FindConditions } from 'typeorm';
+import moment = require('moment');
 
 @Crud({
     model: {
@@ -25,5 +27,19 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     get base(): CrudController<MiniStoreSalePayment> {
         return this;
+    }
+
+    @Get('/simple-report')
+    async simpleReport(@Req() request, @Res() response, @Query() query: {
+        status: number,
+        startDate: Date,
+        endDate: Date,
+        cashier?: number,
+    }) {
+
+        const result = await this.service.simpleReport();
+        const sa = await this.service.fetchFilteredPayments(query);
+        response.status(200);
+        response.send(sa);
     }
 }

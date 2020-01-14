@@ -1,6 +1,6 @@
 import {
     Column,
-    Entity, ManyToOne,
+    Entity, JoinColumn, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -10,6 +10,7 @@ import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/min
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
+import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {
@@ -42,12 +43,12 @@ export class MiniStoreSale {
     })
     idModality: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
+    @ManyToOne(type => Student, student => student.sales)
+    @JoinColumn({
         name: 'id_alumno',
+        referencedColumnName: 'id',
     })
-    idStudent: number;
+    student: Student;
 
     @Column('int', {
         nullable: false,
