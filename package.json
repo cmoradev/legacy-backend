@@ -51,6 +51,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.10.0",
     "dotenv": "^8.1.0",
+    "exceljs": "^3.5.0",
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.16.2",
     "immutable": "^4.0.0-rc.12",

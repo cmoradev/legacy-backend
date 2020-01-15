@@ -1,11 +1,11 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {MiniStoreSalePayment} from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago
  */
-@Entity('tie_venta_forma_pago' )
+@Entity('tie_venta_forma_pago')
 export class MiniStoreSaleMethodPayment {
 
     @PrimaryGeneratedColumn({
@@ -18,11 +18,17 @@ export class MiniStoreSaleMethodPayment {
      * Relación con la forma pago
      */
 
-    @Column('int', {
-        nullable: false,
+        // @Column('int', {
+        //     nullable: false,
+        //     name: 'id_forma_pago',
+        // })
+        // idWayToPay: number;
+    @ManyToOne(type => InvoiceMethodPayment, invoiceMethod => invoiceMethod.salesPaymentMethods)
+    @JoinColumn({
         name: 'id_forma_pago',
+        referencedColumnName: 'id',
     })
-    idWayToPay: number;
+    invoiceMethod;
 
     /**
      * Solo código método pago -> desnormalizado
