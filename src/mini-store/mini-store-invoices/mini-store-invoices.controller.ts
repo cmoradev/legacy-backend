@@ -63,13 +63,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       MetodoPago: 'PUE',
       LugarExpedicion: '77728',
     });
-    cfdi.relacion({
-      TipoRelacion: '04',
-      UUID: [
-        '9C67E772-318E-11EA-B788-ADCD358BE878',
-        'AAC9D1BC-3243-11EA-826E-15874F0FD22E',
-      ],
-    });
+
     cfdi.emisor({
       Rfc: 'TCM970625MB1',
       Nombre: 'FACTURACION MODERNA SA DE CV',
@@ -130,12 +124,19 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }]);
     cfdi.impuesto(impuesto);
 
-    // tslint:disable-next-line:no-shadowed-variable
-    const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res: any) => {
-      return res.data;
-    });
-  //  res.contentType('application/xml');
-    res.send(data);
+    // tslint:disable-next-line:no-shadowed-variable no-console
+    console.log(cfdi.validateAll());
+    try {
+      const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res) => {
+        return res.data;
+      });
+      res.send(data);
+    } catch (e) {
+      res.send(e).status(400);
+    }
+
+    //  res.contentType('application/xml');
+
   }
 
   @Post('/cancelar')
