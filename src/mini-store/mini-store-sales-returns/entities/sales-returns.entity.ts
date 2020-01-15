@@ -13,6 +13,7 @@ import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.e
 import { SalesReturnsProducts } from './sales-returns-products.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
+import { InvoicementStatusEnum } from '../enums/invoicement-status.enum';
 
 @Entity({ name: 'sale_returns' })
 export class SalesReturns {
@@ -22,6 +23,27 @@ export class SalesReturns {
         name: 'id',
     })
     id: number;
+
+    @Column({
+        type: 'varchar',
+        nullable: false,
+        default: '0000-0',
+    })
+    folio: string;
+
+    @Column({
+        type: 'text',
+        nullable: true,
+    })
+    comments: string;
+
+    @Column({
+        type: 'enum',
+        nullable: false,
+        default: InvoicementStatusEnum.Unbilled,
+        enum: InvoicementStatusEnum,
+    })
+    invoiceStatus: InvoicementStatusEnum;
 
     @Column({
         type: 'decimal',
