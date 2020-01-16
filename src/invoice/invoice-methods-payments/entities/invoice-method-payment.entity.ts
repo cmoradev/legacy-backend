@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import { SalesReturns } from '../../../mini-store/mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('facturacion_formas_pago')
 export class InvoiceMethodPayment {
@@ -60,4 +61,7 @@ export class InvoiceMethodPayment {
 
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     salesPaymentMethods: MiniStoreSaleMethodPayment[];
+
+    @OneToMany(type => SalesReturns, salesReturns => salesReturns.paymentMethod)
+    salesReturns: SalesReturns[];
 }

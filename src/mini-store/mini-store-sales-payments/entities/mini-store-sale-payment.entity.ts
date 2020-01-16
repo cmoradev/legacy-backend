@@ -4,7 +4,6 @@ import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payme
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../system/users/entities/user.entity';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment {
