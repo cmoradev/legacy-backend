@@ -2,8 +2,6 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { FindConditions } from 'typeorm';
-import moment = require('moment');
 
 @Crud({
     model: {

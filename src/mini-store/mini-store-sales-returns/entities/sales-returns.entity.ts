@@ -14,6 +14,7 @@ import { SalesReturnsProducts } from './sales-returns-products.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoicementStatusEnum } from '../enums/invoicement-status.enum';
+import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 @Entity({ name: 'sale_returns' })
 export class SalesReturns {
@@ -53,6 +54,9 @@ export class SalesReturns {
         default: () => '\'0.000000\'',
     })
     amount: string;
+
+    @ManyToOne(type => InvoiceMethodPayment, method => method.salesReturns)
+    paymentMethod: InvoiceMethodPayment;
 
     @ManyToOne(() => User, (user) => user.salesReturns, {
         nullable: false,
