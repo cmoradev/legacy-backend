@@ -11,6 +11,8 @@ import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service
     join: {
       sale: {},
       details: {},
+      agent: {},
+      invoices: {},
       'details.saleDetail': {},
       'details.saleDetail.miniStoreProduct': {},
     },
