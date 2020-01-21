@@ -1,12 +1,20 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service';
 import { InvoiceSaleReturnDto } from './dto/invoice-sale-return.dto';
 import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
 import { InvoiceCompanyService } from '../../invoice/invoice-company/invoice-company.service';
-import { divNumber, ivaAndFinalAmount, MultNumber } from '../../common/numbers';
-import { add, div, mul, round, sub } from 'exact-math';
+import { ivaAndFinalAmount, MultNumber } from '../../common/numbers';
+import { add } from 'exact-math';
+import { Response } from 'express';
+import axios from 'axios';
+import { DatosCfdi } from '@signati/sdk-node/lib/interfaces/cfdi.interface';
+import { Concept } from '@signati/sdk-node/lib/interfaces/concepto.interface';
+import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
+import { InvoiceType } from '../mini-store-invoices/enums/invoice-type.enum';
+import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import { InvoicementStatusEnum } from './enums/invoicement-status.enum';
 
 @Crud({
   model: {
@@ -27,6 +35,7 @@ import { add, div, mul, round, sub } from 'exact-math';
 @Controller()
 export class MiniStoreSalesReturnsController implements CrudController<SalesReturns> {
   constructor(public service: MiniStoreSalesReturnsService,
+              public serviceInvoiveMini: MiniStoreInvoicesService,
               public serviceInvoiceCompany: InvoiceCompanyService) {
   }
 
@@ -35,12 +44,13 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
   }
 
   @Post('/facturar')
-  async verifyregistration(@Body() dataToInvoice: InvoiceSaleReturnDto): Promise<any> {
-    const saleReturn = await this.service.getReturnDetails(dataToInvoice.idSale);
+  async verifyregistration(@Body() dataToInvoice: InvoiceSaleReturnDto, @Res() res: Response): Promise<any> {
+    const saleReturn = await this.service.getReturnDetails(dataToInvoice.idSaleReturn);
     // TODO hacer esto dinamico
     const company = await this.serviceInvoiceCompany.findCompany(3);
-    // this.desglose.iva = ivaAndFinalAmount(+saleReturn.amount).iva
-    const cfdi = new CfdiClass({
+    let totalFactura = '0.00';
+    let totalIva = '0.00';
+    const a: DatosCfdi = {
       Serie: 'A',
       Folio: saleReturn.folio,
       // condicionesDePago: 'CONTADO',
@@ -52,8 +62,9 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
       FormaPago: saleReturn.paymentMethod.code,
       MetodoPago: 'PUE',
       LugarExpedicion: '77728',
-    });
-
+    };
+    const cfdi = new CfdiClass(a);
+    cfdi.relacion({ UUID: dataToInvoice.uuidRelation, TipoRelacion: '03' });
     cfdi.emisor({
       Rfc: company.rfc,
       Nombre: company.businessName,
@@ -64,19 +75,20 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
       Nombre: dataToInvoice.receptor,
       UsoCFDI: dataToInvoice.usoCfdi,
     });
-
     for (const product of saleReturn.details) {
       const concept = new Concepto({
         ClaveProdServ: product.saleDetail.miniStoreProduct.storeInvoiceKey.key,
-        NoIdentificacion: 'AULOG001',
+        //  NoIdentificacion: 'AULOG001',
         Cantidad: MultNumber(product.quantity, 1),
         ClaveUnidad: 'H87',
         Unidad: 'Pieza',
         Descripcion: product.saleDetail.miniStoreProduct.name,
-        ValorUnitario: divNumber(product.amount, product.quantity),
-        Importe: MultNumber(divNumber(product.amount, product.quantity), product.quantity),
+        ValorUnitario: product.saleDetail.price,
+        Importe: MultNumber(product.saleDetail.price, product.quantity),
         Descuento: '0.00',
-      });
+      } as Concept);
+      totalFactura = add(totalFactura, MultNumber(product.saleDetail.price, product.quantity));
+      totalIva = add(totalIva, concept.getImpuestoImporte('0.160000'));
       concept.traslado({
         Base: concept.getImpuestoBase(),
         Impuesto: '002',
@@ -86,16 +98,43 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
       });
       cfdi.concepto(concept);
     }
-    const impuesto = new Impuesto({ totalImpuestosTrasladados: ivaAndFinalAmount(+saleReturn.amount).iva });
+    const impuesto = new Impuesto({ totalImpuestosTrasladados: totalIva });
     impuesto.traslados([{
       Impuesto: '002',
       TipoFactor: 'Tasa',
       TasaOCuota: '0.160000',
-      Importe: ivaAndFinalAmount(+saleReturn.amount).iva,
+      Importe: totalIva,
     }]);
     cfdi.impuesto(impuesto);
-    console.log(cfdi.validateAll());
+    try {
+      const cfdiObj = cfdi.getCfdi();
+      const data: { uuid, total } = await axios.post('api.signati.io', cfdiObj).then((res) => {
+        return res.data;
+      });
 
-    return cfdi.getCfdi();
+      this.serviceInvoiveMini.saveInvoice({
+        folio: saleReturn.folio,
+        uuid: data.uuid,
+        total: data.total,
+        businessName: dataToInvoice.receptor,
+        rfc: dataToInvoice.receptorRfc,
+        idBillingAgent: dataToInvoice.idUser,
+        agentBilling: { id: dataToInvoice.idUser },
+        idSale: saleReturn.sale.id,
+        status: 1,
+        miniStoreSale: {
+          id: saleReturn.sale.id,
+        },
+        invoiceType: InvoiceType.expenses,
+        idPlantel: 1,
+        saleReturn: {
+          id: dataToInvoice.idSaleReturn,
+        },
+      } as MiniStoreInvoice);
+      await this.service.updateSaleReturn(dataToInvoice.idSaleReturn, InvoicementStatusEnum.billed);
+      res.send(data);
+    } catch (e) {
+      res.send(e).status(400);
+    }
   }
 }

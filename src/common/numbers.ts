@@ -36,16 +36,17 @@ export function ivaFromFinalAmount(amount: number, ivaDefault: number = 1.16): I
   return { finalAmount: '0.00', amountWithOutIva: '0.00', iva: '0.00' };
 }
 
-export function ivaAndFinalAmount(amount: number, ivaDefault: number = 1.16): IvaAndFinalAmount {
+export function ivaAndFinalAmount(amount: number, ivaDefault: number | string = '1.16'): IvaAndFinalAmount {
   if (amount > 0) {
     const originalAmount = round(amount, -2, {
       returnString: true,
       trim: false,
     });
     const amountWithIva = round(mul(amount, ivaDefault, { returnString: true }), -2, {
-      returnString: false,
+      returnString: true,
       trim: false,
     });
+   // console.log(originalAmount)
     const iva = round(sub(amountWithIva, originalAmount, { returnString: true }), -2, {
       returnString: true,
       trim: false,
