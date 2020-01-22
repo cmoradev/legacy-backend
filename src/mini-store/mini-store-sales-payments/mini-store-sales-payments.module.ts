@@ -3,11 +3,23 @@ import { MiniStoreSalesPaymentsController } from './mini-store-sales-payments.co
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { User } from '../../system/users/entities/user.entity';
+import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import { InvoiceMethodPayment } from '../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([ MiniStoreSalePayment ], 'colegiodb') ],
-  exports: [MiniStoreSalesPaymentsService ],
-  controllers: [MiniStoreSalesPaymentsController],
-  providers: [MiniStoreSalesPaymentsService],
+    imports: [TypeOrmModule.forFeature([
+        MiniStoreSalePayment,
+        User,
+        InvoiceMethodPayment,
+        MiniStoreSale,
+        SalesReturns], ColegioDBNameConnection)],
+    exports: [MiniStoreSalesPaymentsService],
+    controllers: [MiniStoreSalesPaymentsController],
+    providers: [MiniStoreSalesPaymentsService],
 })
-export class MiniStoreSalesPaymentsModule {}
+export class MiniStoreSalesPaymentsModule {
+}

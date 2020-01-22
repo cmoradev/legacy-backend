@@ -180,4 +180,7 @@ export class User {
     @OneToMany(type => MiniStoreSalePayment, mssp => mssp.agent)
     salePayments: MiniStoreSalePayment[];
 
+    @OneToMany(type => MiniStoreSale, (ms) => ms.agent)
+    sales: MiniStoreSale[];
+
 }

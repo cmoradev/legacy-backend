@@ -28,7 +28,7 @@ export class MiniStoreSaleMethodPayment {
         name: 'id_forma_pago',
         referencedColumnName: 'id',
     })
-    invoiceMethod;
+    invoiceMethod: InvoiceMethodPayment;
 
     /**
      * Solo código método pago -> desnormalizado

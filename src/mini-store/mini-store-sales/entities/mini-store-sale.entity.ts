@@ -29,6 +29,13 @@ export class MiniStoreSale {
     })
     folio: string;
 
+    @ManyToOne(type => User, (u) => u.sales)
+    @JoinColumn({
+        name: 'id_agente',
+        referencedColumnName: 'id',
+    })
+    agent: User;
+
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',

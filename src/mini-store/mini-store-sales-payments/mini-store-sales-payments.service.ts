@@ -4,12 +4,22 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SimpleReport } from './reports/simple.report';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+import { User } from '../../system/users/entities/user.entity';
+import { InvoiceMethodPayment } from '../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import moment = require('moment');
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
     constructor(
-        @InjectRepository(MiniStoreSalePayment, 'colegiodb') readonly repo: Repository<MiniStoreSalePayment>,
+        @InjectRepository(MiniStoreSalePayment, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSalePayment>,
+        @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
+        @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
+        @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
+        @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection)
+        readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
     ) {
         super(repo);
     }
@@ -23,36 +33,86 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
     }
 
-    async fetchFilteredPayments(query: {
+    async fetchFilteredReturns(query: {
         status: number,
         startDate: Date,
         endDate: Date,
         cashier?: number,
     }) {
-        const queryBuilder = this.repo.createQueryBuilder('payment');
-        queryBuilder.leftJoinAndSelect('payment.agent', 'agent');
-        queryBuilder.leftJoinAndSelect('payment.miniStoreSale', 'sale');
-        queryBuilder.leftJoinAndSelect('sale.student', 'student');
-        queryBuilder.leftJoinAndSelect('payment.miniStoreSaleMethodPayments', 'paymentMethod');
-        queryBuilder.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
+        const salesReturnsQB = this.salesReturnsRepository.createQueryBuilder('saleReturn');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.agent', 'agent');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.sale', 'sale');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod');
+        // salesReturnsQB.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
+        return salesReturnsQB.getMany();
+    }
+
+    async fetchFilteredPayments(query: {
+        status: number,
+        startDate: Date,
+        endDate: Date,
+        cashier?: number,
+    }): Promise<MiniStoreSalePayment[]> {
+        const paymentsQueryBuilder = this.repo.createQueryBuilder('payment');
+        paymentsQueryBuilder.leftJoinAndSelect('payment.agent', 'agent');
+        paymentsQueryBuilder.leftJoinAndSelect('payment.miniStoreSale', 'sale');
+        paymentsQueryBuilder.leftJoinAndSelect('sale.student', 'student');
+        paymentsQueryBuilder.leftJoinAndSelect('payment.miniStoreSaleMethodPayments', 'paymentMethod');
+        paymentsQueryBuilder.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
         if (query) {
-            queryBuilder.where('payment.idStatusPayment= :paymentStatus', {
+            paymentsQueryBuilder.where('payment.idStatusPayment= :paymentStatus', {
                 paymentStatus: query.status,
             });
-            queryBuilder.andWhere('payment.createdAt BETWEEN :startDate AND :endDate',
+            paymentsQueryBuilder.andWhere('payment.createdAt BETWEEN :startDate AND :endDate',
                 {
                     startDate: moment(query.startDate).startOf('day').toDate(),
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                queryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                paymentsQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
         }
-        return await queryBuilder.limit(10).getMany();
+        return await paymentsQueryBuilder.getMany();
     }
 
-    async simpleReport(options?: { base64: boolean }): Promise<string | any> {
-        const workbook = new SimpleReport().generate();
+    async fetchFilteredSales(query: {
+        status: number;
+        startDate: Date;
+        endDate: Date; cashier?: number
+    }): Promise<MiniStoreSale[]> {
+        const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale');
+        salesQueryBuilder.leftJoinAndSelect('sale.agent', 'agent');
+        salesQueryBuilder.leftJoinAndSelect('sale.student', 'student');
+        salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
+        if (query) {
+            salesQueryBuilder.where('payments.idStatusPayment= :paymentStatus', {
+                paymentStatus: query.status,
+            });
+            salesQueryBuilder.andWhere('payments.createdAt BETWEEN :startDate AND :endDate',
+                {
+                    startDate: moment(query.startDate).startOf('day').toDate(),
+                    endDate: moment(query.endDate).endOf('day').toDate(),
+                });
+            if (query.cashier) {
+                salesQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+            }
+        }
+        return await salesQueryBuilder.getMany();
+    }
+
+    async simpleReport(payments: MiniStoreSalePayment[], options?: { base64: boolean }): Promise<string | any> {
+        const cashiersAndSales = await this.userRepository.find({
+            relations: ['salePayments', 'department'],
+        });
+
+        const paymentMethods = await this.invoiceMethodPaymentRepository.find();
+
+        const cashiers = cashiersAndSales.filter(cashier => {
+            if (cashier.department !== null && cashier.department.id === 2 || cashier.salePayments.length > 0) {
+                return cashier;
+            }
+        });
+        const workbook = new SimpleReport().generate({ payments, cashiers, paymentMethods });
         try {
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
@@ -72,4 +132,5 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             return e;
         }
     }
+
 }

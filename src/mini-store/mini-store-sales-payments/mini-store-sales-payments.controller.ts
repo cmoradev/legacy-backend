@@ -35,9 +35,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         cashier?: number,
     }) {
 
-        const result = await this.service.simpleReport();
-        const sa = await this.service.fetchFilteredPayments(query);
+        const payments = await this.service.fetchFilteredPayments(query);
+        const sales = await this.service.fetchFilteredSales(query);
+        const result = await this.service.simpleReport(payments);
         response.status(200);
-        response.send(sa);
+        response.send(sales);
     }
 }

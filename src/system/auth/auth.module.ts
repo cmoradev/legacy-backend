@@ -61,7 +61,6 @@ export class AuthModule {
             store: sessionStore,
             cookie: {
                 httpOnly: true,
-                expires: true,
                 maxAge: 1000 * 60 * 60 * 24 * 7,
             },
             resave: false,
