@@ -8,7 +8,6 @@ import * as moment from 'moment-timezone';
 import { ChangeStatusInvoiceMiniStoreInterface } from './interface/ChangeStatusInvoiceMiniStore.interface';
 import { UsersService } from '../../system/users/users.service';
 
-
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
   constructor(
@@ -40,6 +39,11 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     const payment = await this.salesPaymentService.findOne({ id });
     payment.stamping = status;
     return await this.salesPaymentService.repo.save(payment);
+  }
+
+  async saveInvoice(data: MiniStoreInvoice) {
+    const invoice = this.repo.create(data);
+    this.repo.save(invoice);
   }
 
 }

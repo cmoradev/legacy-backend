@@ -6,7 +6,7 @@ import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
 import { FacturacionModerna } from 'invoice-modern';
 import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
-import { CfdiClass, Concepto, Impuesto } from '@signati/signati-sdk-node';
+import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
 import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 
@@ -52,7 +52,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       Serie: 'A',
       Folio: '2303240',
       // Fecha: 'asdasdasd',
-      FormaPago: '03',
       // condicionesDePago: 'CONTADO',
       // condicionesDePago: 'PUE',
       SubTotal: '1850',
@@ -60,6 +59,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
       Moneda: 'MXN',
       Total: '1943.00',
       TipoDeComprobante: 'I',
+      FormaPago: '03',
       MetodoPago: 'PUE',
       LugarExpedicion: '77728',
     });
@@ -116,7 +116,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     const impuesto = new Impuesto({
       totalImpuestosTrasladados: '268.00',
     });
-    impuesto.addTraslados([{
+    impuesto.traslados([{
       Impuesto: '002',
       TipoFactor: 'Tasa',
       TasaOCuota: '0.160000',

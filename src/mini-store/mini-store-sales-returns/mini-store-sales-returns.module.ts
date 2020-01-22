@@ -4,12 +4,18 @@ import { MiniStoreSalesReturnsController } from './mini-store-sales-returns.cont
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { InvoiceCompanyModule } from '../../invoice/invoice-company/invoice-company.module';
+import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoices.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([SalesReturns], ColegioDBNameConnection)],
-    providers: [MiniStoreSalesReturnsService],
-    exports: [MiniStoreSalesReturnsService],
-    controllers: [MiniStoreSalesReturnsController],
+  imports: [
+    TypeOrmModule.forFeature([SalesReturns], ColegioDBNameConnection),
+    InvoiceCompanyModule,
+    MiniStoreInvoicesModule,
+  ],
+  providers: [MiniStoreSalesReturnsService],
+  exports: [MiniStoreSalesReturnsService],
+  controllers: [MiniStoreSalesReturnsController],
 })
 export class MiniStoreSalesReturnsModule {
 }
