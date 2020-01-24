@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
@@ -127,7 +127,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     // tslint:disable-next-line:no-shadowed-variable no-console
     console.log(cfdi.validateAll());
     try {
-      const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res) => {
+      const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res: any) => {
         return res.data;
       });
       res.send(data);
@@ -136,6 +136,26 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     //  res.contentType('application/xml');
+
+  }
+
+  @Get('report-invoice')
+  public async reportInvoice(@Req() request, @Res() response, @Query() query: {
+    startDate: string,
+    endDate: string,
+    billingAgent: number,
+    status: number,
+    data: string,
+  }) {
+
+    try {
+      const dataReport = await this.service.reportInvoice(query);
+      response.status(200);
+      response.send(dataReport);
+    } catch (e) {
+      response.status(401);
+      response.send(e.message);
+    }
 
   }
 

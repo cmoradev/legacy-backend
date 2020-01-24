@@ -131,9 +131,7 @@ export class CheckInService extends TypeOrmCrudService<CheckIn> {
           .find(
             {
                 select: [ 'id', 'name', 'entryHour', 'status', 'guestBadgeCode', 'department'],
-                where: { entryHour: Between(
-                      dates.dateStart.toDate(),
-                      dates.dateEnd.toDate()) },
+                where: { entryHour: Between(dates.dateStart.toDate(), dates.dateEnd.toDate()) },
                 order: {
                     entryHour: 'DESC',
                 },

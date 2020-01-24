@@ -14,7 +14,7 @@ import { Concept } from '@signati/sdk-node/lib/interfaces/concepto.interface';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { InvoiceType } from '../mini-store-invoices/enums/invoice-type.enum';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
-import { InvoicementStatusEnum } from './enums/invoicement-status.enum';
+import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-status.enum';
 
 @Crud({
   model: {
