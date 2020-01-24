@@ -16,7 +16,7 @@ export class InvoiceProcessor {
       let typeInvoice = 'Ingreso';
       switch (invoice.invoiceType) {
         case InvoiceType.expenses:
-          payDay = formatDate(invoice.saleReturn.createdDate);
+          payDay = formatDate(invoice.saleReturn.createdAt);
           paymentFolio = invoice.saleReturn.folio;
           paymentMethod = invoice.saleReturn.paymentMethod.name;
           billingAgent = `${invoice.saleReturn.agent.name} ${invoice.saleReturn.agent.lastnameFather} ${invoice.saleReturn.agent.lastnameMother}`.toUpperCase();
