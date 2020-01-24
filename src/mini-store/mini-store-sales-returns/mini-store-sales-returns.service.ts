@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { InvoicementStatusEnum } from './enums/invoicement-status.enum';
+import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-status.enum';
 
 @Injectable()
 export class MiniStoreSalesReturnsService extends TypeOrmCrudService<SalesReturns> {
