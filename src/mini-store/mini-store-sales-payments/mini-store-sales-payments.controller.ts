@@ -33,12 +33,15 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         startDate: Date,
         endDate: Date,
         cashier?: number,
+        onlyFile?: boolean,
+        invoiceStatus?: number,
     }) {
 
         const payments = await this.service.fetchFilteredPayments(query);
         const sales = await this.service.fetchFilteredSales(query);
-        const result = await this.service.simpleReport(payments);
+        const salesReturns = await this.service.fetchFilteredReturns(query);
+        const result = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
         response.status(200);
-        response.send(sales);
+        response.send(query.onlyFile ? result : payments);
     }
 }
