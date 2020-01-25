@@ -38,12 +38,26 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         startDate: Date,
         endDate: Date,
         cashier?: number,
+        invoiceStatus?: number,
     }) {
         const salesReturnsQB = this.salesReturnsRepository.createQueryBuilder('saleReturn');
         salesReturnsQB.leftJoinAndSelect('saleReturn.agent', 'agent');
         salesReturnsQB.leftJoinAndSelect('saleReturn.sale', 'sale');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.details', 'details');
+        salesReturnsQB.leftJoinAndSelect('details.saleDetail', 'saleDetail');
+        salesReturnsQB.leftJoinAndSelect('saleDetail.miniStoreProduct', 'product');
+        salesReturnsQB.leftJoinAndSelect('sale.student', 'student');
         salesReturnsQB.leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod');
-        // salesReturnsQB.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
+        if (query) {
+            salesReturnsQB.andWhere('saleReturn.createdAt BETWEEN :startDate AND :endDate',
+                {
+                    startDate: moment(query.startDate).startOf('day').toDate(),
+                    endDate: moment(query.endDate).endOf('day').toDate(),
+                });
+            if (query.cashier) {
+                salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.cashier });
+            }
+        }
         return salesReturnsQB.getMany();
     }
 
@@ -52,6 +66,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         startDate: Date,
         endDate: Date,
         cashier?: number,
+        invoiceStatus?: number,
     }): Promise<MiniStoreSalePayment[]> {
         const paymentsQueryBuilder = this.repo.createQueryBuilder('payment');
         paymentsQueryBuilder.leftJoinAndSelect('payment.agent', 'agent');
@@ -68,6 +83,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     startDate: moment(query.startDate).startOf('day').toDate(),
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
+            if (query.invoiceStatus) {
+                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
+            }
             if (query.cashier) {
                 paymentsQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
@@ -79,15 +97,24 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         status: number;
         startDate: Date;
         endDate: Date; cashier?: number
+        invoiceStatus?: number,
     }): Promise<MiniStoreSale[]> {
         const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale');
         salesQueryBuilder.leftJoinAndSelect('sale.agent', 'agent');
         salesQueryBuilder.leftJoinAndSelect('sale.student', 'student');
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
+        salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSaleDetails', 'details');
+        salesQueryBuilder.leftJoinAndSelect('details.miniStoreProduct', 'products');
         if (query) {
             salesQueryBuilder.where('payments.idStatusPayment= :paymentStatus', {
                 paymentStatus: query.status,
             });
+            if (query.invoiceStatus) {
+                salesQueryBuilder.andWhere('payments.stamping= :invoiceStatus', {
+                        invoiceStatus: query.invoiceStatus,
+                    },
+                );
+            }
             salesQueryBuilder.andWhere('payments.createdAt BETWEEN :startDate AND :endDate',
                 {
                     startDate: moment(query.startDate).startOf('day').toDate(),
@@ -100,7 +127,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return await salesQueryBuilder.getMany();
     }
 
-    async simpleReport(payments: MiniStoreSalePayment[], options?: { base64: boolean }): Promise<string | any> {
+    async simpleReport(payments: MiniStoreSalePayment[], sales: MiniStoreSale[], salesReturns: SalesReturns[],
+                       options?: { base64: boolean }): Promise<string | any> {
         const cashiersAndSales = await this.userRepository.find({
             relations: ['salePayments', 'department'],
         });
@@ -112,7 +140,13 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 return cashier;
             }
         });
-        const workbook = new SimpleReport().generate({ payments, cashiers, paymentMethods });
+        const workbook = new SimpleReport().generate({
+            payments,
+            cashiers,
+            paymentMethods,
+            salesReturns,
+            sales,
+        });
         try {
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
