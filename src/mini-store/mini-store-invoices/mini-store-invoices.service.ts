@@ -91,7 +91,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         const dateName = new Date();
         const fileName = dateName.toTimeString() + '.xlsx';
         const result = await workbook.xlsx.writeBuffer({ filename: fileName });
-        await workbook.xlsx.writeFile('./xls-imports/' + fileName);
+        // await workbook.xlsx.writeFile('./xls-imports/' + fileName);
         const buffer = Buffer.from(result);
         const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
         return {
