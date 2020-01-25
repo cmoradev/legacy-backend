@@ -66,9 +66,9 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
     const cfdi = new CfdiClass(a);
     cfdi.relacion({ UUID: dataToInvoice.uuidRelation, TipoRelacion: '03' });
     cfdi.emisor({
-      Rfc: company.rfc,
+      Rfc: 'TCM970625M', // company.rfc,
       Nombre: company.businessName,
-      RegimenFiscal: company.fiscalRegime,
+      RegimenFiscal: '601', // company.fiscalRegime,
     });
     cfdi.receptor({
       Rfc: dataToInvoice.receptorRfc,
