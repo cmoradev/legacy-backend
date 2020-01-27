@@ -108,7 +108,7 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
     cfdi.impuesto(impuesto);
     try {
       const cfdiObj = cfdi.getCfdi();
-      const data: { uuid, total } = await axios.post('https://api.signati.io/timbrar/facturar', cfdiObj).then((res) => {
+      const data: { uuid, total } = await axios.post('https://api.signati.io/timbrado/facturar', cfdiObj).then((res) => {
         return res.data;
       });
 
