@@ -32,12 +32,19 @@ export class MiniStoreSaleDetail {
     })
     productCode: string;
 
+    @Column('varchar', {
+        nullable: true,
+        length: 8,
+        name: 'product_name',
+    })
+    productName: string;
+
     @Column('decimal', {
         nullable: false,
         name: 'cantidad',
         precision: 15,
         scale: 6,
-        default: () => '\'0.000000\'',
+        default: () => '0.000000',
     })
     quantity: number;
 

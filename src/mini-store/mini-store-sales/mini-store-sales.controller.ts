@@ -9,8 +9,10 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
     },
     query: {
         join: {
+            student: {},
             miniStoreSalePayments: {},
             miniStoreSaleDetails: {},
+            'miniStoreSaleDetails.miniStoreProduct': {},
             miniStoreInvoices: {},
             returnedProducts: {},
             'returnedProducts.agent': {},

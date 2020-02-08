@@ -57,6 +57,9 @@ export class MiniStoreSale {
     })
     student: Student;
 
+    /**
+     * @Deprecated
+     */
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -65,7 +68,7 @@ export class MiniStoreSale {
     idExternal: number;
 
     /**
-     * Deprecated
+     * @Deprecated
      */
     @Column('int', {
         nullable: true,

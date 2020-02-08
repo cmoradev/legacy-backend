@@ -40,8 +40,11 @@ export class MiniStoreSaleMethodPayment {
     })
     codePaymentMethod: string;
 
-    @Column('float', {
+    @Column('decimal', {
         nullable: false,
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
         name: 'cantidad',
     })
     quantity: number;
