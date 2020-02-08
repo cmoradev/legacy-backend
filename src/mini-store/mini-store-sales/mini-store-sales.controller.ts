@@ -34,14 +34,4 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     get base(): CrudController<MiniStoreSale> {
         return this;
     }
-
-    @Get('/aslals')
-    async prueba() {
-        return await this.service.repo.find({
-            where: {
-                isIVA: false,
-            },
-            take: 10,
-        });
-    }
 }

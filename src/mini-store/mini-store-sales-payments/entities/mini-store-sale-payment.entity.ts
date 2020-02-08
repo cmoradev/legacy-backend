@@ -22,16 +22,20 @@ export class MiniStoreSalePayment {
     })
     folio: string;
 
-    @Column('float', {
+    @Column('decimal', {
         nullable: true,
-        default: () => '\'0\'',
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
         name: 'cambio',
     })
     change: number | null;
 
-    @Column('float', {
+    @Column('decimal', {
         nullable: false,
-        default: () => '\'0\'',
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
         name: 'cantidad',
     })
     quantity: number;
