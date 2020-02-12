@@ -4,21 +4,25 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from './system/auth/auth.module';
 import * as path from 'path';
 import * as favicon from 'serve-favicon';
+import * as boolParser from 'express-query-boolean';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  app.use(favicon(path.join(__dirname, '..' , 'public', 'favicon.ico')));
+    const app = await NestFactory.create(AppModule);
+    app.enableCors();
+    app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
+    app.use(boolParser());
 
-  const options = new DocumentBuilder()
-      .setTitle('Apps')
-      .setDescription('Es la aplicación de escuela')
-      .setVersion('1.0')
-      .addTag('School')
-      .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
-  app.get(AuthModule).initialize(app);
+    const options = new DocumentBuilder()
+        .setTitle('Apps')
+        .setDescription('Es la aplicación de escuela')
+        .setVersion('1.0')
+        .addTag('School')
+        .build();
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup('api', app, document);
+    app.get(AuthModule).initialize(app);
 
-  await app.listen(3000);
+    await app.listen(3000);
 }
+
 bootstrap();
