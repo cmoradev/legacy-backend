@@ -1,6 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
+import { Shift } from '../../../system/shift/entities/shift.entity';
+import { InvoicesBank } from '../../../system/invoices-bank/entities/invoices-bank.entity';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago
@@ -49,12 +51,12 @@ export class MiniStoreSaleMethodPayment {
     })
     quantity: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
+    @ManyToOne(type => InvoicesBank, bank => bank.SalesMethodPayment)
+    @JoinColumn({
         name: 'id_banco',
+        referencedColumnName: 'id',
     })
-    idBank: number;
+    Bank: InvoicesBank;
 
     @Column('date', {
         nullable: true,

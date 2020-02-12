@@ -13,6 +13,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
+import { MiniStoreSaleMethodPayment } from '../../../mini-store/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 
 @Entity('facturacion_bancos', { schema: 'colegio_pdc' })
 export class InvoicesBank {
@@ -44,4 +46,6 @@ export class InvoicesBank {
   })
   updatedAt: Date;
 
+  @OneToMany(() => MiniStoreSaleMethodPayment, (SalesMethodPayment) => SalesMethodPayment.Bank)
+  SalesMethodPayment: MiniStoreSaleMethodPayment[];
 }
