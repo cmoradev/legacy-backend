@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { MiniStoreSalesDetailsService } from './mini-store-sales-details.service';
@@ -26,7 +26,7 @@ export class MiniStoreSalesDetailsController implements CrudController<MiniStore
     }
 
     @Get('/top-trending-products-report')
-    public topTrendingProducts(query?: { startDate: Date, endDate: Date }) {
+    public topTrendingProducts(@Query() query?: { startDate: Date, endDate: Date; onlyData?: boolean }) {
         return this.service.topTrendingProductsReport(query);
     }
 }

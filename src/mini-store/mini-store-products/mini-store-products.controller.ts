@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreProduct } from './entities/mini-store-product.entity';
 import { MiniStoreProductsService } from './mini-store-products.service';
@@ -27,5 +27,10 @@ export class MiniStoreProductsController implements CrudController<MiniStoreProd
 
     get base(): CrudController<MiniStoreProduct> {
         return this;
+    }
+
+    @Get('/products-list-report')
+    public productsList(@Query() query?: { priceListID: string, classificationID: string, onlyData?: boolean }) {
+        return this.service.ProductsList(query);
     }
 }

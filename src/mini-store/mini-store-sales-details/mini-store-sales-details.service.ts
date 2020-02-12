@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { TopTrendingProductsReport } from './reports/top-trending-products.report';
 import { DataConverter } from '../../common/excel-tools/data-converter';
 import moment = require('moment');
+import { TopTrendingProduct } from './interfaces/top-trending-product.interface';
 
 @Injectable()
 export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSaleDetail> {
@@ -13,19 +14,30 @@ export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSa
         super(repo);
     }
 
-    public async topTrendingProductsReport(query: { startDate: Date; endDate: Date }) {
+    public async topTrendingProductsReport(query: { startDate: Date; endDate: Date; onlyData?: boolean }) {
         const report = new TopTrendingProductsReport();
         const converter = new DataConverter();
         const startDate = moment(query && query.startDate || new Date()).startOf('day').toISOString(true);
         const endDate = moment(query && query.endDate || new Date()).endOf('day').toISOString(true);
 
         const QBuilder = this.repo.createQueryBuilder('productDetails');
-        QBuilder.leftJoinAndSelect('productDetails.miniStoreProduct', 'product');
+        QBuilder.leftJoin('productDetails.miniStoreProduct', 'product');
+        QBuilder.leftJoin('productDetails.miniStoreClassification', 'productClassification');
         QBuilder.where(`productDetails.createdAt >= :startDate AND productDetails.createdAt <= :endDate`, {
             startDate,
             endDate,
         });
-        const products = await QBuilder.getMany();
-        return converter.convert(report.generate(products));
+        QBuilder.groupBy('productDetails.idProduct');
+        QBuilder.addGroupBy('productDetails.idClassification');
+        QBuilder.addGroupBy('product.id');
+        QBuilder.addGroupBy('productClassification.id');
+        QBuilder.select('productClassification.name', 'classificationName');
+        QBuilder.addSelect('product.name', 'productName');
+        QBuilder.addSelect('SUM(productDetails.quantity)', 'quantity');
+        const products: TopTrendingProduct[] = await QBuilder.getRawMany();
+        if (query && query.onlyData) {
+            return products || [];
+        }
+        return converter.convert(report.generate(products), { base64: true });
     }
 }
