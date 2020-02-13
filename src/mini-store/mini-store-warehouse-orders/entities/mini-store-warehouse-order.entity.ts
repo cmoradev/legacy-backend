@@ -49,7 +49,7 @@ export class MiniStoreWarehouseOrder {
         width: 1,
         name: 'status',
     })
-    status: boolean;
+    status: number;
 
     @Column('decimal', {
         nullable: false,

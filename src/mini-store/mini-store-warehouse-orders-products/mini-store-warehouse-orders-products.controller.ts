@@ -10,6 +10,9 @@ import { MiniStoreWarehouseOrderProduct } from './entities/mini-store-warehouse-
     query: {
         join: {
             miniStoreProduct: {},
+            'miniStoreProduct.storeInvoiceKey': {},
+            'miniStoreProduct.storePriceList': {},
+            'miniStoreProduct.storeClassification': {},
             miniStoreWarehouseOrder: {},
         },
     },
