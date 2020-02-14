@@ -11,6 +11,7 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
         join: {
             student: {},
             miniStoreSalePayments: {},
+            'miniStoreSalePayments.miniStoreInvoices': {},
             miniStoreSaleDetails: {},
             'miniStoreSaleDetails.miniStoreProduct': {},
             miniStoreInvoices: {},
