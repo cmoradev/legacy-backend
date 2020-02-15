@@ -16,6 +16,8 @@ import { SystemModule } from './system/system.module';
 import { IntegrationsModule } from './integrations/integrations.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { AcademyModule } from './academy/academy.module';
+import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
+import { MailServiceModule } from './mail-service/mail-service.module';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -31,6 +33,19 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
             name: 'colegiodb',
             useClass: ColegioDBService,
         }),
+        MailerModule.forRoot({
+            transport: 'smtps://developers@colegioinglesplaya.com:7creamiste7@smtp.gmail.com',
+            defaults: {
+                from: '"nest-modules" <modules@nestjs.com>',
+            },
+            template: {
+                dir: __dirname + '/templates',
+                adapter: new HandlebarsAdapter(),
+                options: {
+                    strict: true,
+                },
+            },
+        }),
         ConfigModule,
         RouterModule.forRoutes(routes),
         SchoolColegioInglesModule,
@@ -41,6 +56,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         InvoiceModule,
         IntegrationsModule,
         AcademyModule,
+        MailServiceModule,
     ],
     controllers: [AppController],
     providers: [AppService],

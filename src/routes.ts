@@ -83,6 +83,7 @@ import { AcademyChargeWayOfPayingModule } from './academy/academy-charge-way-of-
 import { AcademyChargeModule } from './academy/academy-charge/academy-charge.module';
 import { MiniStoreSalesReturnsModule } from './mini-store/mini-store-sales-returns/mini-store-sales-returns.module';
 import { InvoiceCompanyModule } from './invoice/invoice-company/invoice-company.module';
+import { MailServiceModule } from './mail-service/mail-service.module';
 
 export const routes: Routes = [
   {
@@ -215,5 +216,9 @@ export const routes: Routes = [
       { path: 'locations', module: LocationsModule },
 
     ],
+  },
+  {
+    path: '/mail-service',
+    module: MailServiceModule,
   },
 ];
