@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Level } from '../../levels/entities/level.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 
 @Entity('grados')
 export class Grade {
@@ -44,6 +45,9 @@ export class Grade {
 
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
+
+    @OneToOne(() => PaymentPlan, (paymentPlan) => paymentPlan.grade )
+    paymentPlan: PaymentPlan;
 
     @OneToMany(() => Group, (group) => group.groupGrade)
     groups: Group[];

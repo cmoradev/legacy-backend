@@ -84,6 +84,8 @@ import { AcademyChargeModule } from './academy/academy-charge/academy-charge.mod
 import { MiniStoreSalesReturnsModule } from './mini-store/mini-store-sales-returns/mini-store-sales-returns.module';
 import { InvoiceCompanyModule } from './invoice/invoice-company/invoice-company.module';
 import { MailServiceModule } from './mail-service/mail-service.module';
+import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
+import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
 
 export const routes: Routes = [
   {
@@ -130,6 +132,8 @@ export const routes: Routes = [
     path: '/school',
     module: SchoolColegioInglesModule,
     children: [
+      { path: '/payment-plans', module: PaymentPlansModule },
+      { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
       { path: '/dashboard', module: SystemDashBoardModule },
       { path: '/subjects', module: SubjectsModule },
       { path: '/study-plans', module: StudyPlansModule },

@@ -11,6 +11,7 @@ import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
+import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 
 @Entity('niveles')
 export class Level {
@@ -48,6 +49,9 @@ export class Level {
     name: 'updated_at',
   })
   updatedAt: Date;
+  @OneToMany(() => PaymentPlan, (paymentPlan) => paymentPlan.level)
+  paymentPlans: PaymentPlan[];
+
   @ManyToOne(() => Campus, (campus) => campus.levels)
   campus: Campus;
 

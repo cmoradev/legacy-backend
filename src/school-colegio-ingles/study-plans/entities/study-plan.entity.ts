@@ -6,6 +6,7 @@ import { Level } from '../../levels/entities/level.entity';
 import { Modality } from '../../modalities/entities/modality.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
+import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 
 @Entity()
 export class StudyPlan {
@@ -66,5 +67,9 @@ export class StudyPlan {
 
     @OneToMany(() => Inscription, (inscription) => inscription.inscripStudyPlan)
     studyPlaninscriptions: Inscription[];
+
+    @ManyToOne(() => PaymentPlan, (paymentPlan) => paymentPlan.studyPlan )
+    paymentPlans: PaymentPlan[];
+
 
 }

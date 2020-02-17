@@ -13,13 +13,13 @@ export class Base {
     id: number;
 
     @CreateDateColumn({
-        type: 'timestamp with time zone',
+        type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: 'timestamp with time zone',
+        type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
     updatedAt: Date;
