@@ -8,40 +8,42 @@ import { Grade } from '../../grades/entities/grade.entity';
 @Entity()
 export class PaymentPlan extends Base {
 
-  @Column('varchar', {
-    nullable: false,
-    length: 300,
-  })
-  name: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 300,
+    })
+    name: string;
 
-  @Column('varchar', {
-    nullable: true,
-    length: 300,
-  })
-  description: string;
+    @Column('varchar', {
+        nullable: true,
+        length: 300,
+    })
+    description: string;
 
-  @Column('boolean', {
-    nullable: true,
-    default: false,
-  })
-  isActiveInStudyPlan: boolean;
+    @Column('boolean', {
+        nullable: true,
+        default: false,
+    })
+    isActiveInStudyPlan: boolean;
 
-  @Column('boolean', {
-    nullable: true,
-    default: true,
-  })
-  isActive: boolean;
+    @Column('boolean', {
+        nullable: true,
+        default: true,
+    })
+    isActive: boolean;
 
-  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.paymentPlans)
-  studyPlan: StudyPlan;
+    @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.paymentPlans)
+    studyPlan: StudyPlan;
 
-  @ManyToOne(() => Level, (level) => level.paymentPlans)
-  level: Level;
+    @ManyToOne(() => Level, (level) => level.paymentPlans)
+    level: Level;
 
-  @OneToMany(() => PaymentPlanConcept,
-    (paymentPlanConcept) => paymentPlanConcept.paymentPlan )
-  paymentPlanConcepts: PaymentPlanConcept[];
+    @OneToMany(() => PaymentPlanConcept,
+        (paymentPlanConcept) => paymentPlanConcept.paymentPlan)
+    paymentPlanConcepts: PaymentPlanConcept[];
 
-  @OneToMany(type => Grade, (grade) => grade.paymentPlan )
-  grades: Grade[];
+    @OneToMany(type => Grade, (grade) => grade.paymentPlan, {
+        cascade: ['insert', 'update'],
+    })
+    grades: Grade[];
 }
