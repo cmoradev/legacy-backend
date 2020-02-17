@@ -7,6 +7,11 @@ import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
   model: {
     type: PaymentPlanConcept,
   },
+  query: {
+    join: {
+      paymentPlan: {},
+    },
+  },
 })
 @Controller()
 export class PaymentPlanConceptsController implements CrudController<PaymentPlanConcept> {

@@ -11,6 +11,8 @@ import { LevelsService } from './levels.service';
         join: {
             grades: {},
             campus: {},
+            paymentPlans: {},
+            'paymentPlans.paymentConcepts': {},
         },
     },
 })

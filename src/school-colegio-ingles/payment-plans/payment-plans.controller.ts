@@ -8,6 +8,13 @@ import { PaymentPlansService } from './payment-plans.service';
     type: PaymentPlan,
   },
   query: {
+    join: {
+      studyPlan: {},
+      grade: {},
+      level: {},
+      paymentPlanConcepts: {},
+      'level.campus': {},
+    },
   },
 })
 @Controller()
