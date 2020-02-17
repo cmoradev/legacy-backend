@@ -42,7 +42,6 @@ export class PaymentPlan extends Base {
     (paymentPlanConcept) => paymentPlanConcept.paymentPlan )
   paymentPlanConcepts: PaymentPlanConcept[];
 
-  @OneToOne(() => Grade, (grade) => grade.paymentPlan )
-  @JoinColumn()
-  grade: Grade;
+  @OneToMany(type => Grade, (grade) => grade.paymentPlan )
+  grades: Grade[];
 }

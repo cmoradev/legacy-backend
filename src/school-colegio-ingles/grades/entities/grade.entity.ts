@@ -46,7 +46,7 @@ export class Grade {
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
 
-    @OneToOne(() => PaymentPlan, (paymentPlan) => paymentPlan.grade )
+    @OneToMany(type => PaymentPlan, paymentPlan => paymentPlan.grades)
     paymentPlan: PaymentPlan;
 
     @OneToMany(() => Group, (group) => group.groupGrade)
