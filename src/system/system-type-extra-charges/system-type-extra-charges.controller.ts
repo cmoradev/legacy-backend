@@ -4,19 +4,21 @@ import { SystemTypeExtraChargesService } from './system-type-extra-charges.servi
 import { SystemTypeExtraCharges } from './entities/system-type-extra-charges.entity';
 
 @Crud({
-  model: {
-    type: SystemTypeExtraCharges,
-  },
-  query: {
-    join: {},
-  },
+    model: {
+        type: SystemTypeExtraCharges,
+    },
+    query: {
+        join: {
+            systemTyExCharCharge: {},
+        },
+    },
 })
 @Controller()
 export class SystemTypeExtraChargesController implements CrudController<SystemTypeExtraCharges> {
-  constructor(readonly service: SystemTypeExtraChargesService) {
-  }
+    constructor(readonly service: SystemTypeExtraChargesService) {
+    }
 
-  get base(): CrudController<SystemTypeExtraCharges> {
-    return this;
-  }
+    get base(): CrudController<SystemTypeExtraCharges> {
+        return this;
+    }
 }

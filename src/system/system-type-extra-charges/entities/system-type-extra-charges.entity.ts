@@ -1,19 +1,4 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    RelationId, ValueTransformer,
-} from 'typeorm';
-import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
 import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
 
 class TransformerInArray implements ValueTransformer {
