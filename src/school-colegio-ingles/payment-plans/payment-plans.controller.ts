@@ -10,7 +10,7 @@ import { PaymentPlansService } from './payment-plans.service';
   query: {
     join: {
       studyPlan: {},
-      grade: {},
+      grades: {},
       level: {},
       paymentPlanConcepts: {},
       'level.campus': {},
