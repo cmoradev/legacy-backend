@@ -12,6 +12,7 @@ import { OperationApplicationEnum } from '../../../system/system-extra-charges/e
 import { TypeStudent } from '../interface/studentsSchool.interface';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { MiniStoreSale } from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
+import { SchoolCharge } from '../../charges/school-charges/entities/school-charge.entity';
 
 @Entity('alumnos')
 export class Student {
@@ -160,4 +161,6 @@ export class Student {
     @OneToMany(type => MiniStoreSale, sale => sale.student)
     sales: MiniStoreSale[];
 
+    @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolStudent)
+    studentCharges: SchoolCharge[];
 }

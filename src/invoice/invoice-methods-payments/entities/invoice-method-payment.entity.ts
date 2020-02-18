@@ -62,6 +62,9 @@ export class InvoiceMethodPayment {
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     salesPaymentMethods: MiniStoreSaleMethodPayment[];
 
+    @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
+    schoolChargePaymentMethods: MiniStoreSaleMethodPayment[];
+
     @OneToMany(type => SalesReturns, salesReturns => salesReturns.paymentMethod)
     salesReturns: SalesReturns[];
 }

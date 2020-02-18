@@ -7,6 +7,7 @@ import { AcademyConcepts } from '../../../academy/academy-concepts/entities/acad
 import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
 import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
+import { SchoolCharge } from '../../charges/school-charges/entities/school-charge.entity';
 
 @Entity('ciclos')
 export class Cycle {
@@ -82,4 +83,7 @@ export class Cycle {
 
   @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsCycle)
   cycleAcIns: AcademyInscription[];
+
+  @OneToMany(() => SchoolCharge, (shoolCharge) => shoolCharge.schoolCycle)
+  cycleSchoolCharge: SchoolCharge[];
 }
