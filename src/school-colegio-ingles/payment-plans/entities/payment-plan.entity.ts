@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
@@ -42,8 +42,7 @@ export class PaymentPlan extends Base {
         (paymentPlanConcept) => paymentPlanConcept.paymentPlan)
     paymentPlanConcepts: PaymentPlanConcept[];
 
-    @OneToMany(type => Grade, (grade) => grade.paymentPlan, {
-        cascade: ['insert', 'update'],
-    })
+    @ManyToMany(type => Grade, (grade) => grade.paymentPlans)
+    @JoinTable()
     grades: Grade[];
 }
