@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Level } from '../../levels/entities/level.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
@@ -45,6 +45,12 @@ export class Grade {
 
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
+
+    @Column('int', {
+        nullable: true,
+        name: 'levelId',
+    })
+    levelId: number | string | null;
 
     @ManyToMany(type => PaymentPlan, paymentPlan => paymentPlan.grades)
     paymentPlans: PaymentPlan[];
