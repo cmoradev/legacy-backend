@@ -46,6 +46,12 @@ export class Grade {
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
 
+    @Column('int', {
+        nullable: true,
+        name: 'levelId',
+    })
+    levelId: number | string | null;
+
     @ManyToOne(type => PaymentPlan, paymentPlan => paymentPlan.grades)
     paymentPlan: PaymentPlan;
 
