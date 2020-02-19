@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { AcademyInscriptionConcepts } from '../../../academy/academy-inscription-concepts/entities/academy-inscription-concepts.entity';
-import { SchoolChargePayment } from '../../../school-colegio-ingles/charges/school-charges-payments/entities/school-charge-payment.entity';
+import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 
 @Entity('estado_pagos')
 export class SystemPaymentStatus {

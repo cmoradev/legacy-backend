@@ -15,5 +15,5 @@ import { SchoolChargesInvoiceModule } from './school-charges-invoice/school-char
         SchoolChargesInvoiceModule,
         SchoolChargesDetailsExtraChargesModule],*/
 })
-export class ChargesModule {
+export class ChargesSchoolModule {
 }

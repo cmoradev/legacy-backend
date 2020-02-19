@@ -1,18 +1,4 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('ac_cobro_det_descuentos')
 export class AcademyChargeDiscounts {

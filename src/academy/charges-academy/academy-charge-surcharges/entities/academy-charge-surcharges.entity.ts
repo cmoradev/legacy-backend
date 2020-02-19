@@ -14,7 +14,6 @@ import {
   RelationId,
 } from 'typeorm';
 
-
 @Entity('ac_cobro_det_recargos')
 export class AcademyChargeSurcharges {
 
