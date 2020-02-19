@@ -31,14 +31,11 @@ export class SchoolChargesMethodsPayments extends Base {
 
     @Column('date', {
         nullable: true,
-        default: () => new Date().toTimeString(),
     })
-    date: string | null;
+    date: Date;
 
     @Column('varchar', {
-        nullable: false,
-        length: 90,
-        default: () => '',
+        nullable: true,
     })
     account: string;
     /**
