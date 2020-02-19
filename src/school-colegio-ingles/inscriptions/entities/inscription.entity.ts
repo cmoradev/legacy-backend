@@ -10,6 +10,7 @@ import { AssignmentInscription } from '../../assignment-incription/entities/assi
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 
 @Entity('inscripciones')
 export class Inscription {
@@ -126,5 +127,8 @@ export class Inscription {
   inscripStudyPlanVariant: StudyPlanVariant;
   @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlaninscriptions)
   inscripStudyPlan: StudyPlan;
+
+  @OneToMany(() => SchoolPayment, (schoolPayment) => schoolPayment.inscriptions)
+  schoolPayments: SchoolPayment[];
 
 }

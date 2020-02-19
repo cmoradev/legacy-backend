@@ -86,6 +86,7 @@ import { InvoiceCompanyModule } from './invoice/invoice-company/invoice-company.
 import { MailServiceModule } from './mail-service/mail-service.module';
 import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
+import { SchoolPaymentsModule } from './school-colegio-ingles/school-payments/school-payments.module';
 
 export const routes: Routes = [
   {
@@ -132,6 +133,7 @@ export const routes: Routes = [
     path: '/school',
     module: SchoolColegioInglesModule,
     children: [
+      { path: '/school-payments', module: SchoolPaymentsModule },
       { path: '/payment-plans', module: PaymentPlansModule },
       { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
       { path: '/dashboard', module: SystemDashBoardModule },
