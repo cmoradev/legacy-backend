@@ -13,7 +13,7 @@ import { GradesService } from './grades.service';
       },
       'level.campus': {
       },
-      paymentPlan: {
+      paymentPlans: {
       },
     },
   },
