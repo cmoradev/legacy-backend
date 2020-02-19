@@ -16,6 +16,7 @@ import {
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
+import { SchoolChargesDetailsExtraCharges } from '../../school-charges-details-extra-charges/entities/school-charges-details-extra-charges';
 
 @Entity('school_charges_details')
 export class SchoolChargeDetails extends Base {
@@ -56,6 +57,8 @@ export class SchoolChargeDetails extends Base {
     @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesDetails)
     schoolCharge: SchoolCharge;
 
+    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.schoolChargeDetails)
+    extraCharges: SchoolChargesDetailsExtraCharges[];
     /*
     relacion con la tabla mensualidades
     @Column('int', {

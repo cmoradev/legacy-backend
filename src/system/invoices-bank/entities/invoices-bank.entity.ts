@@ -16,7 +16,7 @@ import {
 import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 
-import { SchoolChargesMethodsPayments } from '../../../school-colegio-ingles/charges/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import { SchoolChargesMethodsPayments } from '../../../school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 
 @Entity('facturacion_bancos', { schema: 'colegio_pdc' })
 export class InvoicesBank {

@@ -16,9 +16,9 @@ import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SalesReturns } from '../../../mini-store/mini-store-sales-returns/entities/sales-returns.entity';
-import { SchoolCharge } from '../../../school-colegio-ingles/charges/school-charges/entities/school-charge.entity';
-import { SchoolChargePayment } from '../../../school-colegio-ingles/charges/school-charges-payments/entities/school-charge-payment.entity';
-import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges/school-charges-invoice/entities/school-charges-invoice.entity';
+import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
+import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 
 @Entity('usuarios')
 export class User {
