@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import {
-    OperationApplicationEnum,
+    OperationApplicationEnum, SystemExtraCharges,
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
@@ -42,12 +42,9 @@ export class SchoolChargesDetailsExtraCharges extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_ac_descuento',
-    })
-    idAcDescuento: number;
-
     @ManyToOne(() => SchoolChargeDetails, (schoolCharge) => schoolCharge.extraCharges)
     schoolChargeDetails: SchoolChargeDetails;
+
+    @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
+    systemExtraCharges: SystemExtraCharges;
 }
