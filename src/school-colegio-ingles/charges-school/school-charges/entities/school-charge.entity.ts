@@ -14,7 +14,7 @@ export class SchoolCharge extends Base {
     @Column('varchar', {
         nullable: false,
         length: 40,
-        default: () => '\'000000000000000\'',
+        default: '000000000000000',
         name: 'folio',
     })
     folio: string;
