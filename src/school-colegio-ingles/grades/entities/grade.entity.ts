@@ -5,6 +5,7 @@ import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
+import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 
 @Entity('grados')
 export class Grade {
@@ -54,6 +55,9 @@ export class Grade {
 
     @ManyToMany(type => PaymentPlan, paymentPlan => paymentPlan.grades)
     paymentPlans: PaymentPlan[];
+
+    @ManyToMany(type => PaymentPlanConcept, paymentPlanConcept => paymentPlanConcept.grades)
+    paymentPlansConcepts: PaymentPlanConcept[];
 
     @OneToMany(() => Group, (group) => group.groupGrade)
     groups: Group[];
