@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SchoolChargesInvoiceService } from './school-charges-payments-invoice.service';
-import { SchoolChargesInvoiceController } from './school-charges-payments-invoice.controller';
+import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
+import { SchoolChargesInvoiceController } from './school-charges-invoice.controller';
 
 @Module({
   providers: [SchoolChargesInvoiceService],
