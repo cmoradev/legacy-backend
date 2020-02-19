@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { SchoolChargesDetailsExtraChargesService } from './school-charges-details-extra-charges.service';
 import { SchoolChargesDetailsExtraChargesController } from './school-charges-details-extra-charges.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { SchoolChargesDetailsExtraCharges } from './entities/school-charges-details-extra-charges.entity';
 
 @Module({
-  providers: [SchoolChargesDetailsExtraChargesService],
-  controllers: [SchoolChargesDetailsExtraChargesController]
+    imports: [TypeOrmModule.forFeature([SchoolChargesDetailsExtraCharges], ColegioDBNameConnection)],
+    providers: [SchoolChargesDetailsExtraChargesService],
+    controllers: [SchoolChargesDetailsExtraChargesController],
 })
-export class SchoolChargesDetailsExtraChargesModule {}
+export class SchoolChargesDetailsExtraChargesModule {
+}

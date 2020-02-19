@@ -1,12 +1,20 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import {
-    OperationApplicationEnum, SystemExtraCharges,
-    TypeChargeApplicationEnum,
-} from '../../../../system/system-extra-charges/entities/system-extra-charges.entity';
+import { SystemExtraCharges } from '../../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
-import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
+
+export enum OperationApplicationEnum {
+    sum = 'sum',
+    subtraction = 'subtraction',
+    division = 'division',
+    multiplication = 'multiplication',
+}
+
+export enum TypeChargeApplicationEnum {
+    percentage = 1,
+    quantity = 2,
+}
 
 @Entity('school-charges-details-extra-charges')
 export class SchoolChargesDetailsExtraCharges extends Base {
@@ -23,21 +31,21 @@ export class SchoolChargesDetailsExtraCharges extends Base {
 
     @Column({
         type: 'enum',
-        nullable: false,
+        nullable: true,
         enum: TypeChargeApplicationEnum,
     })
-    typeApplication: OperationApplicationEnum;
+    applicationType: OperationApplicationEnum;
 
     @Column({
         type: 'enum',
-        nullable: false,
+        nullable: true,
         enum: OperationApplicationEnum,
     })
-    operation: OperationApplicationEnum;
+    operationType: OperationApplicationEnum;
 
     @Column({
         type: 'enum',
-        nullable: false,
+        nullable: true,
         enum: SystemTypeExtraChargesEnum,
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
