@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typ
 import { Base } from '../../../common/orm/entities/base.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Grade } from '../../grades/entities/grade.entity';
+import { PaymentPlanConceptTypeEnum } from '../enums/payment-plan-concept-type.enum';
 
 @Entity()
 export class PaymentPlanConcept extends Base {
@@ -11,6 +12,13 @@ export class PaymentPlanConcept extends Base {
         length: 300,
     })
     name: string;
+
+    @Column('enum', {
+        nullable: false,
+        default: PaymentPlanConceptTypeEnum.OneTime,
+        enum: PaymentPlanConceptTypeEnum,
+    })
+    conceptType: PaymentPlanConceptTypeEnum;
 
     @Column('varchar', {
         nullable: true,
