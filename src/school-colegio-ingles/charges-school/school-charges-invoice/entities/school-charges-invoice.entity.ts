@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { InvoiceType } from '../../../../mini-store/mini-store-invoices/enums/invoice-type.enum';
+import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
-import { MiniStoreSalePayment } from '../../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { MiniStoreSale } from '../../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSale } from '../../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 

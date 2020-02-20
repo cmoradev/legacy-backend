@@ -16,7 +16,7 @@ import {
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
-import { MiniStoreSale } from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 
 @Entity('ac_inscrip_conceptos')

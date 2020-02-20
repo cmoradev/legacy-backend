@@ -17,6 +17,7 @@ import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
+import { MiniStoreDetailsExtraCharges } from '../../../mini-store/store-sales/mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
 
 export enum OperationApplicationEnum {
     sum = 'sum',
@@ -150,5 +151,8 @@ export class SystemExtraCharges {
 
     @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
     extraChargeSchool: SchoolChargesDetailsExtraCharges[];
+
+    @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
+    extraChargeMiniStore: MiniStoreDetailsExtraCharges[];
 
 }

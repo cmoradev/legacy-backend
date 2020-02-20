@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
+import { MiniStoreInvoicesService } from '../store-sales/mini-store-invoices/mini-store-invoices.service';
 import { StatusInvoce } from '../../invoice/interface/StatusInvoce.interface';
 import { UsersService } from '../../system/users/users.service';
-import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import { MiniStoreSalesPaymentsService } from '../store-sales/mini-store-sales-payments/mini-store-sales-payments.service';
 
 @Injectable()
 export class MiniStoreDashBoardService {
