@@ -13,6 +13,7 @@ import { DataConverter } from '../../../common/excel-tools/data-converter';
             miniStoreSale: {},
             miniStoreProduct: {},
             miniStoreClassification: {},
+            extraCharges: {},
         },
     },
 })
