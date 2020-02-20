@@ -1,8 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { PaymentPlanConceptTypeEnum } from '../enums/payment-plan-concept-type.enum';
+import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 
 @Entity()
 export class PaymentPlanConcept extends Base {
@@ -67,4 +68,7 @@ export class PaymentPlanConcept extends Base {
     @ManyToMany(type => Grade, (grade) => grade.paymentPlansConcepts)
     @JoinTable()
     grades: Grade[];
+
+    @OneToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.paymentPlanConcept)
+    schoolPayment: SchoolPayment;
 }
