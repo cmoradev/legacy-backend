@@ -4,9 +4,9 @@ import {
     OneToMany, OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MiniStoreInvoice } from '../../../mini-store/mini-store-invoices/entities/mini-store-invoice.entity';
-import { MiniStoreSale } from '../../../mini-store/mini-store-sales/entities/mini-store-sale.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { ClassroomPermission } from '../../../school-colegio-ingles/classroom-permission/entities/classroom-permission.entity';
 import { Inscription } from '../../../school-colegio-ingles/inscriptions/entities/inscription.entity';
@@ -15,7 +15,7 @@ import { Role } from '../../roles/entities/role.entity';
 import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
-import { SalesReturns } from '../../../mini-store/mini-store-sales-returns/entities/sales-returns.entity';
+import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';

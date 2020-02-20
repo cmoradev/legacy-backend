@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { SchoolChargeDetails } from '../../charges-school/school-charges-details/entities/school-charge-details.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
+import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 
 @Entity()
 export class SchoolPayment extends Base {
@@ -39,6 +40,14 @@ export class SchoolPayment extends Base {
     nullable: true,
   })
   payDay: string | null;
+  @Column('date', {
+    nullable: true,
+  })
+  paidDay: string | null;
+  @Column('varchar', {
+    nullable: true,
+  })
+  satCode: string | null;
 
   @Column('decimal', {
     nullable: true,
@@ -71,6 +80,10 @@ export class SchoolPayment extends Base {
   @OneToOne(() => SchoolChargeDetails, (schoolCharge) => schoolCharge.schoolPayment)
   @JoinColumn()
   schoolChargeDetail: SchoolChargeDetails;
+
+  @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
+  @JoinColumn()
+  paymentPlanConcept: PaymentPlanConcept;
 
   @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments)
   inscriptions: Inscription[];

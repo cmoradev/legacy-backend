@@ -12,7 +12,7 @@ import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.enti
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { InscriptionStatus } from '../../../system/inscription-status/entities/inscription-status.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Entity('ac_inscripciones_alumnos')

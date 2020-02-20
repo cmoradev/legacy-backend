@@ -4,7 +4,7 @@ import { SchoolCharge } from '../../school-charges/entities/school-charge.entity
 import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
 import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { MiniStoreInvoice } from '../../../../mini-store/mini-store-invoices/entities/mini-store-invoice.entity';
+import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 
 @Entity('school_charge_payments')

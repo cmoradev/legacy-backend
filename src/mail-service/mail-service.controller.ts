@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MailService } from './mail-service.service';
-import { MiniStoreSalePayment } from '../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Controller('mini-store')
 export class MailServiceController {

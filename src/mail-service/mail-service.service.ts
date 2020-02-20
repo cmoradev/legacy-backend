@@ -4,7 +4,7 @@ import * as handlebars from 'handlebars';
 import { receiptPayment } from './templates/receipt-payment';
 import * as moment from 'moment';
 import { MailerOptions } from './interfaces/mailer-options.interface';
-import { MiniStoreSalePayment } from '../mini-store/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Injectable()
 export class MailService {

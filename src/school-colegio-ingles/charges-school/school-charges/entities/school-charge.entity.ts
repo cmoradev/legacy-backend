@@ -5,7 +5,7 @@ import { Cycle } from '../../../cycles/entities/cycle.entity';
 import { Campus } from '../../../campuses/entities/campus.entity';
 import { Student } from '../../../students/entities/student.entity';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
-import { MiniStoreInvoice } from '../../../../mini-store/mini-store-invoices/entities/mini-store-invoice.entity';
+import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 
 @Entity('school_charges')
