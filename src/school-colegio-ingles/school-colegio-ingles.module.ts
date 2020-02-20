@@ -28,6 +28,7 @@ import { FamilyMembersModule } from './family-members/family-members.module';
 import { PaymentPlansModule } from './payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './payment-plan-concepts/payment-plan-concepts.module';
 import { ChargesSchoolModule } from './charges-school/charges-school.module';
+import { SchoolPaymentsModule } from './school-payments/school-payments.module';
 
 @Module({
     imports: [
@@ -47,7 +48,8 @@ import { ChargesSchoolModule } from './charges-school/charges-school.module';
         AssignmentIncriptionModule, ClassroomPermissionModule,
         IncidentsModule, IncidentClassificationModule,
         CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
-        FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule, ChargesSchoolModule,
+        FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
+      SchoolPaymentsModule, ChargesSchoolModule,
     ],
 })
 export class SchoolColegioInglesModule {

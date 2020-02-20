@@ -4,21 +4,24 @@ import { PaymentPlanConcept } from './entities/payment-plan-concept.entity';
 import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
 
 @Crud({
-  model: {
-    type: PaymentPlanConcept,
-  },
-  query: {
-    join: {
-      paymentPlan: {},
+    model: {
+        type: PaymentPlanConcept,
     },
-  },
+    query: {
+        join: {
+            paymentPlan: {},
+            grades: {},
+        },
+    },
 })
 @Controller()
 export class PaymentPlanConceptsController implements CrudController<PaymentPlanConcept> {
-  constructor(
-    readonly service: PaymentPlanConceptsService,
-  ) { }
-  get base(): CrudController<PaymentPlanConcept> {
-    return this;
-  }
+    constructor(
+        readonly service: PaymentPlanConceptsService,
+    ) {
+    }
+
+    get base(): CrudController<PaymentPlanConcept> {
+        return this;
+    }
 }

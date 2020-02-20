@@ -13,7 +13,7 @@ export class SchoolChargePayment extends Base {
     @Column('varchar', {
         nullable: false,
         length: 45,
-        default: () => '000000000000000',
+        default: '000000000000000',
         name: 'folio',
     })
     folio: string;

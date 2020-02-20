@@ -14,9 +14,9 @@ import {
     RelationId,
 } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { User } from '../../../../system/users/entities/user.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
+import { SchoolPayment } from '../../../school-payments/entities/school-payment.entity';
 
 @Entity('school_charges_details')
 export class SchoolChargeDetails extends Base {
@@ -59,6 +59,9 @@ export class SchoolChargeDetails extends Base {
 
     @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.schoolChargeDetails)
     extraCharges: SchoolChargesDetailsExtraCharges[];
+
+    @OneToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.schoolChargeDetail)
+    schoolPayment: SchoolPayment;
     /*
     relacion con la tabla mensualidades
     @Column('int', {
