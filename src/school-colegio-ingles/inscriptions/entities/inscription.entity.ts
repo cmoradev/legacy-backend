@@ -132,7 +132,7 @@ export class Inscription {
     @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlaninscriptions)
     inscripStudyPlan: StudyPlan;
 
-    @OneToMany(() => SchoolPayment, (schoolPayment) => schoolPayment.inscriptions)
+    @OneToMany(() => SchoolPayment, (schoolPayment) => schoolPayment.inscription)
     schoolPayments: SchoolPayment[];
 
 }

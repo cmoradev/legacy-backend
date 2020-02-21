@@ -86,5 +86,5 @@ export class SchoolPayment extends Base {
   paymentPlanConcept: PaymentPlanConcept;
 
   @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments)
-  inscriptions: Inscription[];
+  inscription: Inscription;
 }
