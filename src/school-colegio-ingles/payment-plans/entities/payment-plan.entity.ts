@@ -4,6 +4,7 @@ import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Level } from '../../levels/entities/level.entity';
 import { Grade } from '../../grades/entities/grade.entity';
+import { Inscription } from '../../inscriptions/entities/inscription.entity';
 
 @Entity()
 export class PaymentPlan extends Base {
@@ -41,6 +42,9 @@ export class PaymentPlan extends Base {
     @OneToMany(() => PaymentPlanConcept,
         (paymentPlanConcept) => paymentPlanConcept.paymentPlan)
     paymentPlanConcepts: PaymentPlanConcept[];
+
+    @OneToMany(type => Inscription, (i) => i.paymentPlan)
+    studentsInscriptions: Inscription[];
 
     @ManyToMany(type => Grade, (grade) => grade.paymentPlans)
     @JoinTable()
