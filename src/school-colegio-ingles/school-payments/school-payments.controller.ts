@@ -10,7 +10,7 @@ import { SchoolPaymentsService } from './school-payments.service';
   query: {
     join: {
       schoolChargeDetail: {},
-      inscriptions: {},
+      inscription: {},
     },
   },
 })
