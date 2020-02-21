@@ -8,6 +8,7 @@ import { AcademyActivitiesGroup } from '../../../academy/academy-activities-grou
 import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
+import { Periods } from '../../periods/entities/periods.entity';
 
 @Entity('ciclos')
 export class Cycle {
@@ -60,6 +61,9 @@ export class Cycle {
     })
     updatedAt: Date;
 
+    @OneToMany(() => Periods, (periods) => periods.periodsCycle)
+    cyclePeridos: Periods[];
+
     @OneToMany(() => Group, (group) => group.groupCycle)
     groups: Group[];
 
@@ -67,7 +71,7 @@ export class Cycle {
     classrooms: Classroom[];
 
     @OneToMany(() => Inscription, (inscription) => inscription.inscripCycle)
-    ciclyeInscriptions: Inscription[];
+    cycleInscriptions: Inscription[];
 
     @OneToMany(() => Assignment, (assignment) => assignment.cycle)
     assignments: Assignment[];

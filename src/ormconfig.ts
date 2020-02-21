@@ -39,6 +39,8 @@ const config: ConnectionOptions = {
     // Location of migration should be inside src folder
     // to be compiled into dist/ folder.
     migrationsDir: 'src/migrations',
+    entitiesDir: 'src/entity',
+    subscribersDir: 'src/subscriber',
   },
 };
 
