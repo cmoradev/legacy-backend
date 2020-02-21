@@ -107,7 +107,7 @@ export class Inscription {
     @ManyToOne(() => Level, (level) => level.levelInscriptions)
     inscripLevel: Level;
 
-    @ManyToOne(() => Cycle, (cycle) => cycle.ciclyeInscriptions)
+    @ManyToOne(() => Cycle, (cycle) => cycle.cycleInscriptions)
     inscripCycle: Cycle;
 
     @ManyToOne(() => Campus, (campus) => campus.campusInscriptions)
