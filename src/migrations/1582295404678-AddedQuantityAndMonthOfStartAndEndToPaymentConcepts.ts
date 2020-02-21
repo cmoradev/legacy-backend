@@ -5,8 +5,8 @@ export class AddedQuantityAndMonthOfStartAndEndToPaymentConcepts1582295404678 im
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query('ALTER TABLE `payment_plan_concept` ADD `quantity` int NOT NULL DEFAULT 1', undefined);
-        await queryRunner.query('ALTER TABLE `payment_plan_concept` ADD `startMonth` enum (\'January\', \'February\', \'March\', \'April\', \'May\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\') NULL', undefined);
-        await queryRunner.query('ALTER TABLE `payment_plan_concept` ADD `endMonth` enum (\'January\', \'February\', \'March\', \'April\', \'May\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\') NULL', undefined);
+        await queryRunner.query('ALTER TABLE `payment_plan_concept` ADD `startMonth` enum (\'January\', \'February\', \'March\', \'April\', \'May\',\'June\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\') NULL', undefined);
+        await queryRunner.query('ALTER TABLE `payment_plan_concept` ADD `endMonth` enum (\'January\', \'February\', \'March\', \'April\', \'May\',\'June\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\') NULL', undefined);
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {

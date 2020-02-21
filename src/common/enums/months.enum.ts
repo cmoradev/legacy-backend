@@ -4,6 +4,7 @@ export enum Months {
     March = 'March',
     April = 'April',
     May = 'May',
+    June = 'June',
     July = 'July',
     August = 'August',
     September = 'September',
