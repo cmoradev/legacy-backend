@@ -4,6 +4,7 @@ import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { PaymentPlanConceptTypeEnum } from '../enums/payment-plan-concept-type.enum';
 import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
+import { Months } from '../../../common/enums/months.enum';
 
 @Entity()
 export class PaymentPlanConcept extends Base {
@@ -25,6 +26,24 @@ export class PaymentPlanConcept extends Base {
         nullable: true,
     })
     description?: string | null;
+
+    @Column('int', {
+        nullable: false,
+        default: 1,
+    })
+    quantity: number;
+
+    @Column('enum', {
+        nullable: true,
+        enum: Months,
+    })
+    startMonth: Months;
+
+    @Column('enum', {
+        nullable: true,
+        enum: Months,
+    })
+    endMonth: Months;
 
     @Column('decimal', {
         nullable: false,
