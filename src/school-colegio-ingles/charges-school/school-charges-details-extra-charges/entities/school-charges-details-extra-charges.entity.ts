@@ -34,7 +34,7 @@ export class SchoolChargesDetailsExtraCharges extends Base {
         nullable: true,
         enum: TypeChargeApplicationEnum,
     })
-    applicationType: OperationApplicationEnum;
+    applicationType: TypeChargeApplicationEnum;
 
     @Column({
         type: 'enum',
