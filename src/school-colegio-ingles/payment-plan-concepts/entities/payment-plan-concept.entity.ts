@@ -33,6 +33,11 @@ export class PaymentPlanConcept extends Base {
     })
     quantity: number;
 
+    @Column('int', {
+        nullable: true,
+    })
+    startDay: number;
+
     @Column('enum', {
         nullable: true,
         enum: Months,
