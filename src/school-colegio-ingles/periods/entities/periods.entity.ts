@@ -27,6 +27,12 @@ export class Periods extends Base {
     })
     endDate: Date;
 
+    @Column('boolean', {
+        nullable: false,
+        default: true,
+    })
+    isActive: boolean;
+
     @ManyToOne(() => Cycle, (cycle) => cycle.cyclePeridos)
     periodsCycle: Cycle;
 

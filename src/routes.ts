@@ -87,144 +87,185 @@ import { MailServiceModule } from './mail-service/mail-service.module';
 import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
 import { SchoolPaymentsModule } from './school-colegio-ingles/school-payments/school-payments.module';
+import { PeriodsModule } from './school-colegio-ingles/periods/periods.module';
+import { ChargesSchoolModule } from './school-colegio-ingles/charges-school/charges-school.module';
+import { SchoolChargesModule } from './school-colegio-ingles/charges-school/school-charges/school-charges.module';
+import { SchoolChargesDetailsService } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.service';
+import { SchoolChargesDetailsModule } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.module';
+import { SchoolChargesInvoice } from './school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
+import { SchoolChargesInvoiceModule } from './school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.module';
+import { SchoolChargesMethodsPayments } from './school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-methods-payments/school-charges-methods-payments.module';
+import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
 
 export const routes: Routes = [
-  {
-    path: '/invoice',
-    module: InvoiceModule,
-    children: [
-      {
-        path: '/keys',
-        module: InvoiceKeysModule,
-      },
-      {
-        path: '/companies',
-        module: InvoiceCompanyModule,
-      },
-    ],
-  },
-  {
-    path: '/system',
-    module: SystemModule,
-    children: [
-      { path: '/dashboard', module: SystemDashBoardModule },
-      { path: '/users', module: UsersModule },
-      { path: '/routes', module: RoutesModule },
-      { path: '/permissions', module: PermissionsModule },
-      { path: '/auth', module: AuthModule },
-      { path: '/roles', module: RolesModule },
-      { path: '/departments', module: DepartmentsModule },
-      { path: '/actions', module: ActionsModule },
-      { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
-      { path: '/invoices-bank', module: InvoicesBankModule },
-      { path: '/countries', module: CountriesModule },
-      { path: '/states', module: StatesModule },
-      { path: '/cities', module: CitiesModule },
-      { path: '/municipalities', module: MunicipalitiesModule },
-      { path: '/payments-status', module: SystemPaymentsStatusModule },
-      { path: '/inscription-status', module: InscriptionStatusModule },
-      { path: '/concepts-type', module: SystemConceptsTypeModule },
-      { path: '/shift', module: ShiftModule },
-      { path: '/extra-charges', module: SystemExtraChargesModule },
-      { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
-    ],
-  },
-  {
-    path: '/school',
-    module: SchoolColegioInglesModule,
-    children: [
-      { path: '/school-payments', module: SchoolPaymentsModule },
-      { path: '/payment-plans', module: PaymentPlansModule },
-      { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
-      { path: '/dashboard', module: SystemDashBoardModule },
-      { path: '/subjects', module: SubjectsModule },
-      { path: '/study-plans', module: StudyPlansModule },
-      { path: '/study-plan-variants', module: StudyPlanVariantsModule },
-      { path: '/levels', module: LevelsModule },
-      { path: '/grades', module: GradesModule },
-      { path: '/students', module: StudentsModule },
-      { path: '/assignments', module: AssignmentsModule },
-      { path: '/modalities', module: ModalitiesModule },
-      { path: '/teachers', module: TeachersModule },
-      { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
-      { path: '/groups', module: GroupsModule },
-      { path: '/inscriptions', module: InscriptionsModule },
-      { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
-      { path: '/cycles', module: CyclesModule },
-      { path: '/campuses', module: CampusesModule },
-      { path: '/families', module: FamiliesModule },
-      { path: '/classrooms', module: ClassroomsModule },
-      { path: '/classrooms-permissions', module: ClassroomPermissionModule },
-      { path: '/incident-classifications', module: IncidentClassificationModule },
-      { path: '/incidents', module: IncidentsModule },
-      { path: '/check-in', module: CheckInModule },
-    ],
-  },
-  {
-    path: '/mini-store',
-    module: MiniStoreModule,
-    children: [
-      {
-        path: '/dash-board',
-        module: MiniStoreDashBoardModule,
-        children: [],
-      },
-      { path: '/products', module: MiniStoreProductsModule },
-      { path: '/classifications', module: MiniStoreClassificationsModule },
-      { path: '/prices-lists', module: MiniStorePricesListsModule },
-      { path: '/sales', module: MiniStoreSalesModule },
-      { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
-      { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
-      { path: '/sales-details', module: MiniStoreSalesDetailsModule },
-      { path: '/invoices', module: MiniStoreInvoicesModule },
-      {
-        path: '/warehouse', children: [
-          { path: '/orders', module: MiniStoreWarehouseOrdersModule },
-          { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
-          { path: '/providers', module: MiniStoreWarehouseProvidersModule },
+    {
+        path: '/invoice',
+        module: InvoiceModule,
+        children: [
+            {
+                path: '/keys',
+                module: InvoiceKeysModule,
+            },
+            {
+                path: '/companies',
+                module: InvoiceCompanyModule,
+            },
+        ],
+    },
+    {
+        path: '/system',
+        module: SystemModule,
+        children: [
+            { path: '/dashboard', module: SystemDashBoardModule },
+            { path: '/users', module: UsersModule },
+            { path: '/routes', module: RoutesModule },
+            { path: '/permissions', module: PermissionsModule },
+            { path: '/auth', module: AuthModule },
+            { path: '/roles', module: RolesModule },
+            { path: '/departments', module: DepartmentsModule },
+            { path: '/actions', module: ActionsModule },
+            { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
+            { path: '/invoices-bank', module: InvoicesBankModule },
+            { path: '/countries', module: CountriesModule },
+            { path: '/states', module: StatesModule },
+            { path: '/cities', module: CitiesModule },
+            { path: '/municipalities', module: MunicipalitiesModule },
+            { path: '/payments-status', module: SystemPaymentsStatusModule },
+            { path: '/inscription-status', module: InscriptionStatusModule },
+            { path: '/concepts-type', module: SystemConceptsTypeModule },
+            { path: '/shift', module: ShiftModule },
+            { path: '/extra-charges', module: SystemExtraChargesModule },
+            { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
+        ],
+    },
+    {
+        path: '/school',
+        module: SchoolColegioInglesModule,
+        children: [
+            {
+                    path: '/charges',
+                module: ChargesSchoolModule,
+                children: [
+                    {
+                        path: '/',
+                        module: SchoolChargesModule,
+                    },
+                    {
+                        path: '/details',
+                        module: SchoolChargesDetailsModule,
+                    },
+                    {
+                        path: '/details-extra-charge',
+                        module: SchoolChargesDetailsModule,
+                    },
+                    {
+                        path: '/invoice',
+                        module: SchoolChargesInvoiceModule,
+                    },
+                    {
+                        path: '/payments',
+                        module: SchoolChargesPaymentsModule,
+                    },
+                    {
+                        path: '/methods-payment',
+                        module: SchoolChargesMethodsPaymentsModule,
+                    },
+                ],
+            },
+            { path: '/school-payments', module: SchoolPaymentsModule },
+            { path: '/payment-plans', module: PaymentPlansModule },
+            { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
+            { path: '/dashboard', module: SystemDashBoardModule },
+            { path: '/subjects', module: SubjectsModule },
+            { path: '/study-plans', module: StudyPlansModule },
+            { path: '/study-plan-variants', module: StudyPlanVariantsModule },
+            { path: '/levels', module: LevelsModule },
+            { path: '/grades', module: GradesModule },
+            { path: '/students', module: StudentsModule },
+            { path: '/assignments', module: AssignmentsModule },
+            { path: '/modalities', module: ModalitiesModule },
+            { path: '/teachers', module: TeachersModule },
+            { path: '/assignments-subjects', module: AssignmentsSubjectsModule },
+            { path: '/groups', module: GroupsModule },
+            { path: '/inscriptions', module: InscriptionsModule },
+            { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
+            { path: '/cycles', module: CyclesModule },
+            { path: '/periods', module: PeriodsModule },
+            { path: '/campuses', module: CampusesModule },
+            { path: '/families', module: FamiliesModule },
+            { path: '/classrooms', module: ClassroomsModule },
+            { path: '/classrooms-permissions', module: ClassroomPermissionModule },
+            { path: '/incident-classifications', module: IncidentClassificationModule },
+            { path: '/incidents', module: IncidentsModule },
+            { path: '/check-in', module: CheckInModule },
+        ],
+    },
+    {
+        path: '/mini-store',
+        module: MiniStoreModule,
+        children: [
+            {
+                path: '/dash-board',
+                module: MiniStoreDashBoardModule,
+                children: [],
+            },
+            { path: '/products', module: MiniStoreProductsModule },
+            { path: '/classifications', module: MiniStoreClassificationsModule },
+            { path: '/prices-lists', module: MiniStorePricesListsModule },
+            { path: '/sales', module: MiniStoreSalesModule },
+            { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
+            { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
+            { path: '/sales-details', module: MiniStoreSalesDetailsModule },
+            { path: '/invoices', module: MiniStoreInvoicesModule },
+            {
+                path: '/warehouse', children: [
+                    { path: '/orders', module: MiniStoreWarehouseOrdersModule },
+                    { path: '/orders-products', module: MiniStoreWarehouseOrdersProductsModule },
+                    { path: '/providers', module: MiniStoreWarehouseProvidersModule },
+
+                ],
+            },
+            { path: '/sales-returns', module: MiniStoreSalesReturnsModule },
+        ],
+    },
+    {
+        path: '/academies',
+        module: AcademyModule,
+        children: [
+            { path: '/dashboard', module: AcademyDashBoardModule },
+            { path: '/academy-activities', module: AcademyActivitiesModule },
+            { path: '/academy-activities-group', module: AcademyActivitiesGroupModule },
+            { path: '/academy-concepts', module: AcademyConceptsModule },
+            { path: '/academy-modalities', module: AcademyModalitiesModule },
+            { path: '/academy-inscription', module: AcademyInscriptionModule },
+            { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
+            { path: '/academy-charge', module: AcademyChargeModule },
+            { path: '/academy-charge-details', module: AcademyChargeDetailsModule },
+            { path: '/academy-charge-discounts', module: AcademyChargeDiscountsModule },
+            { path: '/academy-charge-invoice', module: AcademyChargeInvoiceModule },
+            { path: '/academy-charge-surcharges', module: AcademyChargeSurchargesModule },
+            { path: '/academy-charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
+        ],
+    },
+    {
+        path: '/fixed-assets-control',
+        module: FixedAssetsControlModule,
+        children: [
+            { path: 'branch-companies', module: BranchCompaniesModule },
+            { path: 'employees', module: EmployeesModule },
+            { path: 'fixed-assets', module: FixedAssetsModule },
+            { path: 'fixed-assets-assignments', module: FixedAssetsAssignmentsModule },
+            { path: 'job-positions', module: JobPositionsModule },
+            { path: 'matrix-companies', module: MatrixCompaniesModule },
+            { path: 'responsive-letters', module: ResponsiveLettersModule },
+            { path: 'classifications', module: ClassificationsModule },
+            { path: 'locations', module: LocationsModule },
 
         ],
-      },
-      {path: '/sales-returns', module: MiniStoreSalesReturnsModule},
-    ],
-  },
-  {
-    path: '/academies',
-    module: AcademyModule,
-    children: [
-      { path: '/dashboard', module: AcademyDashBoardModule },
-      { path: '/academy-activities', module: AcademyActivitiesModule },
-      { path: '/academy-activities-group', module: AcademyActivitiesGroupModule },
-      { path: '/academy-concepts', module: AcademyConceptsModule },
-      { path: '/academy-modalities', module: AcademyModalitiesModule },
-      { path: '/academy-inscription', module: AcademyInscriptionModule },
-      { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
-      { path: '/academy-charge', module: AcademyChargeModule },
-      { path: '/academy-charge-details', module: AcademyChargeDetailsModule },
-      { path: '/academy-charge-discounts', module: AcademyChargeDiscountsModule },
-      { path: '/academy-charge-invoice', module: AcademyChargeInvoiceModule },
-      { path: '/academy-charge-surcharges', module: AcademyChargeSurchargesModule },
-      { path: '/academy-charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
-    ],
-  },
-  {
-    path: '/fixed-assets-control',
-    module: FixedAssetsControlModule,
-    children: [
-      { path: 'branch-companies', module: BranchCompaniesModule },
-      { path: 'employees', module: EmployeesModule },
-      { path: 'fixed-assets', module: FixedAssetsModule },
-      { path: 'fixed-assets-assignments', module: FixedAssetsAssignmentsModule },
-      { path: 'job-positions', module: JobPositionsModule },
-      { path: 'matrix-companies', module: MatrixCompaniesModule },
-      { path: 'responsive-letters', module: ResponsiveLettersModule },
-      { path: 'classifications', module: ClassificationsModule },
-      { path: 'locations', module: LocationsModule },
-
-    ],
-  },
-  {
-    path: '/mail-service',
-    module: MailServiceModule,
-  },
+    },
+    {
+        path: '/mail-service',
+        module: MailServiceModule,
+    },
 ];

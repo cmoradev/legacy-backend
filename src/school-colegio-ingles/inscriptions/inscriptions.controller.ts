@@ -12,53 +12,60 @@ import { ExcelSheet } from '../../common/sheets/interfaces/excel.interface';
 import { sheetToObjPage } from '../../common/sheets';
 
 @Crud({
-  model: {
-    type: Inscription,
-  },
-  query: {
-    maxLimit: 200,
-    join: {
-      inscripStudent: {},
-      inscripCampus: {},
-      inscripGrade: {},
-      inscripGroup: {},
-      inscripLevel: {},
-      inscripCycle: {},
-      inscripAgentCreator: {},
+    model: {
+        type: Inscription,
     },
-  },
+    query: {
+        maxLimit: 200,
+        join: {
+            inscripStudent: {},
+            inscripCampus: {},
+            inscripGrade: {},
+            inscripGroup: {},
+            inscripLevel: {},
+            inscripCycle: {},
+            inscripAgentCreator: {},
+            inscripAgentEditor: {},
+            inscripClassroom: {},
+            paymentPlan: {},
+            inscripAssignmentsInscription: {},
+            inscripStudyPlanVariant: {},
+            inscripStudyPlan: {},
+            schoolPayments: {},
+        },
+    },
 })
 @Controller()
 export class InscriptionsController implements CrudController<Inscription> {
-  constructor(
-    readonly service: InscriptionsService,
-  ) {
-  }
+    constructor(
+        readonly service: InscriptionsService,
+    ) {
+    }
 
-  get base(): CrudController<Inscription> {
-    return this;
-  }
+    get base(): CrudController<Inscription> {
+        return this;
+    }
 
-  @Get('/amir')
-  async verify(): Promise<any> {
-    return 'amir';
-  }
+    @Get('/amir')
+    async verify(): Promise<any> {
+        return 'amir';
+    }
 
-  @Post('/verifyinscription')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, './uploads');
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + '_' + file.originalname);
-      },
-    }),
-  }))
-  async verifyregistration(@UploadedFile() file, @Body() data: VerifyregistratioDto): Promise<any> {
-    const pathfile = path.join(__dirname, `../../../uploads/` + file.filename);
-    const Sheets: ExcelSheet[] = xlsx.parse(pathfile);
-    const inscripcion: VerificarInscriprions = await sheetToObjPage(Sheets);
-    return await this.service.verificarInscription(inscripcion, data);
-  }
+    @Post('/verifyinscription')
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, './uploads');
+            },
+            filename: (req, file, cb) => {
+                cb(null, Date.now() + '_' + file.originalname);
+            },
+        }),
+    }))
+    async verifyregistration(@UploadedFile() file, @Body() data: VerifyregistratioDto): Promise<any> {
+        const pathfile = path.join(__dirname, `../../../uploads/` + file.filename);
+        const Sheets: ExcelSheet[] = xlsx.parse(pathfile);
+        const inscripcion: VerificarInscriprions = await sheetToObjPage(Sheets);
+        return await this.service.verificarInscription(inscripcion, data);
+    }
 }

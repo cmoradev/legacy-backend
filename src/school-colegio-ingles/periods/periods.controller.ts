@@ -1,9 +1,21 @@
 import { Controller } from '@nestjs/common';
-import { CrudController } from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { Periods } from './entities/periods.entity';
 import { PeriodsService } from './periods.service';
+import { Student } from '../students/entities/student.entity';
 
-@Controller('periods')
+@Crud({
+    model: {
+        type: Periods,
+    },
+    query: {
+        limit: 200,
+        join: {
+            periodsCycle: {},
+        },
+    },
+})
+@Controller()
 export class PeriodsController implements CrudController<Periods> {
     constructor(readonly service: PeriodsService) {
     }

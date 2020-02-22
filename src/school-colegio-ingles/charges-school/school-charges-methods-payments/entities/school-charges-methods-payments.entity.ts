@@ -26,9 +26,6 @@ export class SchoolChargesMethodsPayments extends Base {
     })
     quantity: number;
 
-    @ManyToOne(type => InvoicesBank, bank => bank.schoolChargesMethodsPayments)
-    Bank: InvoicesBank;
-
     @Column('date', {
         nullable: true,
     })
@@ -38,6 +35,9 @@ export class SchoolChargesMethodsPayments extends Base {
         nullable: true,
     })
     account: string;
+
+    @ManyToOne(type => InvoicesBank, bank => bank.schoolChargesMethodsPayments)
+    Bank: InvoicesBank;
     /**
      * Relación de un método de pago con una factura de metodo de pago
      */
