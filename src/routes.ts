@@ -88,6 +88,15 @@ import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/paymen
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
 import { SchoolPaymentsModule } from './school-colegio-ingles/school-payments/school-payments.module';
 import { PeriodsModule } from './school-colegio-ingles/periods/periods.module';
+import { ChargesSchoolModule } from './school-colegio-ingles/charges-school/charges-school.module';
+import { SchoolChargesModule } from './school-colegio-ingles/charges-school/school-charges/school-charges.module';
+import { SchoolChargesDetailsService } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.service';
+import { SchoolChargesDetailsModule } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.module';
+import { SchoolChargesInvoice } from './school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
+import { SchoolChargesInvoiceModule } from './school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.module';
+import { SchoolChargesMethodsPayments } from './school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-methods-payments/school-charges-methods-payments.module';
+import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
 
 export const routes: Routes = [
     {
@@ -134,6 +143,36 @@ export const routes: Routes = [
         path: '/school',
         module: SchoolColegioInglesModule,
         children: [
+            {
+                    path: '/charges',
+                module: ChargesSchoolModule,
+                children: [
+                    {
+                        path: '/',
+                        module: SchoolChargesModule,
+                    },
+                    {
+                        path: '/details',
+                        module: SchoolChargesDetailsModule,
+                    },
+                    {
+                        path: '/details-extra-charge',
+                        module: SchoolChargesDetailsModule,
+                    },
+                    {
+                        path: '/invoice',
+                        module: SchoolChargesInvoiceModule,
+                    },
+                    {
+                        path: '/payments',
+                        module: SchoolChargesPaymentsModule,
+                    },
+                    {
+                        path: '/methods-payment',
+                        module: SchoolChargesMethodsPaymentsModule,
+                    },
+                ],
+            },
             { path: '/school-payments', module: SchoolPaymentsModule },
             { path: '/payment-plans', module: PaymentPlansModule },
             { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
