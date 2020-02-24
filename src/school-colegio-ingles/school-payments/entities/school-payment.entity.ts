@@ -103,7 +103,7 @@ export class SchoolPayment extends Base {
         default: StatusPayment.Debit,
         enum: StatusPayment,
     })
-    conceptType: StatusPayment;
+    statusPayment: StatusPayment;
 
     @OneToOne(() => SchoolChargeDetails, (schoolCharge) => schoolCharge.schoolPayment)
     @JoinColumn()
