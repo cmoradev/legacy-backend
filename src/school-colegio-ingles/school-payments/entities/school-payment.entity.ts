@@ -4,6 +4,7 @@ import { SchoolChargeDetails } from '../../charges-school/school-charges-details
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 
+
 @Entity()
 export class SchoolPayment extends Base {
   @Column('varchar', {
@@ -36,14 +37,23 @@ export class SchoolPayment extends Base {
   })
   quantity: number;
 
-  @Column('date', {
+  @Column('int', {
     nullable: true,
   })
-  payDay: string | null;
-  @Column('date', {
+  payDay: number;
+  @Column('int', {
     nullable: true,
   })
-  paidDay: string | null;
+  payMonth: number;
+  @Column('int', {
+    nullable: true,
+  })
+  paidDay: number;
+  @Column('int', {
+    nullable: true,
+  })
+  paidMonth: number;
+
   @Column('varchar', {
     nullable: true,
   })
@@ -70,6 +80,15 @@ export class SchoolPayment extends Base {
     scale: 6,
   })
   iva: string;
+
+  @Column('date', {
+    nullable: true,
+  })
+  paidDate: Date;
+  @Column('date', {
+    nullable: true,
+  })
+  payDate: Date;
 
   @Column('boolean', {
     nullable: false,
