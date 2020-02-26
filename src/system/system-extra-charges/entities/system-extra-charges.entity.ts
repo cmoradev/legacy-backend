@@ -18,6 +18,7 @@ import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.enti
 import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { MiniStoreDetailsExtraCharges } from '../../../mini-store/store-sales/mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 export enum OperationApplicationEnum {
     sum = 'sum',
@@ -37,13 +38,7 @@ export enum ApplicationFormEnum {
 }
 
 @Entity('ac_descuentos')
-export class SystemExtraCharges {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class SystemExtraCharges extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -134,20 +129,6 @@ export class SystemExtraCharges {
         name: 'active',
     })
     isActive: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
     extraChargeSchool: SchoolChargesDetailsExtraCharges[];
