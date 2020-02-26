@@ -3,18 +3,10 @@ import { Base } from '../../../../common/orm/entities/base.entity';
 import { SystemExtraCharges } from '../../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
-
-export enum OperationApplicationEnum {
-    sum = 'sum',
-    subtraction = 'subtraction',
-    division = 'division',
-    multiplication = 'multiplication',
-}
-
-export enum TypeChargeApplicationEnum {
-    percentage = 1,
-    quantity = 2,
-}
+import {
+    OperationApplicationEnum,
+    TypeChargeApplicationEnum,
+} from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 
 @Entity('mini-store-details-extra-charges')
 export class MiniStoreDetailsExtraCharges extends Base {

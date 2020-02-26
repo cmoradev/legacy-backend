@@ -1,41 +1,15 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    RelationId,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { MiniStoreDetailsExtraCharges } from '../../../mini-store/store-sales/mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-
-export enum OperationApplicationEnum {
-    sum = 'sum',
-    subtraction = 'subtraction',
-    division = 'division',
-    multiplication = 'multiplication',
-}
-
-export enum TypeChargeApplicationEnum {
-    percentage = 1,
-    quantity = 2,
-}
-
-export enum ApplicationFormEnum {
-    Manual = 1,
-    Automatic = 2,
-}
+import {
+    ApplicationFormEnum,
+    OperationApplicationEnum,
+    TypeChargeApplicationEnum,
+} from '../enums/system-extra-charges.enum';
 
 @Entity('ac_descuentos')
 export class SystemExtraCharges extends Base {
@@ -59,7 +33,7 @@ export class SystemExtraCharges extends Base {
         enum: TypeChargeApplicationEnum,
         default: TypeChargeApplicationEnum.percentage,
     })
-    typeApplication: OperationApplicationEnum;
+    typeApplication: TypeChargeApplicationEnum;
 
     @Column({
         type: 'enum',

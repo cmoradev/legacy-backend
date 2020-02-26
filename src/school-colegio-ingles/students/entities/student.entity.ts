@@ -1,14 +1,9 @@
-import {
-    Column,
-    Entity, JoinColumn, ManyToOne, OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { Campus } from '../../campuses/entities/campus.entity';
 import { Family } from '../../families/entities/family.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
 import { AcademiesModality } from '../../../academy/academy-modalities/entities/academy-modality.entity';
-import { OperationApplicationEnum } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { TypeStudent } from '../interface/studentsSchool.interface';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
