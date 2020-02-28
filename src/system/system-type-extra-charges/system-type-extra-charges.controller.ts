@@ -10,6 +10,7 @@ import { SystemTypeExtraCharges } from './entities/system-type-extra-charges.ent
     query: {
         join: {
             systemTyExCharCharge: {},
+            'systemTyExCharCharge.extraChargesType': {},
         },
     },
 })
