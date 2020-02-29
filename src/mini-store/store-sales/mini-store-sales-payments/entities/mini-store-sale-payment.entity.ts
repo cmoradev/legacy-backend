@@ -40,6 +40,9 @@ export class MiniStoreSalePayment {
     })
     quantity: number;
 
+    /**
+     * Deprecated
+     */
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -47,6 +50,9 @@ export class MiniStoreSalePayment {
     })
     idSale: number;
 
+    /**
+     * Deprecated
+     */
     @Column('int', {
         nullable: true,
         default: () => '\'0\'',

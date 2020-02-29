@@ -104,7 +104,10 @@ export class MiniStoreSaleDetail {
     @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
     returnedProducts: SalesReturnsProducts;
 
-    @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.miniSaleChargeDetails)
+    @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.miniSaleChargeDetails,
+        {
+            cascade: ['insert'],
+        })
     extraCharges: MiniStoreDetailsExtraCharges[];
 
 }

@@ -1,9 +1,4 @@
-import {
-    Column,
-    Entity, JoinColumn, ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -11,6 +6,7 @@ import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-
 import { User } from '../../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
+import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {
@@ -29,20 +25,16 @@ export class MiniStoreSale {
     })
     folio: string;
 
-    @ManyToOne(type => User, (u) => u.sales)
-    @JoinColumn({
-        name: 'id_agente',
-        referencedColumnName: 'id',
-    })
-    agent: User;
+    // @Column('int', {
+    //     nullable: false,
+    //     default: () => '\'0\'',
+    //     name: 'id_agente',
+    // })
+    // idAgent: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_agente',
-    })
-    idAgent: number;
-
+    /**
+     * @Deprecated
+     */
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -86,6 +78,9 @@ export class MiniStoreSale {
     })
     codePaymentMethod: string | null;
 
+    /**
+     * @Deprecated
+     */
     @Column('varchar', {
         nullable: true,
         length: 5,
@@ -107,6 +102,9 @@ export class MiniStoreSale {
     })
     observations: string | null;
 
+    /**
+     * @Deprecated
+     */
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -126,12 +124,15 @@ export class MiniStoreSale {
     })
     reasonCancellation: string | null;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'ciclo',
-    })
-    cycle: number;
+    /**
+     * Deprecated
+     */
+        // @Column('int', {
+        //     nullable: false,
+        //     default: () => '\'0\'',
+        //     name: 'ciclo',
+        // })
+        // cycle: number;
 
     @Column('int', {
         nullable: false,
@@ -139,6 +140,10 @@ export class MiniStoreSale {
         name: 'iva',
     })
     iva: number;
+
+    /**
+     * Deprecated
+     */
     @Column('tinyint', {
         nullable: false,
         default: () => '\'0\'',
@@ -154,6 +159,9 @@ export class MiniStoreSale {
     })
     isDeferredPayments: boolean;
 
+    /**
+     * Deprecated
+     */
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -163,6 +171,9 @@ export class MiniStoreSale {
     })
     change: number;
 
+    /**
+     * Deprecated
+     */
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -171,12 +182,9 @@ export class MiniStoreSale {
     })
     stamping: boolean;
 
-    @Column('varchar', {
-        nullable: true,
-        length: 300,
-        name: 'uuid',
-    })
-    uuid: string | null;
+    @Column()
+    @Generated('uuid')
+    uuid: string;
 
     /**
      * Deprecated
@@ -188,6 +196,7 @@ export class MiniStoreSale {
     })
     idInvoice: number;
 
+    // hacer relacion, por defecto lleva 1
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -210,7 +219,10 @@ export class MiniStoreSale {
     })
     updatedAt: Date;
 
-    @OneToMany(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreSale)
+    @OneToMany(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreSale,
+        {
+            cascade: ['insert'],
+        })
     miniStoreSalePayments: MiniStoreSalePayment[];
 
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale)
@@ -227,5 +239,21 @@ export class MiniStoreSale {
 
     @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale)
     returnedProducts: SalesReturns[];
+
+    @ManyToOne(type => User, (u) => u.sales)
+    @JoinColumn({
+        name: 'id_agente',
+        referencedColumnName: 'id',
+    })
+    agent: User;
+
+    @ManyToOne(type => Cycle, (c) => c.sales, {
+        nullable: false,
+    })
+    @JoinColumn({
+        name: 'ciclo',
+        referencedColumnName: 'id',
+    })
+    cycle: Cycle;
 
 }
