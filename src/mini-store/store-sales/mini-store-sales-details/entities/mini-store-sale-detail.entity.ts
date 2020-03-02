@@ -36,7 +36,6 @@ export class MiniStoreSaleDetail {
 
     @Column('varchar', {
         nullable: true,
-        length: 8,
         name: 'product_name',
     })
     productName: string;
@@ -71,9 +70,13 @@ export class MiniStoreSaleDetail {
     })
     price: string;
 
+    /**
+     * @Deprecated
+     */
     @Column('int', {
         nullable: false,
         name: 'id_tie_venta',
+        default: 0,
     })
     idSale: number;
 

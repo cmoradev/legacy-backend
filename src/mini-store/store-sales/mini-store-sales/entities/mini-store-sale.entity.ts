@@ -225,10 +225,16 @@ export class MiniStoreSale {
         })
     miniStoreSalePayments: MiniStoreSalePayment[];
 
-    @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale)
+    @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale,
+        {
+            cascade: ['insert', 'update'],
+        })
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
-    @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale)
+    @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale,
+        {
+            cascade: ['insert'],
+        })
     miniStoreInvoices: MiniStoreInvoice[];
 
     @ManyToOne(() => User, (user) => user.miniStoreBillingSales)
@@ -237,7 +243,10 @@ export class MiniStoreSale {
     @ManyToOne(() => User, (user) => user.miniStoreCancelingSales)
     agentCanceling: User;
 
-    @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale)
+    @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale,
+        {
+            cascade: ['insert'],
+        })
     returnedProducts: SalesReturns[];
 
     @ManyToOne(type => User, (u) => u.sales)
