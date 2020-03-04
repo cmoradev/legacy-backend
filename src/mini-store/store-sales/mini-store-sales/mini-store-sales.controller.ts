@@ -13,6 +13,7 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
             miniStoreSalePayments: {},
             'miniStoreSalePayments.systemPaymentStatus': {},
             'miniStoreSalePayments.miniStoreInvoices': {},
+            'miniStoreSalePayments.agent': {},
             miniStoreSaleDetails: {},
             'miniStoreSaleDetails.miniStoreProduct': {},
             'miniStoreSaleDetails.extraCharges': {},
