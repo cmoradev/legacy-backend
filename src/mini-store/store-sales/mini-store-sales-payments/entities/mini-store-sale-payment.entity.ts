@@ -141,7 +141,10 @@ export class MiniStoreSalePayment {
     /**
      * Relación de un pago con sus metodos de pago
      */
-    @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.miniStoreSalePayment)
+    @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.miniStoreSalePayment,
+        {
+            cascade: ['insert', 'update'],
+        })
     miniStoreSaleMethodPayments: MiniStoreSaleMethodPayment[];
 
     /**

@@ -15,6 +15,7 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
             'miniStoreSalePayments.miniStoreInvoices': {},
             miniStoreSaleDetails: {},
             'miniStoreSaleDetails.miniStoreProduct': {},
+            'miniStoreSaleDetails.extraCharges': {},
             miniStoreInvoices: {},
             returnedProducts: {},
             'returnedProducts.agent': {},
