@@ -8,6 +8,7 @@ import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.servi
         type: MiniStoreSalePayment,
     },
     query: {
+        limit: 200,
         join: {
             miniStoreSale: {},
             SystemPaymentStatus: {},

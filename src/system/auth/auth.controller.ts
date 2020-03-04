@@ -27,8 +27,8 @@ export class AuthController {
         res.status(201).json(req.user);
     }
 
-    @UseGuards(SessionGuard)
-    @Post('logout')
+   // @UseGuards(SessionGuard)
+    @Get('logout')
     public logout(@Req() req, @Res() res) {
         req.session.destroy(() => {
             res.status(HttpStatus.OK).send({ status: true, message: 'Se ha cerrado sesión exitosamente' });
