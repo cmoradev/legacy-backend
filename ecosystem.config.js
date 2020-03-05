@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: 'colegio',
+    name: 'colegio-api-core',
     script: 'dist/main.js',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   {
-    name: 'rancho',
+    name: 'rancho-api-core',
     script: 'dist/main.js',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
@@ -34,7 +34,7 @@ module.exports = {
     }
   },
   {
-    name: 'refaccionaria-chan',
+    name: 'refaccionaria-chan-api-core',
     script: 'dist/main.js',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
@@ -49,6 +49,6 @@ module.exports = {
     env_production: {
       NODE_ENV: 'refaccionaria'
     },
-    
+
   }],
 };
