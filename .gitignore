@@ -5,6 +5,7 @@
 development.env
 production.env
 testing.env
+*.env
 
 # Carga de archivos
 /uploads
