@@ -13,7 +13,7 @@ export class ConfigService {
 
     constructor(filePath: string) {
         const config = dotenv.parse(fs.readFileSync(filePath));
-        // this.envConfig = this.validateInput(config);
+         // this.envConfig = this.validateInput(config);
         this.envConfig = this.validateInput(config);
     }
 
@@ -26,6 +26,7 @@ export class ConfigService {
     private validateInput(envConfig: EnvConfig): EnvConfig {
         const envVarsSchema: Joi.ObjectSchema = Joi.object({
             API_PORT: Joi.number().default(3000),
+            APP_NAME: Joi.string(),
             API_HOST: Joi.string().default('0.0.0.0'),
             API_AUTH_ENABLED: Joi.boolean().default(true),
             API_SECRET: Joi.string(),
