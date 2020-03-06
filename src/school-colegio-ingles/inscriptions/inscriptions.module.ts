@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inscription } from './entities/inscription.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { Student } from '../students/entities/student.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Inscription, Student], 'colegiodb'),
+        TypeOrmModule.forFeature([Inscription, Student], ColegioDBNameConnection),
         MulterModule.register({
             dest: './upload',
         }),

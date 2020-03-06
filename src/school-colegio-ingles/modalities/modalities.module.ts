@@ -3,10 +3,11 @@ import { ModalitiesController } from './modalities.controller';
 import { ModalitiesService } from './modalities.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Modality } from './entities/modality.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Modality], 'colegiodb'),
+        TypeOrmModule.forFeature([Modality], ColegioDBNameConnection),
     ],
     exports: [ModalitiesService],
     controllers: [ModalitiesController],

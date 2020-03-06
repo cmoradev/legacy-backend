@@ -3,9 +3,10 @@ import { PaymentPlanConceptsController } from './payment-plan-concepts.controlle
 import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentPlanConcept } from './entities/payment-plan-concept.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentPlanConcept], 'colegiodb')],
+  imports: [TypeOrmModule.forFeature([PaymentPlanConcept], ColegioDBNameConnection)],
   exports: [PaymentPlanConceptsService],
   controllers: [PaymentPlanConceptsController],
   providers: [PaymentPlanConceptsService],

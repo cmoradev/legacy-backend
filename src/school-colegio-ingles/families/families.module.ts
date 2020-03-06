@@ -3,9 +3,10 @@ import { FamiliesController } from './families.controller';
 import { FamiliesService } from './families.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Family } from './entities/family.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([ Family ], 'colegiodb') ],
+  imports: [ TypeOrmModule.forFeature([ Family ], ColegioDBNameConnection) ],
   exports: [ FamiliesService ],
   controllers: [FamiliesController],
   providers: [FamiliesService],

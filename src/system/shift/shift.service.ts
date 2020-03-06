@@ -4,11 +4,12 @@ import { Route } from '../routes/entities/route.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Shift } from './entities/shift.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class ShiftService extends TypeOrmCrudService<Shift> {
   constructor(
-    @InjectRepository(Shift, 'colegiodb') readonly repo: Repository<Shift>,
+    @InjectRepository(Shift, ColegioDBNameConnection) readonly repo: Repository<Shift>,
   ) {
     super(repo);
   }

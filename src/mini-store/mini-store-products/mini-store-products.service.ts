@@ -5,11 +5,12 @@ import { Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { DataConverter } from '../../common/excel-tools/data-converter';
 import { PriceProductsListReport } from './reports/price-products-list.report';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduct> {
     constructor(
-        @InjectRepository(MiniStoreProduct, 'colegiodb') readonly repo: Repository<MiniStoreProduct>,
+        @InjectRepository(MiniStoreProduct, ColegioDBNameConnection) readonly repo: Repository<MiniStoreProduct>,
     ) {
         super(repo);
     }

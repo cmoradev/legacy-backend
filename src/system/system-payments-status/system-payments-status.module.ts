@@ -3,9 +3,10 @@ import { SystemPaymentsStatusController } from './system-payments-status.control
 import { SystemPaymentsStatusService } from './system-payments-status.service';
 import { SystemPaymentStatus } from './entities/system-payment-status.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([SystemPaymentStatus], 'colegiodb')],
+    imports: [TypeOrmModule.forFeature([SystemPaymentStatus], ColegioDBNameConnection)],
     exports: [SystemPaymentsStatusService],
     controllers: [SystemPaymentsStatusController],
     providers: [SystemPaymentsStatusService],

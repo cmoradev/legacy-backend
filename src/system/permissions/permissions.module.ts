@@ -3,9 +3,10 @@ import { PermissionsController } from './permissions.controller';
 import { PermissionsService } from './permissions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Permission } from './entities/permission.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ Permission ], 'colegiodb')],
+  imports: [TypeOrmModule.forFeature([ Permission ], ColegioDBNameConnection)],
   controllers: [PermissionsController],
   providers: [PermissionsService],
 })

@@ -3,9 +3,10 @@ import { GradesService } from './grades.service';
 import { GradesController } from './grades.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Grade } from './entities/grade.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([Grade], 'colegiodb')],
+  imports: [ TypeOrmModule.forFeature([Grade], ColegioDBNameConnection)],
   exports: [GradesService],
   providers: [GradesService],
   controllers: [GradesController],

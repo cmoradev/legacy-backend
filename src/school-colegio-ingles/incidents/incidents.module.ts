@@ -3,10 +3,11 @@ import { IncidentsController } from './incidents.controller';
 import { IncidentsService } from './incidents.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Incident } from './entities/incident.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([ Incident ], 'colegiodb'),
+      TypeOrmModule.forFeature([ Incident ], ColegioDBNameConnection),
   ],
   controllers: [IncidentsController],
   providers: [IncidentsService],

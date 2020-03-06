@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ColegioDBService } from './databases/colegiodb.service';
+import { ColegioDBNameConnection, ColegioDBService } from './databases/colegiodb.service';
 import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegio-ingles.module';
 import { RouterModule } from 'nest-router';
 import { routes } from './routes';
@@ -30,7 +30,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
     imports: [
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
-            name: 'colegiodb',
+            name: ColegioDBNameConnection,
             useClass: ColegioDBService,
         }),
         MailerModule.forRoot({

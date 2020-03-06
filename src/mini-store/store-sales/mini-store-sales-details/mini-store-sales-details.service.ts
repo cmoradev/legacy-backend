@@ -7,10 +7,11 @@ import { TopTrendingProductsReport } from './reports/top-trending-products.repor
 import { DataConverter } from '../../../common/excel-tools/data-converter';
 import moment = require('moment');
 import { TopTrendingProduct } from './interfaces/top-trending-product.interface';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 
 @Injectable()
 export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSaleDetail> {
-    constructor(@InjectRepository(MiniStoreSaleDetail, 'colegiodb') readonly repo: Repository<MiniStoreSaleDetail>) {
+    constructor(@InjectRepository(MiniStoreSaleDetail, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSaleDetail>) {
         super(repo);
     }
 

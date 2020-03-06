@@ -12,8 +12,9 @@ export class ConfigService {
     private readonly envConfig: EnvConfig;
 
     constructor(filePath: string) {
+        console.log('varible de entorno ' + filePath);
         const config = dotenv.parse(fs.readFileSync(filePath));
-         // this.envConfig = this.validateInput(config);
+        // this.envConfig = this.validateInput(config);
         this.envConfig = this.validateInput(config);
     }
 
@@ -30,6 +31,7 @@ export class ConfigService {
             API_HOST: Joi.string().default('0.0.0.0'),
             API_AUTH_ENABLED: Joi.boolean().default(true),
             API_SECRET: Joi.string(),
+            DB_DBNAME_CONNECTION: Joi.string(),
             DB_DBNAME_COLEGIO_INGLES: Joi.string(),
             DB_USERNAME_COLEGIO_INGLES: Joi.string(),
             DB_PASSWORD_COLEGIO_INGLES: Joi.string(),
@@ -53,9 +55,9 @@ export class ConfigService {
      */
     public nodeEnvironment(): NodeEnv {
         const nodeEnvSchema = Joi.string()
-            .valid('development', 'production', 'test', 'staging' )
+            .valid('development', 'production', 'test', 'staging')
             .default('development');
-        const {error, value: nodeEnv} = nodeEnvSchema.validate<NodeEnv>(process.env.NODE_ENV as NodeEnv);
+        const { error, value: nodeEnv } = nodeEnvSchema.validate<NodeEnv>(process.env.NODE_ENV as NodeEnv);
 
         if (error) {
             throw new Error(`Config validation error: ${error.message}`);

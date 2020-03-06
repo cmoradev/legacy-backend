@@ -3,10 +3,11 @@ import { StudentsController } from './students.controller';
 import { StudentsService } from './students.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([Student ], 'colegiodb'),
+      TypeOrmModule.forFeature([Student ], ColegioDBNameConnection),
   ],
   exports: [StudentsService],
   controllers: [StudentsController],

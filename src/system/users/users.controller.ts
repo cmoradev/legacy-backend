@@ -6,6 +6,7 @@ import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Crud({
   model: {
@@ -40,7 +41,7 @@ import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.e
 export class UsersController implements CrudController<User> {
   constructor(
     readonly service: UsersService,
-    @InjectRepository(Teacher, 'colegiodb') readonly repoTeacher: Repository<Teacher>,
+    @InjectRepository(Teacher, ColegioDBNameConnection) readonly repoTeacher: Repository<Teacher>,
   ) {
   }
 

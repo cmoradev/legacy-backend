@@ -13,11 +13,12 @@ import { InvoiceProcessor } from './processor/invoice.processor';
 import { ReportInvoice } from './reports/invoice.report';
 import { InvoiceReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceCompanyService } from '../../../invoice/invoice-company/invoice-company.service';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
   constructor(
-    @InjectRepository(MiniStoreInvoice, 'colegiodb') readonly repo: Repository<MiniStoreInvoice>,
+    @InjectRepository(MiniStoreInvoice, ColegioDBNameConnection) readonly repo: Repository<MiniStoreInvoice>,
     readonly salesPaymentService: MiniStoreSalesPaymentsService,
     readonly userService: UsersService,
     readonly serviceInvoiceCompany: InvoiceCompanyService,

@@ -3,9 +3,10 @@ import { ClassroomPermissionController } from './classroom-permission.controller
 import { ClassroomPermissionService } from './classroom-permission.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassroomPermission } from './entities/classroom-permission.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([ClassroomPermission], 'colegiodb') ],
+  imports: [ TypeOrmModule.forFeature([ClassroomPermission], ColegioDBNameConnection) ],
   exports: [ ClassroomPermissionService ],
   controllers: [ClassroomPermissionController],
   providers: [ClassroomPermissionService],

@@ -3,11 +3,12 @@ import { Repository } from 'typeorm';
 import { StudyPlanVariant } from './entities/study-plan-variants.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class StudyPlanVariantsService extends TypeOrmCrudService<StudyPlanVariant> {
     constructor(
-        @InjectRepository(StudyPlanVariant, 'colegiodb') readonly repo: Repository<StudyPlanVariant>,
+        @InjectRepository(StudyPlanVariant, ColegioDBNameConnection) readonly repo: Repository<StudyPlanVariant>,
     ) {
         super(repo);
     }

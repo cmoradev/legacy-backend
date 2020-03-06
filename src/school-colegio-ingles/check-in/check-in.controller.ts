@@ -23,6 +23,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AcademicService } from '../../integrations/academic/academic.service';
 import {List} from 'immutable';
 import { AcademicStudent } from '../../integrations/academic/interfaces/academic-student.interface';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 @Crud({
     model: {
         type: CheckIn,
@@ -37,7 +38,7 @@ import { AcademicStudent } from '../../integrations/academic/interfaces/academic
 export class CheckInController implements CrudController<CheckIn> {
     constructor(
       readonly service: CheckInService,
-      @InjectRepository(Department, 'colegiodb')
+      @InjectRepository(Department, ColegioDBNameConnection)
       private readonly departmentRepository: Repository<Department>,
       private readonly academicService: AcademicService,
       ) {}

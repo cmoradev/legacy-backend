@@ -6,10 +6,11 @@ import { CheckIn } from './entities/check-in.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { Department } from '../../system/departments/entities/department.entity';
 import { IntegrationsModule } from '../../integrations/integrations.module';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([CheckIn, Department], 'colegiodb'),
+      TypeOrmModule.forFeature([CheckIn, Department], ColegioDBNameConnection),
       MulterModule.register({
         dest: '/signatures',
       }),

@@ -3,11 +3,12 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Permission } from './entities/permission.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class PermissionsService extends TypeOrmCrudService<Permission> {
     constructor(
-        @InjectRepository(Permission, 'colegiodb') readonly repo: Repository<Permission>,
+        @InjectRepository(Permission, ColegioDBNameConnection) readonly repo: Repository<Permission>,
     ) {
         super(repo);
     }

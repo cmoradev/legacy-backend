@@ -3,9 +3,10 @@ import { AssignmentIncriptionController } from './assignment-incription.controll
 import { AssignmentIncriptionService } from './assignment-incription.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AssignmentInscription } from './entities/assignment-inscription.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Module({
-  imports: [ TypeOrmModule.forFeature([ AssignmentInscription ], 'colegiodb') ],
+  imports: [ TypeOrmModule.forFeature([ AssignmentInscription ], ColegioDBNameConnection) ],
   exports: [ AssignmentIncriptionService ],
   controllers: [AssignmentIncriptionController],
   providers: [AssignmentIncriptionService],

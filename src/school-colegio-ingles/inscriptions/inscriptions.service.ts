@@ -6,12 +6,13 @@ import { Repository } from 'typeorm';
 import { Student } from '../students/entities/student.entity';
 import { VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
   constructor(
-    @InjectRepository(Inscription, 'colegiodb') readonly inscriptions: Repository<Inscription>,
-    @InjectRepository(Student, 'colegiodb') readonly student: Repository<Student>,
+    @InjectRepository(Inscription, ColegioDBNameConnection) readonly inscriptions: Repository<Inscription>,
+    @InjectRepository(Student, ColegioDBNameConnection) readonly student: Repository<Student>,
   ) {
     super(inscriptions);
   }

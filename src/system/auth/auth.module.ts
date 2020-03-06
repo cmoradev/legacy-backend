@@ -14,6 +14,7 @@ import { Department } from '../departments/entities/department.entity';
 import { Role } from '../roles/entities/role.entity';
 import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
 import { UsersModule } from '../users/users.module';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 // tslint:disable-next-line:no-var-requires
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -22,7 +23,7 @@ const MySQLStore = require('express-mysql-session')(session);
         UsersModule,
         PassportModule,
         ConfigModule,
-        TypeOrmModule.forFeature([Department, Role, Campus], 'colegiodb'),
+        TypeOrmModule.forFeature([Department, Role, Campus], ColegioDBNameConnection),
       JwtModule.registerAsync({
           useClass: JwtConfigService,
           imports: [ConfigModule],

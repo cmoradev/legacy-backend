@@ -5,11 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { StatusInvoce } from '../../invoice/interface/StatusInvoce.interface';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
   constructor(
-    @InjectRepository(User, 'colegiodb') readonly repo: Repository<User>,
+    @InjectRepository(User, ColegioDBNameConnection) readonly repo: Repository<User>,
   ) {
     super(repo);
   }

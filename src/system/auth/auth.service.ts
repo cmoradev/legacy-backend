@@ -8,6 +8,7 @@ import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.ent
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 interface UserBody {
     name: string;
@@ -25,11 +26,11 @@ interface UserBody {
 export class AuthService {
     constructor(
         private readonly usersService: UsersService,
-        @InjectRepository(Role, 'colegiodb')
+        @InjectRepository(Role, ColegioDBNameConnection)
         private readonly roleRepository: Repository<Role>,
-        @InjectRepository(Department, 'colegiodb')
+        @InjectRepository(Department, ColegioDBNameConnection)
         private readonly departmentRepository: Repository<Department>,
-        @InjectRepository(Campus, 'colegiodb')
+        @InjectRepository(Campus, ColegioDBNameConnection)
         private readonly campusRepository: Repository<Campus>,
         private readonly jwtService: JwtService,
 

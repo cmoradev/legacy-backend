@@ -6,6 +6,7 @@ import { Between, Repository } from 'typeorm';
 
 import { Department } from '../../system/departments/entities/department.entity';
 import { DateQueryObject } from '../../common/time-utils';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 export enum StatusCheckIn {
     Inside = 'Inside',
@@ -17,9 +18,9 @@ export enum StatusCheckIn {
 @Injectable()
 export class CheckInService extends TypeOrmCrudService<CheckIn> {
     constructor(
-      @InjectRepository(CheckIn, 'colegiodb')
+      @InjectRepository(CheckIn, ColegioDBNameConnection)
       readonly checkinRepository: Repository<CheckIn>,
-      @InjectRepository(Department, 'colegiodb')
+      @InjectRepository(Department, ColegioDBNameConnection)
       readonly departmentRepository: Repository<Department>,
     ) {
         super(checkinRepository);

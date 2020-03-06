@@ -6,11 +6,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SimpleReport } from '../mini-store-sales-payments/reports/simple.report';
 import { ExcelSheet } from '../../../common/sheets/interfaces/excel.interface';
 import * as Excel from 'exceljs';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
     constructor(
-        @InjectRepository(MiniStoreSale, 'colegiodb') readonly repo: Repository<MiniStoreSale>,
+        @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSale>,
     ) {
         super(repo);
     }
