@@ -13,6 +13,7 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
         type: User,
     },
     query: {
+        exclude: ['password', 'rememberToken'],
         join: {
             teacher: {}, // Teacher;
             role: {},
