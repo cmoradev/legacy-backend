@@ -16,10 +16,8 @@ export class UsersService extends TypeOrmCrudService<User> {
   }
 
   public async create(createUserDto: Partial<User>): Promise<User> {
-    let { password } = createUserDto;
-    const { name, email, ...userOther } = createUserDto;
-    password = await hash(password, 8);
-    return this.repo.create({ name, email, password, ...userOther });
+    createUserDto.password = await hash(createUserDto.password, 8);
+    return this.repo.create({...createUserDto });
   }
 
   public async save(user: User): Promise<User> {

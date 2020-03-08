@@ -236,48 +236,54 @@ export class SimpleReport {
         const paymentsDetails = [];
         let startRow = 15;
         payments.forEach(payment => {
-            const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            let studentType = '';
-            switch (payment.miniStoreSale.student.typeStudent) {
-                case TypeStudent.externo:
-                    studentType = 'Externo';
-                    break;
-                case TypeStudent.student:
-                    studentType = 'Alumno';
-                    break;
-                default:
-                    studentType = 'Prospecto';
-                    break;
-            }
-            const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
-            if (nextRowToMerge > startRow) {
-                ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
-                    paymentsSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
+            if (payment.miniStoreSale) {
+
+
+                const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
+                const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+                let studentType = '';
+                switch (payment.miniStoreSale.student.typeStudent) {
+                    case TypeStudent.externo:
+                        studentType = 'Externo';
+                        break;
+                    case TypeStudent.student:
+                        studentType = 'Alumno';
+                        break;
+                    default:
+                        studentType = 'Prospecto';
+                        break;
+                }
+                const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
+                if (nextRowToMerge > startRow) {
+                    ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
+                        paymentsSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
+                    });
+                    startRow = nextRowToMerge;
+                }
+                payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
+                    const paymentItem = [];
+                    const totalPaymentsAmount = payment.miniStoreSaleMethodPayments.reduce((previousValue, currentValue) => {
+                        return previousValue + currentValue.quantity;
+                    }, 0);
+                    paymentItem.push(payment.createdAt || '');
+                    paymentItem.push(payment.agent.name);
+                    paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
+                    paymentItem.push(payment.folio);
+                    paymentItem.push(payment.miniStoreSale.folio);
+                    paymentItem.push(studentType);
+                    paymentItem.push(payment.miniStoreSale.student.matricula);
+                    paymentItem.push(fullName);
+                    paymentItem.push(payment.miniStoreSale.observations || '');
+                    paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
+                    paymentItem.push(paymentMethod.quantity);
+                    paymentItem.push(payment.change);
+                    paymentItem.push(totalPaymentsAmount - payment.change);
+                    paymentsDetails.push(paymentItem);
                 });
-                startRow = nextRowToMerge;
+                startRow += 1;
+            } else {
+                console.log(payment)
             }
-            payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
-                const paymentItem = [];
-                const totalPaymentsAmount = payment.miniStoreSaleMethodPayments.reduce((previousValue, currentValue) => {
-                    return previousValue + currentValue.quantity;
-                }, 0);
-                paymentItem.push(payment.createdAt || '');
-                paymentItem.push(payment.agent.name);
-                paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
-                paymentItem.push(payment.folio);
-                paymentItem.push(payment.miniStoreSale.folio);
-                paymentItem.push(studentType);
-                paymentItem.push(payment.miniStoreSale.student.matricula);
-                paymentItem.push(fullName);
-                paymentItem.push(payment.miniStoreSale.observations || '');
-                paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
-                paymentItem.push(paymentMethod.quantity);
-                paymentItem.push(payment.change);
-                paymentItem.push(totalPaymentsAmount - payment.change);
-                paymentsDetails.push(paymentItem);
-            });
-            startRow += 1;
         });
 
         paymentsSheet.addTable({

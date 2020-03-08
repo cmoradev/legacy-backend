@@ -80,6 +80,7 @@ export class AuthService {
                 'role', 'campus', 'department', 'role.permissions', 'role.permissions.route', 'role.permissions.route.actions',
                 ],
             });
+        console.log(user)
         if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
             const { password, ...result } = user;
             return result;
