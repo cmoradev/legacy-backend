@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 
 @Crud({
     model: {
@@ -108,6 +109,24 @@ export class UsersController implements CrudController<User> {
             } else {
                 const result = await this.service.save(await this.service.create(userBody));
                 res.send(result);
+            }
+        } catch (e) {
+            res.status(401);
+            res.send(e);
+        }
+    }
+
+    @Post('update-password')
+    async updatePassword(@Body() userBody: UpdatePasswordDto, @Req() req, @Res() res: Response) {
+        try {
+            const { id } = userBody;
+            const user: User | undefined = await this.service.findOne({ id });
+            if (user) {
+                const result = await this.service.save(await this.service.changePassword(userBody));
+                res.send({ msg: 'password change' });
+            } else {
+                res.status(401);
+                res.send({ msg: 'user no exist' });
             }
         } catch (e) {
             res.status(401);

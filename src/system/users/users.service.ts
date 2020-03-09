@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { StatusInvoce } from '../../invoice/interface/StatusInvoce.interface';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
@@ -16,6 +17,11 @@ export class UsersService extends TypeOrmCrudService<User> {
   }
 
   public async create(createUserDto: Partial<User>): Promise<User> {
+    createUserDto.password = await hash(createUserDto.password, 8);
+    return this.repo.create({...createUserDto });
+  }
+
+  public async changePassword(createUserDto: UpdatePasswordDto): Promise<User> {
     createUserDto.password = await hash(createUserDto.password, 8);
     return this.repo.create({...createUserDto });
   }
