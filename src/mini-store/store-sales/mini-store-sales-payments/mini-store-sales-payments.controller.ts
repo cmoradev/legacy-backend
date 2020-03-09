@@ -2,6 +2,8 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
+import { convertPaymentsReport } from './reports/payments.util';
+import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 
 @Crud({
     model: {
@@ -21,6 +23,7 @@ import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.servi
 export class MiniStoreSalesPaymentsController implements CrudController<MiniStoreSalePayment> {
     constructor(
         readonly service: MiniStoreSalesPaymentsService,
+        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
     ) {
     }
 
@@ -34,15 +37,34 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         startDate: Date,
         endDate: Date,
         cashier?: number,
-        onlyFile?: boolean,
+        onlyFile: boolean,
         invoiceStatus?: number,
     }) {
 
         const payments = await this.service.fetchFilteredPayments(query);
         const sales = await this.service.fetchFilteredSales(query);
         const salesReturns = await this.service.fetchFilteredReturns(query);
-        const result = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
-        response.status(200);
-        response.send(query.onlyFile ? result : payments);
+        const result = {
+            payments: {
+                matriz: [],
+                payments: [],
+            },
+            sales: [],
+            returns: [],
+            file: '',
+        };
+        console.log(query.onlyFile)
+        if (query.onlyFile) {
+            result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
+        } else {
+            const cashiers = await this.service.getUserCasher();
+            const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find();
+            const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
+            result.payments = viewPayments;
+        }
+        response.send(result);
+        //
+        // response.status(200);
+        // response.send(query.onlyFile ? result : payments);
     }
 }

@@ -127,16 +127,29 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return await salesQueryBuilder.getMany();
     }
 
+    public async getUserCasher(): Promise<User[]> {
+        const cashiersAndSales = await this.userRepository.find({
+            relations: [ 'salePayments', 'department'],
+            select: ['id', 'name'],
+        });
+        const cashiers = cashiersAndSales.filter(cashier => {
+            if (cashier.department !== null && cashier.department.id === 2 || cashier.salePayments.length > 0) {
+                return cashier;
+            }
+        });
+        return cashiers;
+    }
+
     async simpleReport(payments: MiniStoreSalePayment[], sales: MiniStoreSale[], salesReturns: SalesReturns[],
                        options?: { base64: boolean }): Promise<string | any> {
         const cashiersAndSales = await this.userRepository.find({
-            relations: ['salePayments', 'department'],
+            relations: ['salePayments', 'department', 'role'],
         });
 
         const paymentMethods = await this.invoiceMethodPaymentRepository.find();
 
         const cashiers = cashiersAndSales.filter(cashier => {
-            if (cashier.department !== null && cashier.department.id === 2 || cashier.salePayments.length > 0) {
+            if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.salePayments.length > 0) {
                 return cashier;
             }
         });

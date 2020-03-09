@@ -237,8 +237,6 @@ export class SimpleReport {
         let startRow = 15;
         payments.forEach(payment => {
             if (payment.miniStoreSale) {
-
-
                 const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
                 const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
                 let studentType = '';
