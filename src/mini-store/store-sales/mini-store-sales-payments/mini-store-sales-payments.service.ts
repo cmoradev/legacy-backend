@@ -129,7 +129,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
     public async getUserCasher(): Promise<User[]> {
         const cashiersAndSales = await this.userRepository.find({
-            relations: [ 'salePayments', 'department'],
+            relations: ['salePayments', 'department'],
             select: ['id', 'name'],
         });
         const cashiers = cashiersAndSales.filter(cashier => {
@@ -146,7 +146,12 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             relations: ['salePayments', 'department', 'role'],
         });
 
-        const paymentMethods = await this.invoiceMethodPaymentRepository.find();
+        const paymentMethods = await this.invoiceMethodPaymentRepository.find({
+            where: {
+                showReport: true,
+                isActive: true,
+            },
+        });
 
         const cashiers = cashiersAndSales.filter(cashier => {
             if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.salePayments.length > 0) {

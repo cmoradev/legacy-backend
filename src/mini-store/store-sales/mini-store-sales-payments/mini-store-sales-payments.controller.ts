@@ -58,7 +58,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
         } else {
             const cashiers = await this.service.getUserCasher();
-            const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find();
+            const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
+                where: {
+                    showReport: true,
+                    isActive: true,
+                },
+            });
             const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
             result.payments = viewPayments;
         }
