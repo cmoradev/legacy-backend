@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
+import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
 
@@ -41,4 +41,15 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     get base(): CrudController<MiniStoreSale> {
         return this;
     }
+
+    @Override()
+    async createOne(
+        @ParsedRequest() req: CrudRequest,
+        @ParsedBody() dto: MiniStoreSale,
+    ) {
+        const sale = await this.base.createOneBase(req, dto);
+        sale.folio += sale.id;
+        return sale;
+    }
+
 }

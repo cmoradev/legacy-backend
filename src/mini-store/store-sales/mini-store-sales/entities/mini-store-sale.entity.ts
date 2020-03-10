@@ -1,4 +1,13 @@
-import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    AfterInsert,
+    Column,
+    Entity,
+    Generated,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -265,4 +274,8 @@ export class MiniStoreSale {
     })
     cycle: Cycle;
 
+    @AfterInsert()
+    resetCounters() {
+        this.folio = 'asdsada';
+    }
 }
