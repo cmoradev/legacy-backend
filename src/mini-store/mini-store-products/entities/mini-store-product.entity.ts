@@ -36,7 +36,7 @@ export class MiniStoreProduct {
 
     @Column('varchar', {
         nullable: false,
-        length: 11,
+        length: 200,
         name: 'codigo',
     })
     code: string;
