@@ -12,10 +12,12 @@ import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-
     query: {
         limit: 200,
         join: {
-            miniStoreSale: {},
-            SystemPaymentStatus: {},
+            agent: {},
             miniStoreSaleMethodPayments: {},
+            'miniStoreSaleMethodPayments.invoiceMethodPayment': {},
+            systemPaymentStatus: {},
             miniStoreInvoices: {},
+            miniStoreSale: {},
         },
     },
 })
@@ -53,7 +55,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             returns: [],
             file: '',
         };
-        console.log(query.onlyFile)
+        console.log(query.onlyFile);
         if (query.onlyFile) {
             result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
         } else {
