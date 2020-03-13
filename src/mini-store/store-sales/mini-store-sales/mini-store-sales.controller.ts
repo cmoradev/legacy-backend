@@ -11,7 +11,6 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
         join: {
             student: {},
             miniStoreSalePayments: {},
-            'miniStoreSalePayments.systemPaymentStatus': {},
             'miniStoreSalePayments.miniStoreInvoices': {},
             'miniStoreSalePayments.agent': {},
             'miniStoreSalePayments.miniStoreSaleMethodPayments': {},

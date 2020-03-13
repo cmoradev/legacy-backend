@@ -15,7 +15,6 @@ import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-
             agent: {},
             miniStoreSaleMethodPayments: {},
             'miniStoreSaleMethodPayments.invoiceMethodPayment': {},
-            systemPaymentStatus: {},
             miniStoreInvoices: {},
             miniStoreSale: {},
         },
