@@ -8,14 +8,15 @@ import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini
 import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
 import { InvoiceKeys } from '../invoice/invoice-keys/entities/invoice-keys.entity';
+import { MiniStoreProduct } from '../mini-store/mini-store-products/entities/mini-store-product.entity';
 
 /**
  * TODO: borrar, es solo para pruebas
  */
 interface Product {
-    unitMeasurement: number;
     productName: string;
-    classification: string;
+    classification: number;
+    unitMeasurement: string;
     barcode: string;
     stock: number;
     minStock: number;
@@ -48,57 +49,59 @@ export class XlsImporterController {
         const workBook = xlsx.read(uploadedFile);
         const products: any = this.xlsWorkbookToJSON<Product>(workBook, {
             defaultValue: null,
-            range: 'A2:K265',
+            range: 'B7:L336',
             headers: [
-                'unitMeasurement',
                 'productName',
                 'classification',
+                'unitMeasurement',
                 'barcode',
                 'stock',
                 'minStock',
                 'maxStock',
                 'price',
                 'providerPrice',
-                'priceList',
                 'serieFact',
+                'priceList',
             ],
         });
-        for (const product of products.Hoja1) {
-            const classifications = {
-                'PANES Y GALLETAS': 1,
-                'BOTANAS': 2,
-                'GOLOCINAS': 3,
-                'LACTEOS': 4,
-                'REFRESCOS, AGUAS Y JUGOS': 5,
-                'ABARROTES': 6,
-                'CARNES FRIAS': 7,
-                'CARNES FRESCAS': 8,
-            };
-            const classification = classifications[product.classification];
-            this.miniStoreProductsService.createProduct({
+        for (const product of (products.Hoja1 as Product[])) {
+            // const classifications = {
+            //     'PANES Y GALLETAS': 1,
+            //     'BOTANAS': 2,
+            //     'GOLOCINAS': 3,
+            //     'LACTEOS': 4,
+            //     'REFRESCOS, AGUAS Y JUGOS': 5,
+            //     'ABARROTES': 6,
+            //     'CARNES FRIAS': 7,
+            //     'CARNES FRESCAS': 8,
+            // };
+            // const classification = classifications[product.classification];
+            const productToAdd = {
                 name: product.productName,
                 description: product.productName,
                 code: 'NOCODE',
                 codeBar: product.barcode ? product.barcode : 'NOCODE',
                 isActive: true,
-                price: '0.000000',
-                priceWithIVA: '0.000000',
-                priceProvider: '0.000000',
+                price: (+product.price / (1.16)).toFixed(6),
+                priceWithIVA: (+product.price).toFixed(6),
+                priceProvider: (+product.price).toFixed(6),
                 IVA: true,
-                stock: 500,
-                minStock: 10,
-                maxStock: 1200,
+                stock: product.stock,
+                minStock: product.minStock,
+                maxStock: product.maxStock,
                 unity: 'Pieza',
-                unitMeasurement: product.unitMeasurement,
+                unitMeasurement: 1,
                 idPriceList: 4,
-                idClassification: classification,
+                idClassification: product.classification,
                 idInvoiceKey: 1,
-                storePriceList: { id: 4 } as MiniStorePriceList,
-                storeClassification: { id: classification } as MiniStoreClassification,
+                storePriceList: { id: product.priceList } as MiniStorePriceList,
+                storeClassification: { id: product.classification } as MiniStoreClassification,
                 miniStoreWarehouseOrdersProducts: [],
-                storeInvoiceKey: { id: 1 } as InvoiceKeys,
-                miniStoreSaleDetails: [],
-            });
+                storeInvoiceKey: { id: product.serieFact } as InvoiceKeys,
+            } as MiniStoreProduct;
+
+            // descomentar en caso de querer cargar productos al sistema a través de excel
+            // this.miniStoreProductsService.createProduct(productToAdd);
         }
 
     }
