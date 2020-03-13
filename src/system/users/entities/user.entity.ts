@@ -183,7 +183,7 @@ export class User {
     @OneToMany(type => MiniStoreSalePayment, mssp => mssp.agent)
     salePayments: MiniStoreSalePayment[];
 
-    @OneToMany(type => MiniStoreSale, (ms) => ms.agent)
+    @OneToMany(type => MiniStoreSale, (ms) => ms.cashier)
     sales: MiniStoreSale[];
 
     @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.cashier)

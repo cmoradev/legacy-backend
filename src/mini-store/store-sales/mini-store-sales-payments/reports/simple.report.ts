@@ -389,7 +389,7 @@ export class SimpleReport {
                 salesRowItem.push(studentType);
                 salesRowItem.push(student.matricula);
                 salesRowItem.push(fullName);
-                salesRowItem.push(sale.agent.name);
+                salesRowItem.push(sale.cashier.name);
                 salesRowItem.push(detail.quantity);
                 salesRowItem.push(detail.miniStoreProduct.name);
                 salesRowItem.push(productPrice);

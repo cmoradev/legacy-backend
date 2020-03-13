@@ -267,7 +267,7 @@ export class MiniStoreSale {
         name: 'id_agente',
         referencedColumnName: 'id',
     })
-    agent: User;
+    cashier: User;
 
     @ManyToOne(type => Cycle, (c) => c.sales, {
         nullable: false,

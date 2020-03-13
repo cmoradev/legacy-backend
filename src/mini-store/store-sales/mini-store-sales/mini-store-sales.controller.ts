@@ -9,6 +9,7 @@ import { MiniStoreSalesService } from './mini-store-sales.service';
     },
     query: {
         join: {
+            cashier: {},
             student: {},
             miniStoreSalePayments: {},
             'miniStoreSalePayments.miniStoreInvoices': {},
