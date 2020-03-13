@@ -4,4 +4,5 @@ export enum StatusPayment {
     Condoned = 3, // Condonado/Perdonado
     Cancelled = 4, // Cancelado
     Abonar = 5, // Abonado
+    quotation = 6, // Cotizacion
 }

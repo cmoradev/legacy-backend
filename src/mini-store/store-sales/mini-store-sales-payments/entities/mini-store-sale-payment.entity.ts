@@ -4,6 +4,7 @@ import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payme
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../../system/users/entities/user.entity';
+import { StatusPayment } from '../../../../school-colegio-ingles/school-payments/enums/statusPayment';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment {
@@ -53,12 +54,14 @@ export class MiniStoreSalePayment {
     /**
      * Deprecated
      */
-    @Column('int', {
-        nullable: true,
-        default: () => '\'0\'',
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
+        nullable: false,
         name: 'id_estado_pago',
     })
-    idStatusPayment: number | null;
+    idStatusPayment: StatusPayment;
 
     @ManyToOne(type => User, user => user.salePayments)
     @JoinColumn({
@@ -132,11 +135,14 @@ export class MiniStoreSalePayment {
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSalePayments)
     miniStoreSale: MiniStoreSale;
 
-    /**
-     * Relación de un pago con un status de pago
-     */
-    @ManyToOne(() => SystemPaymentStatus, (systemPaymentStatus) => systemPaymentStatus.miniStoreSalePayments)
-    systemPaymentStatus: SystemPaymentStatus;
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
+        nullable: false,
+        name: 'systemPaymentStatusId',
+    })
+    paymentStatus: StatusPayment;
 
     /**
      * Relación de un pago con sus metodos de pago

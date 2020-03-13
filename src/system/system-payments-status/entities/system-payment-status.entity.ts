@@ -34,9 +34,6 @@ export class SystemPaymentStatus {
     })
     updatedAt: Date;
 
-    @OneToMany(() => MiniStoreSalePayment, (miniStorePayment) => miniStorePayment.systemPaymentStatus)
-    miniStoreSalePayments: MiniStoreSalePayment[];
-
     @OneToMany(() => SchoolChargePayment, (schoolChargePayment) => schoolChargePayment.paymentStatus)
     schoolChargePayments: SchoolChargePayment[];
 

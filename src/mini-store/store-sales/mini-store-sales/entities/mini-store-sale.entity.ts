@@ -16,6 +16,8 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
+import { StatusPayment } from '../../../../school-colegio-ingles/school-payments/enums/statusPayment';
+import { FixedAssetAssignmentStatus } from '../../../../fixed-assets-control/fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale {
@@ -98,12 +100,14 @@ export class MiniStoreSale {
     })
     codeWayToPay: string | null;
 
-    @Column('int', {
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
         nullable: false,
-        default: () => '\'0\'',
         name: 'id_estado_pago',
     })
-    idStatusPayment: number;
+    statusSale: StatusPayment;
 
     @Column('text', {
         nullable: true,
@@ -274,8 +278,4 @@ export class MiniStoreSale {
     })
     cycle: Cycle;
 
-    @AfterInsert()
-    resetCounters() {
-        this.folio = 'asdsada';
-    }
 }
