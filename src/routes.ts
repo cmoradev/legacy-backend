@@ -97,6 +97,7 @@ import { SchoolChargesInvoiceModule } from './school-colegio-ingles/charges-scho
 import { SchoolChargesMethodsPayments } from './school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-methods-payments/school-charges-methods-payments.module';
 import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
+import { StatsModule } from './system/stats/stats.module';
 
 export const routes: Routes = [
     {
@@ -137,6 +138,7 @@ export const routes: Routes = [
             { path: '/shift', module: ShiftModule },
             { path: '/extra-charges', module: SystemExtraChargesModule },
             { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
+            { path: '/stats', module: StatsModule },
         ],
     },
     {
