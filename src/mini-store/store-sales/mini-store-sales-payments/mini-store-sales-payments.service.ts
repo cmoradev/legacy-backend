@@ -100,7 +100,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         invoiceStatus?: number,
     }): Promise<MiniStoreSale[]> {
         const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale');
-        salesQueryBuilder.leftJoinAndSelect('sale.agent', 'agent');
+        salesQueryBuilder.leftJoinAndSelect('sale.cashier', 'agent');
         salesQueryBuilder.leftJoinAndSelect('sale.student', 'student');
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSaleDetails', 'details');
