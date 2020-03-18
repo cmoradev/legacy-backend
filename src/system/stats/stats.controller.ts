@@ -14,4 +14,14 @@ export class StatsController {
     }) {
         return this.statsService.salesRevenue(query);
     }
+
+    @Get('sales-by-month-of-year')
+    salesByMonthOfYear(@Query() query: { year: string }) {
+        return this.statsService.salesByMonthsOfYear(query);
+    }
+
+    @Get('monthly-payment-methods-incomes')
+    incomesByPaymentMethodAndMonthsOfYear(@Query() query: { year: string }) {
+        return this.statsService.incomesByPaymentMethodAndMonthsOfYear(query);
+    }
 }
