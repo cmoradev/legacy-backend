@@ -5,10 +5,9 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreWarehouseOrderProduct} from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
-import {MiniStoreWarehouseProvider} from '../../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
+import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
+import { MiniStoreWarehouseProvider } from '../../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
 import { User } from '../../../system/users/entities/user.entity';
-
 
 @Entity('tie_almacen_pedidos')
 export class MiniStoreWarehouseOrder {
@@ -25,12 +24,6 @@ export class MiniStoreWarehouseOrder {
         name: 'folio',
     })
     folio: string | null;
-
-    @Column('int', {
-        nullable: false,
-        name: 'id_proveedor',
-    })
-    idProvider: number;
 
     @Column('date', {
         nullable: true,
@@ -73,20 +66,6 @@ export class MiniStoreWarehouseOrder {
         name: 'is_iva',
     })
     isIVA: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_agente_creador',
-    })
-    idCreatorAgent: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_agente_editor',
-    })
-    idEditorAgent: number;
 
     @Column('timestamp', {
         nullable: false,
