@@ -18,18 +18,6 @@ export class MiniStoreWarehouseOrderProduct {
 
     @Column('int', {
         nullable: false,
-        name: 'id_pedido',
-    })
-    idOrder: number;
-
-    @Column('int', {
-        nullable: false,
-        name: 'id_producto',
-    })
-    idProduct: number;
-
-    @Column('int', {
-        nullable: false,
         name: 'cantidad_solicitada',
     })
     requestedAmount: number;

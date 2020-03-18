@@ -10,6 +10,7 @@ import { MiniStoreWarehouseOrdersService } from './mini-store-warehouse-orders.s
     query: {
         join: {
             miniStoreWareHouseOrdersProducts: {},
+            'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
             miniStoreWarehouseProvider: {},
         },
     },
