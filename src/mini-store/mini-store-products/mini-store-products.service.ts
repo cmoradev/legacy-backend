@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MiniStoreProduct } from './entities/mini-store-product.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { DataConverter } from '../../common/excel-tools/data-converter';
+import { DataConverter } from '../../common/office/excel-tools/data-converter';
 import { PriceProductsListReport } from './reports/price-products-list.report';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 

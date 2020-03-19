@@ -4,7 +4,7 @@ import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TopTrendingProductsReport } from './reports/top-trending-products.report';
-import { DataConverter } from '../../../common/excel-tools/data-converter';
+import { DataConverter } from '../../../common/office/excel-tools/data-converter';
 import moment = require('moment');
 import { TopTrendingProduct } from './interfaces/top-trending-product.interface';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';

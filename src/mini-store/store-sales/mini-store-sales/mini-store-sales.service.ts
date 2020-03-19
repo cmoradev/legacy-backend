@@ -4,7 +4,7 @@ import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SimpleReport } from '../mini-store-sales-payments/reports/simple.report';
-import { ExcelSheet } from '../../../common/sheets/interfaces/excel.interface';
+import { ExcelSheet } from '../../../common/office/sheets/interfaces/excel.interface';
 import * as Excel from 'exceljs';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 
