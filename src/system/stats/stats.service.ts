@@ -5,10 +5,11 @@ import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { StatusPayment } from '../../school-colegio-ingles/school-payments/enums/statusPayment';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { Student } from '../../school-colegio-ingles/students/entities/student.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { User } from '../users/entities/user.entity';
-import { Moment } from 'moment';
+import { add, sub } from 'exact-math';
 import { MonthRange } from './interfaces/month-range.interface';
 
 @Injectable()
@@ -53,10 +54,12 @@ export class StatsService {
     salesResume(sales: MiniStoreSale[]): { totalRevenue: number, totalSales: number } {
         let total = 0;
         for (const sale of sales) {
-            total += sale.miniStoreSalePayments.reduce(
-                (previousValue: number, currentValue: MiniStoreSalePayment) => {
-                    return previousValue + (+currentValue.quantity);
-                }, 0);
+            sale.miniStoreSalePayments.forEach((payment) => {
+                payment.miniStoreSaleMethodPayments.forEach((paymentMethod) => {
+                    total = add(total, paymentMethod.quantity);
+                });
+                total = sub(total, payment.change);
+            });
         }
         return {
             totalRevenue: total,
@@ -69,8 +72,10 @@ export class StatsService {
         const endDate = moment(query.endDate).endOf('day').toISOString(true);
         const salesQB = this.salesRepository.createQueryBuilder('sale');
         salesQB.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
+        salesQB.leftJoinAndSelect('sale.student', 'student');
+        salesQB.leftJoinAndSelect('sale.cashier', 'cashier');
         salesQB.leftJoinAndSelect('payments.miniStoreSaleMethodPayments', 'paymentMethods');
-        salesQB.leftJoinAndSelect('paymentMethods.invoiceMethodPayment', 'paymentMethod');
+        salesQB.leftJoinAndSelect('paymentMethods.invoiceMethodPayment', 'invoicePaymentMethod');
         salesQB.where(`(payments.created_at BETWEEN :startDate AND :endDate)`, {
             startDate,
             endDate,
@@ -142,6 +147,7 @@ export class StatsService {
             cash,
             cards,
             others,
+            total: cash + cards + others,
         };
     }
 
