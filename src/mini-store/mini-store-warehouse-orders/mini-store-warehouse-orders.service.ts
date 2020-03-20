@@ -12,4 +12,17 @@ export class MiniStoreWarehouseOrdersService extends TypeOrmCrudService<MiniStor
     ) {
         super(repo);
     }
+
+    async getOrdersWeareHouse(id: number) {
+        return await this.repo.findOne(id,
+            {
+                relations: [
+                    'miniStoreWareHouseOrdersProducts',
+                    'agentCreator',
+                    'miniStoreWareHouseOrdersProducts.miniStoreProduct',
+                    'miniStoreWarehouseProvider',
+                ],
+            });
+    }
+
 }

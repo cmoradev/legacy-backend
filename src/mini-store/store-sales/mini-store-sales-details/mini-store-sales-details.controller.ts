@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { MiniStoreSalesDetailsService } from './mini-store-sales-details.service';
-import { DataConverter } from '../../../common/excel-tools/data-converter';
+import { DataConverter } from '../../../common/office/excel-tools/data-converter';
 
 @Crud({
     model: {

@@ -8,8 +8,8 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
 import { VerificarInscriprions } from './interfaces/inscriptions.interface';
-import { ExcelSheet } from '../../common/sheets/interfaces/excel.interface';
-import { sheetToObjPage } from '../../common/sheets';
+import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interface';
+import { sheetToObjPage } from '../../common/office/sheets';
 
 @Crud({
     model: {
