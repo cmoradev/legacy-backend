@@ -155,7 +155,7 @@ export async function orderRecipe(options: {
                         },
                     }),
                     new TextRun({
-                        text: `\t\t\t\tFecha de llegada : ${options.arrivalDate}`, font: {
+                        text: `\tFecha de llegada : ${options.arrivalDate}`, font: {
                             name: 'Arial',
                         },
                     }),
