@@ -98,6 +98,7 @@ import { SchoolChargesMethodsPayments } from './school-colegio-ingles/charges-sc
 import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-methods-payments/school-charges-methods-payments.module';
 import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
 import { StatsModule } from './system/stats/stats.module';
+import { MiniStoreProductsProvidersModule } from './mini-store/mini-store-products-providers/mini-store-products-providers.module';
 
 export const routes: Routes = [
     {
@@ -146,7 +147,7 @@ export const routes: Routes = [
         module: SchoolColegioInglesModule,
         children: [
             {
-                    path: '/charges',
+                path: '/charges',
                 module: ChargesSchoolModule,
                 children: [
                     {
@@ -220,6 +221,7 @@ export const routes: Routes = [
             { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
             { path: '/sales-details', module: MiniStoreSalesDetailsModule },
             { path: '/invoices', module: MiniStoreInvoicesModule },
+            { path: '/products-providers', module: MiniStoreProductsProvidersModule },
             {
                 path: '/warehouse', children: [
                     { path: '/orders', module: MiniStoreWarehouseOrdersModule },

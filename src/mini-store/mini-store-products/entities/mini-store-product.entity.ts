@@ -10,6 +10,7 @@ import {MiniStoreClassification} from '../../mini-store-classifications/entities
 import {MiniStoreWarehouseOrderProduct} from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import {MiniStoreSaleDetail} from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
+import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 
 @Entity('tie_productos')
 export class MiniStoreProduct {
@@ -179,4 +180,6 @@ export class MiniStoreProduct {
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreProduct)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
+    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product)
+    miniStoreProductsProvider: MiniStoreProductsProviders[];
 }

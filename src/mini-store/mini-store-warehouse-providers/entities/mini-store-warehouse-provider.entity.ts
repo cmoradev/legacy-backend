@@ -5,6 +5,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
+import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 
 @Entity('tie_almacen_proveedores')
 export class MiniStoreWarehouseProvider {
@@ -125,4 +126,7 @@ export class MiniStoreWarehouseProvider {
 
     @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreWarehouseProvider)
     miniStoreWarehouseOrders: MiniStoreWarehouseOrder[];
+
+    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.provider)
+    miniStoreProductsProvider: MiniStoreProductsProviders[];
 }
