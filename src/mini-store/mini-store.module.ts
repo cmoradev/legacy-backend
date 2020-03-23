@@ -13,6 +13,7 @@ import { MiniStoreWarehouseProvidersModule } from './mini-store-warehouse-provid
 import { MiniStoreDashBoardModule } from './mini-store-dash-board/mini-store-dash-board.module';
 import { MiniStoreSalesReturnsModule } from './store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { StoreSalesModule } from './store-sales/store-sales.module';
+import { MiniStoreProductsProvidersModule } from './mini-store-products-providers/mini-store-products-providers.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { StoreSalesModule } from './store-sales/store-sales.module';
         MiniStoreDashBoardModule,
         MiniStoreSalesReturnsModule,
         StoreSalesModule,
+        MiniStoreProductsProvidersModule,
     ],
 })
 export class MiniStoreModule {
