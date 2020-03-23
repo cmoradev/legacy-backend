@@ -24,4 +24,9 @@ export class StatsController {
     incomesByPaymentMethodAndMonthsOfYear(@Query() query: { year: string }) {
         return this.statsService.incomesByPaymentMethodAndMonthsOfYear(query);
     }
+
+    @Get('cashier-sales')
+    cashierSales(@Query() query: { startDate: string, endDate: string }) {
+        return this.statsService.cashierSales(query);
+    }
 }
