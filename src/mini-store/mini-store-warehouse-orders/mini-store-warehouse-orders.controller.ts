@@ -8,6 +8,7 @@ import { TableRowsDocx } from '../../common/office/docx/Table.docx';
 import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { InvoiceCompanyService } from '../../invoice/invoice-company/invoice-company.service';
+import { ivaFromFinalAmount } from '../../common/numbers';
 
 @Crud({
     model: {
@@ -41,41 +42,41 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
         let total = 0;
         for (const product of order.miniStoreWareHouseOrdersProducts) {
             const prod: TableRowsDocx[] = [];
+
+            const totalProd = round(mul(product.requestedAmount, product.providerPriceReceived), -2, {
+                returnString: true,
+                trim: false,
+            });
             prod.push({ text: i, align: AlignmentType.CENTER });
             prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
             prod.push({ text: product.requestedAmount });
             prod.push({ text: this.unitProd(product.miniStoreProduct.unitMeasurement).name });
             prod.push({ text: product.receivedAmount });
             prod.push({ text: round(product.providerPriceReceived, -2, { returnString: true, trim: false }) });
-            prod.push({
-                text: round(mul(product.requestedAmount, product.providerPriceReceived), -2, {
-                    returnString: true,
-                    trim: false,
-                }),
-            });
+            prod.push({ text: totalProd });
             body.push(prod);
             i += 1;
-            total = round(add(total, mul(product.requestedAmount, product.providerPriceReceived), -2, {
-                returnString: true,
-                trim: false,
-            }));
+            total = add(total, totalProd);
         }
         const company = await this.serviceInvoiceCompany.findCompany(3);
-        res.contentType('application/pdf');
-        res.setHeader('Content-Type', 'application/pdf');
-        res.end(await orderRecipe({
+        // res.contentType('application/pdf');
+        // res.setHeader('Content-Type', 'application/pdf');
+        // toBase64String
+        const bufferPdf = await orderRecipe({
             business: company.businessName,
             provider: order.miniStoreWarehouseProvider.business,
-            applicant: order.agentCreator.name,
+            applicant: order.agentCreator?.name ?? 'No asignado',
             orderDate: order.orderDate,
             arrivalDate: order.expectedDate,
             requestedItems: body.length,
             folio: order.folio,
             body,
-            total: 1212,
-            impuesto: 33,
-            subtotal: 21,
-        }), 'binary');
+            total,
+            impuesto: ivaFromFinalAmount(total).iva,
+            subtotal: ivaFromFinalAmount(total).amountWithOutIva,
+        });
+        res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf.toString('base64') });
+        // res.end(, 'binary');
         // res.send(body);
         // res.setHeader('Content-Disposition', 'attachment; filename="' + encodeURIComponent(pdfBuffer.toString()) + '"');
     }

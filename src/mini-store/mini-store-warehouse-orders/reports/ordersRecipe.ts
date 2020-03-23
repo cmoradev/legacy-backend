@@ -28,7 +28,7 @@ export async function orderRecipe(options: {
     total: string | number,
     subtotal: string | number,
     impuesto: string | number,
-}): Promise<any> {
+}): Promise<Buffer> {
     const doc = new Document({
         creator: 'Punto de venta by amisael.amir.misael@gmail.com',
         description: 'documento generado en el sistema',
@@ -193,8 +193,8 @@ export async function orderRecipe(options: {
     });
 
     const bufferWord = await Packer.toBuffer(doc);
-    fs.writeFileSync('My Document.docx', bufferWord);
+    // fs.writeFileSync('My Document.docx', bufferWord);
     const bufferPDf = await toPdf(bufferWord);
-    fs.writeFileSync('My Document.pdf', bufferPDf);
+    // fs.writeFileSync('My Document.pdf', bufferPDf);
     return bufferPDf;
 }

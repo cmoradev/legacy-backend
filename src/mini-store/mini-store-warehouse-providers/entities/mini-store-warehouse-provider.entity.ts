@@ -4,7 +4,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreWarehouseOrder} from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
+import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 
 @Entity('tie_almacen_proveedores')
 export class MiniStoreWarehouseProvider {
@@ -37,10 +37,28 @@ export class MiniStoreWarehouseProvider {
 
     @Column('varchar', {
         nullable: true,
-        length: 45,
-        name: 'calle',
+        length: 5,
+        name: 'cp',
     })
-    street: string | null;
+    zip: string | null;
+
+    @Column('varchar', {
+        nullable: true,
+        name: 'country',
+    })
+    country: string | null;
+
+    @Column('varchar', {
+        nullable: true,
+        name: 'stado',
+    })
+    state: string | null;
+
+    @Column('varchar', {
+        nullable: true,
+        name: 'city',
+    })
+    city: string | null;
 
     @Column('varchar', {
         nullable: true,
@@ -49,30 +67,12 @@ export class MiniStoreWarehouseProvider {
     })
     colony: string | null;
 
-    @Column('int', {
-        nullable: true,
-        name: 'id_ciudad',
-    })
-    idCity: number | null;
-
-    @Column('int', {
-        nullable: true,
-        name: 'id_estado',
-    })
-    idState: number | null;
-
     @Column('varchar', {
         nullable: true,
-        length: 5,
-        name: 'cp',
+        length: 45,
+        name: 'calle',
     })
-    zip: string | null;
-
-    @Column('int', {
-        nullable: true,
-        name: 'id_pais',
-    })
-    idCountry: number | null;
+    street: string | null;
 
     @Column('varchar', {
         nullable: true,
