@@ -151,6 +151,30 @@ export class StatsService {
         };
     }
 
+    async cashierSales(options: { startDate: Date | string, endDate: Date | string }) {
+        const startDate = moment(options.startDate).startOf('day').toISOString(true);
+        const endDate = moment(options.endDate).endOf('day').toISOString(true);
+
+        const queryQB = this.usersRepository.createQueryBuilder('cashier');
+        queryQB.leftJoinAndSelect('cashier.sales', 'sales');
+        queryQB.leftJoinAndSelect('cashier.department', 'department');
+        queryQB.where('department.id = :departmentID', { departmentID: 2 });
+        const sales = await this.fetchSalesByDateRange({
+            startDate,
+            endDate,
+        });
+        const cashiers = await queryQB.getMany();
+        const resume = [];
+        for (const cashier of cashiers) {
+            const cashierSales = {
+                cashier: `${(cashier.name || '')} ${(cashier.lastnameFather || '')} ${(cashier.lastnameMother || '')}`,
+                sales: sales.filter(value => value.cashier.id === cashier.id).length,
+            };
+            resume.push(cashierSales);
+        }
+        return resume;
+    }
+
     monthsOfYear(year: Moment): MonthRange[] {
         const monthsRanges: MonthRange[] = [];
         for (let monthNumber = 0; monthNumber <= 11; monthNumber++) {
