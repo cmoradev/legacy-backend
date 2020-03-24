@@ -14,6 +14,8 @@ import { MiniStoreProductsService } from './mini-store-products.service';
             storeInvoiceKey: {},
             miniStoreWarehouseOrdersProducts: {},
             miniStoreSaleDetails: {},
+            miniStoreProductsProvider: {},
+            'miniStoreProductsProvider.provider': {},
         },
     },
 

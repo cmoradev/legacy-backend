@@ -5,10 +5,10 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStorePriceList} from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
-import {MiniStoreClassification} from '../../mini-store-classifications/entities/mini-store-classification.entity';
-import {MiniStoreWarehouseOrderProduct} from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
-import {MiniStoreSaleDetail} from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStorePriceList } from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
+import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
+import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
+import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 
@@ -180,6 +180,6 @@ export class MiniStoreProduct {
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreProduct)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
-    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product)
+    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product, { cascade: true })
     miniStoreProductsProvider: MiniStoreProductsProviders[];
 }
