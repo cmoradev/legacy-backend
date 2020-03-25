@@ -99,6 +99,7 @@ import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/char
 import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
 import { StatsModule } from './system/stats/stats.module';
 import { MiniStoreProductsProvidersModule } from './mini-store/mini-store-products-providers/mini-store-products-providers.module';
+import { SettingsModule } from './system/settings/settings.module';
 
 export const routes: Routes = [
     {
@@ -140,6 +141,7 @@ export const routes: Routes = [
             { path: '/extra-charges', module: SystemExtraChargesModule },
             { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
             { path: '/stats', module: StatsModule },
+            { path: '/settings', module: SettingsModule },
         ],
     },
     {
