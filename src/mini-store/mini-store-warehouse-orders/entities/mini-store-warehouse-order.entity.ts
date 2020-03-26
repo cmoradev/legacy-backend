@@ -26,13 +26,15 @@ export class MiniStoreWarehouseOrder {
     folio: string | null;
 
     @Column('timestamp', {
-        nullable: true,
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_pedido',
     })
     orderDate: Date;
 
     @Column('timestamp', {
-        nullable: true,
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_prevista',
     })
     expectedDate: Date;
