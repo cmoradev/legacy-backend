@@ -25,17 +25,17 @@ export class MiniStoreWarehouseOrder {
     })
     folio: string | null;
 
-    @Column('date', {
+    @Column('timestamp', {
         nullable: true,
         name: 'fecha_pedido',
     })
-    orderDate: string | null;
+    orderDate: Date;
 
-    @Column('date', {
+    @Column('timestamp', {
         nullable: true,
         name: 'fecha_prevista',
     })
-    expectedDate: string | null;
+    expectedDate: Date;
 
     @Column('tinyint', {
         nullable: false,
@@ -82,7 +82,10 @@ export class MiniStoreWarehouseOrder {
     })
     updatedAt: Date;
 
-    @OneToMany(() => MiniStoreWarehouseOrderProduct, (miniStoreWarehouseOrderProduct) => miniStoreWarehouseOrderProduct.miniStoreWarehouseOrder)
+    @OneToMany(() => MiniStoreWarehouseOrderProduct, (OrderProduct) => OrderProduct.miniStoreWarehouseOrder,
+        {
+            cascade: true,
+        })
     miniStoreWareHouseOrdersProducts: MiniStoreWarehouseOrderProduct[];
 
     @ManyToOne(() => MiniStoreWarehouseProvider, (miniStoreWarehouseProvider) => miniStoreWarehouseProvider.miniStoreWarehouseOrders)
