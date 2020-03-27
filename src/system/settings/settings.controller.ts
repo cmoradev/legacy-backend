@@ -1,10 +1,21 @@
-import { Controller, Get, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
+import { Crud, CrudController, Override, ParsedRequest } from '@nestjsx/crud';
+import { Company } from './entities/company.entity';
+import { SettingsService } from './settings.service';
 
+@Crud({
+    model: {
+        type: Company,
+    },
+})
 @Controller()
-export class SettingsController {
+export class SettingsController implements CrudController<Company> {
+    constructor(public service: SettingsService) {
+    }
+
     @Post('upload-logo')
     @UseInterceptors(FileInterceptor('logo', {
         storage: diskStorage({
@@ -30,7 +41,7 @@ export class SettingsController {
             }
         }
         fs.rename(logo.path, `/var/www/uploads/${params.companyID}/images/` + logo.filename, (err) => {
-            console.log(err);
+            // err
         });
         const downloadURL = `${req.headers.host}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
         res.send({
@@ -60,4 +71,21 @@ export class SettingsController {
             });
         }
     }
+
+    @Get('company/:uuid')
+    async findCompanyByUuid(@Param() params, @Res() res) {
+        const result = await this.service.findOne({
+            where: {
+                uuid: params.uuid,
+            },
+            relations: ['defaultClient'],
+        });
+        if (result) {
+            res.send(result);
+        }
+        res.status(500).send({
+            error: 'COMPANY_NOT_EXIST',
+        });
+    }
+
 }
