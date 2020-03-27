@@ -86,7 +86,7 @@ export class MiniStoreWarehouseOrder {
 
     @OneToMany(() => MiniStoreWarehouseOrderProduct, (OrderProduct) => OrderProduct.miniStoreWarehouseOrder,
         {
-            cascade: true,
+            cascade: ['insert', 'update'],
         })
     miniStoreWareHouseOrdersProducts: MiniStoreWarehouseOrderProduct[];
 

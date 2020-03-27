@@ -180,6 +180,9 @@ export class MiniStoreProduct {
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreProduct)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
-    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product, { cascade: true })
+    @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product,
+        {
+            cascade: ['insert', 'update'],
+        })
     miniStoreProductsProvider: MiniStoreProductsProviders[];
 }
