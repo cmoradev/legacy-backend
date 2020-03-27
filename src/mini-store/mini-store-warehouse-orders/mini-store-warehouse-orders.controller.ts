@@ -9,6 +9,7 @@ import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { InvoiceCompanyService } from '../../invoice/invoice-company/invoice-company.service';
 import { ivaFromFinalAmount } from '../../common/numbers';
+import * as moment from 'moment';
 
 @Crud({
     model: {
@@ -66,8 +67,8 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             business: company.businessName,
             provider: order.miniStoreWarehouseProvider.business,
             applicant: order.agentCreator?.name ?? 'No asignado',
-            orderDate: order.orderDate,
-            arrivalDate: order.expectedDate,
+            orderDate: moment(order.orderDate).format('DD/MM/YYYY'),
+            arrivalDate: moment(order.expectedDate).format('DD/MM/YYYY'),
             requestedItems: body.length,
             folio: order.folio,
             body,

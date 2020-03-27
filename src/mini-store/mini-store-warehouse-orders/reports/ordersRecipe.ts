@@ -127,7 +127,7 @@ export async function orderRecipe(options: {
                         },
                     }),
                     new TextRun({
-                        text: `\t\t\t\tArticulos solicitados : ${options.requestedItems}`, font: {
+                        text: `\t\t\t\t\tArticulos solicitados : ${options.requestedItems}`, font: {
                             name: 'Arial',
                         },
                     }),
@@ -141,7 +141,7 @@ export async function orderRecipe(options: {
                         },
                     }),
                     new TextRun({
-                        text: `\t\t\t\tFecha de pedido :  ${options.orderDate}`, font: {
+                        text: `\t\t\t\t\tFecha de pedido :  ${options.orderDate}`, font: {
                             name: 'Arial',
                         },
                     }),
