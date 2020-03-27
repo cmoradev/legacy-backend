@@ -15,12 +15,14 @@ import { Role } from '../roles/entities/role.entity';
 import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
 import { UsersModule } from '../users/users.module';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { SettingsModule } from '../settings/settings.module';
 // tslint:disable-next-line:no-var-requires
 const MySQLStore = require('express-mysql-session')(session);
 
 @Module({
     imports: [
         UsersModule,
+        SettingsModule,
         PassportModule,
         ConfigModule,
         TypeOrmModule.forFeature([Department, Role, Campus], ColegioDBNameConnection),

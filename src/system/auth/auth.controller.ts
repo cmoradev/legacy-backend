@@ -5,19 +5,23 @@ import { RegisterGuard } from './guards/register.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SessionGuard } from './guards/session.guard';
+import { SettingsService } from '../settings/settings.service';
 
 @Controller()
 export class AuthController {
-    constructor(readonly authService: AuthService) {
+    constructor(readonly authService: AuthService,
+                readonly settingsService: SettingsService) {
     }
 
     @UseGuards(LoginGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response) {
+        const company = await this.settingsService.fetchCompany();
         const jwt = await this.authService.generateJWT(req.user);
         res.status(201).json({
             user: req.user,
             accessJWT: jwt,
+            company,
         });
     }
 
@@ -27,7 +31,7 @@ export class AuthController {
         res.status(201).json(req.user);
     }
 
-   // @UseGuards(SessionGuard)
+    // @UseGuards(SessionGuard)
     @Get('logout')
     public logout(@Req() req, @Res() res) {
         req.session.destroy(() => {

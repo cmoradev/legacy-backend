@@ -47,6 +47,7 @@ export class Company extends BaseEntity {
 
     @Column({
         type: 'text',
+        nullable: true,
     })
     logo: string;
 

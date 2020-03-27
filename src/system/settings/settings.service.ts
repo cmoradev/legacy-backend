@@ -11,4 +11,13 @@ export class SettingsService extends TypeOrmCrudService<Company> {
         super(companyRepository);
     }
 
+    async fetchCompany(): Promise<Company> {
+        const company = await this.findOne();
+        if (company && company.uuid) {
+            return company;
+        }
+        const createdCompany = this.repo.create();
+        createdCompany.logo = '';
+        return this.repo.save(createdCompany);
+    }
 }
