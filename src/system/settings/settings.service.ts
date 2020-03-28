@@ -18,6 +18,6 @@ export class SettingsService extends TypeOrmCrudService<Company> {
         }
         const createdCompany = this.repo.create();
         createdCompany.logo = '';
-        return this.repo.save(createdCompany);
+        return await this.repo.save(createdCompany);
     }
 }

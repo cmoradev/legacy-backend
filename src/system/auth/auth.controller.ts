@@ -18,7 +18,7 @@ export class AuthController {
     async login(@Req() req, @Res() res: Response) {
         const company = await this.settingsService.fetchCompany();
         const jwt = await this.authService.generateJWT(req.user);
-        res.status(201).json({
+        res.status(201).send({
             user: req.user,
             accessJWT: jwt,
             company,
