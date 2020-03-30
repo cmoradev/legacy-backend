@@ -43,7 +43,7 @@ export class SettingsController implements CrudController<Company> {
         fs.rename(logo.path, `/var/www/uploads/${params.companyID}/images/` + logo.filename, (err) => {
             // err
         });
-        const downloadURL = `${req.headers.host}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
+        const downloadURL = `${req.protocol}://${req.get('host')}${req.originalUrl}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
         res.send({
             downloadURL,
         });
