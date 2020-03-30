@@ -280,7 +280,7 @@ export class SimpleReport {
                 });
                 startRow += 1;
             } else {
-                console.log(payment)
+                console.log(payment);
             }
         });
 
@@ -378,12 +378,12 @@ export class SimpleReport {
                 startRow = nextRowToMerge;
             }
             const totalSale = sale.miniStoreSaleDetails.reduce((previousValue, currentValue) => {
-                const productPrice = sale.isIVA ? parseFloat((parseFloat(currentValue.price) * 1.16).toFixed(2)) : parseFloat(currentValue.price);
+                const productPrice = currentValue.miniStoreProduct.IVA ? currentValue.priceWithIVA : +currentValue.price;
                 return previousValue + (productPrice * parseFloat(currentValue.quantity.toString()));
             }, 0);
             sale.miniStoreSaleDetails.forEach(detail => {
                 const salesRowItem: any[] = [];
-                const productPrice = sale.isIVA ? parseFloat((parseFloat(detail.price) * 1.16).toFixed(2)) : parseFloat(detail.price);
+                const productPrice =  detail.miniStoreProduct.IVA ? detail.priceWithIVA : +detail.price;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
                 salesRowItem.push(studentType);
@@ -394,7 +394,7 @@ export class SimpleReport {
                 salesRowItem.push(detail.miniStoreProduct.name);
                 salesRowItem.push(productPrice);
                 salesRowItem.push(totalSale);
-                salesRowItem.push(sale.isIVA ? 'Si' : 'No');
+                salesRowItem.push(detail.miniStoreProduct.IVA ? 'Si' : 'No');
                 salesRowItem.push(sale.observations ? sale.observations : '');
                 salesRows.push(salesRowItem);
             });
