@@ -19,7 +19,7 @@ import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-r
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
-import { MiniStoreTransaction } from 'src/mini-store/store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
+import { MiniStoreTransaction } from '../../../mini-store/store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
 
 @Entity('usuarios')
 export class User {

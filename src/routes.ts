@@ -216,7 +216,7 @@ export const routes: Routes = [
                 module: MiniStoreDashBoardModule,
                 children: [],
             },
-            { path: 'transaction', module: MiniStoreTransactionModule },
+            { path: '/transaction', module: MiniStoreTransactionModule },
             { path: '/products', module: MiniStoreProductsModule },
             { path: '/classifications', module: MiniStoreClassificationsModule },
             { path: '/prices-lists', module: MiniStorePricesListsModule },
