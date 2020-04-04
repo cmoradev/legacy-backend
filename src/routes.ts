@@ -100,6 +100,7 @@ import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-sch
 import { StatsModule } from './system/stats/stats.module';
 import { MiniStoreProductsProvidersModule } from './mini-store/mini-store-products-providers/mini-store-products-providers.module';
 import { SettingsModule } from './system/settings/settings.module';
+import { MiniStoreTransactionModule } from './mini-store/store-sales/mini-store-transaction/mini-store-transaction.module';
 
 export const routes: Routes = [
     {
@@ -215,6 +216,7 @@ export const routes: Routes = [
                 module: MiniStoreDashBoardModule,
                 children: [],
             },
+            { path: 'transaction', module: MiniStoreTransactionModule },
             { path: '/products', module: MiniStoreProductsModule },
             { path: '/classifications', module: MiniStoreClassificationsModule },
             { path: '/prices-lists', module: MiniStorePricesListsModule },
