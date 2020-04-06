@@ -8,7 +8,7 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 @Module({
     imports: [TypeOrmModule.forFeature([CashRegister], ColegioDBNameConnection)],
     providers: [CashRegisterService],
-    exports: [CashRegister],
+    exports: [CashRegisterService],
     controllers: [CashRegisterController],
 })
 export class CashRegisterModule {
