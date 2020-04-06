@@ -1,10 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { StatusPayment } from '../../../../school-colegio-ingles/school-payments/enums/statusPayment';
+import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
+import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment {
@@ -164,5 +166,8 @@ export class MiniStoreSalePayment {
 
     @ManyToOne(() => User, (user) => user.miniStoreCancelingPayments)
     agentCanceling: User;
+
+    @OneToMany(type => CashRegisterTransaction, (cashRegisterTransaction) => cashRegisterTransaction.payment)
+    cashRegisterTransactions: CashRegisterTransaction[];
 
 }

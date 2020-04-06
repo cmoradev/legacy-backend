@@ -1,7 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { TransactionType } from '../types/Transaction.enum';
+import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
+import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 
 @Entity('tie_transaction')
 export class MiniStoreTransaction extends Base {
@@ -35,11 +36,14 @@ export class MiniStoreTransaction extends Base {
     @Column({
         type: 'enum',
         nullable: false,
-        default: TransactionType.income,
-        enum: TransactionType,
+        default: CashRegisterTransactionType.income,
+        enum: CashRegisterTransactionType,
     })
-    transactionType: TransactionType;
+    transactionType: CashRegisterTransactionType;
 
     @ManyToOne(() => User, (user) => user.miniStoreTransaction)
     transactionUser: User;
+
+    @ManyToOne(type => CashRegister, (cashRegister) => cashRegister.movements)
+    cashRegister: CashRegister;
 }

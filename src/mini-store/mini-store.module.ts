@@ -14,6 +14,8 @@ import { MiniStoreDashBoardModule } from './mini-store-dash-board/mini-store-das
 import { MiniStoreSalesReturnsModule } from './store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { StoreSalesModule } from './store-sales/store-sales.module';
 import { MiniStoreProductsProvidersModule } from './mini-store-products-providers/mini-store-products-providers.module';
+import { CashRegisterModule } from './cash-register/cash-register.module';
+import { CashRegisterTransactionsModule } from './cash-register-transactions/cash-register-transactions.module';
 
 @Module({
     imports: [
@@ -32,6 +34,8 @@ import { MiniStoreProductsProvidersModule } from './mini-store-products-provider
         MiniStoreSalesReturnsModule,
         StoreSalesModule,
         MiniStoreProductsProvidersModule,
+        CashRegisterModule,
+        CashRegisterTransactionsModule,
     ],
 })
 export class MiniStoreModule {
