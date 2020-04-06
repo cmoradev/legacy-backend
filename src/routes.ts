@@ -101,6 +101,8 @@ import { StatsModule } from './system/stats/stats.module';
 import { MiniStoreProductsProvidersModule } from './mini-store/mini-store-products-providers/mini-store-products-providers.module';
 import { SettingsModule } from './system/settings/settings.module';
 import { MiniStoreTransactionModule } from './mini-store/store-sales/mini-store-transaction/mini-store-transaction.module';
+import { CashRegisterModule } from './mini-store/cash-register/cash-register.module';
+import { CashRegisterTransactionsModule } from './mini-store/cash-register-transactions/cash-register-transactions.module';
 
 export const routes: Routes = [
     {
@@ -217,6 +219,8 @@ export const routes: Routes = [
                 children: [],
             },
             { path: '/transaction', module: MiniStoreTransactionModule },
+            { path: '/cash-register', module: CashRegisterModule },
+            { path: '/cash-register-transactions', module: CashRegisterTransactionsModule },
             { path: '/products', module: MiniStoreProductsModule },
             { path: '/classifications', module: MiniStoreClassificationsModule },
             { path: '/prices-lists', module: MiniStorePricesListsModule },
