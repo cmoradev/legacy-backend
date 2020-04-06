@@ -7,6 +7,14 @@ import { CashRegisterTransactionType } from '../../../cash-register-transactions
 @Entity('tie_transaction')
 export class MiniStoreTransaction extends Base {
 
+    @Column('varchar', {
+        nullable: false,
+        length: 40,
+        default: () => '000000000000000',
+        name: 'folio',
+    })
+    folio: string;
+
     @Column('text', {
         nullable: true,
     })
