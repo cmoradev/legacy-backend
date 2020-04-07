@@ -52,12 +52,12 @@ export class CashRegisterTransaction {
         type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
-    createdDate: Date;
+    createdAt: Date;
 
     @UpdateDateColumn({
         name: 'updatedAt',
         type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
-    updatedDate: Date;
+    updatedAt: Date;
 }

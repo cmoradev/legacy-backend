@@ -35,6 +35,22 @@ export class CashRegister {
     })
     closedAt: Date;
 
+    @Column('decimal', {
+        nullable: false,
+        default: () => '\'0.000000\'',
+        precision: 15,
+        scale: 6,
+    })
+    initialAmount: string;
+
+    @Column('decimal', {
+        nullable: false,
+        default: () => '\'0.000000\'',
+        precision: 15,
+        scale: 6,
+    })
+    finalAmount: string;
+
     @ManyToOne(() => User, (user) => user.cashRegisterHistory, {
         nullable: false,
     })
@@ -62,12 +78,12 @@ export class CashRegister {
         type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
-    createdDate: Date;
+    createdAt: Date;
 
     @UpdateDateColumn({
         name: 'updatedAt',
         type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
-    updatedDate: Date;
+    updatedAt: Date;
 }
