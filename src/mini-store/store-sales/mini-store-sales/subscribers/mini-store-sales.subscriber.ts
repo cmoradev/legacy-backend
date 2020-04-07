@@ -1,6 +1,5 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
 import { MiniStoreSale } from '../entities/mini-store-sale.entity';
-import { AcademyInscription } from '../../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
 import { InvoiceCompany } from '../../../../invoice/invoice-company/entities/invoice-company.entity';
 

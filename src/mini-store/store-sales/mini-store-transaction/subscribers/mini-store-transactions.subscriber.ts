@@ -27,7 +27,7 @@ export class MiniStoreTransactionsSubscriber implements EntitySubscriberInterfac
     async generateDocFolio(id: number): Promise<MiniStoreTransaction> {
         const transRepository = getRepository(MiniStoreTransaction, ColegioDBNameConnection);
         const updateIns = await transRepository.findOne({ id });
-        updateIns.folio = 'TRANS-' + updateIns.id;
+        updateIns.folio = 'TR-' + updateIns.id;
         return transRepository.save(updateIns);
     }
 }
