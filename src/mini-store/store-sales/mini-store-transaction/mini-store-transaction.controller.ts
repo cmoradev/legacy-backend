@@ -8,7 +8,9 @@ import { MiniStoreTransactionService } from './mini-store-transaction.service';
         type: MiniStoreTransaction,
     },
     query: {
-        join: {},
+        join: {
+            transactionUser: {},
+        },
     },
 })
 @Controller()
