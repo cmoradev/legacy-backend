@@ -33,7 +33,7 @@ export class CashRegister {
         type: 'timestamp',
         nullable: true,
     })
-    closedAt: Date;
+    closedAt: Date | null;
 
     @Column('decimal', {
         nullable: false,

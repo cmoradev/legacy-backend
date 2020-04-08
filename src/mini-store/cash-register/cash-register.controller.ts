@@ -11,8 +11,10 @@ import { CashRegisterService } from './cash-register.service';
         join: {
             agent: { exclude: ['password'] },
             transactions: {},
+            'transactions.agent': {},
+            'transactions.payment': {},
+            'transactions.payment.miniStoreSaleMethodPayments': {},
             movements: {},
-            payment: {},
         },
     },
 })

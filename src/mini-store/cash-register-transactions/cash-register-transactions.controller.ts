@@ -7,6 +7,14 @@ import { CashRegisterTransactionsService } from './cash-register-transactions.se
     model: {
         type: CashRegisterTransaction,
     },
+    query: {
+        join: {
+            agent: { exclude: ['password'] },
+            cashRegister: {},
+            payment: {},
+            'payment.miniStoreSaleMethodPayments': {},
+        },
+    },
 })
 @Controller()
 export class CashRegisterTransactionsController implements CrudController<CashRegisterTransaction> {
