@@ -6,6 +6,7 @@ import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payme
 import { User } from '../../../../system/users/entities/user.entity';
 import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
+import { StatusPayment } from '../../../school-payments/enums/statusPayment';
 
 @Entity('school_charge_payments')
 export class SchoolChargePayment extends Base {
@@ -69,8 +70,14 @@ export class SchoolChargePayment extends Base {
     @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesPayments)
     schoolCharge: SchoolCharge;
 
-    @ManyToOne(() => SystemPaymentStatus, (systemPaymentStatus) => systemPaymentStatus.schoolChargePayments)
-    paymentStatus: SystemPaymentStatus;
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
+        nullable: false,
+        name: 'paymentStatusId',
+    })
+    paymentStatus: StatusPayment;
 
     /**
      * Relación de un pago con sus metodos de pago
