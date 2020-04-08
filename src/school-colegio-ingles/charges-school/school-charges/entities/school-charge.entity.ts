@@ -7,6 +7,7 @@ import { Student } from '../../../students/entities/student.entity';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
+import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {
@@ -65,8 +66,8 @@ export class SchoolCharge extends Base {
     @OneToMany(() => SchoolChargeDetails, (details) => details.schoolCharge)
     schoolChargesDetails: SchoolChargeDetails[];
 
-    @OneToMany(() => SchoolChargeDetails, (details) => details.schoolCharge)
-    schoolChargesPayments: SchoolChargeDetails[];
+    @OneToMany(() => SchoolChargePayment, (detailspay) => detailspay.schoolCharge)
+    schoolChargesPayments: SchoolChargePayment[];
 
     @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolCharge)
     schoolChargesInvoice: SchoolChargesInvoice[];
