@@ -8,6 +8,7 @@ import { SchoolChargeDetails } from '../../school-charges-details/entities/schoo
 import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
+import { StatusPayment } from '../../../school-payments/enums/statusPayment';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {
@@ -47,6 +48,15 @@ export class SchoolCharge extends Base {
         scale: 6,
     })
     change: number;
+
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
+        nullable: false,
+        name: 'status',
+    })
+    status: StatusPayment;
 
     @ManyToOne(() => Campus, (campus) => campus.campusSchoolCharge)
     schoolCampus: Campus;
