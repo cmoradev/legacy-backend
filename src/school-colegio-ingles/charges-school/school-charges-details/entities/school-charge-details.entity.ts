@@ -18,7 +18,7 @@ import { SchoolCharge } from '../../school-charges/entities/school-charge.entity
 import { SchoolChargesDetailsExtraCharges } from '../../school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { SchoolPayment } from '../../../school-payments/entities/school-payment.entity';
 
-@Entity()
+@Entity('school_charge_details')
 export class SchoolChargeDetails extends Base {
 
     @Column('varchar', {
@@ -57,7 +57,9 @@ export class SchoolChargeDetails extends Base {
     @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesDetails)
     schoolCharge: SchoolCharge;
 
-    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.schoolChargeDetails)
+    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.schoolChargeDetails, {
+        cascade: ['insert'],
+    })
     extraCharges: SchoolChargesDetailsExtraCharges[];
 
     @OneToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.schoolChargeDetail)
