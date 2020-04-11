@@ -63,12 +63,19 @@ export class SchoolCharge extends Base {
     @ManyToOne(() => Student, (student) => student.studentCharges)
     schoolStudent: Student;
 
-    @OneToMany(() => SchoolChargeDetails, (details) => details.schoolCharge)
+    @OneToMany(() => SchoolChargeDetails, (details) => details.schoolCharge, {
+        cascade: ['insert', 'update'],
+    })
     schoolChargesDetails: SchoolChargeDetails[];
 
-    @OneToMany(() => SchoolChargePayment, (detailspay) => detailspay.schoolCharge)
+    @OneToMany(() => SchoolChargePayment, (detailspay) => detailspay.schoolCharge, {
+        cascade: ['insert', 'update'],
+    })
     schoolChargesPayments: SchoolChargePayment[];
 
-    @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolCharge)
+    @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolCharge,
+        {
+            cascade: ['insert', 'update'],
+        })
     schoolChargesInvoice: SchoolChargesInvoice[];
 }
