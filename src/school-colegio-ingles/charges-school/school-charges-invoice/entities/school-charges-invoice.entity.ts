@@ -81,7 +81,7 @@ export class SchoolChargesInvoice extends Base {
     @ManyToOne(() => SchoolChargePayment, (schoolChargePayment) => schoolChargePayment.schoolChargesInvoice)
     schoolChargePayment: SchoolChargePayment;
 
-    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesInvoice)
+    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesInvoice)
     schoolCharge: SchoolCharge;
 
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)

@@ -43,7 +43,7 @@ export class SchoolChargesDetailsExtraCharges extends Base {
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
     @ManyToOne(() => SchoolChargeDetails, (schoolCharge) => schoolCharge.extraCharges)
-    schoolChargeDetails: SchoolChargeDetails;
+    chargeDetail: SchoolChargeDetails;
 
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
     systemExtraCharges: SystemExtraCharges;

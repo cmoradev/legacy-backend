@@ -67,7 +67,7 @@ export class SchoolChargePayment extends Base {
     })
     isIVA: boolean;
 
-    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesPayments)
+    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesPayments)
     schoolCharge: SchoolCharge;
 
     @Column({
@@ -82,7 +82,9 @@ export class SchoolChargePayment extends Base {
     /**
      * Relación de un pago con sus metodos de pago
      */
-    @OneToMany(() => SchoolChargesMethodsPayments, (chargesMethodsPayments) => chargesMethodsPayments.schoolChargePayment)
+    @OneToMany(() => SchoolChargesMethodsPayments, (chargesMethodsPayments) => chargesMethodsPayments.schoolChargePayment, {
+        cascade: ['insert'],
+    })
     methodsPayments: SchoolChargesMethodsPayments[];
 
     @ManyToOne(() => User, (user) => user.schoolChargesPayments)

@@ -54,10 +54,10 @@ export class SchoolChargeDetails extends Base {
     })
     price: number;
 
-    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolChargesDetails)
+    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesDetails)
     schoolCharge: SchoolCharge;
 
-    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.schoolChargeDetails, {
+    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.chargeDetail, {
         cascade: ['insert'],
     })
     extraCharges: SchoolChargesDetailsExtraCharges[];
