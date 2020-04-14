@@ -4,7 +4,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 @Entity({ name: 'folios' })
 export class Folio extends Base {
     @Column({
-        type: 'number',
+        type: 'int',
         nullable: false,
         default: 0,
     })
@@ -18,7 +18,7 @@ export class Folio extends Base {
     salesPrefix: string;
 
     @Column({
-        type: 'number',
+        type: 'int',
         nullable: false,
         default: 0,
     })
@@ -32,7 +32,7 @@ export class Folio extends Base {
     paymentsPrefix: string;
 
     @Column({
-        type: 'number',
+        type: 'int',
         nullable: false,
         default: 0,
     })
@@ -46,7 +46,7 @@ export class Folio extends Base {
     quotationsPrefix: string;
 
     @Column({
-        type: 'number',
+        type: 'int',
         nullable: false,
         default: 0,
     })
