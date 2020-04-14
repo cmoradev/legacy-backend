@@ -103,6 +103,7 @@ import { SettingsModule } from './system/settings/settings.module';
 import { MiniStoreTransactionModule } from './mini-store/store-sales/mini-store-transaction/mini-store-transaction.module';
 import { CashRegisterModule } from './mini-store/cash-register/cash-register.module';
 import { CashRegisterTransactionsModule } from './mini-store/cash-register-transactions/cash-register-transactions.module';
+import { FoliosModule } from './system/folios/folios.module';
 
 export const routes: Routes = [
     {
@@ -145,6 +146,7 @@ export const routes: Routes = [
             { path: '/type-extra-charges', module: SystemTypeExtraChargesModule },
             { path: '/stats', module: StatsModule },
             { path: '/settings', module: SettingsModule },
+            { path: '/folios', module: FoliosModule },
         ],
     },
     {
