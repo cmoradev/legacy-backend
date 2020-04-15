@@ -7,7 +7,7 @@ import { MiniStoreSale } from '../../../../mini-store/store-sales/mini-store-sal
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 
-@Entity('school-charges-invoice')
+@Entity('school_charges_invoice')
 export class SchoolChargesInvoice extends Base {
 
     @Column('varchar', {

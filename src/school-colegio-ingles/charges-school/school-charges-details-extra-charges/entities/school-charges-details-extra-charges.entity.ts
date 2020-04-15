@@ -8,7 +8,7 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 
-@Entity('school-charges-details-extra-charges')
+@Entity('school_charges_details_extra_charges')
 export class SchoolChargesDetailsExtraCharges extends Base {
 
     @Column('varchar', {

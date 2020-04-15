@@ -7,7 +7,7 @@ import { SchoolChargePayment } from '../../school-charges-payments/entities/scho
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago
  */
-@Entity('school-charges-methods-payments')
+@Entity('school_charges_methods_payments')
 export class SchoolChargesMethodsPayments extends Base {
     /**
      * Solo código método pago -> desnormalizado

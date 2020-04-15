@@ -1,5 +1,8 @@
-import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
+import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
 import { SchoolChargeDetails } from '../entities/school-charge-details.entity';
+import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
+import { SchoolPayment } from '../../../school-payments/entities/school-payment.entity';
+import { StatusPayment } from '../../../school-payments/enums/statusPayment';
 
 @EventSubscriber()
 export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<SchoolChargeDetails> {
@@ -28,4 +31,10 @@ export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<
         const { entity: order } = updateEvent;
     }
 
+    async changeStatusSchoolPayment(id: number): Promise<SchoolPayment> {
+        const insRepository = getRepository(SchoolPayment, ColegioDBNameConnection);
+        const updateIns = await insRepository.findOne({ id });
+        updateIns.statusPayment = StatusPayment.PaiOut;
+        return insRepository.save(updateIns);
+    }
 }
