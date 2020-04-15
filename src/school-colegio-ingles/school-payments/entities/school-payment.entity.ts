@@ -105,7 +105,7 @@ export class SchoolPayment extends Base {
     })
     statusPayment: StatusPayment;
 
-    @OneToOne(() => SchoolChargeDetails, (schoolCharge) => schoolCharge.schoolPlanPayment)
+    @OneToOne(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
     schoolChargeDetail: SchoolChargeDetails;
 
     @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
