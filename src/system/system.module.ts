@@ -21,6 +21,7 @@ import { SystemTypeExtraChargesModule } from './system-type-extra-charges/system
 import { InscriptionStatusModule } from './inscription-status/inscription-status.module';
 import { StatsModule } from './stats/stats.module';
 import { SettingsModule } from './settings/settings.module';
+import { FoliosModule } from './folios/folios.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -45,6 +46,7 @@ import { SettingsModule } from './settings/settings.module';
     InscriptionStatusModule,
     StatsModule,
     SettingsModule,
+    FoliosModule,
   ],
 })
 export class SystemModule {
