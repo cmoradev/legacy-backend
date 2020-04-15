@@ -11,7 +11,7 @@ export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<
 
     async beforeInsert(insertEvent: InsertEvent<SchoolChargeDetails>) {
         const { entity: sale } = insertEvent;
-        console.log(sale)
+        console.log(sale, 'amir');
     }
 
     async afterInsert(insertEvent: InsertEvent<SchoolChargeDetails>) {

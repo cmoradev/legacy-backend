@@ -63,7 +63,8 @@ export class SchoolChargeDetails extends Base {
     extraCharges: SchoolChargesDetailsExtraCharges[];
 
     @OneToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.schoolChargeDetail)
-    schoolPayment: SchoolPayment;
+    @JoinColumn()
+    schoolPlanPayment: SchoolPayment;
     /*
     relacion con la tabla mensualidades
     @Column('int', {
