@@ -18,8 +18,8 @@ export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<
     }
 
     async afterInsert(insertEvent: InsertEvent<SchoolChargeDetails>) {
-        const { entity: sale } = insertEvent;
-        // this.generateDocFolio(sale.id);
+        const { entity: details } = insertEvent;
+        this.changeStatusSchoolPayment(details.schoolPlanPayment.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<SchoolChargeDetails>) {
