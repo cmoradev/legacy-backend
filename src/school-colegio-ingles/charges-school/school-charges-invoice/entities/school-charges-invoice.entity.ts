@@ -1,9 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
-import { MiniStoreSalePayment } from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { MiniStoreSale } from '../../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 
@@ -55,17 +53,10 @@ export class SchoolChargesInvoice extends Base {
 
     @Column('tinyint', {
         nullable: false,
-        default: () => '1',
+        default: () => '0',
         name: 'status',
     })
     status: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '0',
-        name: 'id_plantel',
-    })
-    idPlantel: number;
 
     @Column({
         type: 'enum',
@@ -74,6 +65,13 @@ export class SchoolChargesInvoice extends Base {
         enum: InvoiceType,
     })
     invoiceType: InvoiceType;
+
+    @Column('int', {
+        nullable: false,
+        default: () => '0',
+        name: 'id_plantel',
+    })
+    idPlantel: number;
 
     /**
      * Relación que corresponde al la factura al pago de una venta

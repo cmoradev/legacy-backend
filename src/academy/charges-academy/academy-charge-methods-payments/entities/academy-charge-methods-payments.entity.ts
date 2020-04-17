@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { InvoicesBank } from '../../../../system/invoices-bank/entities/invoices-bank.entity';
+import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago
@@ -46,7 +47,7 @@ export class AcademyChargeMethodsPayments extends Base {
     /**
      * Relación de una metodo de pago con una venta
      */
-    /*
-    @ManyToOne(() => SchoolChargePayment, (miniStoreSalePayment) => miniStoreSalePayment.methodsPayments)
-    schoolChargePayment: SchoolChargePayment;*/
+
+    @ManyToOne(() => AcademyChargePayments, (acChargePayments) => acChargePayments.methodsPayments)
+    academyChargePayment: AcademyChargePayments;
 }

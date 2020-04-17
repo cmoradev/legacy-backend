@@ -16,6 +16,10 @@ import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.e
 import { Campus } from '../../../../school-colegio-ingles/campuses/entities/campus.entity';
 import { SchoolChargeDetails } from '../../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
+import { SchoolChargePayment } from '../../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
+import { SchoolChargesInvoice } from '../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
+import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Entity('ac_cobros')
 export class AcademyCharge {
@@ -157,6 +161,16 @@ export class AcademyCharge {
     })
     chargesDetails: AcademyChargeDetails[];
 
+    @OneToMany(() => AcademyChargePayments, (detailspay) => detailspay.academyCharge, {
+        cascade: ['insert'],
+    })
+    chargesPayments: AcademyChargePayments[];
+
+    @OneToMany(() => AcademyChargeInvoice, (chargesInvoice) => chargesInvoice.academyCharge,
+        {
+            cascade: ['insert'],
+        })
+    chargesInvoice: AcademyChargeInvoice[];
 
     @Column('timestamp', {
         nullable: false,

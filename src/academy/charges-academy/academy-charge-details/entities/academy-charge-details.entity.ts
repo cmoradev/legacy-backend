@@ -17,14 +17,14 @@ export class AcademyChargeDetails {
         length: 20,
         name: 'codigo_producto',
     })
-    codigoProducto: string;
+    codeProduct: string;
 
     @Column('varchar', {
         nullable: true,
         length: 20,
         name: 'codigo_unidad',
     })
-    codigoUnidad: string | null;
+    codeUnit: string | null;
 
     @Column('varchar', {
         nullable: true,
@@ -37,20 +37,20 @@ export class AcademyChargeDetails {
         nullable: false,
         name: 'concepto',
     })
-    concepto: string;
+    concept: string;
 
     @Column('varchar', {
         nullable: false,
         length: 8,
         name: 'codigo_concepto',
     })
-    codigoConcepto: string;
+    codeConcept: string;
 
     @Column('int', {
         nullable: false,
         name: 'cantidad',
     })
-    cantidad: number;
+    quantity: number;
 
     @Column('decimal', {
         nullable: false,

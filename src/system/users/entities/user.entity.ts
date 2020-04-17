@@ -23,6 +23,7 @@ import { MiniStoreTransaction } from '../../../mini-store/store-sales/mini-store
 import { CashRegisterTransaction } from '../../../mini-store/cash-register-transactions/entities/cash-register-transaction.entity';
 import { CashRegister } from '../../../mini-store/cash-register/entities/cash-register.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
+import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Entity('usuarios')
 export class User {
@@ -222,4 +223,10 @@ export class User {
 
     @OneToMany(type => CashRegister, (cashRegister) => cashRegister.agent)
     cashRegisterHistory: CashRegister[];
+
+    @OneToMany(() => AcademyChargeInvoice, (academyChargeInvoice) => academyChargeInvoice.agentBilling)
+    academyChargesBillingInvoices: AcademyChargeInvoice[];
+
+    @OneToMany(() => AcademyChargeInvoice, (academyChargeInvoice) => academyChargeInvoice.agentCanceling)
+    academyChargesCancelingInvoices: AcademyChargeInvoice[];
 }
