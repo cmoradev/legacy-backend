@@ -16,7 +16,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
-import { StatusPayment } from '../../../../school-colegio-ingles/school-payments/enums/statusPayment';
+import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { FixedAssetAssignmentStatus } from '../../../../fixed-assets-control/fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 
 @Entity('tie_ventas')

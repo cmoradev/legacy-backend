@@ -4,7 +4,7 @@ import { SchoolChargeDetails } from '../../charges-school/school-charges-details
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { PaymentPlanConceptTypeEnum } from '../../payment-plan-concepts/enums/payment-plan-concept-type.enum';
-import { StatusPayment } from '../enums/statusPayment';
+import { StatusPayment } from '../../../common/enums/statusPayment';
 
 
 @Entity()

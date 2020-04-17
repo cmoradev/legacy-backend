@@ -1,15 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
-import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
-import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
-import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { StatusPayment } from '../../../../common/enums/statusPayment';
 
-@Entity('school_charge_payments')
-export class SchoolChargePayment extends Base {
+@Entity('ac_charge_payments')
+export class AcademyChargePayments extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -66,9 +61,9 @@ export class SchoolChargePayment extends Base {
         default: () => '1',
     })
     isIVA: boolean;
-
-    @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesPayments)
-    schoolCharge: SchoolCharge;
+    /*
+        @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesPayments)
+        schoolCharge: SchoolCharge;*/
 
     @Column({
         type: 'enum',
@@ -82,10 +77,11 @@ export class SchoolChargePayment extends Base {
     /**
      * Relación de un pago con sus metodos de pago
      */
+    /*
     @OneToMany(() => SchoolChargesMethodsPayments, (chargesMethodsPayments) => chargesMethodsPayments.schoolChargePayment, {
         cascade: ['insert'],
     })
-    methodsPayments: SchoolChargesMethodsPayments[];
+    methodsPayments: SchoolChargesMethodsPayments[];*/
 
     @ManyToOne(() => User, (user) => user.schoolChargesPayments)
     cashierCharge: User;
@@ -95,6 +91,7 @@ export class SchoolChargePayment extends Base {
     /*
      * Relación Bidireccional del pago de una venta con la Facturas
     */
+    /*
     @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolChargePayment)
-    schoolChargesInvoice: SchoolChargesInvoice[];
+    schoolChargesInvoice: SchoolChargesInvoice[];*/
 }

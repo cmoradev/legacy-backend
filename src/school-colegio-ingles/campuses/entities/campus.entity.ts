@@ -9,6 +9,7 @@ import { AcademyActivitiesGroup } from '../../../academy/academy-activities-grou
 import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
+import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 
 @Entity('planteles')
 export class Campus {
@@ -76,4 +77,7 @@ export class Campus {
 
   @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
   campusSchoolCharge: SchoolCharge[];
+
+  @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
+  campusAcademyCharge: AcademyCharge[];
 }

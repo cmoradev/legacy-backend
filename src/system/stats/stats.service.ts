@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MiniStoreSale } from '../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { StatusPayment } from '../../school-colegio-ingles/school-payments/enums/statusPayment';
+import { StatusPayment } from '../../common/enums/statusPayment';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Student } from '../../school-colegio-ingles/students/entities/student.entity';

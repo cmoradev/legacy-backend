@@ -8,6 +8,7 @@ import { TypeStudent } from '../interface/studentsSchool.interface';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
+import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 
 @Entity('alumnos')
 export class Student {
@@ -158,4 +159,7 @@ export class Student {
 
     @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolStudent)
     studentCharges: SchoolCharge[];
+
+    @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.schoolStudent)
+    academyCharges: AcademyCharge[];
 }

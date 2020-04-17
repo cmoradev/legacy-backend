@@ -4,7 +4,7 @@ import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payme
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { StatusPayment } from '../../../../school-colegio-ingles/school-payments/enums/statusPayment';
+import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 

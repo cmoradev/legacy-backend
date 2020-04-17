@@ -10,6 +10,7 @@ import { AcademyInscription } from '../../../academy/academy-inscription/entitie
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
 import { Periods } from '../../periods/entities/periods.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 
 @Entity('ciclos')
 export class Cycle {
@@ -91,6 +92,9 @@ export class Cycle {
 
     @OneToMany(() => SchoolCharge, (shoolCharge) => shoolCharge.schoolCycle)
     cycleSchoolCharge: SchoolCharge[];
+
+    @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCycle)
+    cycleAcademyCharge: AcademyCharge[];
 
     @OneToMany(type => MiniStoreSale, (sale) => sale.cycle)
     sales: MiniStoreSale[];

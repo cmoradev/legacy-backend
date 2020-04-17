@@ -1,14 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
 import { Campus } from '../../../campuses/entities/campus.entity';
 import { Student } from '../../../students/entities/student.entity';
-import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
-import { MiniStoreInvoice } from '../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
-import { StatusPayment } from '../../../school-payments/enums/statusPayment';
+import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {

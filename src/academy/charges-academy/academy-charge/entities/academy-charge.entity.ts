@@ -1,18 +1,21 @@
 import {
-    BaseEntity,
     Column,
     Entity,
-    Index,
+    Generated,
     JoinColumn,
-    JoinTable,
-    ManyToMany,
     ManyToOne,
     OneToMany,
-    OneToOne,
-    PrimaryColumn,
     PrimaryGeneratedColumn,
-    RelationId,
+    VersionColumn,
 } from 'typeorm';
+import { AcademyActivity } from '../../../academy-activities/entities/academy-activity.entity';
+import { User } from '../../../../system/users/entities/user.entity';
+import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
+import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
+import { Campus } from '../../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { SchoolChargeDetails } from '../../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
+import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
 
 @Entity('ac_cobros')
 export class AcademyCharge {
@@ -33,29 +36,9 @@ export class AcademyCharge {
 
     @Column('int', {
         nullable: false,
-        name: 'id_agente',
-    })
-    idAgente: number;
-
-    @Column('int', {
-        nullable: false,
         name: 'id_modalidad',
     })
-    idModalidad: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_alumno',
-    })
-    idAlumno: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_externo',
-    })
-    idExterno: number;
+    idModality: number;
 
     @Column('int', {
         nullable: true,
@@ -76,44 +59,33 @@ export class AcademyCharge {
     })
     nombreMetodoPago: string | null;
 
-    @Column('int', {
+    @Column({
+        type: 'enum',
+        enum: StatusPayment,
+        default: StatusPayment.Debit,
         nullable: false,
-        default: () => '\'0\'',
         name: 'id_estado_pago',
     })
-    idEstadoPago: number;
+    status: StatusPayment;
 
     @Column('text', {
         nullable: true,
         name: 'observaciones',
     })
-    observaciones: string | null;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_agente_cancelacion',
-    })
-    idAgenteCancelacion: number;
+    observations: string | null;
 
     @Column('timestamp', {
         nullable: true,
         name: 'fecha_cancelacion',
     })
-    fechaCancelacion: Date | null;
+    dateCancellation: Date | null;
 
     @Column('text', {
         nullable: true,
         name: 'motivos_cancelacion',
     })
-    motivosCancelacion: string | null;
+    reasonsCancellation: string | null;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'ciclo',
-    })
-    ciclo: number;
 
     @Column('int', {
         nullable: false,
@@ -128,20 +100,6 @@ export class AcademyCharge {
     })
     isIva: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'is_isr',
-    })
-    isIsr: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'is_ivaretencion',
-    })
-    isIvaretencion: number;
-
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -149,7 +107,7 @@ export class AcademyCharge {
         scale: 6,
         name: 'cambio',
     })
-    cambio: number;
+    change: number;
 
     @Column('tinyint', {
         nullable: false,
@@ -159,12 +117,46 @@ export class AcademyCharge {
     })
     timbrado: boolean;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
+    @ManyToOne(() => Campus, (campus) => campus.campusAcademyCharge)
+    @JoinColumn({
         name: 'id_plantel',
+        referencedColumnName: 'id',
     })
-    idPlantel: number;
+    chargeCampus: Campus;
+
+    @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcademyCharge)
+    @JoinColumn({
+        name: 'ciclo',
+        referencedColumnName: 'id',
+    })
+    chargeCycle: Cycle;
+
+    @ManyToOne(() => User, (user) => user.academyCharges)
+    @JoinColumn({
+        name: 'id_agente',
+        referencedColumnName: 'id',
+    })
+    cashier: User;
+
+    @ManyToOne(() => User, (user) => user.academyChargesCancellation)
+    @JoinColumn({
+        name: 'id_agente_cancelacion',
+        referencedColumnName: 'id',
+    })
+    cashierCancellation: User;
+
+    @ManyToOne(() => Student, (student) => student.academyCharges)
+    @JoinColumn({
+        name: 'id_alumno',
+        referencedColumnName: 'id',
+    })
+    schoolStudent: Student;
+
+    @OneToMany(() => AcademyChargeDetails, (details) => details.academyCharge, {
+        cascade: ['insert', 'update'],
+    })
+    chargesDetails: AcademyChargeDetails[];
+
 
     @Column('timestamp', {
         nullable: false,
@@ -181,4 +173,13 @@ export class AcademyCharge {
     })
     updatedAt: Date;
 
+    @VersionColumn({
+        default: 0,
+        nullable: false,
+    })
+    version: number;
+
+    @Column()
+    @Generated('uuid')
+    uuid: string;
 }

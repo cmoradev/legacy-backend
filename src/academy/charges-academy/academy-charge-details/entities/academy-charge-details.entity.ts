@@ -1,18 +1,7 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    RelationId,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
+import { SchoolCharge } from '../../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
+import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 
 @Entity('ac_cobro_detalle')
 export class AcademyChargeDetails {
@@ -50,12 +39,6 @@ export class AcademyChargeDetails {
     })
     concepto: string;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_concepto_cobro',
-    })
-    idConceptoCobro: number;
-
     @Column('varchar', {
         nullable: false,
         length: 8,
@@ -78,12 +61,6 @@ export class AcademyChargeDetails {
     })
     price: number;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_ac_cobro',
-    })
-    idAcCobro: number;
-
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
@@ -99,4 +76,21 @@ export class AcademyChargeDetails {
     })
     updatedAt: Date;
 
+    @ManyToOne(() => AcademyCharge, (schoolCharge) => schoolCharge.chargesDetails)
+    @JoinColumn({
+        name: 'id_ac_cobro',
+        referencedColumnName: 'id',
+    })
+    academyCharge: AcademyCharge;
+
+    @OneToMany(() => AcademyChargeDetailsExtraCharge, (extraCharges) => extraCharges.chargeDetail, {
+        cascade: ['insert'],
+    })
+    extraCharges: AcademyChargeDetailsExtraCharge[];
+    // falta relacion con el concepto de cobro de academia
+    @Column('int', {
+        nullable: false,
+        name: 'id_concepto_cobro',
+    })
+    idConceptoCobro: number;
 }
