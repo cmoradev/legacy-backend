@@ -104,6 +104,11 @@ import { MiniStoreTransactionModule } from './mini-store/store-sales/mini-store-
 import { CashRegisterModule } from './mini-store/cash-register/cash-register.module';
 import { CashRegisterTransactionsModule } from './mini-store/cash-register-transactions/cash-register-transactions.module';
 import { FoliosModule } from './system/folios/folios.module';
+import { ChargesAcademyModule } from './academy/charges-academy/charges-academy.module';
+import { AcademyChargeDetailsExtraChargeModule } from './academy/charges-academy/academy-charge-details-extra-charge/academy-charge-details-extra-charge.module';
+import { SchoolChargesDetailsExtraChargesModule } from './school-colegio-ingles/charges-school/school-charges-details-extra-charges/school-charges-details-extra-charges.module';
+import { AcademyChargePaymentsService } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.service';
+import { AcademyChargeMethodsPaymentsModule } from './academy/charges-academy/academy-charge-methods-payments/academy-charge-methods-payments.module';
 
 export const routes: Routes = [
     {
@@ -157,30 +162,12 @@ export const routes: Routes = [
                 path: '/charges',
                 module: ChargesSchoolModule,
                 children: [
-                    {
-                        path: '/',
-                        module: SchoolChargesModule,
-                    },
-                    {
-                        path: '/details',
-                        module: SchoolChargesDetailsModule,
-                    },
-                    {
-                        path: '/details-extra-charge',
-                        module: SchoolChargesDetailsModule,
-                    },
-                    {
-                        path: '/invoice',
-                        module: SchoolChargesInvoiceModule,
-                    },
-                    {
-                        path: '/payments',
-                        module: SchoolChargesPaymentsModule,
-                    },
-                    {
-                        path: '/methods-payment',
-                        module: SchoolChargesMethodsPaymentsModule,
-                    },
+                    { path: '/', module: SchoolChargesModule },
+                    { path: '/details', module: SchoolChargesDetailsModule },
+                    { path: '/details-extra-charge', module: SchoolChargesDetailsExtraChargesModule },
+                    { path: '/invoice', module: SchoolChargesInvoiceModule },
+                    { path: '/payments', module: SchoolChargesPaymentsModule },
+                    { path: '/methods-payment', module: SchoolChargesMethodsPaymentsModule },
                 ],
             },
             { path: '/school-payments', module: SchoolPaymentsModule },
@@ -254,12 +241,22 @@ export const routes: Routes = [
             { path: '/academy-modalities', module: AcademyModalitiesModule },
             { path: '/academy-inscription', module: AcademyInscriptionModule },
             { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
-            { path: '/academy-charge', module: AcademyChargeModule },
-            { path: '/academy-charge-details', module: AcademyChargeDetailsModule },
-            { path: '/academy-charge-discounts', module: AcademyChargeDiscountsModule },
-            { path: '/academy-charge-invoice', module: AcademyChargeInvoiceModule },
-            { path: '/academy-charge-surcharges', module: AcademyChargeSurchargesModule },
-            { path: '/academy-charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
+            {
+                path: '/charges',
+                module: ChargesAcademyModule,
+                children: [
+                    { path: '/', module: AcademyChargeModule },
+                    { path: '/details', module: AcademyChargeDetailsModule },
+                    { path: '/details-extra-charge', module: AcademyChargeDetailsExtraChargeModule },
+                    { path: '/invoice', module: AcademyChargeInvoiceModule },
+                    { path: '/payments', module: AcademyChargePaymentsService },
+                    { path: '/methods-payment', module: AcademyChargeMethodsPaymentsModule },
+
+                    { path: '/discounts', module: AcademyChargeDiscountsModule },
+                    { path: '/surcharges', module: AcademyChargeSurchargesModule },
+                    { path: '/charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
+                ],
+            },
         ],
     },
     {
