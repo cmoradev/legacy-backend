@@ -65,13 +65,6 @@ export class MiniStoreSalePayment {
     })
     idStatusPayment: StatusPayment;
 
-    @ManyToOne(type => User, user => user.salePayments)
-    @JoinColumn({
-        name: 'id_agente',
-        referencedColumnName: 'id',
-    })
-    agent: User;
-
     @Column('int', {
         nullable: true,
         default: () => '\'0\'',
@@ -135,6 +128,10 @@ export class MiniStoreSalePayment {
      * Relación de un pago con una venta
      */
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSalePayments)
+    @JoinColumn({
+        name: 'saleId',
+        referencedColumnName: 'id',
+    })
     miniStoreSale: MiniStoreSale;
 
     @Column({
@@ -162,9 +159,24 @@ export class MiniStoreSalePayment {
     miniStoreInvoices: MiniStoreInvoice[];
 
     @ManyToOne(() => User, (user) => user.miniStoreBillingPayments)
+    @JoinColumn({
+        name: 'cashierBillingId',
+        referencedColumnName: 'id',
+    })
     agentBilling: User;
 
+    @ManyToOne(type => User, user => user.salePayments)
+    @JoinColumn({
+        name: 'recaudadorId',
+        referencedColumnName: 'id',
+    })
+    agent: User;
+
     @ManyToOne(() => User, (user) => user.miniStoreCancelingPayments)
+    @JoinColumn({
+        name: 'paymentCancellerId',
+        referencedColumnName: 'id',
+    })
     agentCanceling: User;
 
     @OneToMany(type => CashRegisterTransaction, (cashRegisterTransaction) => cashRegisterTransaction.payment)

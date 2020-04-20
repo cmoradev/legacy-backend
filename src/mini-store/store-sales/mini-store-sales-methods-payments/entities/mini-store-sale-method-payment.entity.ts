@@ -113,5 +113,9 @@ export class MiniStoreSaleMethodPayment {
      * Relación de una metodo de pago con una venta
      */
     @ManyToOne(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreSaleMethodPayments)
+    @JoinColumn({
+        name: 'salePaymentId',
+        referencedColumnName: 'id',
+    })
     miniStoreSalePayment: MiniStoreSalePayment;
 }
