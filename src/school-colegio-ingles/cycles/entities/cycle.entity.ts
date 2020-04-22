@@ -87,7 +87,7 @@ export class Cycle {
     @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesCycle)
     cycleSystemExtraCharges: SystemExtraCharges[];
 
-    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsCycle)
+    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.cycle)
     cycleAcIns: AcademyInscription[];
 
     @OneToMany(() => SchoolCharge, (shoolCharge) => shoolCharge.schoolCycle)

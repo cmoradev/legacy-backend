@@ -151,7 +151,7 @@ export class Student {
     @OneToMany(() => Incident, (incident) => incident.student)
     incidents: Incident[];
 
-    @OneToMany(() => AcademyInscription, (inscription) => inscription.acInsStudent)
+    @OneToMany(() => AcademyInscription, (inscription) => inscription.student)
     studentAcInscriptions: AcademyInscription[];
 
     @OneToMany(type => MiniStoreSale, sale => sale.student)

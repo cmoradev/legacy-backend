@@ -176,10 +176,10 @@ export class User {
     @OneToMany(() => ClassroomPermission, (classroomPermission) => classroomPermission.user)
     classroomPermissions: ClassroomPermission[];
 
-    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsAgentCreator)
+    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.enrollmentAgent)
     userAcInsHigh: AcademyInscription[];
 
-    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsAgentDown)
+    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.unEnrollerAgent)
     userAcInsDown: AcademyInscription[];
 
     @OneToMany(type => SalesReturns, saleReturns => saleReturns.agent)

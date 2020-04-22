@@ -72,7 +72,7 @@ export class Campus {
   @OneToMany(() => User, (user) => user.campus)
   users: User[];
 
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsCampus)
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.inscriptionCampus)
   campusAcIns: AcademyInscription[];
 
   @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)

@@ -44,7 +44,4 @@ export class InscriptionStatus {
     name: 'updated_at',
   })
   updatedAt: Date;
-
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsStatusIns)
-  insStatusAcIns: AcademyInscription[];
 }

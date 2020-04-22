@@ -111,7 +111,7 @@ export class AcademyActivitiesGroup {
   })
   updatedAt: Date;
 
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsActGroup)
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.academyGroup)
   acGroupAcInsc: AcademyInscription[];
 
 }

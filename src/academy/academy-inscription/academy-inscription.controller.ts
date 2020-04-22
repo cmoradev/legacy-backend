@@ -4,35 +4,35 @@ import { AcademyInscription } from './entities/academy-inscription.entity';
 import { AcademyInscriptionService } from './academy-inscription.service';
 
 @Crud({
-  model: {
-    type: AcademyInscription,
-  },
-  query: {
-    limit: 200,
-    join: {
-      acInsActivity: {},
-      acInsStudent: {},
-      acInsCampus: {},
-      acInsActGroup: {},
-      acInsAgentCreator: {},
-      acInsAgentDown: {},
-      acInsStatusIns: {},
-      acInsCycle: {},
-      acInsConcepts: {},
-      'acInsConcepts.acInsConActivity': {},
-      'acInsConcepts.acInsConConcepType': {},
-      'acInsConcepts.acInsConStatusPayment': {},
+    model: {
+        type: AcademyInscription,
     },
-  },
+    query: {
+        limit: 200,
+        join: {
+            activity: {},
+            student: {},
+            inscriptionCampus: {},
+            academyGroup: {},
+            enrollmentAgent: {},
+            unEnrollerAgent: {},
+            inscriptionStatus: {},
+            cycle: {},
+            concepts: {},
+            'concepts.acInsConActivity': {},
+            'concepts.acInsConConcepType': {},
+            'concepts.acInsConStatusPayment': {},
+        },
+    },
 })
 @Controller()
 export class AcademyInscriptionController implements CrudController<AcademyInscription> {
-  constructor(
-    readonly service: AcademyInscriptionService,
-  ) {
-  }
+    constructor(
+        readonly service: AcademyInscriptionService,
+    ) {
+    }
 
-  get base(): CrudController<AcademyInscription> {
-    return this;
-  }
+    get base(): CrudController<AcademyInscription> {
+        return this;
+    }
 }

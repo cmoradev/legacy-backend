@@ -76,7 +76,7 @@ export class AcademyActivity {
   @OneToMany(() => AcademyActivitiesGroup, (academyActivitiesGroup) => academyActivitiesGroup.academyGroupActivity)
   academyActivityGroups: AcademyActivitiesGroup[];
 
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.acInsActivity)
+  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.activity)
   academyActInscription: AcademyInscription[];
 
   @OneToMany(() => AcademyInscriptionConcepts, (AcInsConcepts) => AcInsConcepts.acInsConActivity)

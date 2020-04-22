@@ -1,188 +1,183 @@
-import {
-  BaseEntity,
-  Column,
-  Entity, JoinColumn, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
-import { InscriptionStatus } from '../../../system/inscription-status/entities/inscription-status.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { InscriptionStatus, StatusPayment } from '../../../common/enums/statusPayment';
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription {
-  // agregue realciones aun falta la migracion
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+    // agregue realciones aun falta la migracion
+    @PrimaryGeneratedColumn({
+        type: 'int',
+        name: 'id',
+    })
+    id: number;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 200,
-    name: 'clave_inscripcion',
-  })
-  keyInscription: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 200,
+        name: 'clave_inscripcion',
+    })
+    keyInscription: string;
 
-  @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
-  @JoinColumn({
-    name: 'id_academia',
-    referencedColumnName: 'id',
-  })
-  acInsActivity: AcademyActivity;
+    @Column('int', {
+        nullable: false,
+        default: () => '\'0\'',
+        name: 'id_nivel',
+    })
+    idNivel: number;
 
-  @ManyToOne(() => Student, (student) => student.studentAcInscriptions)
-  @JoinColumn({
-    name: 'id_alumno',
-    referencedColumnName: 'id',
-  })
-  acInsStudent: Student;
+    @Column('int', {
+        nullable: false,
+        default: () => '\'0\'',
+        name: 'id_grado',
+    })
+    idGrado: number;
 
-  @ManyToOne(() => Campus, (campus) => campus.campusAcIns)
-  @JoinColumn({
-    name: 'id_plantel',
-    referencedColumnName: 'id',
-  })
-  acInsCampus: Campus;
+    @Column('int', {
+        nullable: false,
+        default: () => '\'0\'',
+        name: 'id_grupo',
+    })
+    idGrupo: number;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_nivel',
-  })
-  idNivel: number;
+    @Column('varchar', {
+        nullable: true,
+        length: 250,
+        name: 'descripcion',
+    })
+    description: string | null;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_grado',
-  })
-  idGrado: number;
+    @Column('varchar', {
+        nullable: true,
+        length: 230,
+        name: 'dias',
+    })
+    days: string | null;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_grupo',
-  })
-  idGrupo: number;
+    @Column('varchar', {
+        nullable: true,
+        length: 230,
+        name: 'horario',
+    })
+    timetable: string | null;
 
-  @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
-  @JoinColumn({
-    name: 'id_ac_grupo',
-    referencedColumnName: 'id',
-  })
-  acInsActGroup: AcademyActivitiesGroup;
+    @Column('date', {
+        nullable: true,
+        name: 'fecha_inicio',
+    })
+    startDate: string | null;
 
-  @ManyToOne(() => User, (user) => user.userAcInsHigh)
-  @JoinColumn({
-    name: 'id_agente',
-    referencedColumnName: 'id',
-  })
-  acInsAgentCreator: User;
+    @Column('date', {
+        nullable: true,
+        name: 'fecha_fin',
+    })
+    startEnd: string | null;
 
-  @Column('varchar', {
-    nullable: true,
-    length: 250,
-    name: 'descripcion',
-  })
-  description: string | null;
+    @Column('timestamp', {
+        nullable: true,
+        name: 'fecha_baja',
+    })
+    downDate: Date | null;
 
-  @Column('varchar', {
-    nullable: true,
-    length: 230,
-    name: 'dias',
-  })
-  days: string | null;
+    @Column('varchar', {
+        nullable: true,
+        name: 'motivo_baja',
+    })
+    downMotive: string | null;
 
-  @Column('varchar', {
-    nullable: true,
-    length: 230,
-    name: 'horario',
-  })
-  timetable: string | null;
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+        default: () => '\'0\'',
+        name: 'incluida',
+    })
+    isIncluded: boolean;
 
-  @Column('date', {
-    nullable: true,
-    name: 'fecha_inicio',
-  })
-  startDate: string | null;
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+        default: () => '\'1\'',
+        name: 'active',
+    })
+    isActive: boolean;
 
-  @Column('date', {
-    nullable: true,
-    name: 'fecha_fin',
-  })
-  startEnd: string | null;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.userAcInsDown)
-  @JoinColumn({
-    name: 'id_agente_baja',
-    referencedColumnName: 'id',
-  })
-  acInsAgentDown: User | null;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt: Date;
 
-  @Column('timestamp', {
-    nullable: true,
-    name: 'fecha_baja',
-  })
-  downDate: Date | null;
+    @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
+    @JoinColumn({
+        name: 'id_academia',
+        referencedColumnName: 'id',
+    })
+    activity: AcademyActivity;
 
-  @Column('varchar', {
-    nullable: true,
-    name: 'motivo_baja',
-  })
-  downMotive: string | null;
+    @ManyToOne(() => Student, (student) => student.studentAcInscriptions)
+    @JoinColumn({
+        name: 'id_alumno',
+        referencedColumnName: 'id',
+    })
+    student: Student;
 
-  @Column('tinyint', {
-    nullable: false,
-    width: 1,
-    default: () => '\'0\'',
-    name: 'incluida',
-  })
-  isIncluded: boolean;
+    @ManyToOne(() => Campus, (campus) => campus.campusAcIns)
+    @JoinColumn({
+        name: 'id_plantel',
+        referencedColumnName: 'id',
+    })
+    inscriptionCampus: Campus;
 
-  @ManyToOne(() => InscriptionStatus, (inscriptionStatus) => inscriptionStatus.insStatusAcIns)
-  @JoinColumn({
-    name: 'id_estado_inscripcion',
-    referencedColumnName: 'id',
-  })
-  acInsStatusIns: InscriptionStatus;
+    @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
+    @JoinColumn({
+        name: 'id_ac_grupo',
+        referencedColumnName: 'id',
+    })
+    academyGroup: AcademyActivitiesGroup;
 
-  @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
-  @JoinColumn({
-    name: 'id_ciclo',
-    referencedColumnName: 'id',
-  })
-  acInsCycle: Cycle;
+    @ManyToOne(() => User, (user) => user.userAcInsHigh)
+    @JoinColumn({
+        name: 'id_agente',
+        referencedColumnName: 'id',
+    })
+    enrollmentAgent: User;
 
-  @Column('tinyint', {
-    nullable: false,
-    width: 1,
-    default: () => '\'1\'',
-    name: 'active',
-  })
-  isActive: boolean;
+    @ManyToOne(() => User, (user) => user.userAcInsDown)
+    @JoinColumn({
+        name: 'id_agente_baja',
+        referencedColumnName: 'id',
+    })
+    unEnrollerAgent: User | null;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
+    @Column({
+        type: 'enum',
+        enum: InscriptionStatus,
+        default: InscriptionStatus.Registered,
+        nullable: false,
+        name: 'id_estado_inscripcion',
+    })
+    inscriptionStatus: InscriptionStatus;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
+    @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
+    @JoinColumn({
+        name: 'id_ciclo',
+        referencedColumnName: 'id',
+    })
+    cycle: Cycle;
 
-  @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.AcInscription)
-  acInsConcepts: AcademyInscriptionConcepts[];
+    @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
+    concepts: AcademyInscriptionConcepts[];
 }

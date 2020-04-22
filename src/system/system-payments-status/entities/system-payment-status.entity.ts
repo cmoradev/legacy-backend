@@ -33,10 +33,4 @@ export class SystemPaymentStatus {
         name: 'updated_at',
     })
     updatedAt: Date;
-
-    @OneToMany(() => SchoolChargePayment, (schoolChargePayment) => schoolChargePayment.paymentStatus)
-    schoolChargePayments: SchoolChargePayment[];
-
-    @OneToMany(() => AcademyInscriptionConcepts, (acInscripConceptos) => acInscripConceptos.acInsConStatusPayment)
-    sysPayStaAcInsConcept: AcademyInscriptionConcepts[];
 }

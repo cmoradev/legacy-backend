@@ -13,7 +13,7 @@ import { AcademyInscriptionConceptsService } from './academy-inscription-concept
       acInsConActivity: {},
       acInsConConcepType: {},
       acInsConStatusPayment: {},
-      AcInscription: {},
+      acInscription: {},
     },
   },
 })

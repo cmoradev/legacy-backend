@@ -18,6 +18,7 @@ import { SystemPaymentStatus } from '../../../system/system-payments-status/enti
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
+import { StatusPayment, PaymentStatus } from '../../../common/enums/statusPayment';
 
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts {
@@ -70,12 +71,14 @@ export class AcademyInscriptionConcepts {
     })
     acInsConConcepType: SystemConceptsType;
 
-    @ManyToOne(type => SystemPaymentStatus, systemPayStatus => systemPayStatus.sysPayStaAcInsConcept)
-    @JoinColumn({
+    @Column({
+        type: 'enum',
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
+        nullable: false,
         name: 'id_estado_pago',
-        referencedColumnName: 'id',
     })
-    acInsConStatusPayment: SystemPaymentStatus;
+    paymentStatus: PaymentStatus;
 
     @Column('varchar', {
         nullable: true,
@@ -135,20 +138,6 @@ export class AcademyInscriptionConcepts {
     })
     isIva: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'is_isr',
-    })
-    isIsr: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'is_ivaretencion',
-    })
-    isIvaretencion: number;
-
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -171,7 +160,7 @@ export class AcademyInscriptionConcepts {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.acInsConcepts)
-    AcInscription: AcademyInscription;
+    @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.concepts)
+    acInscription: AcademyInscription;
 
 }
