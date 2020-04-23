@@ -6,7 +6,6 @@ import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment
 import { PaymentPlanConceptTypeEnum } from '../../payment-plan-concepts/enums/payment-plan-concept-type.enum';
 import { StatusPayment } from '../../../common/enums/statusPayment';
 
-
 @Entity()
 export class SchoolPayment extends Base {
     @Column('varchar', {

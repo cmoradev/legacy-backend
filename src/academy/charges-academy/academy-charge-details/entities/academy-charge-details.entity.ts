@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
-import { SchoolCharge } from '../../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
+import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Entity('ac_cobro_detalle')
 export class AcademyChargeDetails {
@@ -31,7 +31,7 @@ export class AcademyChargeDetails {
         length: 100,
         name: 'unidad',
     })
-    unidad: string | null;
+    unit: string | null;
 
     @Column('varchar', {
         nullable: false,
@@ -87,10 +87,15 @@ export class AcademyChargeDetails {
         cascade: ['insert'],
     })
     extraCharges: AcademyChargeDetailsExtraCharge[];
+
     // falta relacion con el concepto de cobro de academia
     @Column('int', {
         nullable: false,
         name: 'id_concepto_cobro',
     })
     idConceptoCobro: number;
+
+    @OneToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail)
+    @JoinColumn()
+    academyInscriptionConcept: AcademyInscriptionConcepts;
 }

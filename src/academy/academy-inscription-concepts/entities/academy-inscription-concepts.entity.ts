@@ -19,6 +19,8 @@ import { SystemConceptsType } from '../../../system/system-concepts-type/entitie
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { StatusPayment, PaymentStatus } from '../../../common/enums/statusPayment';
+import { SchoolChargeDetails } from '../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
+import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts {
@@ -94,17 +96,27 @@ export class AcademyInscriptionConcepts {
     })
     quantity: number;
 
+    @Column('int', {
+        nullable: true,
+    })
+    payDay: number;
+
+    @Column('int', {
+        nullable: true,
+    })
+    payMonth: number;
+
     @Column('date', {
         nullable: true,
         name: 'fecha_pago',
     })
-    payDay: string | null;
+    paidDay: number;
 
     @Column('date', {
         nullable: true,
         name: 'fecha_pagado',
     })
-    payDate: string | null;
+    paidMonth: number;
 
     @Column('decimal', {
         nullable: true,
@@ -162,5 +174,8 @@ export class AcademyInscriptionConcepts {
 
     @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.concepts)
     acInscription: AcademyInscription;
+
+    @OneToOne(type => AcademyChargeDetails, chargeDetails => chargeDetails.academyInscriptionConcept)
+    academyChargeDetail: AcademyChargeDetails;
 
 }
