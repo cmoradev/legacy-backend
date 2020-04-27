@@ -20,4 +20,8 @@ import { CashRegisterTransactionsService } from './cash-register-transactions.se
 export class CashRegisterTransactionsController implements CrudController<CashRegisterTransaction> {
     constructor(public service: CashRegisterTransactionsService) {
     }
+
+    get base(): CrudController<CashRegisterTransaction> {
+        return this;
+    }
 }
