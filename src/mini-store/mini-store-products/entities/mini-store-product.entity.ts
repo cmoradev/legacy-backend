@@ -90,6 +90,17 @@ export class MiniStoreProduct {
     })
     IVA: boolean;
 
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+    })
+    isFavorite: boolean;
+
+    @Column('text', {
+        nullable: true,
+    })
+    picture: string | null;
+
     @Column('decimal', {
         nullable: false,
         default: () => '\'0.000\'',
@@ -155,7 +166,7 @@ export class MiniStoreProduct {
         default: () => 'CURRENT_TIMESTAMP',
         name: 'created_at',
     })
-    createdAt?: Date;
+    createdAt: Date;
 
     @Column('timestamp', {
         nullable: false,
@@ -163,7 +174,7 @@ export class MiniStoreProduct {
         onUpdate: 'CURRENT_TIMESTAMP',
         name: 'updated_at',
     })
-    updatedAt?: Date;
+    updatedAt: Date;
 
     @ManyToOne(() => MiniStorePriceList, (storePriceList) => storePriceList.storeProducts)
     storePriceList: MiniStorePriceList;
