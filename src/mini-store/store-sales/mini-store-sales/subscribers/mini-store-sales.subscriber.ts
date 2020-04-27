@@ -2,6 +2,9 @@ import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent,
 import { MiniStoreSale } from '../entities/mini-store-sale.entity';
 import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
 import { InvoiceCompany } from '../../../../invoice/invoice-company/entities/invoice-company.entity';
+import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
+import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';
+import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
 
 @EventSubscriber()
 export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniStoreSale> {
@@ -14,6 +17,7 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
     async afterInsert(insertEvent: InsertEvent<MiniStoreSale>) {
         const { entity: sale } = insertEvent;
         this.generateDocFolio(sale.id);
+        this.generateTransaction(sale.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSale>) {
@@ -33,5 +37,27 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         console.log('new sale' + miniStore.foliajeNota + updateIns.id);
         updateIns.folio = miniStore.foliajeNota + updateIns.id;
         return insRepository.save(updateIns);
+    }
+
+    async generateTransaction(id: number): Promise<CashRegisterTransaction> {
+
+        const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
+        const sale = await getRepository(MiniStoreSale, ColegioDBNameConnection).findOne({
+            where: { id },
+            relations: ['cashier', 'miniStoreSalePayments'],
+        });
+
+        const serviceCashRegister = await getRepository(CashRegister, ColegioDBNameConnection).findOne({
+            where: {
+                closedAt: null,
+                agentId: sale.cashier.id,
+            },
+        });
+        const trasaction = new CashRegisterTransaction();
+        trasaction.transactionType = CashRegisterTransactionType.income;
+        trasaction.agent = sale.cashier;
+        trasaction.payment = sale.miniStoreSalePayments[0];
+        trasaction.cashRegister = serviceCashRegister;
+        return serviceTransaction.save(trasaction);
     }
 }
