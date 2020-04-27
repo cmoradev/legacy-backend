@@ -27,7 +27,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {
         return await this.repo.createQueryBuilder('payments')
             .select('SUM(payments.quantity)', 'sum')
-            .where('payments.agentBillingId = :id', { id })
+            .where('payments.cashierBillingId = :id', { id })
             .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
 

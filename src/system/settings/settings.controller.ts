@@ -43,9 +43,15 @@ export class SettingsController implements CrudController<Company> {
         fs.rename(logo.path, `/var/www/uploads/${params.companyID}/images/` + logo.filename, (err) => {
             // err
         });
-        const downloadURL = `${req.protocol}://${req.headers['x-forwarded-host']}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
-        console.log(req.headers)
-	res.send({downloadURL});
+        let urlHost = '';
+        if (req.headers['x-forwarded-host']) {
+            urlHost = `${req.protocol}://${req.headers['x-forwarded-host']}`;
+        } else {
+            urlHost = `http://${req.headers.host}`;
+        }
+
+        const downloadURL = `${urlHost}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
+        res.send({ downloadURL });
     }
 
     @Get('files/logo')
