@@ -30,18 +30,18 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
     }
 
     async generateDocFolio(id: number): Promise<MiniStoreSale> {
-        const insRepository = await getRepository(MiniStoreSale, ColegioDBNameConnection);
-        const business = await getRepository(InvoiceCompany, ColegioDBNameConnection);
+        const insRepository = getRepository(MiniStoreSale, ColegioDBNameConnection);
+        const business = getRepository(InvoiceCompany, ColegioDBNameConnection);
         const miniStore = await business.findOne({ id: 3 });
         const updateIns = await insRepository.findOne({ id });
         console.log('new sale' + miniStore.foliajeNota + updateIns.id);
         updateIns.folio = miniStore.foliajeNota + updateIns.id;
-        return insRepository.save(updateIns);
+        return await insRepository.save(updateIns);
     }
 
     async generateTransaction(id: number): Promise<CashRegisterTransaction> {
 
-        const serviceTransaction = await getRepository(CashRegisterTransaction, ColegioDBNameConnection);
+        const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
         const sale = await getRepository(MiniStoreSale, ColegioDBNameConnection).findOne({
             where: { id },
             relations: ['cashier', 'miniStoreSalePayments'],
@@ -58,6 +58,6 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         trasaction.agent = sale.cashier;
         trasaction.payment = sale.miniStoreSalePayments[0];
         trasaction.cashRegister = serviceCashRegister;
-        return  await serviceTransaction.save(trasaction);
+        return await serviceTransaction.save(trasaction);
     }
 }

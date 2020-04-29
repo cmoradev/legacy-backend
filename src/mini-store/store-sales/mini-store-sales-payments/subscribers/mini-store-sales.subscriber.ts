@@ -25,10 +25,10 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
     }
 
     async generateDocFolio(id: number): Promise<MiniStoreSalePayment> {
-        const servicePayments = await getRepository(MiniStoreSalePayment, ColegioDBNameConnection);
+        const servicePayments = getRepository(MiniStoreSalePayment, ColegioDBNameConnection);
         const updatePayment = await servicePayments.findOne({ id });
         console.log('new pago' + updatePayment.folio + ' NTTPA-' + updatePayment.id);
         updatePayment.folio = 'NTTPA-' + updatePayment.id;
-        return servicePayments.save(updatePayment);
+        return await servicePayments.save(updatePayment);
     }
 }
