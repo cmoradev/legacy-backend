@@ -1,6 +1,10 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
 import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
 import { MiniStoreSalePayment } from '../entities/mini-store-sale-payment.entity';
+import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
+import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
+import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 
 @EventSubscriber()
 export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterface<MiniStoreSalePayment> {
@@ -13,6 +17,7 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
     async afterInsert(insertEvent: InsertEvent<MiniStoreSalePayment>) {
         const { entity: payment } = insertEvent;
         this.generateFolioPayment(payment.id);
+        this.generateTransaction(payment.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSalePayment>) {
@@ -29,5 +34,27 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
         const updatePayment = await servicePayments.findOne({ id });
         updatePayment.folio = 'NTTPA-' + updatePayment.id;
         return await servicePayments.save(updatePayment);
+    }
+
+    async generateTransaction(id: number): Promise<CashRegisterTransaction> {
+
+        const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
+        const payment = await getRepository(MiniStoreSalePayment, ColegioDBNameConnection).findOne({
+            where: { id },
+            relations: ['agent'],
+        });
+
+        const serviceCashRegister = await getRepository(CashRegister, ColegioDBNameConnection).findOne({
+            where: {
+                closedAt: null,
+                agentId: payment.agent.id,
+            },
+        });
+        const trasaction = new CashRegisterTransaction();
+        trasaction.transactionType = CashRegisterTransactionType.income;
+        trasaction.agent = payment.agent;
+        trasaction.payment = payment;
+        trasaction.cashRegister = serviceCashRegister;
+        return await serviceTransaction.save(trasaction);
     }
 }

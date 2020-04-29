@@ -17,7 +17,6 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
     async afterInsert(insertEvent: InsertEvent<MiniStoreSale>) {
         const { entity: sale } = insertEvent;
         await this.generateDocFolio(sale.id);
-        await this.generateTransaction(sale.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSale>) {
@@ -39,25 +38,4 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         return await insRepository.save(updateIns);
     }
 
-    async generateTransaction(id: number): Promise<CashRegisterTransaction> {
-
-        const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
-        const sale = await getRepository(MiniStoreSale, ColegioDBNameConnection).findOne({
-            where: { id },
-            relations: ['cashier', 'miniStoreSalePayments'],
-        });
-
-        const serviceCashRegister = await getRepository(CashRegister, ColegioDBNameConnection).findOne({
-            where: {
-                closedAt: null,
-                agentId: sale.cashier.id,
-            },
-        });
-        const trasaction = new CashRegisterTransaction();
-        trasaction.transactionType = CashRegisterTransactionType.income;
-        trasaction.agent = sale.cashier;
-        trasaction.payment = sale.miniStoreSalePayments[0];
-        trasaction.cashRegister = serviceCashRegister;
-        return await serviceTransaction.save(trasaction);
-    }
 }
