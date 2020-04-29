@@ -12,7 +12,7 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSalePayment>) {
         const { entity: payment } = insertEvent;
-        await this.generateFolioPayment(payment.id);
+        this.generateFolioPayment(payment.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSalePayment>) {
