@@ -16,7 +16,11 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSale>) {
         const { entity: sale } = insertEvent;
-        this.generateDocFolio(sale.id);
+        try {
+            this.generateDocFolio(sale.id);
+        } catch (e) {
+            console.log(sale, e);
+        }
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSale>) {
@@ -33,7 +37,7 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         const business = getRepository(InvoiceCompany, ColegioDBNameConnection);
         const miniStore = await business.findOne({ id: 3 });
         const updateIns = await insRepository.findOne({ id });
-        console.log( updateIns);
+        console.log(updateIns);
         updateIns.folio = miniStore.foliajeNota + updateIns.id;
         return await insRepository.save(updateIns);
     }

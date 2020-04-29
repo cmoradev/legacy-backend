@@ -16,8 +16,12 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSalePayment>) {
         const { entity: payment } = insertEvent;
-        this.generateFolioPayment(payment.id);
-        this.generateTransaction(payment.id);
+        try {
+            this.generateFolioPayment(payment.id);
+            this.generateTransaction(payment.id);
+        } catch (e) {
+            console.log(payment, e);
+        }
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSalePayment>) {
@@ -39,7 +43,9 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
     async generateTransaction(id: number): Promise<CashRegisterTransaction> {
 
         const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
-        const payment = await getRepository(MiniStoreSalePayment, ColegioDBNameConnection).findOne({
+        const servicePayment = getRepository(MiniStoreSalePayment, ColegioDBNameConnection);
+
+        const payment = await servicePayment.findOne({
             where: { id },
             relations: ['agent'],
         });
