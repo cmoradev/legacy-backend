@@ -12,7 +12,7 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSalePayment>) {
         const { entity: payment } = insertEvent;
-        await this.generateDocFolio(payment.id);
+        await this.generateFolioPayment(payment.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSalePayment>) {
@@ -24,10 +24,9 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
         const { entity: order } = updateEvent;
     }
 
-    async generateDocFolio(id: number): Promise<MiniStoreSalePayment> {
+    async generateFolioPayment(id: number): Promise<MiniStoreSalePayment> {
         const servicePayments = getRepository(MiniStoreSalePayment, ColegioDBNameConnection);
         const updatePayment = await servicePayments.findOne({ id });
-        console.log('new pago' + updatePayment.folio + ' NTTPA-' + updatePayment.id);
         updatePayment.folio = 'NTTPA-' + updatePayment.id;
         return await servicePayments.save(updatePayment);
     }
