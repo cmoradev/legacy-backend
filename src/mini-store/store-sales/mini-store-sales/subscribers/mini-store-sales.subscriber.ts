@@ -16,8 +16,8 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSale>) {
         const { entity: sale } = insertEvent;
-        this.generateDocFolio(sale.id);
-        this.generateTransaction(sale.id);
+        await this.generateDocFolio(sale.id);
+        await this.generateTransaction(sale.id);
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSale>) {
@@ -30,8 +30,8 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
     }
 
     async generateDocFolio(id: number): Promise<MiniStoreSale> {
-        const insRepository = getRepository(MiniStoreSale, ColegioDBNameConnection);
-        const business = getRepository(InvoiceCompany, ColegioDBNameConnection);
+        const insRepository = await getRepository(MiniStoreSale, ColegioDBNameConnection);
+        const business = await getRepository(InvoiceCompany, ColegioDBNameConnection);
         const miniStore = await business.findOne({ id: 3 });
         const updateIns = await insRepository.findOne({ id });
         console.log('new sale' + miniStore.foliajeNota + updateIns.id);
@@ -41,7 +41,7 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
 
     async generateTransaction(id: number): Promise<CashRegisterTransaction> {
 
-        const serviceTransaction = getRepository(CashRegisterTransaction, ColegioDBNameConnection);
+        const serviceTransaction = await getRepository(CashRegisterTransaction, ColegioDBNameConnection);
         const sale = await getRepository(MiniStoreSale, ColegioDBNameConnection).findOne({
             where: { id },
             relations: ['cashier', 'miniStoreSalePayments'],
@@ -58,6 +58,6 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         trasaction.agent = sale.cashier;
         trasaction.payment = sale.miniStoreSalePayments[0];
         trasaction.cashRegister = serviceCashRegister;
-        return serviceTransaction.save(trasaction);
+        return  await serviceTransaction.save(trasaction);
     }
 }

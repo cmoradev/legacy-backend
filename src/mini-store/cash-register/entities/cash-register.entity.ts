@@ -25,7 +25,6 @@ export class CashRegister {
         type: 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
-        transformer: new DateTimeZoneTransformer(),
     })
     openAt: Date;
 
