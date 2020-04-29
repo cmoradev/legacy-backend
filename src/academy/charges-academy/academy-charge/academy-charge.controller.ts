@@ -4,22 +4,31 @@ import { AcademyCharge } from './entities/academy-charge.entity';
 import { AcademyChargeService } from './academy-charge.service';
 
 @Crud({
-  model: {
-    type: AcademyCharge,
-  },
-  query: {
-    limit: 200,
-    join: {},
-  },
+    model: {
+        type: AcademyCharge,
+    },
+    query: {
+        limit: 200,
+        join: {
+            chargeCampus: {},
+            chargeCycle: {},
+            cashier: {},
+            cashierCancellation: {},
+            schoolStudent: {},
+            chargesDetails: {},
+            chargesPayments: {},
+            chargesInvoice: {},
+        },
+    },
 })
 @Controller()
 export class AcademyChargeController implements CrudController<AcademyCharge> {
-  constructor(
-    readonly service: AcademyChargeService,
-  ) {
-  }
+    constructor(
+        readonly service: AcademyChargeService,
+    ) {
+    }
 
-  get base(): CrudController<AcademyCharge> {
-    return this;
-  }
+    get base(): CrudController<AcademyCharge> {
+        return this;
+    }
 }
