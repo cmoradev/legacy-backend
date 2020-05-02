@@ -16,6 +16,7 @@ import { AcademyChargeService } from './academy-charge.service';
             cashierCancellation: {},
             schoolStudent: {},
             chargesDetails: {},
+            'chargesDetails.extraCharges': {},
             chargesPayments: {},
             chargesInvoice: {},
         },

@@ -53,13 +53,6 @@ export class MiniStoreSale {
     })
     idModality: number;
 
-    @ManyToOne(type => Student, student => student.sales)
-    @JoinColumn({
-        name: 'id_alumno',
-        referencedColumnName: 'id',
-    })
-    student: Student;
-
     /**
      * @Deprecated
      */
@@ -231,6 +224,13 @@ export class MiniStoreSale {
         name: 'updated_at',
     })
     updatedAt: Date;
+
+    @ManyToOne(type => Student, student => student.sales)
+    @JoinColumn({
+        name: 'id_alumno',
+        referencedColumnName: 'id',
+    })
+    student: Student;
 
     @OneToMany(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreSale,
         {
