@@ -2,7 +2,9 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
-import { totalForProducts } from './reports/mini-store-sale.report';
+import { totalForCashier, totalForCategory, totalForProducts } from './reports/mini-store-sale.report';
+import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import { SaleReport } from './types/SaleReport';
 
 @Crud({
     model: {
@@ -36,6 +38,7 @@ import { totalForProducts } from './reports/mini-store-sale.report';
 export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     constructor(
         readonly service: MiniStoreSalesService,
+        readonly paymentService: MiniStoreSalesPaymentsService,
     ) {
     }
 
@@ -60,10 +63,28 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         endDate: Date,
         cashier?: number,
         onlyFile: boolean,
+        type: number,
     }) {
 
-        // return x
-        res.send(totalForProducts(await this.service.reportCatCasherProd(query)));
-        // res.send( await this.service.reportCatCasherProd(query));
+        const result: SaleReport = {
+            products: [],
+            category: [],
+            cashier: [],
+            file: '',
+        };
+        if (query.type === 1 || query.type.toString() === '1') {
+            result.products = totalForProducts(await this.service.reportCatCasherProd(query));
+        }
+        if (query.type === 2 || query.type.toString() === '2') {
+            result.category = totalForCategory(await this.service.reportCatCasherProd(query));
+        }
+        if (query.type === 3 || query.type.toString() === '3') {
+            result.cashier = totalForCashier(await this.paymentService.fetchFilteredPayments({
+                status: query.status,
+                endDate: query.endDate,
+                startDate: query.startDate,
+            }));
+        }
+        res.send(result);
     }
 }

@@ -54,16 +54,12 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                 'cashier.lastnameMother',
             ])
             .where('sales.statusSale= :status', {
-                status: 2,
-                // status: query.status,
+                status: query.status,
             })
             .andWhere('sales.createdAt BETWEEN :startDate AND :endDate',
                 {
-                    /*
                     startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),*/
-                    startDate: moment('2020-04-29 00:00:00').startOf('day').toDate(),
-                    endDate: moment('2020-05-03 23:59:59').endOf('day').toDate(),
+                    endDate: moment(query.endDate).endOf('day').toDate(),
                 });
         /*sif (query.cashier) {
             sales.andWhere('cashier.id = :cashier', { cashier: query.cashier });
