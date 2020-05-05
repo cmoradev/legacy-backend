@@ -7,7 +7,7 @@ import { Request } from 'express';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class LocalRegisterStrategy extends Strategy {
+export class RegisterStrategy extends Strategy {
     public name: string = 'local-register';
 
     constructor(

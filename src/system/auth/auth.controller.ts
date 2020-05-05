@@ -1,11 +1,11 @@
 import { Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { LoginGuard } from './guards/login.guard';
 import { Response } from 'express';
 import { RegisterGuard } from './guards/register.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { SessionGuard } from './guards/session.guard';
 import { SettingsService } from '../settings/settings.service';
+import { JwtGuard } from './guards/jwt.guard';
+import { LocalAuthGuard } from './guards/login.guard';
 
 @Controller()
 export class AuthController {
@@ -13,7 +13,7 @@ export class AuthController {
                 readonly settingsService: SettingsService) {
     }
 
-    @UseGuards(LoginGuard)
+    @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response) {
         const company = await this.settingsService.fetchCompany();
@@ -34,9 +34,7 @@ export class AuthController {
     // @UseGuards(SessionGuard)
     @Get('logout')
     public logout(@Req() req, @Res() res) {
-        req.session.destroy(() => {
-            res.status(HttpStatus.OK).send({ status: true, message: 'Se ha cerrado sesión exitosamente' });
-        });
+        res.send(req);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -45,8 +43,8 @@ export class AuthController {
         res.status(201).json(req.user);
     }
 
-    @UseGuards(SessionGuard)
-    @Post('me')
+    @UseGuards(JwtGuard)
+    @Get('me')
     public checkMySession(@Req() req, @Res() res: Response) {
         res.status(201).json(req.user);
     }

@@ -33,7 +33,6 @@ export class AuthService {
         @InjectRepository(Campus, ColegioDBNameConnection)
         private readonly campusRepository: Repository<Campus>,
         private readonly jwtService: JwtService,
-
     ) {
     }
 
@@ -75,12 +74,16 @@ export class AuthService {
     }
 
     async validateUser(email: string, passw: string): Promise<Partial<User> | null> {
+        console.log(email, passw);
         const user: User | undefined = await this.usersService
-            .findOne({ email }, { relations: [
-                'role', 'campus', 'department', 'role.permissions', 'role.permissions.route', 'role.permissions.route.actions',
+            .findOne({ email }, {
+                relations: [
+                    'role',
+                    'campus',
+                    'department',
+                    'role.permissions', 'role.permissions.route', 'role.permissions.route.actions',
                 ],
             });
-        console.log(user)
         if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
             const { password, ...result } = user;
             return result;
