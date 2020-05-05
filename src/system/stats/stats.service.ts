@@ -76,7 +76,7 @@ export class StatsService {
         salesQB.leftJoinAndSelect('sale.cashier', 'cashier');
         salesQB.leftJoinAndSelect('payments.miniStoreSaleMethodPayments', 'paymentMethods');
         salesQB.leftJoinAndSelect('paymentMethods.invoiceMethodPayment', 'invoicePaymentMethod');
-        salesQB.where(`(payments.created_at BETWEEN :startDate AND :endDate)`, {
+        salesQB.where(`(payments.createdAt BETWEEN :startDate AND :endDate)`, {
             startDate,
             endDate,
         });
