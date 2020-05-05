@@ -74,7 +74,6 @@ export class AuthService {
     }
 
     async validateUser(email: string, passw: string): Promise<Partial<User> | null> {
-        console.log(email, passw);
         const user: User | undefined = await this.usersService
             .findOne({ email }, {
                 relations: [
