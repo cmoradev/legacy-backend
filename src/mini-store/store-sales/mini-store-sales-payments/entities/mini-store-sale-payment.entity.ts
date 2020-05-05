@@ -1,21 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
-import { SystemPaymentStatus } from '../../../../system/system-payments-status/entities/system-payment-status.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { StatusPayment } from '../../../../common/enums/statusPayment';
-import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('tie_venta_pagos')
-export class MiniStoreSalePayment {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreSalePayment extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -100,21 +93,6 @@ export class MiniStoreSalePayment {
         name: 'timbrado',
     })
     stamping: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @Column('tinyint', {
         nullable: false,

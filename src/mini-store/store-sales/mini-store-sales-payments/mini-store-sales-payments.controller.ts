@@ -65,6 +65,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     isActive: true,
                 },
             });
+            console.log(payments);
             const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
             result.payments = viewPayments;
         }
