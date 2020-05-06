@@ -22,6 +22,7 @@ import { InscriptionStatusModule } from './inscription-status/inscription-status
 import { StatsModule } from './stats/stats.module';
 import { SettingsModule } from './settings/settings.module';
 import { FoliosModule } from './folios/folios.module';
+import { AuthAccessTokensModule } from './auth-access-tokens/auth-access-tokens.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -47,6 +48,7 @@ import { FoliosModule } from './folios/folios.module';
     StatsModule,
     SettingsModule,
     FoliosModule,
+    AuthAccessTokensModule,
   ],
 })
 export class SystemModule {

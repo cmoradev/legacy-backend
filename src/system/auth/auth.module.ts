@@ -14,12 +14,14 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { SettingsModule } from '../settings/settings.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
+import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens.module';
 
 @Module({
     imports: [
         UsersModule,
         SettingsModule,
         ConfigModule,
+        AuthAccessTokensModule,
         PassportModule.register({
             defaultStrategy: 'jwt',
             property: 'user',

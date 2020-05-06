@@ -1,0 +1,21 @@
+import { Injectable } from '@nestjs/common';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { Repository } from 'typeorm';
+import { AuthAccessTokensEntity } from './entities/auth-access-tokens.entity';
+
+@Injectable()
+export class AuthAccessTokensService extends TypeOrmCrudService<AuthAccessTokensEntity> {
+    constructor(
+        @InjectRepository(AuthAccessTokensEntity, ColegioDBNameConnection) readonly repo: Repository<AuthAccessTokensEntity>,
+    ) {
+        super(repo);
+    }
+
+    async saveToken(data: Partial<AuthAccessTokensEntity>) {
+        let token = new AuthAccessTokensEntity();
+        token = { ...data } as AuthAccessTokensEntity;
+        return await this.repo.save(token);
+    }
+}

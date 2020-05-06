@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,6 +19,7 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { AcademyModule } from './academy/academy.module';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 import { MailServiceModule } from './mail-service/mail-service.module';
+import { JwtGuard } from './system/auth/guards/jwt.guard';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions

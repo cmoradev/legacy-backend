@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { PayloadToken } from '../../common/types/jwt';
 
 interface UserBody {
     name: string;
@@ -91,10 +92,12 @@ export class AuthService {
         return null;
     }
 
-    async generateJWT(user: Partial<User>) {
+    generateJWT(user: Partial<User>): { access_token: string, decode: PayloadToken | any } {
         const payload = { username: user.email, sub: user.id };
+        const token = this.jwtService.sign(payload);
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: token,
+            decode: this.jwtService.decode(token),
         };
     }
 }
