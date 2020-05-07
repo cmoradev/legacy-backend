@@ -18,4 +18,15 @@ export class AuthAccessTokensService extends TypeOrmCrudService<AuthAccessTokens
         token = { ...data } as AuthAccessTokensEntity;
         return await this.repo.save(token);
     }
+
+    async findToken(token: string) {
+        console.log(token)
+        const a = await this.repo.findOne({
+            where: {
+                jwt: token,
+            },
+        });
+        return a;
+    }
+
 }

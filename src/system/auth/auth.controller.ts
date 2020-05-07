@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { RegisterGuard } from './guards/register.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,6 +8,8 @@ import { JwtGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/login.guard';
 import { AuthAccessTokensService } from '../auth-access-tokens/auth-access-tokens.service';
 import * as moment from 'moment';
+import { RefreshGuard } from './guards/refresh.guard';
+
 
 @Controller()
 export class AuthController {
@@ -21,10 +23,12 @@ export class AuthController {
     async login(@Req() req, @Res() res: Response) {
         const company = await this.settingsService.fetchCompany();
         const jwt = await this.authService.generateJWT(req.user);
-        this.authAccessTokensService.saveToken({
+        await this.authAccessTokensService.saveToken({
             expiresAt: moment(jwt.decode.exp * 1000).toDate(),
             name: 'Token',
             revoked: false,
+            jwt: jwt.access_token,
+            isActive: true,
             refresh: false,
             scopes: '[]',
             clientId: 1,
@@ -44,6 +48,26 @@ export class AuthController {
     @Post('register')
     async register(@Req() req, @Res() res: Response) {
         res.status(201).json(req.user);
+    }
+
+    @UseGuards(RefreshGuard)
+    @Post('refresh-token')
+    async refresToken(@Req() req, @Res() res: Response) {
+        const { token, sub, username } = req.user;
+
+        const lastToken = await this.authAccessTokensService.findToken(token);
+        if (lastToken) {
+
+            const jwt = await this.authService.generateJWT({ id: sub, email: username });
+            lastToken.jwt = jwt.access_token;
+            lastToken.expiresAt = moment(jwt.decode.exp * 1000).toDate();
+            lastToken.refresh = true;
+            this.authAccessTokensService.repo.save(lastToken);
+            res.status(201).json({
+                refresh_token: jwt.access_token,
+            });
+        }
+        throw new UnauthorizedException();
     }
 
     // @UseGuards(SessionGuard)

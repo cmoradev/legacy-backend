@@ -6,8 +6,9 @@ import { totalForCashier, totalForCategory, totalForProducts } from './reports/m
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSale,

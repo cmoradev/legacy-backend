@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { ConfigModule } from '../../config/config.module';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { PassportModule } from '@nestjs/passport';
-import * as session from 'express-session';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Department } from '../departments/entities/department.entity';
 import { Role } from '../roles/entities/role.entity';
@@ -38,7 +37,12 @@ import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens
         LocalStrategy,
         JwtStrategy,
     ],
-    exports: [PassportModule, LocalStrategy, AuthService],
+    exports: [
+        PassportModule,
+        LocalStrategy,
+        JwtStrategy,
+        AuthService,
+    ],
     controllers: [AuthController],
 })
 export class AuthModule {

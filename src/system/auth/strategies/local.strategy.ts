@@ -12,18 +12,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(email, password, done: Function) {
+    async validate(email, password, done: (err: any, user: any) => void) {
         await this.authService.validateUser(email, password)
             .then(user => done(null, user))
             .catch(err => done(err, false));
     }
 }
-
-export const callback = (err, user, info) => {
-    if (typeof info !== 'undefined') {
-        throw new UnauthorizedException(info.message);
-    } else if (err || !user) {
-        throw err || new UnauthorizedException();
-    }
-    return user;
-};

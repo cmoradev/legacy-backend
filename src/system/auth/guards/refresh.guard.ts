@@ -3,10 +3,10 @@ import { AuthGuard } from '@nestjs/passport';
 import {} from 'passport-jwt';
 import { PayloadToken } from '../../../common/types/jwt';
 import { getAction, getFeature } from '@nestjsx/crud';
+import { AuthAccessTokensService } from '../../auth-access-tokens/auth-access-tokens.service';
 
 @Injectable()
-export class JwtGuard extends AuthGuard('jwt') {
-
+export class RefreshGuard extends AuthGuard('jwt') {
     canActivate(context: ExecutionContext) {
         // Add your custom authentication logic here
         // for example, call super.logIn(request) to establish a session
@@ -15,8 +15,8 @@ export class JwtGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err: any, user: any, info: any, context: ExecutionContext, status?: any) {
-        console.log('JWT');
         // You can throw an exception based on either "info" or "err" arguments
+        console.log('refresh guards');
         if (err || !user) {
             throw err || new UnauthorizedException();
         }
@@ -25,11 +25,7 @@ export class JwtGuard extends AuthGuard('jwt') {
             throw err || new UnauthorizedException();
         }
         const token = context.switchToHttp().getRequest().headers.authorization.replace('Bearer ', '');
-
-        if (Date.now() >= user.exp * 1000) {
-            throw err || new UnauthorizedException('Expired token');
-        }
-
+        user.token = token;
         return user;
     }
 }
