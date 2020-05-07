@@ -35,6 +35,18 @@ export class AuthAccessTokensEntity extends Base {
     })
     revoked: boolean;
 
+    @Column({
+        type: 'text',
+        nullable: false,
+    })
+    jwt: string;
+
+    @Column({
+        type: 'boolean',
+        nullable: false,
+    })
+    isActive: boolean;
+
     @Column('tinyint', {
         nullable: false,
         width: 1,
