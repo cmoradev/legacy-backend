@@ -67,7 +67,7 @@ export class AuthController {
                 refresh_token: jwt.access_token,
             });
         }
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('Not Found Token');
     }
 
     // @UseGuards(SessionGuard)

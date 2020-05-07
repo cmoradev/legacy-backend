@@ -14,6 +14,7 @@ export class AuthAccessTokensService extends TypeOrmCrudService<AuthAccessTokens
     }
 
     async saveToken(data: Partial<AuthAccessTokensEntity>) {
+        console.log('token guardado');
         let token = new AuthAccessTokensEntity();
         token = { ...data } as AuthAccessTokensEntity;
         return await this.repo.save(token);
