@@ -4,18 +4,18 @@ import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sal
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { ItemRecibo } from '../types/recibo.interface';
 
-export const totalAmountConceptAfterExCharge = (concept: MiniStoreSaleDetail) => {
-    const conceptPrice = concept.miniStoreProduct.IVA ? +concept.priceWithIVA : +concept.price;
-    const total = mulQuantity(conceptPrice, concept.quantity);
+export const totalAmountConceptAfterExCharge = (detail: MiniStoreSaleDetail) => {
+    const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
+    const total = mulQuantity(conceptPrice, detail.quantity);
 
-    return amountAfterExtraCharge(total, concept.extraCharges.map(value => {
-        return {quantity: value.quantity, type: value.applicationType};
+    return amountAfterExtraCharge(total, detail.extraCharges.map(value => {
+        return { quantity: value.quantity, type: value.applicationType };
     }));
 };
 
-export const totalAmountConcept = (concept: MiniStoreSaleDetail) => {
-    const conceptPrice = concept.miniStoreProduct.IVA  ? +concept.priceWithIVA : +concept.price;
-    return mulQuantity(conceptPrice, concept.quantity);
+export const totalAmountConcept = (detail: MiniStoreSaleDetail) => {
+    const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
+    return mulQuantity(conceptPrice, detail.quantity);
 };
 
 export const saleDetails = (details: MiniStoreSaleDetail[]) => {
@@ -24,12 +24,12 @@ export const saleDetails = (details: MiniStoreSaleDetail[]) => {
     const taxes = 0;
     const total = 0;
     const surcharges = 0;
-    details.forEach((concept) => {
-        subtotal += totalAmountConcept(concept);
-        discounts += totalAmountConceptAfterExCharge(concept);
+    details.forEach((detail) => {
+        subtotal += totalAmountConcept(detail);
+        discounts += totalAmountConceptAfterExCharge(detail);
     });
     discounts = subtotal - discounts;
-    const {finalAmount, iva, amountWithOutIva} = ivaFromFinalAmount((subtotal - discounts));
+    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount((subtotal - discounts));
     return {
         subtotal: amountWithOutIva,
         surcharges,
@@ -43,16 +43,16 @@ export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, 
     const saleAmount = saleDetails(details || []).total;
     const base = ((payment.quantity - payment.change) / saleAmount) || 1;
     const generalizedConcepts: ItemRecibo[] = [];
-    details.forEach((concept) => {
-        const discount = (totalAmountConcept(concept) - totalAmountConceptAfterExCharge(concept));
+    details.forEach((detail) => {
+        const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
 
-        const conceptPrice = concept.miniStoreProduct.IVA  ? +concept.priceWithIVA : +concept.price;
+        const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
 
         generalizedConcepts.push({
-            descrption: concept.productName,
+            descrption: detail.productName,
             discount: (discount * base).toFixed(2),
-            importe: (totalAmountConcept(concept) * base),
-            quantity: concept.quantity,
+            importe: (totalAmountConcept(detail) * base),
+            quantity: detail.quantity,
             surcharge: '0.00',
             unitPrice: conceptPrice * base,
         });
