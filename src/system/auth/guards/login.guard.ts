@@ -4,39 +4,7 @@ import {
     CanActivate,
     ExecutionContext,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class LoginGuard implements CanActivate {
-    public async canActivate(context: ExecutionContext): Promise<boolean> {
-        const [
-            req,
-            res,
-            next,
-        ] = [
-            context.switchToHttp().getRequest(),
-            context.switchToHttp().getResponse(),
-            context.switchToHttp().getNext(),
-        ];
-
-        return new Promise((resolve) => {
-            passport.authenticate('local-login', (err: any, user?: any) => {
-                if (err || !user) {
-                    return resolve(false);
-                }
-                // tslint:disable-next-line:no-shadowed-variable
-                req.logIn(user, (err) => {
-                    if (err) {
-                        return resolve(false);
-                    }
-                    // tslint:disable-next-line:no-shadowed-variable
-                    req.session.save((err) => {
-                        if (err) {
-                            return resolve(false);
-                        }
-                        return resolve(true);
-                    });
-                });
-            })(req, res, next);
-        });
-    }
-}
+export class LocalAuthGuard extends AuthGuard('local') {}

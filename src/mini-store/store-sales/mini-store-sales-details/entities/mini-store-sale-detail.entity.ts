@@ -80,6 +80,12 @@ export class MiniStoreSaleDetail {
     })
     idSale: number;
 
+    @Column('tinyint', {
+        nullable: false,
+        default: 1,
+    })
+    isIva: boolean;
+
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',

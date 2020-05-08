@@ -25,7 +25,6 @@ async function bootstrap() {
         .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);
-    app.get(AuthModule).initialize(app);
     await app.listen(processEnv.API_PORT);
     console.log(`App Ready on ${processEnv.API_PORT}`);
 }
