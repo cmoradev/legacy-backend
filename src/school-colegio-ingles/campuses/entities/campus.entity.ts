@@ -10,6 +10,7 @@ import { SystemExtraCharges } from '../../../system/system-extra-charges/entitie
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
+import { InvoiceCompany } from '../../../invoice/invoice-company/entities/invoice-company.entity';
 
 @Entity('planteles')
 export class Campus {
@@ -53,6 +54,9 @@ export class Campus {
 
   @OneToMany(() => Student, (student) => student.studentCampus)
   students: Student[];
+
+  @OneToMany(() => InvoiceCompany, (invoice) => invoice.invoiceCampus)
+  invoices: InvoiceCompany[];
 
   @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
   campusInscriptions: Inscription[];

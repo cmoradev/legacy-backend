@@ -13,6 +13,9 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { TypeFolio} from '../../interface/FolioInvoice.interface';
+
 
 @Entity('facturacion_empresas')
 export class InvoiceCompany {
@@ -92,6 +95,33 @@ export class InvoiceCompany {
 
   @Column('varchar', {
     nullable: false,
+    length: 10,
+    name: 'foliaje_pago',
+  })
+  foliajePago: string;
+
+  //-------
+  @Column('int', {
+    nullable: true,
+    name: 'serie_nota',
+  })
+  serieNota: number;
+
+  @Column('int', {
+    nullable: true,
+    name: 'serie_factura',
+  })
+  serieFactura: number;
+
+  @Column('int', {
+    nullable: true,
+    name: 'serie_pago',
+  })
+  seriePago: number;
+
+  //----
+  @Column('varchar', {
+    nullable: false,
     length: 5,
     name: 'serie_facturacion',
   })
@@ -124,6 +154,15 @@ export class InvoiceCompany {
   })
   idPlantel: number;
 
+  @Column({
+    type: 'enum',
+    nullable: false,
+    name: 'id_modalidad',
+    enum: TypeFolio,
+    default: TypeFolio.colegio,
+})
+typeStudent: TypeFolio;
+
   @Column('timestamp', {
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP',
@@ -138,5 +177,8 @@ export class InvoiceCompany {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @ManyToOne(() => Campus, (campus) => campus.invoices)
+    invoiceCampus: Campus;
 
 }
