@@ -8,7 +8,7 @@ import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSale,
