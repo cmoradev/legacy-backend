@@ -1,20 +1,20 @@
 import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  RelationId,
+    BaseEntity,
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    PrimaryGeneratedColumn,
+    RelationId,
 } from 'typeorm';
 import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
-import { TypeFolio} from '../../interface/FolioInvoice.interface';
+import { TypeFolio } from '../../interface/FolioInvoice.interface';
 
 
 @Entity('facturacion_empresas')
