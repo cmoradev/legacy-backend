@@ -56,7 +56,7 @@ export class Campus {
   students: Student[];
 
   @OneToMany(() => InvoiceCompany, (invoice) => invoice.invoiceCampus)
-  invoices: InvoiceCompany[];
+  branchoffice: InvoiceCompany[];
 
   @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
   campusInscriptions: Inscription[];

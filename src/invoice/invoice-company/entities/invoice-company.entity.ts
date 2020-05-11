@@ -178,7 +178,7 @@ typeStudent: TypeFolio;
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Campus, (campus) => campus.invoices)
+  @ManyToOne(() => Campus, (campus) => campus.branchoffice)
     invoiceCampus: Campus;
 
 }
