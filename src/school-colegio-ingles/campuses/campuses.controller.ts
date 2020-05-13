@@ -7,6 +7,11 @@ import { CampusesService } from './campuses.service';
     model: {
         type: Campus,
     },
+    query: {
+        join: {
+            branchoffice: {},
+        },
+    },
 })
 @Controller()
 export class CampusesController implements CrudController<Campus> {

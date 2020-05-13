@@ -80,7 +80,7 @@ export class StatsService {
             startDate,
             endDate,
         });
-        salesQB.andWhere('(payments.idStatusPayment = :paidOut OR payments.idStatusPayment = :abonar)', {
+        salesQB.andWhere('(payments.paymentStatus = :paidOut OR payments.paymentStatus = :abonar)', {
             paidOut: StatusPayment.PaiOut,
             abonar: StatusPayment.Abonar,
         });
