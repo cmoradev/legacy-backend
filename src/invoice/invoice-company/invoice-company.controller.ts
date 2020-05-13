@@ -7,6 +7,9 @@ import { InvoiceCompanyService } from './invoice-company.service';
   model: {
     type: InvoiceCompany,
   },
+    query: {
+      join: { invoiceCampus: {} }
+    }
 })
 @Controller()
 export class InvoiceCompanyController implements CrudController<InvoiceCompany> {

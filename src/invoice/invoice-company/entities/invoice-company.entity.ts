@@ -161,7 +161,7 @@ export class InvoiceCompany {
     enum: TypeFolio,
     default: TypeFolio.colegio,
 })
-typeStudent: TypeFolio;
+typeModule: TypeFolio;
 
   @Column('timestamp', {
     nullable: false,
