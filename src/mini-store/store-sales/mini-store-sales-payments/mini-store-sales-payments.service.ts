@@ -75,7 +75,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         paymentsQueryBuilder.leftJoinAndSelect('payment.miniStoreSaleMethodPayments', 'paymentMethod');
         paymentsQueryBuilder.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
         if (query) {
-            paymentsQueryBuilder.where('payment.idStatusPayment= :paymentStatus', {
+            paymentsQueryBuilder.where('payment.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
             });
             paymentsQueryBuilder.andWhere('payment.createdAt BETWEEN :startDate AND :endDate',
@@ -106,7 +106,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSaleDetails', 'details');
         salesQueryBuilder.leftJoinAndSelect('details.miniStoreProduct', 'products');
         if (query) {
-            salesQueryBuilder.where('payments.idStatusPayment= :paymentStatus', {
+            salesQueryBuilder.where('payments.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
             });
             if (query.invoiceStatus) {
