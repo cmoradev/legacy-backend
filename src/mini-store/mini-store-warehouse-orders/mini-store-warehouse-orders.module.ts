@@ -4,12 +4,12 @@ import { MiniStoreWarehouseOrdersService } from './mini-store-warehouse-orders.s
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { InvoiceCompanyModule } from '../../invoice/invoice-company/invoice-company.module';
+import { BranchOfficeSettingModule } from '../../system/branch-office-setting/branch-office-setting.module';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([MiniStoreWarehouseOrder], ColegioDBNameConnection),
-        InvoiceCompanyModule,
+        BranchOfficeSettingModule,
     ],
     exports: [MiniStoreWarehouseOrdersService],
     controllers: [MiniStoreWarehouseOrdersController],

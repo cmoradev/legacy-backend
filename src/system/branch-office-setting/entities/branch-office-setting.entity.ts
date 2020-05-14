@@ -13,12 +13,11 @@ import {
     PrimaryGeneratedColumn,
     RelationId,
 } from 'typeorm';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { TypeFolio } from '../../interface/FolioInvoice.interface';
-
+import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
+import { TypeFolio } from '../../../invoice/interface/FolioInvoice.interface';
 
 @Entity('facturacion_empresas')
-export class InvoiceCompany {
+export class BranchOfficeSetting {
 
     @PrimaryGeneratedColumn({
         type: 'int',

@@ -10,7 +10,7 @@ import { SystemExtraCharges } from '../../system-extra-charges/entities/system-e
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
-import { InvoiceCompany } from '../../../invoice/invoice-company/entities/invoice-company.entity';
+import { BranchOfficeSetting }  from '../../branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('planteles')
 export class BranchOffice {
@@ -55,8 +55,8 @@ export class BranchOffice {
   @OneToMany(() => Student, (student) => student.studentCampus)
   students: Student[];
 
-  @OneToMany(() => InvoiceCompany, (invoice) => invoice.invoiceCampus)
-  branchoffice: InvoiceCompany[];
+  @OneToMany(() => BranchOfficeSetting, (invoice) => invoice.invoiceCampus)
+  branchoffice: BranchOfficeSetting[];
 
   @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
   campusInscriptions: Inscription[];

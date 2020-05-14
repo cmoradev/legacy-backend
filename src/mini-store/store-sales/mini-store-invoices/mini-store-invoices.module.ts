@@ -5,14 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreSalesPaymentsModule } from '../mini-store-sales-payments/mini-store-sales-payments.module';
 import { UsersModule } from '../../../system/users/users.module';
-import { InvoiceCompanyModule } from '../../../invoice/invoice-company/invoice-company.module';
+import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
     MiniStoreSalesPaymentsModule,
     UsersModule,
-    InvoiceCompanyModule,
+    BranchOfficeSettingModule,
   ],
   exports: [MiniStoreInvoicesService],
   providers: [MiniStoreInvoicesService],

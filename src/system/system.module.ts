@@ -24,6 +24,7 @@ import { SettingsModule } from './settings/settings.module';
 import { FoliosModule } from './folios/folios.module';
 import { AuthAccessTokensModule } from './auth-access-tokens/auth-access-tokens.module';
 import { BranchOfficeModule } from './branch-office/branch-office.module';
+import { BranchOfficeSettingModule } from './branch-office-setting/branch-office-setting.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -35,6 +36,7 @@ import { BranchOfficeModule } from './branch-office/branch-office.module';
     StatesModule,
     DepartmentsModule,
     BranchOfficeModule,
+    BranchOfficeSettingModule,
     CitiesModule,
     MunicipalitiesModule,
     SystemConceptsTypeModule,

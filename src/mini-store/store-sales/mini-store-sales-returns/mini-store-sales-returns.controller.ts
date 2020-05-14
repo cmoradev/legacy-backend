@@ -4,7 +4,7 @@ import { SalesReturns } from './entities/sales-returns.entity';
 import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service';
 import { InvoiceSaleReturnDto } from './dto/invoice-sale-return.dto';
 import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
-import { InvoiceCompanyService } from '../../../invoice/invoice-company/invoice-company.service';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ivaAndFinalAmount, MultNumber } from '../../../common/numbers';
 import { add } from 'exact-math';
 import { Response } from 'express';
@@ -36,7 +36,7 @@ import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-
 export class MiniStoreSalesReturnsController implements CrudController<SalesReturns> {
     constructor(public service: MiniStoreSalesReturnsService,
                 public serviceInvoiveMini: MiniStoreInvoicesService,
-                public serviceInvoiceCompany: InvoiceCompanyService) {
+                public serviceInvoiceCompany: BranchOfficeSettingService) {
     }
 
     get base(): CrudController<SalesReturns> {
