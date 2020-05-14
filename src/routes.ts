@@ -12,7 +12,7 @@ import { TeachersModule } from './school-colegio-ingles/teachers/teachers.module
 import { GroupsModule } from './school-colegio-ingles/groups/groups.module';
 import { InscriptionsModule } from './school-colegio-ingles/inscriptions/inscriptions.module';
 import { CyclesModule } from './school-colegio-ingles/cycles/cycles.module';
-import { CampusesModule } from './school-colegio-ingles/campuses/campuses.module';
+import { BranchOfficeModule } from './system/branch-office/branch-office.module';
 import { FamiliesModule } from './school-colegio-ingles/families/families.module';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { MiniStoreProductsModule } from './mini-store/mini-store-products/mini-store-products.module';
@@ -189,7 +189,7 @@ export const routes: Routes = [
             { path: '/assignments-inscriptions', module: AssignmentIncriptionModule },
             { path: '/cycles', module: CyclesModule },
             { path: '/periods', module: PeriodsModule },
-            { path: '/campuses', module: CampusesModule },
+            { path: '/campuses', module: BranchOfficeModule },
             { path: '/families', module: FamiliesModule },
             { path: '/classrooms', module: ClassroomsModule },
             { path: '/classrooms-permissions', module: ClassroomPermissionModule },

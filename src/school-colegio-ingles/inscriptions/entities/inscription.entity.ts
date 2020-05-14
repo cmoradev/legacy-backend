@@ -4,7 +4,7 @@ import { Group } from '../../groups/entities/group.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { Level } from '../../levels/entities/level.entity';
 import { Cycle } from '../../cycles/entities/cycle.entity';
-import { Campus } from '../../campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
 import { StudyPlanVariant } from '../../study-plan-variants/entities/study-plan-variants.entity';
@@ -110,8 +110,8 @@ export class Inscription {
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleInscriptions)
     inscripCycle: Cycle;
 
-    @ManyToOne(() => Campus, (campus) => campus.campusInscriptions)
-    inscripCampus: Campus;
+    @ManyToOne(() => BranchOffice, (campus) => campus.campusInscriptions)
+    inscripCampus: BranchOffice;
 
     @ManyToOne(() => User, (user) => user.userCchoolCreatorInscription)
     inscripAgentCreator: User;

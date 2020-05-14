@@ -13,7 +13,7 @@ import {
     PrimaryGeneratedColumn,
     RelationId,
 } from 'typeorm';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { TypeFolio } from '../../interface/FolioInvoice.interface';
 
 
@@ -178,14 +178,15 @@ export class InvoiceCompany {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => Campus, (campus) => campus.branchoffice)
-    invoiceCampus: Campus;
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'1\'',
+    name: 'active',
+  })
+  isActive: boolean;
 
-    @Column('tinyint', {
-        nullable: false,
-        width: 1,
-        default: () => '\'1\'',
-        name: 'active',
-    })
-    isActive: boolean;
+  @ManyToOne(() => BranchOffice, (campus) => campus.branchoffice)
+    invoiceCampus: BranchOffice;
+
 }

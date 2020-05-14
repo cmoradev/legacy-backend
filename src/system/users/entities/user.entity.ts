@@ -10,7 +10,7 @@ import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { ClassroomPermission } from '../../../school-colegio-ingles/classroom-permission/entities/classroom-permission.entity';
 import { Inscription } from '../../../school-colegio-ingles/inscriptions/entities/inscription.entity';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
 import { Role } from '../../roles/entities/role.entity';
 import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
@@ -140,8 +140,8 @@ export class User {
     @ManyToOne(() => Department, (department) => department.users)
     department: Department;
 
-    @ManyToOne(() => Campus, (campus) => campus.users)
-    campus: Campus;
+    @ManyToOne(() => BranchOffice, (campus) => campus.users)
+    campus: BranchOffice;
 
     @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.agentBilling)
     miniStoreBillingInvoices: MiniStoreInvoice[];

@@ -1,19 +1,19 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Level } from '../../levels/entities/level.entity';
-import { Student } from '../../students/entities/student.entity';
-import { Inscription } from '../../inscriptions/entities/inscription.entity';
-import { Family } from '../../families/entities/family.entity';
-import { User } from '../../../system/users/entities/user.entity';
+import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
+import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
+import { Inscription } from '../../../school-colegio-ingles/inscriptions/entities/inscription.entity';
+import { Family } from '../../../school-colegio-ingles/families/entities/family.entity';
+import { User } from '../../users/entities/user.entity';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
-import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
+import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
-import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
+import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { InvoiceCompany } from '../../../invoice/invoice-company/entities/invoice-company.entity';
 
 @Entity('planteles')
-export class Campus {
+export class BranchOffice {
 
   @PrimaryGeneratedColumn({
     type: 'int',

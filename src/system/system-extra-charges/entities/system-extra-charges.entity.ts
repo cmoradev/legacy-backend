@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { SystemTypeExtraCharges } from '../../system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
@@ -83,12 +83,12 @@ export class SystemExtraCharges extends Base {
     })
     extraChargesType: SystemTypeExtraCharges;
 
-    @ManyToOne(type => Campus, campus => campus.campusExtraCharges)
+    @ManyToOne(type => BranchOffice, campus => campus.campusExtraCharges)
     @JoinColumn({
         name: 'id_plantel',
         referencedColumnName: 'id',
     })
-    extraChargesCampus: Campus;
+    extraChargesCampus: BranchOffice;
 
     @ManyToOne(type => Cycle, cycle => cycle.cycleSystemExtraCharges)
     @JoinColumn({

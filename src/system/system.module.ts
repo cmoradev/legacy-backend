@@ -23,6 +23,7 @@ import { StatsModule } from './stats/stats.module';
 import { SettingsModule } from './settings/settings.module';
 import { FoliosModule } from './folios/folios.module';
 import { AuthAccessTokensModule } from './auth-access-tokens/auth-access-tokens.module';
+import { BranchOfficeModule } from './branch-office/branch-office.module';
 @Module({
   imports: [
     PermissionsModule,
@@ -33,6 +34,7 @@ import { AuthAccessTokensModule } from './auth-access-tokens/auth-access-tokens.
     SystemPaymentsStatusModule,
     StatesModule,
     DepartmentsModule,
+    BranchOfficeModule,
     CitiesModule,
     MunicipalitiesModule,
     SystemConceptsTypeModule,

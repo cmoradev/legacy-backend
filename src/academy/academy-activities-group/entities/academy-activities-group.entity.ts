@@ -16,7 +16,7 @@ import {
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Shift } from '../../../system/shift/entities/shift.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 
 @Entity('ac_grupos')
@@ -83,12 +83,12 @@ export class AcademyActivitiesGroup {
   })
   academyGroupCycle: Cycle;
 
-  @ManyToOne(type => Campus, campus => campus.campusAcademyGroups)
+  @ManyToOne(type => BranchOffice, campus => campus.campusAcademyGroups)
   @JoinColumn({
     name: 'id_plantel',
     referencedColumnName: 'id',
   })
-  academyGroupCampus: Campus;
+  academyGroupCampus: BranchOffice;
 
   @Column('int', {
     nullable: false,

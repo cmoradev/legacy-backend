@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { Campus } from './entities/campus.entity';
+import { BranchOffice } from './entities/branch-office.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
-export class CampusesService extends TypeOrmCrudService<Campus> {
+export class BranchOfficeService extends TypeOrmCrudService<BranchOffice> {
     constructor(
-        @InjectRepository(Campus, ColegioDBNameConnection) repo: Repository<Campus>,
+        @InjectRepository(BranchOffice, ColegioDBNameConnection) repo: Repository<BranchOffice>,
     ) { super(repo); }
 }

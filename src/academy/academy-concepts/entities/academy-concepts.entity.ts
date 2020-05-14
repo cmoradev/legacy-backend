@@ -16,7 +16,7 @@ import {
 import { States } from '../../../system/states/entities/states.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 
@@ -79,12 +79,12 @@ export class AcademyConcepts {
     })
     academyConceptsCycle: Cycle;
 
-    @ManyToOne(type => Campus, campus => campus.campusAcademyConcepts)
+    @ManyToOne(type => BranchOffice, campus => campus.campusAcademyConcepts)
     @JoinColumn({
         name: 'id_plantel',
         referencedColumnName: 'id',
     })
-    academyConceptsCampus: Campus;
+    academyConceptsCampus: BranchOffice;
 
     @ManyToOne(type => Level, level => level.levelAcademyConcepts)
     @JoinColumn({
