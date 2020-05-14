@@ -178,6 +178,14 @@ typeModule: TypeFolio;
   })
   updatedAt: Date;
 
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'1\'',
+    name: 'active',
+  })
+  isActive: boolean;
+
   @ManyToOne(() => Campus, (campus) => campus.branchoffice)
     invoiceCampus: Campus;
 
