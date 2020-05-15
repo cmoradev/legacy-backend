@@ -14,7 +14,7 @@ import {
     RelationId,
 } from 'typeorm';
 import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
-import { TypeFolio } from '../../../invoice/interface/FolioInvoice.interface';
+import { TypeModule } from '../../../invoice/interface/FolioInvoice.interface';
 
 @Entity('facturacion_empresas')
 export class BranchOfficeSetting {
@@ -99,7 +99,6 @@ export class BranchOfficeSetting {
     })
     foliajePago: string;
 
-    //-------
     @Column('int', {
         nullable: true,
         name: 'serie_nota',
@@ -118,7 +117,6 @@ export class BranchOfficeSetting {
     })
     seriePago: number;
 
-    //----
     @Column('varchar', {
         nullable: false,
         length: 5,
@@ -157,10 +155,10 @@ export class BranchOfficeSetting {
         type: 'enum',
         nullable: false,
         name: 'id_modalidad',
-        enum: TypeFolio,
-        default: TypeFolio.colegio,
+        enum: TypeModule,
+        default: TypeModule.colegio,
     })
-    typeModule: TypeFolio;
+    typeModule: TypeModule;
 
     @Column('timestamp', {
         nullable: false,
