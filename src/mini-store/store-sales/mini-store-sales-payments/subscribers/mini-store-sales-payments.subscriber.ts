@@ -20,7 +20,7 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
             this.generateFolioPayment(payment.id);
             this.generateTransaction(payment.id);
         } catch (e) {
-            console.log('payment :' + payment.id, 'error', e);
+            console.log('payment :' + payment, 'error', e);
         }
     }
 
