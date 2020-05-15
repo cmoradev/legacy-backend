@@ -1,7 +1,7 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
 import { MiniStoreSale } from '../entities/mini-store-sale.entity';
 import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
-import { InvoiceCompany } from '../../../../invoice/invoice-company/entities/invoice-company.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
@@ -19,7 +19,7 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         try {
             this.generateDocFolio(sale.id);
         } catch (e) {
-            console.log(sale, e);
+            console.log('ventas :' + sale.id, 'error', e);
         }
     }
 
@@ -34,10 +34,9 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
 
     async generateDocFolio(id: number): Promise<MiniStoreSale> {
         const insRepository = getRepository(MiniStoreSale, ColegioDBNameConnection);
-        const business = getRepository(InvoiceCompany, ColegioDBNameConnection);
+        const business = getRepository(BranchOfficeSetting, ColegioDBNameConnection);
         const miniStore = await business.findOne({ id: 3 });
         const updateIns = await insRepository.findOne({ id });
-        console.log(updateIns);
         updateIns.folio = miniStore.foliajeNota + updateIns.id;
         return await insRepository.save(updateIns);
     }

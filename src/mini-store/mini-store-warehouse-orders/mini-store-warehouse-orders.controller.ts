@@ -7,7 +7,7 @@ import { orderRecipe } from './reports/ordersRecipe';
 import { TableRowsDocx } from '../../common/office/docx/Table.docx';
 import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
-import { InvoiceCompanyService } from '../../invoice/invoice-company/invoice-company.service';
+import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
 import { ivaFromFinalAmount } from '../../common/numbers';
 import * as moment from 'moment';
 
@@ -27,7 +27,7 @@ import * as moment from 'moment';
 export class MiniStoreWarehouseOrdersController implements CrudController<MiniStoreWarehouseOrder> {
     constructor(
         readonly service: MiniStoreWarehouseOrdersService,
-        readonly serviceInvoiceCompany: InvoiceCompanyService,
+        readonly serviceInvoiceCompany: BranchOfficeSettingService,
     ) {
     }
 

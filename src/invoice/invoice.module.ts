@@ -7,7 +7,6 @@ import { InvoiceUnitsModule } from './invoice-units/invoice-units.module';
 import { InvoiceUsesCfdiModule } from './invoice-uses-cfdi/invoice-uses-cfdi.module';
 import { InvoiceModalityPaymentModule } from './invoice-modality-payment/invoice-modality-payment.module';
 import { InvoiceMethodsPaymentsModule } from './invoice-methods-payments/invoice-methods-payments.module';
-import { InvoiceCompanyModule } from './invoice-company/invoice-company.module';
 
 @Module({
   providers: [InvoiceService],
@@ -19,7 +18,6 @@ import { InvoiceCompanyModule } from './invoice-company/invoice-company.module';
     InvoiceUsesCfdiModule,
     InvoiceMethodsPaymentsModule,
     InvoiceModalityPaymentModule,
-    InvoiceCompanyModule,
   ],
 })
 export class InvoiceModule {

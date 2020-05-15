@@ -1,11 +1,11 @@
 import * as Excel from 'exceljs';
 import { Borders } from 'exceljs';
 import { InvoiceReport } from '../../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { InvoiceCompany } from '../../../../invoice/invoice-company/entities/invoice-company.entity';
+import { BranchOfficeSetting }  from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import moment = require('moment');
 
 export class ReportInvoice {
-  public generateReport(data: InvoiceReport[], query: { startDate: string, endDate: string }, company: InvoiceCompany): Excel.Workbook {
+  public generateReport(data: InvoiceReport[], query: { startDate: string, endDate: string }, company: BranchOfficeSetting): Excel.Workbook {
     const workbook = new Excel.Workbook();
     workbook.views = [
       {
@@ -29,7 +29,7 @@ export class ReportInvoice {
     return workbook;
   }
 
-  public addfilltoSheet(invoiceSheet: Excel.Worksheet, imageID, invoices: InvoiceReport[], query: any, company: InvoiceCompany): Excel.Worksheet {
+  public addfilltoSheet(invoiceSheet: Excel.Worksheet, imageID, invoices: InvoiceReport[], query: any, company: BranchOfficeSetting): Excel.Worksheet {
 
     invoiceSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
     invoiceSheet.mergeCells('C2:D2');

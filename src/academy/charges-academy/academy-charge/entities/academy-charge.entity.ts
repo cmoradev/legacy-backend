@@ -13,7 +13,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
-import { Campus } from '../../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { SchoolChargeDetails } from '../../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
 import { SchoolChargePayment } from '../../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
@@ -121,12 +121,12 @@ export class AcademyCharge {
     })
     timbrado: boolean;
 
-    @ManyToOne(() => Campus, (campus) => campus.campusAcademyCharge)
+    @ManyToOne(() => BranchOffice, (campus) => campus.campusAcademyCharge)
     @JoinColumn({
         name: 'id_plantel',
         referencedColumnName: 'id',
     })
-    chargeCampus: Campus;
+    chargeCampus: BranchOffice;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcademyCharge)
     @JoinColumn({

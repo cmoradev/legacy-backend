@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
-import { Campus } from '../../../campuses/entities/campus.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { Student } from '../../../students/entities/student.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
@@ -57,8 +57,8 @@ export class SchoolCharge extends Base {
     })
     status: StatusPayment;
 
-    @ManyToOne(() => Campus, (campus) => campus.campusSchoolCharge)
-    schoolCampus: Campus;
+    @ManyToOne(() => BranchOffice, (campus) => campus.campusSchoolCharge)
+    schoolCampus: BranchOffice;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleSchoolCharge)
     schoolCycle: Cycle;

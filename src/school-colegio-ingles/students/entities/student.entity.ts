@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
-import { Campus } from '../../campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Family } from '../../families/entities/family.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
 import { AcademiesModality } from '../../../academy/academy-modalities/entities/academy-modality.entity';
@@ -136,8 +136,8 @@ export class Student {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => Campus, (campus) => campus.students)
-    studentCampus: Campus;
+    @ManyToOne(() => BranchOffice, (campus) => campus.students)
+    studentCampus: BranchOffice;
 
     @ManyToOne(() => AcademiesModality, (academiesModality) => academiesModality.students)
     academiesModality: AcademiesModality;

@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Campus } from '../../campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
@@ -52,8 +52,8 @@ export class Level {
   @OneToMany(() => PaymentPlan, (paymentPlan) => paymentPlan.level)
   paymentPlans: PaymentPlan[];
 
-  @ManyToOne(() => Campus, (campus) => campus.levels)
-  campus: Campus;
+  @ManyToOne(() => BranchOffice, (campus) => campus.levels)
+  campus: BranchOffice;
 
   @OneToMany(() => Grade, (grade) => grade.level)
   grades: Grade[];

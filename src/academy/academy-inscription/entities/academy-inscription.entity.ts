@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
-import { Campus } from '../../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
@@ -134,12 +134,12 @@ export class AcademyInscription {
     })
     student: Student;
 
-    @ManyToOne(() => Campus, (campus) => campus.campusAcIns)
+    @ManyToOne(() => BranchOffice, (campus) => campus.campusAcIns)
     @JoinColumn({
         name: 'id_plantel',
         referencedColumnName: 'id',
     })
-    inscriptionCampus: Campus;
+    inscriptionCampus: BranchOffice;
 
     @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
     @JoinColumn({

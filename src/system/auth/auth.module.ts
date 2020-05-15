@@ -7,7 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Department } from '../departments/entities/department.entity';
 import { Role } from '../roles/entities/role.entity';
-import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../branch-office/entities/branch-office.entity';
 import { UsersModule } from '../users/users.module';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { SettingsModule } from '../settings/settings.module';
@@ -30,7 +30,7 @@ import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens
             useClass: JwtConfigService,
             imports: [ConfigModule],
         }),
-        TypeOrmModule.forFeature([Department, Role, Campus], ColegioDBNameConnection),
+        TypeOrmModule.forFeature([Department, Role, BranchOffice], ColegioDBNameConnection),
     ],
     providers: [
         AuthService,

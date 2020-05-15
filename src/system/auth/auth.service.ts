@@ -4,7 +4,7 @@ import { Role } from '../roles/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Department } from '../departments/entities/department.entity';
-import { Campus } from '../../school-colegio-ingles/campuses/entities/campus.entity';
+import { BranchOffice } from '../branch-office/entities/branch-office.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
@@ -31,8 +31,8 @@ export class AuthService {
         private readonly roleRepository: Repository<Role>,
         @InjectRepository(Department, ColegioDBNameConnection)
         private readonly departmentRepository: Repository<Department>,
-        @InjectRepository(Campus, ColegioDBNameConnection)
-        private readonly campusRepository: Repository<Campus>,
+        @InjectRepository(BranchOffice, ColegioDBNameConnection)
+        private readonly campusRepository: Repository<BranchOffice>,
         private readonly jwtService: JwtService,
     ) {
     }

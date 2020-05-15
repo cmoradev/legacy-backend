@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {Campus} from '../../campuses/entities/campus.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import {Student} from '../../students/entities/student.entity';
 
 @Entity('familias' )
@@ -59,8 +59,8 @@ export class Family {
     })
     updatedAt: Date;
 
-    @ManyToOne(() => Campus, (campus) => campus.families)
-    campus: Campus;
+    @ManyToOne(() => BranchOffice, (campus) => campus.families)
+    campus: BranchOffice;
 
     @OneToMany(() => Student, (student) => student.family)
     students: Student[];
