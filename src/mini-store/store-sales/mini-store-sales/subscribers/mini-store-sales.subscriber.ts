@@ -19,7 +19,7 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
         try {
             this.generateDocFolio(sale.id);
         } catch (e) {
-            console.log('ventas :' + sale.id, 'error', e);
+            console.log('ventas :' + sale, 'error', e);
         }
     }
 
