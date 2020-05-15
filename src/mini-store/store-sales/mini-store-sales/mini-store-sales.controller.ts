@@ -50,10 +50,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     }
 
     @Override()
-    async createOne(
-        @ParsedRequest() req: CrudRequest,
-        @ParsedBody() dto: MiniStoreSale,
-    ) {
+    async createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: MiniStoreSale,) {
         const sale = await this.base.createOneBase(req, dto);
         sale.folio += sale.id;
         return sale;
