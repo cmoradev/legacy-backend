@@ -15,6 +15,8 @@ import {
 } from 'typeorm';
 import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
 import { TypeModule } from '../../../invoice/interface/FolioInvoice.interface';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Entity('facturacion_empresas')
 export class BranchOfficeSetting {
@@ -175,15 +177,21 @@ export class BranchOfficeSetting {
     })
     updatedAt: Date;
 
-  @Column('tinyint', {
-    nullable: false,
-    width: 1,
-    default: () => '\'1\'',
-    name: 'active',
-  })
-  isActive: boolean;
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+        default: () => '\'1\'',
+        name: 'active',
+    })
+    isActive: boolean;
 
-  @ManyToOne(() => BranchOffice, (campus) => campus.branchoffice)
+    @ManyToOne(() => BranchOffice, (campus) => campus.branchoffice)
     invoiceCampus: BranchOffice;
+
+    @OneToMany(() => MiniStoreSale, (sale) => sale.storeBranchOffice)
+    branchOfficeSetStore: MiniStoreSale[];
+
+    @OneToMany(() => MiniStoreSalePayment, (payments) => payments.storePaymentOffice)
+    branchOfficeSettStorePayment: MiniStoreSalePayment[];
 
 }
