@@ -181,7 +181,7 @@ export class MiniStoreSale extends Base {
     })
     idInvoice: number;
 
-    @ManyToOne(() => BranchOffice, (campus) => campus.campusAcademyCharge)
+    @ManyToOne(() => BranchOffice, (campus) => campus.branchOfficeStore)
     @JoinColumn({
         name: 'storeBranchOfficeId',
         referencedColumnName: 'id',

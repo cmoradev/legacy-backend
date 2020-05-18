@@ -12,6 +12,7 @@ import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/scho
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { BranchOfficeSetting } from '../../branch-office-setting/entities/branch-office-setting.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Entity('planteles')
 export class BranchOffice {
@@ -85,6 +86,9 @@ export class BranchOffice {
 
     @OneToMany(() => MiniStoreSale, (academyCharge) => academyCharge.storeBranchOffice)
     branchOfficeStore: MiniStoreSale[];
+
+    @OneToMany(() => MiniStoreSalePayment, (academyCharge) => academyCharge.storePaymentOffice)
+    branchOfficeStorePayment: MiniStoreSalePayment[];
 
     @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
     campusAcademyCharge: AcademyCharge[];
