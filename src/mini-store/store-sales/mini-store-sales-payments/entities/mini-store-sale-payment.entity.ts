@@ -6,6 +6,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment extends Base {
@@ -101,6 +102,9 @@ export class MiniStoreSalePayment extends Base {
         name: 'is_iva',
     })
     isIVA: boolean;
+
+    @ManyToOne(() => BranchOffice, (campus) => campus.branchOfficeStorePayment)
+    storePaymentOffice: BranchOffice;
 
     /**
      * Relación de un pago con una venta
