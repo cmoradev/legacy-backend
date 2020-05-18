@@ -10,78 +10,83 @@ import { SystemExtraCharges } from '../../system-extra-charges/entities/system-e
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
-import { BranchOfficeSetting }  from '../../branch-office-setting/entities/branch-office-setting.entity';
+import { BranchOfficeSetting } from '../../branch-office-setting/entities/branch-office-setting.entity';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 
 @Entity('planteles')
 export class BranchOffice {
 
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+    @PrimaryGeneratedColumn({
+        type: 'int',
+        name: 'id',
+    })
+    id: number;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 45,
-    name: 'plantel',
-  })
-  name: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 45,
+        name: 'plantel',
+    })
+    name: string;
 
-  @Column('int', {
-    nullable: false,
-    name: 'id_ubicacion',
-  })
-  idLocation: number;
+    @Column('int', {
+        nullable: false,
+        name: 'id_ubicacion',
+    })
+    idLocation: number;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt: Date;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt: Date;
 
-  @OneToMany(() => Level, (level) => level.campus)
-  levels: Level[];
+    @OneToMany(() => Level, (level) => level.campus)
+    levels: Level[];
 
-  @OneToMany(() => Student, (student) => student.studentCampus)
-  students: Student[];
+    @OneToMany(() => Student, (student) => student.studentCampus)
+    students: Student[];
 
-  @OneToMany(() => BranchOfficeSetting, (invoice) => invoice.invoiceCampus)
-  branchoffice: BranchOfficeSetting[];
+    @OneToMany(() => BranchOfficeSetting, (invoice) => invoice.invoiceCampus)
+    branchoffice: BranchOfficeSetting[];
 
-  @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
-  campusInscriptions: Inscription[];
+    @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
+    campusInscriptions: Inscription[];
 
-  @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsCampus)
-  campusAcademyConcepts: AcademyConcepts[];
+    @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsCampus)
+    campusAcademyConcepts: AcademyConcepts[];
 
-  @OneToMany(() => AcademyActivitiesGroup, (academygroup) => academygroup.academyGroupCampus)
-  campusAcademyGroups: AcademyActivitiesGroup[];
+    @OneToMany(() => AcademyActivitiesGroup, (academygroup) => academygroup.academyGroupCampus)
+    campusAcademyGroups: AcademyActivitiesGroup[];
 
-  @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesCampus)
-  campusExtraCharges: SystemExtraCharges[];
+    @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesCampus)
+    campusExtraCharges: SystemExtraCharges[];
 
-  @OneToMany(() => Family, (family) => family.campus)
-  families: Family[];
+    @OneToMany(() => Family, (family) => family.campus)
+    families: Family[];
 
-  @OneToMany(() => User, (user) => user.campus)
-  users: User[];
+    @OneToMany(() => User, (user) => user.campus)
+    users: User[];
 
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.inscriptionCampus)
-  campusAcIns: AcademyInscription[];
+    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.inscriptionCampus)
+    campusAcIns: AcademyInscription[];
 
-  @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
-  campusSchoolCharge: SchoolCharge[];
+    @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
+    campusSchoolCharge: SchoolCharge[];
 
-  @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
-  campusAcademyCharge: AcademyCharge[];
+    @OneToMany(() => MiniStoreSale, (academyCharge) => academyCharge.storeBranchOffice)
+    branchOfficeStore: MiniStoreSale[];
+
+    @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
+    campusAcademyCharge: AcademyCharge[];
+
 }
