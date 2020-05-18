@@ -18,15 +18,11 @@ import { Student } from '../../../../school-colegio-ingles/students/entities/stu
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { FixedAssetAssignmentStatus } from '../../../../fixed-assets-control/fixed-assets-assignments/entities/fixed-asset-assignment.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('tie_ventas')
-export class MiniStoreSale {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreSale extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -35,13 +31,6 @@ export class MiniStoreSale {
         name: 'folio',
     })
     folio: string;
-
-    // @Column('int', {
-    //     nullable: false,
-    //     default: () => '\'0\'',
-    //     name: 'id_agente',
-    // })
-    // idAgent: number;
 
     /**
      * @Deprecated
@@ -130,16 +119,6 @@ export class MiniStoreSale {
     })
     reasonCancellation: string | null;
 
-    /**
-     * Deprecated
-     */
-        // @Column('int', {
-        //     nullable: false,
-        //     default: () => '\'0\'',
-        //     name: 'ciclo',
-        // })
-        // cycle: number;
-
     @Column('int', {
         nullable: false,
         default: () => '\'16\'',
@@ -202,28 +181,19 @@ export class MiniStoreSale {
     })
     idInvoice: number;
 
-    // hacer relacion, por defecto lleva 1
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_plantel',
+    @ManyToOne(() => BranchOffice, (campus) => campus.campusAcademyCharge)
+    @JoinColumn({
+        name: 'storeBranchOfficeId',
+        referencedColumnName: 'id',
     })
-    idPlantel: number;
+    storeBranchOffice: BranchOffice;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
+    @ManyToOne(type => Cycle, (c) => c.sales)
+    @JoinColumn({
+        name: 'cycleId',
+        referencedColumnName: 'id',
     })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+    cycle: Cycle;
 
     @ManyToOne(type => Student, student => student.sales)
     @JoinColumn({
@@ -268,14 +238,5 @@ export class MiniStoreSale {
         referencedColumnName: 'id',
     })
     cashier: User;
-
-    @ManyToOne(type => Cycle, (c) => c.sales, {
-        nullable: false,
-    })
-    @JoinColumn({
-        name: 'ciclo',
-        referencedColumnName: 'id',
-    })
-    cycle: Cycle;
 
 }
