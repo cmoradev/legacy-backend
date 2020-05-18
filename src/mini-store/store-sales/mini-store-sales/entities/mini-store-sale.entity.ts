@@ -20,6 +20,7 @@ import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { FixedAssetAssignmentStatus } from '../../../../fixed-assets-control/fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
@@ -181,12 +182,15 @@ export class MiniStoreSale extends Base {
     })
     idInvoice: number;
 
-    @ManyToOne(() => BranchOffice, (campus) => campus.branchOfficeStore)
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStore)
     @JoinColumn({
         name: 'storeBranchOfficeId',
         referencedColumnName: 'id',
     })
     storeBranchOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetStore)
+    storeBranchOfficeSet: BranchOfficeSetting;
 
     @ManyToOne(type => Cycle, (c) => c.sales)
     @JoinColumn({

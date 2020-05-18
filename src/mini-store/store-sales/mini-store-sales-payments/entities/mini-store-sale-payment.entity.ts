@@ -7,6 +7,7 @@ import { StatusPayment } from '../../../../common/enums/statusPayment';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment extends Base {
@@ -103,8 +104,11 @@ export class MiniStoreSalePayment extends Base {
     })
     isIVA: boolean;
 
-    @ManyToOne(() => BranchOffice, (campus) => campus.branchOfficeStorePayment)
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStorePayment)
     storePaymentOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettStorePayment)
+    storePaymentOfficeSet: BranchOfficeSetting;
 
     /**
      * Relación de un pago con una venta
