@@ -24,7 +24,7 @@ export class StatsService {
     ) {
     }
 
-    async salesRevenue(query: { startDate: string; endDate: string }) {
+    async salesRevenue(query: { startDate: string; endDate: string, branchOfficeId: number }) {
         const sales = await this.fetchSalesByDateRange(query);
         const clients = await this.clientsRepository.count();
         const users = await this.usersRepository
@@ -36,6 +36,7 @@ export class StatsService {
         const todaySales = await this.fetchSalesByDateRange({
             endDate: today.toISOString(true),
             startDate: today.toISOString(true),
+            branchOfficeId: query.branchOfficeId,
         });
         const globalSalesResume = this.salesResume(sales);
         const todaySalesResume = this.salesResume(todaySales);
@@ -67,16 +68,20 @@ export class StatsService {
         };
     }
 
-    async fetchSalesByDateRange(query: { startDate: string; endDate: string }): Promise<MiniStoreSale[]> {
+    async fetchSalesByDateRange(query: { startDate: string; endDate: string, branchOfficeId: number }): Promise<MiniStoreSale[]> {
         const startDate = moment(query.startDate).startOf('day').toISOString(true);
         const endDate = moment(query.endDate).endOf('day').toISOString(true);
         const salesQB = this.salesRepository.createQueryBuilder('sale');
+        salesQB.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
         salesQB.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
         salesQB.leftJoinAndSelect('sale.student', 'student');
         salesQB.leftJoinAndSelect('sale.cashier', 'cashier');
         salesQB.leftJoinAndSelect('payments.miniStoreSaleMethodPayments', 'paymentMethods');
         salesQB.leftJoinAndSelect('paymentMethods.invoiceMethodPayment', 'invoicePaymentMethod');
-        salesQB.where(`(payments.createdAt BETWEEN :startDate AND :endDate)`, {
+        salesQB.where('storeBranchOffice.id= :officeId', {
+            officeId: query.branchOfficeId,
+        });
+        salesQB.andWhere(`(payments.createdAt BETWEEN :startDate AND :endDate)`, {
             startDate,
             endDate,
         });
@@ -87,7 +92,7 @@ export class StatsService {
         return salesQB.getMany();
     }
 
-    async salesByMonthsOfYear(query: { year: string }) {
+    async salesByMonthsOfYear(query: { year: string, branchOfficeId: number }) {
         const year = moment(query.year);
         const monthsRanges = this.monthsOfYear(year);
         const results = [];
@@ -95,6 +100,7 @@ export class StatsService {
             const salesByMonth = await this.fetchSalesByDateRange({
                 startDate: month.startDate,
                 endDate: month.endDate,
+                branchOfficeId: query.branchOfficeId,
             });
             const salesResume = this.salesResume(salesByMonth);
             results.push({
@@ -105,7 +111,7 @@ export class StatsService {
         return results;
     }
 
-    async incomesByPaymentMethodAndMonthsOfYear(query: { year: string }) {
+    async incomesByPaymentMethodAndMonthsOfYear(query: { year: string, branchOfficeId: number }) {
         const year = moment(query.year);
         const monthsRanges = this.monthsOfYear(year);
         const results = [];
@@ -113,6 +119,7 @@ export class StatsService {
             const salesByMonth = await this.fetchSalesByDateRange({
                 startDate: month.startDate,
                 endDate: month.endDate,
+                branchOfficeId: query.branchOfficeId,
             });
             const salesPaymentMethodsResume = this.paymentMethodsResume(salesByMonth);
             results.push({
@@ -151,7 +158,7 @@ export class StatsService {
         };
     }
 
-    async cashierSales(options: { startDate: Date | string, endDate: Date | string }) {
+    async cashierSales(options: { startDate: Date | string, endDate: Date | string, branchOfficeId: number; }) {
         const startDate = moment(options.startDate).startOf('day').toISOString(true);
         const endDate = moment(options.endDate).endOf('day').toISOString(true);
 
@@ -162,6 +169,7 @@ export class StatsService {
         const sales = await this.fetchSalesByDateRange({
             startDate,
             endDate,
+            branchOfficeId: options.branchOfficeId,
         });
         const cashiers = await queryQB.getMany();
         const resume = [];

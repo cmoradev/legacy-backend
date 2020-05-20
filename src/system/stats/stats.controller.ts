@@ -11,22 +11,23 @@ export class StatsController {
     salesByDateRange(@Query() query: {
         startDate: string,
         endDate: string,
+        branchOfficeId: number;
     }) {
         return this.statsService.salesRevenue(query);
     }
 
     @Get('sales-by-month-of-year')
-    salesByMonthOfYear(@Query() query: { year: string }) {
+    salesByMonthOfYear(@Query() query: { year: string, branchOfficeId: number; }) {
         return this.statsService.salesByMonthsOfYear(query);
     }
 
     @Get('monthly-payment-methods-incomes')
-    incomesByPaymentMethodAndMonthsOfYear(@Query() query: { year: string }) {
+    incomesByPaymentMethodAndMonthsOfYear(@Query() query: { year: string, branchOfficeId: number; }) {
         return this.statsService.incomesByPaymentMethodAndMonthsOfYear(query);
     }
 
     @Get('cashier-sales')
-    cashierSales(@Query() query: { startDate: string, endDate: string }) {
+    cashierSales(@Query() query: { startDate: string, endDate: string, branchOfficeId: number; }) {
         return this.statsService.cashierSales(query);
     }
 }
