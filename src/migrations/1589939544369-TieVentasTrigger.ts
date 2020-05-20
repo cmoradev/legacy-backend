@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class TieVentasTrigger1589939544369 implements MigrationInterface {
 
@@ -18,7 +18,6 @@ export class TieVentasTrigger1589939544369 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query(`DROP TRIGGER IF EXISTS before_venta_insert`);
-
     }
 
 }

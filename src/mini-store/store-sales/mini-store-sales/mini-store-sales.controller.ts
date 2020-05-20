@@ -7,6 +7,7 @@ import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini
 import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -49,21 +50,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         return this;
     }
 
-    @Override()
-    async createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: MiniStoreSale,) {
-        const sale = await this.base.createOneBase(req, dto);
-        sale.folio += sale.id;
-        return sale;
-    }
-
     @Get('/sale-report')
     async saleReport(@Req() request, @Res() res, @Query() query: {
         status: number,
         startDate: Date,
         endDate: Date,
-        cashier?: number,
         onlyFile: boolean,
         type: number,
+        branchOfficeId: number;
     }) {
 
         const result: SaleReport = {
@@ -83,7 +77,8 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 status: query.status,
                 endDate: query.endDate,
                 startDate: query.startDate,
-            }));
+                branchOfficeId: query.branchOfficeId,
+            } as QuerySimpleReport));
         }
         res.send(result);
     }
