@@ -8,6 +8,9 @@ import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { ManyToOne } from 'typeorm';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -18,6 +21,8 @@ import { QuerySimpleReport } from '../mini-store-sales-payments/interface/Invoic
         join: {
             cashier: {},
             student: {},
+            storeBranchOffice: {},
+            storeBranchOfficeSet: {},
             miniStoreSalePayments: {},
             'miniStoreSalePayments.miniStoreInvoices': {},
             'miniStoreSalePayments.agent': {},
