@@ -17,7 +17,7 @@ export class MiniStoreSalesPaymentsSubscriber implements EntitySubscriberInterfa
     async afterInsert(insertEvent: InsertEvent<MiniStoreSalePayment>) {
         const { entity: payment } = insertEvent;
         try {
-            this.generateFolioPayment(payment.id);
+            //this.generateFolioPayment(payment.id);
             this.generateTransaction(payment.id);
         } catch (e) {
             console.log('payment :' + payment, 'error', e);
