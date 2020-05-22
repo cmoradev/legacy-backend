@@ -7,6 +7,10 @@ import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini
 import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { ManyToOne } from 'typeorm';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -17,6 +21,8 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
         join: {
             cashier: {},
             student: {},
+            storeBranchOffice: {},
+            storeBranchOfficeSet: {},
             miniStoreSalePayments: {},
             'miniStoreSalePayments.miniStoreInvoices': {},
             'miniStoreSalePayments.agent': {},
@@ -49,21 +55,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         return this;
     }
 
-    @Override()
-    async createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: MiniStoreSale,) {
-        const sale = await this.base.createOneBase(req, dto);
-        sale.folio += sale.id;
-        return sale;
-    }
-
     @Get('/sale-report')
     async saleReport(@Req() request, @Res() res, @Query() query: {
         status: number,
         startDate: Date,
         endDate: Date,
-        cashier?: number,
         onlyFile: boolean,
         type: number,
+        branchOfficeId: number;
     }) {
 
         const result: SaleReport = {
@@ -83,7 +82,8 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 status: query.status,
                 endDate: query.endDate,
                 startDate: query.startDate,
-            }));
+                branchOfficeId: query.branchOfficeId,
+            } as QuerySimpleReport));
         }
         res.send(result);
     }

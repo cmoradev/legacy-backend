@@ -4,6 +4,7 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { convertPaymentsReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
+import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 
 @Crud({
     model: {
@@ -33,14 +34,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     }
 
     @Get('/simple-report')
-    async simpleReport(@Req() request, @Res() response, @Query() query: {
-        status: number,
-        startDate: Date,
-        endDate: Date,
-        cashier?: number,
-        onlyFile: boolean,
-        invoiceStatus?: number,
-    }) {
+    async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
 
         const payments = await this.service.fetchFilteredPayments(query);
         const sales = await this.service.fetchFilteredSales(query);
@@ -54,7 +48,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             returns: [],
             file: '',
         };
-        console.log(query.onlyFile);
         if (query.onlyFile) {
             result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
         } else {
@@ -65,7 +58,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     isActive: true,
                 },
             });
-            console.log(payments);
             const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
             result.payments = viewPayments;
         }

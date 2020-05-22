@@ -20,9 +20,11 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
         startDate: Date,
         endDate: Date,
         cashier?: number,
+        branchOfficeId: number;
     }) {
 
         const sales = this.repo.createQueryBuilder('sales')
+            .leftJoinAndSelect('sales.storeBranchOffice', 'storeBranchOffice')
             .leftJoinAndSelect('sales.cashier', 'cashier')
             .leftJoinAndSelect('sales.miniStoreSaleDetails', 'details')
             .leftJoinAndSelect('details.miniStoreClassification', 'clasification')
@@ -53,7 +55,10 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                 'cashier.lastnameFather',
                 'cashier.lastnameMother',
             ])
-            .where('sales.statusSale= :status', {
+            .where('storeBranchOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            })
+            .andWhere('sales.statusSale= :status', {
                 status: query.status,
             })
             .andWhere('sales.createdAt BETWEEN :startDate AND :endDate',
