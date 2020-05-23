@@ -17,6 +17,8 @@ import { BranchOffice } from '../../branch-office/entities/branch-office.entity'
 import { TypeModule } from '../../../invoice/interface/FolioInvoice.interface';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { SchoolPayment } from '../../../school-colegio-ingles/school-payments/entities/school-payment.entity';
+import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 @Entity('facturacion_empresas')
 export class BranchOfficeSetting {
@@ -184,6 +186,16 @@ export class BranchOfficeSetting {
         name: 'active',
     })
     isActive: boolean;
+
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+        default: () => '\'0\'',
+    })
+    isQuickSale: boolean;
+
+    @ManyToOne(type => InvoiceMethodPayment, mP => mP.methodPayBranchOffSet)
+    quickSaleMethod: InvoiceMethodPayment;
 
     @ManyToOne(() => BranchOffice, (campus) => campus.branchoffice)
     invoiceCampus: BranchOffice;
