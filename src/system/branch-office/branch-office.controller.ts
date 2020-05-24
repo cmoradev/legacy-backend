@@ -10,6 +10,7 @@ import { BranchOfficeService } from './branch-office.service';
     query: {
         join: {
             branchoffice: {},
+            'branchoffice.quickSaleMethod': {},
         },
     },
 })
@@ -17,7 +18,9 @@ import { BranchOfficeService } from './branch-office.service';
 export class BranchOfficeController implements CrudController<BranchOffice> {
     constructor(
         readonly service: BranchOfficeService,
-    ) { }
+    ) {
+    }
+
     get base(): CrudController<BranchOffice> {
         return this;
     }
