@@ -76,6 +76,7 @@ export class AcademyChargeDetails {
     })
     updatedAt: Date;
 
+
     @ManyToOne(() => AcademyCharge, (schoolCharge) => schoolCharge.chargesDetails)
     @JoinColumn({
         name: 'id_ac_cobro',
@@ -88,14 +89,15 @@ export class AcademyChargeDetails {
     })
     extraCharges: AcademyChargeDetailsExtraCharge[];
 
+    @ManyToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail, {
+        cascade: ['insert'],
+    })
+    academyInscriptionConcept: AcademyInscriptionConcepts;
+
     // falta relacion con el concepto de cobro de academia
     @Column('int', {
         nullable: false,
         name: 'id_concepto_cobro',
     })
     idConceptoCobro: number;
-
-    @OneToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail)
-    @JoinColumn()
-    academyInscriptionConcept: AcademyInscriptionConcepts;
 }

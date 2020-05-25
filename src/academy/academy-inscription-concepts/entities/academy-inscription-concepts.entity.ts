@@ -175,7 +175,7 @@ export class AcademyInscriptionConcepts {
     @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.concepts)
     acInscription: AcademyInscription;
 
-    @OneToOne(type => AcademyChargeDetails, chargeDetails => chargeDetails.academyInscriptionConcept)
-    academyChargeDetail: AcademyChargeDetails;
+    @OneToMany(type => AcademyChargeDetails, chargeDetails => chargeDetails.academyInscriptionConcept)
+    academyChargeDetail: AcademyChargeDetails[];
 
 }
