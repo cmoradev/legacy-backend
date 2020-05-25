@@ -8,7 +8,10 @@ import { BranchOfficeSettingService } from './branch-office-setting.service';
         type: BranchOfficeSetting,
     },
     query: {
-        join: { invoiceCampus: {} },
+        join: {
+            invoiceCampus: {},
+            quickSaleMethod: {},
+        },
     },
 })
 @Controller()
