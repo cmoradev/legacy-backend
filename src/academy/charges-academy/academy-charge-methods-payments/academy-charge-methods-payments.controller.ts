@@ -12,7 +12,7 @@ import { AcademyChargeMethodsPayments } from './entities/academy-charge-methods-
         join: {},
     },
 })
-@Controller('academy-charge-methods-payments')
+@Controller()
 export class AcademyChargeMethodsPaymentsController implements CrudController<AcademyChargeMethodsPayments> {
     constructor(
         readonly service: AcademyChargeMethodsPaymentsService,
