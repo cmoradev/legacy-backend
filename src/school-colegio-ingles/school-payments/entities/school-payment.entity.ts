@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { SchoolChargeDetails } from '../../charges-school/school-charges-details/entities/school-charge-details.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
@@ -104,8 +104,8 @@ export class SchoolPayment extends Base {
     })
     statusPayment: StatusPayment;
 
-    @OneToOne(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
-    schoolChargeDetail: SchoolChargeDetails;
+    @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
+    schoolChargeDetail: SchoolChargeDetails[];
 
     @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
     @JoinColumn()

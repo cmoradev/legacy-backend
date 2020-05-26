@@ -10,6 +10,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import moment = require('moment');
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
+import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -33,22 +34,22 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
     }
 
-    async fetchFilteredReturns(query: {
-        status: number,
-        startDate: Date,
-        endDate: Date,
-        cashier?: number,
-        invoiceStatus?: number,
-    }) {
+    async fetchFilteredReturns(query: QuerySimpleReport) {
         const salesReturnsQB = this.salesReturnsRepository.createQueryBuilder('saleReturn');
         salesReturnsQB.leftJoinAndSelect('saleReturn.agent', 'agent');
         salesReturnsQB.leftJoinAndSelect('saleReturn.sale', 'sale');
+        salesReturnsQB.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
         salesReturnsQB.leftJoinAndSelect('saleReturn.details', 'details');
         salesReturnsQB.leftJoinAndSelect('details.saleDetail', 'saleDetail');
         salesReturnsQB.leftJoinAndSelect('saleDetail.miniStoreProduct', 'product');
         salesReturnsQB.leftJoinAndSelect('sale.student', 'student');
         salesReturnsQB.leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod');
         if (query) {
+
+            salesReturnsQB.where('storeBranchOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });
+
             salesReturnsQB.andWhere('saleReturn.createdAt BETWEEN :startDate AND :endDate',
                 {
                     startDate: moment(query.startDate).startOf('day').toDate(),
@@ -61,23 +62,24 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return salesReturnsQB.getMany();
     }
 
-    async fetchFilteredPayments(query: {
-        status: number,
-        startDate: Date,
-        endDate: Date,
-        cashier?: number,
-        invoiceStatus?: number,
-    }): Promise<MiniStoreSalePayment[]> {
+    async fetchFilteredPayments(query: QuerySimpleReport): Promise<MiniStoreSalePayment[]> {
         const paymentsQueryBuilder = this.repo.createQueryBuilder('payment');
+        paymentsQueryBuilder.leftJoinAndSelect('payment.storePaymentOffice', 'storePaymentOffice');
         paymentsQueryBuilder.leftJoinAndSelect('payment.agent', 'agent');
         paymentsQueryBuilder.leftJoinAndSelect('payment.miniStoreSale', 'sale');
         paymentsQueryBuilder.leftJoinAndSelect('sale.student', 'student');
         paymentsQueryBuilder.leftJoinAndSelect('payment.miniStoreSaleMethodPayments', 'paymentMethod');
         paymentsQueryBuilder.leftJoinAndSelect('paymentMethod.invoiceMethod', 'invoiceMethod');
         if (query) {
-            paymentsQueryBuilder.where('payment.paymentStatus= :paymentStatus', {
+
+            paymentsQueryBuilder.where('storePaymentOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });
+
+            paymentsQueryBuilder.andWhere('payment.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
             });
+
             paymentsQueryBuilder.andWhere('payment.createdAt BETWEEN :startDate AND :endDate',
                 {
                     startDate: moment(query.startDate).startOf('day').toDate(),
@@ -93,20 +95,19 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return await paymentsQueryBuilder.getMany();
     }
 
-    async fetchFilteredSales(query: {
-        status: number;
-        startDate: Date;
-        endDate: Date; cashier?: number
-        invoiceStatus?: number,
-    }): Promise<MiniStoreSale[]> {
+    async fetchFilteredSales(query: QuerySimpleReport): Promise<MiniStoreSale[]> {
         const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale');
+        salesQueryBuilder.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
         salesQueryBuilder.leftJoinAndSelect('sale.cashier', 'agent');
         salesQueryBuilder.leftJoinAndSelect('sale.student', 'student');
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSalePayments', 'payments');
         salesQueryBuilder.leftJoinAndSelect('sale.miniStoreSaleDetails', 'details');
         salesQueryBuilder.leftJoinAndSelect('details.miniStoreProduct', 'products');
         if (query) {
-            salesQueryBuilder.where('payments.paymentStatus= :paymentStatus', {
+            salesQueryBuilder.where('storeBranchOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });
+            salesQueryBuilder.andWhere('payments.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
             });
             if (query.invoiceStatus) {

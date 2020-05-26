@@ -27,7 +27,12 @@ export class MiniStoreSalesDetailsController implements CrudController<MiniStore
     }
 
     @Get('/top-trending-products-report')
-    public topTrendingProducts(@Query() query?: { startDate: Date, endDate: Date; onlyData?: boolean }) {
+    public topTrendingProducts(@Query() query?: {
+        startDate: Date,
+        endDate: Date;
+        branchOfficeId: number;
+        onlyData?: boolean
+    }) {
         return this.service.topTrendingProductsReport(query);
     }
 }

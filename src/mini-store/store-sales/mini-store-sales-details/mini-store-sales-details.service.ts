@@ -15,26 +15,36 @@ export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSa
         super(repo);
     }
 
-    public async topTrendingProductsReport(query: { startDate: Date; endDate: Date; onlyData?: boolean }) {
+    public async topTrendingProductsReport(query: {
+        startDate: Date;
+        endDate: Date;
+        branchOfficeId: number;
+        onlyData?: boolean
+    }) {
         const report = new TopTrendingProductsReport();
         const converter = new DataConverter();
         const startDate = moment(query && query.startDate || new Date()).startOf('day').toISOString(true);
         const endDate = moment(query && query.endDate || new Date()).endOf('day').toISOString(true);
 
-        const QBuilder = this.repo.createQueryBuilder('productDetails');
-        QBuilder.leftJoin('productDetails.miniStoreProduct', 'product');
-        QBuilder.leftJoin('productDetails.miniStoreClassification', 'productClassification');
-        QBuilder.where(`productDetails.createdAt >= :startDate AND productDetails.createdAt <= :endDate`, {
+        const QBuilder = this.repo.createQueryBuilder('saleDetails');
+        QBuilder.leftJoin('saleDetails.miniStoreSale', 'sale');
+        QBuilder.leftJoin('sale.storeBranchOffice', 'storeBranchOffice');
+        QBuilder.leftJoin('saleDetails.miniStoreProduct', 'product');
+        QBuilder.leftJoin('saleDetails.miniStoreClassification', 'productClassification');
+        QBuilder.where(`saleDetails.createdAt >= :startDate AND saleDetails.createdAt <= :endDate`, {
             startDate,
             endDate,
         });
-        QBuilder.groupBy('productDetails.idProduct');
-        QBuilder.addGroupBy('productDetails.idClassification');
+        QBuilder.andWhere('storeBranchOffice.id= :officeId', {
+            officeId: query.branchOfficeId,
+        });
+        QBuilder.groupBy('saleDetails.idProduct');
+        QBuilder.addGroupBy('saleDetails.idClassification');
         QBuilder.addGroupBy('product.id');
         QBuilder.addGroupBy('productClassification.id');
         QBuilder.select('productClassification.name', 'classificationName');
         QBuilder.addSelect('product.name', 'productName');
-        QBuilder.addSelect('SUM(productDetails.quantity)', 'quantity');
+        QBuilder.addSelect('SUM(saleDetails.quantity)', 'quantity');
         const products: TopTrendingProduct[] = await QBuilder.getRawMany();
         if (query && query.onlyData) {
             return products || [];

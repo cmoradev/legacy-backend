@@ -62,7 +62,8 @@ export class SchoolChargeDetails extends Base {
     })
     extraCharges: SchoolChargesDetailsExtraCharges[];
 
-    @OneToOne(type => SchoolPayment, schoolPayment => schoolPayment.schoolChargeDetail)
-    @JoinColumn()
+    @ManyToOne(type => SchoolPayment, schoolPayment => schoolPayment.schoolChargeDetail, {
+        cascade: ['insert'],
+    })
     schoolPlanPayment: SchoolPayment;
 }
