@@ -158,7 +158,7 @@ export class BranchOfficeSetting {
         nullable: false,
         name: 'id_modalidad',
         enum: TypeModule,
-        default: TypeModule.colegio,
+        default: 3,
     })
     typeModule: TypeModule;
 
