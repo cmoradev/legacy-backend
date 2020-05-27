@@ -93,13 +93,13 @@ export class AcademyInscriptionConcepts {
         nullable: true,
         name: 'fecha_pago',
     })
-    paidDay: Date;
+    payDate: Date;
 
     @Column('date', {
         nullable: true,
         name: 'fecha_pagado',
     })
-    paidMonth: Date;
+    paidDate: Date;
 
     @Column('decimal', {
         nullable: true,

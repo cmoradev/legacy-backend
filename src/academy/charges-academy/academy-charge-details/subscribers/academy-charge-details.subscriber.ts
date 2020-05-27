@@ -34,6 +34,7 @@ export class AcademyChargeDetailsSubscriber implements EntitySubscriberInterface
     async changeStatusConcept(id: number): Promise<AcademyInscriptionConcepts> {
         const insRepository = getRepository(AcademyInscriptionConcepts, ColegioDBNameConnection);
         const updateIns = await insRepository.findOne({ id });
+        updateIns.paidDate = new Date();
         updateIns.paymentStatus = PaymentStatus.PaiOut;
         return insRepository.save(updateIns);
     }
