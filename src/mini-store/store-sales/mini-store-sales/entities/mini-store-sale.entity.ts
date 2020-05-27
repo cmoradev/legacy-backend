@@ -1,13 +1,4 @@
-import {
-    AfterInsert,
-    Column,
-    Entity,
-    Generated,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -16,8 +7,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
-import { FixedAssetAssignmentStatus } from '../../../../fixed-assets-control/fixed-assets-assignments/entities/fixed-asset-assignment.entity';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
@@ -85,12 +75,12 @@ export class MiniStoreSale extends Base {
 
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'id_estado_pago',
     })
-    statusSale: StatusPayment;
+    statusSale: PaymentStatus;
 
     @Column('text', {
         nullable: true,

@@ -6,7 +6,7 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { Student } from '../../../students/entities/student.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 
 @Entity('school_charges')
@@ -50,12 +50,12 @@ export class SchoolCharge extends Base {
 
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'status',
     })
-    status: StatusPayment;
+    status: PaymentStatus;
 
     @ManyToOne(() => BranchOffice, (campus) => campus.campusSchoolCharge)
     schoolCampus: BranchOffice;

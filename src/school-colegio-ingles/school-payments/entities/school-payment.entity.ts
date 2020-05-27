@@ -3,8 +3,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { SchoolChargeDetails } from '../../charges-school/school-charges-details/entities/school-charge-details.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
-import { PaymentPlanConceptTypeEnum } from '../../payment-plan-concepts/enums/payment-plan-concept-type.enum';
-import { StatusPayment } from '../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 
 @Entity()
 export class SchoolPayment extends Base {
@@ -99,10 +98,10 @@ export class SchoolPayment extends Base {
 
     @Column('enum', {
         nullable: false,
-        default: StatusPayment.Debit,
-        enum: StatusPayment,
+        default: PaymentStatus.Debit,
+        enum: PaymentStatus,
     })
-    statusPayment: StatusPayment;
+    statusPayment: PaymentStatus;
 
     @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
     schoolChargeDetail: SchoolChargeDetails[];

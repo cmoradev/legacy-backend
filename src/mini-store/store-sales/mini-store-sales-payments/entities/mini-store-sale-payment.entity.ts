@@ -3,7 +3,7 @@ import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.e
 import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
@@ -53,12 +53,12 @@ export class MiniStoreSalePayment extends Base {
      */
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'id_estado_pago',
     })
-    idStatusPayment: StatusPayment;
+    idStatusPayment: PaymentStatus;
 
     @Column('int', {
         nullable: true,
@@ -122,12 +122,12 @@ export class MiniStoreSalePayment extends Base {
 
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'systemPaymentStatusId',
     })
-    paymentStatus: StatusPayment;
+    paymentStatus: PaymentStatus;
 
     /**
      * Relación de un pago con sus metodos de pago

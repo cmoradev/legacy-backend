@@ -6,7 +6,7 @@ import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.enti
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
-import { InscriptionStatus, StatusPayment } from '../../../common/enums/statusPayment';
+import { InscriptionStatus } from '../../../common/enums/PaymentStatus';
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription {

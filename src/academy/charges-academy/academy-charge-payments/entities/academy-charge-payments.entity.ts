@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyChargeMethodsPayments } from '../../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
@@ -70,12 +70,12 @@ export class AcademyChargePayments extends Base {
 
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'paymentStatusId',
     })
-    paymentStatus: StatusPayment;
+    paymentStatus: PaymentStatus;
 
     /**
      * Relación de un pago con sus metodos de pago
