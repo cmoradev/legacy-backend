@@ -12,7 +12,7 @@ import { AcademyChargeDetailsExtraChargeService } from './academy-charge-details
         join: {},
     },
 })
-@Controller('academy-charge-details-extra-charge')
+@Controller()
 export class AcademyChargeDetailsExtraChargeController implements CrudController<AcademyChargeDetailsExtraCharge> {
     constructor(
         readonly service: AcademyChargeDetailsExtraChargeService,

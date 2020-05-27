@@ -90,11 +90,8 @@ import { SchoolPaymentsModule } from './school-colegio-ingles/school-payments/sc
 import { PeriodsModule } from './school-colegio-ingles/periods/periods.module';
 import { ChargesSchoolModule } from './school-colegio-ingles/charges-school/charges-school.module';
 import { SchoolChargesModule } from './school-colegio-ingles/charges-school/school-charges/school-charges.module';
-import { SchoolChargesDetailsService } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.service';
 import { SchoolChargesDetailsModule } from './school-colegio-ingles/charges-school/school-charges-details/school-charges-details.module';
-import { SchoolChargesInvoice } from './school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceModule } from './school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.module';
-import { SchoolChargesMethodsPayments } from './school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { SchoolChargesMethodsPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-methods-payments/school-charges-methods-payments.module';
 import { SchoolChargesPaymentsModule } from './school-colegio-ingles/charges-school/school-charges-payments/school-charges-payments.module';
 import { StatsModule } from './system/stats/stats.module';
@@ -107,8 +104,8 @@ import { FoliosModule } from './system/folios/folios.module';
 import { ChargesAcademyModule } from './academy/charges-academy/charges-academy.module';
 import { AcademyChargeDetailsExtraChargeModule } from './academy/charges-academy/academy-charge-details-extra-charge/academy-charge-details-extra-charge.module';
 import { SchoolChargesDetailsExtraChargesModule } from './school-colegio-ingles/charges-school/school-charges-details-extra-charges/school-charges-details-extra-charges.module';
-import { AcademyChargePaymentsService } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.service';
 import { AcademyChargeMethodsPaymentsModule } from './academy/charges-academy/academy-charge-methods-payments/academy-charge-methods-payments.module';
+import { AcademyChargePaymentsModule } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.module';
 
 export const routes: Routes = [
     {
@@ -162,7 +159,7 @@ export const routes: Routes = [
                 path: '/charges',
                 module: ChargesSchoolModule,
                 children: [
-                    { path: '/', module: SchoolChargesModule },
+                    { path: '/charge', module: SchoolChargesModule },
                     { path: '/details', module: SchoolChargesDetailsModule },
                     { path: '/details-extra-charge', module: SchoolChargesDetailsExtraChargesModule },
                     { path: '/invoice', module: SchoolChargesInvoiceModule },
@@ -245,11 +242,11 @@ export const routes: Routes = [
                 path: '/charges',
                 module: ChargesAcademyModule,
                 children: [
-                    { path: '/', module: AcademyChargeModule },
+                    { path: '/charge', module: AcademyChargeModule },
                     { path: '/details', module: AcademyChargeDetailsModule },
                     { path: '/details-extra-charge', module: AcademyChargeDetailsExtraChargeModule },
                     { path: '/invoice', module: AcademyChargeInvoiceModule },
-                    { path: '/payments', module: AcademyChargePaymentsService },
+                    { path: '/payments', module: AcademyChargePaymentsModule },
                     { path: '/methods-payment', module: AcademyChargeMethodsPaymentsModule },
 
                     { path: '/discounts', module: AcademyChargeDiscountsModule },
