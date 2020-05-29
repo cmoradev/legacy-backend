@@ -8,17 +8,13 @@ import {
     PrimaryGeneratedColumn,
     VersionColumn,
 } from 'typeorm';
-import { AcademyActivity } from '../../../academy-activities/entities/academy-activity.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
-import { SchoolChargeDetails } from '../../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
-import { SchoolChargePayment } from '../../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
-import { SchoolChargesInvoice } from '../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Entity('ac_cobros')
@@ -65,12 +61,12 @@ export class AcademyCharge {
 
     @Column({
         type: 'enum',
-        enum: StatusPayment,
-        default: StatusPayment.Debit,
+        enum: PaymentStatus,
+        default: PaymentStatus.Debit,
         nullable: false,
         name: 'id_estado_pago',
     })
-    status: StatusPayment;
+    status: PaymentStatus;
 
     @Column('text', {
         nullable: true,

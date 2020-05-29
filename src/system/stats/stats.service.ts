@@ -3,11 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MiniStoreSale } from '../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { StatusPayment } from '../../common/enums/statusPayment';
+import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Student } from '../../school-colegio-ingles/students/entities/student.entity';
-import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { User } from '../users/entities/user.entity';
 import { add, sub } from 'exact-math';
 import { MonthRange } from './interfaces/month-range.interface';
@@ -86,8 +85,8 @@ export class StatsService {
             endDate,
         });
         salesQB.andWhere('(payments.paymentStatus = :paidOut OR payments.paymentStatus = :abonar)', {
-            paidOut: StatusPayment.PaiOut,
-            abonar: StatusPayment.Abonar,
+            paidOut: PaymentStatus.PaiOut,
+            abonar: PaymentStatus.Abonar,
         });
         return salesQB.getMany();
     }

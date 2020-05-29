@@ -1,25 +1,8 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    RelationId,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
-import { SystemPaymentStatus } from '../../../system/system-payments-status/entities/system-payment-status.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
-import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
-import { StatusPayment, PaymentStatus } from '../../../common/enums/statusPayment';
-import { SchoolChargeDetails } from '../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
+import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 
 @Entity('ac_inscrip_conceptos')
@@ -110,13 +93,13 @@ export class AcademyInscriptionConcepts {
         nullable: true,
         name: 'fecha_pago',
     })
-    paidDay: Date;
+    payDate: Date;
 
     @Column('date', {
         nullable: true,
         name: 'fecha_pagado',
     })
-    paidMonth: Date;
+    paidDate: Date;
 
     @Column('decimal', {
         nullable: true,

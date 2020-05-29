@@ -2,7 +2,7 @@ import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent,
 import { SchoolChargeDetails } from '../entities/school-charge-details.entity';
 import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
 import { SchoolPayment } from '../../../school-payments/entities/school-payment.entity';
-import { StatusPayment } from '../../../../common/enums/statusPayment';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 @EventSubscriber()
 export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<SchoolChargeDetails> {
@@ -34,7 +34,7 @@ export class SchoolChargeDetailsSubscriber implements EntitySubscriberInterface<
     async changeStatusSchoolPayment(id: number): Promise<SchoolPayment> {
         const insRepository = getRepository(SchoolPayment, ColegioDBNameConnection);
         const updateIns = await insRepository.findOne({ id });
-        updateIns.statusPayment = StatusPayment.PaiOut;
+        updateIns.statusPayment = PaymentStatus.PaiOut;
         return insRepository.save(updateIns);
     }
 }
