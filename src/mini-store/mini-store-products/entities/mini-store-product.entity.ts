@@ -9,6 +9,7 @@ import { MiniStorePriceList } from '../../mini-store-prices-lists/entities/mini-
 import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
 import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 
@@ -196,4 +197,11 @@ export class MiniStoreProduct {
             cascade: ['insert', 'update'],
         })
     miniStoreProductsProvider: MiniStoreProductsProviders[];
+
+    @ManyToOne(() => BranchOffice, (BranchOffice) => BranchOffice.id,
+        {
+            cascade: ['insert', 'update'],
+        })
+    BranchOffice: BranchOffice
+
 }

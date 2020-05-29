@@ -1,4 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BranchType } from '../../../invoice/interface/FolioInvoice.interface';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 import { Inscription } from '../../../school-colegio-ingles/inscriptions/entities/inscription.entity';
@@ -13,6 +14,7 @@ import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/e
 import { BranchOfficeSetting } from '../../branch-office-setting/entities/branch-office-setting.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 
 @Entity('planteles')
 export class BranchOffice {
@@ -50,6 +52,15 @@ export class BranchOffice {
         name: 'updated_at',
     })
     updatedAt: Date;
+
+    @Column({
+        type: 'enum',
+        nullable: false,
+        name: 'branch_type',
+        enum: BranchType,
+        default: 1,
+    })
+    BranchType: BranchType;
 
     @OneToMany(() => Level, (level) => level.campus)
     levels: Level[];
@@ -92,5 +103,8 @@ export class BranchOffice {
 
     @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
     campusAcademyCharge: AcademyCharge[];
+
+    @OneToMany(() => MiniStoreProduct, (MiniStoreProduct) => MiniStoreProduct.BranchOffice)
+    MiniStoreProduct: MiniStoreProduct[];  
 
 }

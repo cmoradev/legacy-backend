@@ -16,6 +16,7 @@ import { MiniStoreProductsService } from './mini-store-products.service';
             miniStoreSaleDetails: {},
             miniStoreProductsProvider: {},
             'miniStoreProductsProvider.provider': {},
+            BranchOffice: {}
         },
     },
 
