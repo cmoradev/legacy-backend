@@ -5,6 +5,8 @@ import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payme
 import { User } from '../../../../system/users/entities/user.entity';
 import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/school-charges-invoice.entity';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('school_charge_payments')
 export class SchoolChargePayment extends Base {
@@ -64,6 +66,12 @@ export class SchoolChargePayment extends Base {
         default: () => '1',
     })
     isIVA: boolean;
+
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeSchoolPayment)
+    schoolPaymentOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettSchoolPayment)
+    schoolPaymentOfficeSet: BranchOfficeSetting;
 
     @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesPayments)
     schoolCharge: SchoolCharge;

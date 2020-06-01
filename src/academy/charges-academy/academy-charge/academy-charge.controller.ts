@@ -11,6 +11,7 @@ import { AcademyChargeService } from './academy-charge.service';
         limit: 200,
         join: {
             chargeCampus: {},
+            academyBranchOfficeSet: {},
             chargeCycle: {},
             cashier: {},
             cashierCancellation: {},

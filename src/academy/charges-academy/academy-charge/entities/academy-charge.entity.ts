@@ -16,6 +16,7 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('ac_cobros')
 export class AcademyCharge {
@@ -123,6 +124,9 @@ export class AcademyCharge {
         referencedColumnName: 'id',
     })
     chargeCampus: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetAcademy)
+    academyBranchOfficeSet: BranchOfficeSetting;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcademyCharge)
     @JoinColumn({

@@ -15,6 +15,8 @@ import { BranchOfficeSetting } from '../../branch-office-setting/entities/branch
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
+import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 
 @Entity('planteles')
 export class BranchOffice {
@@ -92,19 +94,25 @@ export class BranchOffice {
     @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.inscriptionCampus)
     campusAcIns: AcademyInscription[];
 
-    @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
-    campusSchoolCharge: SchoolCharge[];
-
     @OneToMany(() => MiniStoreSale, (academyCharge) => academyCharge.storeBranchOffice)
     branchOfficeStore: MiniStoreSale[];
 
     @OneToMany(() => MiniStoreSalePayment, (academyCharge) => academyCharge.storePaymentOffice)
     branchOfficeStorePayment: MiniStoreSalePayment[];
 
+    @OneToMany(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.BranchOffice)
+    MiniStoreProduct: MiniStoreProduct[];
+
+    @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
+    campusSchoolCharge: SchoolCharge[];
+
+    @OneToMany(() => SchoolChargePayment, (school) => school.schoolPaymentOffice)
+    branchOfficeSchoolPayment: SchoolChargePayment[];
+
     @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
     campusAcademyCharge: AcademyCharge[];
 
-    @OneToMany(() => MiniStoreProduct, (MiniStoreProduct) => MiniStoreProduct.BranchOffice)
-    MiniStoreProduct: MiniStoreProduct[];  
+    @OneToMany(() => AcademyChargePayments, (school) => school.academyPaymentOffice)
+    branchOfficeAcademyPayment: AcademyChargePayments[];
 
 }

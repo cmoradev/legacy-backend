@@ -5,6 +5,8 @@ import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyChargeMethodsPayments } from '../../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('ac_charge_payments')
 export class AcademyChargePayments extends Base {
@@ -67,6 +69,12 @@ export class AcademyChargePayments extends Base {
 
     @ManyToOne(() => AcademyCharge, (academyCharge) => academyCharge.chargesPayments)
     academyCharge: AcademyCharge;
+
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeAcademyPayment)
+    academyPaymentOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyPayment)
+    academyPaymentOfficeSet: BranchOfficeSetting;
 
     @Column({
         type: 'enum',

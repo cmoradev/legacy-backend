@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
@@ -8,6 +8,7 @@ import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/scho
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {
@@ -59,6 +60,9 @@ export class SchoolCharge extends Base {
 
     @ManyToOne(() => BranchOffice, (campus) => campus.campusSchoolCharge)
     schoolCampus: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetSchool)
+    schoolBranchOfficeSet: BranchOfficeSetting;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleSchoolCharge)
     schoolCycle: Cycle;
