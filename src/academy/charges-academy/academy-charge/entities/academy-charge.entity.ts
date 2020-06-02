@@ -17,16 +17,10 @@ import { AcademyChargeDetails } from '../../academy-charge-details/entities/acad
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('ac_cobros')
-export class AcademyCharge {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
-
+export class AcademyCharge extends Base {
     @Column('varchar', {
         nullable: false,
         length: 40,
@@ -171,29 +165,4 @@ export class AcademyCharge {
             cascade: ['insert'],
         })
     chargesInvoice: AcademyChargeInvoice[];
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
-
-    @VersionColumn({
-        default: 0,
-        nullable: false,
-    })
-    version: number;
-
-    @Column()
-    @Generated('uuid')
-    uuid: string;
 }

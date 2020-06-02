@@ -152,12 +152,18 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     async changeTime() {
         const payments = await this.repo.find({
             relations: ['academyCharge'],
+            order: {
+                id: 'ASC',
+            },
         });
 
         for (const payment of payments) {
             payment.createdAt = payment.academyCharge.createdAt;
             payment.updatedAt = payment.academyCharge.updatedAt;
             await this.repo.save(payment);
+            console.log('id pago: ' + payment.id);
+            console.log(payment.createdAt);
+            console.log(payment.updatedAt);
             console.log(payment.academyCharge.folio);
         }
 
