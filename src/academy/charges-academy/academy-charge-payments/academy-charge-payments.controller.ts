@@ -80,7 +80,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
 
     @Get('/time-change')
     async timeChange(@Req() request, @Res() response) {
-        await this.service.changeTime();
+        // await this.service.changeTime();
         response.send({ msj: 'finalizado' });
     }
 }
