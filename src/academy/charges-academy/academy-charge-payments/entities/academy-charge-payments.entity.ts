@@ -94,7 +94,7 @@ export class AcademyChargePayments extends Base {
     })
     methodsPayments: AcademyChargeMethodsPayments[];
 
-    @ManyToOne(() => User, (user) => user.schoolChargesPayments)
+    @ManyToOne(() => User, (user) => user.academyChargesPayments)
     cashierCharge: User;
 
     @ManyToOne(() => User, (user) => user.chargesPaymentsCancellation)
