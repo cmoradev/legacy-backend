@@ -155,15 +155,10 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         });
 
         for (const payment of payments) {
-            if (payment.academyCharge) {
-                payment.quantity = round(add(payment.quantity, payment.change, { returnString: true }), -2, {
-                    returnString: true,
-                    trim: false,
-                });
-                payment.createdAt = payment.academyCharge.createdAt;
-                payment.updatedAt = payment.academyCharge.updatedAt;
-                await this.repo.save(payment);
-            }
+            payment.createdAt = payment.academyCharge.createdAt;
+            payment.updatedAt = payment.academyCharge.updatedAt;
+            await this.repo.save(payment);
+            console.log(payment.academyCharge.folio);
         }
 
     }
