@@ -61,7 +61,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         };
 
         if (query.onlyFile) {
-             result.file = await this.service.simpleReport(payments, charges, { base64: true });
+            result.file = await this.service.simpleReport(payments, charges, { base64: true });
         } else {
             const cashiers = await this.service.getUserCasher();
             const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
@@ -76,5 +76,11 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         }
 
         response.send(result);
+    }
+
+    @Get('/time-change')
+    async timeChange(@Req() request, @Res() response) {
+        await this.service.changeTime();
+        response.send({ msj: 'finalizado' });
     }
 }

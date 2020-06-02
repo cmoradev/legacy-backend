@@ -11,6 +11,7 @@ import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/
 import moment = require('moment');
 import { SimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/reports/simple.report';
 import { SimpleReportAcademy } from './reports/simple.report';
+import { add, round, sub } from 'exact-math';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -148,4 +149,22 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         }
     }
 
+    async changeTime() {
+        const payments = await this.repo.find({
+            relations: ['academyCharge'],
+        });
+
+        for (const payment of payments) {
+            if (payment.academyCharge) {
+                payment.quantity = round(add(payment.quantity, payment.change, { returnString: true }), -2, {
+                    returnString: true,
+                    trim: false,
+                });
+                payment.createdAt = payment.academyCharge.createdAt;
+                payment.updatedAt = payment.academyCharge.updatedAt;
+                await this.repo.save(payment);
+            }
+        }
+
+    }
 }
