@@ -15,7 +15,7 @@ export class TieVentasTriggerStockReturn1590588072149 implements MigrationInterf
         DECLARE products_details_cursor CURSOR FOR SELECT miniStoreProductId, cantidad FROM tie_venta_detalle WHERE miniStoreSaleId = NEW.id;
         DECLARE CONTINUE HANDLER FOR NOT FOUND SET done := TRUE; 
         
-        IF NEW.id_estado_pago = 1 THEN
+        IF NEW.id_estado_pago = 4 THEN
         
             OPEN products_details_cursor;
                 read_loop: LOOP
@@ -27,8 +27,8 @@ export class TieVentasTriggerStockReturn1590588072149 implements MigrationInterf
                  END IF;
                  
                  SET @currentStock = (SELECT stock FROM tie_productos WHERE id = _id_producto);
-                SET @newStock = (currentStock + _cantidad);	
-                UPDATE tie_productos SET stock = newStock WHERE id = _id_producto;
+                SET @newStock = (@currentStock + _cantidad);	
+                UPDATE tie_productos SET stock = @newStock WHERE id = _id_producto;
     
             END LOOP;
         END IF;			 

@@ -198,10 +198,10 @@ export class MiniStoreProduct {
         })
     miniStoreProductsProvider: MiniStoreProductsProviders[];
 
-    @ManyToOne(() => BranchOffice, (BranchOffice) => BranchOffice.id,
+    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
         {
             cascade: ['insert', 'update'],
         })
-    BranchOffice: BranchOffice
+    BranchOffice: BranchOffice;
 
 }

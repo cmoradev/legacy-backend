@@ -10,7 +10,7 @@ export class TieVentasDetalleTriggerStockMinus1590588028595 implements Migration
         FOR EACH ROW BEGIN
         
             SET @currentStock = (SELECT stock FROM tie_productos WHERE id = NEW.id_producto);
-            SET @newStock = (currentStock - NEW.cantidad);
+            SET @newStock = (@currentStock - NEW.cantidad);
             
             UPDATE tie_productos SET stock = @newStock WHERE id = NEW.id_producto;    
         END
