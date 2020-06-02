@@ -5,13 +5,12 @@ import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import moment = require('moment');
 import { User } from '../../../system/users/entities/user.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
-import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
+import moment = require('moment');
+import { SimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/reports/simple.report';
+import { SimpleReportAcademy } from './reports/simple.report';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -19,6 +18,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         @InjectRepository(AcademyChargePayments, ColegioDBNameConnection) readonly repo: Repository<AcademyChargePayments>,
         @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
+        @InjectRepository(AcademyCharge, ColegioDBNameConnection) readonly academyRepository: Repository<AcademyCharge>,
     ) {
         super(repo);
     }
@@ -57,6 +57,39 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         return await paymentsQueryBuilder.getMany();
     }
 
+    async fetchFilteredSales(query: QuerySimpleReport): Promise<AcademyCharge[]> {
+        const salesQueryBuilder = this.academyRepository.createQueryBuilder('charge');
+        salesQueryBuilder.leftJoinAndSelect('charge.chargeCampus', 'chargeCampus');
+        salesQueryBuilder.leftJoinAndSelect('charge.cashier', 'cashier');
+        salesQueryBuilder.leftJoinAndSelect('charge.schoolStudent', 'schoolStudent');
+        salesQueryBuilder.leftJoinAndSelect('charge.chargesPayments', 'chargesPayments');
+        salesQueryBuilder.leftJoinAndSelect('charge.chargesDetails', 'chargesDetails');
+        salesQueryBuilder.leftJoinAndSelect('chargesDetails.academyInscriptionConcept', 'academyInscriptionConcept');
+        if (query) {
+            /*salesQueryBuilder.where('storeBranchOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });*/
+            salesQueryBuilder.andWhere('chargesPayments.paymentStatus= :paymentStatus', {
+                paymentStatus: query.status,
+            });
+            /*if (query.invoiceStatus) {
+                salesQueryBuilder.andWhere('payments.stamping= :invoiceStatus', {
+                        invoiceStatus: query.invoiceStatus,
+                    },
+                );
+            }*/
+            salesQueryBuilder.andWhere('chargesPayments.createdAt BETWEEN :startDate AND :endDate',
+                {
+                    startDate: moment(query.startDate).startOf('day').toDate(),
+                    endDate: moment(query.endDate).endOf('day').toDate(),
+                });
+            if (query.cashier) {
+                salesQueryBuilder.andWhere('cashier.id = :agentID', { agentID: query.cashier });
+            }
+        }
+        return await salesQueryBuilder.getMany();
+    }
+
     public async getUserCasher(): Promise<User[]> {
         const cashiersAndSales = await this.userRepository.find({
             relations: ['salePayments', 'department'],
@@ -83,10 +116,36 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         });
 
         const cashiers = cashiersAndSales.filter(cashier => {
-            if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.salePayments.length > 0) {
+            if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.academyChargesPayments.length > 0) {
                 return cashier;
             }
         });
+
+        const workbook = new SimpleReportAcademy().generate({
+            payments,
+            cashiers,
+            paymentMethods,
+            sales,
+        });
+
+        try {
+            const fileName = (+new Date()).toString() + '.xlsx';
+            if (options && options.base64) {
+                const result = await workbook.xlsx.writeBuffer({
+                        filename: (+new Date()).toString() + '.xlsx',
+                    },
+                );
+                const buffer = Buffer.from(result);
+                const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+                return b64Encoding + buffer.toString('base64');
+
+            } else {
+                await workbook.xlsx.writeFile('./xls-imports/' + fileName);
+                return fileName;
+            }
+        } catch (e) {
+            return e;
+        }
     }
 
 }

@@ -49,6 +49,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
     @Get('/simple-report')
     async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
         const payments = await this.service.fetchFilteredPayments(query);
+        const charges = await this.service.fetchFilteredSales(query);
         const result = {
             payments: {
                 matriz: [],
@@ -60,7 +61,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         };
 
         if (query.onlyFile) {
-            // result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
+             result.file = await this.service.simpleReport(payments, charges, { base64: true });
         } else {
             const cashiers = await this.service.getUserCasher();
             const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({

@@ -6,7 +6,7 @@ import { TypeStudent } from '../../../../school-colegio-ingles/students/interfac
 import { AcademyChargePayments } from '../entities/academy-charge-payments.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 
-export class SimpleReport {
+export class SimpleReportAcademy {
     public generate(data: {
         payments: AcademyChargePayments[],
         cashiers: User[],
@@ -51,7 +51,10 @@ export class SimpleReport {
     }
 
     public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data): Excel.Worksheet {
-        const { cashiers, payments, paymentMethods } = data;
+        const cashiers: User[] = data.cashiers;
+        const payments: AcademyChargePayments[] = data.payments;
+        const paymentMethods: InvoiceMethodPayment[] = data.paymentMethods;
+
         paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
         paymentsSheet.mergeCells('C3:D3');
@@ -120,15 +123,15 @@ export class SimpleReport {
         const resume: ResumeType[] = [];
 
         paymentMethods.forEach(paymentMethod => {
-            const paymentsByMethod = payments.filter(payment => payment.miniStoreSaleMethodPayments
-                .some(method => method.invoiceMethod.id === paymentMethod.id));
+            const paymentsByMethod = payments.filter(payment => payment.methodsPayments
+                .some(method => method.invoiceMethodPayment.id === paymentMethod.id));
             paymentsByMethod.forEach(payment => {
-                payment.miniStoreSaleMethodPayments.filter(method => method.invoiceMethod.id === paymentMethod.id)
+                payment.methodsPayments.filter(method => method.invoiceMethodPayment.id === paymentMethod.id)
                     .forEach(filteredMethod => {
                         const total = filteredMethod.quantity - (payment.change || 0);
                         resume.push({
                             paymentMethod,
-                            cashier: payment.agent,
+                            cashier: payment.cashierCharge,
                             quantity: filteredMethod.quantity,
                             change: payment.change || 0,
                             total,
@@ -225,11 +228,11 @@ export class SimpleReport {
         const paymentsDetails = [];
         let startRow = 15;
         payments.forEach(payment => {
-            if (payment.miniStoreSale) {
-                const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
+            if (payment.academyCharge) {
+                const { name, lastNameFather, lastNameMother } = payment.academyCharge.schoolStudent;
                 const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
                 let studentType = '';
-                switch (payment.miniStoreSale.student.typeStudent) {
+                switch (payment.academyCharge.schoolStudent.typeStudent) {
                     case TypeStudent.externo:
                         studentType = 'Externo';
                         break;
@@ -240,28 +243,28 @@ export class SimpleReport {
                         studentType = 'Prospecto';
                         break;
                 }
-                const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
+                const nextRowToMerge = startRow + (payment.methodsPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
                         paymentsSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                     });
                     startRow = nextRowToMerge;
                 }
-                payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
+                payment.methodsPayments.forEach(paymentMethod => {
                     const paymentItem = [];
-                    const totalPaymentsAmount = payment.miniStoreSaleMethodPayments.reduce((previousValue, currentValue) => {
+                    const totalPaymentsAmount = payment.methodsPayments.reduce((previousValue, currentValue) => {
                         return previousValue + currentValue.quantity;
                     }, 0);
                     paymentItem.push(payment.createdAt || '');
-                    paymentItem.push(payment.agent.name);
+                    paymentItem.push(payment.cashierCharge.name);
                     paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
                     paymentItem.push(payment.folio);
-                    paymentItem.push(payment.miniStoreSale.folio);
+                    paymentItem.push(payment.academyCharge.folio);
                     paymentItem.push(studentType);
-                    paymentItem.push(payment.miniStoreSale.student.matricula);
+                    paymentItem.push(payment.academyCharge.schoolStudent.matricula);
                     paymentItem.push(fullName);
-                    paymentItem.push(payment.miniStoreSale.observations || '');
-                    paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
+                    paymentItem.push(payment.academyCharge.observations || '');
+                    paymentItem.push(paymentMethod?.invoiceMethodPayment?.name || '');
                     paymentItem.push(paymentMethod.quantity);
                     paymentItem.push(payment.change);
                     paymentItem.push(totalPaymentsAmount - payment.change);
@@ -367,12 +370,12 @@ export class SimpleReport {
                 startRow = nextRowToMerge;
             }
             const totalSale = sale.chargesDetails.reduce((previousValue, currentValue) => {
-                const productPrice = currentValue.academyInscriptionConcept.isIva ?  +currentValue.price * 1.16 : +currentValue.price;
+                const productPrice = sale.isIva ? +currentValue.price * 1.16 : +currentValue.price;
                 return previousValue + (productPrice * parseFloat(currentValue.quantity.toString()));
             }, 0);
             sale.chargesDetails.forEach(detail => {
                 const salesRowItem: any[] = [];
-                const productPrice =  detail.academyInscriptionConcept.isIva ? +detail.price * 1.16 : +detail.price;
+                const productPrice = sale.isIva ? +detail.price * 1.16 : +detail.price;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
                 salesRowItem.push(studentType);
@@ -383,7 +386,7 @@ export class SimpleReport {
                 salesRowItem.push(detail.concept);
                 salesRowItem.push(productPrice);
                 salesRowItem.push(totalSale);
-                salesRowItem.push(detail.academyInscriptionConcept.isIva ? 'Si' : 'No');
+                salesRowItem.push(sale.isIva ? 'Si' : 'No');
                 salesRowItem.push(sale.observations ? sale.observations : '');
                 salesRows.push(salesRowItem);
             });

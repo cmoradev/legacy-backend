@@ -7,6 +7,8 @@ import { AcademyChargePayments } from './entities/academy-charge-payments.entity
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
+import { AcademyChargeModule } from '../academy-charge/academy-charge.module';
+import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 
 @Module({
     imports: [
@@ -15,8 +17,10 @@ import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-p
                 AcademyChargePayments,
                 User,
                 InvoiceMethodPayment,
+                AcademyCharge,
             ], ColegioDBNameConnection),
         InvoiceMethodsPaymentsModule,
+        AcademyChargeModule,
     ],
     controllers: [AcademyChargePaymentsController],
     providers: [AcademyChargePaymentsService],
