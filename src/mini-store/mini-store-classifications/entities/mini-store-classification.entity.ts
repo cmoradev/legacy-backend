@@ -1,11 +1,12 @@
 import {
     Column,
-    Entity,
+    Entity, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
 import {MiniStoreSaleDetail} from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_clasificaciones')
 export class MiniStoreClassification {
@@ -51,5 +52,11 @@ export class MiniStoreClassification {
 
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreClassification)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
+
+    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
+        {
+            cascade: ['insert', 'update'],
+        })
+    BranchOffice: BranchOffice;
 
 }
