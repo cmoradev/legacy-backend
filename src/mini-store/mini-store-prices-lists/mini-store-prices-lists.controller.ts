@@ -10,6 +10,7 @@ import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
     query: {
         join: {
             storeProducts: { },
+            BranchOfficeLisId: { }
         },
     },
 })

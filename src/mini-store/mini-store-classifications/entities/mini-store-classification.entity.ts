@@ -57,6 +57,6 @@ export class MiniStoreClassification {
         {
             cascade: ['insert', 'update'],
         })
-    BranchOffice: BranchOffice;
+    BranchOfficeID: BranchOffice;
 
 }

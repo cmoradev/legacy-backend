@@ -11,7 +11,7 @@ import { MiniStoreClassificationsService } from './mini-store-classifications.se
         join: {
             storeProducts: {},
             miniStoreSaleDetails: {},
-            BranchOffice: {},
+            BranchOffice: { alias: 'branchId' },
         },
     },
 })
