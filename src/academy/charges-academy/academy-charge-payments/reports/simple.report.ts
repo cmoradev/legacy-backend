@@ -5,6 +5,8 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { AcademyChargePayments } from '../entities/academy-charge-payments.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
+import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/school-academy-point-of-sale';
+import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 
 export class SimpleReportAcademy {
     public generate(data: {
@@ -35,7 +37,7 @@ export class SimpleReportAcademy {
                     },
                 },
         });
-        const salesSheet = workbook.addWorksheet('Ventas', {
+        const salesSheet = workbook.addWorksheet('Cobros', {
             properties:
                 {
                     tabColor: {
@@ -55,7 +57,7 @@ export class SimpleReportAcademy {
         const payments: AcademyChargePayments[] = data.payments;
         const paymentMethods: InvoiceMethodPayment[] = data.paymentMethods;
 
-        paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
+        // paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
         paymentsSheet.mergeCells('C3:D3');
         paymentsSheet.mergeCells('C4:D4');
@@ -75,7 +77,7 @@ export class SimpleReportAcademy {
 
         bussinessNameCell.value = 'COLEGIO INGLÉS QUINTANA ROO, S.C ';
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
-        dateRangeCell.value = 'RANGO CONSULTADO: 2020-01-10 - 2020-01-10';
+        dateRangeCell.value = 'RANGO CONSULTADO: []';
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
 
         ['D2', 'D3', 'D4', 'D5'].map(key => {
@@ -243,13 +245,13 @@ export class SimpleReportAcademy {
                         studentType = 'Prospecto';
                         break;
                 }
-                const nextRowToMerge = startRow + (payment.methodsPayments.length) - 1;
+                /*const nextRowToMerge = startRow + (payment.methodsPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
                         paymentsSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                     });
                     startRow = nextRowToMerge;
-                }
+                }*/
                 payment.methodsPayments.forEach(paymentMethod => {
                     const paymentItem = [];
                     const totalPaymentsAmount = payment.methodsPayments.reduce((previousValue, currentValue) => {
@@ -362,13 +364,13 @@ export class SimpleReportAcademy {
                     break;
             }
 
-            const nextRowToMerge = startRow + (sale.chargesDetails.length) - 1;
+            /*const nextRowToMerge = startRow + (sale.chargesDetails.length) - 1;
             if (nextRowToMerge > startRow) {
                 ['B', 'C', 'D', 'E', 'F', 'G', 'K', 'L', 'M'].forEach(column => {
                     salesSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                 });
                 startRow = nextRowToMerge;
-            }
+            }*/
             const totalSale = sale.chargesDetails.reduce((previousValue, currentValue) => {
                 const productPrice = sale.isIva ? +currentValue.price * 1.16 : +currentValue.price;
                 return previousValue + (productPrice * parseFloat(currentValue.quantity.toString()));
@@ -376,6 +378,11 @@ export class SimpleReportAcademy {
             sale.chargesDetails.forEach(detail => {
                 const salesRowItem: any[] = [];
                 const productPrice = sale.isIva ? +detail.price * 1.16 : +detail.price;
+                // tslint:disable-next-line:no-unused-expression
+                const recargos = productPrice - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos);
+                const becas = productPrice - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas);
+                const descuentos = productPrice - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos);
+                const totaldetail = productPrice + recargos - becas - descuentos;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
                 salesRowItem.push(studentType);
@@ -385,7 +392,10 @@ export class SimpleReportAcademy {
                 salesRowItem.push(detail.quantity);
                 salesRowItem.push(detail.concept);
                 salesRowItem.push(productPrice);
-                salesRowItem.push(totalSale);
+                salesRowItem.push(descuentos);
+                salesRowItem.push(becas);
+                salesRowItem.push(recargos);
+                salesRowItem.push(totaldetail);
                 salesRowItem.push(sale.isIva ? 'Si' : 'No');
                 salesRowItem.push(sale.observations ? sale.observations : '');
                 salesRows.push(salesRowItem);
@@ -407,7 +417,10 @@ export class SimpleReportAcademy {
                 { name: 'Cantidad' },
                 { name: 'Productos' },
                 { name: 'Precio', totalsRowLabel: 'Totales' },
-                { name: 'Total', totalsRowFunction: 'sum' },
+                { name: 'Descuentos' },
+                { name: 'Becas' },
+                { name: 'recargos' },
+                { name: 'Total' },
                 { name: 'Incluye I.V.A' },
                 { name: 'Observación' },
             ],
@@ -421,7 +434,7 @@ export class SimpleReportAcademy {
             left: { style: 'thin' },
         };
         salesSheet.getRow(2).eachCell((cell, colNumber) => {
-            if (colNumber > 1 && colNumber < 14) {
+            if (colNumber > 1 && colNumber < 17) {
                 salesSheet.getColumn(colNumber).width = 25;
                 cell.style = {
                     border: borders as Partial<Borders>,
@@ -451,13 +464,8 @@ export class SimpleReportAcademy {
                 });
             }
         });
-        for (let row = 3; row <= salesRows.length + 3; row++) {
-            salesSheet.getRow(row).eachCell((cell, colNumber) => {
-                if (colNumber > 9 && colNumber < 12) {
-                    cell.numFmt = '"$"#,##0.00;[Red]\-"$"#,##0.00';
-                }
-            });
-        }
+
+
         return salesSheet;
     }
 }

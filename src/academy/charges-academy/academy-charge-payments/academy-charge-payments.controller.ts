@@ -2,16 +2,7 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import { Column, ManyToOne, OneToMany } from 'typeorm';
-import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { PaymentStatus } from '../../../common/enums/PaymentStatus';
-import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
-import { User } from '../../../system/users/entities/user.entity';
-import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { convertPaymentsReport } from '../../../mini-store/store-sales/mini-store-sales-payments/reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { convertPaymentsReportAc } from './reports/payments.util';
 
@@ -24,6 +15,7 @@ import { convertPaymentsReportAc } from './reports/payments.util';
         join: {
             academyCharge: {},
             'academyCharge.chargesDetails': {},
+            'academyCharge.schoolStudent': {},
             'academyCharge.chargesDetails.extraCharges': {},
             academyPaymentOffice: {},
             academyPaymentOfficeSet: {},

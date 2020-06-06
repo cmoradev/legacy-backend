@@ -65,6 +65,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         salesQueryBuilder.leftJoinAndSelect('charge.schoolStudent', 'schoolStudent');
         salesQueryBuilder.leftJoinAndSelect('charge.chargesPayments', 'chargesPayments');
         salesQueryBuilder.leftJoinAndSelect('charge.chargesDetails', 'chargesDetails');
+        salesQueryBuilder.leftJoinAndSelect('chargesDetails.extraCharges', 'extraCharges');
         salesQueryBuilder.leftJoinAndSelect('chargesDetails.academyInscriptionConcept', 'academyInscriptionConcept');
         if (query) {
             /*salesQueryBuilder.where('storeBranchOffice.id= :officeId', {
