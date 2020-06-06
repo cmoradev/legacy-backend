@@ -1,10 +1,11 @@
 import {
     Column,
-    Entity,
+    Entity, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_listaprecios')
 export class MiniStorePriceList {
@@ -53,5 +54,11 @@ export class MiniStorePriceList {
 
     @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storePriceList)
     storeProducts: MiniStoreProduct[];
+
+    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
+        {
+            cascade: ['insert', 'update'],
+        })
+    BranchOfficeLisId: BranchOffice;
 
 }
