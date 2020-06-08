@@ -7,15 +7,13 @@ import { User } from '../../../system/users/entities/user.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { InscriptionStatus } from '../../../common/enums/PaymentStatus';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
+import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
+import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
 
 @Entity('ac_inscripciones_alumnos')
-export class AcademyInscription {
-    // agregue realciones aun falta la migracion
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class AcademyInscription extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -23,27 +21,6 @@ export class AcademyInscription {
         name: 'clave_inscripcion',
     })
     keyInscription: string;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_nivel',
-    })
-    idNivel: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_grado',
-    })
-    idGrado: number;
-
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_grupo',
-    })
-    idGrupo: number;
 
     @Column('varchar', {
         nullable: true,
@@ -106,19 +83,14 @@ export class AcademyInscription {
     })
     isActive: boolean;
 
-    @Column('timestamp', {
+    @Column({
+        type: 'enum',
+        enum: InscriptionStatus,
+        default: InscriptionStatus.Registered,
         nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
+        name: 'id_estado_inscripcion',
     })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+    inscriptionStatus: InscriptionStatus;
 
     @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
     @JoinColumn({
@@ -133,6 +105,27 @@ export class AcademyInscription {
         referencedColumnName: 'id',
     })
     student: Student;
+
+    @ManyToOne(() => Level, (level) => level.levelAcademyInscription)
+    @JoinColumn({
+        name: 'id_nivel',
+        referencedColumnName: 'id',
+    })
+    schoolLevel: Level;
+
+    @ManyToOne(() => Grade, (grade) => grade.gradeAcademyInscription)
+    @JoinColumn({
+        name: 'id_grado',
+        referencedColumnName: 'id',
+    })
+    schoolGrade: Grade;
+
+    @ManyToOne(() => Group, (group) => group.groupAcademyInscription)
+    @JoinColumn({
+        name: 'id_grupo',
+        referencedColumnName: 'id',
+    })
+    schoolGroup: Group;
 
     @ManyToOne(() => BranchOffice, (campus) => campus.campusAcIns)
     @JoinColumn({
@@ -161,15 +154,6 @@ export class AcademyInscription {
         referencedColumnName: 'id',
     })
     unEnrollerAgent: User | null;
-
-    @Column({
-        type: 'enum',
-        enum: InscriptionStatus,
-        default: InscriptionStatus.Registered,
-        nullable: false,
-        name: 'id_estado_inscripcion',
-    })
-    inscriptionStatus: InscriptionStatus;
 
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
     @JoinColumn({

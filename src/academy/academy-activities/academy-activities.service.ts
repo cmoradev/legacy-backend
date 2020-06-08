@@ -57,7 +57,16 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
             });
         }*/
 
-        const insccripciones = this.repoAcademyInscription.createQueryBuilder('inscripciones');
+        const insccripciones = this.repoAcademyInscription.createQueryBuilder('inscripcion')
+            .leftJoinAndSelect('inscripcion.academyGroup', 'academyGroup')
+            .leftJoinAndSelect('inscripcion.student', 'student')
+            .leftJoinAndSelect('inscripcion.concepts', 'concepts')
+            .where('inscripcion.inscriptionStatus = :status', {
+                status: 2,
+            });
+        /*insccripciones.where('academyGroup.id = :id', {
+            id: 2,
+        });*/
         return insccripciones.getMany();
 
     }

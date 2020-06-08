@@ -3,6 +3,7 @@ import {Grade} from '../../grades/entities/grade.entity';
 import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
+import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 
 @Entity('grupos' )
 export class Group {
@@ -70,4 +71,7 @@ export class Group {
 
     @OneToMany(() => Classroom, (classroom) => classroom.group )
     groupClassrooms: Classroom[];
+
+    @OneToMany(() => AcademyInscription, (acInscription) => acInscription.schoolGroup)
+    groupAcademyInscription: AcademyInscription[];
 }

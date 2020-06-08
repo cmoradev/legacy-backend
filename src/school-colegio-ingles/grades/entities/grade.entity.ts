@@ -6,6 +6,7 @@ import { AssignmentSubject } from '../../assignments-subjects/entities/assignmen
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
+import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 
 @Entity('grados')
 export class Grade {
@@ -67,6 +68,10 @@ export class Grade {
 
     @OneToMany(() => Inscription, (inscription) => inscription.inscripGrade)
     gradeInscriptions: Inscription[];
+
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.grade)
     assignmentsSubjects: AssignmentSubject[];
+
+    @OneToMany(() => AcademyInscription, (acInscription) => acInscription.schoolGrade)
+    gradeAcademyInscription: AcademyInscription[];
 }
