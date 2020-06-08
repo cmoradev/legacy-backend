@@ -1,17 +1,17 @@
 import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  RelationId,
+    BaseEntity,
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    PrimaryGeneratedColumn,
+    RelationId,
 } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Shift } from '../../../system/shift/entities/shift.entity';
@@ -22,96 +22,96 @@ import { AcademyInscription } from '../../academy-inscription/entities/academy-i
 @Entity('ac_grupos')
 export class AcademyActivitiesGroup {
 
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+    @PrimaryGeneratedColumn({
+        type: 'int',
+        name: 'id',
+    })
+    id: number;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 50,
-    name: 'nombre',
-  })
-  name: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 50,
+        name: 'nombre',
+    })
+    name: string;
 
-  @Column('varchar', {
-    nullable: false,
-    length: 250,
-    name: 'horario',
-  })
-  schedule: string;
+    @Column('varchar', {
+        nullable: false,
+        length: 250,
+        name: 'horario',
+    })
+    schedule: string;
 
-  @Column('int', {
-    nullable: true,
-    default: () => '\'0\'',
-    name: 'id_maestro',
-  })
-  idMaestro: number | null;
+    @Column('int', {
+        nullable: true,
+        default: () => '\'0\'',
+        name: 'id_maestro',
+    })
+    idMaestro: number | null;
 
-  @ManyToOne(type => Shift, shift => shift.shiftActivityGroups)
-  @JoinColumn({
-    name: 'id_turno',
-    referencedColumnName: 'id',
-  })
-  academyGroupShift: Shift;
+    @Column('int', {
+        nullable: true,
+        name: 'min',
+    })
+    min: number | null;
 
-  @ManyToOne(type => AcademyActivity, activity => activity.academyActivityGroups)
-  @JoinColumn({
-    name: 'id_academia',
-    referencedColumnName: 'id',
-  })
-  academyGroupActivity: AcademyActivity;
+    @Column('int', {
+        nullable: false,
+        default: () => '\'20\'',
+        name: 'max',
+    })
+    max: number;
 
-  @Column('int', {
-    nullable: true,
-    name: 'min',
-  })
-  min: number | null;
+    @Column('int', {
+        nullable: false,
+        default: () => '\'0\'',
+        name: 'activo',
+    })
+    isActive: number;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'20\'',
-    name: 'max',
-  })
-  max: number;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'created_at',
+    })
+    createdAt: Date;
 
-  @ManyToOne(type => Cycle, cycle => cycle.cycleAcademyGroups)
-  @JoinColumn({
-    name: 'id_ciclo',
-    referencedColumnName: 'id',
-  })
-  academyGroupCycle: Cycle;
+    @Column('timestamp', {
+        nullable: false,
+        default: () => 'CURRENT_TIMESTAMP',
+        name: 'updated_at',
+    })
+    updatedAt: Date;
 
-  @ManyToOne(type => BranchOffice, campus => campus.campusAcademyGroups)
-  @JoinColumn({
-    name: 'id_plantel',
-    referencedColumnName: 'id',
-  })
-  academyGroupCampus: BranchOffice;
+    @ManyToOne(type => AcademyActivity, activity => activity.academyActivityGroups)
+    @JoinColumn({
+        name: 'id_academia',
+        referencedColumnName: 'id',
+    })
+    academyGroupActivity: AcademyActivity;
 
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'activo',
-  })
-  isActive: number;
+    @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.academyGroup)
+    acGroupAcInsc: AcademyInscription[];
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
+    @ManyToOne(type => Cycle, cycle => cycle.cycleAcademyGroups)
+    @JoinColumn({
+        name: 'id_ciclo',
+        referencedColumnName: 'id',
+    })
+    academyGroupCycle: Cycle;
 
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
+    @ManyToOne(type => BranchOffice, campus => campus.campusAcademyGroups)
+    @JoinColumn({
+        name: 'id_plantel',
+        referencedColumnName: 'id',
+    })
+    academyGroupCampus: BranchOffice;
 
-  @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.academyGroup)
-  acGroupAcInsc: AcademyInscription[];
+    @ManyToOne(type => Shift, shift => shift.shiftActivityGroups)
+    @JoinColumn({
+        name: 'id_turno',
+        referencedColumnName: 'id',
+    })
+    academyGroupShift: Shift;
 
 }
