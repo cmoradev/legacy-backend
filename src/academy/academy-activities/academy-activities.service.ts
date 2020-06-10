@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { AcademyActivity } from './entities/academy-activity.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { QueryMensualidades } from './types/academyActvities.interface';
+import { QueryMensualidades, QueryResultMoths } from './types/academyActvities.interface';
 import { AcademyActivitiesGroup } from '../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../academy-inscription/entities/academy-inscription.entity';
+import * as moment from 'moment';
+import { AcademyInscriptionConcepts } from '../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Injectable()
 export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity> {
@@ -37,37 +39,93 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
                 isActive: true,
             });
 
-        /*
-            if (query.activityId !== 0) {
-                activities.where('activities.id = :id', {
-                    id: query.activityId,
-                });
-            }
-        */
-
-        /*if (query.branchOfficeId !== 0) {
-            activities.where('branchOffice.id = :id', {
-                id: query.branchOfficeId,
+        if (query.activityId !== 0 && query.activityId !== '0') {
+            activities.andWhere('activities.id = :activityId', {
+                activityId: query.activityId,
             });
         }
 
-        if (query.cycleId !== 0) {
-            activities.where('cycle.id = :id', {
-                id: query.cycleId,
+        if (query.branchOfficeId !== 0 && query.branchOfficeId !== '0') {
+            activities.andWhere('branchOffice.id = :branchOfficeId', {
+                branchOfficeId: query.branchOfficeId,
             });
-        }*/
+        }
 
-        const insccripciones = this.repoAcademyInscription.createQueryBuilder('inscripcion')
-            .leftJoinAndSelect('inscripcion.academyGroup', 'academyGroup')
-            .leftJoinAndSelect('inscripcion.student', 'student')
-            .leftJoinAndSelect('inscripcion.concepts', 'concepts')
-            .where('inscripcion.inscriptionStatus = :status', {
-                status: 2,
+        if (query.cycleId !== 0 && query.cycleId !== '0') {
+            activities.andWhere('cycle.id = :cycleId', {
+                cycleId: query.cycleId,
             });
-        /*insccripciones.where('academyGroup.id = :id', {
-            id: 2,
-        });*/
-        return insccripciones.getMany();
+        }
+        const activityResult = await activities.getMany();
+        let i = 0;
+        for (const activity of activityResult) {
+            let k = 0;
+            for (const group of activity.academyActivityGroups) {
+                const insccripciones = this.repoAcademyInscription.createQueryBuilder('inscripcion')
+                    .leftJoinAndSelect('inscripcion.academyGroup', 'academyGroup')
+                    .leftJoinAndSelect('inscripcion.student', 'student')
+                    .leftJoinAndSelect('inscripcion.schoolLevel', 'schoolLevel')
+                    .leftJoinAndSelect('inscripcion.schoolGrade', 'schoolGrade')
+                    .leftJoinAndSelect('inscripcion.schoolGroup', 'schoolGroup')
+                    .leftJoinAndSelect('inscripcion.concepts', 'concepts',
+                        'concepts.payDate BETWEEN :startDate AND :endDate AND concepts.id_concepto_cobro = :idT OR concepts.id_concepto_cobro = :idR', {
+                            startDate: moment(query.month).startOf('month').toDate(),
+                            endDate: moment(query.month).endOf('month').toDate(),
+                            idT: 2,
+                            idR: 5,
+                        })
+                    .leftJoinAndSelect((qb) => {
+                            return qb.from(AcademyInscriptionConcepts, 'conceptsQuery');
+                        },
+                        'conceptsQuery', 'conceptsQuery.acInscriptionId = inscripcion.id')
+                    .where('inscripcion.inscriptionStatus = :status', {
+                        status: 2,
+                    }).andWhere('academyGroup.id = :academyGroupId', {
+                        academyGroupId: group.id,
+                    });
+                const insccriptions = await insccripciones.getMany();
+                if (insccriptions && insccriptions.length > 0) {
+                    // @ts-ignore
+                    activityResult[i].academyActivityGroups[k].students = [];
+                    for (const insccription of insccriptions) {
+                        let estadopago = 0;
+                        let fecha: any = '';
+                        if (insccription.isIncluded) {
+                            estadopago = 0;
+                            fecha = 'sin fecha';
+                        } else {
+                            if (insccription.concepts && insccription.concepts.length > 0) {
+                                estadopago = insccription.concepts[0].idConceptoCobro;
+                                fecha = insccription.concepts[0].payDate;
+                            } else {
+                                estadopago = 6;
+                                fecha = 'sin fecha';
+                            }
+                        }
+                        // @ts-ignore
+                        activityResult[i].academyActivityGroups[k].students.push({
+                            'id': insccription.student.id,
+                            'matricula': insccription.student.matricula,
+                            'name': insccription.student.name + ' ' + insccription.student.lastNameFather + ' ' + insccription.student.lastNameMother,
+                            'type': insccription.student.typeStudent ? 'Alumno' : 'Externo',
+                            'level': insccription?.schoolLevel?.name ?? '',
+                            'grade': insccription?.schoolGrade?.name ?? '',
+                            'grup': insccription?.schoolGroup?.name ?? '',
+                            'state': estadopago,
+                            'date': fecha,
+                        });
+
+                    }
+                } else {
+                    // @ts-ignore
+                    activityResult[i].academyActivityGroups[k].students = [];
+                }
+                k++;
+            }
+            i++;
+        }
+
+        return activityResult as unknown as QueryResultMoths[];
 
     }
 }

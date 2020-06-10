@@ -57,6 +57,11 @@ export class AcademyInscriptionConcepts {
     acInsConConcepType: SystemConceptsType;
 
     @Column({
+        name: 'id_concepto_cobro',
+    })
+    idConceptoCobro: number;
+
+    @Column({
         type: 'enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,

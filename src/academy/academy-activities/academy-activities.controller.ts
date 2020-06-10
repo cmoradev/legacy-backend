@@ -30,8 +30,9 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
         return this;
     }
 
-    @Get('/mensualidadades')
+    @Get('/monthly-payments')
     async simpleReport(@Req() request, @Res() response, @Query() query: QueryMensualidades) {
+        console.log(query);
         response.send(await this.service.monthsPayments(query));
     }
 }

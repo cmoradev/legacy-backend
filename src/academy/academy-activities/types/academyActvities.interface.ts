@@ -1,7 +1,37 @@
+import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
+import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
+
 export interface QueryMensualidades {
-    activityId: 0;
-    ActivityGroupId: 0;
-    month: '';
-    cycleId: 0;
-    branchOfficeId: 0;
+    activityId: number | string;
+    ActivityGroupId: number | string;
+    month: string | Date;
+    cycleId: number | string;
+    branchOfficeId: number | string;
+}
+
+export interface QueryResultMoths {
+    id: number;
+    name: string;
+    academyActivityGroups: ActivityGroup[];
+}
+
+interface ActivityGroup {
+    id: number;
+    name: string;
+    schedule: string;
+    academyGroupCampus: AcademyActivitiesGroup;
+    academyGroupCycle: Cycle;
+    students: ActivityGroupStudents[];
+}
+
+interface ActivityGroupStudents {
+    id: number;
+    matricula: string;
+    name: string;
+    type: string;
+    level: string;
+    grade: string;
+    grup: string;
+    state: number | string;
+    date: string;
 }
