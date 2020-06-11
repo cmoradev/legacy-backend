@@ -31,7 +31,7 @@ interface ActivityGroupStudents {
     type: string;
     level: string;
     grade: string;
-    grup: string;
+    group: string;
     state: number | string;
     date: string;
 }

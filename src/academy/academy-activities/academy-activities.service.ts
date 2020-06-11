@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AcademyActivity } from './entities/academy-activity.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { QueryMensualidades, QueryResultMoths } from './types/academyActvities.interface';
-import { AcademyActivitiesGroup } from '../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../academy-inscription/entities/academy-inscription.entity';
 import * as moment from 'moment';
 import { AcademyInscriptionConcepts } from '../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { TypeStudent } from '../../school-colegio-ingles/students/interface/studentsSchool.interface';
 
 @Injectable()
 export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity> {
@@ -84,6 +84,8 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
                         academyGroupId: group.id,
                     });
                 const insccriptions = await insccripciones.getMany();
+                const estado = { 0: 'I', 1: 'A', 2: 'P', 3: 'Cond', 6: 'N/I' };
+
                 if (insccriptions && insccriptions.length > 0) {
                     // @ts-ignore
                     activityResult[i].academyActivityGroups[k].students = [];
@@ -95,7 +97,7 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
                             fecha = 'sin fecha';
                         } else {
                             if (insccription.concepts && insccription.concepts.length > 0) {
-                                estadopago = insccription.concepts[0].idConceptoCobro;
+                                estadopago = insccription.concepts[0].paymentStatus;
                                 fecha = insccription.concepts[0].payDate;
                             } else {
                                 estadopago = 6;
@@ -107,11 +109,11 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
                             'id': insccription.student.id,
                             'matricula': insccription.student.matricula,
                             'name': insccription.student.name + ' ' + insccription.student.lastNameFather + ' ' + insccription.student.lastNameMother,
-                            'type': insccription.student.typeStudent ? 'Alumno' : 'Externo',
+                            'type': insccription.student.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
                             'level': insccription?.schoolLevel?.name ?? '',
                             'grade': insccription?.schoolGrade?.name ?? '',
-                            'grup': insccription?.schoolGroup?.name ?? '',
-                            'state': estadopago,
+                            'group': insccription?.schoolGroup?.name ?? '',
+                            'state': estado[estadopago],
                             'date': fecha,
                         });
 
