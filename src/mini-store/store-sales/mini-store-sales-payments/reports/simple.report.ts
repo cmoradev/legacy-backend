@@ -81,9 +81,9 @@ export class SimpleReport {
             left: { style: 'thin' },
         };
 
-        bussinessNameCell.value = 'COLEGIO INGLÉS QUINTANA ROO, S.C ';
+        bussinessNameCell.value = 'QUINTANA ROO, S.C ';
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
-        dateRangeCell.value = 'RANGO CONSULTADO: 2020-01-10 - 2020-01-10';
+        dateRangeCell.value = 'RANGO CONSULTADO: *';
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
 
         ['D2', 'D3', 'D4', 'D5'].map(key => {

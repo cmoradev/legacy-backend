@@ -7,6 +7,13 @@ export interface QueryMensualidades {
     month: string | Date;
     cycleId: number | string;
     branchOfficeId: number | string;
+    file?: boolean;
+}
+
+export interface QueryFile {
+    src: string;
+    type: string;
+    name: string;
 }
 
 export interface QueryResultMoths {

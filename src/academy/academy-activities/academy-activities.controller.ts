@@ -4,6 +4,10 @@ import { AcademyActivity } from './entities/academy-activity.entity';
 import { AcademyActivitiesService } from './academy-activities.service';
 import { QuerySimpleReport } from '../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { QueryMensualidades } from './types/academyActvities.interface';
+import { AcademyActivityReport } from './reports/academy-activity.report';
+import { getDaysArray } from '../../common/date';
+import * as moment from 'moment';
+import { months } from 'moment';
 
 @Crud({
     model: {
@@ -32,7 +36,20 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
 
     @Get('/monthly-payments')
     async simpleReport(@Req() request, @Res() response, @Query() query: QueryMensualidades) {
-        console.log(query);
-        response.send(await this.service.monthsPayments(query));
+        const year = moment(query.month).year();
+        const month = moment(query.month).month() + 1;
+
+        const data = await this.service.monthsPayments(query);
+        if (query.file) {
+            const report = new AcademyActivityReport();
+            const file = await report.monthlyPayments(data, { year, month });
+            response.send({
+                src: file,
+                type: 'excel',
+                name: 'monthly-payments',
+            });
+        } else {
+            response.send(data);
+        }
     }
 }
