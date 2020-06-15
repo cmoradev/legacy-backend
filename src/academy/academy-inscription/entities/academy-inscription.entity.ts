@@ -11,6 +11,8 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
+//import {AcademyChargeDetailsExtraCharge} from "../../charges-academy/academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity";
+import {InscriptionAcademyChargeDetailsExtraChargeEntity} from "../../../academy/charges-academy/inscription-academy-charge-details-extra-charge/entites/inscription-academy-charge-details-extra-charge.entity";
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {
@@ -164,4 +166,9 @@ export class AcademyInscription extends Base {
 
     @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
     concepts: AcademyInscriptionConcepts[];
+
+    @OneToMany(() => InscriptionAcademyChargeDetailsExtraChargeEntity, (extraCharges) => extraCharges.inscChargeDetail, {
+        cascade: ['insert'],
+    })
+    extraCharges: InscriptionAcademyChargeDetailsExtraChargeEntity[];
 }
