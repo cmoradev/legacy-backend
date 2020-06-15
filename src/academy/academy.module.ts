@@ -7,6 +7,7 @@ import { AcademyActivitiesGroupModule } from './academy-activities-group/academy
 import { AcademyInscriptionModule } from './academy-inscription/academy-inscription.module';
 import { AcademyInscriptionConceptsModule } from './academy-inscription-concepts/academy-inscription-concepts.module';
 import { ChargesAcademyModule } from './charges-academy/charges-academy.module';
+import { InscriptionAcademyChargeDetailsExtraChargeModule } from './inscription-academy-charge-details-extra-charge/inscription-academy-charge-details-extra-charge.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ChargesAcademyModule } from './charges-academy/charges-academy.module';
     AcademyActivitiesGroupModule,
     AcademyInscriptionModule,
     AcademyInscriptionConceptsModule,
+    InscriptionAcademyChargeDetailsExtraChargeModule,
     ChargesAcademyModule,
   ],
 })
