@@ -166,8 +166,5 @@ export class AcademyInscription extends Base {
     @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
     concepts: AcademyInscriptionConcepts[];
 
-    @OneToMany(() => InscriptionAcademyChargeDetailsExtraChargeEntity, (extraCharges) => extraCharges.inscChargeDetail, {
-        cascade: ['insert'],
-    })
-    extraCharges: InscriptionAcademyChargeDetailsExtraChargeEntity[];
+
 }
