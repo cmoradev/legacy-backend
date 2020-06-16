@@ -22,6 +22,7 @@ import { AcademyInscriptionService } from './academy-inscription.service';
             'concepts.acInsConActivity': {},
             'concepts.acInsConConcepType': {},
             'concepts.acInsConStatusPayment': {},
+            'concepts.extraCharges': {},
         },
     },
 })
