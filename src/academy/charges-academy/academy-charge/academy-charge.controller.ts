@@ -19,6 +19,7 @@ import { AcademyChargeService } from './academy-charge.service';
             chargesDetails: {},
             'chargesDetails.extraCharges': {},
             chargesPayments: {},
+            'chargesPayments.academyChargesInvoice': {},
             'chargesPayments.methodsPayments': {},
             'chargesPayments.methodsPayments.Bank': {},
             'chargesPayments.methodsPayments.invoiceMethodPayment': {},
