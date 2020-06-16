@@ -6,7 +6,7 @@ import {
     OperationApplicationEnum,
     TypeChargeApplicationEnum,
 } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
-import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
+import {AcademyInscriptionConcepts} from "../../academy-inscription-concepts/entities/academy-inscription-concepts.entity";
 
 @Entity('ac_inscrip_charges_details_extra_charges')
 export class InscriptionAcademyChargeDetailsExtraChargeEntity extends Base {
@@ -42,8 +42,8 @@ export class InscriptionAcademyChargeDetailsExtraChargeEntity extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
-    @ManyToOne(() => AcademyInscription, (academy) => academy.extraCharges)
-    inscChargeDetail: AcademyInscription;
+    @ManyToOne(() => AcademyInscriptionConcepts, (academy) => academy.extraCharges)
+    inscChargeDetail: AcademyInscriptionConcepts;
 
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
     systemExtraCharges: SystemExtraCharges;
