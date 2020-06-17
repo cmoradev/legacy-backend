@@ -106,7 +106,7 @@ import { AcademyChargeDetailsExtraChargeModule } from './academy/charges-academy
 import { SchoolChargesDetailsExtraChargesModule } from './school-colegio-ingles/charges-school/school-charges-details-extra-charges/school-charges-details-extra-charges.module';
 import { AcademyChargeMethodsPaymentsModule } from './academy/charges-academy/academy-charge-methods-payments/academy-charge-methods-payments.module';
 import { AcademyChargePaymentsModule } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.module';
-import { InscriptionAcademyChargeDetailsExtraChargeModule } from './academy/inscription-academy-charge-details-extra-charge/inscription-academy-charge-details-extra-charge.module';
+import { AcademyInscriptionChargesModule } from './academy/academy-inscription-concept-charges/academy-inscription-charges.module';
 
 export const routes: Routes = [
     {
@@ -239,7 +239,7 @@ export const routes: Routes = [
             { path: '/academy-modalities', module: AcademyModalitiesModule },
             { path: '/academy-inscription', module: AcademyInscriptionModule },
             { path: '/academy-inscription-concepts', module: AcademyInscriptionConceptsModule },
-            { path: '/academy-inscription-concepts/charges', module: InscriptionAcademyChargeDetailsExtraChargeModule },
+            { path: '/academy-inscription-concepts/charges', module: AcademyInscriptionChargesModule },
             {
                 path: '/charges',
                 module: ChargesAcademyModule,

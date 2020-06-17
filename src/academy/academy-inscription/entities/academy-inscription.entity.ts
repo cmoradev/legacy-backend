@@ -11,7 +11,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
-import { InscriptionAcademyChargeDetailsExtraChargeEntity } from '../../inscription-academy-charge-details-extra-charge/entites/inscription-academy-charge-details-extra-charge.entity';
+import { AcademyInscriptionChargesEntity } from '../../academy-inscription-concept-charges/entites/academy-inscription-charges.entity';
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {
