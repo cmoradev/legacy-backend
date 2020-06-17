@@ -9,6 +9,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
+import { MiniStoreSalesModule } from '../mini-store-sales/mini-store-sales.module';
 
 @Module({
     imports: [

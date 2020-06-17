@@ -25,3 +25,8 @@ export interface QuerySimpleReport {
     invoiceStatus?: number;
     branchOfficeId: number;
 }
+
+export interface QueryBilling {
+    saleId: number;
+    salePaymentId: number;
+}

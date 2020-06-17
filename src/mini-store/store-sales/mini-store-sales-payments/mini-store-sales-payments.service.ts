@@ -10,7 +10,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import moment = require('moment');
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
-import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
+import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -184,6 +184,32 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         } catch (e) {
             return e;
         }
+    }
+
+    async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment }> {
+        const sale = await this.salesRepository.findOne({
+            where: {
+                id: query.saleId,
+            },
+            relations: [
+                'miniStoreSaleDetails',
+                'miniStoreSaleDetails.extraCharges',
+            ],
+        });
+
+        const payment = await this.repo.findOne({
+            where: {
+                id: query.salePaymentId,
+            },
+            relations: [
+                'miniStoreSaleMethodPayments',
+            ],
+        });
+
+        return {
+            sale,
+            payment,
+        };
     }
 
 }

@@ -4,7 +4,12 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { convertPaymentsReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
-import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
+import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalesService } from '../mini-store-sales/mini-store-sales.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { Repository } from 'typeorm';
 
 @Crud({
     model: {
@@ -65,5 +70,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         //
         // response.status(200);
         // response.send(query.onlyFile ? result : payments);
+    }
+
+    @Get('billing')
+    async billing(@Req() request, @Res() response, @Query() query: QueryBilling) {
+        const result = await this.service.findSaleByPayment(query);
+        response.send(result);
     }
 }
