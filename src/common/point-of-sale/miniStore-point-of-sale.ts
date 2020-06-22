@@ -59,3 +59,23 @@ export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, 
     });
     return generalizedConcepts;
 };
+
+export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]) => {
+    const saleAmount = saleDetails(details || []).total;
+    const base = ((payment.quantity - payment.change) / saleAmount) || 1;
+    const generalizedConcepts: any[] = [];
+    details.forEach((detail) => {
+        const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
+
+        const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
+
+        generalizedConcepts.push({
+            descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
+            discount: (discount * base).toFixed(2),
+            importe: (totalAmountConcept(detail) * base),
+            quantity: detail.quantity,
+            unitPrice: conceptPrice * base,
+        });
+    });
+    return generalizedConcepts;
+};

@@ -10,6 +10,7 @@ import { MiniStoreSalesService } from '../mini-store-sales/mini-store-sales.serv
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { Repository } from 'typeorm';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 
 @Crud({
     model: {
@@ -75,6 +76,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     @Get('billing')
     async billing(@Req() request, @Res() response, @Query() query: QueryBilling) {
         const result = await this.service.findSaleByPayment(query);
-        response.send(result);
+        response.send(ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails));
     }
 }

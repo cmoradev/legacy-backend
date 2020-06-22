@@ -193,6 +193,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             },
             relations: [
                 'miniStoreSaleDetails',
+                'miniStoreSaleDetails.miniStoreProduct',
                 'miniStoreSaleDetails.extraCharges',
             ],
         });
