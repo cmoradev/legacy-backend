@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
@@ -11,7 +11,6 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
-import { AcademyInscriptionChargesEntity } from '../../academy-inscription-concept-charges/entites/academy-inscription-charges.entity';
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {

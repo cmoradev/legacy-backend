@@ -70,10 +70,11 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
 
         generalizedConcepts.push({
+            quantity: detail.quantity,
+            clave: 0,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
             discount: (discount * base).toFixed(2),
             importe: (totalAmountConcept(detail) * base),
-            quantity: detail.quantity,
             unitPrice: conceptPrice * base,
         });
     });

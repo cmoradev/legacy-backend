@@ -3,10 +3,10 @@ import { AcademyInscriptionChargesController } from './academy-inscription-charg
 import { IncriptionAcademyChargeDetailsExtraChargeService } from './inscription-academy-charge-details-extra-charge.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
-import { AcademyInscriptionChargesEntity } from './entites/academy-inscription-charges.entity';
+import { AcademyInscriptionConceptCharges } from './entites/academy-inscription-concept-charges.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([AcademyInscriptionChargesEntity], ColegioDBNameConnection)],
+    imports: [TypeOrmModule.forFeature([AcademyInscriptionConceptCharges], ColegioDBNameConnection)],
     controllers: [AcademyInscriptionChargesController],
     providers: [IncriptionAcademyChargeDetailsExtraChargeService],
 })

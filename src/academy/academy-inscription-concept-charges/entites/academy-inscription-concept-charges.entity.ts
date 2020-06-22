@@ -8,8 +8,8 @@ import {
 } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
-@Entity('ac_inscrip_charges_details_extra_charges')
-export class AcademyInscriptionChargesEntity extends Base {
+@Entity('ac_inscrip_concepts_extra_charges')
+export class AcademyInscriptionConceptCharges extends Base {
 
     @Column('varchar', {
         nullable: false,

@@ -4,7 +4,7 @@ import { SystemConceptsType } from '../../../system/system-concepts-type/entitie
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
-import {AcademyInscriptionChargesEntity} from "../../academy-inscription-concept-charges/entites/academy-inscription-charges.entity";
+import { AcademyInscriptionConceptCharges } from '../../academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
 
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts {
@@ -167,9 +167,9 @@ export class AcademyInscriptionConcepts {
     @OneToMany(type => AcademyChargeDetails, chargeDetails => chargeDetails.academyInscriptionConcept)
     academyChargeDetail: AcademyChargeDetails[];
 
-    @OneToMany(() => AcademyInscriptionChargesEntity, (extraCharges) => extraCharges.inscChargeDetail, {
+    @OneToMany(() => AcademyInscriptionConceptCharges, (extraCharges) => extraCharges.inscChargeDetail, {
         cascade: ['insert'],
     })
-    extraCharges: AcademyInscriptionChargesEntity[];
+    extraCharges: AcademyInscriptionConceptCharges[];
 
 }
