@@ -20,6 +20,7 @@ import * as moment from 'moment';
             miniStoreWareHouseOrdersProducts: {},
             'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
             miniStoreWarehouseProvider: {},
+            BranchOfficeMiniStoreWherehouse: {}
         },
     },
 })

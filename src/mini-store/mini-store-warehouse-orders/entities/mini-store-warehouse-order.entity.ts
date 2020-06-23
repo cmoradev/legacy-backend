@@ -8,6 +8,7 @@ import {
 import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import { MiniStoreWarehouseProvider } from '../../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_almacen_pedidos')
 export class MiniStoreWarehouseOrder {
@@ -98,4 +99,10 @@ export class MiniStoreWarehouseOrder {
 
     @ManyToOne(() => User, (user) => user.miniStoreEditorWareHouseOrder)
     agentEditor: User;
+
+    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
+        {
+            cascade: ['insert', 'update'],
+        })
+    BranchOfficeMiniStoreWherehouse: BranchOffice;
 }
