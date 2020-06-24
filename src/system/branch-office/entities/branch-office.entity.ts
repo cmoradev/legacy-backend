@@ -59,6 +59,22 @@ export class BranchOffice {
     updatedAt: Date;
 
     @Column({
+        type: 'int',
+        nullable: false,
+        name: 'folio_order',
+        default: 1,
+    })
+    FolioOrder: number;
+
+    @Column({
+        type: 'varchar',
+        nullable: false,
+        name: 'prefix_order',
+        default: '',
+    })
+    PrefixOrder: string;
+
+    @Column({
         type: 'enum',
         nullable: false,
         name: 'branch_type',
