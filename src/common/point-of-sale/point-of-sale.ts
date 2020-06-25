@@ -1,8 +1,16 @@
-import { mul, round } from 'exact-math';
+import { add, mul, round, sub } from 'exact-math';
 import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 
 export const mulQuantity = (price: number | string, quantity: number | string) => {
     return +round(mul(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
+};
+
+export const subQuantity = (price: number | string, quantity: number | string) => {
+    return +round(sub(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
+};
+
+export const sumQuantity = (price: number | string, quantity: number | string) => {
+    return +round(add(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
 };
 
 export function amountAfterExtraCharge(amount: number, discounts: Array<{

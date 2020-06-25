@@ -1,4 +1,4 @@
-import { amountAfterExtraCharge, mulQuantity } from './point-of-sale';
+import { amountAfterExtraCharge, mulQuantity, subQuantity, sumQuantity } from './point-of-sale';
 import { ivaFromFinalAmount } from '../numbers';
 import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
@@ -61,22 +61,36 @@ export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, 
 };
 
 export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]) => {
-    const saleAmount = saleDetails(details || []).total;
-    const base = ((payment.quantity - payment.change) / saleAmount) || 1;
+    const detalles = saleDetails(details || []);
+    const pago = payment.quantity - payment.change;
+    const base = (pago / detalles.total) || 1;
+    console.log(ivaFromFinalAmount(pago));
+    const resultad = {
+        total: sumQuantity(pago, '0.01'),
+        subtotal: 0,//sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
+        discount: 0,
+        detalles: [],
+    };
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
-        const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
-
+        const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
+        const discount = (discountTotal * base).toFixed(2);
         const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
-
+        resultad.discount = sumQuantity(discount, resultad.discount);
+        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), discount));
+        console.log(nativeCalculo);
+        const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
+        resultad.subtotal = sumQuantity(importe, resultad.subtotal);
         generalizedConcepts.push({
             quantity: detail.quantity,
-            clave: 0,
+            claveProd: detail.productCode,
+            unidad: 'E48', // detail.miniStoreProduct.unity,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
-            discount: (discount * base).toFixed(2),
-            importe: (totalAmountConcept(detail) * base),
-            unitPrice: conceptPrice * base,
+            unitPrice: sumQuantity(nativeCalculo.amountWithOutIva, discount), // mulQuantity(conceptPrice, base),
+            discount,
+            importe, // mulQuantity(totalAmountConcept(detail), base),
         });
     });
-    return generalizedConcepts;
+    resultad.detalles = generalizedConcepts;
+    return resultad;
 };

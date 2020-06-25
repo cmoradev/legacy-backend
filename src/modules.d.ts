@@ -9,3 +9,41 @@ declare module 'exact-math' {
     export function floor(...args: any): any; // 9
     export function pow(...args: any): any;
 }
+
+interface Stamp {
+    Set(params): Stamp;
+
+    StampV4(xml: string, callback: () => void, isb64: boolean): Stamp;
+}
+
+declare module 'sw-sdk-nodejs' {
+    class AuthenticationClass {
+        auth(params): this;
+
+        Token(callback): this;
+
+        TokenSync(): this;
+    }
+
+    // tslint:disable-next-line:max-classes-per-file
+    class StampServiceClass {
+        Set(params): this;
+
+        StampV1(xml: string, callback: (error, data) => void): this;
+
+        StampV2(xml: string, callback: (error, data) => void, isb64?: boolean): this;
+
+        StampV3(xml: string, callback: (error, data) => void, isb64?: boolean): this;
+
+        StampV4(xml: string, callback: (error, data) => void, isb64?: boolean): this;
+    }
+
+    export const Authentication: AuthenticationClass;
+
+    export const StampService: StampServiceClass;
+
+    export function CancelationService(): void;
+
+    // tslint:disable-next-line:max-classes-per-file
+    export function AccountBalance(): void;
+}
