@@ -107,6 +107,7 @@ import { SchoolChargesDetailsExtraChargesModule } from './school-colegio-ingles/
 import { AcademyChargeMethodsPaymentsModule } from './academy/charges-academy/academy-charge-methods-payments/academy-charge-methods-payments.module';
 import { AcademyChargePaymentsModule } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.module';
 import { AcademyInscriptionChargesModule } from './academy/academy-inscription-concept-charges/academy-inscription-charges.module';
+import { FamilyFiscalModule } from './school-colegio-ingles/family-fiscal/family-fiscal.module';
 
 export const routes: Routes = [
     {
@@ -189,6 +190,7 @@ export const routes: Routes = [
             { path: '/periods', module: PeriodsModule },
             { path: '/campuses', module: BranchOfficeModule },
             { path: '/families', module: FamiliesModule },
+            { path: '/family-business-name', module: FamilyFiscalModule },
             { path: '/classrooms', module: ClassroomsModule },
             { path: '/classrooms-permissions', module: ClassroomPermissionModule },
             { path: '/incident-classifications', module: IncidentClassificationModule },

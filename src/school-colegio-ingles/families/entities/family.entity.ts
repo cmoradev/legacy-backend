@@ -1,8 +1,9 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import {Student} from '../../students/entities/student.entity';
+import { Student } from '../../students/entities/student.entity';
+import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 
-@Entity('familias' )
+@Entity('familias')
 export class Family {
 
     @PrimaryGeneratedColumn({
@@ -65,4 +66,6 @@ export class Family {
     @OneToMany(() => Student, (student) => student.family)
     students: Student[];
 
+    @OneToMany(() => BusinessNameFamily, (student) => student.family)
+    businessName: BusinessNameFamily[];
 }
