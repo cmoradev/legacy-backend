@@ -8,7 +8,9 @@ import { FamilyFiscalService } from './family-fiscal.service';
         type: BusinessNameFamily,
     },
     query: {
-        join: {},
+        join: {
+            family: {},
+        },
     },
 })
 @Controller()
