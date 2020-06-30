@@ -1,4 +1,15 @@
-import { Body, Controller, HttpStatus, Param, Patch, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    HttpStatus,
+    Param,
+    Patch,
+    Post,
+    Req,
+    Res,
+    UnauthorizedException,
+    UseGuards,
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -8,7 +19,8 @@ import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
-
+import { JwtGuard } from '../auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: User,

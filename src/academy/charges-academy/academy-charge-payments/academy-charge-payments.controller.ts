@@ -1,11 +1,12 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { convertPaymentsReportAc } from './reports/payments.util';
-
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyChargePayments,

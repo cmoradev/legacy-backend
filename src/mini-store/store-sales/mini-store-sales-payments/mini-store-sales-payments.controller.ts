@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
@@ -6,24 +6,15 @@ import { convertPaymentsReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
-import {
-    CFDI,
-    Comprobante,
-    Concepts,
-    Emisor,
-    Impuestos,
-    Receptor,
-    Relacionado,
-} from '@signati/core';
+import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor } from '@signati/core';
 import { XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
-import { mul } from 'exact-math';
 import { mulQuantity, subQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
-import { Authentication } from 'sw-sdk-nodejs';
 import { FactSw } from '../../../webService/FactSw';
 import * as moment from 'moment-timezone';
 import { FactMod } from '../../../webService/factMod';
-import { ivaFromFinalAmount } from '../../../common/numbers';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSalePayment,

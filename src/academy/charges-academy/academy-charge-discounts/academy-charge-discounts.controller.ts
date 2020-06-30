@@ -1,10 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { AcademyChargeDetails } from '../academy-charge-details/entities/academy-charge-details.entity';
-import { AcademyChargeDetailsService } from '../academy-charge-details/academy-charge-details.service';
 import { AcademyChargeDiscounts } from './entities/academy-charge-discounts.entity';
 import { AcademyChargeDiscountsService } from './academy-charge-discounts.service';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: AcademyChargeDiscounts,
