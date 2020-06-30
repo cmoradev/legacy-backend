@@ -12,15 +12,10 @@ import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('tie_productos')
-export class MiniStoreProduct {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id?: number;
+export class MiniStoreProduct extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -162,20 +157,10 @@ export class MiniStoreProduct {
     })
     idInvoiceKey: number;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
+    @Column('longtext', {
+        nullable: true,
     })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+    calculation: string;
 
     @ManyToOne(() => MiniStorePriceList, (storePriceList) => storePriceList.storeProducts)
     storePriceList: MiniStorePriceList;
