@@ -24,7 +24,7 @@ async function bootstrap() {
         .addTag('School')
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('api', app, document);
+    environment === 'development' ? SwaggerModule.setup('api', app, document) : null;
     await app.listen(processEnv.API_PORT);
     console.log(`App Ready on ${processEnv.API_PORT}`);
 }

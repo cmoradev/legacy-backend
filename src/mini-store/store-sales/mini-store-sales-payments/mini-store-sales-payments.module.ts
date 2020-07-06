@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MiniStoreSalesPaymentsController } from './mini-store-sales-payments.controller';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,7 +9,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
-import { MiniStoreSalesModule } from '../mini-store-sales/mini-store-sales.module';
+import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoices.module';
 
 @Module({
     imports: [
@@ -20,7 +20,9 @@ import { MiniStoreSalesModule } from '../mini-store-sales/mini-store-sales.modul
             MiniStoreSale,
             SalesReturns,
         ], ColegioDBNameConnection),
-        InvoiceMethodsPaymentsModule],
+        forwardRef(() => MiniStoreInvoicesModule),
+        InvoiceMethodsPaymentsModule,
+    ],
     exports: [MiniStoreSalesPaymentsService],
     controllers: [MiniStoreSalesPaymentsController],
     providers: [MiniStoreSalesPaymentsService],

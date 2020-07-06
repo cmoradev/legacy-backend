@@ -3,7 +3,7 @@ import {
     Entity,
     ManyToOne,
     OneToMany,
-    PrimaryGeneratedColumn,
+    PrimaryGeneratedColumn, ValueTransformer,
 } from 'typeorm';
 import { MiniStorePriceList } from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
@@ -13,6 +13,17 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+
+export const toJsonCal: ValueTransformer = {
+
+    to(value: string): string {
+        return value;
+    },
+    from(value: string): any {
+        return JSON.parse(value);
+    },
+
+};
 
 @Entity('tie_productos')
 export class MiniStoreProduct extends Base {
@@ -159,6 +170,7 @@ export class MiniStoreProduct extends Base {
 
     @Column('longtext', {
         nullable: true,
+        transformer: toJsonCal,
     })
     calculation: string;
 

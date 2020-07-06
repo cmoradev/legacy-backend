@@ -29,4 +29,15 @@ export interface QuerySimpleReport {
 export interface QueryBilling {
     saleId: number;
     salePaymentId: number;
+    usoCfdi: {
+        value: string,
+        label: string
+    },
+    receiver: {
+        id: number
+        businessName: string;
+        rfc: string;
+        email: string;
+    },
+    agentBillingId: number
 }

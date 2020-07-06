@@ -10,9 +10,15 @@ import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor } from '@signa
 import { XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { mulQuantity, subQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { FactSw } from '../../../webService/FactSw';
-import * as moment from 'moment-timezone';
+
 import { FactMod } from '../../../webService/factMod';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { GenerateInvoice } from './utils/generateInvoice';
+import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
+import { User } from '../../../system/users/entities/user.entity';
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -35,6 +41,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     constructor(
         readonly service: MiniStoreSalesPaymentsService,
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+        readonly miniStoreInvoicesService: MiniStoreInvoicesService,
     ) {
     }
 
@@ -79,102 +86,54 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     @Get('billing')
     async billing(@Req() request, @Res() response, @Query() query: QueryBilling) {
         const sw = new FactSw();
-        const fm = new FactMod();
-        const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+
         const result = await this.service.findSaleByPayment(query);
-        const factura = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
-
-        const key = '/home/misael/Documents/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046.key';
-        const cer = '/home/misael/Documents/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046s.cer';
+        const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
 
 
-        const comprobanteAttribute: Comprobante = {
-            Serie: 'E',
-            Folio: 'ACACUN-27',
-            Fecha: fecha,
-            Sello: '',
-            FormaPago: '01',
-            NoCertificado: '',
-            Certificado: '',
-            // condicionesDePago: 'Contado',
-            SubTotal: factura.subtotal.toString(),
-            Descuento: factura.discount.toString(),
-            Moneda: 'MXN',
-            Total: factura.total.toString(),
-            TipoDeComprobante: 'I',
-            MetodoPago: 'PUE',
-            LugarExpedicion: '77728',
-        };
-        console.log(factura.total.toString());
-
-        const cfd = new CFDI(comprobanteAttribute);
-
-
-        const emisor = new Emisor({
-            Rfc: 'XAMA620210DQ5',
-            Nombre: 'aaasdads',
-            RegimenFiscal: '605',
-        });
-        await cfd.emisor(emisor);
-
-        const receptor = new Receptor({
-            Rfc: 'XAXX010101000',
-            Nombre: 'PUBLICO EN GENERAL',
-            UsoCFDI: 'G01',
-        });
-        await cfd.receptor(receptor);
-        let totalTranslado = '0.00';
-        for (const detalle of factura.detalles) {
-            const concepto = new Concepts({
-                ClaveProdServ: detalle.claveProd,
-                NoIdentificacion: '23243012',
-                Cantidad: detalle.quantity,
-                ClaveUnidad: 'E48',
-                Unidad: 'Pieza',
-                Descripcion: detalle.descrption,
-                ValorUnitario: detalle.unitPrice,
-                Importe: detalle.importe,
-                Descuento: detalle.discount,
-            } as XmlConceptoAttributes);
-
-            concepto.traslado({
-                Base: subQuantity(detalle.importe, detalle.discount).toString(),
-                Impuesto: '002',
-                TipoFactor: 'Tasa',
-                TasaOCuota: '0.160000',
-                Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount), .16).toString(),
-            });
-            totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discount), .16), totalTranslado).toString();
-            await cfd.concepto(concepto);
-        }
-
-        const impuesto: Impuestos = new Impuestos({
-            TotalImpuestosTrasladados: totalTranslado,
-        });
-
-        impuesto.traslados({
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
-            Importe: totalTranslado,
-        });
-        await cfd.impuesto(impuesto);
-        await cfd.certificar(cer);
-        await cfd.sellar(key, '12345678a');
-        const xml = await cfd.getXmlCdfi();
         try {
+            if (false) {
+
+            } else {
+                const factura = new MiniStoreInvoice();
+                factura.uuid = '';
+                factura.businessName = '';
+                factura.rfc = '';
+                factura.agentBilling = {
+                    id: 0,
+                } as User;
+                factura.status = 0; // Pendiente de procesar en facturación moderna
+                factura.miniStoreSale = {
+                    id: query.saleId,
+                } as MiniStoreSale;
+                factura.miniStoreSalePayment = {
+                    id: query.salePaymentId,
+                } as MiniStoreSalePayment;
+                factura.idPlantel = 1;
+                const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
+                if (invoice) {
+                    const xml = await GenerateInvoice({
+                            folio: invoice.folio,
+                            serie: 'E',
+                        }, {} as BranchOfficeSetting, {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails);
+                }
+            }
+
 
             // console.log(await sw.getToken());
-
-
-            const timbrado = await sw.facturar(xml);
-            console.log(timbrado);
-            response.set('Content-Type', 'text/xml');
-            response.send(xml);
+            // const timbrado = await sw.facturar(xml);
+            // console.log(timbrado);
+            // response.set('Content-Type', 'text/xml');
+            // response.send(xml);
 
         } catch (e) {
-            response.send(e);
             console.log(e);
+            response.send(e);
         }
     }
 }

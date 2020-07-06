@@ -59,15 +59,21 @@ export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, 
     });
     return generalizedConcepts;
 };
+export interface FacturaDetalles {
+    total: number | string;
+    subtotal: number | string;
+    discount: number | string;
+    detalles: any[];
 
-export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]) => {
+}
+export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
     const detalles = saleDetails(details || []);
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
     console.log(ivaFromFinalAmount(pago));
     const resultad = {
         total: sumQuantity(pago, '0.01'),
-        subtotal: 0,//sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
+        subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
         discount: 0,
         detalles: [],
     };
