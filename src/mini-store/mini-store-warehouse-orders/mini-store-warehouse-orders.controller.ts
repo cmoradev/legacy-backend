@@ -77,7 +77,10 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             impuesto: ivaFromFinalAmount(total).iva,
             subtotal: ivaFromFinalAmount(total).amountWithOutIva,
         });
-        res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf.toString('base64') });
+
+        // Buffer.from(data, 'base64');
+        res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf });
+        //res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf.toString('base64') });
         // res.end(, 'binary');
         // res.send(body);
         // res.setHeader('Content-Disposition', 'attachment; filename="' + encodeURIComponent(pdfBuffer.toString()) + '"');
