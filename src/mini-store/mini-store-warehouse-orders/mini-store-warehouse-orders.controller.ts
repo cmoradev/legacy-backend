@@ -10,6 +10,7 @@ import { add, mul, round } from 'exact-math';
 import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
 import { ivaFromFinalAmount } from '../../common/numbers';
 import * as moment from 'moment';
+import { TableCell } from 'pdfmake/interfaces';
 
 @Crud({
     model: {
@@ -38,22 +39,22 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
     @Get('pdf/:id')
     public async pdf(@Param() params, @Res() res: Response) {
-        const body: TableRowsDocx[][] = [];
+        const body: TableCell[][] = [];
         const order = await this.service.getOrdersWeareHouse(params.id);
         let i = 1;
         let total = 0;
         for (const product of order.miniStoreWareHouseOrdersProducts) {
-            const prod: TableRowsDocx[] = [];
+            const prod: TableCell[] = [];
 
             const totalProd = round(mul(product.requestedAmount, product.providerPriceReceived), -2, {
                 returnString: true,
                 trim: false,
             });
-            prod.push({ text: i, align: AlignmentType.CENTER });
+            prod.push({ text: i.toString(), align: AlignmentType.CENTER });
             prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
-            prod.push({ text: product.requestedAmount });
+            prod.push({ text: product.requestedAmount.toString() });
             prod.push({ text: this.unitProd(product.miniStoreProduct.unitMeasurement).name });
-            prod.push({ text: product.receivedAmount });
+            prod.push({ text: product.receivedAmount.toString() });
             prod.push({ text: round(product.providerPriceReceived, -2, { returnString: true, trim: false }) });
             prod.push({ text: totalProd });
             body.push(prod);

@@ -15,10 +15,10 @@ import * as path from 'path';
 import * as toPdf from 'office-to-pdf';
 import { TableDocx, TableHeaderDocx, TableRowsDocx } from '../../../common/office/docx/Table.docx';
 import * as fs from 'fs';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf } from 'pdfmake/build/pdfmake';
-import {vfs} from 'pdfmake/build/pdfmake';
-import {pdfMake} from 'pdfmake/build/vfs_fonts';
+import { vfs } from 'pdfmake/build/pdfmake';
+import { pdfMake } from 'pdfmake/build/vfs_fonts';
 
 // @ts-ignore
 vfs = pdfMake.vfs;
@@ -31,12 +31,99 @@ export async function orderRecipe(options: {
     arrivalDate: string | any,
     requestedItems: string | number,
     folio: string,
-    body: TableRowsDocx[][],
+    body: TableCell[][],
     total: string | number,
     subtotal: string | number,
     impuesto: string | number,
 }): Promise<string> {
 
+    options.body.unshift([
+        {
+            text: 'N°',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+        {
+            text: 'Concepto/Descricion',
+            style: 'tableHeader',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+        {
+            text: 'C.pedida',
+            style: 'tableHeader',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+        {
+            text: 'Unidad',
+            style: 'tableHeader',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        }, {
+            text: 'C.Recibida',
+            style: 'tableHeader',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+        {
+            text: 'Precio',
+            style: 'tableHeader',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+        {
+            text: 'Valor',
+            fillColor: '#dddddd',
+            border: [true, true, true, true],
+        },
+    ]);
+
+    options.body.push(
+        [
+            {
+                text: 'Subtotal',
+                colSpan: 6,
+                style: {
+                    alignment: 'right',
+                },
+            },
+            { text: '' },
+            { text: '' },
+            { text: '' },
+            { text: '' },
+            { text: '' },
+            { text: options.subtotal.toString() },
+        ]);
+    options.body.push([
+        {
+            text: 'Impuesto', colSpan: 6,
+            style: {
+                alignment: 'right',
+            },
+        },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: options.impuesto.toString() },
+    ]);
+
+    options.body.push([
+        {
+            text: 'Total', colSpan: 6,
+            style: {
+                alignment: 'right',
+            },
+        },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: options.total.toString() },
+    ]);
     const docDefinition: TDocumentDefinitions = {
         pageSize: 'A4',
         pageMargins: [20, 25, 20, 25],
@@ -151,15 +238,21 @@ export async function orderRecipe(options: {
                         ],
                     },
                     {
-                        width: 150,
-                        style: 'tableExample',
+                        width: 200,
                         table: {
-
                             headerRows: 1,
                             body: [
 
-                                [{ text: 'Folio', fillColor: '#dddddd', border: [true, true, true, true] }],
-                                [options.folio],
+                                [
+                                    {
+                                        text: 'Folio',
+                                        fillColor: '#dddddd',
+                                        border: [true, true, true, true],
+                                    },
+                                ],
+                                [
+                                    options.folio,
+                                ],
                             ],
                         },
                     },
@@ -169,97 +262,30 @@ export async function orderRecipe(options: {
 
             {
                 style: 'tableExample',
+                margin: [0, 20, 0, 0],
                 table: {
                     widths: [40, 153, 50, 80, 60, 50, 50],
                     headerRows: 1,
-                    body: [
-
-                        [{
-                            text: 'N°',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, {
-                            text: 'Concepto/Descricion',
-                            style: 'tableHeader',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, {
-                            text: 'C.pedida',
-                            style: 'tableHeader',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, {
-                            text: 'Unidad',
-                            style: 'tableHeader',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, {
-                            text: 'C.Recibida',
-                            style: 'tableHeader',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, {
-                            text: 'Precio',
-                            style: 'tableHeader',
-                            fillColor: '#dddddd',
-                            border: [true, true, true, true],
-                        }, { text: 'Valor', fillColor: '#dddddd', border: [true, true, true, true] }],
-                        ['1', 'cat', 'nomina', 'servicio', '19891', '090', '090'],
-                    ],
+                    body: options.body,
                 },
-
-
             },
             {
-
-                style: 'tableExample',
+                margin: [0, 40, 0, 0],
                 table: {
-
-                    widths: [548],
-
+                    widths: [260, 260],
                     body: [
                         [
                             {
                                 border: [false, false, false, true],
                                 alignment: 'center',
-                                text: [
-                                    {
-                                        border: [false, false, true, false],
-                                        linecolors: '#000080',
-                                        style: { fontSize: 10, bold: true, color: '#a76d09' },
-                                        text: ' ',
-                                    },
-                                    {
-                                        border: [false, false, false, false],
-                                        fontSize: 10,
-                                        text: '\n  ',
-                                    },
-                                    {
-                                        border: [false, false, false, false],
-                                        linecolors: '#000080',
-                                        style: { fontSize: 10, bold: true, color: '#a76d09' },
-                                        text: '',
-                                    },
-                                    {
-                                        border: [false, false, false, false],
-                                        fontSize: 10,
-                                        text: '\n\n\n\n  ',
-                                    },
-                                ],
+                                text: '',
+                            },
+                            {
+                                border: [false, false, false, true],
+                                alignment: 'center',
+                                text: '',
                             },
                         ],
-                    ],
-                },
-            },
-
-            {
-
-
-                style: 'tableExample',
-                table: {
-
-                    widths: [290, 250],
-                    body: [
                         [
                             {
                                 border: [false, false, false, false],
@@ -298,29 +324,8 @@ export async function orderRecipe(options: {
                     ],
                 },
             },
-
-
         ],
     };
-
-
-    const bodyDetails: TableRowsDocx[][] = [
-        [
-            { text: '', columnSpan: 5 },
-            { text: 'Subtotal', align: AlignmentType.CENTER },
-            { text: options.subtotal },
-        ],
-        [
-            { text: '', columnSpan: 5 },
-            { text: 'Impuesto', align: AlignmentType.CENTER },
-            { text: options.impuesto },
-        ],
-        [
-            { text: '', columnSpan: 5 },
-            { text: 'Total', align: AlignmentType.CENTER },
-            { text: options.total },
-        ],
-    ];
 
 
     return new Promise(async (resolve, reject) => {
