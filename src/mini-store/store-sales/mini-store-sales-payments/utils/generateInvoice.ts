@@ -37,7 +37,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
         RegimenFiscal: emisor.fiscalRegime,
     });
     await cfd.emisor(emi);
-
+    let total: number = 0;
     const recep = new Receptor(receptor);
     await cfd.receptor(recep);
     let totalTranslado = '0.00';
@@ -55,11 +55,11 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
         } as XmlConceptoAttributes);
 
         concepto.traslado({
-            Base: subQuantity(detalle.importe, detalle.discount).toString(),
+            Base: subQuantity(detalle.importe, detalle.discount, -5).toString(),
             Impuesto: '002',
             TipoFactor: 'Tasa',
             TasaOCuota: '0.160000',
-            Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount), .16).toString(),
+            Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount, -5), .16, -5).toString(),
         });
         totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discount), .16), totalTranslado).toString();
         await cfd.concepto(concepto);

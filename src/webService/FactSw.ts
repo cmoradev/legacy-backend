@@ -33,9 +33,9 @@ export class FactSw {
         });
     }
 
-    public async facturar(xml: string): Promise<any> {
+    public async facturar(xml: string): Promise<StampV4> {
         return new Promise((resolve, reject) => {
-            console.log(xml);
+            // console.log(xml);
             const obj = {
                 url: this.url,
                 user: 'amisael.amir.misael@gmail.com',
@@ -47,10 +47,25 @@ export class FactSw {
                     console.log(err);
                     reject(err);
                 } else {
-                    console.log(data);
+                   // console.log(data);
                     resolve(data);
                 }
             });
         });
     }
+}
+
+interface StampV4 {
+    data: {
+        cadenaOriginalSAT: string
+        noCertificadoSAT: string
+        noCertificadoCFDI: string
+        uuid: string
+        selloSAT: string
+        selloCFDI: string
+        fechaTimbrado: string
+        qrCode: string
+        cfdi: string
+    },
+    status: string
 }

@@ -1,3 +1,5 @@
+import { BusinessNameFamily } from '../../../../school-colegio-ingles/family-fiscal/entities/BusinessNameFamily.entity';
+
 export interface InvoiceReport {
     status: string;
     billingDate: Date | string;
@@ -26,18 +28,14 @@ export interface QuerySimpleReport {
     branchOfficeId: number;
 }
 
-export interface QueryBilling {
+export class QueryBilling {
     saleId: number;
     salePaymentId: number;
+    branchOfficeSettingId: number;
     usoCfdi: {
         value: string,
         label: string
-    },
-    receiver: {
-        id: number
-        businessName: string;
-        rfc: string;
-        email: string;
-    },
-    agentBillingId: number
+    };
+    receiver: BusinessNameFamily
+    agentBillingId: number;
 }

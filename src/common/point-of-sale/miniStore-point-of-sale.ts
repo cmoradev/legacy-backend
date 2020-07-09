@@ -1,5 +1,5 @@
-import { amountAfterExtraCharge, mulQuantity, subQuantity, sumQuantity } from './point-of-sale';
-import { ivaFromFinalAmount } from '../numbers';
+import { amountAfterExtraCharge, divQuantity, mulQuantity, subQuantity, sumQuantity } from './point-of-sale';
+import { divNumber, ivaFromFinalAmount } from '../numbers';
 import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { ItemRecibo } from '../types/recibo.interface';
@@ -59,6 +59,7 @@ export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, 
     });
     return generalizedConcepts;
 };
+
 export interface FacturaDetalles {
     total: number | string;
     subtotal: number | string;
@@ -66,13 +67,62 @@ export interface FacturaDetalles {
     detalles: any[];
 
 }
+
 export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
     const detalles = saleDetails(details || []);
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
     console.log(ivaFromFinalAmount(pago));
     const resultad = {
-        total: sumQuantity(pago, '0.01'),
+        total: 0,
+        subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
+        discount: 0,
+        detalles: [],
+    };
+    const generalizedConcepts: any[] = [];
+    details.forEach((detail) => {
+        const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
+        const discount = mulQuantity(discountTotal, base);
+        const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
+
+        resultad.discount = sumQuantity(discount, resultad.discount);
+
+        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discount, detail.quantity)));
+        console.log(nativeCalculo);
+        // const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
+        // const importe = (+nativeCalculo.amountWithOutIva + (discount / detail.quantity)) * detail.quantity;
+        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discount, detail.quantity));
+        const importe = mulQuantity(unitPrice, detail.quantity);
+
+        resultad.subtotal = sumQuantity(importe, resultad.subtotal);
+        const concept = {
+            quantity: detail.quantity,
+            claveProd: detail.productCode,
+            unidad: 'E48', // detail.miniStoreProduct.unity,
+            descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
+            unitPrice: unitPrice, // mulQuantity(conceptPrice, base),
+            discount,
+            importe: importe, // mulQuantity(totalAmountConcept(detail), base),
+        };
+        const totalconcetp = sumQuantity(subQuantity(importe, discount).toString(), mulQuantity(subQuantity(importe, discount), .16));
+        resultad.total = sumQuantity(resultad.total, totalconcetp);
+        generalizedConcepts.push(concept);
+    });
+    resultad.detalles = generalizedConcepts;
+    console.log('total: ' + resultad.total);
+    return resultad;
+};
+
+/*
+export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
+    const saleAmount = saleDetails(details || []).total;
+
+    const pago = payment.quantity - payment.change;
+    const base = ((payment.quantity - payment.change) / saleAmount) || 1;
+
+    console.log(ivaFromFinalAmount(pago));
+    const resultad = {
+        total: pago,
         subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
         discount: 0,
         detalles: [],
@@ -82,21 +132,28 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
         const discount = (discountTotal * base).toFixed(2);
         const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
+
         resultad.discount = sumQuantity(discount, resultad.discount);
-        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), discount));
+        // @ts-ingore
+        const nativeCalculo = ivaFromFinalAmount((conceptPrice * base).toFixed(2));
         console.log(nativeCalculo);
-        const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
+        const importe = mulQuantity(nativeCalculo.amountWithOutIva, detail.quantity);
+        // const importe = (+nativeCalculo.amountWithOutIva + discount) * detail.quantity;
+
         resultad.subtotal = sumQuantity(importe, resultad.subtotal);
-        generalizedConcepts.push({
+        const conceptos = {
             quantity: detail.quantity,
             claveProd: detail.productCode,
             unidad: 'E48', // detail.miniStoreProduct.unity,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
-            unitPrice: sumQuantity(nativeCalculo.amountWithOutIva, discount), // mulQuantity(conceptPrice, base),
+            unitPrice: nativeCalculo.amountWithOutIva, // mulQuantity(conceptPrice, base),
             discount,
-            importe, // mulQuantity(totalAmountConcept(detail), base),
-        });
+            importe: importe, // mulQuantity(totalAmountConcept(detail), base),
+        };
+        console.log(conceptos);
+        generalizedConcepts.push(conceptos);
     });
     resultad.detalles = generalizedConcepts;
     return resultad;
 };
+*/

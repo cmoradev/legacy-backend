@@ -1,16 +1,21 @@
-import { add, mul, round, sub } from 'exact-math';
+import { add, div, mul, round, sub } from 'exact-math';
 import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 
-export const mulQuantity = (price: number | string, quantity: number | string) => {
-    return +round(mul(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
+export const mulQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
+    return +round(mul(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
 };
 
-export const subQuantity = (price: number | string, quantity: number | string) => {
-    return +round(sub(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
+export const subQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
+    return +round(sub(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
 };
 
-export const sumQuantity = (price: number | string, quantity: number | string) => {
-    return +round(add(price, quantity, { returnString: true }), -2, { returnString: true, trim: false });
+export const sumQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
+    return +round(add(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
+
+};
+
+export const divQuantity = (dividiendo: number | string, divisor: number | string, decimal: number = -2) => {
+    return +round(div(dividiendo, divisor, { returnString: true }), decimal, { returnString: true, trim: false });
 };
 
 export function amountAfterExtraCharge(amount: number, discounts: Array<{

@@ -8,7 +8,7 @@ interface IvaFromFinalAmount {
 
 interface IvaAndFinalAmount {
     originalAmount: string | number;
-    amountWithIva: string  | number;
+    amountWithIva: string | number;
     iva: string | number;
 }
 
@@ -17,22 +17,22 @@ interface Onliva {
     iva: string;
 }
 
-export function ivaFromFinalAmount(amount: number | string, ivaDefault: number = 1.16): IvaFromFinalAmount {
+export function ivaFromFinalAmount(amount: number | string, decimal: number = -2, ivaDefault: number = 1.16): IvaFromFinalAmount {
     if (amount > 0) {
         const finalAmount = amount;
         let amountWithOutIva = 0;
         let iva = 0;
         if (ivaDefault === 0) {
-            amountWithOutIva = round(mul(amount, 1, { returnString: true }), -2, {
+            amountWithOutIva = round(mul(amount, 1, { returnString: true }), decimal, {
                 returnString: true,
                 trim: false,
             });
         } else {
-            amountWithOutIva = round(div(amount, ivaDefault, { returnString: true }), -2, {
+            amountWithOutIva = round(div(amount, ivaDefault, { returnString: true }), decimal, {
                 returnString: true,
                 trim: false,
             });
-            iva = round(sub(finalAmount, amountWithOutIva, { returnString: true }), -2, {
+            iva = round(sub(finalAmount, amountWithOutIva, { returnString: true }), decimal, {
                 returnString: true,
                 trim: false,
             });

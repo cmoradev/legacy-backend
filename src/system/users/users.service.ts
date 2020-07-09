@@ -4,7 +4,6 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
-import { StatusInvoce } from '../../invoice/interface/StatusInvoce.interface';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 

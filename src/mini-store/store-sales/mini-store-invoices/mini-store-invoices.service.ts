@@ -14,6 +14,7 @@ import { ReportInvoice } from './reports/invoice.report';
 import { InvoiceReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
@@ -33,6 +34,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         invoice.idCancelingAgent = data.idCancelingAgent;
         invoice.agentCanceling = await this.userService.findOne({ id: data.idCancelingAgent });
         invoice.reasonCancellation = data.reasonCancellation;
+        // @ts-ignore
         invoice.cancellationDate = fecha;
         return await this.repo.save(invoice);
     }
@@ -54,12 +56,22 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         return await this.repo.save(invoice);
     }
 
-    async findInvoiceByPaymeny(paymentId: number) {
-        const miniStoreInvoice = this.repo.createQueryBuilder('invoice');
-        miniStoreInvoice.leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment');
-        miniStoreInvoice.where('miniStoreSalePayment.id= :paymentId', {
-            paymentId,
-        });
+    async findInvoiceByPayment(options: { paymentId: number, status: StatusInvoce, stamping?: number }) {
+        const invoice = this.repo.createQueryBuilder('invoice')
+            .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
+            .where('invoice.status = :status', {
+                status: options.status,
+            })
+            .where('miniStoreSalePayment.id= :paymentId', {
+                paymentId: options.paymentId,
+            });
+        if (options.stamping) {
+            invoice.andWhere('miniStoreSalePayment.stamping= :stamping', {
+                stamping: options.stamping,
+            });
+        }
+
+        return await invoice.getOne();
     }
 
     async reportInvoice(query: {
