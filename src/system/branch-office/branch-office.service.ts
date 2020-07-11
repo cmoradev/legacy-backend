@@ -10,4 +10,12 @@ export class BranchOfficeService extends TypeOrmCrudService<BranchOffice> {
     constructor(
         @InjectRepository(BranchOffice, ColegioDBNameConnection) repo: Repository<BranchOffice>,
     ) { super(repo); }
+
+    async findBranch(id: number) {
+        return await this.repo.findOne({
+            where: {
+                id,
+            },
+        });
+    }
 }

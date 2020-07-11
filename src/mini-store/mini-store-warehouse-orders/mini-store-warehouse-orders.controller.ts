@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res, Post, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { CrudController, Crud } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
@@ -8,13 +8,17 @@ import { TableRowsDocx } from '../../common/office/docx/Table.docx';
 import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
+import { BranchOfficeService } from "../../system/branch-office/branch-office.service";
 import { ivaFromFinalAmount } from '../../common/numbers';
 import * as moment from 'moment';
 import { TableCell } from 'pdfmake/interfaces';
+import * as fs from 'fs';
+import * as nodemailer from 'nodemailer';
+import { pdfMailDto } from './dto/pdfMail.dto'
 
 @Crud({
     model: {
-        type: MiniStoreWarehouseOrder,
+        type: MiniStoreWarehouseOrder
     },
     query: {
         join: {
@@ -25,11 +29,13 @@ import { TableCell } from 'pdfmake/interfaces';
         },
     },
 })
+
 @Controller()
 export class MiniStoreWarehouseOrdersController implements CrudController<MiniStoreWarehouseOrder> {
     constructor(
         readonly service: MiniStoreWarehouseOrdersService,
         readonly serviceInvoiceCompany: BranchOfficeSettingService,
+        readonly branchOfficeService: BranchOfficeService,
     ) {
     }
 
@@ -40,7 +46,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
     @Get('pdf/:id')
     public async pdf(@Param() params, @Res() res: Response) {
         const body: TableCell[][] = [];
-        const order = await this.service.getOrdersWeareHouse(params.id);
+        const order = await this.service.getOrdersWeareHouse(params.order.id);
         let i = 1;
         let total = 0;
         for (const product of order.miniStoreWareHouseOrdersProducts) {
@@ -85,6 +91,97 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
         // res.end(, 'binary');
         // res.send(body);
         // res.setHeader('Content-Disposition', 'attachment; filename="' + encodeURIComponent(pdfBuffer.toString()) + '"');
+    }
+
+    @Post('pdf/:id')
+    public async sendpdf(@Param() params, @Res() res: Response, @Body() requestData: pdfMailDto) {
+        console.log("data params", requestData);
+        const body: TableCell[][] = [];
+        const order = await this.service.getOrdersWeareHouse(params.id);
+        let i = 1;
+        let total = 0;
+        for (const product of order.miniStoreWareHouseOrdersProducts) {
+            const prod: TableCell[] = [];
+
+            const totalProd = round(mul(product.requestedAmount, product.providerPriceReceived), -2, {
+                returnString: true,
+                trim: false,
+            });
+            prod.push({ text: i.toString(), align: AlignmentType.CENTER });
+            prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
+            prod.push({ text: product.requestedAmount.toString() });
+            prod.push({ text: this.unitProd(product.miniStoreProduct.unitMeasurement).name });
+            prod.push({ text: product.receivedAmount.toString() });
+            prod.push({ text: round(product.providerPriceReceived, -2, { returnString: true, trim: false }) });
+            prod.push({ text: totalProd });
+            body.push(prod);
+            i += 1;
+            total = add(total, totalProd);
+        }
+        const company = await this.serviceInvoiceCompany.findCompany(3);
+        const bufferPdf = await orderRecipe({
+            business: company.businessName,
+            provider: order.miniStoreWarehouseProvider.business,
+            applicant: order.agentCreator?.name ?? 'No asignado',
+            orderDate: moment(order.orderDate).format('DD/MM/YYYY'),
+            arrivalDate: moment(order.expectedDate).format('DD/MM/YYYY'),
+            requestedItems: body.length,
+            folio: order.folio,
+            body,
+            total,
+            impuesto: ivaFromFinalAmount(total).iva,
+            subtotal: ivaFromFinalAmount(total).amountWithOutIva,
+        });
+
+        const dir = '/tmp';
+        let tempName = Math.random().toString(36).substring(7) + '.pdf';
+
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' })
+        } else {
+            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' })
+        }
+
+        const currentBranch = await this.branchOfficeService.findBranch(requestData.currentBranch);
+        const emailResponse = await this.sendOrderPdf({emisorMail: `smtps://${currentBranch.Email}:${currentBranch.EmailPass}@smtp.gmail.com`, fileName:tempName, receptorEmail: requestData.mail })
+
+        try {
+            fs.unlinkSync(`${dir}/${tempName}`);
+            console.log( `successfully deleted ${dir}/${tempName}`);
+        } catch (err) {
+            // handle the error
+        }
+
+        if(emailResponse && emailResponse.accepted && emailResponse.accepted.length > 0){
+            res.send({ response: true });
+        } else {
+            res.send({ response: false });
+        }
+    }
+
+    public async sendOrderPdf(options: { emisorMail: string, fileName: string, receptorEmail: string }){
+
+        const {emisorMail, fileName, receptorEmail } = options;
+
+        const transporter =  nodemailer.createTransport(emisorMail);
+        const mailOptions = {
+            transporterName: emisorMail,
+            to: receptorEmail,
+            from: 'developers@colegioinglesplaya.com',
+            subject: 'Orden de Pedido',
+            text: 'PDF con la orden de pedido',
+            html: '<div> Por este medio adjuntamos la orden de pedido. Saludos. </div>',
+            attachments:[
+                {
+                    filename: `${fileName}`,
+                    path: `/tmp/${fileName}`
+                }
+            ],
+        }
+
+        return await transporter.sendMail(mailOptions);
+
     }
 
     public unitProd(unitMeasurement: number) {
