@@ -48,6 +48,7 @@
     "@nestjsx/crud": "^4.2.0",
     "@nestjsx/crud-typeorm": "^4.2.0",
     "@signati/core": "^3.3.6",
+    "@signati/pdf": "0.0.3",
     "@signati/sdk-node": "0.0.2",
     "@types/express-mysql-session": "^1.2.2",
     "@types/moment-timezone": "^0.5.13",

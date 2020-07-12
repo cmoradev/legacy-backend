@@ -27,6 +27,12 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         super(repo);
     }
 
+    async updateInvoice(data: MiniStoreInvoice) {
+        let invoice = await this.repo.findOne({ id: data.id });
+        invoice = { ...data };
+        return await this.repo.save(invoice);
+    }
+
     async changeStautsInvoice(data: ChangeStatusInvoiceMiniStoreInterface) {
         const fecha = MomentTimeZone().tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
         const invoice = await this.repo.findOne({ id: data.id });
