@@ -35,7 +35,7 @@ export async function orderRecipe(options: {
     total: string | number,
     subtotal: string | number,
     impuesto: string | number,
-}): Promise<string> {
+}): Promise<any> {
 
     options.body.unshift([
         {
@@ -330,8 +330,8 @@ export async function orderRecipe(options: {
 
     return new Promise(async (resolve, reject) => {
         const pdf1 = createPdf(docDefinition);
-        pdf1.getBase64((result) => {
-            resolve(result);
-        });
+            pdf1.getBase64((result) => {
+                resolve(result);
+            });
     });
 }

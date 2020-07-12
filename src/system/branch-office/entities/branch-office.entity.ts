@@ -83,6 +83,30 @@ export class BranchOffice {
     })
     BranchType: BranchType;
 
+    @Column({
+        type: 'varchar',
+        nullable: true,
+        name: 'email',
+        default: '',
+    })
+    Email: string;
+
+    @Column({
+        type: 'varchar',
+        nullable: true,
+        name: 'email_user',
+        default: '',
+    })
+    UserEmail: string;
+
+    @Column({
+        type: 'varchar',
+        nullable: true,
+        name: 'email_pass',
+        default: '',
+    })
+    EmailPass: string;
+
     @OneToMany(() => Level, (level) => level.campus)
     levels: Level[];
 

@@ -2,4 +2,5 @@ import { ISendMailOptions } from '@nest-modules/mailer/dist/interfaces/send-mail
 
 export interface MailerOptions extends ISendMailOptions {
     attachments?: any[];
+    transporterName?: string
 }
