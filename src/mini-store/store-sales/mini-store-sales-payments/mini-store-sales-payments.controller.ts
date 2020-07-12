@@ -143,12 +143,33 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         },
                         invoiceDetails);
                     const timbrado = await sw.facturar(xml);
-                    // console.log(timbrado);
+                    await this.service.updatePayment({
+                        id: query.salePaymentId,
+                        stamping: 1,
+                    } as MiniStoreSalePayment);
+                    // Guardamos el xml
+                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
+                    // Obtenemos los datos del xml
+                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
+                    // 4. Actualizamos los campos con la factura los datos del sat
+                    invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
+                    invoiceFind.status = 1;
+                    invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+                    await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
+                    // Generamos el PDf del xml
+                    const pdf = new PDF(pathXml, 0, {
+                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                    });
+                    await pdf.save('/var/www/pdc/comprobantes/tienda', timbrado.data.uuid.toUpperCase());
+                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    // falta regresar el dato
                     response.send({ rf: invoiceFind.id, msg: xml, debug: timbrado });
                 }
             } else {
                 const factura = new MiniStoreInvoice();
                 factura.uuid = '';
+                factura.folio = 'FACTURA-1'; // checar
                 factura.businessName = query.receiver.businessName;
                 factura.rfc = query.receiver.rfc;
                 factura.agentBilling = {
@@ -178,13 +199,17 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         },
                         invoiceDetails);
                     const timbrado = await sw.facturar(xml);
+                    await this.service.updatePayment({
+                        id: query.salePaymentId,
+                        stamping: 1,
+                    } as MiniStoreSalePayment);
                     // Guardamos el xml
-                    const pathXml = '/home/misael/Documents/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
                     const cfdi: XmlCdfi = await XmlToJson(pathXml);
                     // 4. Actualizamos los campos con la factura los datos del sat
-                    invoice.uuid = timbrado.data.uuid;
+                    invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;
                     invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
                     await this.miniStoreInvoicesService.updateInvoice(invoice);
@@ -192,7 +217,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                     });
-                    await pdf.save('/home/misael/Documents/', timbrado.data.uuid.toUpperCase());
+                    await pdf.save('/var/www/pdc/comprobantes/tienda', timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     // falta regresar el dato
                     response.send({ r: invoice.id, msg: xml, debug: 0 });

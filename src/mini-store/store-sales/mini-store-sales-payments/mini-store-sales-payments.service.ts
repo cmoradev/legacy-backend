@@ -11,6 +11,7 @@ import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/
 import moment = require('moment');
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
+import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -213,4 +214,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         };
     }
 
+    async updatePayment(data: MiniStoreSalePayment) {
+        let payment = await this.repo.findOne({ id: data.id });
+        payment = { ...data };
+        return await this.repo.save(payment);
+    }
 }
