@@ -31,6 +31,7 @@ export interface QuerySimpleReport {
 export class QueryBilling {
     saleId: number;
     salePaymentId: number;
+    branchOfficeId: number;
     branchOfficeSettingId: number;
     usoCfdi: {
         value: string,

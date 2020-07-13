@@ -18,6 +18,8 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
 import { XmlCdfi } from '@signati/core';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -174,7 +176,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             } else {
                 const factura = new MiniStoreInvoice();
                 factura.uuid = '';
-                factura.folio = 'FACTURA-1'; // checar
                 factura.businessName = query.receiver.businessName;
                 factura.rfc = query.receiver.rfc;
                 factura.agentBilling = {
@@ -187,6 +188,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 factura.miniStoreSalePayment = {
                     id: query.salePaymentId,
                 } as MiniStoreSalePayment;
+                factura.invoiceBranchOffice = {
+                    id: query.branchOfficeId,
+                } as BranchOffice;
+                factura.invoiceBranchOfficeSet = {
+                    id: query.branchOfficeSettingId,
+                } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
 
                 if (invoice) {
