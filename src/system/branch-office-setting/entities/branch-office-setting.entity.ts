@@ -132,6 +132,20 @@ export class BranchOfficeSetting {
     })
     serieFacturacion: string;
 
+
+    @Column('int', {
+        nullable: true,
+        name: 'folio_cotizacion',
+    })
+    folioCotizacion: number;
+
+    @Column('varchar', {
+        nullable: false,
+        length: 5,
+        name: 'serie_cotizacion',
+    })
+    serieCotizacion: string;
+
     @Column('varchar', {
         nullable: false,
         length: 100,
