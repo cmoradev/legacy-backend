@@ -47,7 +47,7 @@ export class FactSw {
                     console.log(err);
                     reject(err);
                 } else {
-                   // console.log(data);
+                    // console.log(data);
                     resolve(data);
                 }
             });
@@ -56,16 +56,18 @@ export class FactSw {
 }
 
 interface StampV4 {
-    data: {
-        cadenaOriginalSAT: string
-        noCertificadoSAT: string
-        noCertificadoCFDI: string
-        uuid: string
-        selloSAT: string
-        selloCFDI: string
-        fechaTimbrado: string
-        qrCode: string
-        cfdi: string
-    },
-    status: string
+    data: TDF;
+    status: string;
+}
+
+export interface TDF {
+    cadenaOriginalSAT: string;
+    noCertificadoSAT: string;
+    noCertificadoCFDI: string;
+    uuid: string;
+    selloSAT: string;
+    selloCFDI: string;
+    fechaTimbrado: string;
+    qrCode: string;
+    cfdi: string;
 }
