@@ -1,9 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceType } from '../enums/invoice-type.enum';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice {
@@ -103,13 +105,6 @@ export class MiniStoreInvoice {
     })
     status: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_plantel',
-    })
-    idPlantel: number;
-
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
@@ -136,6 +131,17 @@ export class MiniStoreInvoice {
     /**
      * Relación que corresponde al la factura al pago de una venta
      */
+
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStoreInvoice)
+    @JoinColumn({
+        name: 'invoiceBranchOfficeId',
+        referencedColumnName: 'id',
+    })
+    invoiceBranchOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettStoreInvoice)
+    invoiceBranchOfficeSet: BranchOfficeSetting;
+
     @ManyToOne(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreInvoices)
     miniStoreSalePayment: MiniStoreSalePayment;
 

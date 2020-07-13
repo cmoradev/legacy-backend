@@ -23,6 +23,7 @@ import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/scho
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 
 @Entity('facturacion_empresas')
 export class BranchOfficeSetting {
@@ -209,6 +210,9 @@ export class BranchOfficeSetting {
 
     @OneToMany(() => MiniStoreSalePayment, (payments) => payments.storePaymentOffice)
     branchOfficeSettStorePayment: MiniStoreSalePayment[];
+
+    @OneToMany(() => MiniStoreInvoice, (payments) => payments.invoiceBranchOfficeSet)
+    branchOfficeSettStoreInvoice: MiniStoreInvoice[];
 
     @OneToMany(() => SchoolCharge, (sale) => sale.schoolBranchOfficeSet)
     branchOfficeSetSchool: SchoolCharge[];

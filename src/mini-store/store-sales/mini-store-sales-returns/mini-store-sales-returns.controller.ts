@@ -129,7 +129,7 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
                     id: saleReturn.sale.id,
                 },
                 invoiceType: InvoiceType.expenses,
-                idPlantel: 1,
+                // idPlantel: 1,
                 saleReturn: {
                     id: dataToInvoice.idSaleReturn,
                 },

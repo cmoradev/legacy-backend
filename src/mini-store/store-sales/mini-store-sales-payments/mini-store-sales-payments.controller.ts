@@ -156,7 +156,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
                     invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-                    await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
+                    const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
@@ -164,7 +164,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     // falta regresar el dato
-                    response.send({ rf: invoiceFind.id, msg: xml, debug: timbrado });
+
+                    respuesta.stamping = true;
+                    respuesta.msg = 'Pago Facturado';
+                    respuesta.invoice = resultInvoice;
+                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    response.send(respuesta);
                 }
             } else {
                 const factura = new MiniStoreInvoice();
@@ -182,7 +187,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 factura.miniStoreSalePayment = {
                     id: query.salePaymentId,
                 } as MiniStoreSalePayment;
-                factura.idPlantel = 1;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
 
                 if (invoice) {
@@ -212,7 +216,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;
                     invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-                    await this.miniStoreInvoicesService.updateInvoice(invoice);
+                    const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
@@ -220,7 +224,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     // falta regresar el dato
-                    response.send({ r: invoice.id, msg: xml, debug: 0 });
+
+                    respuesta.stamping = true;
+                    respuesta.msg = 'Pago Facturado';
+                    respuesta.invoice = resultInvoiceFirst;
+                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    response.send(respuesta);
                 }
             }
 

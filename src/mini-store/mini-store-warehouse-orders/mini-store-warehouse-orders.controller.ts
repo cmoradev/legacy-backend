@@ -8,24 +8,24 @@ import { TableRowsDocx } from '../../common/office/docx/Table.docx';
 import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
-import { BranchOfficeService } from "../../system/branch-office/branch-office.service";
+import { BranchOfficeService } from '../../system/branch-office/branch-office.service';
 import { ivaFromFinalAmount } from '../../common/numbers';
 import * as moment from 'moment';
 import { TableCell } from 'pdfmake/interfaces';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
-import { pdfMailDto } from './dto/pdfMail.dto'
+import { pdfMailDto } from './dto/pdfMail.dto';
 
 @Crud({
     model: {
-        type: MiniStoreWarehouseOrder
+        type: MiniStoreWarehouseOrder,
     },
     query: {
         join: {
             miniStoreWareHouseOrdersProducts: {},
             'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
             miniStoreWarehouseProvider: {},
-            BranchOfficeMiniStoreWherehouse: {}
+            BranchOfficeMiniStoreWherehouse: {},
         },
     },
 })
@@ -95,7 +95,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
     @Post('pdf/:id')
     public async sendpdf(@Param() params, @Res() res: Response, @Body() requestData: pdfMailDto) {
-        console.log("data params", requestData);
+        console.log('data params', requestData);
         const body: TableCell[][] = [];
         const order = await this.service.getOrdersWeareHouse(params.id);
         let i = 1;
@@ -134,37 +134,41 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
         });
 
         const dir = '/tmp';
-        let tempName = Math.random().toString(36).substring(7) + '.pdf';
+        const tempName = Math.random().toString(36).substring(7) + '.pdf';
 
-        if (!fs.existsSync(dir)){
+        if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
-            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' })
+            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' });
         } else {
-            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' })
+            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' });
         }
 
         const currentBranch = await this.branchOfficeService.findBranch(requestData.currentBranch);
-        const emailResponse = await this.sendOrderPdf({emisorMail: `smtps://${currentBranch.Email}:${currentBranch.EmailPass}@smtp.gmail.com`, fileName:tempName, receptorEmail: requestData.mail })
+        const emailResponse = await this.sendOrderPdf({
+            emisorMail: `smtps://${currentBranch.Email}:${currentBranch.EmailPass}@smtp.gmail.com`,
+            fileName: tempName,
+            receptorEmail: requestData.mail,
+        });
 
         try {
             fs.unlinkSync(`${dir}/${tempName}`);
-            console.log( `successfully deleted ${dir}/${tempName}`);
+            console.log(`successfully deleted ${dir}/${tempName}`);
         } catch (err) {
             // handle the error
         }
 
-        if(emailResponse && emailResponse.accepted && emailResponse.accepted.length > 0){
+        if (emailResponse && emailResponse.accepted && emailResponse.accepted.length > 0) {
             res.send({ response: true });
         } else {
             res.send({ response: false });
         }
     }
 
-    public async sendOrderPdf(options: { emisorMail: string, fileName: string, receptorEmail: string }){
+    public async sendOrderPdf(options: { emisorMail: string, fileName: string, receptorEmail: string }) {
 
-        const {emisorMail, fileName, receptorEmail } = options;
+        const { emisorMail, fileName, receptorEmail } = options;
 
-        const transporter =  nodemailer.createTransport(emisorMail);
+        const transporter = nodemailer.createTransport(emisorMail);
         const mailOptions = {
             transporterName: emisorMail,
             to: receptorEmail,
@@ -172,13 +176,13 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             subject: 'Orden de Pedido',
             text: 'PDF con la orden de pedido',
             html: '<div> Por este medio adjuntamos la orden de pedido. Saludos. </div>',
-            attachments:[
+            attachments: [
                 {
                     filename: `${fileName}`,
-                    path: `/tmp/${fileName}`
-                }
+                    path: `/tmp/${fileName}`,
+                },
             ],
-        }
+        };
 
         return await transporter.sendMail(mailOptions);
 
