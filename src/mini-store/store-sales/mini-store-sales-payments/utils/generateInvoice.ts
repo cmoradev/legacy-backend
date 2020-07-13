@@ -9,8 +9,8 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 export async function GenerateInvoice(data: { serie: string; folio: string, },
                                       emisor: BranchOfficeSetting,
                                       receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
-    const key = '/home/misael/Documents/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046.key';
-    const cer = '/home/misael/Documents/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046s.cer';
+    const key = '/home/misael/Documentos/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046.key';
+    const cer = '/home/misael/Documentos/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046s.cer';
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
     const comprobante: Comprobante = {
         Serie: data.serie,

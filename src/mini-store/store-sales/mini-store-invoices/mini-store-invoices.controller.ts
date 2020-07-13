@@ -51,7 +51,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     @Get('/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
-            const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.xml');
+            const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.pdf');
             // data:application/pdf;base64,
             // data:application/pdf;filename=generated.pdf;base64,
             res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
