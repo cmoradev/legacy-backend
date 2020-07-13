@@ -55,7 +55,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         const pdf = new PDF(xml, 0, {
             lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
         });
-        await pdf.save('/home/misael/Documents/proyectos', 'dalia');
+        await pdf.save('/home/misael/Documents/proyectos/test');
         return 'amir';
     }
 
@@ -161,7 +161,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda', timbrado.data.uuid.toUpperCase());
+                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     // falta regresar el dato
                     response.send({ rf: invoiceFind.id, msg: xml, debug: timbrado });
@@ -217,13 +217,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda', timbrado.data.uuid.toUpperCase());
+                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     // falta regresar el dato
                     response.send({ r: invoice.id, msg: xml, debug: 0 });
                 }
             }
-
 
             // console.log(await sw.getToken());
             // const timbrado = await sw.facturar(xml);
@@ -232,7 +231,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             // response.send(xml);
 
         } catch (e) {
-            console.log(e);
             response.send(e);
         }
     }
