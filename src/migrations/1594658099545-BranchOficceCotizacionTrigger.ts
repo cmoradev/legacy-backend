@@ -12,7 +12,8 @@ export class BranchOficceCotizacionTrigger1594658099545 implements MigrationInte
 			SET @prefix = (SELECT folio_cotizacion FROM facturacion_empresas WHERE id= NEW.storeBranchOfficeSetId AND active = true); 
             SET @consecutive = (SELECT serie_cotizacion FROM facturacion_empresas WHERE id= NEW.storeBranchOfficeSetId AND active = true); 
             SET @consecutive = (SELECT @consecutive + 1); SET @folio = (CONCAT_WS('-', @prefix, @consecutive)); 
-            SET NEW.folio = @folio; UPDATE facturacion_empresas SET serie_nota = @consecutive WHERE id= NEW.storeBranchOfficeSetId AND active = true;
+            SET NEW.folio = @folio; 
+            UPDATE facturacion_empresas SET serie_cotizacion = @consecutive WHERE id= NEW.storeBranchOfficeSetId AND active = true;
 		ELSE
 			SET @prefix = (SELECT foliaje_nota FROM facturacion_empresas WHERE id= NEW.storeBranchOfficeSetId AND active = true); 
             SET @consecutive = (SELECT serie_nota FROM facturacion_empresas WHERE id= NEW.storeBranchOfficeSetId AND active = true); 
