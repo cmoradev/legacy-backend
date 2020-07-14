@@ -38,11 +38,26 @@ declare module 'sw-sdk-nodejs' {
         StampV4(xml: string, callback: (error, data) => void, isb64?: boolean): this;
     }
 
+    // tslint:disable-next-line:max-classes-per-file
+    class CancelationServiceClass {
+
+        Set(params): this;
+
+        CancelationByCSD(callback: (error, data) => void): this;
+
+        CancelationByXML(callback: (error, data) => void): this;
+
+        _setXML(params): void;
+
+        _setCSD(params): void;
+
+    }
+
     export const Authentication: AuthenticationClass;
 
     export const StampService: StampServiceClass;
 
-    export function CancelationService(): void;
+    export const CancelationService: CancelationServiceClass;
 
     // tslint:disable-next-line:max-classes-per-file
     export function AccountBalance(): void;
