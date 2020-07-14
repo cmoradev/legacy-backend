@@ -3,8 +3,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class BranchOficceCotizacionTrigger1594658099545 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(`DROP TRIGGER IF EXISTS before_venta_insert`);
         await queryRunner.query(`
-        DROP TRIGGER IF EXISTS before_venta_insert;
         CREATE TRIGGER before_venta_insert 
             BEFORE INSERT ON tie_ventas
             FOR EACH ROW  
