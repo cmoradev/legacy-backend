@@ -108,6 +108,18 @@ export class BranchOfficeSetting {
     })
     foliajePago: string;
 
+    @Column('varchar', {
+        nullable: true,
+        name: 'folio_cotizacion',
+    })
+    folioCotizacion: number;
+
+    @Column('int', {
+        nullable: true,
+        name: 'serie_cotizacion',
+    })
+    serieCotizacion: number;
+
     @Column('int', {
         nullable: true,
         name: 'serie_nota',
@@ -132,20 +144,6 @@ export class BranchOfficeSetting {
         name: 'serie_facturacion',
     })
     serieFacturacion: string;
-
-
-    @Column('int', {
-        nullable: true,
-        name: 'folio_cotizacion',
-    })
-    folioCotizacion: number;
-
-    @Column('varchar', {
-        nullable: false,
-        length: 5,
-        name: 'serie_cotizacion',
-    })
-    serieCotizacion: string;
 
     @Column('varchar', {
         nullable: false,
