@@ -11,6 +11,7 @@ import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.enti
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
 import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoices.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
+import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { BranchOfficeSettingModule } from '../../../system/branch-office-setting
             User,
             InvoiceMethodPayment,
             MiniStoreSale,
+            MiniStoreInvoice,
             SalesReturns,
         ], ColegioDBNameConnection),
         forwardRef(() => MiniStoreInvoicesModule),

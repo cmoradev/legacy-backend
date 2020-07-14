@@ -175,6 +175,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 }
             } else {
                 const factura = new MiniStoreInvoice();
+                factura.folio = '';
                 factura.uuid = '';
                 factura.businessName = query.receiver.businessName;
                 factura.rfc = query.receiver.rfc;
@@ -195,7 +196,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     id: query.branchOfficeSettingId,
                 } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
-
+                console.log(invoice);
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {

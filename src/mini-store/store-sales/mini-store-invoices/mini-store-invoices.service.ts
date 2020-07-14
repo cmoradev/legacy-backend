@@ -58,8 +58,9 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     async saveInvoice(data: MiniStoreInvoice) {
-        const invoice = this.repo.create(data);
-        return await this.repo.save(invoice);
+        const invoice = await this.repo.create(data);
+        const result = await this.repo.save(invoice);
+        return await this.repo.findOne({ id: result.id });
     }
 
     async findInvoiceByPayment(options: { paymentId: number, status: StatusInvoce, stamping?: number }) {
