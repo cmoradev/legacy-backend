@@ -65,8 +65,8 @@ export class FactSw {
                 uuid: options.uuid,
                 password: options.password,
                 rfc: options.rfc,
-                b64Cer: 'MIIFxTCCA62gAwIBAgIUMjAwMDEwMDAwMDAzMDAwMjI4MTUwDQYJKoZIhvcNAQELBQAwggFmMSAwHgYDVQQDDBdBL...',
-                b64Key: 'MIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQIAgEAAoIBAQACAggAMBQGCCqGSIb3DQMHBAgwggS9A...',
+                b64Cer: options.cer,
+                b64Key: options.key,
             };
 
             const cancelation = CancelationService.Set(params);

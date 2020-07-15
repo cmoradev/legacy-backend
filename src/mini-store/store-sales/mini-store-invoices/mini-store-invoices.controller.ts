@@ -14,6 +14,7 @@ import * as fs from 'fs';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
+import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -41,12 +42,12 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         // 'emisorRFC': 'WSI1503194J6',
         // 'RFC': 'GUCE910701NHA',
     };
+    token: string = 'T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbXB3YVZxTHdOdHAwVXY2NTdJb1hkREtXTzE3dk9pMmdMdkFDR2xFWFVPUXpTUm9mTG1ySXdZbFNja3FRa0RlYURqbzdzdlI2UUx1WGJiKzViUWY2dnZGbFloUDJ6RjhFTGF4M1BySnJ4cHF0YjUvbmRyWWpjTkVLN3ppd3RxL0dJPQ.T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbFlVcU92YUJTZWlHU3pER1kySnlXRTF4alNUS0ZWcUlVS0NhelhqaXdnWTRncklVSWVvZlFZMWNyUjVxYUFxMWFxcStUL1IzdGpHRTJqdS9Zakw2UGQ5cytTOVNTYWUwRUhQQVZBOVZ6QWVXdlAzTkhuOGdldExTNDlsWC9vR1cyR2JUWlg0L3dFa3FHeWhwam5mcGxWRHFSTUYzNCsrNXBKcHFpY3NRTTNKSnJ4Nm51c2pLVDMwclFYMTB0NmViTUFiTStVaFVzZ3lJWnIwUDB0TUQ2WjN2YXRMdUR6Nzlwckt3b09MNlgvNnJnVk5nNE84VzhVNmR5ODRTc2JvOHIxYmRKelR0M3NOdStUK2VWaStWeW4wUGxhVDdONWFuSWRibW9oOGNiYTkwRmMxaWhsUVNpSE1YcjMzUUJuRlBod3VPaVdzUVRSR29CQVRMOGpFNk5talQzS21kc1BaY1FNVjNtcDZrY3JFUjdJWnVyZWhDWlcwRE82Z1BFbUFndHJvQVRvdWtFVnppODFSdzhxSkZncHRIeDd1UkRxQWIwVzlkY2lOWGJreitEc1VQNTdXRStNcVFBTXVKYlluT0hPUWJPcXc2a2NaMnJBaDF2S21ZMzQyeDFYcll0Q1pSbkh3K2hiSy9kUjlBPT0.FwcVM47f9GR_009Nw4mLxYJnf__DHO04PwEaJrAAzy8';
 
-    constructor(
-        readonly service: MiniStoreInvoicesService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private  smartWeb: FactSw,
-    ) {
+    constructor(readonly service: MiniStoreInvoicesService,
+                readonly branchOfficeSettingService: BranchOfficeSettingService,
+                readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
+                private  smartWeb: FactSw) {
     }
 
     get base(): CrudController<MiniStoreInvoice> {
@@ -66,13 +67,42 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Post('cancel-invoice')
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
-        // this.smartWeb.
-        console.log(cancelInvoiceSw);
-        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-            where: {
-                id: cancelInvoiceSw.branchOfficeSettingId,
-            },
-        });
+        try {
+
+            const invoce = await this.service.findOne({
+                where: {
+                    id: cancelInvoiceSw.invoiceId,
+                },
+                relations: ['miniStoreSalePayment'],
+            });
+
+            const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+                where: {
+                    id: cancelInvoiceSw.branchOfficeSettingId,
+                },
+            });
+            const payment = await this.miniStoreSalesPaymentsService.findOne({
+                where: {
+                    id: invoce.miniStoreSalePayment.id,
+                },
+            });
+
+            const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
+            const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
+            console.log(key);
+            console.log(cer);
+            const result = await this.smartWeb.cancelarCSD({
+                rfc: branchOfficeSett.rfc,
+                password: branchOfficeSett.password,
+                uuid: invoce.uuid,
+                cer,
+                key,
+                token: this.token,
+            });
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     @Get('report-invoice')

@@ -14,7 +14,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
         MiniStoreSalesPaymentsModule,
         UsersModule,
         BranchOfficeSettingModule,
-
+        MiniStoreSalesPaymentsModule,
     ],
     exports: [MiniStoreInvoicesService],
     providers: [MiniStoreInvoicesService, SmartWeb],
