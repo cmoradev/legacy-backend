@@ -11,6 +11,7 @@ import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import { JwtGuard } from 'src/system/auth/guards/jwt.guard';
 import * as fs from 'fs';
+import { FactSw } from '../../../webService/FactSw';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -41,6 +42,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     constructor(
         readonly service: MiniStoreInvoicesService,
+        private  smartWeb: FactSw,
     ) {
     }
 
@@ -52,7 +54,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.pdf');
-            // data:application/pdf;base64,
             // data:application/pdf;filename=generated.pdf;base64,
             res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
         } catch (e) {
@@ -61,8 +62,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     @Post('cancel-invoice')
-    async cancelInvoiceSwSmartweb(@Body() cancelInvoice: CancelInvoiceMinistoreDto, @Res() res: Response) {
-
+    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceMinistoreDto, @Res() res: Response) {
+        // this.smartWeb.
+        console.log(cancelInvoiceSw);
     }
 
     @Get('report-invoice')

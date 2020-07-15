@@ -44,6 +44,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
         readonly miniStoreInvoicesService: MiniStoreInvoicesService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private  smartWeb: FactSw,
     ) {
     }
 
@@ -97,7 +98,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
-        const sw = new FactSw();
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
@@ -144,7 +144,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             UsoCFDI: query.usoCfdi.value,
                         },
                         invoiceDetails);
-                    const timbrado = await sw.facturar(xml);
+                    const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
@@ -210,7 +210,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             UsoCFDI: query.usoCfdi.value,
                         },
                         invoiceDetails);
-                    const timbrado = await sw.facturar(xml);
+                    const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,

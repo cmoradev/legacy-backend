@@ -24,15 +24,10 @@ import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-scho
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('facturacion_empresas')
-export class BranchOfficeSetting {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class BranchOfficeSetting extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -148,9 +143,23 @@ export class BranchOfficeSetting {
     @Column('varchar', {
         nullable: false,
         length: 100,
-        name: 'certificado_facturacion',
+        name: 'cer_csd',
     })
-    certificateInvoice: string;
+    cerCSD: string;
+
+    @Column('varchar', {
+        nullable: false,
+        length: 100,
+        name: 'key_csd',
+    })
+    keyCSD: string;
+
+    @Column('varchar', {
+        nullable: false,
+        length: 100,
+        name: 'password',
+    })
+    password: string;
 
     @Column('varchar', {
         nullable: false,
@@ -166,12 +175,6 @@ export class BranchOfficeSetting {
     })
     bankAccount: string;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_plantel',
-    })
-    idPlantel: number;
-
     @Column({
         type: 'enum',
         nullable: false,
@@ -180,21 +183,6 @@ export class BranchOfficeSetting {
         default: 3,
     })
     typeModule: TypeModule;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @Column('tinyint', {
         nullable: false,

@@ -7,16 +7,17 @@ import { MiniStoreSalesPaymentsModule } from '../mini-store-sales-payments/mini-
 import { UsersModule } from '../../../system/users/users.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { SmartWeb } from '../../../Provider/swsmart.provider';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
-    MiniStoreSalesPaymentsModule,
-    UsersModule,
-    BranchOfficeSettingModule,
-  ],
-  exports: [MiniStoreInvoicesService],
-  providers: [MiniStoreInvoicesService],
-  controllers: [MiniStoreInvoicesController],
+    imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
+        MiniStoreSalesPaymentsModule,
+        UsersModule,
+        BranchOfficeSettingModule,
+    ],
+    exports: [MiniStoreInvoicesService],
+    providers: [MiniStoreInvoicesService, SmartWeb],
+    controllers: [MiniStoreInvoicesController],
 })
 export class MiniStoreInvoicesModule {
 }

@@ -12,6 +12,7 @@ import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-p
 import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoices.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import { SmartWeb } from '../../../Provider/swsmart.provider';
 
 @Module({
     imports: [
@@ -29,7 +30,7 @@ import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-inv
     ],
     exports: [MiniStoreSalesPaymentsService],
     controllers: [MiniStoreSalesPaymentsController],
-    providers: [MiniStoreSalesPaymentsService],
+    providers: [MiniStoreSalesPaymentsService, SmartWeb],
 })
 export class MiniStoreSalesPaymentsModule {
 }
