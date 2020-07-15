@@ -1,4 +1,4 @@
-export class CancelInvoiceMinistoreDto {
+export class CancelInvoiceSwDto {
     cashierId: number;
     uuid: string;
     invoiceId: number;

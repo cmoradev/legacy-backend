@@ -52,15 +52,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         return this;
     }
 
-    @Get('/amir')
-    async test() {
-        const xml = '/home/misael/Documents/misproyectos/signati/Node/pdf/server/amir.xml';
-        const pdf = new PDF(xml, 0, {
-            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
-        });
-        await pdf.save('/home/misael/Documents/proyectos/test');
-        return 'amir';
-    }
 
     @Get('/simple-report')
     async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {

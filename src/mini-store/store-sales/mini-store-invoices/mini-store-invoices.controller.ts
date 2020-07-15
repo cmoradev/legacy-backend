@@ -12,6 +12,8 @@ import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import { JwtGuard } from 'src/system/auth/guards/jwt.guard';
 import * as fs from 'fs';
 import { FactSw } from '../../../webService/FactSw';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -42,6 +44,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     constructor(
         readonly service: MiniStoreInvoicesService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
         private  smartWeb: FactSw,
     ) {
     }
@@ -62,9 +65,14 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     @Post('cancel-invoice')
-    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceMinistoreDto, @Res() res: Response) {
+    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         // this.smartWeb.
         console.log(cancelInvoiceSw);
+        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+            where: {
+                id: cancelInvoiceSw.branchOfficeSettingId,
+            },
+        });
     }
 
     @Get('report-invoice')
