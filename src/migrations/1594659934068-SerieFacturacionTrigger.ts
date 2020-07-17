@@ -1,8 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class SerieFacturacionTrigger1594659934068 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(`DROP TRIGGER IF EXISTS before_factura_insert`);
         await queryRunner.query(`
         CREATE TRIGGER before_factura_insert 
     BEFORE INSERT ON tie_facturas

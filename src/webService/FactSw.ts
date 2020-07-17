@@ -1,4 +1,4 @@
-import { StampService, Authentication } from 'sw-sdk-nodejs';
+import { StampService, Authentication, CancelationService } from 'sw-sdk-nodejs';
 
 export class FactSw {
 
@@ -13,7 +13,6 @@ export class FactSw {
     getToken() {
         return new Promise((resolve, reject) => {
 
-
             const obj = {
                 url: 'http://services.test.sw.com.mx',
                 user: 'demo',
@@ -23,10 +22,8 @@ export class FactSw {
             const auth = Authentication.auth(obj);
             auth.Token((err, data) => {
                 if (err) {
-                    console.log(err);
                     reject(err);
                 } else {
-                    console.log(data);
                     resolve(data);
                 }
             });
@@ -44,10 +41,39 @@ export class FactSw {
             const stamp = StampService.Set(obj);
             stamp.StampV4(xml, (err, data) => {
                 if (err) {
-                    console.log(err);
                     reject(err);
                 } else {
                     // console.log(data);
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    public async cancelarCSD(options: {
+        token: string,
+        uuid: string,
+        password: string,
+        rfc: string,
+        cer: string,
+        key: string,
+    }): Promise<Cancelacion> {
+        return new Promise((resolve, reject) => {
+            const params = {
+                url: 'http://services.test.sw.com.mx',
+                token: options.token,
+                uuid: options.uuid,
+                password: options.password,
+                rfc: options.rfc,
+                b64Cer: options.cer,
+                b64Key: options.key,
+            };
+
+            const cancelation = CancelationService.Set(params);
+            cancelation.CancelationByCSD((err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
                     resolve(data);
                 }
             });
@@ -70,4 +96,18 @@ export interface TDF {
     fechaTimbrado: string;
     qrCode: string;
     cfdi: string;
+}
+
+export interface Cancelacion {
+    data: DataCancelacion;
+    status: string;
+}
+
+interface DataCancelacion {
+    acuse: string;
+    uuid: AnyData;
+}
+
+interface AnyData {
+    [key: string]: string;
 }

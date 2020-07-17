@@ -20,6 +20,7 @@ import * as fs from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -43,22 +44,14 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         readonly service: MiniStoreSalesPaymentsService,
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
         readonly miniStoreInvoicesService: MiniStoreInvoicesService,
+        readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private  smartWeb: FactSw,
     ) {
     }
 
     get base(): CrudController<MiniStoreSalePayment> {
         return this;
-    }
-
-    @Get('/amir')
-    async test() {
-        const xml = '/home/misael/Documents/misproyectos/signati/Node/pdf/server/amir.xml';
-        const pdf = new PDF(xml, 0, {
-            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
-        });
-        await pdf.save('/home/misael/Documents/proyectos/test');
-        return 'amir';
     }
 
     @Get('/simple-report')
@@ -97,9 +90,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
-        const sw = new FactSw();
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+        const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
                 id: query.branchOfficeSettingId,
@@ -144,7 +137,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             UsoCFDI: query.usoCfdi.value,
                         },
                         invoiceDetails);
-                    const timbrado = await sw.facturar(xml);
+                    const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
@@ -165,8 +158,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
-
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoice;
@@ -175,6 +168,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 }
             } else {
                 const factura = new MiniStoreInvoice();
+                factura.folio = '';
                 factura.uuid = '';
                 factura.businessName = query.receiver.businessName;
                 factura.rfc = query.receiver.rfc;
@@ -195,7 +189,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     id: query.branchOfficeSettingId,
                 } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
-
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {
@@ -209,7 +202,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             UsoCFDI: query.usoCfdi.value,
                         },
                         invoiceDetails);
-                    const timbrado = await sw.facturar(xml);
+                    const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
@@ -230,6 +223,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
 
                     respuesta.stamping = true;

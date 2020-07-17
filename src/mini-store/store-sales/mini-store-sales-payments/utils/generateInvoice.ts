@@ -9,8 +9,8 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 export async function GenerateInvoice(data: { serie: string; folio: string, },
                                       emisor: BranchOfficeSetting,
                                       receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
-    const key = '/home/misael/Documentos/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046.key';
-    const cer = '/home/misael/Documentos/misproyectos/signati/Node/cfdi/server/api/controllers/cfdi/FIEL_XAMA620210DQ5_20190528163522/CSD_XAMA620210DQ5_20190528180059/CSD_ALBA_XKARAJAM_MENDEZ_XAMA620210DQ5_20190528_180046s.cer';
+    const key = '/var/www/CSD/' + emisor.keyCSD;
+    const cer = '/var/www/CSD/' + emisor.cerCSD;
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
     const comprobante: Comprobante = {
         Serie: data.serie,
@@ -37,7 +37,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
         RegimenFiscal: emisor.fiscalRegime,
     });
     await cfd.emisor(emi);
-    let total: number = 0;
+    const total: number = 0;
     const recep = new Receptor(receptor);
     await cfd.receptor(recep);
     let totalTranslado = '0.00';
@@ -77,7 +77,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     });
     await cfd.impuesto(impuesto);
     await cfd.certificar(cer);
-    await cfd.sellar(key, '12345678a');
+    await cfd.sellar(key, emisor.password);
     const xml = await cfd.getXmlCdfi();
     return xml;
 }

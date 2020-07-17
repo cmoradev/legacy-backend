@@ -11,6 +11,14 @@ import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import { JwtGuard } from 'src/system/auth/guards/jwt.guard';
 import * as fs from 'fs';
+import { FactSw } from '../../../webService/FactSw';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
+import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import { QueryBilling } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import * as nodemailer from 'nodemailer';
+import Mail = require('nodemailer/lib/mailer');
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -38,10 +46,13 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         // 'emisorRFC': 'WSI1503194J6',
         // 'RFC': 'GUCE910701NHA',
     };
+    token: string = 'T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbXB3YVZxTHdOdHAwVXY2NTdJb1hkREtXTzE3dk9pMmdMdkFDR2xFWFVPUXpTUm9mTG1ySXdZbFNja3FRa0RlYURqbzdzdlI2UUx1WGJiKzViUWY2dnZGbFloUDJ6RjhFTGF4M1BySnJ4cHF0YjUvbmRyWWpjTkVLN3ppd3RxL0dJPQ.T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbFlVcU92YUJTZWlHU3pER1kySnlXRTF4alNUS0ZWcUlVS0NhelhqaXdnWTRncklVSWVvZlFZMWNyUjVxYUFxMWFxcStUL1IzdGpHRTJqdS9Zakw2UGQ5cytTOVNTYWUwRUhQQVZBOVZ6QWVXdlAzTkhuOGdldExTNDlsWC9vR1cyR2JUWlg0L3dFa3FHeWhwam5mcGxWRHFSTUYzNCsrNXBKcHFpY3NRTTNKSnJ4Nm51c2pLVDMwclFYMTB0NmViTUFiTStVaFVzZ3lJWnIwUDB0TUQ2WjN2YXRMdUR6Nzlwckt3b09MNlgvNnJnVk5nNE84VzhVNmR5ODRTc2JvOHIxYmRKelR0M3NOdStUK2VWaStWeW4wUGxhVDdONWFuSWRibW9oOGNiYTkwRmMxaWhsUVNpSE1YcjMzUUJuRlBod3VPaVdzUVRSR29CQVRMOGpFNk5talQzS21kc1BaY1FNVjNtcDZrY3JFUjdJWnVyZWhDWlcwRE82Z1BFbUFndHJvQVRvdWtFVnppODFSdzhxSkZncHRIeDd1UkRxQWIwVzlkY2lOWGJreitEc1VQNTdXRStNcVFBTXVKYlluT0hPUWJPcXc2a2NaMnJBaDF2S21ZMzQyeDFYcll0Q1pSbkh3K2hiSy9kUjlBPT0.FwcVM47f9GR_009Nw4mLxYJnf__DHO04PwEaJrAAzy8';
 
-    constructor(
-        readonly service: MiniStoreInvoicesService,
-    ) {
+    constructor(readonly service: MiniStoreInvoicesService,
+                readonly branchOfficeSettingService: BranchOfficeSettingService,
+                readonly branchOffice: BranchOfficeService,
+                readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
+                private  smartWeb: FactSw) {
     }
 
     get base(): CrudController<MiniStoreInvoice> {
@@ -52,7 +63,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.pdf');
-            // data:application/pdf;base64,
             // data:application/pdf;filename=generated.pdf;base64,
             res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
         } catch (e) {
@@ -60,98 +70,67 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('/prueba')
-    public async prueba(@Res() res: Response) {
-
-        const cfdi = new CfdiClass({
-            Serie: 'A',
-            Folio: '2303240',
-            // Fecha: 'asdasdasd',
-            // condicionesDePago: 'CONTADO',
-            // condicionesDePago: 'PUE',
-            SubTotal: '1850',
-            Descuento: '175.00',
-            Moneda: 'MXN',
-            Total: '1943.00',
-            TipoDeComprobante: 'I',
-            FormaPago: '03',
-            MetodoPago: 'PUE',
-            LugarExpedicion: '77728',
-        });
-
-        cfdi.emisor({
-            Rfc: 'TCM970625MB1',
-            Nombre: 'FACTURACION MODERNA SA DE CV',
-            RegimenFiscal: '601',
-        });
-        cfdi.receptor({
-            Rfc: 'XAXX010101000',
-            Nombre: 'PUBLICO EN GENERAL',
-            UsoCFDI: 'G01',
-        });
-        const concept = new Concepto({
-            ClaveProdServ: '01010101',
-            NoIdentificacion: 'AULOG001',
-            Cantidad: '5',
-            ClaveUnidad: 'H87',
-            Unidad: 'Pieza',
-            Descripcion: 'Aurriculares USB Logitech',
-            ValorUnitario: '350.00',
-            Importe: '1750.00',
-            Descuento: '175.00',
-        });
-        concept.traslado({
-            Base: '1575.00',
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
-            Importe: '252.00',
-        });
-        cfdi.concepto(concept);
-
-        const concept2 = new Concepto({
-            ClaveProdServ: '43201800',
-            NoIdentificacion: 'USB',
-            Cantidad: '1',
-            ClaveUnidad: 'H87',
-            Unidad: 'Pieza',
-            Descripcion: 'Memoria USB 32gb marca Kingston',
-            ValorUnitario: '100.00',
-            Importe: '100.00',
-        });
-        concept2.traslado({
-            Base: '100.00',
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
-            Importe: '16.00',
-        });
-        cfdi.concepto(concept2);
-
-        const impuesto = new Impuesto({
-            totalImpuestosTrasladados: '268.00',
-        });
-        impuesto.traslados([{
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
-            Importe: '268.00',
-        }]);
-        cfdi.impuesto(impuesto);
-
-        // tslint:disable-next-line:no-shadowed-variable no-console
-        console.log(cfdi.validateAll());
+    @Post('cancel-invoice')
+    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
-            const data: any = await axios.post('http://localhost:4000/timbrado/facturar', cfdi.getCfdi()).then((res: any) => {
-                return res.data;
+
+            const invoce = await this.service.findOne({
+                where: {
+                    id: cancelInvoiceSw.invoiceId,
+                },
+                relations: ['miniStoreSalePayment'],
             });
-            res.send(data);
+            const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
+            const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+                where: {
+                    id: cancelInvoiceSw.branchOfficeSettingId,
+                },
+            });
+            const payment = await this.miniStoreSalesPaymentsService.findOne({
+                where: {
+                    id: invoce.miniStoreSalePayment.id,
+                },
+            });
+
+            const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
+            const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
+            console.log(key);
+            console.log(cer);
+            const result = await this.smartWeb.cancelarCSD({
+                rfc: branchOfficeSett.rfc,
+                password: branchOfficeSett.password,
+                uuid: invoce.uuid,
+                cer,
+                key,
+                token: this.token,
+            });
+
+            if (cancelInvoiceSw.sendMail) {
+                for (const email of cancelInvoiceSw.mails) {
+                    const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                }
+            }
+            console.log(result);
         } catch (e) {
-            res.send(e).status(400);
+            console.log(e);
         }
+    }
 
-        //  res.contentType('application/xml');
+    @Post('/send-invoice')
+    async sendMail(@Body() data: {
+        email: string;
+        uuid: string;
+        branchOfficeId: number;
+        branchOfficeSettingId: number;
+    }) {
+        try {
 
+            const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
+            const message = this.service.sendMail(currentBranch, data.uuid, data.email);
+            console.log(message);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     @Get('report-invoice')

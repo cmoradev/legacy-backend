@@ -24,15 +24,10 @@ import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-scho
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('facturacion_empresas')
-export class BranchOfficeSetting {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class BranchOfficeSetting extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -108,6 +103,18 @@ export class BranchOfficeSetting {
     })
     foliajePago: string;
 
+    @Column('varchar', {
+        nullable: true,
+        name: 'folio_cotizacion',
+    })
+    folioCotizacion: number;
+
+    @Column('int', {
+        nullable: true,
+        name: 'serie_cotizacion',
+    })
+    serieCotizacion: number;
+
     @Column('int', {
         nullable: true,
         name: 'serie_nota',
@@ -133,26 +140,26 @@ export class BranchOfficeSetting {
     })
     serieFacturacion: string;
 
-
-    @Column('int', {
-        nullable: true,
-        name: 'folio_cotizacion',
-    })
-    folioCotizacion: number;
-
     @Column('varchar', {
         nullable: false,
-        length: 5,
-        name: 'serie_cotizacion',
+        length: 100,
+        name: 'cer_csd',
     })
-    serieCotizacion: string;
+    cerCSD: string;
 
     @Column('varchar', {
         nullable: false,
         length: 100,
-        name: 'certificado_facturacion',
+        name: 'key_csd',
     })
-    certificateInvoice: string;
+    keyCSD: string;
+
+    @Column('varchar', {
+        nullable: false,
+        length: 100,
+        name: 'password',
+    })
+    password: string;
 
     @Column('varchar', {
         nullable: false,
@@ -168,12 +175,6 @@ export class BranchOfficeSetting {
     })
     bankAccount: string;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_plantel',
-    })
-    idPlantel: number;
-
     @Column({
         type: 'enum',
         nullable: false,
@@ -182,21 +183,6 @@ export class BranchOfficeSetting {
         default: 3,
     })
     typeModule: TypeModule;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @Column('tinyint', {
         nullable: false,
