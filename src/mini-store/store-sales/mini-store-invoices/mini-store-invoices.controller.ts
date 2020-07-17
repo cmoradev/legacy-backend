@@ -105,14 +105,69 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 token: this.token,
             });
 
-            if (cancelInvoiceSw.sendMail) {
-                for (const email of cancelInvoiceSw.mails) {
-                    const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+
+            const status = result.data.uuid[invoce.uuid];
+            /** Nuevos estados para la venta:
+             * 0.- Sin facturar
+             * 1.- Facturado
+             * 2.- Cancelado
+             * 3.- En cola
+             * 4.- Rechazado
+             */
+            if (status === '201' || +status === 201) {
+                if (cancelInvoiceSw.sendMail) {
+                    for (const email of cancelInvoiceSw.mails) {
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                    }
                 }
+                invoce.status = 2;
+                payment.stamping = 0;
+                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
+
+                res.send({
+                    msg: 'Cancelado',
+                    payment: updatePay,
+                    invoice: updateInvoice,
+                }).status(200);
             }
-            console.log(result);
+            if (status === '202' || +status === 202) {
+                if (cancelInvoiceSw.sendMail) {
+                    for (const email of cancelInvoiceSw.mails) {
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                    }
+                }
+                invoce.status = 2;
+                payment.stamping = 0;
+                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
+                res.send({
+                    msg: 'Cancelado',
+                    payment: updatePay,
+                    invoice: updateInvoice,
+                }).status(200);
+            }
+            if (status === '203' || +status === 203) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+            if (status === '205' || +status === 205) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+
         } catch (e) {
-            console.log(e);
+            res.send({
+                msg: e,
+                payment: '',
+                invoice: '',
+            }).status(400);
         }
     }
 
