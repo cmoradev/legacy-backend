@@ -4,6 +4,7 @@ import { BranchOffice } from './entities/branch-office.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { Like } from "typeorm";
 
 @Injectable()
 export class BranchOfficeService extends TypeOrmCrudService<BranchOffice> {
@@ -17,5 +18,9 @@ export class BranchOfficeService extends TypeOrmCrudService<BranchOffice> {
                 id,
             },
         });
+    }
+
+    async getBranchLike(name:string){
+        return await this.repo.findOne({name:Like(`%${name}%`)});
     }
 }

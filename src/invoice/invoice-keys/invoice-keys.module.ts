@@ -9,6 +9,7 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
   imports: [TypeOrmModule.forFeature([InvoiceKeys], ColegioDBNameConnection)],
   providers: [InvoiceKeysService],
   controllers: [InvoiceKeysController],
+  exports: [InvoiceKeysService]
 })
 export class InvoiceKeysModule {
 }
