@@ -13,6 +13,7 @@ import { MiniStoreInvoicesModule } from '../mini-store-invoices/mini-store-invoi
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
+import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
             SalesReturns,
         ], ColegioDBNameConnection),
         forwardRef(() => MiniStoreInvoicesModule),
+        BranchOfficeModule,
         BranchOfficeSettingModule,
         InvoiceMethodsPaymentsModule,
     ],

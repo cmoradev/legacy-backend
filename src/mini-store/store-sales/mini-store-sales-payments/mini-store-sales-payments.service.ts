@@ -12,6 +12,9 @@ import moment = require('moment');
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import * as nodemailer from 'nodemailer';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import Mail from 'nodemailer/lib/mailer';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -218,5 +221,37 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         let payment = await this.repo.findOne({ id: data.id });
         payment = { ...data };
         return await this.repo.save(payment);
+    }
+
+    async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: currentBranch.Email,
+                pass: currentBranch.EmailPass,
+            },
+        });
+        const pathInvoice = '/var/www/pdc/comprobantes/tienda/' + uuid.toUpperCase();
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: currentBranch.Email,
+            subject: 'Tienda  - Comprobantes de pago CFDI',
+            text: 'CFDI',
+            html: '<div> <h2>Gracias por su compra</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Tienda Escolar del Colegio Inglés</p></div>',
+            attachments: [
+                {
+                    filename: uuid.toUpperCase() + '.xml',
+                    path: `${pathInvoice}.xml`,
+                },
+                {
+                    filename: uuid.toUpperCase() + '.pdf',
+                    path: `${pathInvoice}.pdf`,
+                },
+            ],
+        };
+        return await transporter.sendMail(mailOptions);
     }
 }

@@ -20,6 +20,7 @@ import * as fs from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -43,6 +44,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         readonly service: MiniStoreSalesPaymentsService,
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
         readonly miniStoreInvoicesService: MiniStoreInvoicesService,
+        readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
         private  smartWeb: FactSw,
     ) {
@@ -51,7 +53,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     get base(): CrudController<MiniStoreSalePayment> {
         return this;
     }
-
 
     @Get('/simple-report')
     async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
@@ -91,6 +92,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+        const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
                 id: query.branchOfficeSettingId,
@@ -156,8 +158,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
-
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoice;
@@ -187,7 +189,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     id: query.branchOfficeSettingId,
                 } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
-                console.log(invoice);
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {
@@ -222,6 +223,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
 
                     respuesta.stamping = true;

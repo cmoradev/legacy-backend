@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
@@ -7,7 +7,7 @@ import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini
 import { SaleReport } from './types/SaleReport';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { QueryBilling, QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { ManyToOne } from 'typeorm';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';

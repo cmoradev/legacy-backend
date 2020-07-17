@@ -15,6 +15,10 @@ import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import { QueryBilling } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import * as nodemailer from 'nodemailer';
+import Mail = require('nodemailer/lib/mailer');
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -46,6 +50,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     constructor(readonly service: MiniStoreInvoicesService,
                 readonly branchOfficeSettingService: BranchOfficeSettingService,
+                readonly branchOffice: BranchOfficeService,
                 readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
                 private  smartWeb: FactSw) {
     }
@@ -75,7 +80,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 },
                 relations: ['miniStoreSalePayment'],
             });
-
+            const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
                     id: cancelInvoiceSw.branchOfficeSettingId,
@@ -99,7 +104,30 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 key,
                 token: this.token,
             });
+
+            if (cancelInvoiceSw.sendMail) {
+                for (const email of cancelInvoiceSw.mails) {
+                    const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                }
+            }
             console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    @Post('/send-invoice')
+    async sendMail(@Body() data: {
+        email: string;
+        uuid: string;
+        branchOfficeId: number;
+        branchOfficeSettingId: number;
+    }) {
+        try {
+
+            const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
+            const message = this.service.sendMail(currentBranch, data.uuid, data.email);
+            console.log(message);
         } catch (e) {
             console.log(e);
         }
