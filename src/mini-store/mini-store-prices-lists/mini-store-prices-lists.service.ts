@@ -4,10 +4,15 @@ import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { Like } from "typeorm";
 
 @Injectable()
 export class MiniStorePricesListsService extends TypeOrmCrudService<MiniStorePriceList> {
     constructor(
         @InjectRepository(MiniStorePriceList, ColegioDBNameConnection)readonly repo: Repository<MiniStorePriceList>,
     ) { super(repo); }
+
+    public async getListLike(name:string){
+        return await this.repo.findOne({name: Like(`%${name}%`)});
+    }
 }
