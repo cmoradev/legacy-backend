@@ -200,6 +200,10 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                     filename: uuid.toUpperCase() + '.pdf',
                     path: `${pathInvoice}.pdf`,
                 },
+                {
+                    filename: '/var/www/pdc/comprobantes/tienda/' + uuid + '-acuse.xml',
+                    path: `${uuid}-acuse.xml`,
+                },
             ],
         };
         return await transporter.sendMail(mailOptions);

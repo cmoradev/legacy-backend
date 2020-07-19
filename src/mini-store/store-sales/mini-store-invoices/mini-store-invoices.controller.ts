@@ -115,12 +115,15 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
              * 4.- Rechazado
              */
             if (status === '201' || +status === 201) {
+                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
                         const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
                     }
                 }
                 invoce.status = 2;
+                invoce.reasonCancellation = cancelInvoiceSw.reason;
+                // invoce. = cancelInvoiceSw.reason;
                 payment.stamping = 0;
                 const updateInvoice = await this.service.updateInvoice(invoce);
                 const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
