@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreDetailsExtraCharges } from './entities/mini-store-details-extra-charges.entity';
 import { MiniStoreDetailsExtraChargesService } from './mini-store-details-extra-charges.service';
-
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreDetailsExtraCharges,

@@ -22,7 +22,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSalePayment,

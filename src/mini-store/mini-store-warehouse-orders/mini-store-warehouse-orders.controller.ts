@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Res, Post, Body, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CrudController, Crud } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
@@ -15,7 +15,8 @@ import { TableCell } from 'pdfmake/interfaces';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
 import { pdfMailDto } from './dto/pdfMail.dto';
-
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreWarehouseOrder,

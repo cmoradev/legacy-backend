@@ -20,7 +20,7 @@ import { BranchOfficeService } from '../../../system/branch-office/branch-office
 import * as nodemailer from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreInvoice,
