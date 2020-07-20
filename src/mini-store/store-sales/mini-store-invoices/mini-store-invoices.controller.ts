@@ -9,7 +9,6 @@ import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
 import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
 import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
-import { JwtGuard } from 'src/system/auth/guards/jwt.guard';
 import * as fs from 'fs';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -19,6 +18,7 @@ import { QueryBilling } from '../mini-store-sales-payments/interface/InvoiceMini
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import * as nodemailer from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @UseGuards(JwtGuard)
 @Crud({
