@@ -2,9 +2,9 @@ import { StampService, Authentication, CancelationService } from 'sw-sdk-nodejs'
 
 export class FactSw {
 
-    private url = process.env.NODE_ENV === 'development' ? 'http://services.test.sw.com.mx' : 'https://services.sw.com.mx';
-    private user = process.env.NODE_ENV === 'development' ? 'amisael.amir.misael@gmail.com' : 'developers@colegioinglesplaya.com';
-    private password = process.env.NODE_ENV === 'development' ? 'sw.amir' : 'Web/1507*deV';
+    private url = process.env.NODE_ENV === 'desarrollo' ? 'http://services.test.sw.com.mx' : 'https://services.sw.com.mx';
+    private user = process.env.NODE_ENV === 'desarrollo' ? 'amisael.amir.misael@gmail.com' : 'developers@colegioinglesplaya.com';
+    private password = process.env.NODE_ENV === 'desarrollo' ? 'sw.amir' : 'Web/1507*deV';
 
     constructor() {
         //  this.factura = new FacturacionModerna(this.option);
