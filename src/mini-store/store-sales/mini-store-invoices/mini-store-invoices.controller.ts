@@ -94,8 +94,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
             const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
-            console.log(key);
-            console.log(cer);
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -104,7 +102,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 key,
                 token: this.token,
             });
-
 
             const status = result.data.uuid[invoce.uuid];
             /** Nuevos estados para la venta:
@@ -135,6 +132,8 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 }).status(200);
             }
             if (status === '202' || +status === 202) {
+                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
                         const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
