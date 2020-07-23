@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service';
@@ -15,7 +15,8 @@ import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invo
 import { InvoiceType } from '../mini-store-invoices/enums/invoice-type.enum';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-status.enum';
-
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SalesReturns,

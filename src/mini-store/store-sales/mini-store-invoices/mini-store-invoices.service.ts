@@ -181,14 +181,14 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
             to: email,
             from: currentBranch.Email,
             subject, // 'Tienda - Solicitud de cancelación del Comprobantes de pago CFDI',
-            text: body,
             html: `<div>
                     <h2>Notificación de cancelación de CFDI</h2><br>
                     <h4>Motivo de cancelación: </h4>
-                     <p>${'mitivo'}</p>
+                     <p>${body}</p>
                     <p>Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.</p>
                     <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, 
                      transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.</p>
+                     <p>En caso de ser cancelable sin autorizacion se le adjuntara el acuse de cancelación.</p>
                     <br> 
                     </div>`,
             attachments: [
@@ -199,6 +199,10 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 {
                     filename: uuid.toUpperCase() + '.pdf',
                     path: `${pathInvoice}.pdf`,
+                },
+                {
+                    filename: `${uuid}-acuse.xml`,
+                    path: pathInvoice + '-acuse.xml',
                 },
             ],
         };

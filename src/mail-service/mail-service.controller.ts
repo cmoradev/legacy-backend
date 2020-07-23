@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { MailService } from './mail-service.service';
 import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-
+import { JwtGuard } from '../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Controller()
 export class MailServiceController {
     constructor(private readonly mailservice: MailService) {

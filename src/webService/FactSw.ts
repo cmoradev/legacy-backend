@@ -2,9 +2,9 @@ import { StampService, Authentication, CancelationService } from 'sw-sdk-nodejs'
 
 export class FactSw {
 
-    private url = 'http://services.test.sw.com.mx';
-    private user = 'demo';
-    private password = '123456789';
+    private url = process.env.NODE_ENV === 'desarrollo' ? 'http://services.test.sw.com.mx' : 'https://services.sw.com.mx';
+    private user = process.env.NODE_ENV === 'desarrollo' ? 'amisael.amir.misael@gmail.com' : 'developers@colegioinglesplaya.com';
+    private password = process.env.NODE_ENV === 'desarrollo' ? 'sw.amir' : 'Web/1507*deV';
 
     constructor() {
         //  this.factura = new FacturacionModerna(this.option);
@@ -14,9 +14,9 @@ export class FactSw {
         return new Promise((resolve, reject) => {
 
             const obj = {
-                url: 'http://services.test.sw.com.mx',
-                user: 'demo',
-                password: '123456789',
+                url: this.url,
+                user: this.user,
+                password: this.password,
             };
 
             const auth = Authentication.auth(obj);
@@ -35,8 +35,8 @@ export class FactSw {
             // console.log(xml);
             const obj = {
                 url: this.url,
-                user: 'amisael.amir.misael@gmail.com',
-                password: 'sw.amir',
+                user: this.user,
+                password: this.password,
             };
             const stamp = StampService.Set(obj);
             stamp.StampV4(xml, (err, data) => {
@@ -60,7 +60,7 @@ export class FactSw {
     }): Promise<Cancelacion> {
         return new Promise((resolve, reject) => {
             const params = {
-                url: 'http://services.test.sw.com.mx',
+                url: this.url,
                 token: options.token,
                 uuid: options.uuid,
                 password: options.password,

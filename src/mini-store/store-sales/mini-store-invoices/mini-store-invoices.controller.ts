@@ -9,7 +9,6 @@ import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
 import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
 import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
-import { JwtGuard } from 'src/system/auth/guards/jwt.guard';
 import * as fs from 'fs';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -19,8 +18,9 @@ import { QueryBilling } from '../mini-store-sales-payments/interface/InvoiceMini
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import * as nodemailer from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreInvoice,
@@ -94,8 +94,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
             const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
-            console.log(key);
-            console.log(cer);
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -105,14 +103,73 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 token: this.token,
             });
 
-            if (cancelInvoiceSw.sendMail) {
-                for (const email of cancelInvoiceSw.mails) {
-                    const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+            const status = result.data.uuid[invoce.uuid];
+            /** Nuevos estados para la venta:
+             * 0.- Sin facturar
+             * 1.- Facturado
+             * 2.- Cancelado
+             * 3.- En cola
+             * 4.- Rechazado
+             */
+            if (status === '201' || +status === 201) {
+                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+                if (cancelInvoiceSw.sendMail) {
+                    for (const email of cancelInvoiceSw.mails) {
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                    }
                 }
+                invoce.status = 2;
+                invoce.reasonCancellation = cancelInvoiceSw.reason;
+                // invoce. = cancelInvoiceSw.reason;
+                payment.stamping = 0;
+                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
+
+                res.send({
+                    msg: 'Cancelado',
+                    payment: updatePay,
+                    invoice: updateInvoice,
+                }).status(200);
             }
-            console.log(result);
+            if (status === '202' || +status === 202) {
+                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+
+                if (cancelInvoiceSw.sendMail) {
+                    for (const email of cancelInvoiceSw.mails) {
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                    }
+                }
+                invoce.status = 2;
+                payment.stamping = 0;
+                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
+                res.send({
+                    msg: 'Cancelado',
+                    payment: updatePay,
+                    invoice: updateInvoice,
+                }).status(200);
+            }
+            if (status === '203' || +status === 203) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+            if (status === '205' || +status === 205) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+
         } catch (e) {
-            console.log(e);
+            res.send({
+                msg: e,
+                payment: '',
+                invoice: '',
+            }).status(400);
         }
     }
 

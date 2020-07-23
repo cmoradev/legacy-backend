@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreClassification } from './entities/mini-store-classification.entity';
 import { MiniStoreClassificationsService } from './mini-store-classifications.service';
-
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreClassification,
