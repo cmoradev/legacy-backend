@@ -12,7 +12,12 @@ export class MiniStorePricesListsService extends TypeOrmCrudService<MiniStorePri
         @InjectRepository(MiniStorePriceList, ColegioDBNameConnection)readonly repo: Repository<MiniStorePriceList>,
     ) { super(repo); }
 
-    public async getListLike(name:string){
-        return await this.repo.findOne({name: Like(`%${name}%`)});
+    public async getListLike(name:string, returnId?: boolean){
+        if(returnId){
+            const query = await this.repo.findOne({name: Like(`%${name}%`)});
+            return query.id;
+        } else {
+            return await this.repo.findOne({name: Like(`%${name}%`)});
+        }
     }
 }

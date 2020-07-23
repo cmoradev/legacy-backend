@@ -12,7 +12,13 @@ export class InvoiceKeysService extends TypeOrmCrudService<InvoiceKeys> {
     @InjectRepository(InvoiceKeys, ColegioDBNameConnection) repo: Repository<InvoiceKeys>,
   ) { super(repo); }
 
-  async getInvoiceKeyLike(name:string){
-    return await this.repo.findOne({name:Like(`%${name}%`)});
+  async getInvoiceKeyLike(name:string, returnId?: boolean){
+    if(returnId){
+      const query = await this.repo.findOneOrFail({name:Like(`%${name}%`)});
+      return query?.id
+    } else {
+       return await this.repo.findOne({name:Like(`%${name}%`)});
+    }
+
   }
 }

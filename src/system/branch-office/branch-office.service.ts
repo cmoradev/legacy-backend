@@ -20,7 +20,13 @@ export class BranchOfficeService extends TypeOrmCrudService<BranchOffice> {
         });
     }
 
-    async getBranchLike(name:string){
-        return await this.repo.findOne({name:Like(`%${name}%`)});
+    async getBranchLike(name:string, returnId?: boolean){
+        if(returnId){
+            const query = await this.repo.findOneOrFail({name:Like(`%${name}%`)});
+            return query.id;
+        } else {
+            return await this.repo.findOne({name:Like(`%${name}%`)});
+        }
+
     }
 }
