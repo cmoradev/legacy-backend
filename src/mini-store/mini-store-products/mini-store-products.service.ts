@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MiniStoreProduct } from './entities/mini-store-product.entity';
-import { Repository } from 'typeorm';
+import {getRepository, Repository} from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { DataConverter } from '../../common/office/excel-tools/data-converter';
 import { PriceProductsListReport } from './reports/price-products-list.report';
@@ -45,5 +45,54 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
         }
         return converter.convert(report.generate(products), { base64: true });
 
+    }
+
+    public async getEntityMetaData() {
+        const result = this.repo.metadata.propertiesMap;
+        const entityKeys = [];
+        for(let key in result) {
+            if(result[key] !== 'id' && result[key] !== 'createdAt' && result[key] !== 'updatedAt' && result[key] !== 'version' && result[key] !== 'uuid'  && result[key] !== 'calculation' && result[key] !== 'isActive' ){
+                entityKeys.push(result[key]);
+            }
+        }
+        return entityKeys;
+    }
+
+    public async getEntityRelations(){
+        const relations = this.repo.metadata.ownRelations.map(relation => relation.inverseEntityMetadata.targetName);
+        const relationsFields = this.repo.metadata.ownRelations.map(relation => relation.propertyName);
+        const relationsTrash = ['MiniStoreWarehouseOrderProduct', 'MiniStoreSaleDetail', 'MiniStoreProductsProviders'];
+        const relationsFieldTrash = ['miniStoreWarehouseOrdersProducts', 'miniStoreSaleDetails', 'miniStoreProductsProvider'];
+        const filteredRelations = relations.filter(value => !relationsTrash.includes(value));
+        const filteredFieldRelations = relationsFields.filter(value => !relationsFieldTrash.includes(value));
+        let relationsResult = {};
+        let rowsCount = 0;
+        let queryData: any = [];
+
+        for(let relation of filteredRelations){
+            const repository = await getRepository(relation, ColegioDBNameConnection);
+            let relationData = await repository.find({ select : ['name']});
+            relationData = JSON.parse( JSON.stringify(relationData) );
+
+            //console.log("Select ", relationData);
+
+            //for(let query in relationData){
+                //console.log("query ", query);
+                //console.log("data ", relationData[query]['name']);
+                //queryData.push(relationData[query]['name'])
+                //relationsResult[relation] =  relationData[query]['name'];
+            //}
+
+            //console.log("For loop", relationData);
+
+            relationsResult[relation] =  relationData
+            //relationsResult[relation] =  queryData
+            //relationsResult.push({ [relation]: relationData });
+            rowsCount = rowsCount + relationData.length;
+        }
+
+        //console.log("Result ", relationsResult);
+
+        return ({relationsFields: filteredFieldRelations, relations: filteredRelations, relationsData: relationsResult, rowCount: rowsCount});
     }
 }

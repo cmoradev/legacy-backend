@@ -12,7 +12,12 @@ export class MiniStoreClassificationsService extends TypeOrmCrudService<MiniStor
         @InjectRepository(MiniStoreClassification, ColegioDBNameConnection) readonly repo: Repository<MiniStoreClassification>,
     ) { super(repo); }
 
-    async getClasificationLike(name:string){
-        return await this.repo.findOne({name: Like(`%${name}%`)});
+    async getClasificationLike(name:string, returnId?: boolean){
+        if(returnId){
+            const query = await this.repo.findOne({name: Like(`%${name}%`)});
+            return query.id;
+        } else {
+            return await this.repo.findOne({name: Like(`%${name}%`)});
+        }
     }
 }

@@ -17,6 +17,8 @@ import { MiniStoreClassificationsService } from '../mini-store/mini-store-classi
 import { InvoiceKeysService } from '../invoice/invoice-keys/invoice-keys.service';
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
+import { number } from '@hapi/joi';
+import { tableLayouts } from 'pdfmake/build/pdfmake';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -159,26 +161,57 @@ export class XlsImporterController {
 
 
         // res.sendFile(path.resolve('./src/xls-importer/xls/producto_layout.xlsx'));
-        if (requestData.layout === 'Productos') {
-            const fileLoc = path.resolve('./src/xls-importer/xls/producto/producto_layout.xlsx');
-            const stream = fs.createReadStream(fileLoc, { encoding: 'base64' });
-            // res.send({ src: 'data:application/xlsx;filename=generated.xlsx;base64,' + stream });
-            stream.pipe(res);
-            // res.send(stream);
-        }
+        if (requestData.layout == 'Productos') {
+            const productData = await this.miniStoreProductsService.getEntityMetaData();
 
+            const workbook = xlsx.utils.book_new();
+            workbook.SheetNames.push('Hoja1');
+
+            workbook.Props;
+
+            const ws_data = [productData];
+
+            const ws = xlsx.utils.aoa_to_sheet(ws_data);
+
+            workbook.Sheets['Hoja1'] = ws;
+
+            let wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
+
+            res.send(JSON.stringify(wbout));
+        }
     }
 
     @Post('source')
     public async setSource(@Res() res: Response, @Body() requestData: xlsType) {
-        res.set({
-            'Content-Type': 'application/vnd.ms-excel',
-        });
-        if (requestData.layout === 'Productos') {
-            const fileLoc = path.resolve('./src/xls-importer/xls/producto/producto_source.xlsx');
-            const stream = fs.createReadStream(fileLoc, { encoding: 'base64' });
-            stream.pipe(res);
+        let relationship = await this.miniStoreProductsService.getEntityRelations();
+        relationship = JSON.parse(JSON.stringify(relationship));
+
+
+        let workbook = xlsx.utils.book_new();
+        workbook.SheetNames.push('Hoja1');
+
+
+        let rows = [];
+        for (let i = 0; i < relationship.rowCount; i++) {
+            let data = [];
+            for (let relation in relationship.relationsData) {
+                if (relationship.relationsData[relation][i] && relationship.relationsData[relation][i].name) {
+                    data.push(relationship.relationsData[relation][i].name);
+                } else {
+                    data.push('');
+                }
+                rows[i] = data;
+
+            }
         }
+
+        rows.unshift(relationship.relations);
+        let ws = xlsx.utils.aoa_to_sheet(rows);
+        workbook.Sheets['Hoja1'] = ws;
+
+        let wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
+
+        res.send(JSON.stringify(wbout));
     }
 
     @Post('bulk-product-xls')
@@ -195,61 +228,48 @@ export class XlsImporterController {
     public async bulkProductXls(@UploadedFile() file, @Res() res: Response, @Body() requestData: xlsType) {
         const uploadedFile = fs.readFileSync(file.path);
         const workBook = xlsx.read(uploadedFile);
-
         const unitMeasurements = [
             { id: 1, name: 'Kilogramos', unit: 'Kg(s)' },
             { id: 6, name: 'Pieza', unit: 'pza(s)' },
             { id: 8, name: 'Litros', unit: 'L' },
         ];
 
-        const products: any = this.xlsWorkbookToJSON<Product>(workBook, {
+        let productDataHeaders = await this.miniStoreProductsService.getEntityMetaData();
+
+        const products: any = this.xlsWorkbookToJSON<MiniStoreProduct>(workBook, {
             defaultValue: null,
-            range: 'A2:T500',
-            headers: [
-                'nombre', 'descripcion', 'codigo', 'codigo_barra', 'precio', 'precio_con_iva',
-                'precio_proveedor', 'iva', 'stock', 'minstock', 'maxstock', 'unidad',
-                'id_listaprecios', 'id_clasificacion', 'id_facturacion_codigos', 'unitMeasurement',
-                'storePriceListId', 'storeClassificationId', 'storeInvoiceKeyId', 'branchOfficeId',
-            ],
+            range: 'A2:W500',
+            headers: productDataHeaders,
         });
 
-        for (const product of (products.Hoja1 as Product[])) {
-            if (product.nombre === null) {
+        const productToAdd = {} as MiniStoreProduct;
+
+        for (const product of (products.Hoja1 as MiniStoreProduct[])) {
+
+            if (product.name === null) {
                 break;
             } else {
-                const unitMeasureId: any = unitMeasurements.find((unit) => {
-                    return unit.name == product.unidad;
-                });
-                const priceListId: any = await this.miniStorePricesListsService.getListLike(product.storePriceListId) as MiniStorePriceList;
-                const classification: any = await this.miniStoreClassificationsService.getClasificationLike(product.storeClassificationId) as MiniStoreClassification;
-                const invoiceKey: any = await this.invoiceKeysService.getInvoiceKeyLike(product.storeInvoiceKeyId) as InvoiceKeys;
-                const branchOffice: any = await this.branchOfficeService.getBranchLike(product.branchOfficeId) as BranchOffice;
-
-                const productToAdd = {
-                    name: product.nombre,
-                    description: product.descripcion,
-                    code: product.codigo,
-                    codeBar: product.codigo_barra ? product.codigo_barra : 'NOCODE',
-                    isActive: true,
-                    price: (+product.precio / (1.16)).toFixed(6),
-                    priceWithIVA: (+product.precio_con_iva).toFixed(6),
-                    priceProvider: (+product.precio_proveedor).toFixed(6),
-                    IVA: true,
-                    stock: product.stock,
-                    minStock: product.minstock,
-                    maxStock: product.maxstock,
-                    unity: product.unidad,
-                    unitMeasurement: unitMeasureId?.id as number,
-                    idPriceList: priceListId.id as number,
-                    idClassification: classification.id,
-                    idInvoiceKey: invoiceKey.id,
-                    isFavorite: false,
-                    storePriceList: { id: priceListId.id } as MiniStorePriceList,
-                    storeClassification: { id: classification.id } as MiniStoreClassification,
-                    miniStoreWarehouseOrdersProducts: [],
-                    storeInvoiceKey: { id: invoiceKey.id } as InvoiceKeys,
-                    branchOffice: { id: branchOffice.id } as BranchOffice,
-                } as MiniStoreProduct;
+                for (let key in product) {
+                    productToAdd[key] = product[key];
+                }
+                try {
+                    const measureId = unitMeasurements.find((unit) => {
+                        return unit.name == product.unity;
+                    });
+                    productToAdd.isActive = true;
+                    productToAdd.isFavorite = false;
+                    productToAdd.unitMeasurement = measureId.id;
+                    productToAdd.storePriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList)) as MiniStorePriceList;
+                    productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
+                    productToAdd.storeInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.idInvoiceKey)) as InvoiceKeys;
+                    productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
+                    productToAdd.idPriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList), true) as number;
+                    productToAdd.idClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification), true) as number;
+                    productToAdd.idInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.idInvoiceKey), true) as number;
+                } catch (e) {
+                    console.log('Error saving product... ', e);
+                    return res.send({ success: false, error: e });
+                }
 
                 try {
                     await this.miniStoreProductsService.createProduct(productToAdd);
@@ -257,21 +277,18 @@ export class XlsImporterController {
                     console.log('Error saving product... ', e);
                     return res.send({ success: false, error: e });
                 }
+
             }
         }
-
         try {
             fs.unlinkSync(`/tmp/${file.filename}`);
             console.log(`successfully deleted tmp/${file.filename}`);
         } catch (err) {
             console.log('Error on delete ', err);
             return res.send({ success: false, error: err });
-            // handle the error
         }
 
         return res.send({ success: true });
-
-
     }
 
 
