@@ -17,7 +17,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             miniStoreSaleDetails: {},
             miniStoreProductsProvider: {},
             'miniStoreProductsProvider.provider': {},
-            BranchOffice: {alias: 'branchId'}
+            branchOffice: {alias: 'branchId'}
         },
     },
 

@@ -20,7 +20,12 @@ export const toJsonCal: ValueTransformer = {
         return value;
     },
     from(value: string): any {
-        return JSON.parse(value);
+        try {
+            return JSON.parse(value);
+        } catch (e) {
+            console.log(e.message);
+            return [];
+        }
     },
 
 };
@@ -199,6 +204,6 @@ export class MiniStoreProduct extends Base {
         {
             cascade: ['insert', 'update'],
         })
-    BranchOffice: BranchOffice;
+    branchOffice: BranchOffice;
 
 }

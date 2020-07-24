@@ -104,5 +104,5 @@ export class MiniStoreWarehouseOrder {
         {
             cascade: ['insert', 'update'],
         })
-    BranchOfficeMiniStoreWherehouse: BranchOffice;
+    branchOfficeMiniStoreWherehouse: BranchOffice;
 }

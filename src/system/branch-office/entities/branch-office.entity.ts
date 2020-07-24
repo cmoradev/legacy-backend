@@ -17,9 +17,9 @@ import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store
 import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
-import {MiniStoreClassification} from "../../../mini-store/mini-store-classifications/entities/mini-store-classification.entity";
-import {MiniStorePriceList} from "../../../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity";
-import {MiniStoreWarehouseOrder} from "../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity";
+import { MiniStoreClassification } from '../../../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
+import { MiniStorePriceList } from '../../../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
+import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 
 @Entity('planteles')
@@ -147,7 +147,7 @@ export class BranchOffice {
     @OneToMany(() => MiniStoreInvoice, (academyCharge) => academyCharge.invoiceBranchOffice)
     branchOfficeStoreInvoice: MiniStoreInvoice[];
 
-    @OneToMany(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.BranchOffice)
+    @OneToMany(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.branchOffice)
     MiniStoreProduct: MiniStoreProduct[];
 
     @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
@@ -168,6 +168,6 @@ export class BranchOffice {
     @OneToMany(() => MiniStorePriceList, (list) => list.BranchOfficeLisId)
     BranchOfficeList: MiniStorePriceList[];
 
-    @OneToMany(() => MiniStoreWarehouseOrder, (MiniStoreWarehouseOrder) => MiniStoreWarehouseOrder.BranchOfficeMiniStoreWherehouse)
+    @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.branchOfficeMiniStoreWherehouse)
     BranchOfficeWherehouseOrder: MiniStoreWarehouseOrder[];
 }
