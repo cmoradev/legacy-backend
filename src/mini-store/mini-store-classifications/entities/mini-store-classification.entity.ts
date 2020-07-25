@@ -1,6 +1,6 @@
 import {
     Column,
-    Entity, ManyToOne,
+    Entity, JoinColumn, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -53,10 +53,13 @@ export class MiniStoreClassification {
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreClassification)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
-    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
-        {
-            cascade: ['insert', 'update'],
-        })
+    @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id, {
+        cascade: ['insert', 'update'],
+    })
+    @JoinColumn({
+        name: 'branchOfficeIDId',
+        referencedColumnName: 'id',
+    })
     branchOffice: BranchOffice;
 
 }
