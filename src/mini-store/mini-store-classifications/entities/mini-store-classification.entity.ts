@@ -4,8 +4,8 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
-import {MiniStoreSaleDetail} from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
+import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_clasificaciones')
@@ -57,6 +57,6 @@ export class MiniStoreClassification {
         {
             cascade: ['insert', 'update'],
         })
-    BranchOfficeID: BranchOffice;
+    branchOffice: BranchOffice;
 
 }
