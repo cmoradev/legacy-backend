@@ -177,7 +177,6 @@ export class MiniStoreProduct extends Base {
     @Column('longtext', {
         nullable: true,
         transformer: toJsonCal,
-        default: () => '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]',
     })
     calculation: string;
 
