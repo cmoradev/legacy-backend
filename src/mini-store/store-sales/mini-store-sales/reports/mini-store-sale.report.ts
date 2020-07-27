@@ -151,7 +151,12 @@ export function totalForCashier(payments: MiniStoreSalePayment[]) {
 
 function exceOperation(operation: string) {
     // tslint:disable-next-line:no-eval
-    return eval(operation);
+    try {
+        // tslint:disable-next-line:no-eval
+        return eval(operation);
+    } catch (e) {
+        return 0;
+    }
 }
 
 
