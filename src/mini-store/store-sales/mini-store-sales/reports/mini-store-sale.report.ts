@@ -196,7 +196,7 @@ function formatOperation(items: OperationCalculate[], cantidad: string | number)
             list.push({
                 ope: text,
                 name: item.name,
-                result: exceOperation(text).toFixed(2),
+                result: exceOperation(text),
             });
         }
         return list;
