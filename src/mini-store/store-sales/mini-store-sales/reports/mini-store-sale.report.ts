@@ -150,6 +150,7 @@ export function totalForCashier(payments: MiniStoreSalePayment[]) {
 }
 
 function exceOperation(operation: string) {
+    // tslint:disable-next-line:no-eval
     return eval(operation);
 }
 
@@ -190,7 +191,7 @@ function formatOperation(items: OperationCalculate[], cantidad: string | number)
             list.push({
                 ope: text,
                 name: item.name,
-                result: exceOperation(text),
+                result: exceOperation(text).toFixed(2),
             });
         }
         return list;
