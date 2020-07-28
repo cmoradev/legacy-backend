@@ -72,6 +72,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
             file: '',
         };
         if (query.type === 1 || query.type.toString() === '1') {
+            console.log(0)
             result.products = totalForProducts(await this.service.reportCatCasherProd(query));
         }
         if (query.type === 2 || query.type.toString() === '2') {

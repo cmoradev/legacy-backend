@@ -3,6 +3,7 @@ import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/min
 import { add, mul, round, sub } from 'exact-math';
 import { totalAmountConceptAfterExCharge } from '../../../../common/point-of-sale/miniStore-point-of-sale';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { OperationCalculate } from '../../../mini-store-products/types/extra.types';
 
 export function totalForProducts(sales: MiniStoreSale[]) {
     const products: MiniStoreSaleDetail[] = [];
@@ -26,12 +27,15 @@ export function totalForProducts(sales: MiniStoreSale[]) {
 
         return r;
     }, []);
+
+    console.log(prod);
     return prod.reduce((preValue, curValue, i) => {
         preValue[i] = {
             name: curValue.productName,
             quantity: curValue.quantity,
             unitMeasurement: curValue.unitMeasurement,
             total: curValue.total,
+            calculation: formatOperation(curValue.miniStoreProduct.calculation, curValue.quantity),
         };
         return preValue;
     }, []);
@@ -143,4 +147,59 @@ export function totalForCashier(payments: MiniStoreSalePayment[]) {
         return r;
     }, []);
     return groupBy;
+}
+
+function exceOperation(operation: string) {
+    // tslint:disable-next-line:no-eval
+    try {
+        // tslint:disable-next-line:no-eval
+        return eval(operation);
+    } catch (e) {
+        return 0;
+    }
+}
+
+
+function formatOperation(items: OperationCalculate[], cantidad: string | number) {
+    if (items != null) {
+
+        const data: OperationCalculate[] = [...items];
+        data.sort((a: OperationCalculate, b: OperationCalculate) => {
+            return a.position - b.position;
+        });
+        const list: { ope: string, name: string, result: any }[] = [];
+        for (const item of data) {
+            let text = '';
+            if (item.position.toString() !== '0') {
+                for (let i = 0; i < item.leftOperation.length; i++) {
+                    const letf = item.leftOperation[i];
+                    text += letf;
+                    if (i === item.leftOperation.length - 1) {
+                        console.log(item.take);
+                        text += item.take ? '(' + cantidad + ')' : '(' + item.value + ')';
+                        if (item.type === 1) {
+                            text += '*' + '(' + cantidad + ')';
+                        }
+                    }
+                }
+                if (item.leftOperation.length === 0) {
+                    console.log(item.take);
+                    text += item.take ? '(' + cantidad + ')' : '(' + item.value + ')';
+                    if (item.type === 1) {
+                        text += '*' + '(' + cantidad + ')';
+                    }
+                }
+                for (const right of item.rightOperation) {
+                    text += right;
+                }
+            }
+            list.push({
+                ope: text,
+                name: item.name,
+                result: exceOperation(text),
+            });
+        }
+        return list;
+    }
+    return [];
 }

@@ -49,6 +49,7 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                 'clasification.name',
                 'charges',
                 'product.id',
+                'product.calculation',
                 'product.IVA',
                 'cashier.id',
                 'cashier.name',

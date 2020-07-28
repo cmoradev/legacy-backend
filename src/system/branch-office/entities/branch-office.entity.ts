@@ -162,7 +162,7 @@ export class BranchOffice {
     @OneToMany(() => AcademyChargePayments, (school) => school.academyPaymentOffice)
     branchOfficeAcademyPayment: AcademyChargePayments[];
 
-    @OneToMany(() => MiniStoreClassification, (clafification) => clafification.BranchOfficeID)
+    @OneToMany(() => MiniStoreClassification, (clafification) => clafification.branchOffice)
     MiniStoreClassification: MiniStoreClassification[];
 
     @OneToMany(() => MiniStorePriceList, (list) => list.BranchOfficeLisId)

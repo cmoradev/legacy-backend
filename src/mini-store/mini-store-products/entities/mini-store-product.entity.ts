@@ -173,6 +173,7 @@ export class MiniStoreProduct extends Base {
     })
     idInvoiceKey: number;
 
+    // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
     @Column('longtext', {
         nullable: true,
         transformer: toJsonCal,
