@@ -4,6 +4,7 @@ import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as xlsx from 'xlsx';
+import { Workbook } from 'exceljs';
 import { WorkBook } from 'xlsx';
 import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini-store-products.service';
 import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
@@ -19,6 +20,7 @@ import { BranchOfficeService } from '../system/branch-office/branch-office.servi
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { number } from '@hapi/joi';
 import { tableLayouts } from 'pdfmake/build/pdfmake';
+import {DataConverter} from "../common/office/excel-tools/data-converter";
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -155,29 +157,71 @@ export class XlsImporterController {
     @Post('layout')
     public async setLayout(@Res() res: Response, @Body() requestData: xlsType) {
         console.log('Here...', requestData);
+        const workbook = new Workbook();
         res.set({
             'Content-Type': 'application/vnd.ms-excel',
         });
 
 
-        // res.sendFile(path.resolve('./src/xls-importer/xls/producto_layout.xlsx'));
         if (requestData.layout == 'Productos') {
             const productData = await this.miniStoreProductsService.getEntityMetaData();
+            const sheet = workbook.addWorksheet('Layout', {
+                views:[{state: 'frozen', xSplit: 1, ySplit:1}],
+                    properties:
+                        {
+                            tabColor: {
+                                argb: '359c5b',
+                            },
+                        },
+                });
 
-            const workbook = xlsx.utils.book_new();
-            workbook.SheetNames.push('Hoja1');
+            let columns = [];
+            for(let field of productData){
+                columns.push({ header: field, key: field});
+            }
 
-            workbook.Props;
+            sheet.columns = columns;
+            sheet.columns.forEach(column => {
+                if(column){
+                    column.width = column.header.length < 12 ? 12 : column.header.length
+                    column.style.protection = { locked : false };
+                }
 
-            const ws_data = [productData];
+            });
+            sheet.protect('password', {
+                selectUnlockedCells: true,
+                deleteRows: true,
+                deleteColumns: true,
+                insertRows: true,
+                formatColumns: true,
+                formatCells: true
+            });
+            sheet.eachRow((row, rowNumber) => {
+                console.log("Row count", rowNumber)
+                if(rowNumber == 1){
+                    row.eachCell((cell, cellNumber)=>{
+                        cell.protection = {
+                            locked: true
+                        }
+                        cell.style.alignment = { horizontal: 'center' }
+                        cell.border ={
+                            top: {style:'thin'},
+                            left: {style:'thin'},
+                            bottom: {style:'thin'},
+                            right: {style:'thin'}
+                        }
+                        cell.style.fill = {
+                            type: 'pattern',
+                            pattern:'solid',
+                            fgColor:{argb:'3F6CAF'},
+                        }
+                    })
+                }
+            });
 
-            const ws = xlsx.utils.aoa_to_sheet(ws_data);
-
-            workbook.Sheets['Hoja1'] = ws;
-
-            let wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
-
-            res.send(JSON.stringify(wbout));
+            const converter = new DataConverter();
+            let wbout = await converter.convert(workbook, {base64:true})
+            res.send(wbout);
         }
     }
 
@@ -185,10 +229,54 @@ export class XlsImporterController {
     public async setSource(@Res() res: Response, @Body() requestData: xlsType) {
         let relationship = await this.miniStoreProductsService.getEntityRelations();
         relationship = JSON.parse(JSON.stringify(relationship));
+        relationship.relations.push('unitMeasurement');
+        const unitMeasurements = ['Kilogramos', 'Pieza', 'Litros'];
+        const workbook = new Workbook();
+        const sheet = workbook.addWorksheet('Layout', {
+            views:[{state: 'frozen', xSplit: 1, ySplit:1}],
+            properties:
+                {
+                    tabColor: {
+                        argb: '359c5b',
+                    },
+                },
+        });
 
+        let columns = [];
 
-        let workbook = xlsx.utils.book_new();
-        workbook.SheetNames.push('Hoja1');
+        for(let field of relationship.relations){
+            columns.push({ header: field, key: field});
+        }
+
+        sheet.columns = columns;
+        sheet.columns.forEach(column => {
+            if(column){
+                column.width = column.header.length < 12 ? 12 : column.header.length
+                column.style.protection = { locked : true };
+            }
+        });
+        sheet.protect('password', {
+            selectUnlockedCells: true,
+            formatColumns: true,
+            formatCells: true});
+        sheet.eachRow((row, rowNumber) => {
+            if(rowNumber == 1){
+                row.eachCell((cell, cellNumber)=>{
+                    cell.style.alignment = { horizontal: 'center' }
+                    cell.border ={
+                        top: {style:'thin'},
+                        left: {style:'thin'},
+                        bottom: {style:'thin'},
+                        right: {style:'thin'}
+                    }
+                    cell.style.fill = {
+                        type: 'pattern',
+                        pattern:'solid',
+                        fgColor:{argb:'3F6CAF'}
+                    }
+                })
+            }
+        });
 
 
         let rows = [];
@@ -201,17 +289,21 @@ export class XlsImporterController {
                     data.push('');
                 }
                 rows[i] = data;
-
             }
         }
 
-        rows.unshift(relationship.relations);
-        let ws = xlsx.utils.aoa_to_sheet(rows);
-        workbook.Sheets['Hoja1'] = ws;
+        for(let unit in unitMeasurements ){
+            let counter = parseInt(unit) + 1
+            rows[counter].push(unitMeasurements[unit])
+        }
 
-        let wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
+        sheet.addRows(rows);
 
-        res.send(JSON.stringify(wbout));
+        const converter = new DataConverter();
+        let wbout = await converter.convert(workbook, {base64:true})
+
+        res.send(wbout);
+
     }
 
     @Post('bulk-product-xls')
@@ -244,7 +336,7 @@ export class XlsImporterController {
 
         const productToAdd = {} as MiniStoreProduct;
 
-        for (const product of (products.Hoja1 as MiniStoreProduct[])) {
+        for (const product of (products.Layout as MiniStoreProduct[])) {
 
             if (product.name === null) {
                 break;
