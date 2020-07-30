@@ -215,6 +215,9 @@ export class XlsImporterController {
                             pattern:'solid',
                             fgColor:{argb:'3F6CAF'},
                         }
+                        cell.font = {
+                            color:{argb:'FFFFFF'}
+                        }
                     })
                 }
             });
@@ -273,6 +276,9 @@ export class XlsImporterController {
                         type: 'pattern',
                         pattern:'solid',
                         fgColor:{argb:'3F6CAF'}
+                    }
+                    cell.font = {
+                        color:{argb:'FFFFFF'}
                     }
                 })
             }
