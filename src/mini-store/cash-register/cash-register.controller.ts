@@ -3,7 +3,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegister } from './entities/cash-register.entity';
 import { CashRegisterService } from './cash-register.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: CashRegister,

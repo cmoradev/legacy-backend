@@ -1,8 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class TieVentasTriggerStockReturn1596120355306 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(`DROP TRIGGER IF EXISTS tie_venta_after_update`);
         await queryRunner.query(`
         CREATE
         TRIGGER tie_venta_after_update AFTER UPDATE 
