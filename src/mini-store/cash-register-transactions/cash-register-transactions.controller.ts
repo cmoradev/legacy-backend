@@ -3,6 +3,8 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegisterTransaction } from './entities/cash-register-transaction.entity';
 import { CashRegisterTransactionsService } from './cash-register-transactions.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: CashRegisterTransaction,
@@ -12,7 +14,9 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             agent: { exclude: ['password'] },
             cashRegister: {},
             payment: {},
-            'payment.miniStoreSaleMethodPayments': {},
+            'payment.miniStoreSaleMethodPayments': {
+                alias: 'paymentMiniStoreSaleMethodPayments',
+            },
         },
     },
 })
