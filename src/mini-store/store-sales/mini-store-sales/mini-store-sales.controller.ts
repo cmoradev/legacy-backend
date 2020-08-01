@@ -24,23 +24,47 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
             storeBranchOffice: {},
             storeBranchOfficeSet: {},
             miniStoreSalePayments: {},
-            'miniStoreSalePayments.miniStoreInvoices': {},
-            'miniStoreSalePayments.agent': {},
-            'miniStoreSalePayments.miniStoreSaleMethodPayments': {},
-            'miniStoreSalePayments.miniStoreSaleMethodPayments.Bank': {},
-            'miniStoreSalePayments.miniStoreSaleMethodPayments.invoiceMethodPayment': {},
+            'miniStoreSalePayments.miniStoreInvoices': {
+                alias: 'miniStoreSalePayments_miniStoreInvoices',
+            },
+            'miniStoreSalePayments.agent': {
+                alias: 'miniStoreSalePayments_agent',
+            },
+            'miniStoreSalePayments.miniStoreSaleMethodPayments': {
+
+                alias: 'miniStoreSalePayments_miniStoreSaleMethodPayments',
+            },
+            'miniStoreSalePayments.miniStoreSaleMethodPayments.Bank': {
+                alias: 'miniStoreSaleMethodPayments_Bank',
+            },
+            'miniStoreSalePayments.miniStoreSaleMethodPayments.invoiceMethodPayment': {
+                alias: 'miniStoreSaleMethodPayments_invoiceMethodPayment',
+            },
             miniStoreSaleDetails: {},
-            'miniStoreSaleDetails.miniStoreProduct': {},
-            'miniStoreSaleDetails.extraCharges': {},
+            'miniStoreSaleDetails.miniStoreProduct': {
+                alias: 'miniStoreSaleDetails_miniStoreProduct',
+            },
+            'miniStoreSaleDetails.extraCharges': {
+                alias: 'miniStoreSaleDetails_extraCharges',
+            },
             miniStoreInvoices: {},
             returnedProducts: {},
-            'returnedProducts.agent': {},
-            'returnedProducts.invoices': {},
-            'returnedProducts.details': {},
-            'returnedProducts.details.saleDetail': {},
+            'returnedProducts.agent': {
+                alias: 'returnedProducts_agent',
+            },
+            'returnedProducts.invoices': {
+                alias: 'returnedProducts_invoices',
+            },
+            'returnedProducts.details': {
+                alias: 'returnedProducts_details',
+            },
+            'returnedProducts.details.saleDetail': {
+                alias: 'details_saleDetail',
+            },
             agentBilling: {},
             agentCanceling: {},
         },
+
     },
 })
 @Controller()
@@ -54,6 +78,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     get base(): CrudController<MiniStoreSale> {
         return this;
     }
+
 
     @Get('/sale-report')
     async saleReport(@Req() request, @Res() res, @Query() query: {
@@ -72,7 +97,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
             file: '',
         };
         if (query.type === 1 || query.type.toString() === '1') {
-            console.log(0)
+            console.log(0);
             result.products = totalForProducts(await this.service.reportCatCasherProd(query));
         }
         if (query.type === 2 || query.type.toString() === '2') {

@@ -205,7 +205,7 @@ export class BranchOfficeSetting extends Base {
     @ManyToOne(() => BranchOffice, (campus) => campus.branchoffice)
     invoiceCampus: BranchOffice;
 
-    @OneToMany(() => MiniStoreSale, (sale) => sale.storeBranchOffice)
+    @OneToMany(() => MiniStoreSale, (sale) => sale.storeBranchOfficeSet)
     branchOfficeSetStore: MiniStoreSale[];
 
     @OneToMany(() => MiniStoreSalePayment, (payments) => payments.storePaymentOffice)
