@@ -3,6 +3,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class AcChargeFolio1596128406369 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(`DROP TRIGGER IF EXISTS before_ac_charge_payment_insert`);
         await queryRunner.query(`
         CREATE TRIGGER before_ac_charge_payment_insert
             BEFORE INSERT ON ac_charge_payments
