@@ -14,7 +14,6 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             transactions: {},
             'transactions.agent': {},
             'transactions.payment': {},
-            'transactions.payment.miniStoreSaleMethodPayments': {},
             movements: {},
         },
     },

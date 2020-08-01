@@ -57,7 +57,7 @@ export class ConfigService {
         const nodeEnvSchema = Joi.string()
             .valid('development', 'production', 'test', 'staging')
             .default('development');
-        const { error, value: nodeEnv } = nodeEnvSchema.validate<NodeEnv>(process.env.NODE_ENV as NodeEnv);
+        const { error, value: nodeEnv } = nodeEnvSchema.validate(process.env.NODE_ENV as NodeEnv);
 
         if (error) {
             throw new Error(`Config validation error: ${error.message}`);

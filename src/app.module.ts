@@ -20,6 +20,8 @@ import { AcademyModule } from './academy/academy.module';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 import { MailServiceModule } from './mail-service/mail-service.module';
 import { JwtGuard } from './system/auth/guards/jwt.guard';
+import { AppGateway } from './app.gateway';
+import { whatsapp } from './Provider/whatsapp.provider';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -61,7 +63,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
         MailServiceModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [AppService, whatsapp, AppGateway],
 })
 export class AppModule {
     constructor() {
