@@ -20,7 +20,7 @@ import { BranchOfficeService } from '../system/branch-office/branch-office.servi
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { number } from '@hapi/joi';
 import { tableLayouts } from 'pdfmake/build/pdfmake';
-import {DataConverter} from "../common/office/excel-tools/data-converter";
+import {DataConverter} from '../common/office/excel-tools/data-converter';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -163,7 +163,7 @@ export class XlsImporterController {
         });
 
 
-        if (requestData.layout == 'Productos') {
+        if (requestData.layout === 'Productos') {
             const productData = await this.miniStoreProductsService.getEntityMetaData();
             const sheet = workbook.addWorksheet('Layout', {
                 views:[{state: 'frozen', xSplit: 1, ySplit:1}],
@@ -175,8 +175,8 @@ export class XlsImporterController {
                         },
                 });
 
-            let columns = [];
-            for(let field of productData){
+            const columns = [];
+            for(const field of productData){
                 columns.push({ header: field, key: field});
             }
 
@@ -197,7 +197,7 @@ export class XlsImporterController {
                 formatCells: true
             });
             sheet.eachRow((row, rowNumber) => {
-                console.log("Row count", rowNumber)
+                console.log('Row count', rowNumber)
                 if(rowNumber == 1){
                     row.eachCell((cell, cellNumber)=>{
                         cell.protection = {
@@ -223,7 +223,7 @@ export class XlsImporterController {
             });
 
             const converter = new DataConverter();
-            let wbout = await converter.convert(workbook, {base64:true})
+            const wbout = await converter.convert(workbook, {base64:true})
             res.send(wbout);
         }
     }
@@ -245,9 +245,9 @@ export class XlsImporterController {
                 },
         });
 
-        let columns = [];
+        const columns = [];
 
-        for(let field of relationship.relations){
+        for(const field of relationship.relations){
             columns.push({ header: field, key: field});
         }
 
@@ -285,10 +285,10 @@ export class XlsImporterController {
         });
 
 
-        let rows = [];
+        const rows = [];
         for (let i = 0; i < relationship.rowCount; i++) {
-            let data = [];
-            for (let relation in relationship.relationsData) {
+            const data = [];
+            for (const relation in relationship.relationsData) {
                 if (relationship.relationsData[relation][i] && relationship.relationsData[relation][i].name) {
                     data.push(relationship.relationsData[relation][i].name);
                 } else {
@@ -298,15 +298,15 @@ export class XlsImporterController {
             }
         }
 
-        for(let unit in unitMeasurements ){
-            let counter = parseInt(unit) + 1
+        for(const unit in unitMeasurements ){
+            const counter = parseInt(unit) + 1
             rows[counter].push(unitMeasurements[unit])
         }
 
         sheet.addRows(rows);
 
         const converter = new DataConverter();
-        let wbout = await converter.convert(workbook, {base64:true})
+        const wbout = await converter.convert(workbook, {base64:true})
 
         res.send(wbout);
 
@@ -332,7 +332,7 @@ export class XlsImporterController {
             { id: 8, name: 'Litros', unit: 'L' },
         ];
 
-        let productDataHeaders = await this.miniStoreProductsService.getEntityMetaData();
+        const productDataHeaders = await this.miniStoreProductsService.getEntityMetaData();
 
         const products: any = this.xlsWorkbookToJSON<MiniStoreProduct>(workBook, {
             defaultValue: null,
@@ -347,32 +347,26 @@ export class XlsImporterController {
             if (product.name === null) {
                 break;
             } else {
-                for (let key in product) {
+                for (const key in product) {
                     productToAdd[key] = product[key];
                 }
                 try {
                     const measureId = unitMeasurements.find((unit) => {
-                        return unit.name == product.unity;
+                        return unit.name === product.unity;
                     });
                     productToAdd.isActive = true;
                     productToAdd.isFavorite = false;
                     productToAdd.unitMeasurement = measureId.id;
                     productToAdd.storePriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList)) as MiniStorePriceList;
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
-                    productToAdd.storeInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.idInvoiceKey)) as InvoiceKeys;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
-                    productToAdd.idPriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList), true) as number;
-                    productToAdd.idClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification), true) as number;
-                    productToAdd.idInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.idInvoiceKey), true) as number;
                 } catch (e) {
-                    console.log('Error saving product... ', e);
                     return res.send({ success: false, error: e });
                 }
 
                 try {
                     await this.miniStoreProductsService.createProduct(productToAdd);
                 } catch (e) {
-                    console.log('Error saving product... ', e);
                     return res.send({ success: false, error: e });
                 }
 
