@@ -38,8 +38,6 @@ export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSa
         QBuilder.andWhere('storeBranchOffice.id= :officeId', {
             officeId: query.branchOfficeId,
         });
-        QBuilder.groupBy('saleDetails.idProduct');
-        QBuilder.addGroupBy('saleDetails.idClassification');
         QBuilder.addGroupBy('product.id');
         QBuilder.addGroupBy('productClassification.id');
         QBuilder.select('productClassification.name', 'classificationName');
