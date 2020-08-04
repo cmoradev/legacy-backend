@@ -15,18 +15,6 @@ export class MiniStoreSaleDetail {
     })
     id: number;
 
-    @Column('int', {
-        nullable: false,
-        name: 'id_producto',
-    })
-    idProduct: number;
-
-    @Column('int', {
-        nullable: false,
-        name: 'id_clasificacion',
-    })
-    idClassification: number;
-
     @Column('varchar', {
         nullable: false,
         length: 8,
@@ -69,16 +57,6 @@ export class MiniStoreSaleDetail {
         name: 'precio',
     })
     price: string;
-
-    /**
-     * @Deprecated
-     */
-    @Column('int', {
-        nullable: false,
-        name: 'id_tie_venta',
-        default: 0,
-    })
-    idSale: number;
 
     @Column('tinyint', {
         nullable: false,

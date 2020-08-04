@@ -154,25 +154,6 @@ export class MiniStoreProduct extends Base {
     })
     unitMeasurement: number;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_listaprecios',
-    })
-    idPriceList: number;
-
-    @Column('int', {
-        nullable: false,
-        name: 'id_clasificacion',
-    })
-    idClassification: number;
-
-    @Column('int', {
-        nullable: false,
-        name: 'id_facturacion_codigos',
-    })
-    idInvoiceKey: number;
-
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
     @Column('longtext', {
         nullable: true,
