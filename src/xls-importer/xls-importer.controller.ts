@@ -20,7 +20,7 @@ import { BranchOfficeService } from '../system/branch-office/branch-office.servi
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { number } from '@hapi/joi';
 import { tableLayouts } from 'pdfmake/build/pdfmake';
-import {DataConverter} from '../common/office/excel-tools/data-converter';
+import { DataConverter } from '../common/office/excel-tools/data-converter';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -166,25 +166,25 @@ export class XlsImporterController {
         if (requestData.layout === 'Productos') {
             const productData = await this.miniStoreProductsService.getEntityMetaData();
             const sheet = workbook.addWorksheet('Layout', {
-                views:[{state: 'frozen', xSplit: 1, ySplit:1}],
-                    properties:
-                        {
-                            tabColor: {
-                                argb: '359c5b',
-                            },
+                views: [{ state: 'frozen', xSplit: 1, ySplit: 1 }],
+                properties:
+                    {
+                        tabColor: {
+                            argb: '359c5b',
                         },
-                });
+                    },
+            });
 
             const columns = [];
-            for(const field of productData){
-                columns.push({ header: field, key: field});
+            for (const field of productData) {
+                columns.push({ header: field, key: field });
             }
 
             sheet.columns = columns;
             sheet.columns.forEach(column => {
-                if(column){
-                    column.width = column.header.length < 12 ? 12 : column.header.length
-                    column.style.protection = { locked : false };
+                if (column) {
+                    column.width = column.header.length < 12 ? 12 : column.header.length;
+                    column.style.protection = { locked: false };
                 }
 
             });
@@ -194,36 +194,36 @@ export class XlsImporterController {
                 deleteColumns: true,
                 insertRows: true,
                 formatColumns: true,
-                formatCells: true
+                formatCells: true,
             });
             sheet.eachRow((row, rowNumber) => {
-                console.log('Row count', rowNumber)
-                if(rowNumber == 1){
-                    row.eachCell((cell, cellNumber)=>{
+                console.log('Row count', rowNumber);
+                if (rowNumber == 1) {
+                    row.eachCell((cell, cellNumber) => {
                         cell.protection = {
-                            locked: true
-                        }
-                        cell.style.alignment = { horizontal: 'center' }
-                        cell.border ={
-                            top: {style:'thin'},
-                            left: {style:'thin'},
-                            bottom: {style:'thin'},
-                            right: {style:'thin'}
-                        }
+                            locked: true,
+                        };
+                        cell.style.alignment = { horizontal: 'center' };
+                        cell.border = {
+                            top: { style: 'thin' },
+                            left: { style: 'thin' },
+                            bottom: { style: 'thin' },
+                            right: { style: 'thin' },
+                        };
                         cell.style.fill = {
                             type: 'pattern',
-                            pattern:'solid',
-                            fgColor:{argb:'3F6CAF'},
-                        }
+                            pattern: 'solid',
+                            fgColor: { argb: '3F6CAF' },
+                        };
                         cell.font = {
-                            color:{argb:'FFFFFF'}
-                        }
-                    })
+                            color: { argb: 'FFFFFF' },
+                        };
+                    });
                 }
             });
 
             const converter = new DataConverter();
-            const wbout = await converter.convert(workbook, {base64:true})
+            const wbout = await converter.convert(workbook, { base64: true });
             res.send(wbout);
         }
     }
@@ -236,7 +236,7 @@ export class XlsImporterController {
         const unitMeasurements = ['Kilogramos', 'Pieza', 'Litros'];
         const workbook = new Workbook();
         const sheet = workbook.addWorksheet('Layout', {
-            views:[{state: 'frozen', xSplit: 1, ySplit:1}],
+            views: [{ state: 'frozen', xSplit: 1, ySplit: 1 }],
             properties:
                 {
                     tabColor: {
@@ -247,40 +247,41 @@ export class XlsImporterController {
 
         const columns = [];
 
-        for(const field of relationship.relations){
-            columns.push({ header: field, key: field});
+        for (const field of relationship.relations) {
+            columns.push({ header: field, key: field });
         }
 
         sheet.columns = columns;
         sheet.columns.forEach(column => {
-            if(column){
-                column.width = column.header.length < 12 ? 12 : column.header.length
-                column.style.protection = { locked : true };
+            if (column) {
+                column.width = column.header.length < 12 ? 12 : column.header.length;
+                column.style.protection = { locked: true };
             }
         });
         sheet.protect('password', {
             selectUnlockedCells: true,
             formatColumns: true,
-            formatCells: true});
+            formatCells: true,
+        });
         sheet.eachRow((row, rowNumber) => {
-            if(rowNumber == 1){
-                row.eachCell((cell, cellNumber)=>{
-                    cell.style.alignment = { horizontal: 'center' }
-                    cell.border ={
-                        top: {style:'thin'},
-                        left: {style:'thin'},
-                        bottom: {style:'thin'},
-                        right: {style:'thin'}
-                    }
+            if (rowNumber == 1) {
+                row.eachCell((cell, cellNumber) => {
+                    cell.style.alignment = { horizontal: 'center' };
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' },
+                    };
                     cell.style.fill = {
                         type: 'pattern',
-                        pattern:'solid',
-                        fgColor:{argb:'3F6CAF'}
-                    }
+                        pattern: 'solid',
+                        fgColor: { argb: '3F6CAF' },
+                    };
                     cell.font = {
-                        color:{argb:'FFFFFF'}
-                    }
-                })
+                        color: { argb: 'FFFFFF' },
+                    };
+                });
             }
         });
 
@@ -298,15 +299,15 @@ export class XlsImporterController {
             }
         }
 
-        for(const unit in unitMeasurements ){
-            const counter = parseInt(unit) + 1
-            rows[counter].push(unitMeasurements[unit])
+        for (const unit in unitMeasurements) {
+            const counter = parseInt(unit) + 1;
+            rows[counter].push(unitMeasurements[unit]);
         }
 
         sheet.addRows(rows);
 
         const converter = new DataConverter();
-        const wbout = await converter.convert(workbook, {base64:true})
+        const wbout = await converter.convert(workbook, { base64: true });
 
         res.send(wbout);
 
@@ -354,7 +355,7 @@ export class XlsImporterController {
                     const measureId = unitMeasurements.find((unit) => {
                         return unit.name === product.unity;
                     });
-                    console.log("price list", product.storePriceList)
+                    console.log('price list', product.storePriceList);
                     productToAdd.isActive = true;
                     productToAdd.isFavorite = false;
                     productToAdd.unitMeasurement = measureId.id;
@@ -363,12 +364,14 @@ export class XlsImporterController {
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
                 } catch (e) {
+                    console.log('error en añadir al objeto');
                     return res.send({ success: false, error: e });
                 }
 
                 try {
                     await this.miniStoreProductsService.createProduct(productToAdd);
                 } catch (e) {
+                    console.log('error al guardar objecto');
                     return res.send({ success: false, error: e });
                 }
 
