@@ -366,6 +366,8 @@ export class XlsImporterController {
 
                     console.log(productToAdd);
                 } catch (e) {
+
+                    console.log(productToAdd);
                     console.log('error en añadir al objeto');
                     return res.send({ success: false, error: e });
                 }
