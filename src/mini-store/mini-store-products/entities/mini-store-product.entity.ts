@@ -140,6 +140,9 @@ export class MiniStoreProduct extends Base {
     })
     maxStock: number | null;
 
+    // tslint:disable-next-line:jsdoc-format
+    /** @Deprecated **/
+        // @By Amir no se ocupa en nigun lado pero falta verificar en la vista
     @Column('varchar', {
         nullable: false,
         length: 20,
