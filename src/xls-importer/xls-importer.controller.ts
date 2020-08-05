@@ -363,6 +363,8 @@ export class XlsImporterController {
                     productToAdd.storeInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.storeInvoiceKey)) as InvoiceKeys;
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
+
+                    console.log(productToAdd);
                 } catch (e) {
                     console.log('error en añadir al objeto');
                     return res.send({ success: false, error: e });
