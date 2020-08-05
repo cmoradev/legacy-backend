@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { INestApplication, Module } from '@nestjs/common';
+import * as session from 'express-session';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ConfigModule } from '../../config/config.module';
@@ -14,6 +15,8 @@ import { SettingsModule } from '../settings/settings.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
 import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens.module';
+import passport from 'passport';
+import { ConfigService } from '../../config/config.service';
 
 @Module({
     imports: [
@@ -46,4 +49,21 @@ import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens
     controllers: [AuthController],
 })
 export class AuthModule {
+    constructor(
+        private readonly configService: ConfigService,
+    ) {
+    }
+    public initialize(app: INestApplication) {
+        app.use(session({
+            secret: this.configService.get<string>('API_SECRET'),
+            resave: false,
+            cookie: {
+                httpOnly: !!this.configService.isProduction,
+                secure: !!this.configService.isProduction,
+                maxAge: 1000 * 60 * 60 * 24 * 7,
+            },
+            saveUninitialized: false,
+        }));
+
+    }
 }

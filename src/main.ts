@@ -23,6 +23,7 @@ async function bootstrap() {
         .setVersion('1.0')
         .addTag('School')
         .build();
+    app.get(AuthModule).initialize(app);
     const document = SwaggerModule.createDocument(app, options);
     environment === 'development' ? SwaggerModule.setup('api', app, document) : null;
     await app.listen(processEnv.API_PORT);
