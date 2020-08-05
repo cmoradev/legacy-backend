@@ -354,10 +354,12 @@ export class XlsImporterController {
                     const measureId = unitMeasurements.find((unit) => {
                         return unit.name === product.unity;
                     });
+                    console.log("price list", product.storePriceList)
                     productToAdd.isActive = true;
                     productToAdd.isFavorite = false;
                     productToAdd.unitMeasurement = measureId.id;
                     productToAdd.storePriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList)) as MiniStorePriceList;
+                    productToAdd.storeInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.storeInvoiceKey)) as InvoiceKeys;
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
                 } catch (e) {
