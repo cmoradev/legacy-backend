@@ -353,9 +353,9 @@ export class XlsImporterController {
                 }
                 try {
                     const measureId = unitMeasurements.find((unit) => {
-                        return unit.name === product.unity;
+                        // @ts-ignore
+                        return unit.name === product.unitMeasurement;
                     });
-                    console.log('price list', product.storePriceList);
                     productToAdd.isActive = true;
                     productToAdd.isFavorite = false;
                     productToAdd.unitMeasurement = measureId.id;
@@ -364,10 +364,7 @@ export class XlsImporterController {
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
 
-                    console.log(productToAdd);
                 } catch (e) {
-
-                    console.log(productToAdd);
                     console.log('error en añadir al objeto');
                     return res.send({ success: false, error: e });
                 }

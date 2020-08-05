@@ -60,6 +60,7 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
                 result[key] !== 'miniStoreWarehouseOrdersProducts' &&
                 result[key] !== 'miniStoreSaleDetails' &&
                 result[key] !== 'miniStoreProductsProvider' &&
+                result[key] !== 'unity' &&
                 result[key] !== 'isActive' ){
                 entityKeys.push(result[key]);
             }
