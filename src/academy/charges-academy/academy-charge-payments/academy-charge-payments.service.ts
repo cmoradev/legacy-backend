@@ -4,7 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import {
+    QueryBilling,
+    QuerySimpleReport,
+} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -12,6 +15,9 @@ import moment = require('moment');
 import { SimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/reports/simple.report';
 import { SimpleReportAcademy } from './reports/simple.report';
 import { add, round, sub } from 'exact-math';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -148,5 +154,32 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         } catch (e) {
             return e;
         }
+    }
+
+    async findSaleByPayment(query: QueryBillingAcademy): Promise<{ charge: AcademyCharge, payment: AcademyChargePayments }> {
+        const charge = await this.academyRepository.findOne({
+            where: {
+                id: query.chargeId,
+            },
+            relations: [
+                'chargesDetails',
+                'chargesDetails.academyInscriptionConcept',
+                'chargesDetails.extraCharges',
+            ],
+        });
+
+        const payment = await this.repo.findOne({
+            where: {
+                id: query.chargePaymentId,
+            },
+            relations: [
+                'methodsPayments',
+            ],
+        });
+
+        return {
+            charge,
+            payment,
+        };
     }
 }

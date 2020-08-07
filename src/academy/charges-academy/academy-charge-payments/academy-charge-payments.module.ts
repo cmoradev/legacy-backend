@@ -9,6 +9,10 @@ import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
 import { AcademyChargeModule } from '../academy-charge/academy-charge.module';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
+import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
+import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
+import { AcademyChargeInvoiceModule } from '../academy-charge-invoice/academy-charge-invoice.module';
+import { SmartWeb } from '../../../Provider/swsmart.provider';
 
 @Module({
     imports: [
@@ -19,11 +23,14 @@ import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity'
                 InvoiceMethodPayment,
                 AcademyCharge,
             ], ColegioDBNameConnection),
+        BranchOfficeModule,
+        BranchOfficeSettingModule,
+        AcademyChargeInvoiceModule,
         InvoiceMethodsPaymentsModule,
         AcademyChargeModule,
     ],
     controllers: [AcademyChargePaymentsController],
-    providers: [AcademyChargePaymentsService],
+    providers: [AcademyChargePaymentsService, SmartWeb],
 })
 export class AcademyChargePaymentsModule {
 }

@@ -1,11 +1,15 @@
 import { SchoolChargeDetails } from '../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
-import { amountAfterExtraCharge, mulQuantity } from './point-of-sale';
+import { amountAfterExtraCharge, divQuantity, mulQuantity, subQuantity, sumQuantity } from './point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { add, sub } from 'exact-math';
 import { ivaFromFinalAmount } from '../numbers';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { FacturaDetalles, saleDetails, totalAmountConceptAfterExCharge } from './miniStore-point-of-sale';
+import { AcademyCharge } from '../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 
 export const totalAmountConceptAfterExtraCharge = (concept: SchoolChargeDetails | AcademyChargeDetails, typeExtraCharges: SystemTypeExtraChargesEnum) => {
     const conceptPrice = concept.price;
@@ -85,4 +89,54 @@ export const generalizeConceptsPriceByPaymentAcSc = (payment: SchoolChargePaymen
         });
     });
     return generalizedConcepts;
+};
+
+
+export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments, details: AcademyChargeDetails[]): FacturaDetalles => {
+    const detalles = saleDetailsAcademySchool(details || []);
+    const pago = payment.quantity - payment.change;
+    const base = (pago / detalles.total) || 1;
+    console.log(ivaFromFinalAmount(pago));
+    const resultad = {
+        total: 0,
+        subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
+        discount: 0,
+        detalles: [],
+    };
+    const generalizedConcepts: any[] = [];
+    details.forEach((detail) => {
+        const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos));
+        const surchargesTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos));
+        const scholarshipsTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas));
+
+        const discount = mulQuantity(discountTotal, base);
+        const surcharges = mulQuantity(surchargesTotal, base);
+        const scholarships = mulQuantity(scholarshipsTotal, base);
+
+        const conceptPrice = detail.price;
+        resultad.discount = sumQuantity(discount, resultad.discount);
+
+        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discount, detail.quantity)));
+        console.log(nativeCalculo);
+
+        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discount, detail.quantity));
+        const importe = mulQuantity(unitPrice, detail.quantity);
+
+        resultad.subtotal = sumQuantity(importe, resultad.subtotal);
+        const concept = {
+            quantity: detail.quantity,
+            claveProd: detail.codeConcept,
+            unidad: 'E48', // detail.miniStoreProduct.unity,
+            descrption: detail.concept ? detail.concept : detail.academyInscriptionConcept.description,
+            unitPrice, // mulQuantity(conceptPrice, base),
+            discount,
+            importe, // mulQuantity(totalAmountConcept(detail), base),
+        };
+        const totalconcetp = sumQuantity(subQuantity(importe, discount).toString(), mulQuantity(subQuantity(importe, discount), .16));
+        resultad.total = sumQuantity(resultad.total, totalconcetp);
+        generalizedConcepts.push(concept);
+    });
+    resultad.detalles = generalizedConcepts;
+    console.log('total: ' + resultad.total);
+    return resultad;
 };

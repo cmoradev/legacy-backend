@@ -1,11 +1,24 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import {
+    QueryBilling,
+    QuerySimpleReport,
+} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { convertPaymentsReportAc } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
+import { AcademyChargeInvoiceService } from '../academy-charge-invoice/academy-charge-invoice.service';
+import { FactSw } from '../../../webService/FactSw';
+import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
@@ -32,6 +45,10 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
     constructor(
         readonly service: AcademyChargePaymentsService,
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+        readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private  smartWeb: FactSw,
     ) {
     }
 
@@ -75,5 +92,52 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
     async timeChange(@Req() request, @Res() response) {
         // await this.service.changeTime();
         response.send({ msj: 'finalizado' });
+    }
+
+    @Post('/billing')
+    async billing(@Body() query: QueryBillingAcademy, @Res() response) {
+        const result = await this.service.findSaleByPayment(query);
+        const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
+        const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+            where: {
+                id: query.branchOfficeSettingId,
+            },
+        });
+        const invoiceFind = await this.academyChargeInvoiceService.findInvoiceByPayment({
+            paymentId: query.chargePaymentId,
+            status: StatusInvoce.noBilling,
+        });
+
+        const respuesta = {
+            stamping: false,
+            msg: '',
+            invoice: {},
+            uuid: '',
+        };
+
+        try {
+            if (invoiceFind) {
+                if (invoiceFind.academyChargePayment.stamping === 1) {
+                    const invocePayment = await this.academyChargeInvoiceService.findInvoiceByPayment({
+                        paymentId: query.chargePaymentId,
+                        status: StatusInvoce.invoiced,
+                        stamping: 1,
+                    });
+                    respuesta.stamping = true;
+                    respuesta.invoice = invocePayment;
+                    respuesta.msg = 'Pago Facturado';
+                    respuesta.uuid = invocePayment.uuid;
+                    response.send(respuesta);
+                } else {
+
+                }
+            } else {
+
+            }
+        } catch (e) {
+            response.send(e);
+        }
+
     }
 }

@@ -100,9 +100,9 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
             claveProd: detail.productCode,
             unidad: 'E48', // detail.miniStoreProduct.unity,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
-            unitPrice: unitPrice, // mulQuantity(conceptPrice, base),
+            unitPrice, // mulQuantity(conceptPrice, base),
             discount,
-            importe: importe, // mulQuantity(totalAmountConcept(detail), base),
+            importe, // mulQuantity(totalAmountConcept(detail), base),
         };
         const totalconcetp = sumQuantity(subQuantity(importe, discount).toString(), mulQuantity(subQuantity(importe, discount), .16));
         resultad.total = sumQuantity(resultad.total, totalconcetp);

@@ -6,9 +6,10 @@ import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection)],
-  providers: [AcademyChargeInvoiceService],
-  controllers: [AcademyChargeInvoiceController],
+    imports: [TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection)],
+    providers: [AcademyChargeInvoiceService],
+    controllers: [AcademyChargeInvoiceController],
+    exports: [AcademyChargeInvoiceService],
 })
 export class AcademyChargeInvoiceModule {
 }
