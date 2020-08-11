@@ -4,28 +4,32 @@ import { Group } from './entities/group.entity';
 import { GroupsService } from './groups.service';
 
 @Crud({
-  model: {
-    type: Group,
-  },
-  query: {
-    join: {
-      groupGrade: {},
-      'groupGrade.level': {},
-      'groupGrade.level.campus': {},
-      groupCycle: {},
-      groupInscriptions: {},
-      groupClassrooms: {},
+    model: {
+        type: Group,
     },
-  },
+    query: {
+        join: {
+            groupGrade: {},
+            'groupGrade.level': {
+                alias: 'level',
+            },
+            'groupGrade.level.campus': {
+                alias: 'campus',
+            },
+            groupCycle: {},
+            groupInscriptions: {},
+            groupClassrooms: {},
+        },
+    },
 })
 @Controller()
 export class GroupsController implements CrudController<Group> {
-  constructor(
-    readonly service: GroupsService,
-  ) {
-  }
+    constructor(
+        readonly service: GroupsService,
+    ) {
+    }
 
-  get base(): CrudController<Group> {
-    return this;
-  }
+    get base(): CrudController<Group> {
+        return this;
+    }
 }
