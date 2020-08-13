@@ -92,7 +92,7 @@ export const generalizeConceptsPriceByPaymentAcSc = (payment: SchoolChargePaymen
 };
 
 
-export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments, details: AcademyChargeDetails[]): FacturaDetalles => {
+export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | AcademyChargePayments, details: SchoolChargeDetails[] | AcademyChargeDetails[]): FacturaDetalles => {
     const detalles = saleDetailsAcademySchool(details || []);
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
@@ -115,8 +115,9 @@ export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments, d
 
         const conceptPrice = detail.price;
         resultad.discount = sumQuantity(discount, resultad.discount);
+        resultad.discount = sumQuantity(scholarships, resultad.discount);
 
-        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discount, detail.quantity)));
+        const nativeCalculo = ivaFromFinalAmount(subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discount, detail.quantity)));
         console.log(nativeCalculo);
 
         const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discount, detail.quantity));

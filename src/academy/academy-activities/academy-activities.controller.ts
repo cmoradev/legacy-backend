@@ -9,6 +9,7 @@ import { getDaysArray } from '../../common/date';
 import * as moment from 'moment';
 import { months } from 'moment';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
@@ -19,7 +20,9 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         join: {
             academyActivityConcepts: {},
             academyActivityGroups: {},
-            'academyActivityGroups.academyGroupCycle': {},
+            'academyActivityGroups.academyGroupCycle': {
+                alias: 'academyGroupCycle',
+            },
             academyActInscription: {},
         },
     },

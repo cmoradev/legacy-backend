@@ -18,6 +18,7 @@ import { FactSw } from '../../../webService/FactSw';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
+import { Response } from 'express';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -95,9 +96,10 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
     }
 
     @Post('/billing')
-    async billing(@Body() query: QueryBillingAcademy, @Res() response) {
+    async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
+        res.send(invoiceDetails);
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -128,7 +130,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     respuesta.invoice = invocePayment;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.uuid = invocePayment.uuid;
-                    response.send(respuesta);
+                    res.send(respuesta);
                 } else {
 
                 }
@@ -136,7 +138,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
 
             }
         } catch (e) {
-            response.send(e);
+            res.send(e);
         }
 
     }
