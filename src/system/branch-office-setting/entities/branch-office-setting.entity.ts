@@ -25,6 +25,7 @@ import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/e
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Entity('facturacion_empresas')
 export class BranchOfficeSetting extends Base {
@@ -225,4 +226,7 @@ export class BranchOfficeSetting extends Base {
 
     @OneToMany(() => AcademyChargePayments, (payments) => payments.academyPaymentOfficeSet)
     branchOfficeSettAcademyPayment: AcademyChargePayments[];
+
+    @OneToMany(() => AcademyChargeInvoice, (payments) => payments.invoiceBranchOfficeSet)
+    branchOfficeSettAcademyInvoice: AcademyChargeInvoice[];
 }

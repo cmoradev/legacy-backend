@@ -21,6 +21,7 @@ import { MiniStoreClassification } from '../../../mini-store/mini-store-classifi
 import { MiniStorePriceList } from '../../../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Entity('planteles')
 export class BranchOffice {
@@ -161,6 +162,9 @@ export class BranchOffice {
 
     @OneToMany(() => AcademyChargePayments, (school) => school.academyPaymentOffice)
     branchOfficeAcademyPayment: AcademyChargePayments[];
+
+    @OneToMany(() => AcademyChargeInvoice, (academyCharge) => academyCharge.invoiceBranchOffice)
+    branchOfficeAcademyInvoice: AcademyChargeInvoice[];
 
     @OneToMany(() => MiniStoreClassification, (clafification) => clafification.branchOffice)
     MiniStoreClassification: MiniStoreClassification[];

@@ -19,6 +19,14 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
 import { Response } from 'express';
+import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { User } from '../../../system/users/entities/user.entity';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -135,6 +143,28 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
 
                 }
             } else {
+                const factura = new AcademyChargeInvoice();
+
+                factura.folio = '';
+                factura.uuid = '';
+                factura.businessName = query.receiver.businessName;
+                factura.rfc = query.receiver.rfc;
+                factura.agentBilling = {
+                    id: query.agentBillingId,
+                } as User;
+                factura.status = 0; // Pendiente de procesar en facturación moderna
+                factura.academyCharge = {
+                    id: query.chargeId,
+                } as AcademyCharge;
+                factura.academyChargePayment = {
+                    id: query.chargePaymentId,
+                } as AcademyChargePayments;
+                factura.invoiceBranchOffice = {
+                    id: query.branchOfficeId,
+                } as BranchOffice;
+                factura.invoiceBranchOfficeSet = {
+                    id: query.branchOfficeSettingId,
+                } as BranchOfficeSetting;
 
             }
         } catch (e) {

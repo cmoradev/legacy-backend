@@ -3,6 +3,8 @@ import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoi
 import { User } from '../../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('ac_facturas')
 export class AcademyChargeInvoice {
@@ -98,12 +100,15 @@ export class AcademyChargeInvoice {
     })
     academyCharge: AcademyCharge;
 
-    @Column('int', {
-        nullable: false,
-        default: () => '\'0\'',
-        name: 'id_plantel',
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeAcademyInvoice)
+    @JoinColumn({
+        name: 'invoiceBranchOfficeId',
+        referencedColumnName: 'id',
     })
-    idPlantel: number;
+    invoiceBranchOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
+    invoiceBranchOfficeSet: BranchOfficeSetting;
 
     @Column('timestamp', {
         nullable: false,
