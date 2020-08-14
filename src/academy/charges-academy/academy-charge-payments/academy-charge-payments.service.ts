@@ -18,6 +18,9 @@ import { add, round, sub } from 'exact-math';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import * as nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -181,5 +184,43 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             charge,
             payment,
         };
+    }
+
+    async updatePayment(data: AcademyChargePayments) {
+        let payment = await this.repo.findOne({ id: data.id });
+        payment = { ...data };
+        return await this.repo.save(payment);
+    }
+
+    async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: currentBranch.Email,
+                pass: currentBranch.EmailPass,
+            },
+        });
+        const pathInvoice = '/var/www/pdc/comprobantes/academias/' + uuid.toUpperCase();
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: currentBranch.Email,
+            subject: 'Academias  - Comprobantes de pago CFDI',
+            text: 'CFDI',
+            html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Academias del Colegio Inglés</p></div>',
+            attachments: [
+                {
+                    filename: uuid.toUpperCase() + '.xml',
+                    path: `${pathInvoice}.xml`,
+                },
+                {
+                    filename: uuid.toUpperCase() + '.pdf',
+                    path: `${pathInvoice}.pdf`,
+                },
+            ],
+        };
+        return await transporter.sendMail(mailOptions);
     }
 }

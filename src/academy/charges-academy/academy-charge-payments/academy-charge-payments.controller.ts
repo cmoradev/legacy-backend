@@ -27,6 +27,10 @@ import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
+import { GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+import * as fs from 'fs';
+import { XmlCdfi } from '@signati/core';
+import { PDF, XmlToJson } from '@signati/pdf';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -107,7 +111,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
     async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
-        res.send(invoiceDetails);
+        // res.send(invoiceDetails);
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -140,6 +144,46 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     respuesta.uuid = invocePayment.uuid;
                     res.send(respuesta);
                 } else {
+                    const xml = await GenerateInvoice(
+                        {
+                            folio: invoiceFind.folio ? invoiceFind.folio : 'A-0012',
+                            serie: branchOfficeSett.serieFacturacion,
+                        },
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails);
+                    const timbrado = await this.smartWeb.facturar(xml);
+                    await this.service.updatePayment({
+                        id: query.chargePaymentId,
+                        stamping: 1,
+                    } as AcademyChargePayments);
+                    // Guardamos el xml
+                    const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
+                    // Obtenemos los datos del xml
+                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
+                    // 4. Actualizamos los campos con la factura los datos del sat
+                    invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
+                    invoiceFind.status = 1;
+                    invoiceFind.total = cfdi['cfdi:Comprobante']._attributes.Total;
+                    const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(invoiceFind);
+                    // Generamos el PDf del xml
+                    const pdf = new PDF(pathXml, 0, {
+                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                    });
+                    await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
+                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    // falta regresar el dato
+                    respuesta.stamping = true;
+                    respuesta.msg = 'Pago Facturado';
+                    respuesta.invoice = resultInvoice;
+                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    res.send(respuesta);
 
                 }
             } else {
@@ -165,7 +209,52 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                 factura.invoiceBranchOfficeSet = {
                     id: query.branchOfficeSettingId,
                 } as BranchOfficeSetting;
+                const invoice = await this.academyChargeInvoiceService.saveInvoice(factura);
+                if (invoice) {
+                    const xml = await GenerateInvoice(
+                        {
+                            folio: invoice.folio ? invoice.folio : 'A-0012',
+                            serie: branchOfficeSett.serieFacturacion,
+                        },
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails);
+                    const timbrado = await this.smartWeb.facturar(xml);
+                    console.log(timbrado);
+                    await this.service.updatePayment({
+                        id: query.chargePaymentId,
+                        stamping: 1,
+                    } as AcademyChargePayments);
+                    // Guardamos el xml
+                    const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
+                    // Obtenemos los datos del xml
+                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
+                    // 4. Actualizamos los campos con la factura los datos del sat
+                    invoice.uuid = timbrado.data.uuid.toUpperCase();
+                    invoice.status = 1;
+                    invoice.total = cfdi['cfdi:Comprobante']._attributes.Total;
+                    const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(invoice);
+                    // Generamos el PDf del xml
+                    const pdf = new PDF(pathXml, 0, {
+                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                    });
+                    await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
+                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    // falta regresar el dato
 
+                    respuesta.stamping = true;
+                    respuesta.msg = 'Pago Facturado';
+                    respuesta.invoice = resultInvoiceFirst;
+                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    res.send(respuesta);
+
+                }
             }
         } catch (e) {
             res.send(e);
