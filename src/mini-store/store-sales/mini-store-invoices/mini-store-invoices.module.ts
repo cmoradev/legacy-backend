@@ -12,7 +12,6 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 
 @Module({
     imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
-        MiniStoreSalesPaymentsModule,
         UsersModule,
         BranchOfficeModule,
         BranchOfficeSettingModule,

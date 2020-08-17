@@ -5,6 +5,7 @@ import { AcademyCharge } from '../../academy-charge/entities/academy-charge.enti
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 
 @Entity('ac_facturas')
 export class AcademyChargeInvoice {
@@ -61,13 +62,6 @@ export class AcademyChargeInvoice {
     })
     reasonCancellation: string | null;
 
-    @Column('tinyint', {
-        nullable: false,
-        default: () => '\'1\'',
-        name: 'status',
-    })
-    status: number;
-
     @Column({
         type: 'enum',
         nullable: false,
@@ -75,6 +69,15 @@ export class AcademyChargeInvoice {
         enum: InvoiceType,
     })
     invoiceType: InvoiceType;
+
+    @Column({
+        type: 'enum',
+        nullable: false,
+        default: InvoiceStatus.Unbilled,
+        enum: InvoiceStatus,
+        name: 'status',
+    })
+    status: InvoiceStatus;
 
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)
     @JoinColumn({

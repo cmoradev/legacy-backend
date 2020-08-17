@@ -6,6 +6,7 @@ import { InvoiceType } from '../enums/invoice-type.enum';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice {
@@ -98,12 +99,6 @@ export class MiniStoreInvoice {
     })
     idPayment: number;
 
-    @Column('tinyint', {
-        nullable: false,
-        default: () => '\'1\'',
-        name: 'status',
-    })
-    status: number;
 
     @Column('timestamp', {
         nullable: false,
@@ -127,6 +122,15 @@ export class MiniStoreInvoice {
         enum: InvoiceType,
     })
     invoiceType: InvoiceType;
+
+    @Column({
+        type: 'enum',
+        nullable: false,
+        default: InvoiceStatus.Unbilled,
+        enum: InvoiceStatus,
+        name: 'status',
+    })
+    status: InvoiceStatus;
 
     /**
      * Relación que corresponde al la factura al pago de una venta

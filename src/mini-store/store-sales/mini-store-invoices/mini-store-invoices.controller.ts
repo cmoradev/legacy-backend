@@ -19,6 +19,7 @@ import { BranchOfficeService } from '../../../system/branch-office/branch-office
 import * as nodemailer from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { User } from '../../../system/users/entities/user.entity';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -46,7 +47,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         // 'emisorRFC': 'WSI1503194J6',
         // 'RFC': 'GUCE910701NHA',
     };
-    token: string = 'T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbXB3YVZxTHdOdHAwVXY2NTdJb1hkREtXTzE3dk9pMmdMdkFDR2xFWFVPUXpTUm9mTG1ySXdZbFNja3FRa0RlYURqbzdzdlI2UUx1WGJiKzViUWY2dnZGbFloUDJ6RjhFTGF4M1BySnJ4cHF0YjUvbmRyWWpjTkVLN3ppd3RxL0dJPQ.T2lYQ0t4L0RHVkR4dHZ5Nkk1VHNEakZ3Y0J4Nk9GODZuRyt4cE1wVm5tbFlVcU92YUJTZWlHU3pER1kySnlXRTF4alNUS0ZWcUlVS0NhelhqaXdnWTRncklVSWVvZlFZMWNyUjVxYUFxMWFxcStUL1IzdGpHRTJqdS9Zakw2UGQ5cytTOVNTYWUwRUhQQVZBOVZ6QWVXdlAzTkhuOGdldExTNDlsWC9vR1cyR2JUWlg0L3dFa3FHeWhwam5mcGxWRHFSTUYzNCsrNXBKcHFpY3NRTTNKSnJ4Nm51c2pLVDMwclFYMTB0NmViTUFiTStVaFVzZ3lJWnIwUDB0TUQ2WjN2YXRMdUR6Nzlwckt3b09MNlgvNnJnVk5nNE84VzhVNmR5ODRTc2JvOHIxYmRKelR0M3NOdStUK2VWaStWeW4wUGxhVDdONWFuSWRibW9oOGNiYTkwRmMxaWhsUVNpSE1YcjMzUUJuRlBod3VPaVdzUVRSR29CQVRMOGpFNk5talQzS21kc1BaY1FNVjNtcDZrY3JFUjdJWnVyZWhDWlcwRE82Z1BFbUFndHJvQVRvdWtFVnppODFSdzhxSkZncHRIeDd1UkRxQWIwVzlkY2lOWGJreitEc1VQNTdXRStNcVFBTXVKYlluT0hPUWJPcXc2a2NaMnJBaDF2S21ZMzQyeDFYcll0Q1pSbkh3K2hiSy9kUjlBPT0.FwcVM47f9GR_009Nw4mLxYJnf__DHO04PwEaJrAAzy8';
 
     constructor(readonly service: MiniStoreInvoicesService,
                 readonly branchOfficeSettingService: BranchOfficeSettingService,
@@ -100,7 +100,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 uuid: invoce.uuid,
                 cer,
                 key,
-                token: this.token,
             });
 
             const status = result.data.uuid[invoce.uuid];
@@ -140,6 +139,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                     }
                 }
                 invoce.status = 2;
+                invoce.agentCanceling = {
+                    id: cancelInvoiceSw.cashierId,
+                } as User;
                 payment.stamping = 0;
                 const updateInvoice = await this.service.updateInvoice(invoce);
                 const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
@@ -184,9 +186,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
             const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
             const message = this.service.sendMail(currentBranch, data.uuid, data.email);
-            console.log(message);
+            // console.log(message);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     }
 

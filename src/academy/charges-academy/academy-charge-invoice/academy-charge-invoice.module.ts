@@ -4,11 +4,21 @@ import { AcademyChargeInvoiceController } from './academy-charge-invoice.control
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
+import { UsersModule } from '../../../system/users/users.module';
+import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
+import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
+import { MiniStoreSalesPaymentsModule } from '../../../mini-store/store-sales/mini-store-sales-payments/mini-store-sales-payments.module';
+import { SmartWeb } from '../../../Provider/swsmart.provider';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection)],
-    providers: [AcademyChargeInvoiceService],
+    imports: [
+        TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection),
+        UsersModule,
+        BranchOfficeModule,
+        BranchOfficeSettingModule,
+    ],
     controllers: [AcademyChargeInvoiceController],
+    providers: [AcademyChargeInvoiceService, SmartWeb],
     exports: [AcademyChargeInvoiceService],
 })
 export class AcademyChargeInvoiceModule {
