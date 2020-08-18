@@ -20,8 +20,10 @@ import * as nodemailer from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { User } from '../../../system/users/entities/user.entity';
+import { PDF } from '@signati/pdf';
+import { readFileSync } from 'fs';
 
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreInvoice,
@@ -60,11 +62,21 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     @Get('/pdf')
-    public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
+    public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string, rebuild: string }) {
         try {
+            if (query.rebuild === '1' || +query.rebuild === 1) {
+                const logo = readFileSync('/var/www/logos/tienditalogo.png');
+                const pathXml = '/var/www/pdc/comprobantes/tienda/' + query.uuid + '.xml';
+                const pdf = new PDF(pathXml, 0, {
+                    lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                    logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                });
+                await pdf.save('/var/www/pdc/comprobantes/tienda/' + query.uuid);
+            }
             const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            // data:image/png;base64,
+            res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
         } catch (e) {
             res.send({ error: e }).status(400);
         }

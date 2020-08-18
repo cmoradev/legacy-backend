@@ -21,6 +21,7 @@ import { XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import { readFileSync } from 'fs';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -111,6 +112,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         };
 
         try {
+            const logo = readFileSync('/var/www/logos/tienditalogo.png');
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -153,8 +155,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
+
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
@@ -220,6 +224,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)

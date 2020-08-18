@@ -31,6 +31,7 @@ import { GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sale
 import * as fs from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
+import { readFileSync } from 'fs';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -131,6 +132,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         };
 
         try {
+            const logo = readFileSync('/var/www/logos/academiaslogo.png');
             if (invoiceFind) {
                 if (invoiceFind.academyChargePayment.stamping === 1) {
                     const invocePayment = await this.academyChargeInvoiceService.findInvoiceByPayment({
@@ -174,6 +176,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
@@ -224,7 +227,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                         },
                         invoiceDetails);
                     const timbrado = await this.smartWeb.facturar(xml);
-                    console.log(timbrado);
+                    // console.log(timbrado);
                     await this.service.updatePayment({
                         id: query.chargePaymentId,
                         stamping: 1,
@@ -242,6 +245,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
