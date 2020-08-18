@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AcademyChargePaymentsController } from './academy-charge-payments.controller';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -25,12 +25,13 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
             ], ColegioDBNameConnection),
         BranchOfficeModule,
         BranchOfficeSettingModule,
-        AcademyChargeInvoiceModule,
+        forwardRef(() => AcademyChargeInvoiceModule),
         InvoiceMethodsPaymentsModule,
         AcademyChargeModule,
     ],
     controllers: [AcademyChargePaymentsController],
     providers: [AcademyChargePaymentsService, SmartWeb],
+    exports: [AcademyChargePaymentsService],
 })
 export class AcademyChargePaymentsModule {
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
 import { AcademyChargeInvoiceController } from './academy-charge-invoice.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,8 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { MiniStoreSalesPaymentsModule } from '../../../mini-store/store-sales/mini-store-sales-payments/mini-store-sales-payments.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
+import { AcademyChargePaymentsModule } from '../academy-charge-payments/academy-charge-payments.module';
+import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
 
 @Module({
     imports: [
@@ -16,6 +18,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
         UsersModule,
         BranchOfficeModule,
         BranchOfficeSettingModule,
+        forwardRef(() => AcademyChargePaymentsModule),
     ],
     controllers: [AcademyChargeInvoiceController],
     providers: [AcademyChargeInvoiceService, SmartWeb],
