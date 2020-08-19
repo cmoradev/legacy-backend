@@ -148,7 +148,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                 } else {
                     const xml = await GenerateInvoice(
                         {
-                            folio: invoiceFind.folio ? invoiceFind.folio : 'A-0012',
+                            folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
                         branchOfficeSett,
@@ -216,7 +216,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {
-                            folio: invoice.folio ? invoice.folio : 'A-0012',
+                            folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
                         branchOfficeSett,
