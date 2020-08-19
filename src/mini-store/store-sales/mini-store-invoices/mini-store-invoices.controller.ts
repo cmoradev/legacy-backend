@@ -23,7 +23,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
 import { readFileSync } from 'fs';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreInvoice,
