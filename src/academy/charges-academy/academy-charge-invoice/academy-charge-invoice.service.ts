@@ -39,7 +39,8 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
 
     async saveInvoice(data: AcademyChargeInvoice) {
         const invoice = await this.repo.create(data);
-        return await this.repo.save(invoice);
+        const result = await this.repo.save(invoice);
+        return await this.repo.findOne({ id: result.id });
     }
 
     async updateInvoice(data: AcademyChargeInvoice) {
