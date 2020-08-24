@@ -106,8 +106,11 @@ export class SchoolPayment extends Base {
     @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
     schoolChargeDetail: SchoolChargeDetails[];
 
-    @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
-    @JoinColumn()
+    // @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
+    // @JoinColumn()
+    // paymentPlanConcept: PaymentPlanConcept;
+
+    @ManyToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
     paymentPlanConcept: PaymentPlanConcept;
 
     @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments)

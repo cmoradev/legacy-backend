@@ -31,7 +31,8 @@ import { sheetToObjPage } from '../../common/office/sheets';
             inscripAssignmentsInscription: {},
             inscripStudyPlanVariant: {},
             inscripStudyPlan: {},
-            schoolPayments: {},
+            schoolPayments: {alias:'schoolCharges'},
+            'schoolPayments.paymentPlanConcept': {},
         },
     },
 })
