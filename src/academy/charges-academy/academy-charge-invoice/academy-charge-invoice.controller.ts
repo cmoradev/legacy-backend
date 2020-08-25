@@ -200,8 +200,10 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             },
             relations: [
                 'agentBilling',
+                'academyChargePayment',
                 'agentCanceling',
                 'academyCharge',
+                'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
                 'academyCharge.chargesDetails.extraCharges'
             ],
@@ -217,8 +219,10 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             },
             relations: [
                 'agentBilling',
+                'academyChargePayment',
                 'agentCanceling',
                 'academyCharge',
+                'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
                 'academyCharge.chargesDetails.extraCharges'
             ],
@@ -236,9 +240,11 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             relations: [
                 'agentBilling',
                 'agentCanceling',
+                'academyChargePayment',
                 'academyCharge',
+                'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges'
+                'academyCharge.chargesDetails.extraCharges',
             ],
         });
 

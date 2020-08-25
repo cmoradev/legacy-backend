@@ -95,7 +95,13 @@ export class ReportInvoice {
             }
 
             invoiceItem.push(invoice.createdAt);
-            invoiceItem.push(invoice.updatedAt);
+
+            if(invoice.academyChargePayment){
+                invoiceItem.push(invoice.academyChargePayment.createdAt);
+            } else {
+                invoiceItem.push('');
+            }
+
             // invoiceItem.push(invoice.folioInvoice);
             // invoiceItem.push(invoice.paymentFolio);
             if(invoice.folio && invoice.folio !== ''){
@@ -104,17 +110,45 @@ export class ReportInvoice {
                 invoiceItem.push('SN');
             }
 
+            if(invoice.academyChargePayment){
+                invoiceItem.push(invoice.academyChargePayment.folio);
+            } else {
+                invoiceItem.push('SN');
+            }
+
+            if(invoice.academyCharge && invoice.academyCharge.schoolStudent){
+                invoiceItem.push(invoice.academyCharge.schoolStudent.name + ' ' + invoice.academyCharge.schoolStudent.lastNameFather + ' ' + invoice.academyCharge.schoolStudent.lastNameMother);
+            } else {
+                invoiceItem.push('')
+            }
+
             // invoiceItem.push(invoice.typePerson);
             // invoiceItem.push(invoice.studentName);
             if(invoice.status === 2){
-                invoiceItem.push(invoice.agentCanceling.name);
+                if(invoice.agentCanceling){
+                    invoiceItem.push(invoice.agentCanceling.name)
+                } else {
+                    invoiceItem.push('S/N')
+                }
+
             } else {
-                invoiceItem.push(invoice.agentBilling.name);
+                if(invoice.agentBilling){
+                    invoiceItem.push(invoice.agentBilling.name)
+                } else {
+                    invoiceItem.push('S/N')
+                }
             }
 
             invoiceItem.push(invoice.businessName);
             invoiceItem.push(invoice.rfc);
             // invoiceItem.push(invoice.paymentForm);
+
+            if(invoice.academyChargePayment){
+                invoiceItem.push(invoice.academyChargePayment.quantity)
+            } else {
+                invoiceItem.push(0);
+            }
+
             if(invoice.total){
                 invoiceItem.push(invoice.total);
             }else{
@@ -139,14 +173,15 @@ export class ReportInvoice {
                 { name: 'FECHA DE FACTURACION' },
                 { name: 'DIA DE PAGO' },
                 { name: 'FOLIO DE FACTURA' },
-                // { name: 'FOLIO DE PAGO' },
+                { name: 'FOLIO DE PAGO' },
                 // { name: 'FOLIO DE VENTA' },
                 // { name: 'PERSONA' },
-                // { name: 'ALUMNO/CLIENTE' },
+                { name: 'ALUMNO/CLIENTE' },
                 { name: 'FACTURADOR' },
                 { name: 'RAZON SOCIAL' },
                 { name: 'RFC' },
                 // { name: 'METODO DE PAGO' },
+                { name: 'MONTO' },
                 { name: 'TOTAL', totalsRowFunction: 'sum' },
                 { name: 'UUID' },
                 { name: 'TIPO DE FACTURA' },
