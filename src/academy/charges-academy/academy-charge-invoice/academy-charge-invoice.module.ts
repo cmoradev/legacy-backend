@@ -11,6 +11,7 @@ import { MiniStoreSalesPaymentsModule } from '../../../mini-store/store-sales/mi
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { AcademyChargePaymentsModule } from '../academy-charge-payments/academy-charge-payments.module';
 import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
+import {AcademyChargeDiscountsModule} from '../academy-charge-discounts/academy-charge-discounts.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-st
         UsersModule,
         BranchOfficeModule,
         BranchOfficeSettingModule,
+        AcademyChargeDiscountsModule,
         forwardRef(() => AcademyChargePaymentsModule),
     ],
     controllers: [AcademyChargeInvoiceController],

@@ -12,4 +12,12 @@ export class AcademyChargeDiscountsService extends TypeOrmCrudService<AcademyCha
   ) {
     super(repo);
   }
+
+  async getInvoiceDisscounts(id: number){
+    return await this.repo.find({
+        where:{
+          idCobroDetalle: id
+        }
+      });
+  }
 }

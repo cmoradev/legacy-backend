@@ -11,6 +11,15 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
+import moment = require('moment');
+
+import { ReportData } from './dto/reportData.dto'
+import {AcademyInscriptionConcepts} from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import {AcademyChargeDiscountsService} from '../academy-charge-discounts/academy-charge-discounts.service';
+import {Workbook} from 'exceljs';
+import {Between} from 'typeorm';
+import * as Moment from 'moment';
+import { ReportInvoice } from './reports/invoice.reports';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -29,6 +38,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
         readonly academyChargePaymentsService: AcademyChargePaymentsService,
+        readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
         private  smartWeb: FactSw,
     ) {
     }
@@ -171,4 +181,157 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         }
     }
 
+    @Post('/global-report')
+    public async getReportGlobal( @Body() request: ReportData,  @Res() res: Response ){
+
+        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+            where: {
+                id: request.branchOfficeId,
+            },
+        });
+
+        // Billed
+        const invoiceBilled = await this.service.repo.find({
+            where: {
+                status: 1,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            },
+            relations: [
+                'agentBilling',
+                'agentCanceling',
+                'academyCharge',
+                'academyCharge.chargesDetails',
+                'academyCharge.chargesDetails.extraCharges'
+            ],
+        });
+
+        // Unbilled
+        const invoiceUnBilled = await this.service.repo.find({
+            where: {
+                status: 0,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            },
+            relations: [
+                'agentBilling',
+                'agentCanceling',
+                'academyCharge',
+                'academyCharge.chargesDetails',
+                'academyCharge.chargesDetails.extraCharges'
+            ],
+        });
+
+        // Cancelled
+
+        const invoiceCancelled = await this.service.repo.find({
+            where: {
+                status: 2,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            },
+            relations: [
+                'agentBilling',
+                'agentCanceling',
+                'academyCharge',
+                'academyCharge.chargesDetails',
+                'academyCharge.chargesDetails.extraCharges'
+            ],
+        });
+
+        // const query = this.service.repo.createQueryBuilder('invoice');
+        // query.innerJoinAndSelect('invoice.academyCharge', 'charges')
+        // query.innerJoinAndSelect('charges.chargesDetails', 'detail')
+        // query.leftJoinAndSelect('detail.extraCharges', 'extra')
+        // query.innerJoinAndSelect('invoice.agentBilling', 'agent')
+        // query.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
+        // //query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
+        // query.where('invoice.createdAt BETWEEN :inicio AND :fin',
+        //     {
+        //         inicio: moment(request.inicio).startOf('day').toDate(),
+        //         fin: moment(request.fin).endOf('day').toDate(),
+        //     });
+        // query.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
+        // query.andWhere('invoice.status = :status', {status: 1});
+
+
+
+        // Unbilled
+        // const query1 = this.service.repo.createQueryBuilder('invoice');
+        // query1.innerJoinAndSelect('invoice.academyCharge', 'charges')
+        // query1.innerJoinAndSelect('charges.chargesDetails', 'details')
+        // query1.innerJoinAndSelect('invoice.agentBilling', 'agent')
+        // query1.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
+        // // query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
+        // query1.where('invoice.createdAt BETWEEN :inicio AND :fin',
+        //     {
+        //         inicio: moment(request.startDate).startOf('day').toDate(),
+        //         fin: moment(request.endDate).endOf('day').toDate(),
+        //     });
+        // query1.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
+        // query1.andWhere('invoice.status = :status', {status: 0});
+
+        //Unbilled
+        // const query3 = this.service.repo.createQueryBuilder('invoice');
+        // query3.innerJoinAndSelect('invoice.academyCharge', 'charges')
+        // query3.innerJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
+        // query3.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
+        // // query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
+        // query3.where('invoice.createdAt BETWEEN :inicio AND :fin',
+        //     {
+        //         inicio: moment(request.startDate).startOf('day').toDate(),
+        //         fin: moment(request.endDate).endOf('day').toDate(),
+        //     });
+        // query3.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
+        // query3.andWhere('invoice.status = :status', {status: 0});
+
+        // const invoiceBilled = await query.getMany();
+        // const invoiceUnBilled = await query1.getMany();
+        // const invoiceCancelled = await query3.getMany();
+
+        const workSheets = [
+             {name: 'Facturas Pagadas', data: invoiceBilled},
+             {name: 'Facturas No Pagadas', data: invoiceUnBilled},
+             {name: 'Facturas Canceladas', data: invoiceCancelled},
+        ]
+
+        const workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
+
+        // console.log("rows ", invoiceBilled.length);
+
+        // tslint:disable-next-line:prefer-for-of
+        // for (let i = 0; i < invoiceBilled.length; i++){
+        //     if(invoiceBilled[i].academyCharge){
+        //         const disscounts =  await this.academyChargeDiscountsService.getInvoiceDisscounts(invoiceBilled[i].academyCharge.id);
+        //         invoiceBilled[i].academyCharge['disscounts'] = disscounts
+        //         //console.log(disscounts);
+        //     }
+        // }
+
+        const dateName = new Date();
+        const fileName = dateName.toTimeString() + '.xlsx';
+        const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+        // await workbook.xlsx.writeFile('./xls-imports/' + fileName);
+        const buffer = Buffer.from(result);
+        const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+
+        const data = {
+            facturado: {
+                rows: invoiceBilled
+            },
+            nofacturado: {
+                rows: invoiceUnBilled
+            },
+            cancelados:{
+                rows: invoiceCancelled
+            },
+            file: b64Encoding + buffer.toString('base64'),
+        }
+        res.send({ success:true, data });
+    }
 }
+
+

@@ -7,6 +7,7 @@ import { AcademyChargeDiscounts } from './entities/academy-charge-discounts.enti
 
 @Module({
   imports: [TypeOrmModule.forFeature([AcademyChargeDiscounts], ColegioDBNameConnection)],
+  exports: [AcademyChargeDiscountsService],
   providers: [AcademyChargeDiscountsService],
   controllers: [AcademyChargeDiscountsController],
 })

@@ -258,8 +258,9 @@ export const routes: Routes = [
                     { path: '/discounts', module: AcademyChargeDiscountsModule },
                     { path: '/surcharges', module: AcademyChargeSurchargesModule },
                     { path: '/charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
+                    { path: '/reports', module:AcademyChargeInvoiceModule},
                 ],
-            },
+            }
         ],
     },
     {
