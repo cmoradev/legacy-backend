@@ -7,7 +7,7 @@ export const myTransformer: ValueTransformer = {
         return value;
     },
     from(value: string): string[] {
-        return value.split(',');
+        return value?.split(',');
     },
 
 };
