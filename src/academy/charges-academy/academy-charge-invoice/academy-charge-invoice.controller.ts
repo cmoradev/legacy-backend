@@ -181,7 +181,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         }
     }
 
-    @Post('/global-report')
+    @Post('/report')
     public async getReportGlobal( @Body() request: ReportData,  @Res() res: Response ){
 
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
@@ -190,14 +190,56 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             },
         });
 
-        // Billed
-        const invoiceBilled = await this.service.repo.find({
-            where: {
+        let whereParamsBilled = { }
+        let whereParamsUnBilled = { }
+        let whereParamsCancelled = { }
+
+        if(request.idUsuario === 'all'){
+            whereParamsBilled = {
                 status: 1,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            },
+            }
+            whereParamsUnBilled = {
+                status: 0,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            }
+            whereParamsCancelled = {
+                status: 2,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            }
+        } else {
+            whereParamsBilled = {
+                agentBilling: request.idUsuario,
+                status: 1,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            }
+            whereParamsUnBilled = {
+                agentBilling: request.idUsuario,
+                status: 0,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            }
+            whereParamsCancelled = {
+                agentCanceling: request.idUsuario,
+                status: 2,
+                createdAt: Between(
+                    Moment(request.startDate).startOf('day').toDate(),
+                    Moment(request.endDate).endOf('day').toDate()),
+            }
+        }
+
+        // Billed
+        const invoiceBilled = await this.service.repo.find({
+            where: whereParamsBilled,
             relations: [
                 'agentBilling',
                 'academyChargePayment',
@@ -211,12 +253,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
         // Unbilled
         const invoiceUnBilled = await this.service.repo.find({
-            where: {
-                status: 0,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            },
+            where: whereParamsUnBilled,
             relations: [
                 'agentBilling',
                 'academyChargePayment',
@@ -231,12 +268,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         // Cancelled
 
         const invoiceCancelled = await this.service.repo.find({
-            where: {
-                status: 2,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            },
+            where: whereParamsCancelled,
             relations: [
                 'agentBilling',
                 'agentCanceling',
@@ -248,81 +280,25 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             ],
         });
 
-        // const query = this.service.repo.createQueryBuilder('invoice');
-        // query.innerJoinAndSelect('invoice.academyCharge', 'charges')
-        // query.innerJoinAndSelect('charges.chargesDetails', 'detail')
-        // query.leftJoinAndSelect('detail.extraCharges', 'extra')
-        // query.innerJoinAndSelect('invoice.agentBilling', 'agent')
-        // query.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
-        // //query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
-        // query.where('invoice.createdAt BETWEEN :inicio AND :fin',
-        //     {
-        //         inicio: moment(request.inicio).startOf('day').toDate(),
-        //         fin: moment(request.fin).endOf('day').toDate(),
-        //     });
-        // query.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
-        // query.andWhere('invoice.status = :status', {status: 1});
-
-
-
-        // Unbilled
-        // const query1 = this.service.repo.createQueryBuilder('invoice');
-        // query1.innerJoinAndSelect('invoice.academyCharge', 'charges')
-        // query1.innerJoinAndSelect('charges.chargesDetails', 'details')
-        // query1.innerJoinAndSelect('invoice.agentBilling', 'agent')
-        // query1.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
-        // // query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
-        // query1.where('invoice.createdAt BETWEEN :inicio AND :fin',
-        //     {
-        //         inicio: moment(request.startDate).startOf('day').toDate(),
-        //         fin: moment(request.endDate).endOf('day').toDate(),
-        //     });
-        // query1.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
-        // query1.andWhere('invoice.status = :status', {status: 0});
-
-        //Unbilled
-        // const query3 = this.service.repo.createQueryBuilder('invoice');
-        // query3.innerJoinAndSelect('invoice.academyCharge', 'charges')
-        // query3.innerJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
-        // query3.leftJoinAndSelect('invoice.academyChargePayment', 'payment')
-        // // query.leftJoinAndSelect('invoice.academyChargePayment.chargesDetails', 'payment')
-        // query3.where('invoice.createdAt BETWEEN :inicio AND :fin',
-        //     {
-        //         inicio: moment(request.startDate).startOf('day').toDate(),
-        //         fin: moment(request.endDate).endOf('day').toDate(),
-        //     });
-        // query3.andWhere('invoice.invoiceBranchOffice = :branchOffice', { branchOffice: request.branchOfficeId });
-        // query3.andWhere('invoice.status = :status', {status: 0});
-
-        // const invoiceBilled = await query.getMany();
-        // const invoiceUnBilled = await query1.getMany();
-        // const invoiceCancelled = await query3.getMany();
-
         const workSheets = [
              {name: 'Facturas Pagadas', data: invoiceBilled},
-             {name: 'Facturas No Pagadas', data: invoiceUnBilled},
+             {name: 'Pagos No Facturados', data: invoiceUnBilled},
              {name: 'Facturas Canceladas', data: invoiceCancelled},
         ]
 
-        const workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
+        let workbook = null;
+        let b64Encoding = '';
+        let buffer = null;
 
-        // console.log("rows ", invoiceBilled.length);
+        if(request.file){
+            workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
 
-        // tslint:disable-next-line:prefer-for-of
-        // for (let i = 0; i < invoiceBilled.length; i++){
-        //     if(invoiceBilled[i].academyCharge){
-        //         const disscounts =  await this.academyChargeDiscountsService.getInvoiceDisscounts(invoiceBilled[i].academyCharge.id);
-        //         invoiceBilled[i].academyCharge['disscounts'] = disscounts
-        //         //console.log(disscounts);
-        //     }
-        // }
-
-        const dateName = new Date();
-        const fileName = dateName.toTimeString() + '.xlsx';
-        const result = await workbook.xlsx.writeBuffer({ filename: fileName });
-        // await workbook.xlsx.writeFile('./xls-imports/' + fileName);
-        const buffer = Buffer.from(result);
-        const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+            const dateName = new Date();
+            const fileName = dateName.toTimeString() + '.xlsx';
+            const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+            buffer = Buffer.from(result);
+            b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+        }
 
         const data = {
             facturado: {
@@ -334,7 +310,11 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             cancelados:{
                 rows: invoiceCancelled
             },
-            file: b64Encoding + buffer.toString('base64'),
+            file: '',
+        }
+
+        if(request.file){
+            data.file = b64Encoding + buffer.toString('base64')
         }
         res.send({ success:true, data });
     }

@@ -149,26 +149,44 @@ export class ReportInvoice {
                 invoiceItem.push(0);
             }
 
-            if(invoice.total){
+            if(invoice.total && reportName !== 'Pagos No Facturados'){
                 invoiceItem.push(invoice.total);
-            }else{
+            }else if(reportName !== 'Pagos No Facturados'){
                 invoiceItem.push(0);
             }
 
-            if(invoice.uuid){
+            if(invoice.uuid && reportName !== 'Pagos No Facturados'){
                 invoiceItem.push(invoice.uuid);
-            } else {
+            } else if(reportName !== 'Pagos No Facturados') {
                 invoiceItem.push('xxxxxx');
             }
 
             invoiceItem.push(invoice.invoiceType);
             invoiceDetails.push(invoiceItem);
         });
-        invoiceSheet.addTable({
-            name: 'details',
-            ref: 'B14',
-            totalsRow: true,
-            columns: [
+        let cols = [];
+
+        if(reportName === 'Pagos No Facturados'){
+            cols = [
+                { name: 'ESTADO', filterButton: false },
+                { name: 'FECHA DE FACTURACION' },
+                { name: 'DIA DE PAGO' },
+                { name: 'FOLIO DE FACTURA' },
+                { name: 'FOLIO DE PAGO' },
+                // { name: 'FOLIO DE VENTA' },
+                // { name: 'PERSONA' },
+                { name: 'ALUMNO/CLIENTE' },
+                { name: 'FACTURADOR' },
+                { name: 'RAZON SOCIAL' },
+                { name: 'RFC' },
+                // { name: 'METODO DE PAGO' },
+                // { name: 'MONTO' },
+                { name: 'TOTAL', totalsRowFunction: 'sum' },
+                // { name: 'UUID' },
+                { name: 'TIPO DE FACTURA' },
+            ]
+        } else {
+            cols = [
                 { name: 'ESTADO', filterButton: false },
                 { name: 'FECHA DE FACTURACION' },
                 { name: 'DIA DE PAGO' },
@@ -185,7 +203,15 @@ export class ReportInvoice {
                 { name: 'TOTAL', totalsRowFunction: 'sum' },
                 { name: 'UUID' },
                 { name: 'TIPO DE FACTURA' },
-            ],
+            ]
+        }
+
+
+        invoiceSheet.addTable({
+            name: 'details',
+            ref: 'B14',
+            totalsRow: true,
+            columns: cols,
             rows: invoiceDetails,
         });
 

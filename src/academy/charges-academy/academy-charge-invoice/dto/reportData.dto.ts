@@ -1,5 +1,7 @@
 export class ReportData {
+    idUsuario: number | string;
     startDate: string;
     endDate: string;
-    branchOfficeId: number
+    branchOfficeId: number;
+    file:boolean
 }
