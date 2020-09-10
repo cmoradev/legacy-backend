@@ -165,7 +165,9 @@ export class MiniStoreSalePayment extends Base {
     })
     agentCanceling: User;
 
-    @OneToMany(type => CashRegisterTransaction, (cashRegisterTransaction) => cashRegisterTransaction.payment)
+    @OneToMany(type => CashRegisterTransaction, (cashRegisterTransaction) => cashRegisterTransaction.payment, {
+        cascade: ['insert', 'update'],
+    })
     cashRegisterTransactions: CashRegisterTransaction[];
 
 }

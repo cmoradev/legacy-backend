@@ -55,7 +55,7 @@ export class ConfigService {
      */
     public nodeEnvironment(): NodeEnv {
         const nodeEnvSchema = Joi.string()
-            .valid('development', 'production', 'desarrollo', 'test', 'staging', 'refaccionaria', 'tortilleria', 'rancho')
+            .valid('development', 'production', 'desarrollo', 'cremeria', 'test', 'staging', 'refaccionaria', 'tortilleria', 'rancho')
             .default('development');
         const { error, value: nodeEnv } = nodeEnvSchema.validate(process.env.NODE_ENV as NodeEnv);
 

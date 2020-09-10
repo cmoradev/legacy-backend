@@ -7,7 +7,15 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CashRegisterService extends TypeOrmCrudService<CashRegister> {
-    constructor(@InjectRepository(CashRegister, ColegioDBNameConnection) cashRegisterRepository: Repository<CashRegister>) {
-        super(cashRegisterRepository);
+    constructor(@InjectRepository(CashRegister, ColegioDBNameConnection) repo: Repository<CashRegister>) {
+        super(repo);
+    }
+
+    async generateDataReport() {
+        const salesReturnsQB = this.repo.createQueryBuilder('cashRegister')
+            .leftJoinAndSelect('cashRegister.agent', 'agent')
+            .leftJoinAndSelect('cashRegister.transactions', 'transactions')
+            .leftJoinAndSelect('transactions.payment', 'payment')
+            .leftJoinAndSelect('cashRegister.movements', 'movements');
     }
 }
