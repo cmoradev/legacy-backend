@@ -21,19 +21,24 @@ export class CashRegisterService extends TypeOrmCrudService<CashRegister> {
             .leftJoinAndSelect('transactions.agent', 'agents')
             .leftJoinAndSelect('cashRegister.movements', 'movements');
         if (query.currentCashier) {
-            salesReturnsQB.where('id = :id', {
+            console.log('in current casheir');
+            salesReturnsQB.where('cashRegister.id = :id', {
                 id: query.casherId,
             });
         } else {
-            salesReturnsQB.where('openAt BETWEEN :startDate AND :endDate',
+            console.log('in date');
+            console.log(moment(query.startDate).startOf('day').toDate());
+            console.log(moment(query.startDate).endOf('day').toDate());
+            salesReturnsQB.where('cashRegister.openAt BETWEEN :startDate AND :endDate',
                 {
                     startDate: moment(query.startDate).startOf('day').toDate(),
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
         }
-        if (query.agentId && query.agentId !== 0) {
-            salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.agentId });
-        }
+        // if (query.agentId && query.agentId !== 0) {
+        //     salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.agentId });
+        // }
+
         return await salesReturnsQB.getMany();
     }
 }
