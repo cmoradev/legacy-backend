@@ -41,7 +41,8 @@ export class CashRegisterController implements CrudController<CashRegister> {
 
             const tra = transactionsList(await this.service.generateDataReport(query));
             const re = new TransactionsReport();
-            re.addRow(tra);
+            re.addRow(tra.data);
+            re.addBoxSmall(tra.box);
             res.send({
                 src: 'data:application/pdf;base64,' + await re.getDocument(),
             });

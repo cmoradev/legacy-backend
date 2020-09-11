@@ -290,6 +290,10 @@ export class TransactionsReport {
         }
     }
 
+    async addBoxSmall(caja: string) {
+        this.docDefinition.content[2].table.body[0][1].text[7] = { text: '$' + caja + '\n' };
+    }
+
     async getDocument(options?: BufferOptions): Promise<string> {
         const bitmap = readFileSync(rootPath + '/public/images/logoOfficial.png');
         // convert binary data to base64 encoded string

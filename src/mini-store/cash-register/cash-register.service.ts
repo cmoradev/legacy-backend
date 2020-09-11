@@ -19,26 +19,24 @@ export class CashRegisterService extends TypeOrmCrudService<CashRegister> {
             .leftJoinAndSelect('cashRegister.transactions', 'transactions')
             .leftJoinAndSelect('transactions.payment', 'payment')
             .leftJoinAndSelect('transactions.agent', 'agents')
-            .leftJoinAndSelect('cashRegister.movements', 'movements');
-        if (query.currentCashier) {
-            console.log('in current casheir');
-            salesReturnsQB.where('cashRegister.id = :id', {
+            .leftJoinAndSelect('cashRegister.movements', 'movements')
+            .where('cashRegister.id = :id', {
                 id: query.casherId,
             });
-        } else {
-            console.log('in date');
-            console.log(moment(query.startDate).startOf('day').toDate());
-            console.log(moment(query.startDate).endOf('day').toDate());
-            salesReturnsQB.where('cashRegister.openAt BETWEEN :startDate AND :endDate',
-                {
-                    startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),
-                });
-        }
+        // } else {
+        //     console.log('in date');
+        //     console.log(moment(query.startDate).startOf('day').toDate());
+        //     console.log(moment(query.startDate).endOf('day').toDate());
+        //     salesReturnsQB.where('cashRegister.openAt BETWEEN :startDate AND :endDate',
+        //         {
+        //             startDate: moment(query.startDate).startOf('day').toDate(),
+        //             endDate: moment(query.endDate).endOf('day').toDate(),
+        //         });
+        // }
         // if (query.agentId && query.agentId !== 0) {
         //     salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.agentId });
         // }
 
-        return await salesReturnsQB.getMany();
+        return await salesReturnsQB.getOne();
     }
 }
