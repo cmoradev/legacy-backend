@@ -6,6 +6,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { ReportsCashQuery } from './types/reports.type';
 import { Response } from 'express';
 import { TransactionsReport } from './reports/transactions';
+import { transactionsList } from './reports/transactions.report';
 
 //@UseGuards(JwtGuard)
 @Crud({
@@ -36,9 +37,22 @@ export class CashRegisterController implements CrudController<CashRegister> {
 
     @Get('/cash-report')
     async reportTransactions(@Query() query: ReportsCashQuery, @Req() req, @Res() res: Response) {
-        const re = new TransactionsReport();
-        const download = Buffer.from(await re.getDocument(), 'base64');
-        res.contentType('application/pdf');
-        res.send(download);
+        try {
+
+            const tra = transactionsList(await this.service.generateDataReport(query));
+            const re = new TransactionsReport();
+            re.addRow(tra);
+            res.send({
+                src: 'data:application/pdf;base64,' + await re.getDocument(),
+            });
+            // const download = Buffer.from(await re.getDocument(), 'base64');
+            // res.contentType('application/pdf');
+            // res.send(download);
+            // res.send({
+            //     src: 'data:application/pdf;base64,' + await re.getDocument(),
+            // });
+        } catch (e) {
+            res.send({ error: e }).status(400);
+        }
     }
 }
