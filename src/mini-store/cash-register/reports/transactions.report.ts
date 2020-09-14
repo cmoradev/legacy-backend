@@ -1,5 +1,7 @@
 import { CashRegister } from '../entities/cash-register.entity';
-import { isInterface } from '@nestjs/swagger/dist/plugin/utils/ast-utils';
+import { SubNumber } from '../../../common/numbers';
+import { CashRegisterTransactionType } from '../../cash-register-transactions/enums/cash-register-transaction-type.enum';
+import { roundQuantity, subQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 
 interface TransactionsData {
     action: '',
@@ -11,15 +13,22 @@ interface TransactionsData {
 
 interface Convert {
     data: TransactionsData[]
-    box: string;
-
+    box: string | number | any;
+    income: string | number | any;
+    moneyOut: string | number | any;
+    subIncomeMoneyOut: string | number | any;
+    total: string | number | any;
 }
 
 export function transactionsList(registro: CashRegister): Convert {
 
-    const r = {
+    const resultado = {
         data: [],
-        box: registro.initialAmount,
+        box: roundQuantity(registro.initialAmount),
+        income: roundQuantity(registro.initialAmount),
+        moneyOut: 0,
+        subIncomeMoneyOut: 0,
+        total: 0,
     };
 
     let re: any = {
@@ -30,11 +39,13 @@ export function transactionsList(registro: CashRegister): Convert {
         quantity: '',
     };
     for (const movimiento of registro.movements) {
+        resultado.moneyOut = sumQuantity(resultado.moneyOut, movimiento.quantity);
         re.action = 'Movimiento';
-        re.type = movimiento.transactionType;
-        re.quantity = movimiento.quantity;
+        re.type = typeTrasaction(movimiento.transactionType);
+        re.observation = movimiento.description;
+        re.quantity = roundQuantity(movimiento.quantity);
         re.agent = registro.agent.name;
-        r.data.push(re);
+        resultado.data.push(re);
         re = {
             action: '',
             type: '',
@@ -44,12 +55,15 @@ export function transactionsList(registro: CashRegister): Convert {
         };
     }
     for (const transaccion of registro.transactions) {
+        const total = SubNumber(transaccion.payment.quantity, transaccion.payment.change);
+        // @ts-ignore
+        resultado.income = sumQuantity(resultado.income, total).toString();
         re.action = 'Transacción';
-        re.type = transaccion.transactionType;
-        re.quantity = transaccion.payment.quantity;
+        re.type = typeTrasaction(transaccion.transactionType);
+        re.quantity = total;
         re.observation = transaccion.payment.observations;
         re.agent = transaccion.agent.name;
-        r.data.push(re);
+        resultado.data.push(re);
         re = {
             action: '',
             type: '',
@@ -58,7 +72,24 @@ export function transactionsList(registro: CashRegister): Convert {
             quantity: '',
         };
     }
+    resultado.subIncomeMoneyOut = subQuantity(resultado.income, resultado.moneyOut);
+    resultado.total = subQuantity(subQuantity(resultado.income, resultado.moneyOut), registro.initialAmount);
+    return resultado;
+}
 
+function typeTrasaction(type: string) {
+    let text = '';
+    switch (type) {
+        case CashRegisterTransactionType.expenses:
+            text = 'Gastos';
+            break;
+        case CashRegisterTransactionType.income:
+            text = 'Ingresos';
+            break;
+        case CashRegisterTransactionType.moneyOut:
+            text = 'Retiro';
+            break;
+    }
 
-    return r;
+    return text;
 }

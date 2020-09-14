@@ -38,76 +38,7 @@ export class TransactionsReport {
                             { text: 'RESÚMEN DE MOVIMIENTOS', alignment: 'center' },
                         ],
                     },
-                    [
-                        {
-                            margin: [90, 0, 0, 10],
-                            alignment: 'center',
-                            width: [10],
-                            table: {
-                                alignment: 'right',
-                                body: [
-                                    [{
-                                        text: 'FOLIO',
-                                        style: {
-                                            bold: true,
-                                            fontSize: 9,
-                                            alignment: 'center',
-                                            margin: [0, 0, 0, 0],
-                                        },
-                                    }],
-                                ],
-
-                            },
-                            layout: {
-                                paddingLeft: (i: any, node: any) => {
-                                    return 20;
-                                },
-                                paddingRight: (i: any, node: any) => {
-                                    return 20;
-                                },
-                                paddingTop: (i: any, node: any) => {
-                                    return 0;
-                                },
-                                paddingBottom: (i: any, node: any) => {
-                                    return 0;
-                                },
-                                fillColor: (rowIndex: number, node: any, columnIndex: any) => {
-                                    return (rowIndex === 0) ? '#eeeeee' : null;
-                                },
-                            },
-                        },
-                        {
-                            alignment: 'center',
-                            margin: [90, 0, 0, 0],
-                            table: {
-                                alignment: 'right',
-                                heights: 10,
-                                body: [
-                                    [{
-                                        text: 'FECHA',
-                                        style: {
-                                            bold: true,
-                                            fontSize: 9,
-                                            alignment: 'center',
-                                            margin: [0, 0, 0, 0],
-                                        },
-                                    }],
-                                ],
-
-                            },
-                            layout: {
-                                paddingTop: (i: any, node: any) => {
-                                    return 0;
-                                },
-                                paddingBottom: (i: any, node: any) => {
-                                    return 0;
-                                },
-                                fillColor: (rowIndex: number, node: any, columnIndex: any) => {
-                                    return (rowIndex === 0) ? '#eeeeee' : null;
-                                },
-                            },
-                        },
-                    ],
+                    [],
                 ],
             },
             {
@@ -178,7 +109,6 @@ export class TransactionsReport {
                                         text: 'INGRESOS: ',
                                         style: {
                                             bold: true,
-                                            color: '#a76d09',
                                         },
                                     },
                                     { text: '\n' },
@@ -186,7 +116,6 @@ export class TransactionsReport {
                                         text: 'EGRESOS: ',
                                         style: {
                                             bold: true,
-                                            color: '#a76d09',
                                         },
                                     },
                                     { text: '$\n' },
@@ -194,7 +123,6 @@ export class TransactionsReport {
                                         text: 'INGRESOS - EGRESOS: ',
                                         style: {
                                             bold: true,
-                                            color: '#a76d09',
                                         },
                                     },
                                     { text: '$\n' },
@@ -202,7 +130,6 @@ export class TransactionsReport {
                                         text: 'CAJA CHIC: ',
                                         style: {
                                             bold: true,
-                                            color: '#a76d09',
                                         },
                                     },
                                     { text: '$\n' },
@@ -210,7 +137,6 @@ export class TransactionsReport {
                                         text: 'SALDO FINAL',
                                         style: {
                                             bold: true,
-                                            color: '#a76d09',
                                         },
                                     },
                                     { text: '$' },
@@ -282,7 +208,7 @@ export class TransactionsReport {
 
                 },
                 {
-                    text: dat.quantity,
+                    text: '$ ' + dat.quantity,
 
                 },
             ];
@@ -290,8 +216,28 @@ export class TransactionsReport {
         }
     }
 
+
+    // expenses = 'Expenses',
+    // moneyOut = 'MoneyOut',
+
+    async addIncome(total: string | number) {
+        this.docDefinition.content[2].table.body[0][1].text[1] = { text: ' $ ' + total + '\n', style: { bold: true } };
+    }
+
+    async addMoneyOut(total: string | number) {
+        this.docDefinition.content[2].table.body[0][1].text[3] = { text: ' $ ' + total + '\n', style: { bold: true } };
+    }
+
+    async addSubIncomeMoneyOut(total: string | number) {
+        this.docDefinition.content[2].table.body[0][1].text[5] = { text: ' $ ' + total + '\n', style: { bold: true } };
+    }
+
     async addBoxSmall(caja: string) {
-        this.docDefinition.content[2].table.body[0][1].text[7] = { text: '$' + caja + '\n' };
+        this.docDefinition.content[2].table.body[0][1].text[7] = { text: ' $ ' + caja + '\n', style: { bold: true } };
+    }
+
+    async addTotal(total: string | number) {
+        this.docDefinition.content[2].table.body[0][1].text[9] = { text: ' $ ' + total + '\n', style: { bold: true } };
     }
 
     async getDocument(options?: BufferOptions): Promise<string> {

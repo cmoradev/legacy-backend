@@ -88,3 +88,10 @@ export function MultNumber(num: string | number, num2: string | number) {
         trim: false,
     });
 }
+
+export function SubNumber(num: string | number, num2: string | number) {
+    return round(sub(num, num2, { returnString: true }), -2, {
+        returnString: true,
+        trim: false,
+    });
+}

@@ -17,6 +17,9 @@ export const sumQuantity = (price: number | string, quantity: number | string, d
 export const divQuantity = (dividiendo: number | string, divisor: number | string, decimal: number = -2) => {
     return +round(div(dividiendo, divisor, { returnString: true }), decimal, { returnString: true, trim: false });
 };
+export const roundQuantity = (quantity: number | string, decimal: number = -2) => {
+    return +round(add(quantity, 0, { returnString: true }), decimal, { returnString: true, trim: false });
+};
 
 export function amountAfterExtraCharge(amount: number, discounts: Array<{
     type: TypeChargeApplicationEnum,
