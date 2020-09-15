@@ -1,9 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 
 import { BranchCompany } from './entities/branch-company.entity';
 import { BranchCompaniesService } from './branch-companies.service';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: BranchCompany,

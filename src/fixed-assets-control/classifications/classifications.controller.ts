@@ -1,8 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Classification } from './entities/classification.entity';
 import { ClassificationsService } from './classifications.service';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Classification,

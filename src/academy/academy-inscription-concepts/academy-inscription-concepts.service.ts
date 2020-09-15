@@ -7,9 +7,13 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class AcademyInscriptionConceptsService extends TypeOrmCrudService<AcademyInscriptionConcepts> {
-  constructor(
-    @InjectRepository(AcademyInscriptionConcepts, ColegioDBNameConnection) readonly repo: Repository<AcademyInscriptionConcepts>,
-  ) {
-    super(repo);
-  }
+    constructor(
+        @InjectRepository(AcademyInscriptionConcepts, ColegioDBNameConnection) readonly repo: Repository<AcademyInscriptionConcepts>,
+    ) {
+        super(repo);
+    }
+
+    async update() {
+
+    }
 }

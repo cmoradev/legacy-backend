@@ -2,12 +2,9 @@ import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyActivity } from './entities/academy-activity.entity';
 import { AcademyActivitiesService } from './academy-activities.service';
-import { QuerySimpleReport } from '../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { QueryMensualidades } from './types/academyActvities.interface';
 import { AcademyActivityReport } from './reports/academy-activity.report';
-import { getDaysArray } from '../../common/date';
 import * as moment from 'moment';
-import { months } from 'moment';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @UseGuards(JwtGuard)
