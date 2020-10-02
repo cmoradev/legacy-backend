@@ -15,155 +15,155 @@ import { Level } from '../../../school-colegio-ingles/levels/entities/level.enti
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {
 
-    @Column('varchar', {
-        nullable: false,
-        length: 200,
-        name: 'clave_inscripcion',
-    })
-    keyInscription: string;
+  @Column('varchar', {
+    nullable: false,
+    length: 200,
+    name: 'clave_inscripcion',
+  })
+  keyInscription: string;
 
-    @Column('varchar', {
-        nullable: true,
-        length: 250,
-        name: 'descripcion',
-    })
-    description: string | null;
+  @Column('varchar', {
+    nullable: true,
+    length: 250,
+    name: 'descripcion',
+  })
+  description: string | null;
 
-    @Column('varchar', {
-        nullable: true,
-        length: 230,
-        name: 'dias',
-    })
-    days: string | null;
+  @Column('varchar', {
+    nullable: true,
+    length: 230,
+    name: 'dias',
+  })
+  days: string | null;
 
-    @Column('varchar', {
-        nullable: true,
-        length: 230,
-        name: 'horario',
-    })
-    timetable: string | null;
+  @Column('varchar', {
+    nullable: true,
+    length: 230,
+    name: 'horario',
+  })
+  timetable: string | null;
 
-    @Column('date', {
-        nullable: true,
-        name: 'fecha_inicio',
-    })
-    startDate: string | null;
+  @Column('date', {
+    nullable: true,
+    name: 'fecha_inicio',
+  })
+  startDate: string | null;
 
-    @Column('date', {
-        nullable: true,
-        name: 'fecha_fin',
-    })
-    startEnd: string | null;
+  @Column('date', {
+    nullable: true,
+    name: 'fecha_fin',
+  })
+  startEnd: string | null;
 
-    @Column('timestamp', {
-        nullable: true,
-        name: 'fecha_baja',
-    })
-    downDate: Date | null;
+  @Column('timestamp', {
+    nullable: true,
+    name: 'fecha_baja',
+  })
+  downDate: Date | null;
 
-    @Column('varchar', {
-        nullable: true,
-        name: 'motivo_baja',
-    })
-    downMotive: string | null;
+  @Column('varchar', {
+    nullable: true,
+    name: 'motivo_baja',
+  })
+  downMotive: string | null;
 
-    @Column('tinyint', {
-        nullable: false,
-        width: 1,
-        default: () => '\'0\'',
-        name: 'incluida',
-    })
-    isIncluded: boolean;
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'0\'',
+    name: 'incluida',
+  })
+  isIncluded: boolean;
 
-    @Column('tinyint', {
-        nullable: false,
-        width: 1,
-        default: () => '\'1\'',
-        name: 'active',
-    })
-    isActive: boolean;
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'1\'',
+    name: 'active',
+  })
+  isActive: boolean;
 
-    @Column({
-        type: 'enum',
-        enum: InscriptionStatus,
-        default: InscriptionStatus.Registered,
-        nullable: false,
-        name: 'id_estado_inscripcion',
-    })
-    inscriptionStatus: InscriptionStatus;
+  @Column({
+    type: 'enum',
+    enum: InscriptionStatus,
+    default: InscriptionStatus.Registered,
+    nullable: false,
+    name: 'id_estado_inscripcion',
+  })
+  inscriptionStatus: InscriptionStatus;
 
-    @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
-    @JoinColumn({
-        name: 'id_academia',
-        referencedColumnName: 'id',
-    })
-    activity: AcademyActivity;
+  @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
+  @JoinColumn({
+    name: 'id_academia',
+    referencedColumnName: 'id',
+  })
+  activity: AcademyActivity;
 
-    @ManyToOne(() => Student, (student) => student.studentAcInscriptions)
-    @JoinColumn({
-        name: 'id_alumno',
-        referencedColumnName: 'id',
-    })
-    student: Student;
+  @ManyToOne(() => Student, (student) => student.studentAcInscriptions)
+  @JoinColumn({
+    name: 'id_alumno',
+    referencedColumnName: 'id',
+  })
+  student: Student;
 
-    @ManyToOne(() => Level, (level) => level.levelAcademyInscription)
-    @JoinColumn({
-        name: 'id_nivel',
-        referencedColumnName: 'id',
-    })
-    schoolLevel: Level;
+  @ManyToOne(() => Level, (level) => level.levelAcademyInscription)
+  @JoinColumn({
+    name: 'id_nivel',
+    referencedColumnName: 'id',
+  })
+  schoolLevel: Level;
 
-    @ManyToOne(() => Grade, (grade) => grade.gradeAcademyInscription)
-    @JoinColumn({
-        name: 'id_grado',
-        referencedColumnName: 'id',
-    })
-    schoolGrade: Grade;
+  @ManyToOne(() => Grade, (grade) => grade.gradeAcademyInscription)
+  @JoinColumn({
+    name: 'id_grado',
+    referencedColumnName: 'id',
+  })
+  schoolGrade: Grade;
 
-    @ManyToOne(() => Group, (group) => group.groupAcademyInscription)
-    @JoinColumn({
-        name: 'id_grupo',
-        referencedColumnName: 'id',
-    })
-    schoolGroup: Group;
+  @ManyToOne(() => Group, (group) => group.groupAcademyInscription)
+  @JoinColumn({
+    name: 'id_grupo',
+    referencedColumnName: 'id',
+  })
+  schoolGroup: Group;
 
-    @ManyToOne(() => BranchOffice, (campus) => campus.campusAcIns)
-    @JoinColumn({
-        name: 'id_plantel',
-        referencedColumnName: 'id',
-    })
-    inscriptionCampus: BranchOffice;
+  @ManyToOne(() => BranchOffice, (campus) => campus.campusAcIns)
+  @JoinColumn({
+    name: 'id_plantel',
+    referencedColumnName: 'id',
+  })
+  inscriptionCampus: BranchOffice;
 
-    @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
-    @JoinColumn({
-        name: 'id_ac_grupo',
-        referencedColumnName: 'id',
-    })
-    academyGroup: AcademyActivitiesGroup;
+  @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
+  @JoinColumn({
+    name: 'id_ciclo',
+    referencedColumnName: 'id',
+  })
+  cycle: Cycle;
 
-    @ManyToOne(() => User, (user) => user.userAcInsHigh)
-    @JoinColumn({
-        name: 'id_agente',
-        referencedColumnName: 'id',
-    })
-    enrollmentAgent: User;
+  @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
+  @JoinColumn({
+    name: 'id_ac_grupo',
+    referencedColumnName: 'id',
+  })
+  academyGroup: AcademyActivitiesGroup;
 
-    @ManyToOne(() => User, (user) => user.userAcInsDown)
-    @JoinColumn({
-        name: 'id_agente_baja',
-        referencedColumnName: 'id',
-    })
-    unEnrollerAgent: User | null;
+  @ManyToOne(() => User, (user) => user.userAcInsHigh)
+  @JoinColumn({
+    name: 'id_agente',
+    referencedColumnName: 'id',
+  })
+  enrollmentAgent: User;
 
-    @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
-    @JoinColumn({
-        name: 'id_ciclo',
-        referencedColumnName: 'id',
-    })
-    cycle: Cycle;
+  @ManyToOne(() => User, (user) => user.userAcInsDown)
+  @JoinColumn({
+    name: 'id_agente_baja',
+    referencedColumnName: 'id',
+  })
+  unEnrollerAgent: User | null;
 
-    @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
-    concepts: AcademyInscriptionConcepts[];
+  @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
+  concepts: AcademyInscriptionConcepts[];
 
 
 }
