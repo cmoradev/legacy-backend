@@ -229,7 +229,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
       .leftJoinAndSelect('payments.academyPaymentOffice', 'academyPaymentOffice', 'academyPaymentOffice.id=:branchOfficeId', { branchOfficeId })
       .leftJoinAndSelect('payments.academyCharge', 'academyCharge')
       .leftJoinAndSelect('academyCharge.chargeCycle', 'chargeCycle', 'chargeCycle.id=:cycleId', { cycleId: ciclyId })
-      .select('SUM(payments.quantity-payments.change  )', 'sum')
+      .select('SUM(payments.quantity-payments.change)', 'sum')
       .where(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
       .getRawOne();
 

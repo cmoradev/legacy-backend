@@ -3,6 +3,7 @@ import { MiniStoreInvoicesService } from '../store-sales/mini-store-invoices/min
 import { StatusInvoce } from '../../invoice/interface/StatusInvoce.interface';
 import { UsersService } from '../../system/users/users.service';
 import { MiniStoreSalesPaymentsService } from '../store-sales/mini-store-sales-payments/mini-store-sales-payments.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class MiniStoreDashBoardService {
@@ -50,5 +51,23 @@ export class MiniStoreDashBoardService {
 
   public async myIncome(date: string, id: number) {
     return await this.miniStoreSalesPaymentsService.countTotalPayments(date, date, id);
+  }
+
+  public async cashierSales(query: { branchOfficeId: number, startDate: string, endDate: string, }) {
+    return await this.userService.repo.createQueryBuilder('users')
+      .leftJoin('users.sales', 'sale', `sale.createdAt BETWEEN :startDate AND :endDate`, {
+        startDate: moment(query.startDate).startOf('day').toISOString(),
+        endDate: moment(query.endDate).endOf('day').toISOString(),
+      })
+      .leftJoin('sale.storeBranchOffice', 'storeBranchOffice')
+      .leftJoin('users.department', 'department')
+      .where('department.id = :departmentID', { departmentID: 2 })
+      .andWhere('storeBranchOffice.id= :officeId', {
+        officeId: query.branchOfficeId,
+      })
+      .select(['users.id as id', 'users.name as name','users.img as picture'])
+      .addSelect('COUNT(distinct sale.id) as sales')
+      .groupBy('users.id')
+      .getRawMany();
   }
 }
