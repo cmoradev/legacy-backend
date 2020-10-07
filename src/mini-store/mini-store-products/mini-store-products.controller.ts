@@ -3,7 +3,9 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreProduct } from './entities/mini-store-product.entity';
 import { MiniStoreProductsService } from './mini-store-products.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+import { Pagination } from 'nestjs-typeorm-paginate';
+
+// @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreProduct,
@@ -36,5 +38,18 @@ export class MiniStoreProductsController implements CrudController<MiniStoreProd
     @Get('/products-list-report')
     public productsList(@Query() query?: { priceListID: string, classificationID: string, onlyData?: boolean }) {
         return this.service.ProductsList(query);
+    }
+
+    @Get('count-what-was-sold')
+    async index(
+      @Query('page') page: number = 1,
+      @Query('limit') limit: number = 10,
+    ): Promise<Pagination<MiniStoreProduct>> {
+        limit = limit > 100 ? 100 : limit;
+        return this.service.paginate({
+            page,
+            limit,
+            route: 'http://cats.com/cats',
+        });
     }
 }
