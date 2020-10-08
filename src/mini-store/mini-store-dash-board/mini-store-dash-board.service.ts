@@ -54,6 +54,7 @@ export class MiniStoreDashBoardService {
   }
 
   public async cashierSales(query: { branchOfficeId: number, startDate: string, endDate: string, }) {
+
     return await this.userService.repo.createQueryBuilder('users')
       .leftJoin('users.sales', 'sale', `sale.createdAt BETWEEN :startDate AND :endDate`, {
         startDate: moment(query.startDate).startOf('day').toISOString(),
@@ -65,7 +66,7 @@ export class MiniStoreDashBoardService {
       .andWhere('storeBranchOffice.id= :officeId', {
         officeId: query.branchOfficeId,
       })
-      .select(['users.id as id', 'users.name as name','users.img as picture'])
+      .select(['users.id as id', 'users.name as name', 'users.img as picture'])
       .addSelect('COUNT(distinct sale.id) as sales')
       .groupBy('users.id')
       .getRawMany();

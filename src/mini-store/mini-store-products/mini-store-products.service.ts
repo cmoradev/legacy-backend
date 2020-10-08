@@ -7,6 +7,9 @@ import { DataConverter } from '../../common/office/excel-tools/data-converter';
 import { PriceProductsListReport } from './reports/price-products-list.report';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import * as moment from 'moment';
+import { formatOperation } from '../store-sales/mini-store-sales/reports/mini-store-sale.report';
+import { roundQuantity } from '../../common/point-of-sale/point-of-sale';
 
 @Injectable()
 export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduct> {
@@ -16,11 +19,62 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
     super(repo);
   }
 
-  async paginate(options: IPaginationOptions): Promise<Pagination<MiniStoreProduct>> {
-    const queryBuilder = this.repo.createQueryBuilder('c');
-    queryBuilder.orderBy('c.name', 'DESC'); // Or whatever you need to do
-
-    return paginate<MiniStoreProduct>(queryBuilder, options);
+  async paginate(options: IPaginationOptions, query: { branchOfficeId: number, startDate: string, endDate: string }): Promise<any> { // Promise<Pagination<MiniStoreProduct>> {
+    const total = await this.repo.createQueryBuilder('products')
+      .leftJoin('products.miniStoreSaleDetails', 'miniStoreSaleDetails')
+      .leftJoin('miniStoreSaleDetails.miniStoreSale', 'miniStoreSale')
+      .select([
+        'products.id as id',
+        'products.name as name',
+        'products.isFavorite as isFavorite',
+        'products.calculation as calculation',
+        'products.unity as unity',
+        'products.unitMeasurement as unitMeasurement',
+        'products.picture as picture',
+      ])
+      .addSelect('SUM(miniStoreSaleDetails.quantity)', 'quantity')
+      .andWhere('miniStoreSale.createdAt BETWEEN :startDate AND :endDate',
+        {
+          startDate: moment(query.startDate).startOf('day').toDate(),
+          endDate: moment(query.endDate).endOf('day').toDate(),
+        })
+      .groupBy('products.id')
+      .getCount();
+    const pagina = {
+      count: options.limit,
+      data: [],
+      page: options.page,
+      pageCount: Math.ceil(total / options.limit),
+      total,
+    };
+    const data = await this.repo.createQueryBuilder('products')
+      .leftJoin('products.miniStoreSaleDetails', 'miniStoreSaleDetails')
+      .leftJoin('miniStoreSaleDetails.miniStoreSale', 'miniStoreSale')
+      .select([
+        'products.id as id',
+        'products.name as name',
+        'products.isFavorite as isFavorite',
+        'products.calculation as calculation',
+        'products.unity as unity',
+        'products.unitMeasurement as unitMeasurement',
+        'products.picture as picture',
+      ])
+      .addSelect('SUM(miniStoreSaleDetails.quantity)', 'quantity')
+      .andWhere('miniStoreSale.createdAt BETWEEN :startDate AND :endDate',
+        {
+          startDate: moment(query.startDate).startOf('day').toDate(),
+          endDate: moment(query.endDate).endOf('day').toDate(),
+        })
+      .groupBy('products.id')
+      .offset(options.page === 1 ? 1 : (options.page * options.limit) - options.limit)
+      .limit(options.limit)
+      .getRawMany();
+    for (const result of data) {
+      result.quantity = roundQuantity(result.quantity);
+      result.formula = formatOperation(JSON.parse(result.calculation), result.quantity);
+    }
+    pagina.data = data;
+    return pagina;
   }
 
   async createProduct(product: MiniStoreProduct): Promise<MiniStoreProduct> {

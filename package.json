@@ -93,6 +93,7 @@
     "sw-sdk-nodejs": "^1.1.4",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25",
+    "typeorm-pagination": "^2.0.1",
     "whatsapp-web.js": "^1.7.0",
     "xlsx": "^0.16.5",
     "xml-js": "^1.6.11"
