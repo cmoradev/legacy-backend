@@ -7,6 +7,7 @@ import { XmlReceptorAttribute } from '@signati/core/lib/signati/types/Tags/recep
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 export async function GenerateInvoice(data: { serie: string; folio: string, },
+                                      codigoFormaPago:string,
                                       emisor: BranchOfficeSetting,
                                       receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
     const key = '/var/www/CSD/' + emisor.keyCSD;
@@ -17,7 +18,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
         Folio: data.folio,
         Fecha: fecha,
         Sello: '',
-        FormaPago: '01', // Falta
+        FormaPago: codigoFormaPago,
         NoCertificado: '',
         Certificado: '',
         // condicionesDePago: 'Contado',

@@ -69,6 +69,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     async findInvoiceByPayment(options: { paymentId: number, status: StatusInvoce, stamping?: number }) {
         const invoice = this.repo.createQueryBuilder('invoice')
             .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
+            //.leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
             .where('invoice.status = :status', {
                 status: options.status,
             })

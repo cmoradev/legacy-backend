@@ -132,6 +132,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
+                        result.highestPayment.codePaymentMethod,
                         branchOfficeSett,
                         {
                             Nombre: query.receiver.businessName,
@@ -199,6 +200,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                             folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
+                        result.highestPayment.codePaymentMethod,
                         branchOfficeSett,
                         {
                             Nombre: query.receiver.businessName,

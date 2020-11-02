@@ -15,6 +15,7 @@ import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-inv
 import * as nodemailer from 'nodemailer';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import Mail from 'nodemailer/lib/mailer';
+import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -190,7 +191,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         }
     }
 
-    async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment }> {
+    async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment, highestPayment: MiniStoreSaleMethodPayment }> {
         const sale = await this.salesRepository.findOne({
             where: {
                 id: query.saleId,
@@ -214,7 +215,16 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return {
             sale,
             payment,
+            highestPayment: this.getHighestPayment(payment.miniStoreSaleMethodPayments),
         };
+    }
+
+    getHighestPayment(formadepago: MiniStoreSaleMethodPayment[]) {
+        const methodpaymenst = formadepago.sort((a, b) => {
+            return a.quantity - b.quantity;
+        });
+
+        return methodpaymenst[0];
     }
 
     async updatePayment(data: MiniStoreSalePayment) {
