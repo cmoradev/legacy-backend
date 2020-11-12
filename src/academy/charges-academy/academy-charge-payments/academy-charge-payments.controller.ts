@@ -151,6 +151,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
+                        result.highestPayment.codePaymentMethod,
                         branchOfficeSett,
                         {
                             Nombre: query.receiver.businessName,
@@ -219,6 +220,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
+                        result.highestPayment.codePaymentMethod,
                         branchOfficeSett,
                         {
                             Nombre: query.receiver.businessName,
