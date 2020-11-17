@@ -3,7 +3,9 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+import { TypeStudent } from './interface/studentsSchool.interface';
+
+//  @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Student,
@@ -55,7 +57,15 @@ export class StudentsController implements CrudController<Student> {
 
     @Get('/count-by-type/:studentType')
     public async countStudentsByType(@Param('studentType') studentType: string) {
-        const total: Student[] = await this.service.find({ where: [{ typeStudent: studentType }] });
-        return total.length || 0;
+        const total = await this.service.count({ where: { typeStudent: studentType } });// contamos el total por typo de estudiante
+        let matricula = this.service.generateMatricula(total, +studentType);// generamos la matricula
+        const findMatricula = await this.service.findOne({ where: { matricula } }); // verificamos si la matricula existe
+        if (findMatricula) {
+            // si existe le aumentamos uno mas al total para generar otra nueva
+            matricula = this.service.generateMatricula(total + 1, +studentType);
+        }
+        return matricula;
     }
+
+
 }

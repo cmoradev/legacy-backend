@@ -4,6 +4,7 @@ import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { TypeStudent } from './interface/studentsSchool.interface';
 
 @Injectable()
 export class StudentsService extends TypeOrmCrudService<Student> {
@@ -13,4 +14,14 @@ export class StudentsService extends TypeOrmCrudService<Student> {
         super(repo);
     }
 
+    generateMatricula(total: number, studentType: TypeStudent) {
+        switch (studentType) {
+            case TypeStudent.student:
+                return 'PDC-' + (total + 1);
+            case TypeStudent.externo:
+                return 'PDCACE-' + (total + 1);
+            case TypeStudent.prospecto:
+                return 'PDCPR-' + (total + 1);
+        }
+    }
 }
