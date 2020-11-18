@@ -16,6 +16,7 @@ import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
 import { pdfMailDto } from './dto/pdfMail.dto';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
@@ -26,7 +27,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             miniStoreWareHouseOrdersProducts: {},
             'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
             miniStoreWarehouseProvider: {},
-            BranchOfficeMiniStoreWherehouse: {},
+            branchOfficeMiniStoreWherehouse: {},
         },
     },
 })

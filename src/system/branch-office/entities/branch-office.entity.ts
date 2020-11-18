@@ -169,7 +169,7 @@ export class BranchOffice {
     @OneToMany(() => MiniStoreClassification, (clafification) => clafification.branchOffice)
     MiniStoreClassification: MiniStoreClassification[];
 
-    @OneToMany(() => MiniStorePriceList, (list) => list.BranchOfficeLisId)
+    @OneToMany(() => MiniStorePriceList, (list) => list.branchOfficeList)
     BranchOfficeList: MiniStorePriceList[];
 
     @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.branchOfficeMiniStoreWherehouse)

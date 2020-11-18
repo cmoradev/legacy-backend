@@ -3,15 +3,16 @@ import { MiniStorePricesListsService } from './mini-store-prices-lists.service';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+
+//@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStorePriceList,
     },
     query: {
         join: {
-            storeProducts: { },
-            BranchOfficeLisId: { }
+            storeProducts: {},
+            branchOfficeList: {},
         },
     },
 })

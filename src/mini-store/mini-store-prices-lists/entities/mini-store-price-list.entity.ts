@@ -1,10 +1,10 @@
 import {
     Column,
-    Entity, ManyToOne,
+    Entity, JoinColumn, ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {MiniStoreProduct} from '../../mini-store-products/entities/mini-store-product.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 
 @Entity('tie_listaprecios')
@@ -59,6 +59,9 @@ export class MiniStorePriceList {
         {
             cascade: ['insert', 'update'],
         })
-    BranchOfficeLisId: BranchOffice;
-
+    @JoinColumn({
+        name: 'branchOfficeLisIdId',
+        referencedColumnName: 'id',
+    })
+    branchOfficeList: BranchOffice;
 }

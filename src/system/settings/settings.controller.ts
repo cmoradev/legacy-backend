@@ -93,4 +93,20 @@ export class SettingsController implements CrudController<Company> {
         });
     }
 
+    @Get('defaultCustomer/:uuid')
+    async findDefaultCustormerByCompany(@Param() params, @Res() res) {
+        const result = await this.service.findOne({
+            where: {
+                uuid: params.uuid,
+            },
+            relations: ['defaultClient'],
+        });
+        if (result) {
+            res.send(result.defaultClient);
+        }
+        res.status(500).send({
+            error: 'COMPANY_NOT_EXIST',
+        });
+    }
+
 }
