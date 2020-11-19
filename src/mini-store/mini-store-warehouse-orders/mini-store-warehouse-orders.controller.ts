@@ -17,7 +17,7 @@ import * as nodemailer from 'nodemailer';
 import { pdfMailDto } from './dto/pdfMail.dto';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
+//@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreWarehouseOrder,
@@ -46,9 +46,9 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
     }
 
     @Get('pdf/:id')
-    public async pdf(@Param() params, @Res() res: Response) {
+    public async pdf(@Param('id') id, @Res() res: Response) {
         const body: TableCell[][] = [];
-        const order = await this.service.getOrdersWeareHouse(params.order.id);
+        const order = await this.service.getOrdersWeareHouse(id);
         let i = 1;
         let total = 0;
         for (const product of order.miniStoreWareHouseOrdersProducts) {
@@ -89,7 +89,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
         // Buffer.from(data, 'base64');
         res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf });
-        //res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf.toString('base64') });
+        // res.send({ src: 'data:application/pdf;filename=generated.pdf;base64,' + bufferPdf.toString('base64') });
         // res.end(, 'binary');
         // res.send(body);
         // res.setHeader('Content-Disposition', 'attachment; filename="' + encodeURIComponent(pdfBuffer.toString()) + '"');
@@ -97,7 +97,6 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
     @Post('pdf/:id')
     public async sendpdf(@Param() params, @Res() res: Response, @Body() requestData: pdfMailDto) {
-        console.log('data params', requestData);
         const body: TableCell[][] = [];
         const order = await this.service.getOrdersWeareHouse(params.id);
         let i = 1;
@@ -154,7 +153,6 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
         try {
             fs.unlinkSync(`${dir}/${tempName}`);
-            console.log(`successfully deleted ${dir}/${tempName}`);
         } catch (err) {
             // handle the error
         }
