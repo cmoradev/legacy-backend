@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
+import { connections } from './config.env';
 
 export interface EnvConfig {
     [key: string]: any;
@@ -53,16 +54,25 @@ export class ConfigService {
      * Obtener la variable de entorno de node.
      * @return NodeEnv
      */
-    public nodeEnvironment(): NodeEnv {
+    public nodeEnvironment(): { isProduction: boolean, env: NodeEnv } {
         const nodeEnvSchema = Joi.string()
-            .valid('development', 'production', 'desarrollo', 'cremeria', 'test', 'staging', 'refaccionaria', 'tortilleria', 'rancho', 'pachamama')
+            .valid(...connections)
             .default('development');
         const { error, value: nodeEnv } = nodeEnvSchema.validate(process.env.NODE_ENV as NodeEnv);
 
         if (error) {
             throw new Error(`Config validation error: ${error.message}`);
         }
-        return nodeEnv;
+        const resultado = {
+            isProduction: false,
+            env: nodeEnv,
+        };
+        if (nodeEnv === 'development' || nodeEnv === 'test' || nodeEnv === 'desarrollo' || nodeEnv === 'staging') {
+            resultado.isProduction = false;
+        } else {
+            resultado.isProduction = true;
+        }
+        return resultado;
     }
 
     /**
@@ -70,7 +80,7 @@ export class ConfigService {
      * @return boolean
      */
     get isProduction(): boolean {
-        return this.nodeEnvironment() === 'production';
+        return this.nodeEnvironment().isProduction === true;
     }
 
     /**

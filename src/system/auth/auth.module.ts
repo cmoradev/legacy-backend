@@ -53,6 +53,7 @@ export class AuthModule {
         private readonly configService: ConfigService,
     ) {
     }
+
     public initialize(app: INestApplication) {
         app.use(session({
             secret: this.configService.get<string>('API_SECRET'),

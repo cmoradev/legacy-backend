@@ -71,7 +71,7 @@ export class AcademyChargeInvoice {
     invoiceType: InvoiceType;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceStatus.Unbilled,
         enum: InvoiceStatus,

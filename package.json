@@ -21,18 +21,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection colegiodb",
-    "typeorm:migrate": "npm run typeorm migration:generate -- -n",
+    "typeorm": "cross-env NODE_ENV=${db:-colegio_dev_db} ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection ${db:-colegio_dev_db}",
+    "typeorm:migrate": "npm run typeorm  migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
-    "typeorm:revert": "npm run typeorm migration:revert",
-    "typeorm:prod": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection colegiodb",
-    "typeorm:rancho": "cross-env NODE_ENV=rancho ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection colegiodb",
-    "typeorm:migrate:prod": "npm run typeorm:prod migration:generate -- -n",
-    "typeorm:run:prod": "npm run typeorm:prod migration:run",
-    "typeorm:run:rancho": "npm run typeorm:rancho migration:run",
-    "typeorm:test": "cross-env NODE_ENV=testing ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection colegiodb",
-    "typeorm:migrate:test": "npm run typeorm:test migration:generate -- -n",
-    "typeorm:run:test": "npm run typeorm:test migration:run"
+    "typeorm:revert": "npm run typeorm migration:revert"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

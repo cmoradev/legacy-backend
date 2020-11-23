@@ -4,10 +4,12 @@ import { MiniStoreProductsProvidersController } from './mini-store-products-prov
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { MiniStoreProductsProviders } from './entities/mini-store-products-providers.entity';
+import { MiniStoreProductsModule } from '../mini-store-products/mini-store-products.module';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([MiniStoreProductsProviders], ColegioDBNameConnection),
+        MiniStoreProductsModule,
     ],
     exports: [MiniStoreProductsProvidersService],
     providers: [MiniStoreProductsProvidersService],
