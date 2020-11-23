@@ -1,9 +1,16 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, JoinTable, Tree, TreeChildren, TreeParent } from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToMany,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    JoinTable,
+    OneToOne, JoinColumn,
+} from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
 import { Action } from '../../../school-colegio-ingles/actions/entities/action.entity';
 
-@Entity()
-@Tree('materialized-path')
+@Entity('route')
 export class Route {
     @PrimaryGeneratedColumn({
         type: 'int',
@@ -41,6 +48,7 @@ export class Route {
         length: 50,
     })
     icon: string;
+
     @OneToMany(() => Permission, (permission) => permission.route)
     permissions: Permission[];
 
@@ -61,9 +69,10 @@ export class Route {
     @JoinTable()
     actions: Action[];
 
-    @TreeChildren()
-    children: Route[];
-
-    @TreeParent()
-    parent: Route;
+    @Column('varchar', {
+        nullable: true,
+        length: 255,
+        default: '',
+    })
+    mpath: string;
 }

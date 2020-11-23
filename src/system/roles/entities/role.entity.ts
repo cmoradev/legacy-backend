@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
 import { User } from '../../users/entities/user.entity';
-@Entity()
+@Entity('role')
 export class Role {
     @PrimaryGeneratedColumn({
         type: 'int',
