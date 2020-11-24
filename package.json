@@ -24,7 +24,11 @@
     "typeorm": "cross-env NODE_ENV=${db:-development} ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection ${db:-development}",
     "typeorm:migrate": "npm run typeorm  migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
-    "typeorm:revert": "npm run typeorm migration:revert"
+    "typeorm:revert": "npm run typeorm migration:revert",
+    "orm": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "orm:migrate": "npm run orm migration:generate -- -n",
+    "orm:run": "npm run orm migration:run",
+    "orm:revert": "npm run orm migration:revert"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
