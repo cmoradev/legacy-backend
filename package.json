@@ -28,7 +28,10 @@
     "orm": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "orm:migrate": "npm run orm migration:generate -- -n",
     "orm:run": "npm run orm migration:run",
-    "orm:revert": "npm run orm migration:revert"
+    "orm:revert": "npm run orm migration:revert",
+    "orm:drop": "npm run orm schema:drop",
+    "orm:sync": "npm run orm schema:sync",
+    "seeds:run": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed --configName"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -63,6 +66,7 @@
     "express-mysql-session": "^2.1.4",
     "express-query-boolean": "^2.0.0",
     "express-session": "^1.17.1",
+    "faker": "^5.1.0",
     "immutable": "^4.0.0-rc.12",
     "invoice-modern": "0.0.6",
     "mjml": "^4.6.3",
@@ -89,6 +93,7 @@
     "sw-sdk-nodejs": "^1.1.4",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25",
+    "typeorm-seeding": "^1.6.1",
     "typeorm-pagination": "^2.0.1",
     "whatsapp-web.js": "^1.7.0",
     "xlsx": "^0.16.5",
@@ -100,6 +105,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",
     "@types/express-session": "^1.17.0",
+    "@types/faker": "^5.1.4",
     "@types/hapi__joi": "^17.1.4",
     "@types/jest": "^26.0.8",
     "@types/mjml": "^4.0.4",
