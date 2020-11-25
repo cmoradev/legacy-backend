@@ -4,12 +4,16 @@ import { ConnectionOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { connections } from './config/config.env';
+import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
+
 
 const environment = process.env.NODE_ENV || 'development';
-let config: ConnectionOptions;
+let config: BaseConnectionOptions;
 if (fs.existsSync(`${environment}.env`)) {
     const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
+    // tslint:disable-next-line:no-console
     console.log(`Migración corriendo --> en entorno ${environment}`);
+    // tslint:disable-next-line:no-console
     console.log(`Migración corriendo --> en la base de datos ${processEnv.DB_DBNAME_COLEGIO_INGLES}`);
     config = {
         type: 'mysql',
@@ -21,10 +25,10 @@ if (fs.existsSync(`${environment}.env`)) {
         password: processEnv.DB_PASSWORD_COLEGIO_INGLES,
         database: processEnv.DB_DBNAME_COLEGIO_INGLES,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-
+        seeds: [__dirname + '/databases/seeds/**/*.seed{.ts,.js}'],
+        factories: [__dirname + '/databases/factories/**/*.factory{.ts,.js}'],
         // We are using migrations, synchronize should be set to false.
         synchronize: false,
-
         // Run migrations automatically,
         // you can disable this if you prefer running migration manually.
         migrationsRun: false,
@@ -42,9 +46,9 @@ if (fs.existsSync(`${environment}.env`)) {
             entitiesDir: 'src/entity',
             subscribersDir: 'src/subscriber',
         },
-    };
+    } as BaseConnectionOptions;
 }
-
+console.log(config);
 export = config;
 
 // const environment = process.env.NODE_ENV || 'development';

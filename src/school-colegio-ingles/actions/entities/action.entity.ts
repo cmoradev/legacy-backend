@@ -1,32 +1,24 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Route } from '../../../system/routes/entities/route.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { Permission } from '../../../system/permissions/entities/permission.entity';
 
 @Entity()
-export class Action {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Action extends Base {
 
     @Column('varchar', {
         nullable: false,
         length: 60,
     })
     name: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
+    
+    @ManyToMany(() => Route, (route) => route.actions, {
+        cascade: ['insert', 'update'],
     })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
-
-    @ManyToMany(() => Route, (route) => route.actions)
     routes: Route[];
+
+    @ManyToMany(() => Permission, (permission) => permission.actions, {
+        cascade: ['insert', 'update'],
+    })
+    permission: Permission[];
 }

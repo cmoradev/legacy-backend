@@ -1,33 +1,35 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent} from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    Tree,
+    TreeChildren,
+    TreeParent,
+} from 'typeorm';
 import { Role } from '../../roles/entities/role.entity';
 import { Route } from '../../routes/entities/route.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { Action } from '../../../school-colegio-ingles/actions/entities/action.entity';
 
 @Entity('permission')
-export class Permission {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Permission extends Base {
 
     @Column('int', { nullable: true })
     routeId: number;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
-
     @ManyToOne(() => Role, (role) => role.permissions)
     role: Role;
 
-    @ManyToOne(() => Route, (route) => route.permissions )
+    @ManyToOne(() => Route, (route) => route.permissions)
     route: Route;
+
+    @ManyToMany(() => Action, (action) => action.permission, {
+        cascade: ['insert', 'update'],
+    })
+    @JoinTable()
+    actions: Action[];
 
 }
