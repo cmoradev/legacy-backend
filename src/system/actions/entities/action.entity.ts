@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Route } from '../../../system/routes/entities/route.entity';
+import { Route } from '../../routes/entities/route.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Permission } from '../../../system/permissions/entities/permission.entity';
+import { Permission } from '../../permissions/entities/permission.entity';
 
 @Entity()
 export class Action extends Base {
@@ -11,7 +11,7 @@ export class Action extends Base {
         length: 60,
     })
     name: string;
-    
+
     @ManyToMany(() => Route, (route) => route.actions, {
         cascade: ['insert', 'update'],
     })

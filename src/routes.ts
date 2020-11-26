@@ -32,7 +32,7 @@ import { ClassroomsModule } from './school-colegio-ingles/classrooms/classrooms.
 import { RoutesModule } from './system/routes/routes.module';
 import { PermissionsModule } from './system/permissions/permissions.module';
 import { RolesModule } from './system/roles/roles.module';
-import { ActionsModule } from './school-colegio-ingles/actions/actions.module';
+import { ActionsModule } from './system/actions/actions.module';
 import { AssignmentIncriptionModule } from './school-colegio-ingles/assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-permission/classroom-permission.module';
 import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
@@ -132,11 +132,11 @@ export const routes: Routes = [
             { path: '/dashboard', module: SystemDashBoardModule },
             { path: '/users', module: UsersModule },
             { path: '/routes', module: RoutesModule },
-            { path: '/permissions', module: PermissionsModule },
-            { path: '/auth', module: AuthModule },
             { path: '/roles', module: RolesModule },
-            { path: '/departments', module: DepartmentsModule },
+            { path: '/permissions', module: PermissionsModule },
             { path: '/actions', module: ActionsModule },
+            { path: '/auth', module: AuthModule },
+            { path: '/departments', module: DepartmentsModule },
             { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
             { path: '/invoices-bank', module: InvoicesBankModule },
             { path: '/countries', module: CountriesModule },
@@ -152,7 +152,7 @@ export const routes: Routes = [
             { path: '/stats', module: StatsModule },
             { path: '/settings', module: SettingsModule },
             { path: '/folios', module: FoliosModule },
-            { path: '/xls', module:XlsImporterModule }
+            { path: '/xls', module: XlsImporterModule },
         ],
     },
     {
@@ -260,7 +260,7 @@ export const routes: Routes = [
                     { path: '/charge-way-of-paying', module: AcademyChargeWayOfPayingModule },
                     // { path: '/reports', module:AcademyChargeInvoiceModule},
                 ],
-            }
+            },
         ],
     },
     {

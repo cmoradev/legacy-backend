@@ -12,7 +12,7 @@ import {
 import { Role } from '../../roles/entities/role.entity';
 import { Route } from '../../routes/entities/route.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Action } from '../../../school-colegio-ingles/actions/entities/action.entity';
+import { Action } from '../../actions/entities/action.entity';
 
 @Entity('permission')
 export class Permission extends Base {

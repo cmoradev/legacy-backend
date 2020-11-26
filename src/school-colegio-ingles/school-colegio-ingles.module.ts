@@ -15,7 +15,7 @@ import { CyclesModule } from './cycles/cycles.module';
 import { FamiliesModule } from './families/families.module';
 import { ClassroomsModule } from './classrooms/classrooms.module';
 
-import { ActionsModule } from './actions/actions.module';
+
 import { AssignmentIncriptionModule } from './assignment-incription/assignment-incription.module';
 import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
 import { IncidentsModule } from './incidents/incidents.module';
@@ -44,12 +44,11 @@ import { PeriodsModule } from './periods/periods.module';
         CyclesModule,
         FamiliesModule,
         ClassroomsModule,
-        ActionsModule,
         AssignmentIncriptionModule, ClassroomPermissionModule,
         IncidentsModule, IncidentClassificationModule,
         CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
         FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
-      SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule,
+        SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule,
     ],
 })
 export class SchoolColegioInglesModule {

@@ -8,7 +8,7 @@ import {
     OneToOne, JoinColumn,
 } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
-import { Action } from '../../../school-colegio-ingles/actions/entities/action.entity';
+import { Action } from '../../actions/entities/action.entity';
 
 @Entity('route')
 export class Route {
