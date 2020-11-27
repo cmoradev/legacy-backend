@@ -12,6 +12,7 @@ import { PermissionDto } from './DTO/permission.dto';
         join: {
             role: {},
             route: {},
+            actions: {},
         },
     },
 })

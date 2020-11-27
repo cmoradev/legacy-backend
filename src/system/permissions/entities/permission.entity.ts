@@ -27,7 +27,7 @@ export class Permission extends Base {
     route: Route;
 
     @ManyToMany(() => Action, (action) => action.permission, {
-        cascade: ['insert', 'update'],
+        cascade: ['insert', 'update', 'remove'],
     })
     @JoinTable()
     actions: Action[];

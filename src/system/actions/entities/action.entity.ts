@@ -12,6 +12,24 @@ export class Action extends Base {
     })
     name: string;
 
+    @Column('varchar', {
+        nullable: true,
+    })
+    description: string;
+
+    @Column('varchar', {
+        nullable: true,
+        length: 60,
+    })
+    icon: string;
+
+    @Column('tinyint', {
+        nullable: false,
+        width: 1,
+        default: () => '\'0\'',
+    })
+    isDefault: string;
+
     @ManyToMany(() => Route, (route) => route.actions, {
         cascade: ['insert', 'update'],
     })
