@@ -64,41 +64,46 @@ export class PermissionsController implements CrudController<Permission> {
     @Get('assignpermissions/:id')
     async getFlatPermission(@Param('id') idrol: any) {
         const permissions = await this.service.repo.find({
+            relations: ['actions'],
             where: {
                 role: {
                     id: idrol,
                 },
             },
-            select: ['routeId'],
+            select: ['id', 'routeId'],
         });
         return permissions.map((data) => {
-            return data.routeId;
+            return {
+                id: data.id,
+                routeId: data.routeId,
+                actions: data.actions,
+            };
         });
     }
 
-  @Get('getpermission/:id')
-  async getTreePermission(@Param('id') idrol: number) {
-    /*await this.service.repo.find({
-       where: {
-         role: {
-           id: idrol,
-         },
-         route: {
-           isActive: 0,
-         },
-       },
-       relations: ['route', 'role'],
-     });*/
-    const permissions =  await this.service.repo.createQueryBuilder('permission')
-      .leftJoinAndSelect('permission.route', 'route', 'permission.route = route.id')
-      .leftJoinAndSelect('permission.role', 'role', 'permission.role = role.id')
-      .where('permission.role = :id', { id: idrol })
-      .andWhere('role.isActive = :active', { active: true })
-      .andWhere('route.isActive = :active', { active: 1 })
-      .getMany() ;
-    return permissions.map((data) => {
-      return data.route;
-    });
-  }
+    @Get('getpermission/:id')
+    async getTreePermission(@Param('id') idrol: number) {
+        /*await this.service.repo.find({
+           where: {
+             role: {
+               id: idrol,
+             },
+             route: {
+               isActive: 0,
+             },
+           },
+           relations: ['route', 'role'],
+         });*/
+        const permissions = await this.service.repo.createQueryBuilder('permission')
+            .leftJoinAndSelect('permission.route', 'route', 'permission.route = route.id')
+            .leftJoinAndSelect('permission.role', 'role', 'permission.role = role.id')
+            .where('permission.role = :id', { id: idrol })
+            .andWhere('role.isActive = :active', { active: true })
+            .andWhere('route.isActive = :active', { active: 1 })
+            .getMany();
+        return permissions.map((data) => {
+            return data.route;
+        });
+    }
 
 }
