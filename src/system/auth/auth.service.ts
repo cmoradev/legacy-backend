@@ -81,7 +81,9 @@ export class AuthService {
                     'role',
                     'campus',
                     'department',
-                    'role.permissions', 'role.permissions.route', 'role.permissions.route.actions',
+                    'role.permissions',
+                    'role.permissions.route',
+                    'role.permissions.actions',
                 ],
             });
         if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
