@@ -5,7 +5,7 @@ import actions from './actions.catalogue';
 
 export default class ActionInsertUpdateSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
-       const a = await connection
+        await connection
             .createQueryBuilder()
             .insert()
             .into(Action)
