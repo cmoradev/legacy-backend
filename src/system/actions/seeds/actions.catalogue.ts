@@ -143,4 +143,28 @@ const actions: Partial<Action>[] = [
         isDefault: false,
     },
 ];
+
+export enum ActionsEnum {
+    CREATE = 1,
+    READ = 2,
+    UPDATE = 3,
+    DELETE = 4,
+    INGRESOS_POR_FECHA = 5,
+    VENTAS_POR_FECHA = 6,
+    'CLIENTES' = 7,
+    'CAJEROS' = 8,
+    'INGRESOS POR MES DEL AÑO' = 9,
+    'INGRESOS POR FORMA DE PAGO' = 10,
+    'MOVIMIENTOS' = 11,
+    'VENTAS POR CAJERO' = 12,
+    'INFORMACION DE PRODUCTOS' = 13,
+    'INSCRITOS A' = 14,
+    'BAJAS A' = 15,
+    'NO INSCRITOS' = 16,
+    'INCLUIDAS' = 17,
+    'RENDIMIENTO TOTAL A' = 18,
+    'G TOTAL DE INS A' = 19,
+    'G TOTAL DE INSGRESOS A' = 20,
+}
+
 export default actions;
