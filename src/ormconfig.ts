@@ -25,8 +25,9 @@ if (fs.existsSync(`${environment}.env`)) {
         password: processEnv.DB_PASSWORD_COLEGIO_INGLES,
         database: processEnv.DB_DBNAME_COLEGIO_INGLES,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        seeds: [__dirname + '/databases/seeds/**/*.seed{.ts,.js}'],
-        factories: [__dirname + '/databases/factories/**/*.factory{.ts,.js}'],
+        seeds: [__dirname + '/**/*.seed{.ts,.js}'],
+        factories: [__dirname + '/**/*.factory{.ts,.js}'],
+        migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
         // We are using migrations, synchronize should be set to false.
         synchronize: false,
         // Run migrations automatically,
@@ -38,7 +39,6 @@ if (fs.existsSync(`${environment}.env`)) {
         // Allow both start:prod and start:dev to use migrations
         // __dirname is either dist or src folder, meaning either
         // the compiled js in prod or the ts in dev.
-        migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
         cli: {
             // Location of migration should be inside src folder
             // to be compiled into dist/ folder.
@@ -48,7 +48,6 @@ if (fs.existsSync(`${environment}.env`)) {
         },
     } as BaseConnectionOptions;
 }
-console.log(config);
 export = config;
 
 // const environment = process.env.NODE_ENV || 'development';

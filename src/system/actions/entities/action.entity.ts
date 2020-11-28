@@ -28,7 +28,7 @@ export class Action extends Base {
         width: 1,
         default: () => '\'0\'',
     })
-    isDefault: string;
+    isDefault: boolean;
 
     @ManyToMany(() => Route, (route) => route.actions, {
         cascade: ['insert', 'update'],
