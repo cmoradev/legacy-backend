@@ -4,14 +4,16 @@ import { Route } from './entities/route.entity';
 import { RoutesService } from './routes.service';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
-//@UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Route,
     },
     query: {
         join: {
-            actions: {},
+            routeActions: {},
+            'routeActions.route': {},
+            'routeActions.action': {},
         },
     },
 })

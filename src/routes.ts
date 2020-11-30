@@ -109,6 +109,7 @@ import { AcademyChargePaymentsModule } from './academy/charges-academy/academy-c
 import { AcademyInscriptionChargesModule } from './academy/academy-inscription-concept-charges/academy-inscription-charges.module';
 import { FamilyFiscalModule } from './school-colegio-ingles/family-fiscal/family-fiscal.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
+import { RouteActionModule } from './system/route-action/route-action.module';
 
 export const routes: Routes = [
     {
@@ -132,6 +133,7 @@ export const routes: Routes = [
             { path: '/dashboard', module: SystemDashBoardModule },
             { path: '/users', module: UsersModule },
             { path: '/routes', module: RoutesModule },
+            { path: '/route-action', module: RouteActionModule },
             { path: '/roles', module: RolesModule },
             { path: '/permissions', module: PermissionsModule },
             { path: '/actions', module: ActionsModule },

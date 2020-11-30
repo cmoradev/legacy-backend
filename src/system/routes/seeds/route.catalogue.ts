@@ -1,5 +1,6 @@
 import { Route } from '../entities/route.entity';
 import { Action } from '../../actions/entities/action.entity';
+import { ActionsEnum } from '../../actions/seeds/actions.catalogue';
 
 // @ts-ignore
 const routes: Partial<Route>[] = [

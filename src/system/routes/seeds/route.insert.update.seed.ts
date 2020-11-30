@@ -1,7 +1,8 @@
-import { Factory, Seeder } from 'typeorm-seeding';
+import { Factory, Seeder, times } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
 import routes from './route.catalogue';
 import { Route } from '../entities/route.entity';
+import { Action } from '../../actions/entities/action.entity';
 
 export default class RouteInsertUpdateSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
@@ -11,7 +12,8 @@ export default class RouteInsertUpdateSeed implements Seeder {
             .into(Route)
             .values([...routes])
             .orUpdate({
-                conflict_target: ['id'], overwrite: [
+                conflict_target: ['id'],
+                overwrite: [
                     'id',
                     'isActive',
                     'name',
@@ -24,6 +26,7 @@ export default class RouteInsertUpdateSeed implements Seeder {
             })
             .orIgnore()// para ignorar valores duplicado
             .execute();
+
     }
 }
 

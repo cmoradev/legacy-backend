@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
 import { Action } from '../../actions/entities/action.entity';
+import { RouteAction } from '../../route-action/entities/route-action.entity';
 
 @Entity('route')
 export class Route {
@@ -65,9 +66,8 @@ export class Route {
     })
     updatedAt: Date;
 
-    @ManyToMany(() => Action, (action) => action.routes)
-    @JoinTable()
-    actions: Action[];
+    @OneToMany(type => RouteAction, routeAction => routeAction.route)
+    routeActions: RouteAction[];
 
     @Column('varchar', {
         nullable: true,

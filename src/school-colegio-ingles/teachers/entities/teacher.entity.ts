@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import {Assignment} from '../../assignments/entities/assignment.entity';
+import { Assignment } from '../../assignments/entities/assignment.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
 import { User } from '../../../system/users/entities/user.entity';
 
-@Entity()
+@Entity('teacher')
 export class Teacher {
     @PrimaryGeneratedColumn({
         type: 'int',
@@ -21,7 +21,7 @@ export class Teacher {
     @Column()
     phone: string;
 
-    @OneToMany(() => Assignment, (assignment) => assignment.teacher )
+    @OneToMany(() => Assignment, (assignment) => assignment.teacher)
     assignments: Assignment[];
 
     @OneToOne(() => User, (user) => user.teacher, { cascade: ['update'] })

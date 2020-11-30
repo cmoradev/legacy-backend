@@ -26,6 +26,7 @@ import { AuthAccessTokensModule } from './auth-access-tokens/auth-access-tokens.
 import { BranchOfficeModule } from './branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from './branch-office-setting/branch-office-setting.module';
 import { ActionsModule } from './actions/actions.module';
+import { RouteActionModule } from './route-action/route-action.module';
 
 @Module({
     imports: [
@@ -56,6 +57,7 @@ import { ActionsModule } from './actions/actions.module';
         SettingsModule,
         FoliosModule,
         AuthAccessTokensModule,
+        RouteActionModule,
     ],
 })
 export class SystemModule {
