@@ -10,9 +10,9 @@ export class RouteAction {
     })
     id: number;
 
-    @ManyToOne(type => Route, route => route.routeActions, { primary: true })
+    @ManyToOne(type => Route, route => route.routeActions)
     route: Route;
 
-    @ManyToOne(type => Action, action => action.routeActions, { primary: true })
+    @ManyToOne(type => Action, action => action.routeActions)
     action: Action;
 }
