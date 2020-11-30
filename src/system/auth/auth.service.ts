@@ -75,17 +75,36 @@ export class AuthService {
     }
 
     async validateUser(email: string, passw: string): Promise<Partial<User> | null> {
-        const user: User | undefined = await this.usersService
-            .findOne({ email }, {
-                relations: [
-                    'role',
-                    'campus',
-                    'department',
-                    'role.permissions',
-                    'role.permissions.route',
-                    'role.permissions.actions',
-                ],
-            });
+        // const user: User | undefined = await this.usersService
+        //     .findOne({ email }, {
+        //         relations: [
+        //             'role',
+        //             'campus',
+        //             'department',
+        //             'role.permissions',
+        //             'role.permissions.route',
+        //             'role.permissions.actions',
+        //         ],
+        //     });
+        const user: User | undefined = await this.usersService.repo.createQueryBuilder('users')
+            .leftJoinAndSelect('users.role', 'role')
+            .leftJoinAndSelect('users.campus', 'campus')
+            .leftJoinAndSelect('users.department', 'department')
+            .leftJoinAndSelect('role.permissions', 'permissions')
+            .leftJoinAndSelect('permissions.route', 'route')
+            .leftJoinAndSelect('permissions.actions', 'actions')
+            .select([
+                'users.id', 'users.name', 'users.lastnameFather', 'users.lastnameMother',
+                'users.email', 'users.password', 'users.isActive', 'users.img',
+                'campus.id', 'campus.name',
+                'department.id', 'department.name', 'department.description',
+                'role.id', 'role.isActive', 'role.name', 'permissions.id',
+                'route.id', 'route.isActive', 'route.name', 'route.fatherID',
+                'route.level', 'route.url', 'route.icon',
+                'actions.id',
+            ])
+            .where('users.email = :email', { email })
+            .getOne();
         if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
             const { password, ...result } = user;
             return result;

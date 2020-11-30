@@ -1,6 +1,6 @@
 import {
     Body,
-    Controller,
+    Controller, Get,
     HttpStatus,
     Param,
     Patch,
@@ -20,7 +20,8 @@ import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.e
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+
+// @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: User,
@@ -61,6 +62,31 @@ export class UsersController implements CrudController<User> {
 
     get base(): CrudController<User> {
         return this;
+    }
+
+    @Get('/amir/data')
+    async getuser() {
+        const user: User = await this.service.repo.createQueryBuilder('users')
+            .leftJoinAndSelect('users.role', 'role')
+            .leftJoinAndSelect('users.campus', 'campus')
+            .leftJoinAndSelect('users.department', 'department')
+            .leftJoinAndSelect('role.permissions', 'permissions')
+            .leftJoinAndSelect('permissions.route', 'route')
+            .leftJoinAndSelect('permissions.actions', 'actions')
+            .select([
+                'users.id', 'users.name', 'users.lastnameFather', 'users.lastnameMother',
+                'users.email', 'users.password', 'users.isActive', 'users.img',
+                'campus.id', 'campus.name',
+                'department.id', 'department.name', 'department.description',
+                'role.id', 'role.isActive', 'role.name', 'permissions.id',
+                'route.id', 'route.isActive', 'route.name', 'route.fatherID',
+                'route.level', 'route.url', 'route.icon',
+                'actions.id',
+            ])
+            //.where('users.email = :email', { email })
+            .getOne();
+
+        return user;
     }
 
     @Patch('assign-teacher/:idUser')
