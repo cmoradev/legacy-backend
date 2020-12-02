@@ -23,5 +23,6 @@ const routesActions: Partial<RouteAction>[] = [
     { id: 18, route: { id: 21 }, action: { id: ActionsEnum.RENDIMIENTO_TOTAL_A } },
     { id: 19, route: { id: 21 }, action: { id: ActionsEnum.G_TOTAL_DE_INS_A } },
     { id: 20, route: { id: 21 }, action: { id: ActionsEnum.G_TOTAL_DE_INSGRESOS_A } },
+    { id: 21, route: { id: 21 }, action: { id: ActionsEnum.RANGO_DE_FECHA } },
 ] as RouteAction;
 export default routesActions;

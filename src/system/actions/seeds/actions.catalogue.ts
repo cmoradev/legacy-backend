@@ -142,6 +142,13 @@ const actions: Partial<Action>[] = [
         icon: '',
         isDefault: false,
     },
+    {
+        id: 21,
+        name: 'RANGO DE FECHA',
+        description: 'Permite ver el formulario de rancho de fechas',
+        icon: '',
+        isDefault: false,
+    },
 ];
 
 export enum ActionsEnum {
@@ -164,7 +171,8 @@ export enum ActionsEnum {
     INCLUIDAS = 17,
     RENDIMIENTO_TOTAL_A = 18,
     G_TOTAL_DE_INS_A = 19,
-    G_TOTAL_DE_INSGRESOS_A = 20
+    G_TOTAL_DE_INSGRESOS_A = 20,
+    RANGO_DE_FECHA = 21
 }
 
 export default actions;
