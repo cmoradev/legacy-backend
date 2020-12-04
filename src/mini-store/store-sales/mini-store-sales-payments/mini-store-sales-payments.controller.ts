@@ -124,6 +124,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.invoice = invocePayment;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.uuid = invocePayment.uuid;
+                    response.status(200)
                     response.send(respuesta);
                 } else {
 
@@ -169,6 +170,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoice;
                     respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    response.status(200)
                     response.send(respuesta);
                 }
             } else {
@@ -237,6 +239,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoiceFirst;
                     respuesta.uuid = timbrado.data.uuid.toUpperCase();
+                    response.status(200)
                     response.send(respuesta);
                 }
             }
@@ -248,6 +251,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             // response.send(xml);
 
         } catch (e) {
+            response.status(400)
             response.send(e);
         }
     }

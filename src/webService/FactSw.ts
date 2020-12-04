@@ -34,7 +34,7 @@ export class FactSw {
 
     public async facturar(xml: string): Promise<StampV4> {
         return new Promise((resolve, reject) => {
-            // console.log(xml);
+            console.log(xml);
             const obj = {
                 url: this.url,
                 user: this.user,
