@@ -22,6 +22,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { readFileSync } from 'fs';
+import { Response } from 'express';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -56,7 +57,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     }
 
     @Get('/simple-report')
-    async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
+    async simpleReport(@Req() request, @Res() response : Response, @Query() query: QuerySimpleReport) {
 
         const payments = await this.service.fetchFilteredPayments(query);
         const sales = await this.service.fetchFilteredSales(query);
