@@ -45,14 +45,6 @@ export class SchoolPayment extends Base {
         nullable: true,
     })
     payMonth: number;
-    @Column('int', {
-        nullable: true,
-    })
-    paidDay: number;
-    @Column('int', {
-        nullable: true,
-    })
-    paidMonth: number;
 
     @Column('varchar', {
         nullable: true,
