@@ -7,15 +7,11 @@ import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-retu
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
+import { isDesktop } from '../../../../common/desktop/desktop.config';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('tie_facturas')
-export class MiniStoreInvoice {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreInvoice extends Base {
 
     @Column('varchar', {
         nullable: true,
@@ -67,7 +63,8 @@ export class MiniStoreInvoice {
     })
     idCancelingAgent: number;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -99,24 +96,8 @@ export class MiniStoreInvoice {
     })
     idPayment: number;
 
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
-
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,
         enum: InvoiceType,
@@ -124,7 +105,7 @@ export class MiniStoreInvoice {
     invoiceType: InvoiceType;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceStatus.Unbilled,
         enum: InvoiceStatus,

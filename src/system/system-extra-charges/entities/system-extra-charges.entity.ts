@@ -10,6 +10,7 @@ import {
     OperationApplicationEnum,
     TypeChargeApplicationEnum,
 } from '../enums/system-extra-charges.enum';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('ac_descuentos')
 export class SystemExtraCharges extends Base {
@@ -28,7 +29,7 @@ export class SystemExtraCharges extends Base {
     quantity: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         enum: TypeChargeApplicationEnum,
         default: TypeChargeApplicationEnum.percentage,
@@ -36,7 +37,7 @@ export class SystemExtraCharges extends Base {
     typeApplication: TypeChargeApplicationEnum;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         enum: OperationApplicationEnum,
         default: OperationApplicationEnum.sum,
@@ -55,20 +56,22 @@ export class SystemExtraCharges extends Base {
     })
     endDay: number | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type:  isDesktop ? 'date' :'timestamp',
         nullable: true,
         name: 'fecha_inicio',
     })
     startDate: Date;
 
-    @Column('timestamp', {
+    @Column({
+        type:  isDesktop ? 'date' :'timestamp',
         nullable: true,
         name: 'fecha_fin',
     })
     endDate: Date;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         name: 'id_formaplicacion',
         nullable: false,
         enum: ApplicationFormEnum,

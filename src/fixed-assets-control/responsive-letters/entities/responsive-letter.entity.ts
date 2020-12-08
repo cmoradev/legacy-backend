@@ -4,11 +4,10 @@ import { JobPosition } from '../../job-positions/entities/job-position.entity';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { MatrixCompany } from '../../matrix-companies/entities/matrix-company.entity';
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class ResponsiveLetter {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class ResponsiveLetter extends Base {
 
     @Column({
         nullable: false,
@@ -39,20 +38,5 @@ export class ResponsiveLetter {
     @OneToMany(type => FixedAssetAssignment,
         fixedAssetAssignment => fixedAssetAssignment.responsiveLetter)
     fixedAssetAssignments: FixedAssetAssignment[];
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 
 }

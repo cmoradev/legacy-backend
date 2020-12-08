@@ -11,15 +11,12 @@ import { SchoolCharge } from '../../charges-school/school-charges/entities/schoo
 import { Periods } from '../../periods/entities/periods.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('ciclos')
-export class Cycle {
+export class Cycle extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('varchar', {
         nullable: false,
@@ -28,14 +25,16 @@ export class Cycle {
     })
     name: string;
 
-    @Column('timestamp', {
+    @Column( {
+        type: isDesktop ? 'date': 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_inicio',
     })
     dateStart: Date;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date': 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_fin',
@@ -47,21 +46,6 @@ export class Cycle {
         name: 'active',
     })
     isActive: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => Periods, (periods) => periods.periodsCycle)
     cyclePeridos: Periods[];

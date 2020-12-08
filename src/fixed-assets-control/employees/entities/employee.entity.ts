@@ -3,11 +3,10 @@ import { BranchCompany } from '../../branch-companies/entities/branch-company.en
 import { JobPosition } from '../../job-positions/entities/job-position.entity';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Employee {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Employee extends Base {
     @Column()
     firstName: string;
 
@@ -30,18 +29,4 @@ export class Employee {
         responsiveLetter => responsiveLetter.employee)
     responsiveLetters: ResponsiveLetter[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 }

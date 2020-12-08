@@ -3,6 +3,7 @@ import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { CashRegister } from '../../../cash-register/entities/cash-register.entity';
 import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';
+import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('tie_transaction')
 export class MiniStoreTransaction extends Base {
@@ -34,7 +35,8 @@ export class MiniStoreTransaction extends Base {
     })
     description: string | null;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'applicationDate',
@@ -42,7 +44,7 @@ export class MiniStoreTransaction extends Base {
     applicationDate: Date;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: CashRegisterTransactionType.income,
         enum: CashRegisterTransactionType,

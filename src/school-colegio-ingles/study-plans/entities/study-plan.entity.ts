@@ -7,13 +7,11 @@ import { Modality } from '../../modalities/entities/modality.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity()
-export class StudyPlan {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class StudyPlan extends Base {
 
     @Column()
     name: string;
@@ -35,30 +33,19 @@ export class StudyPlan {
     @OneToMany(type => Assignment, (assignment) => assignment.studyPlan)
     assignment: Assignment;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
     })
     startDate: string;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
     })
     endDate: string | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => Level, (level) => level.studyPlans)
     level: Level;

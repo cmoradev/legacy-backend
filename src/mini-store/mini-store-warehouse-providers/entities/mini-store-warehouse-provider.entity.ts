@@ -6,15 +6,11 @@ import {
 } from 'typeorm';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('tie_almacen_proveedores')
-export class MiniStoreWarehouseProvider {
+export class MiniStoreWarehouseProvider extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('varchar', {
         nullable: false,
@@ -108,21 +104,6 @@ export class MiniStoreWarehouseProvider {
         name: 'pweb',
     })
     webSite: string | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date | null;
 
     @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreWarehouseProvider)
     miniStoreWarehouseOrders: MiniStoreWarehouseOrder[];

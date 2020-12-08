@@ -1,12 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity';
 import { User } from '../../users/entities/user.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 @Entity('role')
-export class Role {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Role extends Base {
 
     @Column('boolean', {
         nullable: false,
@@ -21,19 +18,6 @@ export class Role {
 
     @OneToMany(() => Permission, (permission) => permission.role)
     permissions: Permission[];
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => User, (user) => user.role )
     users: User[];

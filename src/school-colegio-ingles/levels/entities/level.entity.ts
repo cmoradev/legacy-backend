@@ -13,15 +13,10 @@ import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('niveles')
-export class Level {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Level extends Base {
 
     @Column('int', {
         nullable: false,
@@ -36,20 +31,6 @@ export class Level {
     })
     name: string;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
     @OneToMany(() => PaymentPlan, (paymentPlan) => paymentPlan.level)
     paymentPlans: PaymentPlan[];
 

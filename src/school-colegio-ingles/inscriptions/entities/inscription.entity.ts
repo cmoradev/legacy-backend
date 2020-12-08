@@ -12,14 +12,11 @@ import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('inscripciones')
-export class Inscription {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Inscription extends Base {
+
     @Column('int', {
         nullable: false,
         name: 'id_alumnos',
@@ -62,20 +59,6 @@ export class Inscription {
     })
     idStatus: number;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
     /*
     @Column('int', {
       nullable: false,

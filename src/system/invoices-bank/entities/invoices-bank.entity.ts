@@ -17,15 +17,10 @@ import { AcademyActivitiesGroup } from '../../../academy/academy-activities-grou
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 
 import { SchoolChargesMethodsPayments } from '../../../school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
-@Entity('facturacion_bancos', { schema: 'colegio_pdc' })
-export class InvoicesBank {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+@Entity('facturacion_bancos')
+export class InvoicesBank extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -33,20 +28,6 @@ export class InvoicesBank {
         name: 'nombre',
     })
     name: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => MiniStoreSaleMethodPayment, (SalesMethodPayment) => SalesMethodPayment.Bank)
     SalesMethodPayment: MiniStoreSaleMethodPayment[];

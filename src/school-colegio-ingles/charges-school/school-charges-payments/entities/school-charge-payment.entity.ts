@@ -7,6 +7,7 @@ import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/scho
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('school_charge_payments')
 export class SchoolChargePayment extends Base {
@@ -35,7 +36,8 @@ export class SchoolChargePayment extends Base {
     })
     quantity: number;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date': 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
@@ -77,7 +79,7 @@ export class SchoolChargePayment extends Base {
     schoolCharge: SchoolCharge;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

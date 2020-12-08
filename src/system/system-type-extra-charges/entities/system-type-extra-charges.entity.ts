@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
 import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 export const myTransformer: ValueTransformer = {
 
@@ -19,13 +20,7 @@ export enum SystemTypeExtraChargesEnum {
 }
 
 @Entity('ac_tipo_descuento')
-export class SystemTypeExtraCharges {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class SystemTypeExtraCharges extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -41,20 +36,6 @@ export class SystemTypeExtraCharges {
         transformer: myTransformer,
     })
     operations: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesType)
     systemTyExCharCharge: SystemExtraCharges[];

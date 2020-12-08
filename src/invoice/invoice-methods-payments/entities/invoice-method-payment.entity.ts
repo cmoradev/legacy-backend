@@ -4,15 +4,10 @@ import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-r
 import { SchoolChargeDetails } from '../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('facturacion_formas_pago')
-export class InvoiceMethodPayment {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class InvoiceMethodPayment extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -43,21 +38,6 @@ export class InvoiceMethodPayment {
         name: 'isActive',
     })
     isActive: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.invoiceMethodPayment)
     miniStoreSaleMethodPayments: MiniStoreSaleMethodPayment[];

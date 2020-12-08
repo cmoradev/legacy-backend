@@ -4,11 +4,10 @@ import { Employee } from '../../employees/entities/employee.entity';
 import { JobPosition } from '../../job-positions/entities/job-position.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class BranchCompany {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class BranchCompany extends Base {
 
     @Column()
     name: string;
@@ -29,18 +28,4 @@ export class BranchCompany {
     @OneToMany(type => ResponsiveLetter, responsiveLetter => responsiveLetter.branchCompany)
     responsiveLetters: ResponsiveLetter[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 }

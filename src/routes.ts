@@ -83,7 +83,6 @@ import { AcademyChargeWayOfPayingModule } from './academy/charges-academy/academ
 import { AcademyChargeModule } from './academy/charges-academy/academy-charge/academy-charge.module';
 import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { BranchOfficeSettingModule } from './system/branch-office-setting/branch-office-setting.module';
-import { MailServiceModule } from './mail-service/mail-service.module';
 import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
 import { SchoolPaymentsModule } from './school-colegio-ingles/school-payments/school-payments.module';
@@ -280,9 +279,5 @@ export const routes: Routes = [
             { path: 'locations', module: LocationsModule },
 
         ],
-    },
-    {
-        path: '/mail-service',
-        module: MailServiceModule,
-    },
+    }
 ];

@@ -2,13 +2,11 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { Assignment } from '../../assignments/entities/assignment.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('teacher')
-export class Teacher {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Teacher extends Base {
+
     @Column()
     firstName: string;
 
@@ -28,18 +26,6 @@ export class Teacher {
     @JoinColumn()
     user: User;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
     @OneToMany(() => Incident, (incident) => incident.teacher)
     incidents: Incident[];
 }

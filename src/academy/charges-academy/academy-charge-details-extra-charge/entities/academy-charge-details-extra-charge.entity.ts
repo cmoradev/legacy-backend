@@ -22,21 +22,21 @@ export class AcademyChargeDetailsExtraCharge extends Base {
     quantity: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: true,
         enum: TypeChargeApplicationEnum,
     })
     applicationType: TypeChargeApplicationEnum;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: true,
         enum: OperationApplicationEnum,
     })
     operationType: OperationApplicationEnum;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: true,
         enum: SystemTypeExtraChargesEnum,
     })

@@ -3,6 +3,7 @@ import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fi
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 import { Classification } from '../../classifications/entities/classification.entity';
 import { Location } from '../../locations/entities/location.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 export enum FixedAssetStatus {
     Available = 'Available',
@@ -11,9 +12,7 @@ export enum FixedAssetStatus {
 }
 
 @Entity()
-export class FixedAsset {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class FixedAsset extends Base {
     @Column()
     name: string;
 
@@ -52,7 +51,7 @@ export class FixedAsset {
     photoUrl: string;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: FixedAssetStatus,
         default: FixedAssetStatus.Available,
         nullable: false,
@@ -75,19 +74,4 @@ export class FixedAsset {
             nullable: true,
         })
     location: Location;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 }

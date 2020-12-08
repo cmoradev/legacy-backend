@@ -6,15 +6,10 @@ import {
 } from 'typeorm';
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('tie_listaprecios')
-export class MiniStorePriceList {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStorePriceList extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -37,20 +32,6 @@ export class MiniStorePriceList {
     })
     isActive: boolean;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storePriceList)
     storeProducts: MiniStoreProduct[];

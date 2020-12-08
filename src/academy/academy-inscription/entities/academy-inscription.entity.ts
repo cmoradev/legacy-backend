@@ -11,6 +11,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {
@@ -55,7 +56,8 @@ export class AcademyInscription extends Base {
   })
   startEnd: string | null;
 
-  @Column('timestamp', {
+  @Column( {
+    type: isDesktop ? 'date' : 'timestamp',
     nullable: true,
     name: 'fecha_baja',
   })
@@ -84,7 +86,7 @@ export class AcademyInscription extends Base {
   isActive: boolean;
 
   @Column({
-    type: 'enum',
+    type: 'simple-enum',
     enum: InscriptionStatus,
     default: InscriptionStatus.Registered,
     nullable: false,

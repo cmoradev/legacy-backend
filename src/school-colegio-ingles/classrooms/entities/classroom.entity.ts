@@ -15,14 +15,10 @@ import { Group } from '../../groups/entities/group.entity';
 import { Level } from '../../levels/entities/level.entity';
 import { ClassroomPermission } from '../../classroom-permission/entities/classroom-permission.entity';
 import { Incident } from '../../incidents/entities/incident.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Classroom {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Classroom extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -42,21 +38,6 @@ export class Classroom {
         name: 'max',
     })
     max: number | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => Grade, (grade) => grade.classrooms)
     grade: Grade;

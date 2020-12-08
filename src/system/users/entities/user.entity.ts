@@ -25,15 +25,10 @@ import { CashRegister } from '../../../mini-store/cash-register/entities/cash-re
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('usuarios')
-export class User {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class User extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -120,20 +115,6 @@ export class User {
 
     @OneToOne(() => Teacher, (teacher) => teacher.user)
     teacher: Teacher;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => Role, (role) => role.users)
     role: Role;

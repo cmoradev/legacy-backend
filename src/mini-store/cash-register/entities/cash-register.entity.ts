@@ -11,25 +11,25 @@ import { CashRegisterTransaction } from '../../cash-register-transactions/entiti
 import { User } from '../../../system/users/entities/user.entity';
 import { DateTimeZoneTransformer } from '../../../common/orm/entities/transformers/date-time-zone.transformer';
 import { MiniStoreTransaction } from '../../store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity({ name: 'cash_register' })
-export class CashRegister {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class CashRegister extends Base {
 
     @Column()
     @Generated('uuid')
     uuid: string;
 
     @Column({
-        type: 'timestamp',
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
     })
     openAt: Date;
 
     @Column({
-        type: 'timestamp',
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: true,
     })
     closedAt: Date | null;
@@ -66,23 +66,4 @@ export class CashRegister {
     })
     movements: MiniStoreTransaction[];
 
-    @VersionColumn({
-        default: 0,
-        nullable: false,
-    })
-    version: number;
-
-    @CreateDateColumn({
-        name: 'createdAt',
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        name: 'updatedAt',
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    updatedAt: Date;
 }

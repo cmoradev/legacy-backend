@@ -15,7 +15,8 @@ export class PaymentPlanConcept extends Base {
     })
     name: string;
 
-    @Column('enum', {
+    @Column( {
+        type: 'simple-enum',
         nullable: false,
         default: PaymentPlanConceptTypeEnum.OneTime,
         enum: PaymentPlanConceptTypeEnum,
@@ -38,13 +39,15 @@ export class PaymentPlanConcept extends Base {
     })
     startDay: number;
 
-    @Column('enum', {
+    @Column( {
+        type: 'simple-enum',
         nullable: true,
         enum: Months,
     })
     startMonth: Months;
 
-    @Column('enum', {
+    @Column({
+        type:'simple-enum',
         nullable: true,
         enum: Months,
     })

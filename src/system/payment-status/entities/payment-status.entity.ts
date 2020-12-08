@@ -13,36 +13,16 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('estado_pagos')
-export class PaymentStatusEntity {
-
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
-
+export class PaymentStatusEntity extends Base {
+  
   @Column('varchar', {
     nullable: false,
     length: 100,
     name: 'nombre',
   })
   name: string;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
 
 }

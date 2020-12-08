@@ -2,15 +2,10 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Student } from '../../students/entities/student.entity';
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('familias')
-export class Family {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Family  extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -45,20 +40,6 @@ export class Family {
     })
     idCampus: number;
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => BranchOffice, (campus) => campus.families)
     campus: BranchOffice;

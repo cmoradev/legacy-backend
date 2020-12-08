@@ -4,6 +4,7 @@ import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoi
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { User } from '../../../../system/users/entities/user.entity';
+import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('school_charges_invoice')
 export class SchoolChargesInvoice extends Base {
@@ -39,7 +40,8 @@ export class SchoolChargesInvoice extends Base {
     })
     total: number | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type: isDesktop ? 'date' : 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -59,7 +61,7 @@ export class SchoolChargesInvoice extends Base {
     status: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,
         enum: InvoiceType,

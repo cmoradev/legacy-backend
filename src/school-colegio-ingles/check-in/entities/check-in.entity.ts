@@ -1,6 +1,8 @@
 import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Department } from '../../../system/departments/entities/department.entity';
 import * as moment from 'moment';
+import { Base } from '../../../common/orm/entities/base.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 enum StatusCheckIn {
     Inside = 'Inside',
@@ -10,11 +12,7 @@ enum StatusCheckIn {
 }
 
 @Entity()
-export class CheckIn {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class CheckIn extends Base {
 
     @Column({
         type: 'varchar',
@@ -35,19 +33,19 @@ export class CheckIn {
     signature: string;
 
     @Column({
-        type: 'timestamp',
+        type: isDesktop ? 'date':'timestamp',
         nullable: true,
     })
     entryHour: Date | string;
 
     @Column({
-        type: 'timestamp',
+        type: isDesktop ? 'date':'timestamp',
         nullable: true,
     })
     exitHour: Date | string;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: StatusCheckIn,
         nullable: false,
     })
@@ -66,19 +64,6 @@ export class CheckIn {
         nullable: true,
     })
     guestBadgeCode: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @BeforeInsert()
     checkInEntryHour() {

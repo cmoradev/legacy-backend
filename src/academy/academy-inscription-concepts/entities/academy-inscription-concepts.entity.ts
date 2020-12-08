@@ -5,15 +5,11 @@ import { AcademyInscription } from '../../academy-inscription/entities/academy-i
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 import { AcademyInscriptionConceptCharges } from '../../academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_inscrip_conceptos')
-export class AcademyInscriptionConcepts {
+export class AcademyInscriptionConcepts extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('varchar', {
         nullable: true,
@@ -63,7 +59,7 @@ export class AcademyInscriptionConcepts {
     idConceptoCobro: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,
@@ -146,20 +142,6 @@ export class AcademyInscriptionConcepts {
         name: 'active',
     })
     isActive: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.concepts)
     acInscription: AcademyInscription;

@@ -8,6 +8,7 @@ import { CashRegisterTransaction } from '../../../cash-register-transactions/ent
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment extends Base {
@@ -52,7 +53,7 @@ export class MiniStoreSalePayment extends Base {
      * Deprecated
      */
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,
@@ -67,7 +68,8 @@ export class MiniStoreSalePayment extends Base {
     })
     idAgentCancellation: number | null;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date':'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -121,7 +123,7 @@ export class MiniStoreSalePayment extends Base {
     miniStoreSale: MiniStoreSale;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

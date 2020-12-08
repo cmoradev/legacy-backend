@@ -1,14 +1,11 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { User } from '../../../system/users/entities/user.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class ClassroomPermission {
+export class ClassroomPermission extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
 
     @ManyToOne(() => Classroom, (classroom) => classroom.classroomPermissions)
     classroom: Classroom;
@@ -21,19 +18,4 @@ export class ClassroomPermission {
         default: () => '\'1\'',
     })
     isActive: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 }

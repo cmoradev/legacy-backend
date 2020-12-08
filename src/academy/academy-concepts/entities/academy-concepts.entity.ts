@@ -19,15 +19,10 @@ import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.enti
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_aconceptos')
-export class AcademyConcepts {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class AcademyConcepts extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -150,18 +145,5 @@ export class AcademyConcepts {
         name: 'active',
     })
     isActive: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
+    
 }

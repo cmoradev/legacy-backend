@@ -18,15 +18,10 @@ import { Shift } from '../../../system/shift/entities/shift.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_grupos')
-export class AcademyActivitiesGroup {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class AcademyActivitiesGroup extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -68,20 +63,6 @@ export class AcademyActivitiesGroup {
         name: 'activo',
     })
     isActive: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(type => AcademyActivity, activity => activity.academyActivityGroups)
     @JoinColumn({

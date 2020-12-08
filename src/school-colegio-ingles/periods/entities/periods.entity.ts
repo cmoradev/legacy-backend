@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Cycle } from '../../cycles/entities/cycle.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity()
 export class Periods extends Base {
@@ -15,13 +16,15 @@ export class Periods extends Base {
     })
     description: string;
 
-    @Column('timestamp', {
+    @Column( {
+        type: isDesktop ? 'date': 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
     })
     startDate: Date;
 
-    @Column('timestamp', {
+    @Column({
+        type: isDesktop ? 'date': 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
     })

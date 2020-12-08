@@ -6,14 +6,10 @@ import { AssignmentSubject } from '../../assignments-subjects/entities/assignmen
 import { Group } from '../../groups/entities/group.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class StudyPlanVariant {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class StudyPlanVariant extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -60,16 +56,4 @@ export class StudyPlanVariant {
     @OneToMany(() => AssignmentSubject, (assignmentSubject) => assignmentSubject.studyPlanVariant)
     assignmentSubjects: AssignmentSubject[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 }

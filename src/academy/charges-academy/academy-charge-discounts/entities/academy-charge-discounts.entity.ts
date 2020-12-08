@@ -1,13 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('ac_cobro_det_descuentos')
-export class AcademyChargeDiscounts {
+export class AcademyChargeDiscounts extends Base {
 
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
 
   @Column('varchar', {
     nullable: false,
@@ -40,20 +36,6 @@ export class AcademyChargeDiscounts {
     name: 'id_cobro_detalle',
   })
   idCobroDetalle: number;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
+  
 
 }

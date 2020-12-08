@@ -7,15 +7,10 @@ import {
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('tie_clasificaciones')
-export class MiniStoreClassification {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreClassification extends Base{
 
     @Column('varchar', {
         nullable: false,
@@ -31,21 +26,6 @@ export class MiniStoreClassification {
         name: 'active',
     })
     isActive: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storeClassification)
     storeProducts: MiniStoreProduct[];

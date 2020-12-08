@@ -13,6 +13,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { isDesktop } from '../../../common/desktop/desktop.config';
 
 export const toJsonCal: ValueTransformer = {
 
@@ -158,7 +159,8 @@ export class MiniStoreProduct extends Base {
     unitMeasurement: number;
 
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
-    @Column('longtext', {
+    @Column({
+        type: isDesktop ? 'text' : 'longtext',
         nullable: true,
         transformer: toJsonCal,
     })

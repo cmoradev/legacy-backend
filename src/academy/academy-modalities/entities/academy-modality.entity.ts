@@ -14,15 +14,10 @@ import {
     RelationId,
 } from 'typeorm';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_modalidades')
-export class AcademiesModality {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class AcademiesModality  extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -30,21 +25,6 @@ export class AcademiesModality {
         name: 'nombre',
     })
     name: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => Student, (student) => student.academiesModality)
     students: Student[];

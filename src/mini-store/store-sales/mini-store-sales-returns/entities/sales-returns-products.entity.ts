@@ -10,14 +10,10 @@ import {
 } from 'typeorm';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { SalesReturns } from './sales-returns.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity({ name: 'sale_return_products' })
-export class SalesReturnsProducts {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class SalesReturnsProducts extends Base {
 
     @ManyToOne(type => MiniStoreSaleDetail, saleDetail => saleDetail.returnedProducts, {
         nullable: false,
@@ -46,15 +42,6 @@ export class SalesReturnsProducts {
         nullable: false,
     })
     saleReturn: SalesReturns;
-
-    @CreateDateColumn()
-    createdDate: Date;
-
-    @UpdateDateColumn()
-    updatedDate: Date;
-
-    @VersionColumn()
-    version: number;
 
     @BeforeInsert()
     updateAmount() {
