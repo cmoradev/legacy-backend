@@ -40,8 +40,8 @@ export class changecreateAtTocreateAt1607438816694 implements MigrationInterface
     await queryRunner.query('ALTER TABLE `facturacion_claves` ADD `version` int NOT NULL DEFAULT 0');
     await queryRunner.query('ALTER TABLE `facturacion_claves` ADD `uuid` varchar(36) NOT NULL');
 
-    await queryRunner.query('ALTER TABLE `classroom_permission` CHANGE `updated_at` `created_at` `createdAt` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)');
-    await queryRunner.query('ALTER TABLE `classroom_permission` CHANGE `updatedAt` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)');
+    await queryRunner.query('ALTER TABLE `classroom_permission` CHANGE `created_at` `createdAt` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)');
+    await queryRunner.query('ALTER TABLE `classroom_permission` CHANGE `updated_at` `updatedAt` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)');
     await queryRunner.query('ALTER TABLE `classroom_permission` ADD `version` int NOT NULL DEFAULT 0');
     await queryRunner.query('ALTER TABLE `classroom_permission` ADD `uuid` varchar(36) NOT NULL');
 
