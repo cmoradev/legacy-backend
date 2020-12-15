@@ -2,9 +2,7 @@ import { ConfigService } from '../../../config/config.service';
 import { AuthService } from '../auth.service';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PayloadToken } from '../../../common/types/jwt';
-import { isDesktop } from '../../../common/desktop/desktop.config';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,7 +10,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: true,
-            secretOrKey: isDesktop ? 'API_SECRET' :configService.get('API_SECRET'),
+            secretOrKey: configService.get('API_SECRET'),
         });
     }
 

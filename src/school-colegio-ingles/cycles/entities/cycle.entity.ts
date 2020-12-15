@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Group } from '../../groups/entities/group.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { Assignment } from '../../assignments/entities/assignment.entity';
@@ -12,7 +12,6 @@ import { Periods } from '../../periods/entities/periods.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('ciclos')
 export class Cycle extends Base {
@@ -26,7 +25,7 @@ export class Cycle extends Base {
     name: string;
 
     @Column( {
-        type: isDesktop ? 'date': 'timestamp',
+        type: 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_inicio',
@@ -34,7 +33,7 @@ export class Cycle extends Base {
     dateStart: Date;
 
     @Column({
-        type: isDesktop ? 'date': 'timestamp',
+        type: 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_fin',

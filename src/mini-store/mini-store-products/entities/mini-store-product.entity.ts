@@ -1,10 +1,4 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn, ValueTransformer,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, ValueTransformer } from 'typeorm';
 import { MiniStorePriceList } from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
 import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
@@ -13,7 +7,6 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 
 export const toJsonCal: ValueTransformer = {
 
@@ -160,7 +153,7 @@ export class MiniStoreProduct extends Base {
 
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
     @Column({
-        type: isDesktop ? 'text' : 'longtext',
+        type: 'longtext',
         nullable: true,
         transformer: toJsonCal,
     })

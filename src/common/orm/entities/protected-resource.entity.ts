@@ -1,6 +1,5 @@
 import { Column } from 'typeorm';
 import { Base } from './base.entity';
-import { isDesktop } from '../../desktop/desktop.config';
 
 export class ProtectedResource extends Base {
 
@@ -12,7 +11,7 @@ export class ProtectedResource extends Base {
   isRemoved: boolean;
 
   @Column({
-    type: isDesktop ? 'date':'timestamp',
+    type: 'timestamp',
     nullable: true,
   })
   removedAt: Date | null;

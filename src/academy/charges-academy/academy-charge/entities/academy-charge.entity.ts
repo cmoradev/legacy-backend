@@ -1,13 +1,4 @@
-import {
-    Column,
-    Entity,
-    Generated,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    VersionColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
@@ -18,7 +9,6 @@ import { AcademyChargePayments } from '../../academy-charge-payments/entities/ac
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('ac_cobros')
 export class AcademyCharge extends Base {
@@ -71,7 +61,7 @@ export class AcademyCharge extends Base {
     observations: string | null;
 
     @Column( {
-        type: isDesktop ? 'date' : 'timestamp',
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })

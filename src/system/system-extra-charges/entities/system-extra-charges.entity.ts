@@ -10,7 +10,6 @@ import {
     OperationApplicationEnum,
     TypeChargeApplicationEnum,
 } from '../enums/system-extra-charges.enum';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('ac_descuentos')
 export class SystemExtraCharges extends Base {
@@ -57,14 +56,14 @@ export class SystemExtraCharges extends Base {
     endDay: number | null;
 
     @Column( {
-        type:  isDesktop ? 'date' :'timestamp',
+        type:  'timestamp',
         nullable: true,
         name: 'fecha_inicio',
     })
     startDate: Date;
 
     @Column({
-        type:  isDesktop ? 'date' :'timestamp',
+        type:  'timestamp',
         nullable: true,
         name: 'fecha_fin',
     })

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
@@ -9,7 +9,6 @@ import { SchoolChargePayment } from '../../school-charges-payments/entities/scho
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {
@@ -28,7 +27,7 @@ export class SchoolCharge extends Base {
     observations: string | null;
 
     @Column( {
-        type: isDesktop ? 'date': 'timestamp',
+        type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;

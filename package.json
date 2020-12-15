@@ -91,7 +91,6 @@
     "rxjs": "^6.6.2",
     "serve-favicon": "^2.5.0",
     "soap": "^0.32.0",
-    "sqlite3": "^5.0.0",
     "sw-sdk-nodejs": "^1.1.4",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25",

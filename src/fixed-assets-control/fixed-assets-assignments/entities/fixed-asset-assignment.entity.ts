@@ -1,9 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Employee } from '../../employees/entities/employee.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
 import { Location } from '../../locations/entities/location.entity';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 import { Base } from '../../../common/orm/entities/base.entity';
 
 export enum FixedAssetAssignmentStatus {
@@ -48,7 +47,7 @@ export class FixedAssetAssignment extends Base {
     location: Location;
 
     @Column({
-        type: isDesktop ? 'date':'timestamp',
+        type: 'timestamp',
         nullable: true,
     })
     dateOfDelivery?: Date;

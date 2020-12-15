@@ -7,7 +7,6 @@ import { AcademyChargeMethodsPayments } from '../../academy-charge-methods-payme
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('ac_charge_payments')
 export class AcademyChargePayments extends Base {
@@ -37,7 +36,7 @@ export class AcademyChargePayments extends Base {
     quantity: number;
 
     @Column( {
-        type: isDesktop ? 'date' : 'timestamp',
+        type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;

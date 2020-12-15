@@ -1,16 +1,9 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
 import { MiniStoreWarehouseProvider } from '../../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 
 @Entity('tie_almacen_pedidos')
 export class MiniStoreWarehouseOrder extends Base {
@@ -23,7 +16,7 @@ export class MiniStoreWarehouseOrder extends Base {
     folio: string | null;
 
     @Column( {
-      type: isDesktop ? 'date' : 'timestamp',
+      type: 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_pedido',
@@ -31,7 +24,7 @@ export class MiniStoreWarehouseOrder extends Base {
     orderDate: Date;
 
     @Column( {
-      type: isDesktop ? 'date' : 'timestamp',
+      type: 'timestamp',
       nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'fecha_prevista',

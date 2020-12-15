@@ -4,7 +4,6 @@ import {
     PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn,
 } from 'typeorm';
 import { DateTimeZoneTransformer } from './transformers/date-time-zone.transformer';
-import { isDesktop } from '../../desktop/desktop.config';
 
 export class Base {
 
@@ -14,13 +13,13 @@ export class Base {
     id: number;
 
     @CreateDateColumn({
-        type: isDesktop ? 'date' :'timestamp',
+        type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: isDesktop ? 'date' :'timestamp',
+        type: 'timestamp',
         transformer: new DateTimeZoneTransformer(),
     })
     updatedAt: Date;

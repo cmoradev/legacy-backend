@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
@@ -7,7 +7,6 @@ import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-retu
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
-import { isDesktop } from '../../../../common/desktop/desktop.config';
 import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('tie_facturas')
@@ -64,7 +63,7 @@ export class MiniStoreInvoice extends Base {
     idCancelingAgent: number;
 
     @Column({
-        type: isDesktop ? 'date' : 'timestamp',
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })

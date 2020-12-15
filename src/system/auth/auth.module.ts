@@ -15,9 +15,7 @@ import { SettingsModule } from '../settings/settings.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
 import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens.module';
-import passport from 'passport';
 import { ConfigService } from '../../config/config.service';
-import { isDesktop } from '../../common/desktop/desktop.config';
 
 @Module({
     imports: [
@@ -57,11 +55,11 @@ export class AuthModule {
 
     public initialize(app: INestApplication) {
         app.use(session({
-            secret: isDesktop ? 'API_SECRET' : this.configService.get<string>('API_SECRET'),
+            secret: this.configService.get<string>('API_SECRET'),
             resave: false,
             cookie: {
-                httpOnly: isDesktop ? true : !!this.configService.isProduction,
-                secure: isDesktop ? true : !!this.configService.isProduction,
+                httpOnly: !!this.configService.isProduction,
+                secure: !!this.configService.isProduction,
                 maxAge: 1000 * 60 * 60 * 24 * 7,
             },
             saveUninitialized: false,

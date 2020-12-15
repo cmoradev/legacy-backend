@@ -7,7 +7,6 @@ import * as path from 'path';
 import * as favicon from 'serve-favicon';
 import * as boolParser from 'express-query-boolean';
 import * as fs from 'fs';
-import { isDesktop } from './common/desktop/desktop.config';
 
 dotenv.config();
 
@@ -17,7 +16,7 @@ async function bootstrap() {
     app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
     app.use(boolParser());
     const environment = process.env.NODE_ENV || 'development';
-    const processEnv: any = isDesktop ? { API_PORT:3000 } :dotenv.parse(fs.readFileSync(`${environment}.env`));
+    const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
     const options = new DocumentBuilder()
         .setTitle('Apps')
         .setDescription('Es la aplicación de escuela')

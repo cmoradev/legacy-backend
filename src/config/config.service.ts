@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
 import { connections } from './config.env';
-import { isDesktop } from '../common/desktop/desktop.config';
 
 export interface EnvConfig {
     [key: string]: any;
@@ -15,8 +14,8 @@ export class ConfigService {
 
     constructor(filePath: string) {
         console.log('varible de entorno ' + filePath);
-        const config = isDesktop ? {} :dotenv.parse(fs.readFileSync(filePath));
-        this.envConfig = isDesktop ? {} : this.validateInput(config);
+        const config = dotenv.parse(fs.readFileSync(filePath));
+        this.envConfig = this.validateInput(config);
     }
 
     /**

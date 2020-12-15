@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { User } from '../../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
@@ -7,7 +7,6 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../../common/desktop/desktop.config';
 
 @Entity('ac_facturas')
 export class AcademyChargeInvoice extends Base {
@@ -48,7 +47,7 @@ export class AcademyChargeInvoice extends Base {
     total: string | null;
 
     @Column( {
-        type: isDesktop ? 'date' : 'timestamp',
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })

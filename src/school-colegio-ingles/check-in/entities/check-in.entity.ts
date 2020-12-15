@@ -1,8 +1,7 @@
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne } from 'typeorm';
 import { Department } from '../../../system/departments/entities/department.entity';
 import * as moment from 'moment';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { isDesktop } from '../../../common/desktop/desktop.config';
 
 enum StatusCheckIn {
     Inside = 'Inside',
@@ -33,13 +32,13 @@ export class CheckIn extends Base {
     signature: string;
 
     @Column({
-        type: isDesktop ? 'date':'timestamp',
+        type: 'timestamp',
         nullable: true,
     })
     entryHour: Date | string;
 
     @Column({
-        type: isDesktop ? 'date':'timestamp',
+        type: 'timestamp',
         nullable: true,
     })
     exitHour: Date | string;
