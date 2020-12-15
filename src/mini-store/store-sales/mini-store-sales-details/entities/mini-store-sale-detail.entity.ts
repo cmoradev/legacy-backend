@@ -5,15 +5,10 @@ import { MiniStoreClassification } from '../../../mini-store-classifications/ent
 import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
 import { SchoolChargesDetailsExtraCharges } from '../../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { MiniStoreDetailsExtraCharges } from '../../mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('tie_venta_detalle')
-export class MiniStoreSaleDetail {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreSaleDetail extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -63,22 +58,7 @@ export class MiniStoreSaleDetail {
         default: 1,
     })
     isIva: boolean;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date | null;
-
+    
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSaleDetails)
     miniStoreSale: MiniStoreSale;
 

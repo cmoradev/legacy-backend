@@ -5,15 +5,10 @@ import {
   RelationId,
 } from 'typeorm';
 import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('facturacion_claves')
-export class InvoiceKeys {
-
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+export class InvoiceKeys extends Base {
 
   @Column('varchar', {
     nullable: false,
@@ -42,21 +37,6 @@ export class InvoiceKeys {
     name: 'id_razon_social',
   })
   idRazonSocial: number;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
 
   @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storeInvoiceKey)
   storeProducts: MiniStoreProduct[];

@@ -13,15 +13,10 @@ import {
     PrimaryGeneratedColumn,
     RelationId,
 } from 'typeorm';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('ac_cobro_forma_pago')
-export class AcademyChargeWayOfPaying {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class AcademyChargeWayOfPaying extends Base {
 
     @Column('int', {
         nullable: false,
@@ -83,20 +78,5 @@ export class AcademyChargeWayOfPaying {
         name: 'id_ac_cobro',
     })
     idAcCobro: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
 }

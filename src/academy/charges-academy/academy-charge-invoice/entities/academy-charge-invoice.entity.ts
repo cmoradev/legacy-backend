@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { User } from '../../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
@@ -6,15 +6,11 @@ import { AcademyChargePayments } from '../../academy-charge-payments/entities/ac
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('ac_facturas')
-export class AcademyChargeInvoice {
+export class AcademyChargeInvoice extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('varchar', {
         nullable: true,
@@ -50,7 +46,8 @@ export class AcademyChargeInvoice {
     })
     total: string | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -63,7 +60,7 @@ export class AcademyChargeInvoice {
     reasonCancellation: string | null;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,
         enum: InvoiceType,
@@ -112,20 +109,5 @@ export class AcademyChargeInvoice {
 
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
 }

@@ -3,13 +3,10 @@ import { Student } from '../../students/entities/student.entity';
 import { Teacher } from '../../teachers/entities/teacher.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { IncidentClassification } from '../../incident-classification/entities/incident-classification.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Incident {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Incident extends Base {
 
     @Column({
         type: 'varchar',
@@ -29,19 +26,6 @@ export class Incident {
 
     @ManyToOne(() => Classroom, (classroom) => classroom.incidents)
     classroom: Classroom;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => IncidentClassification, (incidentClassification) => incidentClassification.incidents)
     incidentClassification: IncidentClassification[];

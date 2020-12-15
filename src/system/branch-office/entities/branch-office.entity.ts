@@ -22,15 +22,10 @@ import { MiniStorePriceList } from '../../../mini-store/mini-store-prices-lists/
 import { MiniStoreWarehouseOrder } from '../../../mini-store/mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('planteles')
-export class BranchOffice {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class BranchOffice extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -44,21 +39,6 @@ export class BranchOffice {
         name: 'id_ubicacion',
     })
     idLocation: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @Column({
         type: 'int',
@@ -77,7 +57,7 @@ export class BranchOffice {
     PrefixOrder: string;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         name: 'branch_type',
         enum: BranchType,

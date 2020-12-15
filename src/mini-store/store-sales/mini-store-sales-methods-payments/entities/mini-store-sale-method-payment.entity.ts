@@ -3,18 +3,13 @@ import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/m
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { Shift } from '../../../../system/shift/entities/shift.entity';
 import { InvoicesBank } from '../../../../system/invoices-bank/entities/invoices-bank.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago
  */
 @Entity('tie_venta_forma_pago')
-export class MiniStoreSaleMethodPayment {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreSaleMethodPayment extends Base {
 
     /**
      * Relación con la forma pago
@@ -87,21 +82,6 @@ export class MiniStoreSaleMethodPayment {
         name: 'id_tie_pago',
     })
     idPayment: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     /**
      * Relación de un método de pago con una factura de metodo de pago

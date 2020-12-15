@@ -1,10 +1,4 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn, ValueTransformer,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, ValueTransformer } from 'typeorm';
 import { MiniStorePriceList } from '../../mini-store-prices-lists/entities/mini-store-price-list.entity';
 import { MiniStoreClassification } from '../../mini-store-classifications/entities/mini-store-classification.entity';
 import { MiniStoreWarehouseOrderProduct } from '../../mini-store-warehouse-orders-products/entities/mini-store-warehouse-order-product.entity';
@@ -158,7 +152,8 @@ export class MiniStoreProduct extends Base {
     unitMeasurement: number;
 
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
-    @Column('longtext', {
+    @Column({
+        type: 'longtext',
         nullable: true,
         transformer: toJsonCal,
     })

@@ -2,15 +2,11 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGene
 import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity('ac_cobro_detalle')
-export class AcademyChargeDetails {
+export class AcademyChargeDetails extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('varchar', {
         nullable: false,
@@ -60,23 +56,7 @@ export class AcademyChargeDetails {
         name: 'precio',
     })
     price: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
-
-
+    
     @ManyToOne(() => AcademyCharge, (schoolCharge) => schoolCharge.chargesDetails)
     @JoinColumn({
         name: 'id_ac_cobro',

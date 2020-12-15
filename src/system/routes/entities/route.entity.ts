@@ -10,13 +10,10 @@ import {
 import { Permission } from '../../permissions/entities/permission.entity';
 import { Action } from '../../actions/entities/action.entity';
 import { RouteAction } from '../../route-action/entities/route-action.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('route')
-export class Route {
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Route extends Base {
 
     @Column('tinyint', {
         nullable: false,
@@ -52,19 +49,6 @@ export class Route {
 
     @OneToMany(() => Permission, (permission) => permission.route)
     permissions: Permission[];
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @OneToMany(type => RouteAction, routeAction => routeAction.route)
     routeActions: RouteAction[];

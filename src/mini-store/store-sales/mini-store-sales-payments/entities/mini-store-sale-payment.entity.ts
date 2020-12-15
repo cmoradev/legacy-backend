@@ -52,7 +52,7 @@ export class MiniStoreSalePayment extends Base {
      * Deprecated
      */
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,
@@ -67,7 +67,8 @@ export class MiniStoreSalePayment extends Base {
     })
     idAgentCancellation: number | null;
 
-    @Column('timestamp', {
+    @Column({
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -121,7 +122,7 @@ export class MiniStoreSalePayment extends Base {
     miniStoreSale: MiniStoreSale;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

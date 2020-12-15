@@ -7,15 +7,10 @@ import { AcademyConcepts } from '../../academy-concepts/entities/academy-concept
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_academias')
-export class AcademyActivity {
-
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+export class AcademyActivity extends Base {
 
   @Column('varchar', {
     nullable: false,
@@ -55,20 +50,6 @@ export class AcademyActivity {
     name: 'active',
   })
   isActive: boolean;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
 
   @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsActivity)
   academyActivityConcepts: AcademyConcepts[];

@@ -4,15 +4,11 @@ import {Cycle} from '../../cycles/entities/cycle.entity';
 import {Inscription} from '../../inscriptions/entities/inscription.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('grupos' )
-export class Group {
+export class Group extends Base {
 
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
 
     @Column('int', {
         nullable: false,
@@ -44,21 +40,6 @@ export class Group {
         name: 'id_ciclos',
     })
     idCycle: number;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => Grade, (grade) => grade.groups)
     groupGrade: Grade;

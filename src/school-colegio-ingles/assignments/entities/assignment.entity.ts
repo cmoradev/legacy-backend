@@ -7,14 +7,10 @@ import { Cycle } from '../../cycles/entities/cycle.entity';
 import { AssignmentSubject } from '../../assignments-subjects/entities/assignment-subject.entity';
 import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { AssignmentInscription } from '../../assignment-incription/entities/assignment-inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Assignment {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class Assignment extends Base {
 
     @ManyToOne(() => Cycle, (cycle) => cycle.assignments)
     cycle: Cycle;
@@ -37,17 +33,4 @@ export class Assignment {
     @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.assignment)
     assignmentsInscription: AssignmentInscription[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-
-    })
-    updatedAt: Date;
 }

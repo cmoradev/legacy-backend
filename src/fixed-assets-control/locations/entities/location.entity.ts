@@ -2,11 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { Department } from '../../../system/departments/entities/department.entity';
 import { FixedAssetAssignment } from '../../fixed-assets-assignments/entities/fixed-asset-assignment.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Location {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Location extends Base {
 
     @Column()
     description: string;
@@ -25,18 +24,4 @@ export class Location {
         fixedAsset => fixedAsset.location)
     fixedAssets: FixedAsset[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 }

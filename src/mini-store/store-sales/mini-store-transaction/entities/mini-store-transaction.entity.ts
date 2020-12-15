@@ -34,7 +34,8 @@ export class MiniStoreTransaction extends Base {
     })
     description: string | null;
 
-    @Column('timestamp', {
+    @Column({
+        type: 'timestamp',
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
         name: 'applicationDate',
@@ -42,7 +43,7 @@ export class MiniStoreTransaction extends Base {
     applicationDate: Date;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: CashRegisterTransactionType.income,
         enum: CashRegisterTransactionType,

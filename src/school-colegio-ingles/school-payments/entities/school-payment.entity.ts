@@ -88,7 +88,8 @@ export class SchoolPayment extends Base {
     })
     isActive: boolean;
 
-    @Column('enum', {
+    @Column({
+        type: 'simple-enum',
         nullable: false,
         default: PaymentStatus.Debit,
         enum: PaymentStatus,

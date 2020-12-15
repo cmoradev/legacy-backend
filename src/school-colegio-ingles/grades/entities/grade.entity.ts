@@ -7,15 +7,10 @@ import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('grados')
-export class Grade {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Grade extends Base {
 
     @Column('int', {
         nullable: false,
@@ -29,22 +24,7 @@ export class Grade {
         name: 'grado',
     })
     name: string | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
-
+    
     @ManyToOne(() => Level, (level) => level.grades)
     level: Level;
 

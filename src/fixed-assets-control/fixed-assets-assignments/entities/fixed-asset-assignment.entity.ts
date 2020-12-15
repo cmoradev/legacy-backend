@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Employee } from '../../employees/entities/employee.entity';
 import { FixedAsset } from '../../fixed-assets/entities/fixed-asset.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
 import { Location } from '../../locations/entities/location.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 export enum FixedAssetAssignmentStatus {
     Assigned = 'Assigned',
@@ -11,9 +12,8 @@ export enum FixedAssetAssignmentStatus {
 }
 
 @Entity()
-export class FixedAssetAssignment {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class FixedAssetAssignment extends Base {
+
 
     @ManyToOne(type => Employee, employee => employee.assignments, {
         nullable: false,
@@ -27,7 +27,7 @@ export class FixedAssetAssignment {
     fixedAsset: FixedAsset;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: FixedAssetAssignmentStatus,
         default: FixedAssetAssignmentStatus.Assigned,
         nullable: false,
@@ -51,20 +51,5 @@ export class FixedAssetAssignment {
         nullable: true,
     })
     dateOfDelivery?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 
 }

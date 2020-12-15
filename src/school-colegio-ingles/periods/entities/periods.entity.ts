@@ -15,13 +15,15 @@ export class Periods extends Base {
     })
     description: string;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
     })
     startDate: Date;
 
-    @Column('timestamp', {
+    @Column({
+        type: 'timestamp',
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',
     })

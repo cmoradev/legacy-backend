@@ -6,15 +6,10 @@ import {
 } from 'typeorm';
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('tie_almacen_pedidos_productos')
-export class MiniStoreWarehouseOrderProduct {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class MiniStoreWarehouseOrderProduct extends Base {
 
     @Column('int', {
         nullable: false,
@@ -71,21 +66,6 @@ export class MiniStoreWarehouseOrderProduct {
         name: 'sutirdostatus',
     })
     assortedStatus: number | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-        onUpdate: 'CURRENT_TIMESTAMP',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.miniStoreWarehouseOrdersProducts)
     miniStoreProduct: MiniStoreProduct;

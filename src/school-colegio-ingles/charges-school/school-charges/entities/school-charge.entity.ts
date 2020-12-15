@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
@@ -26,7 +26,8 @@ export class SchoolCharge extends Base {
     })
     observations: string | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
@@ -50,7 +51,7 @@ export class SchoolCharge extends Base {
     change: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

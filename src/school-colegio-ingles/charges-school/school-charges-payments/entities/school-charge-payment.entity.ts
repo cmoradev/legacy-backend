@@ -35,7 +35,8 @@ export class SchoolChargePayment extends Base {
     })
     quantity: number;
 
-    @Column('timestamp', {
+    @Column({
+        type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
@@ -77,7 +78,7 @@ export class SchoolChargePayment extends Base {
     schoolCharge: SchoolCharge;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

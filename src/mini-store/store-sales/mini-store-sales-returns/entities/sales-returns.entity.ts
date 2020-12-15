@@ -17,15 +17,10 @@ import { InvoicementStatusEnum } from '../../mini-store-invoices/enums/invoiceme
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MultNumber } from '@signati/sdk-node/lib/util';
 import { add, div, mul, round, sub } from 'exact-math';
+import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity({ name: 'sale_returns' })
-export class SalesReturns {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class SalesReturns extends Base{
 
     @Column({
         type: 'varchar',
@@ -41,7 +36,7 @@ export class SalesReturns {
     comments: string;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoicementStatusEnum.Unbilled,
         enum: InvoicementStatusEnum,
@@ -78,16 +73,6 @@ export class SalesReturns {
         cascade: ['insert', 'update'],
     })
     details: SalesReturnsProducts[];
-
-    @CreateDateColumn({
-        name: 'createdDate',
-    })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        name: 'updatedDate',
-    })
-    updatedAt: Date;
 
     @VersionColumn()
     version: number;

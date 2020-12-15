@@ -1,12 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { BranchCompany } from '../../branch-companies/entities/branch-company.entity';
 import { ResponsiveLetter } from '../../responsive-letters/entities/responsive-letter.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class MatrixCompany {
-
-    @PrimaryGeneratedColumn()
-    id: number;
+export class MatrixCompany extends Base {
 
     @Column()
     name: string;
@@ -16,18 +14,4 @@ export class MatrixCompany {
     @OneToMany(type => ResponsiveLetter, responsiveLetter => responsiveLetter.matrixCompany)
     responsiveLetters: ResponsiveLetter[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt?: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt?: Date;
 }

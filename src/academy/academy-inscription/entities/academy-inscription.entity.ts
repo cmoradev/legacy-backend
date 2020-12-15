@@ -55,7 +55,8 @@ export class AcademyInscription extends Base {
   })
   startEnd: string | null;
 
-  @Column('timestamp', {
+  @Column( {
+    type: 'timestamp',
     nullable: true,
     name: 'fecha_baja',
   })
@@ -84,7 +85,7 @@ export class AcademyInscription extends Base {
   isActive: boolean;
 
   @Column({
-    type: 'enum',
+    type: 'simple-enum',
     enum: InscriptionStatus,
     default: InscriptionStatus.Registered,
     nullable: false,

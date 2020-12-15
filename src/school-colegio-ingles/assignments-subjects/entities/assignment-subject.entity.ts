@@ -5,14 +5,10 @@ import { Teacher } from '../../teachers/entities/teacher.entity';
 import { Subject } from '../../subjects/entities/subject.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { Assignment } from '../../assignments/entities/assignment.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class AssignmentSubject {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-    })
-    id: number;
+export class AssignmentSubject extends Base {
 
     @Column()
     credits: number;
@@ -32,17 +28,4 @@ export class AssignmentSubject {
     @OneToMany(() => Assignment, (assignment) => assignment.assignmentSubject)
     assignments: Assignment[];
 
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-
-    })
-    updatedAt: Date;
 }

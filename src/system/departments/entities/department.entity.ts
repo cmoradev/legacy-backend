@@ -7,15 +7,10 @@ import { CheckIn } from '../../../school-colegio-ingles/check-in/entities/check-
 import { JobPosition } from '../../../fixed-assets-control/job-positions/entities/job-position.entity';
 import { Location } from '../../../fixed-assets-control/locations/entities/location.entity';
 import { User } from '../../users/entities/user.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('departamentos')
-export class Department {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Department extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -29,21 +24,6 @@ export class Department {
         nullable: true,
     })
     description: string;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @OneToMany(() => CheckIn, (checkin) => checkin.department)
     inputRecords: CheckIn;

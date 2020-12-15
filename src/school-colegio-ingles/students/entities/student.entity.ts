@@ -9,15 +9,10 @@ import { AcademyInscription } from '../../../academy/academy-inscription/entitie
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('alumnos')
-export class Student {
-
-    @PrimaryGeneratedColumn({
-        type: 'int',
-        name: 'id',
-    })
-    id: number;
+export class Student extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -101,7 +96,7 @@ export class Student {
     idFamily: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         name: 'id_modalidad',
         enum: TypeStudent,
@@ -120,21 +115,6 @@ export class Student {
         name: 'profile_picture',
     })
     profilePicture: string | null;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        name: 'created_at',
-    })
-    createdAt: Date;
-
-    @Column('timestamp', {
-        nullable: false,
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP',
-        name: 'updated_at',
-    })
-    updatedAt: Date;
 
     @ManyToOne(() => BranchOffice, (campus) => campus.students)
     studentCampus: BranchOffice;

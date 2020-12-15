@@ -1,21 +1,11 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    Generated, ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn, VersionColumn,
-} from 'typeorm';
+import { Column, Entity, Generated, ManyToOne, OneToMany } from 'typeorm';
 import { CashRegisterTransaction } from '../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { User } from '../../../system/users/entities/user.entity';
-import { DateTimeZoneTransformer } from '../../../common/orm/entities/transformers/date-time-zone.transformer';
 import { MiniStoreTransaction } from '../../store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity({ name: 'cash_register' })
-export class CashRegister {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class CashRegister extends Base {
 
     @Column()
     @Generated('uuid')
@@ -66,23 +56,4 @@ export class CashRegister {
     })
     movements: MiniStoreTransaction[];
 
-    @VersionColumn({
-        default: 0,
-        nullable: false,
-    })
-    version: number;
-
-    @CreateDateColumn({
-        name: 'createdAt',
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        name: 'updatedAt',
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    updatedAt: Date;
 }

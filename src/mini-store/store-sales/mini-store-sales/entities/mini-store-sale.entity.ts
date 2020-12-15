@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, JoinColumn, JoinTable, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -74,7 +74,7 @@ export class MiniStoreSale extends Base {
     codeWayToPay: string | null;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,
@@ -98,7 +98,8 @@ export class MiniStoreSale extends Base {
     })
     idAgentCancellation: number;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })

@@ -35,7 +35,8 @@ export class AcademyChargePayments extends Base {
     })
     quantity: number;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
@@ -77,7 +78,7 @@ export class AcademyChargePayments extends Base {
     academyPaymentOfficeSet: BranchOfficeSetting;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,

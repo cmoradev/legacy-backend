@@ -11,11 +11,10 @@ import {
     VersionColumn,
 } from 'typeorm';
 import { Student as Client } from '../../../school-colegio-ingles/students/entities/student.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity()
-export class Company extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Company extends Base {
 
     @Column({
         type: 'varchar',
@@ -55,16 +54,5 @@ export class Company extends BaseEntity {
     @JoinColumn()
     defaultClient: Client;
 
-    @Column()
-    @Generated('uuid')
-    uuid: string;
 
-    @VersionColumn()
-    version: number;
-
-    @CreateDateColumn()
-    createdDate: Date;
-
-    @UpdateDateColumn()
-    updatedDate: Date;
 }

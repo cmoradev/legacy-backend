@@ -39,7 +39,8 @@ export class SchoolChargesInvoice extends Base {
     })
     total: number | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
@@ -59,7 +60,7 @@ export class SchoolChargesInvoice extends Base {
     status: number;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,
         enum: InvoiceType,

@@ -15,7 +15,6 @@ import { SettingsModule } from '../settings/settings.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './jwt-config.service';
 import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens.module';
-import passport from 'passport';
 import { ConfigService } from '../../config/config.service';
 
 @Module({

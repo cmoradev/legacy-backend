@@ -1,13 +1,4 @@
-import {
-    Column,
-    Entity,
-    Generated,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    VersionColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
@@ -55,7 +46,7 @@ export class AcademyCharge extends Base {
     nombreMetodoPago: string | null;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         enum: PaymentStatus,
         default: PaymentStatus.Debit,
         nullable: false,
@@ -69,7 +60,8 @@ export class AcademyCharge extends Base {
     })
     observations: string | null;
 
-    @Column('timestamp', {
+    @Column( {
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })

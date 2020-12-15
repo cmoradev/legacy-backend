@@ -5,15 +5,10 @@ import {
 } from 'typeorm';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 import { AcademyInscriptionConcepts } from '../../../academy/academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_conceptos_cobro')
-export class SystemConceptsType {
-
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+export class SystemConceptsType extends Base {
 
   @Column('varchar', {
     nullable: false,
@@ -21,20 +16,6 @@ export class SystemConceptsType {
     name: 'nombre',
   })
   name: string;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
 
   @OneToMany(type => AcademyConcepts, concepts => concepts.academyConceptsType)
     // @JoinColumn({ name: 'id', referencedColumnName: 'country_id' })

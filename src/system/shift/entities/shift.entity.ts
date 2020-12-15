@@ -5,15 +5,10 @@ import {
 } from 'typeorm';
 import { AcademyConcepts } from '../../../academy/academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../../academy/academy-activities-group/entities/academy-activities-group.entity';
+import { Base } from '../../../common/orm/entities/base.entity';
 
 @Entity('ac_turnos')
-export class Shift {
-
-  @PrimaryGeneratedColumn({
-    type: 'int',
-    name: 'id',
-  })
-  id: number;
+export class Shift extends Base {
 
   @Column('varchar', {
     nullable: false,
@@ -21,20 +16,6 @@ export class Shift {
     name: 'nombre',
   })
   name: string;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
 
   @OneToMany(() => AcademyActivitiesGroup, (academyActivitiesGroup) => academyActivitiesGroup.academyGroupShift)
   shiftActivityGroups: AcademyActivitiesGroup[];

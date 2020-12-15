@@ -177,7 +177,7 @@ export class BranchOfficeSetting extends Base {
     bankAccount: string;
 
     @Column({
-        type: 'enum',
+        type: 'simple-enum',
         nullable: false,
         name: 'id_modalidad',
         enum: TypeModule,
