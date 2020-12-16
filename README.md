@@ -16,6 +16,18 @@
 
 ```bash
 $ npm install
+
+mkdir /var/www
+mkdir /var/www/CSD <= include csd of rfc test
+mkdir /var/www/facturas
+mkdir /var/www/logos <= include logo.png
+mkdir /var/www/uploads
+mkdir /var/www/uploads/temp
+mkdir /var/www/pdc
+chmod 777 -R /var/www/pdc
+mkdir /var/www/pdc/comprobantes/
+mkdir /var/www/pdc/comprobantes/academias
+mkdir /var/www/pdc/comprobantes/tienda
 ```
 
 ## Running the app
