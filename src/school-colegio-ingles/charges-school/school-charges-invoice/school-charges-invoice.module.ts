@@ -9,6 +9,7 @@ import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
     imports: [TypeOrmModule.forFeature([SchoolChargesInvoice], ColegioDBNameConnection)],
     providers: [SchoolChargesInvoiceService],
     controllers: [SchoolChargesInvoiceController],
+    exports: [SchoolChargesInvoiceService]
 })
 export class SchoolChargesInvoiceModule {
 }

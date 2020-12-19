@@ -118,7 +118,7 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     resultad.discount = sumQuantity(scholarships, resultad.discount);
 
     const nativeCalculo = ivaFromFinalAmount(subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discount, detail.quantity)));
-    console.log('Nativo', nativeCalculo);
+    console.log(nativeCalculo);
 
     const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discount, detail.quantity));
     const importe = mulQuantity(unitPrice, detail.quantity);

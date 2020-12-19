@@ -21,35 +21,35 @@ import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
 TypeOrmCrudService.prototype.getJoinType = function(s: string) {
-    // tslint:disable-next-line:no-console
-    return 'leftJoin';
+  // tslint:disable-next-line:no-console
+  return 'leftJoin';
 };
 
 @Module({
-    imports: [
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            name: ColegioDBNameConnection,
-            useClass: ColegioDBService,
-        }),
-        ConfigModule,
-        RouterModule.forRoutes(routes),
-        SchoolColegioInglesModule,
-        MiniStoreModule,
-        XlsImporterModule,
-        FixedAssetsControlModule,
-        SystemModule,
-        InvoiceModule,
-        IntegrationsModule,
-        AcademyModule,
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      name: ColegioDBNameConnection,
+      useClass: ColegioDBService,
+    }),
+    ConfigModule,
+    RouterModule.forRoutes(routes),
+    SchoolColegioInglesModule,
+    MiniStoreModule,
+    XlsImporterModule,
+    FixedAssetsControlModule,
+    SystemModule,
+    InvoiceModule,
+    IntegrationsModule,
+    AcademyModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {
-    constructor() {
-        RequestQueryBuilder.setOptions({
-            delim: '$$',
-        });
-    }
+  constructor() {
+    RequestQueryBuilder.setOptions({
+      delim: '$$',
+    });
+  }
 }
