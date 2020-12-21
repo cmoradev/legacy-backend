@@ -117,13 +117,14 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   const total: number = 0;
   const recep = new Receptor(receptor);
   await cfd.receptor(recep);
+  console.log(factura.detalles);
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
       NoIdentificacion: detalle.NoIdentificacion,
       Cantidad: detalle.quantity,
-      ClaveUnidad: detalle.ClaveUnidad,
-      Unidad: detalle.unit,
+      ClaveUnidad: detalle.unidad,
+      Unidad: 'Pieza',
       Descripcion: detalle.descrption,
       ValorUnitario: detalle.unitPrice,
       Importe: detalle.importe,
@@ -132,13 +133,13 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
     const ieduObject: XmlIeduAttribute = {
       version: '1.0',
       autRVOE: '201587PRIM',
-      CURP: 'EJEMPLO125156RSSC5',
+      CURP: 'RARE991220HQRNNJ04',
       nivelEducativo: 'Primaria',
       nombreAlumno: 'EJEJPMLO GARCIA CORREA',
-      rfcPago: 'XAXX1010101000'
+      rfcPago: 'XAXX010101000'
     }
     const iedu = new Iedu(ieduObject);
-    concepto.complemento(iedu);
+    await concepto.complemento(iedu);
     await cfd.concepto(concepto);
   }
   await cfd.certificar(cer);

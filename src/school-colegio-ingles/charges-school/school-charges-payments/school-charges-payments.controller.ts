@@ -9,7 +9,7 @@ import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
-import fs, { readFileSync } from 'fs';
+import * as fs from 'fs';
 import { GenerateInvoiceIedu } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
@@ -17,6 +17,9 @@ import { User } from '../../../system/users/entities/user.entity';
 import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { readFileSync } from 'fs';
 
 @Crud({
   model: {
@@ -106,7 +109,8 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml = '/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase() + '.xml';
+          console.log(pathXml, timbrado);
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
           const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -147,6 +151,12 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         factura.schoolChargePayment = {
           id: query.chargePaymentId,
         } as SchoolChargePayment;
+        factura.invoiceBranchOffice = {
+          id: query.branchOfficeId,
+        } as BranchOffice;
+        factura.invoiceBranchOfficeSet = {
+          id: query.branchOfficeSettingId,
+        } as BranchOfficeSetting;
         const invoice = await this.schoolChargeInvoiceService.saveInvoice(factura);
         if (invoice) {
           const xml = await GenerateInvoiceIedu(
@@ -169,7 +179,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml = '/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase() + '.xml';
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
           const cfdi: XmlCdfi = await XmlToJson(pathXml);

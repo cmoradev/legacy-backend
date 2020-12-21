@@ -1,9 +1,11 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { User } from '../../../../system/users/entities/user.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 @Entity('school_charges_invoice')
 export class SchoolChargesInvoice extends Base {
@@ -84,8 +86,26 @@ export class SchoolChargesInvoice extends Base {
     schoolCharge: SchoolCharge;
 
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)
+    @JoinColumn({
+        name: 'id_agente_facturador',
+        referencedColumnName: 'id',
+    })
     agentBilling: User;
 
     @ManyToOne(() => User, (user) => user.schoolChargesCancelingInvoices)
+    @JoinColumn({
+        name: 'id_agente_cancelador',
+        referencedColumnName: 'id',
+    })
     agentCanceling: User;
+
+    @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeAcademyInvoice)
+    @JoinColumn({
+        name: 'invoiceBranchOfficeId',
+        referencedColumnName: 'id',
+    })
+    invoiceBranchOffice: BranchOffice;
+
+    @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
+    invoiceBranchOfficeSet: BranchOfficeSetting;
 }
