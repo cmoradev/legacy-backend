@@ -78,7 +78,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       if (invoiceFinded) {
         console.log('Factura encontrada === true', invoiceFinded);
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
-          console.log('PAGO FACTURADO')
+          console.log('PAGO FACTURADO');
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
             paymentId: query.chargePaymentId,
             status: StatusInvoce.invoiced,
@@ -121,12 +121,13 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(invoiceFinded);
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
-            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+            lugarExpedicion: branchOfficeSett.address,
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
           });
+          console.log(pdf);
           await pdf.save('/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          // Todo metodo de enviar por correo
+          this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
           // falta regresar el dato
           invoiceResponse.stamping = true;
           invoiceResponse.msg = 'Pago Facturado';
@@ -190,15 +191,14 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(invoice);
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
-            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+            lugarExpedicion: branchOfficeSett.address,
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
           });
-          await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
+          console.log(pdf);
+          await pdf.save('/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          // Todo metodo enviar por correo colegio
-
+          this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
           // falta regresar el dato
-
           invoiceResponse.stamping = true;
           invoiceResponse.msg = 'Pago Facturado';
           invoiceResponse.invoice = resultInvoiceFirst;

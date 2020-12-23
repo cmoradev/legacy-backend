@@ -6,6 +6,9 @@ import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import * as nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 
 @Injectable()
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
@@ -44,5 +47,38 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     const invoice = await this.repo.create(data);
     const result = await this.repo.save(invoice);
     return await this.repo.findOne({ id: result.id });
+  }
+
+  async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: currentBranch.Email,
+        pass: currentBranch.EmailPass,
+      },
+    });
+    const pathInvoice = '/var/www/pdc/comprobantes/colegio/' + uuid.toUpperCase();
+    const mailOptions: Mail.Options = {
+      to: email,
+      from: currentBranch.Email,
+      subject: 'Academias - Comprobantes de pago CFDI',
+      text: 'CFDI',
+      html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Academias del Colegio Inglés</p></div>',
+      attachments: [
+        {
+          filename: uuid.toUpperCase() + '.xml',
+          path: `${pathInvoice}.xml`,
+        },
+        {
+          filename: uuid.toUpperCase() + '.pdf',
+          path: `${pathInvoice}.pdf`,
+        },
+      ],
+    };
+    return await transporter.sendMail(mailOptions);
+
   }
 }

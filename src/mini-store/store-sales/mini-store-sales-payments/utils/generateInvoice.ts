@@ -117,6 +117,8 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   const total: number = 0;
   const recep = new Receptor(receptor);
   await cfd.receptor(recep);
+  let totalTranslado = '0.00';
+  let totalRetenido = '0.00';
   console.log(factura.detalles);
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
@@ -130,18 +132,36 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
       Importe: detalle.importe,
       Descuento: detalle.discount,
     } as XmlConceptoAttributes);
+    concepto.traslado({
+      Base: subQuantity(detalle.importe, detalle.discount, -5).toString(),
+      Impuesto: '002',
+      TipoFactor: 'Tasa',
+      TasaOCuota: '0.000000',
+      Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount, -5), 0, -5).toString(),
+    });
+    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discount), 0), totalTranslado).toString();
     const ieduObject: XmlIeduAttribute = {
       version: '1.0',
       autRVOE: '201587PRIM',
       CURP: 'RARE991220HQRNNJ04',
       nivelEducativo: 'Primaria',
       nombreAlumno: 'EJEJPMLO GARCIA CORREA',
-      rfcPago: 'XAXX010101000'
-    }
+      rfcPago: 'XAXX010101000',
+    };
     const iedu = new Iedu(ieduObject);
     await concepto.complemento(iedu);
     await cfd.concepto(concepto);
   }
+  const impuesto: Impuestos = new Impuestos({
+    TotalImpuestosTrasladados: totalTranslado,
+  });
+  impuesto.traslados({
+    Impuesto: '002',
+    TipoFactor: 'Tasa',
+    TasaOCuota: '0.000000',
+    Importe: totalTranslado,
+  });
+  await cfd.impuesto(impuesto);
   await cfd.certificar(cer);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();
