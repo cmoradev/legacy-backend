@@ -17,6 +17,7 @@ import { IntegrationsModule } from './integrations/integrations.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { AcademyModule } from './academy/academy.module';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
+import { ScheduleModule } from '@nestjs/schedule';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -32,6 +33,7 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
       name: ColegioDBNameConnection,
       useClass: ColegioDBService,
     }),
+    ScheduleModule.forRoot(),
     ConfigModule,
     RouterModule.forRoutes(routes),
     SchoolColegioInglesModule,

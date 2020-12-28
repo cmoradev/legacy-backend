@@ -1,6 +1,7 @@
 import { Workbook } from 'exceljs';
 import { MiniStoreSaleDetail } from '../entities/mini-store-sale-detail.entity';
 import { TopTrendingProduct } from '../interfaces/top-trending-product.interface';
+import { MultNumber } from '../../../../common/numbers';
 
 export class TopTrendingProductsReport {
     public generate(products: TopTrendingProduct[]): Workbook {
@@ -24,7 +25,9 @@ export class TopTrendingProductsReport {
             const productItem = [];
             productItem.push(product.productName || '');
             productItem.push(product.classificationName || '');
+            productItem.push(product.unity || '');
             productItem.push(+product.quantity || '');
+            productItem.push(product.IVA===1? MultNumber(product.quantity,product.priceWithIVA) : MultNumber(product.quantity,product.price || ''));
             topTrendingProducts.push(productItem);
         });
 
@@ -35,9 +38,11 @@ export class TopTrendingProductsReport {
             ref: 'B3',
             rows: topTrendingProducts,
             columns: [
-                { name: 'Clasificación', filterButton: true },
                 { name: 'Producto', filterButton: true },
-                { name: 'Total vendidos' },
+                { name: 'Clasificación', filterButton: true },
+                { name: 'Unidad', filterButton: true },
+                { name: 'Vendidos' },
+                { name: 'Total' },
             ],
         });
 

@@ -159,10 +159,6 @@ export class MiniStoreSale extends Base {
     })
     stamping: boolean;
 
-    @Column()
-    @Generated('uuid')
-    uuid: string;
-
     /**
      * Deprecated
      */
