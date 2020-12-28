@@ -9,6 +9,7 @@ import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { SchoolChargesMethodsPayments } from '../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { AcademyChargeMethodsPayments } from '../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -64,5 +65,10 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     let payment = await this.repo.findOne({ id: data.id });
     payment = { ...data };
     return await this.repo.save(payment);
+  }
+
+  async fetchFilteredPayments(query: QuerySimpleReport) {
+    const paymentsQueryBuilder = this.repo.createQueryBuilder('payment');
+
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
@@ -20,6 +20,8 @@ import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { readFileSync } from 'fs';
+import { Response } from 'express';
+import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 
 @Crud({
   model: {
@@ -210,5 +212,10 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       console.error(e);
     }
   }
-}
 
+  @Post('/simple-report')
+  async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
+    const payments = await this.service.fetchFilteredPayments(query);
+    console.log('simple report', payments);
+  }
+}
