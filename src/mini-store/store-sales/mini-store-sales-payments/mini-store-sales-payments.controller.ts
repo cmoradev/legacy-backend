@@ -26,234 +26,233 @@ import { Response } from 'express';
 
 @UseGuards(JwtGuard)
 @Crud({
-    model: {
-        type: MiniStoreSalePayment,
+  model: {
+    type: MiniStoreSalePayment,
+  },
+  query: {
+    limit: 200,
+    join: {
+      agent: {},
+      miniStoreSaleMethodPayments: {},
+      'miniStoreSaleMethodPayments.invoiceMethodPayment': {},
+      miniStoreInvoices: {},
+      miniStoreSale: {},
     },
-    query: {
-        limit: 200,
-        join: {
-            agent: {},
-            miniStoreSaleMethodPayments: {},
-            'miniStoreSaleMethodPayments.invoiceMethodPayment': {},
-            miniStoreInvoices: {},
-            miniStoreSale: {},
-        },
-    },
+  },
 })
 @Controller()
 export class MiniStoreSalesPaymentsController implements CrudController<MiniStoreSalePayment> {
-    constructor(
-        readonly service: MiniStoreSalesPaymentsService,
-        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
-        readonly miniStoreInvoicesService: MiniStoreInvoicesService,
-        readonly branchOffice: BranchOfficeService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private  smartWeb: FactSw,
-    ) {
+  constructor(
+    readonly service: MiniStoreSalesPaymentsService,
+    readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+    readonly miniStoreInvoicesService: MiniStoreInvoicesService,
+    readonly branchOffice: BranchOfficeService,
+    readonly branchOfficeSettingService: BranchOfficeSettingService,
+    private  smartWeb: FactSw,
+  ) {
+  }
+
+  get base(): CrudController<MiniStoreSalePayment> {
+    return this;
+  }
+
+  @Get('/simple-report')
+  async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
+
+    const payments = await this.service.fetchFilteredPayments(query);
+    const sales = await this.service.fetchFilteredSales(query);
+    const salesReturns = await this.service.fetchFilteredReturns(query);
+    const result = {
+      payments: {
+        matriz: [],
+        payments: [],
+      },
+      sales: [],
+      returns: [],
+      file: '',
+    };
+    if (query.onlyFile) {
+      result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
+    } else {
+      const cashiers = await this.service.getUserCasher();
+      const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
+        where: {
+          showReport: true,
+          isActive: true,
+        },
+      });
+      const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
+      result.payments = viewPayments;
     }
+    response.send(result);
+    //
+    // response.status(200);
+    // response.send(query.onlyFile ? result : payments);
+  }
 
-    get base(): CrudController<MiniStoreSalePayment> {
-        return this;
-    }
+  @Post('/billing')
+  async billing(@Body() query: QueryBilling, @Res() response) {
+    const result = await this.service.findSaleByPayment(query);
+    const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+    const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+    const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+      where: {
+        id: query.branchOfficeSettingId,
+      },
+    });
+    const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
+      paymentId: query.salePaymentId,
+      status: StatusInvoce.noBilling,
+    });
 
-    @Get('/simple-report')
-    async simpleReport(@Req() request, @Res() response : Response, @Query() query: QuerySimpleReport) {
+    const respuesta = {
+      stamping: false,
+      msg: '',
+      invoice: {},
+      uuid: '',
+    };
 
-        const payments = await this.service.fetchFilteredPayments(query);
-        const sales = await this.service.fetchFilteredSales(query);
-        const salesReturns = await this.service.fetchFilteredReturns(query);
-        const result = {
-            payments: {
-                matriz: [],
-                payments: [],
-            },
-            sales: [],
-            returns: [],
-            file: '',
-        };
-        if (query.onlyFile) {
-            result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
-        } else {
-            const cashiers = await this.service.getUserCasher();
-            const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
-                where: {
-                    showReport: true,
-                    isActive: true,
-                },
-            });
-            const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
-            result.payments = viewPayments;
-        }
-        response.send(result);
-        //
-        // response.status(200);
-        // response.send(query.onlyFile ? result : payments);
-    }
-
-    @Post('/billing')
-    async billing(@Body() query: QueryBilling, @Res() response) {
-        const result = await this.service.findSaleByPayment(query);
-        const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
-        const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
-        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-            where: {
-                id: query.branchOfficeSettingId,
-            },
-        });
-        const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
+    try {
+      const logo = readFileSync('/var/www/logos/tienditalogo.png');
+      if (invoiceFind) {
+        if (invoiceFind.miniStoreSalePayment.stamping === 1) {
+          const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
             paymentId: query.salePaymentId,
-            status: StatusInvoce.noBilling,
-        });
+            status: StatusInvoce.invoiced,
+            stamping: 1,
+          });
+          respuesta.stamping = true;
+          respuesta.invoice = invocePayment;
+          respuesta.msg = 'Pago Facturado';
+          respuesta.uuid = invocePayment.uuid;
+          response.status(200);
+          response.send(respuesta);
+        } else {
+          const xml = await GenerateInvoice(
+            {
+              folio: invoiceFind.folio,
+              serie: branchOfficeSett.serieFacturacion,
+            },
+            result.highestPayment.codePaymentMethod,
+            branchOfficeSett,
+            {
+              Nombre: query.receiver.businessName,
+              Rfc: query.receiver.rfc,
+              UsoCFDI: query.usoCfdi.value,
+            },
+            invoiceDetails);
+          const timbrado = await this.smartWeb.facturar(xml);
+          await this.service.updatePayment({
+            id: query.salePaymentId,
+            stamping: 1,
+          } as MiniStoreSalePayment);
+          // Guardamos el xml
+          const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
+          fs.writeFileSync(pathXml, timbrado.data.cfdi);
+          // Obtenemos los datos del xml
+          const cfdi: XmlCdfi = await XmlToJson(pathXml);
+          // 4. Actualizamos los campos con la factura los datos del sat
+          invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
+          invoiceFind.status = 1;
+          invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
+          // Generamos el PDf del xml
 
-        const respuesta = {
-            stamping: false,
-            msg: '',
-            invoice: {},
-            uuid: '',
-        };
-
-        try {
-            const logo = readFileSync('/var/www/logos/tienditalogo.png');
-            if (invoiceFind) {
-                if (invoiceFind.miniStoreSalePayment.stamping === 1) {
-                    const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
-                        paymentId: query.salePaymentId,
-                        status: StatusInvoce.invoiced,
-                        stamping: 1,
-                    });
-                    respuesta.stamping = true;
-                    respuesta.invoice = invocePayment;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.uuid = invocePayment.uuid;
-                    response.status(200)
-                    response.send(respuesta);
-                } else {
-
-                    const xml = await GenerateInvoice(
-                        {
-                            folio: invoiceFind.folio,
-                            serie: branchOfficeSett.serieFacturacion,
-                        },
-                        result.highestPayment.codePaymentMethod,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails);
-                    const timbrado = await this.smartWeb.facturar(xml);
-                    await this.service.updatePayment({
-                        id: query.salePaymentId,
-                        stamping: 1,
-                    } as MiniStoreSalePayment);
-                    // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
-                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
-                    // Obtenemos los datos del xml
-                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
-                    // 4. Actualizamos los campos con la factura los datos del sat
-                    invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
-                    invoiceFind.status = 1;
-                    invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-                    const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
-                    // Generamos el PDf del xml
-
-                    const pdf = new PDF(pathXml, 0, {
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
-                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-                    // falta regresar el dato
-                    respuesta.stamping = true;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.invoice = resultInvoice;
-                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
-                    response.status(200)
-                    response.send(respuesta);
-                }
-            } else {
-                const factura = new MiniStoreInvoice();
-                factura.folio = '';
-                factura.uuid = '';
-                factura.businessName = query.receiver.businessName;
-                factura.rfc = query.receiver.rfc;
-                factura.agentBilling = {
-                    id: query.agentBillingId,
-                } as User;
-                factura.status = 0; // Pendiente de procesar en facturación moderna
-                factura.miniStoreSale = {
-                    id: query.saleId,
-                } as MiniStoreSale;
-                factura.miniStoreSalePayment = {
-                    id: query.salePaymentId,
-                } as MiniStoreSalePayment;
-                factura.invoiceBranchOffice = {
-                    id: query.branchOfficeId,
-                } as BranchOffice;
-                factura.invoiceBranchOfficeSet = {
-                    id: query.branchOfficeSettingId,
-                } as BranchOfficeSetting;
-                const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
-                if (invoice) {
-                    const xml = await GenerateInvoice(
-                        {
-                            folio: invoice.folio,
-                            serie: branchOfficeSett.serieFacturacion,
-                        },
-                        result.highestPayment.codePaymentMethod,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails);
-                    const timbrado = await this.smartWeb.facturar(xml);
-                    await this.service.updatePayment({
-                        id: query.salePaymentId,
-                        stamping: 1,
-                    } as MiniStoreSalePayment);
-                    // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
-                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
-                    // Obtenemos los datos del xml
-                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
-                    // 4. Actualizamos los campos con la factura los datos del sat
-                    invoice.uuid = timbrado.data.uuid.toUpperCase();
-                    invoice.status = 1;
-                    invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-                    const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
-                    // Generamos el PDf del xml
-                    const pdf = new PDF(pathXml, 0, {
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
-                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-                    // falta regresar el dato
-
-                    respuesta.stamping = true;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.invoice = resultInvoiceFirst;
-                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
-                    response.status(200)
-                    response.send(respuesta);
-                }
-            }
-
-            // console.log(await sw.getToken());
-            // const timbrado = await sw.facturar(xml);
-            // console.log(timbrado);
-            // response.set('Content-Type', 'text/xml');
-            // response.send(xml);
-
-        } catch (e) {
-            response.status(400)
-            response.send(e);
+          const pdf = new PDF(pathXml, 0, {
+            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+          });
+          await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
+          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+          this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+          // falta regresar el dato
+          respuesta.stamping = true;
+          respuesta.msg = 'Pago Facturado';
+          respuesta.invoice = resultInvoice;
+          respuesta.uuid = timbrado.data.uuid.toUpperCase();
+          response.status(200);
+          response.send(respuesta);
         }
+      } else {
+        const factura = new MiniStoreInvoice();
+        factura.folio = '';
+        factura.uuid = '';
+        factura.businessName = query.receiver.businessName;
+        factura.rfc = query.receiver.rfc;
+        factura.agentBilling = {
+          id: query.agentBillingId,
+        } as User;
+        factura.status = 0; // Pendiente de procesar en facturación moderna
+        factura.miniStoreSale = {
+          id: query.saleId,
+        } as MiniStoreSale;
+        factura.miniStoreSalePayment = {
+          id: query.salePaymentId,
+        } as MiniStoreSalePayment;
+        factura.invoiceBranchOffice = {
+          id: query.branchOfficeId,
+        } as BranchOffice;
+        factura.invoiceBranchOfficeSet = {
+          id: query.branchOfficeSettingId,
+        } as BranchOfficeSetting;
+        const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
+        if (invoice) {
+          const xml = await GenerateInvoice(
+            {
+              folio: invoice.folio,
+              serie: branchOfficeSett.serieFacturacion,
+            },
+            result.highestPayment.codePaymentMethod,
+            branchOfficeSett,
+            {
+              Nombre: query.receiver.businessName,
+              Rfc: query.receiver.rfc,
+              UsoCFDI: query.usoCfdi.value,
+            },
+            invoiceDetails);
+          const timbrado = await this.smartWeb.facturar(xml);
+          await this.service.updatePayment({
+            id: query.salePaymentId,
+            stamping: 1,
+          } as MiniStoreSalePayment);
+          // Guardamos el xml
+          const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
+          fs.writeFileSync(pathXml, timbrado.data.cfdi);
+          // Obtenemos los datos del xml
+          const cfdi: XmlCdfi = await XmlToJson(pathXml);
+          // 4. Actualizamos los campos con la factura los datos del sat
+          invoice.uuid = timbrado.data.uuid.toUpperCase();
+          invoice.status = 1;
+          invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
+          // Generamos el PDf del xml
+          const pdf = new PDF(pathXml, 0, {
+            lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+          });
+          await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
+          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+          this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+          // falta regresar el dato
+
+          respuesta.stamping = true;
+          respuesta.msg = 'Pago Facturado';
+          respuesta.invoice = resultInvoiceFirst;
+          respuesta.uuid = timbrado.data.uuid.toUpperCase();
+          response.status(200);
+          response.send(respuesta);
+        }
+      }
+
+      // console.log(await sw.getToken());
+      // const timbrado = await sw.facturar(xml);
+      // console.log(timbrado);
+      // response.set('Content-Type', 'text/xml');
+      // response.send(xml);
+
+    } catch (e) {
+      response.status(400);
+      response.send(e);
     }
+  }
 }
