@@ -41,6 +41,9 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
                 alias: 'miniStoreSaleMethodPayments_invoiceMethodPayment',
             },
             miniStoreSaleDetails: {},
+            'miniStoreSaleDetails.miniStoreClassification': {
+                alias: 'miniStoreSaleDetails_miniStoreClassification',
+            },
             'miniStoreSaleDetails.miniStoreProduct': {
                 alias: 'miniStoreSaleDetails_miniStoreProduct',
             },
