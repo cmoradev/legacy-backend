@@ -9,8 +9,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { QueryBilling, QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { ManyToOne } from 'typeorm';
+import { ManyToOne, OneToOne } from 'typeorm';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -66,6 +67,8 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
             },
             agentBilling: {},
             agentCanceling: {},
+            quotation: {},
+            sale: {}
         },
 
     },
