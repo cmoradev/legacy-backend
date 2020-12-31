@@ -80,7 +80,6 @@ export class SimpleReportCollege {
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
         dateRangeCell.value = `RANGO CONSULTADO: [${data.query.startDate} - ${data.query.endDate}]`;
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
-
         ['D2', 'D3', 'D4', 'D5'].map(key => {
             paymentsSheet.getCell(key).border = {
                 right: { style: 'thin' },
