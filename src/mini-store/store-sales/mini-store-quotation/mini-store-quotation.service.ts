@@ -12,4 +12,8 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
   ) {
     super(repo);
   }
+
+  async updateQuotation(data: MiniStoreQuotation) {
+    return await this.repo.save(data)
+  }
 }
