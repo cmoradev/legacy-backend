@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
@@ -10,6 +10,7 @@ import { BranchOfficeService } from '../../../system/branch-office/branch-office
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
 import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { GenerateInvoiceIedu } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
@@ -19,10 +20,12 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { readFileSync } from 'fs';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { convertPaymentsReportCollege } from './reports/payments.util';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolChargePayment,
@@ -31,8 +34,9 @@ import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sa
     limit: 200,
     join: {
       schoolCharge: {},
+      'schoolCharge.schoolStudent': { alias: 'schoolStudent' },
       paymentStatus: {},
-      methodsPayments: {},
+      methodsPñayments: {},
       cashierCharge: {},
       cashierChargeCancellation: {},
       schoolChargesInvoice: {},
@@ -213,9 +217,32 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     }
   }
 
-  @Post('/simple-report')
+  @Get('/simple-report')
   async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
     const payments = await this.service.fetchFilteredPayments(query);
-    console.log('simple report', payments);
+    const charges = await this.service.fetchFilteredSales(query);
+    const res = {
+      payments: {
+        matriz: [],
+        payments: [],
+      },
+      sales: [],
+      returns: [],
+      file: '',
+    };
+    if (query.onlyFile) {
+      res.file = await this.service.simpleReport(payments, charges, query,{ base64: true });
+    } else {
+      const cashiers = await this.service.getUserCasher();
+      const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
+        where: {
+          showReport: true,
+          isActive: true,
+        },
+      });
+      const viewPayments = convertPaymentsReportCollege(payments, cashiers, paymenMethods);
+      res.payments = viewPayments;
+    }
+    return response.send(res);
   }
 }
