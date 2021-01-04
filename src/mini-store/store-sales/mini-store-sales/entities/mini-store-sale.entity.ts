@@ -25,56 +25,6 @@ export class MiniStoreSale extends Base {
   })
   folio: string;
 
-  /**
-   * @Deprecated
-   */
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_modalidad',
-  })
-  idModality: number;
-
-  /**
-   * @Deprecated
-   */
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_externo',
-  })
-  idExternal: number;
-
-  /**
-   * @Deprecated
-   */
-  @Column('int', {
-    nullable: true,
-    name: 'id_metodo_pago',
-  })
-  idPaymentMethod: number | null;
-
-  /**
-   * Deprecated
-   */
-  @Column('varchar', {
-    nullable: true,
-    length: 10,
-    name: 'codigo_metodo_pago',
-  })
-  codePaymentMethod: string | null;
-
-  /**
-   * @Deprecated
-   */
-  @Column('varchar', {
-    nullable: true,
-    length: 5,
-    default: () => '\'0\'',
-    name: 'codigo_forma_pago',
-  })
-  codeWayToPay: string | null;
-
   @Column({
     type: 'simple-enum',
     enum: PaymentStatus,
@@ -89,16 +39,6 @@ export class MiniStoreSale extends Base {
     name: 'observaciones',
   })
   observations: string | null;
-
-  /**
-   * @Deprecated
-   */
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_agente_cancelacion',
-  })
-  idAgentCancellation: number;
 
   @Column({
     type: 'timestamp',
@@ -119,57 +59,6 @@ export class MiniStoreSale extends Base {
     name: 'iva',
   })
   iva: number;
-
-  /**
-   * Deprecated
-   */
-  @Column('tinyint', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'is_iva',
-  })
-  isIVA: boolean;
-
-  @Column('tinyint', {
-    nullable: false,
-    width: 1,
-    default: () => '\'0\'',
-    name: 'is_pagos_diferido',
-  })
-  isDeferredPayments: boolean;
-
-  /**
-   * Deprecated
-   */
-  @Column('decimal', {
-    nullable: false,
-    default: () => '0.000000',
-    precision: 15,
-    scale: 6,
-    name: 'cambio',
-  })
-  change: number;
-
-  /**
-   * Deprecated
-   */
-  @Column('tinyint', {
-    nullable: false,
-    width: 1,
-    default: () => '\'0\'',
-    name: 'timbrado',
-  })
-  stamping: boolean;
-
-  /**
-   * Deprecated
-   */
-  @Column('int', {
-    nullable: false,
-    default: () => '\'0\'',
-    name: 'id_factura',
-  })
-  idInvoice: number;
 
   @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStore)
   @JoinColumn({
@@ -243,4 +132,117 @@ export class MiniStoreSale extends Base {
   sale: MiniStoreQuotation;
 
 
+  @Column('int', {
+    nullable: false,
+    width: 1,
+    default: () => '\'0\'',
+    name: 'isComplete',
+  })
+  isComplete: number;
+
+  @Column('timestamp', {
+    nullable: true,
+  })
+  expiredAt: Date;
+
+  /**
+   * @Deprecated
+   */
+  @Column('int', {
+    nullable: false,
+    default: () => '\'0\'',
+    name: 'id_agente_cancelacion',
+  })
+  idAgentCancellation: number;
+
+  /**
+   * Deprecated
+   */
+  @Column('tinyint', {
+    nullable: false,
+    default: () => '\'0\'',
+    name: 'is_iva',
+  })
+  isIVA: boolean;
+
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'0\'',
+    name: 'is_pagos_diferido',
+  })
+  isDeferredPayments: boolean;
+
+  /**
+   * Deprecated
+   */
+  @Column('decimal', {
+    nullable: false,
+    default: () => '0.000000',
+    precision: 15,
+    scale: 6,
+    name: 'cambio',
+  })
+  change: number;
+
+  /**
+   * Deprecated
+   */
+  @Column('tinyint', {
+    nullable: false,
+    width: 1,
+    default: () => '\'0\'',
+    name: 'timbrado',
+  })
+  stamping: boolean;
+
+  /**
+   * Deprecated
+   */
+  @Column('int', {
+    nullable: false,
+    default: () => '\'0\'',
+    name: 'id_factura',
+  })
+  idInvoice: number;
+
+  /**
+   * @Deprecated
+   */
+  @Column('int', {
+    nullable: false,
+    default: () => '\'0\'',
+    name: 'id_modalidad',
+  })
+  idModality: number;
+
+  /**
+   * @Deprecated
+   */
+  @Column('int', {
+    nullable: true,
+    name: 'id_metodo_pago',
+  })
+  idPaymentMethod: number | null;
+
+  /**
+   * Deprecated
+   */
+  @Column('varchar', {
+    nullable: true,
+    length: 10,
+    name: 'codigo_metodo_pago',
+  })
+  codePaymentMethod: string | null;
+
+  /**
+   * @Deprecated
+   */
+  @Column('varchar', {
+    nullable: true,
+    length: 5,
+    default: () => '\'0\'',
+    name: 'codigo_forma_pago',
+  })
+  codeWayToPay: string | null;
 }
