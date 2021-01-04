@@ -205,7 +205,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     @Get('report-invoice')
-    public async reportInvoice(@Req() request, @Res() response, @Query() query: {
+    public async reportInvoice(@Res() response, @Query() query: {
         startDate: string,
         endDate: string,
         billingAgent: number,
@@ -218,7 +218,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             response.status(200);
             response.send(dataReport);
         } catch (e) {
-            response.status(401);
+            response.status(404);
             response.send(e.message);
         }
 
