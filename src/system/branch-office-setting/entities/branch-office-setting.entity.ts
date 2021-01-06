@@ -141,6 +141,12 @@ export class BranchOfficeSetting extends Base {
     })
     serieFacturacion: string;
 
+    @Column('int', {
+        nullable: true,
+        width:2
+    })
+    daysQuoteValid: number;
+
     @Column('varchar', {
         nullable: false,
         length: 100,
