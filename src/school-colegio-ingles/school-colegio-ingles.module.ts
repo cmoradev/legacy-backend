@@ -29,6 +29,7 @@ import { PaymentPlanConceptsModule } from './payment-plan-concepts/payment-plan-
 import { ChargesSchoolModule } from './charges-school/charges-school.module';
 import { SchoolPaymentsModule } from './school-payments/school-payments.module';
 import { PeriodsModule } from './periods/periods.module';
+import { PaymentPlanConceptChargesModule } from './payment-plan-concept-charges/payment-plan-concept-charges.module';
 
 @Module({
     imports: [
@@ -48,7 +49,7 @@ import { PeriodsModule } from './periods/periods.module';
         IncidentsModule, IncidentClassificationModule,
         CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
         FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
-        SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule,
+        SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, PaymentPlanConceptChargesModule,
     ],
 })
 export class SchoolColegioInglesModule {

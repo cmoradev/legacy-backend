@@ -5,6 +5,7 @@ import { Grade } from '../../grades/entities/grade.entity';
 import { PaymentPlanConceptTypeEnum } from '../enums/payment-plan-concept-type.enum';
 import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 import { Months } from '../../../common/enums/months.enum';
+import { PaymentPlanConceptCharges } from '../../payment-plan-concept-charges/entities/payment-plan-concept-charges.entity';
 
 @Entity()
 export class PaymentPlanConcept extends Base {
@@ -98,4 +99,7 @@ export class PaymentPlanConcept extends Base {
 
     @OneToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.paymentPlanConcept)
     schoolPayment: SchoolPayment;
+
+    @OneToMany(() => PaymentPlanConceptCharges, (extraCharges) => extraCharges.paymentPlanChargeDetail, { cascade: ['insert']})
+    extraCharges: PaymentPlanConceptCharges;
 }
