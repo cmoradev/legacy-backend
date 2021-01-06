@@ -14,7 +14,7 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Crud({
   model: {
     type: MiniStoreSale,

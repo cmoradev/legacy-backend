@@ -26,4 +26,5 @@ export class MiniStoreQuotationController implements CrudController<MiniStoreQuo
   get base(): CrudController<MiniStoreQuotation> {
     return this;
   }
+
 }
