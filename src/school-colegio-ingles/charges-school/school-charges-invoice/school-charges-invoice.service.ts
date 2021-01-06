@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import * as Moment from 'moment';
+import { InvoiceProcessorCollege } from './utils/invoice.processor';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 
 @Injectable()
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
   constructor(
     @InjectRepository(SchoolChargesInvoice, ColegioDBNameConnection)
       repo: Repository<SchoolChargesInvoice>,
+    readonly serviceInvoiceCompany: BranchOfficeSettingService,
   ) {
     super(repo);
   }
@@ -124,5 +128,41 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       ],
     };
     return await transporter.sendMail(mailOptions);
+  }
+
+  async reportInvoices(query: { startDate: string; endDate: string; billingAgent: number; status: number; data: string }) {
+    const invoices = await this.repo.find({
+      where: {
+        status: query.status,
+        createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).startOf('day').toDate()),
+      },
+      relations: [
+        'agentBilling',
+        'agentCanceling',
+        'schoolChargePayment',
+        'schoolChargePayment.methodsPayments',
+        'schoolChargePayment.methodsPayments.invoiceMethodPayment',
+        'schoolCharge',
+        'schoolCharge.schoolStudent',
+      ],
+    });
+    const report = new InvoiceProcessorCollege().structureInvoiceReport(invoices);
+    switch (query.data) {
+      case 'file':
+        const company = await this.serviceInvoiceCompany.findCompany(3);
+        const workbook = new ReportInvoice().generateReport(report, query, company);
+        const dateName = new Date();
+        const fileName = dateName.toTimeString() + '.xlsx';
+        const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+        const buffer = Buffer.from(result);
+        const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+        return {
+          src: b64Encoding + buffer.toString('base64'),
+        };
+        break;
+      default:
+        return report;
+        break;
+    }
   }
 }

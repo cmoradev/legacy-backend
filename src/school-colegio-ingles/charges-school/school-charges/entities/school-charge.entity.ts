@@ -1,4 +1,4 @@
-import { AfterInsert, Column, Entity, getConnection, getManager, getRepository, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
@@ -9,7 +9,6 @@ import { SchoolChargePayment } from '../../school-charges-payments/entities/scho
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
 
 @Entity('school_charges')
 export class SchoolCharge extends Base {

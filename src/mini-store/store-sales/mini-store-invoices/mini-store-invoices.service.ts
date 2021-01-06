@@ -118,6 +118,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 return report;
                 break;
             case 'file':
+                //Todo convertir dinamico
                 const company = await this.serviceInvoiceCompany.findCompany(3);
                 const workbook = new ReportInvoice().generateReport(report, query, company);
                 const dateName = new Date();
