@@ -2,6 +2,7 @@ export const connections = [
     'development',
     'production',
     'desarrollo',
+    'capecafe',
     'cremeria',
     'test',
     'staging',
