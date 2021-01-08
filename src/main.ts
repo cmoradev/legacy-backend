@@ -11,24 +11,24 @@ import * as fs from 'fs';
 dotenv.config();
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
-	app.enableCors({ origin: "*" });
-	app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
-	app.use(boolParser());
-	const environment = process.env.NODE_ENV || 'development';
-	const processEnv: any = dotenv.parse(fs.readFileSync(`${ environment }.env`));
-	const options = new DocumentBuilder()
-		.setTitle('Apps')
-		.setDescription('Es la aplicación de escuela')
-		.setVersion('1.0')
-		.addTag('School')
-		.build();
-	app.get(AuthModule).initialize(app);
-	const document = SwaggerModule.createDocument(app, options);
-	environment === 'development' ? SwaggerModule.setup('api', app, document) : null;
-	await app.listen(processEnv.API_PORT);
-	console.log(process.env.NODE_ENV);
-	console.log(`App Ready on ${ processEnv.API_PORT }`);
+    const app = await NestFactory.create(AppModule);
+    app.enableCors({ origin: '*' });
+    app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
+    app.use(boolParser());
+    const environment = process.env.NODE_ENV || 'development';
+    const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
+    const options = new DocumentBuilder()
+      .setTitle('Apps')
+      .setDescription('Es la aplicación de escuela')
+      .setVersion('1.0')
+      .addTag('School')
+      .build();
+    app.get(AuthModule).initialize(app);
+    const document = SwaggerModule.createDocument(app, options);
+    environment === 'development' ? SwaggerModule.setup('api', app, document) : null;
+    await app.listen(processEnv.API_PORT);
+    console.log(process.env.NODE_ENV);
+    console.log(`App Ready on ${processEnv.API_PORT}`);
 }
 
 bootstrap();

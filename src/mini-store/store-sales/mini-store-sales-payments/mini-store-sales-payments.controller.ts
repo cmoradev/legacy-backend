@@ -58,7 +58,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
   @Get('/simple-report')
   async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
-
     const payments = await this.service.fetchFilteredPayments(query);
     const sales = await this.service.fetchFilteredSales(query);
     const salesReturns = await this.service.fetchFilteredReturns(query);

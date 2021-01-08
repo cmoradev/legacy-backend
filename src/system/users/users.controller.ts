@@ -21,7 +21,7 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: User,
