@@ -197,38 +197,22 @@ export function convertPaymentsComissionReport(quantityCommissions: number, paym
         if (payment.miniStoreSale) {
             const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
             const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            let studentType = '';
-            switch (payment.miniStoreSale.student.typeStudent) {
-                case TypeStudent.externo:
-                    studentType = 'Externo';
-                    break;
-                case TypeStudent.student:
-                    studentType = 'Alumno';
-                    break;
-                default:
-                    studentType = 'Prospecto';
-                    break;
-            }
+
             payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
                 const paymentItem = [];
-                const totalPaymentsAmount = payment
-                  .miniStoreSaleMethodPayments
-                  .reduce((previousValue, currentValue) => {
-                      return add(previousValue, currentValue.quantity);
-                  }, 0);
+                const totalPaymentsAmount = payment.miniStoreSaleMethodPayments.reduce((previousValue, currentValue) => {
+                    return previousValue + currentValue.quantity;
+                }, 0);
                 paymentItem.push(payment.createdAt || '');
-                paymentItem.push(payment.agent.name);
-                paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
+                paymentItem.push(payment.agent.name + ' ' + payment.agent.lastnameFather + ' ' + payment.agent.lastnameMother);
                 paymentItem.push(payment.folio);
                 paymentItem.push(payment.miniStoreSale.folio);
-                paymentItem.push(studentType);
-                paymentItem.push(payment.miniStoreSale.student.matricula);
                 paymentItem.push(fullName);
                 paymentItem.push(payment.miniStoreSale.observations || '');
-                paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
-                paymentItem.push(paymentMethod.quantity);
-                paymentItem.push(payment.change);
-                paymentItem.push(totalPaymentsAmount - payment.change);
+                const total = totalPaymentsAmount - payment.change;
+                paymentItem.push('$ ' + total);
+                // REGLA DE 3 PARA CALCULAR EL PORCENTAJE DEL PAGO
+                paymentItem.push('$ ' + ((total * quantityCommissions) / 100));
                 paymentsDetails.push(paymentItem);
             });
         } else {

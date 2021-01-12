@@ -226,8 +226,14 @@ export class CommissionsReport {
             columns: head,
             rows: resumeDataTable.map(value => {
                 const newList = [];
+                let k = 0;
                 for (const val of value) {
-                    newList.push(val.value);
+                    if (k > 0) {
+                        newList.push('$ ' + val.value);
+                    } else {
+                        newList.push(val.value);
+                    }
+                    k++;
                 }
                 return newList;
             }),
@@ -298,9 +304,9 @@ export class CommissionsReport {
                     paymentItem.push(fullName);
                     paymentItem.push(payment.miniStoreSale.observations || '');
                     const total = totalPaymentsAmount - payment.change;
-                    paymentItem.push(total);
+                    paymentItem.push('$' + total);
                     // REGLA DE 3 PARA CALCULAR EL PORCENTAJE DEL PAGO
-                    paymentItem.push((total * quantityCommissions) / 100);
+                    paymentItem.push('$ ' + ((total * quantityCommissions) / 100));
                     paymentsDetails.push(paymentItem);
                 });
                 startRow += 1;
@@ -383,7 +389,7 @@ export class CommissionsReport {
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {
-                ['B', 'C', 'D', 'E', 'F', 'G', 'K', 'L', 'M'].forEach(column => {
+                ['B', 'C', 'D', 'E', 'K', 'L', 'I', 'J', 'M'].forEach(column => {
                     salesSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                 });
                 startRow = nextRowToMerge;
@@ -397,13 +403,13 @@ export class CommissionsReport {
                 const productPrice = detail.miniStoreProduct.IVA ? detail.priceWithIVA : +detail.price;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
-                salesRowItem.push(student.matricula);
                 salesRowItem.push(fullName);
                 salesRowItem.push(sale.cashier.name);
                 salesRowItem.push(detail.quantity);
                 salesRowItem.push(detail.miniStoreProduct.name);
-                salesRowItem.push(productPrice);
-                salesRowItem.push(totalSale);
+                salesRowItem.push('$' + productPrice);
+                salesRowItem.push('$' + totalSale);
+                salesRowItem.push('$' + ((totalSale * quantityCommissions) / 100).toString());
                 salesRowItem.push(detail.miniStoreProduct.IVA ? 'Si' : 'No');
                 salesRowItem.push(sale.observations ? sale.observations : '');
                 salesRows.push(salesRowItem);
@@ -418,14 +424,13 @@ export class CommissionsReport {
             columns: [
                 { name: 'Folio' },
                 { name: 'Fecha' },
-                { name: 'Persona' },
-                { name: 'Matricula' },
-                { name: 'Alumno/Cliente' },
+                { name: 'Cliente' },
                 { name: 'Vendedor' },
                 { name: 'Cantidad' },
                 { name: 'Productos' },
                 { name: 'Precio', totalsRowLabel: 'Totales' },
                 { name: 'Total', totalsRowFunction: 'sum' },
+                { name: 'Comisión', totalsRowFunction: 'sum' },
                 { name: 'Incluye I.V.A' },
                 { name: 'Observación' },
             ],
