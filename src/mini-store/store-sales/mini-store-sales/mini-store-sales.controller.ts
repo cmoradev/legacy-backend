@@ -86,17 +86,31 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
 
     @Override()
     async createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: MiniStoreSale) {
+        let isCompleteCo = false;
+        let pivote = {} as MiniStoreQuotation;
+        if (dto.statusSale === 2 && dto.quotation) {
+            if (dto.quotation.quotation) {
+                pivote = Object.assign(dto.quotation);
+                delete dto.quotation;
+                isCompleteCo = true;
+            }
+        }
         const miniStoreSale = await this.base.createOneBase(req, dto);
 
-        if (miniStoreSale.quotation) {
-            const quotation = miniStoreSale.quotation;
-            quotation.sale = {
-                id: miniStoreSale.id,
-            } as MiniStoreSale;
-            quotation.quotation = {
-                id: dto.quotation.quotation.id,
-            } as MiniStoreSale;
-            await this.miniStoreQuotationService.updateQuotation(quotation);
+        if (isCompleteCo) {
+            const quotation = {} as MiniStoreQuotation;
+            const qu = await this.miniStoreQuotationService.findQuotation(pivote.quotation.id);
+            if (qu) {
+                quotation.id = qu.id;
+                quotation.sale = {
+                    id: miniStoreSale.id,
+                } as MiniStoreSale;
+                quotation.quotation = {
+                    id: pivote.quotation.id,
+                    isComplete: 1,
+                } as MiniStoreSale;
+                await this.miniStoreQuotationService.updateQuotation(quotation);
+            }
         }
         return miniStoreSale;
     }

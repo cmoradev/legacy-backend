@@ -15,7 +15,16 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
         super(repo);
     }
 
+    async findQuotation(idQuoations: number) {
+        return await this.repo.createQueryBuilder('cotizacion')
+          .leftJoinAndSelect('cotizacion.quotation', 'quotation')
+          .where('quotation.id= :id', {
+              id: idQuoations,
+          }).getOne();
+    }
+
     async updateQuotation(data: MiniStoreQuotation) {
+        console.log(data);
         return await this.repo.save(data);
     }
 
@@ -27,7 +36,7 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
         onlyFile: boolean;
         branchOfficeId: number;
     }) {
-        let quotations = this.repo.createQueryBuilder('cotizacion')
+        const quotations = this.repo.createQueryBuilder('cotizacion')
           .leftJoinAndSelect('cotizacion.quotation', 'quotation')
           .leftJoinAndSelect('quotation.miniStoreSaleDetails', 'quotation_miniStoreSaleDetails')
           .leftJoinAndSelect('quotation_miniStoreSaleDetails.extraCharges', 'quotation_extraCharges')
