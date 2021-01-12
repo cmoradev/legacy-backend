@@ -23,8 +23,8 @@ export class MiniStoreQuotationReporteController {
         onlyFile: boolean;
         branchOfficeId: number;
     }) {
-        console.log(query)
-        const quotation = await this.service.report();
+        console.log(query);
+        const quotation = await this.service.report(query);
         const result = {
             quotation: [],
             file: '',
