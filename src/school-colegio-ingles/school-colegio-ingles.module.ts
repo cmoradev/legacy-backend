@@ -29,28 +29,28 @@ import { PaymentPlanConceptsModule } from './payment-plan-concepts/payment-plan-
 import { ChargesSchoolModule } from './charges-school/charges-school.module';
 import { SchoolPaymentsModule } from './school-payments/school-payments.module';
 import { PeriodsModule } from './periods/periods.module';
-import { PaymentPlanConceptChargesModule } from './payment-plan-concept-charges/payment-plan-concept-charges.module';
+import { SchoolPaymentsChargesModule } from './school-payments-charges/school-payments-charges.module';
 
 @Module({
-    imports: [
-        SubjectsModule,
-        StudyPlansModule,
-        StudyPlanVariantsModule,
-        LevelsModule, GradesModule,
-        StudentsModule, AssignmentsModule,
-        ModalitiesModule,
-        TeachersModule,
-        AssignmentsSubjectsModule,
-        GroupsModule, InscriptionsModule,
-        CyclesModule,
-        FamiliesModule,
-        ClassroomsModule,
-        AssignmentIncriptionModule, ClassroomPermissionModule,
-        IncidentsModule, IncidentClassificationModule,
-        CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
-        FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
-        SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, PaymentPlanConceptChargesModule,
-    ],
+  imports: [
+    SubjectsModule,
+    StudyPlansModule,
+    StudyPlanVariantsModule,
+    LevelsModule, GradesModule,
+    StudentsModule, AssignmentsModule,
+    ModalitiesModule,
+    TeachersModule,
+    AssignmentsSubjectsModule,
+    GroupsModule, InscriptionsModule,
+    CyclesModule,
+    FamiliesModule,
+    ClassroomsModule,
+    AssignmentIncriptionModule, ClassroomPermissionModule,
+    IncidentsModule, IncidentClassificationModule,
+    CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
+    FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
+    SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, SchoolPaymentsChargesModule,
+  ],
 })
 export class SchoolColegioInglesModule {
 }

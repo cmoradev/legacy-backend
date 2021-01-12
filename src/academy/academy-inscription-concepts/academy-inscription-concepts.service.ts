@@ -12,8 +12,4 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<Academ
     ) {
         super(repo);
     }
-
-    async update() {
-
-    }
 }

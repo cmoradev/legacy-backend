@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { SchoolChargeDetails } from '../../charges-school/school-charges-details/entities/school-charge-details.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
+import { SchoolPaymentCharge } from '../../school-payments-charges/entities/school-payment-charge.entity';
 
 @Entity()
 export class SchoolPayment extends Base {
@@ -108,4 +109,9 @@ export class SchoolPayment extends Base {
 
     @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments)
     inscription: Inscription;
+
+    @OneToMany(() => SchoolPaymentCharge, (extraCharges) => extraCharges.schoolPaymentChargeDetail, {
+        cascade: ['insert'],
+    })
+    extraCharges: SchoolPaymentCharge[];
 }

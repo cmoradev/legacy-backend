@@ -1,15 +1,16 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
+import { Base } from '../../../common/orm/entities/base.entity';
 import {
   OperationApplicationEnum,
   TypeChargeApplicationEnum,
 } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { SystemTypeExtraChargesEnum } from '../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
-import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
-import { Base } from '../../../common/orm/entities/base.entity';
+import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 
 @Entity()
-export class PaymentPlanConceptCharges extends Base {
+export class SchoolPaymentCharge extends Base{
+
   @Column('varchar', {
     nullable: false,
   })
@@ -41,8 +42,8 @@ export class PaymentPlanConceptCharges extends Base {
   })
   typeExtraCharge: SystemTypeExtraChargesEnum;
 
-  @ManyToOne(() => PaymentPlanConcept, (paymentPlan) => paymentPlan.extraCharges)
-  paymentPlanChargeDetail: PaymentPlanConcept;
+  @ManyToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.extraCharges)
+  schoolPaymentChargeDetail: SchoolPayment;
 
   @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
   systemExtraCharges: SystemExtraCharges;
