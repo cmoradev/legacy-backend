@@ -10,7 +10,9 @@ import { SchoolPaymentsService } from './school-payments.service';
   query: {
     join: {
       schoolChargeDetail: {},
+      'schoolChargeDetail.extraCharges': {},
       inscription: {},
+      extraCharges: {alias: 'schoolExtraCharges'},
     },
   },
 })

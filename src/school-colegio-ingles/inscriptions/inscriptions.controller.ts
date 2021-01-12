@@ -32,7 +32,9 @@ import { sheetToObjPage } from '../../common/office/sheets';
             inscripStudyPlanVariant: {},
             inscripStudyPlan: {},
             schoolPayments: {alias:'schoolCharges'},
-            'schoolPayments.paymentPlanConcept': {},
+            'schoolPayments.paymentPlanConcept': {alias: 'paymentPlanConcepts'},
+            'schoolPayments.schoolChargeDetail': {alias: 'schoolChargesDetails'},
+            'schoolPayments.schoolChargeDetail.extraCharges': {alias: 'extraCharges'},
         },
     },
 })
