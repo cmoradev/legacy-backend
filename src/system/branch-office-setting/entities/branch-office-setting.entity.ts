@@ -143,9 +143,19 @@ export class BranchOfficeSetting extends Base {
 
     @Column('int', {
         nullable: true,
-        width:2
+        width: 2,
     })
     daysQuoteValid: number;
+
+
+    @Column('decimal', {
+        nullable: true,
+        default: () => '\'0.00\'',
+        precision: 15,
+        scale: 2,
+        name: 'per_commissions',
+    })
+    perCommissions; // porcentaje de la comision
 
     @Column('varchar', {
         nullable: false,

@@ -14,6 +14,7 @@ import { BranchOfficeSettingModule } from '../../../system/branch-office-setting
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
+import { MiniStoreSalesPaymentsReportController } from './mini-store-sales-payments.report.controller';
 
 @Module({
     imports: [
@@ -30,8 +31,13 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
         BranchOfficeSettingModule,
         InvoiceMethodsPaymentsModule,
     ],
-    exports: [MiniStoreSalesPaymentsService],
-    controllers: [MiniStoreSalesPaymentsController],
+    exports: [
+        MiniStoreSalesPaymentsService,
+    ],
+    controllers: [
+        MiniStoreSalesPaymentsController,
+        MiniStoreSalesPaymentsReportController,
+    ],
     providers: [MiniStoreSalesPaymentsService, SmartWeb],
 })
 export class MiniStoreSalesPaymentsModule {

@@ -6,18 +6,19 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
+import { sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
 
-export class SimpleReport {
+export class CommissionsReport {
 
     public generate(data: {
+        quantityCommissions: number,
         payments: MiniStoreSalePayment[],
         cashiers: User[],
-        salesReturns: SalesReturns[],
         paymentMethods: InvoiceMethodPayment[],
         sales: MiniStoreSale[],
     }): Excel.Workbook {
         const workbook = new Excel.Workbook();
-        const { sales, salesReturns } = data;
+        const { quantityCommissions, sales } = data;
         workbook.views = [
             {
                 x: 0, y: 0, width: 10000, height: 20000,
@@ -26,11 +27,11 @@ export class SimpleReport {
         ];
 
         const image = workbook.addImage({
-            filename: './public/images/little-store-logo.png',
+            filename: './public/images/little-store-logo.png',// Todo
             extension: 'png',
         });
 
-        const paymentsSheet = workbook.addWorksheet('Pagos', {
+        const paymentsSheet = workbook.addWorksheet('Comisiones de Pagos', {
             properties:
               {
                   tabColor: {
@@ -38,7 +39,7 @@ export class SimpleReport {
                   },
               },
         });
-        const salesSheet = workbook.addWorksheet('Ventas', {
+        const salesSheet = workbook.addWorksheet('comisiones Ventas', {
             properties:
               {
                   tabColor: {
@@ -47,23 +48,13 @@ export class SimpleReport {
               },
         });
 
-        const salesReturnsSheet = workbook.addWorksheet('Devoluciones', {
-            properties:
-              {
-                  tabColor: {
-                      argb: 'E53935',
-                  },
-              },
-        });
         this.fillPaymentsSheet(paymentsSheet, image, data);
-        this.fillSalesSheet(salesSheet, sales);
-        this.fillSalesReturnsSheet(salesReturnsSheet, salesReturns);
-
+        this.fillSalesSheet(salesSheet, sales, quantityCommissions);
         return workbook;
     }
 
-    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data): Excel.Worksheet {
-        const { cashiers, payments, paymentMethods } = data;
+    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data: { quantityCommissions: number, cashiers: any[], payments: MiniStoreSalePayment[], paymentMethods: any }): Excel.Worksheet {
+        const { quantityCommissions, cashiers, payments, paymentMethods } = data;
         paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
         paymentsSheet.mergeCells('C3:D3');
@@ -82,7 +73,7 @@ export class SimpleReport {
             left: { style: 'thin' },
         };
 
-        bussinessNameCell.value = 'QUINTANA ROO, S.C ';
+        bussinessNameCell.value = 'QUINTANA ROO, S.C '; // todo
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
         dateRangeCell.value = 'RANGO CONSULTADO: *';
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
@@ -152,47 +143,100 @@ export class SimpleReport {
         const resumeDataTable = [];
 
         for (const paymentMethod of paymentMethods) {
-            const resumeDataTableItem: any[] = [paymentMethod.name];
+            const resumeDataTableItem: any[] = [{ value: paymentMethod.name, cashiersId: 0 }];
+
             for (const cashier of cashiers) {
                 const filteredResume = resume.filter(value => value.paymentMethod.id === paymentMethod.id && value.cashier.id === cashier.id);
-                resumeDataTableItem.push(filteredResume.reduce((previousValue, currentValue) => {
-                    return previousValue + currentValue.total;
-                }, 0));
+                resumeDataTableItem.push({
+                    value: filteredResume.reduce((previousValue, currentValue) => {
+                        return previousValue + currentValue.total;
+                    }, 0),
+                    cashiersId: cashier.id,
+
+                });
             }
-            resumeDataTableItem.push(resumeDataTableItem.reduce((previousValue, currentValue) => {
-                let amount = 0;
-                if (!isNaN(+currentValue)) {
-                    amount = +currentValue;
-                }
-                return previousValue + amount;
-            }, 0));
+
+
+            resumeDataTableItem.push(
+              {
+                  value: resumeDataTableItem.reduce((previousValue, currentValue) => {
+                      let amount = 0;
+                      if (!isNaN(+currentValue)) {
+                          amount = +currentValue;
+                      }
+                      return previousValue + amount;
+                  }, 0),
+                  cashiersId: 0,
+              },
+            );
 
             resumeDataTable.push(resumeDataTableItem);
         }
+
+
+        const sumtotal = [{ value: 'Total' }];
+        const copyuser = [...cashiers];
+        copyuser.push({ id: 0 });
+        for (const cashier of copyuser) {
+            let suma: any = 0;
+            for (const totalPorForma of resumeDataTable) {
+                let i = 0;
+                for (const total of totalPorForma) {
+                    if (total.cashiersId === cashier.id) {
+                        if (i > 0) {
+                            suma = sumQuantity(suma, total.value);
+                        }
+                    }
+                    i++;
+                }
+            }
+            sumtotal.push({
+                value: ((suma * quantityCommissions) / 100).toString(),
+                // @ts-ignore
+                cashiers: cashier.id,
+            });
+        }
+        resumeDataTable.push(sumtotal);
+        console.log(resumeDataTable);
+
+        const head = [{
+            name: 'Tipo',
+            totalsRowLabel: 'Total global',
+            filterButton: true,
+        }, ...cashiers.map(value => {
+            console.log(value);
+            return {
+                name: value.name,
+                filterButton: false,
+                totalsRowFunction: 'sum' as 'sum',
+            };
+        }).concat({
+            name: 'Total',
+            totalsRowFunction: 'sum' as 'sum',
+            filterButton: false,
+        }),
+        ];
+        console.log(head);
         paymentsSheet.addTable({
             name: 'resumen',
             ref: 'F1',
-            totalsRow: true,
             style: {
                 showColumnStripes: true,
             },
-            columns: [{
-                name: 'Tipo',
-                totalsRowLabel: 'Total global',
-                filterButton: true,
-            }, ...cashiers.map(value => {
-                return {
-                    name: value.name,
-                    filterButton: false,
-                    totalsRowFunction: 'sum' as 'sum',
-                };
-            }).concat({
-                name: 'Total',
-                totalsRowFunction: 'sum' as 'sum',
-                filterButton: false,
+            columns: head,
+            rows: resumeDataTable.map(value => {
+                const newList = [];
+                let k = 0;
+                for (const val of value) {
+                    if (k > 0) {
+                        newList.push('$ ' + val.value);
+                    } else {
+                        newList.push(val.value);
+                    }
+                    k++;
+                }
+                return newList;
             }),
-            ],
-            rows: resumeDataTable.map(value => value),
         });
 
         for (const row of Array.from(Array(2 + paymentMethods.length + 1).keys())) {
@@ -240,6 +284,7 @@ export class SimpleReport {
             if (payment.miniStoreSale) {
                 const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
                 const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+
                 const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
@@ -253,17 +298,15 @@ export class SimpleReport {
                         return previousValue + currentValue.quantity;
                     }, 0);
                     paymentItem.push(payment.createdAt || '');
-                    paymentItem.push(payment.agent.name);
-                    paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
+                    paymentItem.push(payment.agent.name + ' ' + payment.agent.lastnameFather + ' ' + payment.agent.lastnameMother);
                     paymentItem.push(payment.folio);
                     paymentItem.push(payment.miniStoreSale.folio);
-                    paymentItem.push(payment.miniStoreSale.student.matricula);
                     paymentItem.push(fullName);
                     paymentItem.push(payment.miniStoreSale.observations || '');
-                    paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
-                    paymentItem.push(paymentMethod.quantity);
-                    paymentItem.push(payment.change);
-                    paymentItem.push(totalPaymentsAmount - payment.change);
+                    const total = totalPaymentsAmount - payment.change;
+                    paymentItem.push('$' + total);
+                    // REGLA DE 3 PARA CALCULAR EL PORCENTAJE DEL PAGO
+                    paymentItem.push('$ ' + ((total * quantityCommissions) / 100));
                     paymentsDetails.push(paymentItem);
                 });
                 startRow += 1;
@@ -279,16 +322,15 @@ export class SimpleReport {
             columns: [
                 { name: 'Fecha', filterButton: false },
                 { name: 'Vendedor' },
-                { name: 'Facturado' },
                 { name: 'Folio de pago' },
                 { name: 'Folio de venta' },
-                { name: 'Matricula' },
                 { name: 'Cliente' },
                 { name: 'Observación' },
-                { name: 'Formas de pago' },
-                { name: 'Monto pagado', totalsRowFunction: 'sum' },
-                { name: 'Cambio', totalsRowFunction: 'sum' },
+                // { name: 'Formas de pago' },
+                // { name: 'Monto pagado', totalsRowFunction: 'sum' },
+                // { name: 'Cambio', totalsRowFunction: 'sum' },
                 { name: 'Total', totalsRowFunction: 'sum' },
+                { name: 'Comisión', totalsRowFunction: 'sum' },
             ],
             rows: paymentsDetails,
         });
@@ -337,29 +379,17 @@ export class SimpleReport {
         return paymentsSheet;
     }
 
-    public fillSalesSheet(salesSheet: Excel.Worksheet, sales: MiniStoreSale[]): Excel.Worksheet {
+    public fillSalesSheet(salesSheet: Excel.Worksheet, sales: MiniStoreSale[], quantityCommissions): Excel.Worksheet {
         const salesRows = [];
         let startRow = 3;
         sales.forEach(sale => {
             const { student } = sale;
             const { name, lastNameFather, lastNameMother } = student;
             const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            let studentType = '';
-            switch (student.typeStudent) {
-                case TypeStudent.student:
-                    studentType = 'Alumno';
-                    break;
-                case TypeStudent.externo:
-                    studentType = 'Externo';
-                    break;
-                default:
-                    studentType = 'Prospecto';
-                    break;
-            }
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {
-                ['B', 'C', 'D', 'E', 'F', 'G', 'K', 'L', 'M'].forEach(column => {
+                ['B', 'C', 'D', 'E', 'K', 'L', 'I', 'J', 'M'].forEach(column => {
                     salesSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                 });
                 startRow = nextRowToMerge;
@@ -373,13 +403,13 @@ export class SimpleReport {
                 const productPrice = detail.miniStoreProduct.IVA ? detail.priceWithIVA : +detail.price;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
-                salesRowItem.push(student.matricula);
                 salesRowItem.push(fullName);
                 salesRowItem.push(sale.cashier.name);
                 salesRowItem.push(detail.quantity);
                 salesRowItem.push(detail.miniStoreProduct.name);
-                salesRowItem.push(productPrice);
-                salesRowItem.push(totalSale);
+                salesRowItem.push('$' + productPrice);
+                salesRowItem.push('$' + totalSale);
+                salesRowItem.push('$' + ((totalSale * quantityCommissions) / 100).toString());
                 salesRowItem.push(detail.miniStoreProduct.IVA ? 'Si' : 'No');
                 salesRowItem.push(sale.observations ? sale.observations : '');
                 salesRows.push(salesRowItem);
@@ -394,13 +424,13 @@ export class SimpleReport {
             columns: [
                 { name: 'Folio' },
                 { name: 'Fecha' },
-                { name: 'Matricula' },
                 { name: 'Cliente' },
                 { name: 'Vendedor' },
                 { name: 'Cantidad' },
                 { name: 'Productos' },
                 { name: 'Precio', totalsRowLabel: 'Totales' },
                 { name: 'Total', totalsRowFunction: 'sum' },
+                { name: 'Comisión', totalsRowFunction: 'sum' },
                 { name: 'Incluye I.V.A' },
                 { name: 'Observación' },
             ],
@@ -452,87 +482,5 @@ export class SimpleReport {
             });
         }
         return salesSheet;
-    }
-
-    public fillSalesReturnsSheet(salesSheetReturns: Excel.Worksheet, salesReturns: SalesReturns[]) {
-        const salesSheetRows = [];
-        const borders = {
-            right: { style: 'thin' },
-            top: { style: 'thin' },
-            bottom: { style: 'thin' },
-            left: { style: 'thin' },
-        };
-
-        salesReturns.forEach(saleReturn => {
-            const salesSheetItem = [];
-            const { lastNameFather, name, lastNameMother, typeStudent, matricula } = saleReturn.sale.student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            salesSheetItem.push(saleReturn.createdAt);
-            salesSheetItem.push(saleReturn.agent.name || '');
-            salesSheetItem.push(saleReturn.folio || '');
-            salesSheetItem.push(saleReturn.sale.folio);
-            salesSheetItem.push(matricula);
-            salesSheetItem.push(fullName);
-            salesSheetItem.push(saleReturn.comments);
-            salesSheetItem.push(saleReturn.paymentMethod.name || '');
-            salesSheetItem.push(parseFloat(saleReturn.amount));
-            salesSheetRows.push(salesSheetItem);
-        });
-        salesSheetReturns.addTable({
-            name: 'salesReturns',
-            ref: 'B2',
-            totalsRow: true,
-            columns: [
-                { name: 'Fecha' },
-                { name: 'Agente' },
-                { name: 'Folio de devolución' },
-                { name: 'Folio de venta' },
-                { name: 'Matricula' },
-                { name: 'Cliente' },
-                { name: 'Observación' },
-                { name: 'Forma' },
-                {
-                    name: 'Monto',
-                    totalsRowFunction: 'sum',
-                },
-            ],
-            rows: salesSheetRows,
-        });
-
-        ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'].forEach(column => {
-            salesSheetReturns.getColumn(column).width = 25;
-            if (column === 'K') {
-                salesSheetReturns.getColumn(column).eachCell((cell, cellNumber) => {
-                    if (cellNumber > 2) {
-                        cell.numFmt = '"$"#,##0.00;[Red]\-"$"#,##0.00';
-                    }
-                });
-            }
-            salesSheetReturns.getColumn(column).eachCell(cell => {
-                cell.style = {
-                    ...cell.style,
-                    border: borders as Partial<Borders>,
-                    alignment: { horizontal: 'center', vertical: 'middle' },
-                };
-            });
-        });
-        salesSheetReturns.getRow(2).eachCell((cell) => {
-            cell.style = {
-                border: borders as Partial<Borders>,
-                alignment: { horizontal: 'center', vertical: 'middle' },
-                font: {
-                    name: 'Calibri',
-                    color: { argb: 'FFFFFF' },
-                    size: 14,
-                },
-                fill: {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: '1E88E5' },
-                    bgColor: { argb: '1E88E5' },
-                },
-            };
-
-        });
     }
 }

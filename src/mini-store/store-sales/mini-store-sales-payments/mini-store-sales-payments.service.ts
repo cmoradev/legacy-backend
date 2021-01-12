@@ -16,26 +16,27 @@ import * as nodemailer from 'nodemailer';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import Mail from 'nodemailer/lib/mailer';
 import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import { CommissionsReport } from './reports/commissions.report';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
     constructor(
-        @InjectRepository(MiniStoreSalePayment, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSalePayment>,
-        @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
-        @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
-        @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
-        @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection)
-        readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
+      @InjectRepository(MiniStoreSalePayment, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSalePayment>,
+      @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
+      @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
+      @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
+      @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection)
+      readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
     ) {
         super(repo);
     }
 
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {
         return await this.repo.createQueryBuilder('payments')
-            .select('SUM(payments.quantity)', 'sum')
-            .where('payments.cashierBillingId = :id', { id })
-            .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
-            .getRawOne();
+          .select('SUM(payments.quantity)', 'sum')
+          .where('payments.cashierBillingId = :id', { id })
+          .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
+          .getRawOne();
 
     }
 
@@ -56,10 +57,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
 
             salesReturnsQB.andWhere('saleReturn.createdAt BETWEEN :startDate AND :endDate',
-                {
-                    startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),
-                });
+              {
+                  startDate: moment(query.startDate).startOf('day').toDate(),
+                  endDate: moment(query.endDate).endOf('day').toDate(),
+              });
             if (query.cashier) {
                 salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
@@ -86,10 +87,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
 
             paymentsQueryBuilder.andWhere('payment.createdAt BETWEEN :startDate AND :endDate',
-                {
-                    startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),
-                });
+              {
+                  startDate: moment(query.startDate).startOf('day').toDate(),
+                  endDate: moment(query.endDate).endOf('day').toDate(),
+              });
             if (query.invoiceStatus) {
                 paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
             }
@@ -117,15 +118,15 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
             if (query.invoiceStatus) {
                 salesQueryBuilder.andWhere('payments.stamping= :invoiceStatus', {
-                        invoiceStatus: query.invoiceStatus,
-                    },
+                      invoiceStatus: query.invoiceStatus,
+                  },
                 );
             }
             salesQueryBuilder.andWhere('payments.createdAt BETWEEN :startDate AND :endDate',
-                {
-                    startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),
-                });
+              {
+                  startDate: moment(query.startDate).startOf('day').toDate(),
+                  endDate: moment(query.endDate).endOf('day').toDate(),
+              });
             if (query.cashier) {
                 salesQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
@@ -146,8 +147,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return cashiers;
     }
 
-    async simpleReport(payments: MiniStoreSalePayment[], sales: MiniStoreSale[], salesReturns: SalesReturns[],
+    async simpleReport(payments: MiniStoreSalePayment[],
+                       sales: MiniStoreSale[],
+                       salesReturns: SalesReturns[],
                        options?: { base64: boolean }): Promise<string | any> {
+
         const cashiersAndSales = await this.userRepository.find({
             relations: ['salePayments', 'department', 'role'],
         });
@@ -164,6 +168,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 return cashier;
             }
         });
+
         const workbook = new SimpleReport().generate({
             payments,
             cashiers,
@@ -175,8 +180,58 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
                 const result = await workbook.xlsx.writeBuffer({
-                        filename: (+new Date()).toString() + '.xlsx',
-                    },
+                      filename: (+new Date()).toString() + '.xlsx',
+                  },
+                );
+                const buffer = Buffer.from(result);
+                const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+                return b64Encoding + buffer.toString('base64');
+
+            } else {
+                await workbook.xlsx.writeFile('./xls-imports/' + fileName);
+                return fileName;
+            }
+        } catch (e) {
+            return e;
+        }
+    }
+
+    async reportCommission(
+      quantityCommissions: number,
+      payments: MiniStoreSalePayment[],
+      sales: MiniStoreSale[],
+      options?: { base64: boolean }): Promise<string | any> {
+
+        const cashiersAndSales = await this.userRepository.find({
+            relations: ['salePayments', 'department', 'role'],
+        });
+
+        const paymentMethods = await this.invoiceMethodPaymentRepository.find({
+            where: {
+                showReport: true,
+                isActive: true,
+            },
+        });
+
+        const cashiers = cashiersAndSales.filter(cashier => {
+            if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.salePayments.length > 0) {
+                return cashier;
+            }
+        });
+        const report = new CommissionsReport();
+        const workbook = report.generate({
+            quantityCommissions,
+            payments,
+            cashiers,
+            paymentMethods,
+            sales,
+        });
+        try {
+            const fileName = (+new Date()).toString() + '.xlsx';
+            if (options && options.base64) {
+                const result = await workbook.xlsx.writeBuffer({
+                      filename: (+new Date()).toString() + '.xlsx',
+                  },
                 );
                 const buffer = Buffer.from(result);
                 const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
