@@ -14,6 +14,7 @@ import { PaymentPlansService } from './payment-plans.service';
       level: {},
       paymentPlanConcepts: {},
       'level.campus': {},
+      studentsInscriptions: {},
     },
   },
 })
@@ -21,6 +22,7 @@ import { PaymentPlansService } from './payment-plans.service';
 export class PaymentPlansController implements CrudController<PaymentPlan> {
   constructor(readonly service: PaymentPlansService) {
   }
+
   get base(): CrudController<PaymentPlan> {
     return this;
   }
