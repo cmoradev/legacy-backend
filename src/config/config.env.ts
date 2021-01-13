@@ -2,6 +2,7 @@ export const connections = [
     'development',
     'production',
     'desarrollo',
+    'capecafe',
     'cremeria',
     'test',
     'staging',
@@ -9,5 +10,6 @@ export const connections = [
     'tortilleria',
     'rancho',
     'pachamama',
+    'kiinbeh',
 ];
 
