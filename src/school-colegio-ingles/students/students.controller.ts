@@ -41,6 +41,7 @@ import { TypeStudent } from './interface/studentsSchool.interface';
             'studentInscriptions.inscripStudyPlanVariant': {},
             'studentInscriptions.inscripStudyPlan': {},
             'studentInscriptions.schoolPayments': {},
+            'studentInscriptions.schoolPayments.extraCharges': {},
         },
     },
 })
