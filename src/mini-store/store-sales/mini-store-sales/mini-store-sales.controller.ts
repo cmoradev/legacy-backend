@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
@@ -9,8 +9,9 @@ import { QuerySimpleReport } from '../mini-store-sales-payments/interface/Invoic
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSale,

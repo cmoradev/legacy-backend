@@ -2,7 +2,7 @@ import { Controller, Get, Param, Post, Query, Req, Res, UploadedFile, UseInterce
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
-import { Crud, CrudController, Override, ParsedRequest } from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
 
@@ -79,18 +79,30 @@ export class SettingsController implements CrudController<Company> {
 
     @Get('company/:uuid')
     async findCompanyByUuid(@Param() params, @Res() res) {
-        const result = await this.service.findOne({
-            where: {
-                uuid: params.uuid,
-            },
-            relations: ['defaultClient'],
-        });
-        if (result) {
-            res.send(result);
+        try {
+
+            const result = await this.service.findOne({
+                where: {
+                    uuid: params.uuid,
+                },
+                relations: ['defaultClient'],
+            });
+            if (result) {
+                res.status(200);
+                res.send(result);
+            } else {
+                res.status(400);
+                res.send({
+                    error: 'COMPANY_NOT_EXIST',
+                });
+            }
+        } catch (e) {
+
+            res.status(400);
+            res.send({
+                error: 'COMPANY_NOT_EXIST',
+            });
         }
-        res.status(500).send({
-            error: 'COMPANY_NOT_EXIST',
-        });
     }
 
     @Get('defaultCustomer/:uuid')

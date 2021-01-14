@@ -35,7 +35,8 @@ export class AuthController {
             userId: req.user.id,
         });
 
-        res.status(201).send({
+        res.status(200);
+        res.send({
             user: req.user,
             accessJWT: {
                 access_token: jwt.access_token,
@@ -47,7 +48,8 @@ export class AuthController {
     @UseGuards(RegisterGuard)
     @Post('register')
     async register(@Req() req, @Res() res: Response) {
-        res.status(201).json(req.user);
+        res.status(200);
+        res.send(req.user);
     }
 
     @UseGuards(RefreshGuard)
@@ -63,7 +65,8 @@ export class AuthController {
             lastToken.expiresAt = moment(jwt.decode.exp * 1000).toDate();
             lastToken.refresh = true;
             this.authAccessTokensService.repo.save(lastToken);
-            res.status(201).json({
+            res.status(200);
+            res.send({
                 refresh_token: jwt.access_token,
             });
         }
