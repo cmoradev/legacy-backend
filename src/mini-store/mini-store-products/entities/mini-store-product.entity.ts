@@ -7,6 +7,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
 export const toJsonCal: ValueTransformer = {
 
@@ -25,9 +26,12 @@ export const toJsonCal: ValueTransformer = {
 
 };
 
+
+@ObjectType()
 @Entity('tie_productos')
 export class MiniStoreProduct extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -35,6 +39,7 @@ export class MiniStoreProduct extends Base {
     })
     name: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 200,
@@ -42,6 +47,7 @@ export class MiniStoreProduct extends Base {
     })
     description: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 200,
@@ -49,6 +55,7 @@ export class MiniStoreProduct extends Base {
     })
     code: string;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 25,
@@ -56,6 +63,7 @@ export class MiniStoreProduct extends Base {
     })
     codeBar: string | null;
 
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -63,6 +71,7 @@ export class MiniStoreProduct extends Base {
     })
     isActive: boolean;
 
+    @Field({ nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000000\'',
@@ -72,6 +81,7 @@ export class MiniStoreProduct extends Base {
     })
     price: string | null;
 
+    @Field()
     @Column('decimal', {
         nullable: false,
         default: () => '\'0.000000\'',
@@ -81,6 +91,7 @@ export class MiniStoreProduct extends Base {
     })
     priceWithIVA: string;
 
+    @Field()
     @Column('decimal', {
         nullable: false,
         default: () => '\'0.000000\'',
@@ -90,6 +101,7 @@ export class MiniStoreProduct extends Base {
     })
     priceProvider: string;
 
+    @Field()
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -97,17 +109,20 @@ export class MiniStoreProduct extends Base {
     })
     IVA: boolean;
 
+    @Field()
     @Column('tinyint', {
         nullable: false,
         width: 1,
     })
     isFavorite: boolean;
 
+    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
     })
     picture: string | null;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '\'0.000\'',
@@ -117,6 +132,7 @@ export class MiniStoreProduct extends Base {
     })
     stock: number;
 
+    @Field({ nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000\'',
@@ -126,6 +142,7 @@ export class MiniStoreProduct extends Base {
     })
     minStock: number | null;
 
+    @Field({ nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000\'',
@@ -138,6 +155,8 @@ export class MiniStoreProduct extends Base {
     // tslint:disable-next-line:jsdoc-format
     /** @Deprecated **/
         // @By Amir no se ocupa en nigun lado pero falta verificar en la vista
+
+    @Field({ nullable: false })
     @Column('varchar', {
         nullable: false,
         length: 20,
@@ -146,6 +165,7 @@ export class MiniStoreProduct extends Base {
     })
     unity: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'1\'',
@@ -153,6 +173,7 @@ export class MiniStoreProduct extends Base {
     unitMeasurement: number;
 
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
+    @Field()
     @Column({
         type: 'longtext',
         nullable: true,
@@ -160,27 +181,34 @@ export class MiniStoreProduct extends Base {
     })
     calculation: string;
 
+    @Field(type => MiniStorePriceList)
     @ManyToOne(() => MiniStorePriceList, (storePriceList) => storePriceList.storeProducts)
     storePriceList: MiniStorePriceList;
 
+    @Field(type => MiniStoreClassification)
     @ManyToOne(() => MiniStoreClassification, (storeClassification) => storeClassification.storeProducts)
     storeClassification: MiniStoreClassification;
 
+    @Field(type => InvoiceKeys)
     @ManyToOne(() => InvoiceKeys, (invoiceKeys) => invoiceKeys.storeProducts)
     storeInvoiceKey: InvoiceKeys;
 
+    @Field(type => [MiniStoreWarehouseOrderProduct])
     @OneToMany(() => MiniStoreWarehouseOrderProduct, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreProduct)
     miniStoreWarehouseOrdersProducts: MiniStoreWarehouseOrderProduct[];
 
+    @Field(type => [MiniStoreSaleDetail])
     @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreProduct)
     miniStoreSaleDetails: MiniStoreSaleDetail[];
 
+    @Field(type => [MiniStoreProductsProviders])
     @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.product,
         {
             cascade: ['insert', 'update'],
         })
     miniStoreProductsProvider: MiniStoreProductsProviders[];
 
+    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
         {
             cascade: ['insert', 'update'],

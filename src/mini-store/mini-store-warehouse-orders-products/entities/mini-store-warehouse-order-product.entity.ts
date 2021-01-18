@@ -1,22 +1,21 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('tie_almacen_pedidos_productos')
 export class MiniStoreWarehouseOrderProduct extends Base {
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'cantidad_solicitada',
     })
     requestedAmount: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         name: 'precio_proveedor_solicitud',
@@ -26,6 +25,7 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     providerPriceRequest: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         name: 'precio_proveedor_recibido',
@@ -35,6 +35,7 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     providerPriceReceived: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         name: 'neto_solicitud',
@@ -44,6 +45,7 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     netRequest: number;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -51,6 +53,7 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     receivedAmount: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         name: 'neto_recibido',
@@ -60,6 +63,7 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     netReceived: number;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
         default: () => '\'0\'',
@@ -67,9 +71,11 @@ export class MiniStoreWarehouseOrderProduct extends Base {
     })
     assortedStatus: number | null;
 
+    @Field(type => MiniStoreProduct)
     @ManyToOne(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.miniStoreWarehouseOrdersProducts)
     miniStoreProduct: MiniStoreProduct;
 
+    @Field(type => MiniStoreWarehouseOrder)
     @ManyToOne(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreWareHouseOrdersProducts)
     miniStoreWarehouseOrder: MiniStoreWarehouseOrder;
 

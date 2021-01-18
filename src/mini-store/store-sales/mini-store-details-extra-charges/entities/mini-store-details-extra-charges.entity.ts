@@ -8,19 +8,25 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 
+import { Field, Int, ObjectType } from 'type-graphql';
+
+@ObjectType()
 @Entity('mini-store-details-extra-charges')
 export class MiniStoreDetailsExtraCharges extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
     })
     name: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
     })
     quantity: number;
 
+    @Field(type => TypeChargeApplicationEnum)
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -28,6 +34,7 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     applicationType: TypeChargeApplicationEnum;
 
+    @Field(type => OperationApplicationEnum)
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -35,6 +42,7 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     operationType: OperationApplicationEnum;
 
+    @Field(type => SystemTypeExtraChargesEnum)
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -42,9 +50,11 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
+    @Field(type => MiniStoreSaleDetail)
     @ManyToOne(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.extraCharges)
     miniSaleChargeDetails: MiniStoreSaleDetail;
 
+    @Field(type => SystemExtraCharges)
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeMiniStore)
     systemExtraCharges: SystemExtraCharges;
 }

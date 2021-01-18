@@ -1,17 +1,15 @@
-import {
-    Column,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('tie_almacen_proveedores')
 export class MiniStoreWarehouseProvider extends Base {
 
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 45,
@@ -19,6 +17,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     name: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 50,
@@ -26,12 +25,14 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     business: string;
 
+    @Field({ nullable: true})
     @Column('text', {
         nullable: true,
         name: 'url_logo',
     })
     logoURL: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 5,
@@ -39,24 +40,28 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     zip: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         name: 'country',
     })
     country: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         name: 'stado',
     })
     state: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         name: 'city',
     })
     city: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 200,
@@ -64,6 +69,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     colony: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 45,
@@ -71,6 +77,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     street: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 14,
@@ -78,6 +85,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     rfc: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 45,
@@ -85,6 +93,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     phone: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 45,
@@ -92,6 +101,7 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     cellphone: string | null;
 
+    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         length: 45,
@@ -99,15 +109,18 @@ export class MiniStoreWarehouseProvider extends Base {
     })
     email: string | null;
 
+    @Field({ nullable: true})
     @Column('text', {
         nullable: true,
         name: 'pweb',
     })
     webSite: string | null;
 
+    @Field(type => [MiniStoreWarehouseOrder])
     @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.miniStoreWarehouseProvider)
     miniStoreWarehouseOrders: MiniStoreWarehouseOrder[];
 
+    @Field(type => [MiniStoreProductsProviders])
     @OneToMany(() => MiniStoreProductsProviders, (mStore) => mStore.provider)
     miniStoreProductsProvider: MiniStoreProductsProviders[];
 }
