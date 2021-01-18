@@ -1,13 +1,16 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('ac_cobro_detalle')
 export class AcademyChargeDetails extends Base {
 
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 20,
@@ -15,6 +18,7 @@ export class AcademyChargeDetails extends Base {
     })
     codeProduct: string;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 20,
@@ -22,6 +26,7 @@ export class AcademyChargeDetails extends Base {
     })
     codeUnit: string | null;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 100,
@@ -29,12 +34,14 @@ export class AcademyChargeDetails extends Base {
     })
     unit: string | null;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         name: 'concepto',
     })
     concept: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 8,
@@ -42,12 +49,14 @@ export class AcademyChargeDetails extends Base {
     })
     codeConcept: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'cantidad',
     })
     quantity: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -56,7 +65,8 @@ export class AcademyChargeDetails extends Base {
         name: 'precio',
     })
     price: number;
-    
+
+    @Field(type => AcademyCharge)
     @ManyToOne(() => AcademyCharge, (schoolCharge) => schoolCharge.chargesDetails)
     @JoinColumn({
         name: 'id_ac_cobro',
@@ -64,16 +74,19 @@ export class AcademyChargeDetails extends Base {
     })
     academyCharge: AcademyCharge;
 
+    @Field(type => [AcademyChargeDetailsExtraCharge])
     @OneToMany(() => AcademyChargeDetailsExtraCharge, (extraCharges) => extraCharges.chargeDetail, {
         cascade: ['insert'],
     })
     extraCharges: AcademyChargeDetailsExtraCharge[];
 
+    @Field(type => AcademyInscriptionConcepts)
     @ManyToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail, {
         cascade: ['insert'],
     })
     academyInscriptionConcept: AcademyInscriptionConcepts;
 
+    @Field(type => Int)
     // falta relacion con el concepto de cobro de academia
     @Column('int', {
         nullable: false,

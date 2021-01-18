@@ -7,20 +7,25 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('ac_inscrip_concepts_extra_charges')
 export class AcademyInscriptionConceptCharges extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
     })
     name: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
     })
     quantity: number;
 
+    @Field(type => TypeChargeApplicationEnum, { nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -28,6 +33,7 @@ export class AcademyInscriptionConceptCharges extends Base {
     })
     applicationType: TypeChargeApplicationEnum;
 
+    @Field(type => OperationApplicationEnum)
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -35,6 +41,7 @@ export class AcademyInscriptionConceptCharges extends Base {
     })
     operationType: OperationApplicationEnum;
 
+    @Field(type => SystemTypeExtraChargesEnum)
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -42,9 +49,11 @@ export class AcademyInscriptionConceptCharges extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
+    @Field(type => AcademyInscriptionConcepts)
     @ManyToOne(() => AcademyInscriptionConcepts, (academy) => academy.extraCharges)
     inscChargeDetail: AcademyInscriptionConcepts;
 
+    @Field(type => SystemExtraCharges)
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
     systemExtraCharges: SystemExtraCharges;
 }

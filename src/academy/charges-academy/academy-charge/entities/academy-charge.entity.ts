@@ -9,9 +9,13 @@ import { AcademyChargePayments } from '../../academy-charge-payments/entities/ac
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('ac_cobros')
 export class AcademyCharge extends Base {
+
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 40,
@@ -20,18 +24,21 @@ export class AcademyCharge extends Base {
     })
     folio: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_modalidad',
     })
     idModality: number;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
         name: 'id_metodo_pago',
     })
     idMetodoPago: number | null;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 10,
@@ -39,12 +46,14 @@ export class AcademyCharge extends Base {
     })
     codigoMetodoPago: string | null;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         name: 'nombre_metodo_pago',
     })
     nombreMetodoPago: string | null;
 
+    @Field(type => PaymentStatus)
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -54,19 +63,22 @@ export class AcademyCharge extends Base {
     })
     status: PaymentStatus;
 
+    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'observaciones',
     })
     observations: string | null;
 
-    @Column( {
+    @Field({ nullable: true })
+    @Column({
         type: 'timestamp',
         nullable: true,
         name: 'fecha_cancelacion',
     })
     dateCancellation: Date | null;
 
+    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'motivos_cancelacion',
@@ -74,12 +86,14 @@ export class AcademyCharge extends Base {
     reasonsCancellation: string | null;
 
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'iva',
     })
     iva: number;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -87,6 +101,7 @@ export class AcademyCharge extends Base {
     })
     isIva: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -96,6 +111,7 @@ export class AcademyCharge extends Base {
     })
     change: number;
 
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -104,6 +120,7 @@ export class AcademyCharge extends Base {
     })
     timbrado: boolean;
 
+    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (campus) => campus.campusAcademyCharge)
     @JoinColumn({
         name: 'id_plantel',
@@ -111,9 +128,11 @@ export class AcademyCharge extends Base {
     })
     chargeCampus: BranchOffice;
 
+    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetAcademy)
     academyBranchOfficeSet: BranchOfficeSetting;
 
+    @Field(type => Cycle)
     @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcademyCharge)
     @JoinColumn({
         name: 'ciclo',
@@ -121,6 +140,7 @@ export class AcademyCharge extends Base {
     })
     chargeCycle: Cycle;
 
+    @Field(type => User)
     @ManyToOne(() => User, (user) => user.academyCharges)
     @JoinColumn({
         name: 'id_agente',
@@ -128,6 +148,7 @@ export class AcademyCharge extends Base {
     })
     cashier: User;
 
+    @Field(type => User)
     @ManyToOne(() => User, (user) => user.academyChargesCancellation)
     @JoinColumn({
         name: 'id_agente_cancelacion',
@@ -135,6 +156,7 @@ export class AcademyCharge extends Base {
     })
     cashierCancellation: User;
 
+    @Field(type => Student)
     @ManyToOne(() => Student, (student) => student.academyCharges)
     @JoinColumn({
         name: 'id_alumno',
@@ -142,19 +164,22 @@ export class AcademyCharge extends Base {
     })
     schoolStudent: Student;
 
+    @Field(type => [AcademyChargeDetails])
     @OneToMany(() => AcademyChargeDetails, (details) => details.academyCharge, {
         cascade: ['insert', 'update'],
     })
     chargesDetails: AcademyChargeDetails[];
 
+    @Field(type => [AcademyChargePayments])
     @OneToMany(() => AcademyChargePayments, (detailspay) => detailspay.academyCharge, {
         cascade: ['insert'],
     })
     chargesPayments: AcademyChargePayments[];
 
+    @Field(type => [AcademyChargeInvoice])
     @OneToMany(() => AcademyChargeInvoice, (chargesInvoice) => chargesInvoice.academyCharge,
-        {
-            cascade: ['insert'],
-        })
+      {
+          cascade: ['insert'],
+      })
     chargesInvoice: AcademyChargeInvoice[];
 }

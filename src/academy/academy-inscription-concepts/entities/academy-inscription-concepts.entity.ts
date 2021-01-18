@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
@@ -6,11 +6,14 @@ import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 import { AcademyInscriptionConceptCharges } from '../../academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts extends Base {
 
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 200,
@@ -18,6 +21,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     keyInscription: string | null;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 20,
@@ -25,6 +29,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     productCode: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 20,
@@ -32,6 +37,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     unitCode: string;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 100,
@@ -39,6 +45,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     unit: string | null;
 
+    @Field(type => AcademyActivity)
     @ManyToOne(type => AcademyActivity, activity => activity.academyActAcInsConcept)
     @JoinColumn({
         name: 'id_academia',
@@ -46,6 +53,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     acInsConActivity: AcademyActivity;
 
+    @Field(type => SystemConceptsType)
     @ManyToOne(type => SystemConceptsType, sysConType => sysConType.systemConceptAcInsConcept)
     @JoinColumn({
         name: 'id_concepto_cobro',
@@ -53,11 +61,13 @@ export class AcademyInscriptionConcepts extends Base {
     })
     acInsConConcepType: SystemConceptsType;
 
+    @Field(type => Int)
     @Column({
         name: 'id_concepto_cobro',
     })
     idConceptoCobro: number;
 
+    @Field(type => PaymentStatus)
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -67,6 +77,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     paymentStatus: PaymentStatus;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 250,
@@ -74,6 +85,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     description: string | null;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'1\'',
@@ -81,28 +93,33 @@ export class AcademyInscriptionConcepts extends Base {
     })
     quantity: number;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
     })
     payDay: number;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
     })
     payMonth: number;
 
+    @Field({ nullable: true })
     @Column('date', {
         nullable: true,
         name: 'fecha_pago',
     })
     payDate: Date;
 
+    @Field({ nullable: true })
     @Column('date', {
         nullable: true,
         name: 'fecha_pagado',
     })
     paidDate: Date;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -112,6 +129,8 @@ export class AcademyInscriptionConcepts extends Base {
     })
     price: number | null;
 
+
+    @Field(type => Int, { nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -121,6 +140,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     oldPrice: number | null;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -128,6 +148,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     idAcCobro: number;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -135,6 +156,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     isIva: number;
 
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -143,12 +165,15 @@ export class AcademyInscriptionConcepts extends Base {
     })
     isActive: boolean;
 
+    @Field(type => AcademyInscription)
     @ManyToOne(() => AcademyInscription, (AcInscription) => AcInscription.concepts)
     acInscription: AcademyInscription;
 
+    @Field(type => [AcademyChargeDetails])
     @OneToMany(type => AcademyChargeDetails, chargeDetails => chargeDetails.academyInscriptionConcept)
     academyChargeDetail: AcademyChargeDetails[];
 
+    @Field(type => [AcademyInscriptionConceptCharges])
     @OneToMany(() => AcademyInscriptionConceptCharges, (extraCharges) => extraCharges.inscChargeDetail, {
         cascade: ['insert'],
     })

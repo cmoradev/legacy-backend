@@ -7,10 +7,13 @@ import { AcademyChargeMethodsPayments } from '../../academy-charge-methods-payme
 import { AcademyChargeInvoice } from '../../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('ac_charge_payments')
 export class AcademyChargePayments extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 45,
@@ -19,6 +22,7 @@ export class AcademyChargePayments extends Base {
     })
     folio: string;
 
+    @Field({ nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -27,6 +31,7 @@ export class AcademyChargePayments extends Base {
     })
     change: number | null;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -35,17 +40,20 @@ export class AcademyChargePayments extends Base {
     })
     quantity: number;
 
+    @Field({ nullable: true})
     @Column( {
         type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
 
+    @Field({ nullable: true})
     @Column('text', {
         nullable: true,
     })
     reasonCancellation: string | null;
 
+    @Field({ nullable: true})
     @Column('text', {
         nullable: true,
     })
@@ -54,6 +62,7 @@ export class AcademyChargePayments extends Base {
     /**
      * Timbrado
      */
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -61,6 +70,7 @@ export class AcademyChargePayments extends Base {
     })
     stamping: number;
 
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -68,15 +78,19 @@ export class AcademyChargePayments extends Base {
     })
     isIVA: boolean;
 
+    @Field(type => AcademyCharge)
     @ManyToOne(() => AcademyCharge, (academyCharge) => academyCharge.chargesPayments)
     academyCharge: AcademyCharge;
 
+    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeAcademyPayment)
     academyPaymentOffice: BranchOffice;
 
+    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyPayment)
     academyPaymentOfficeSet: BranchOfficeSetting;
 
+    @Field(type => PaymentStatus)
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -90,19 +104,23 @@ export class AcademyChargePayments extends Base {
      * Relación de un pago con sus metodos de pago
      */
 
+    @Field(type => [AcademyChargeMethodsPayments])
     @OneToMany(() => AcademyChargeMethodsPayments, (chargesMethodsPayments) => chargesMethodsPayments.academyChargePayment, {
         cascade: ['insert'],
     })
     methodsPayments: AcademyChargeMethodsPayments[];
 
+    @Field(type => User)
     @ManyToOne(() => User, (user) => user.academyChargesPayments)
     cashierCharge: User;
 
+    @Field(type => User)
     @ManyToOne(() => User, (user) => user.chargesPaymentsCancellation)
     cashierChargeCancellation: User;
     /*
      * Relación Bidireccional del pago de una venta con la Facturas
     */
+    @Field(type => [AcademyChargeInvoice])
     @OneToMany(() => AcademyChargeInvoice, (acChargesInvoice) => acChargesInvoice.academyChargePayment)
     academyChargesInvoice: AcademyChargeInvoice[];
 }
