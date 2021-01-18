@@ -18,7 +18,7 @@ import { SchoolCharge } from '../../school-charges/entities/school-charge.entity
 import { SchoolChargesDetailsExtraCharges } from '../../school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { SchoolPayment } from '../../../school-payments/entities/school-payment.entity';
 
-@Entity('school_charge_details')
+@Entity('school_charges_details')
 export class SchoolChargeDetails extends Base {
 
     @Column('varchar', {
