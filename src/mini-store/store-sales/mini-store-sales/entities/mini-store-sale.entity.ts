@@ -13,10 +13,13 @@ import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { RouteAction } from '../../../../system/route-action/entities/route-action.entity';
 import { MiniStoreQuotation } from '../../mini-store-quotation/entities/mini-store-quotation.entity';
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
 
+  @Field(type => MiniStoreSale)
   @Column('varchar', {
     nullable: false,
     length: 40,
@@ -25,6 +28,7 @@ export class MiniStoreSale extends Base {
   })
   folio: string;
 
+  @Field(type => PaymentStatus)
   @Column({
     type: 'simple-enum',
     enum: PaymentStatus,
@@ -34,12 +38,14 @@ export class MiniStoreSale extends Base {
   })
   statusSale: PaymentStatus;
 
+  @Field({ nullable: true})
   @Column('text', {
     nullable: true,
     name: 'observaciones',
   })
   observations: string | null;
 
+  @Field({ nullable: true})
   @Column({
     type: 'timestamp',
     nullable: true,
@@ -47,12 +53,14 @@ export class MiniStoreSale extends Base {
   })
   dateCancellation: Date | null;
 
+  @Field({ nullable: true})
   @Column('text', {
     nullable: true,
     name: 'motivos_cancelacion',
   })
   reasonCancellation: string | null;
 
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'16\'',
@@ -60,6 +68,7 @@ export class MiniStoreSale extends Base {
   })
   iva: number;
 
+  @Field(type => BranchOffice)
   @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStore)
   @JoinColumn({
     name: 'storeBranchOfficeId',
@@ -67,9 +76,11 @@ export class MiniStoreSale extends Base {
   })
   storeBranchOffice: BranchOffice;
 
+  @Field(type => BranchOfficeSetting)
   @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetStore)
   storeBranchOfficeSet: BranchOfficeSetting;
 
+  @Field(type => Cycle)
   @ManyToOne(type => Cycle, (c) => c.sales)
   @JoinColumn({
     name: 'cycleId',
@@ -77,6 +88,7 @@ export class MiniStoreSale extends Base {
   })
   cycle: Cycle;
 
+  @Field(type => Student)
   @ManyToOne(type => Student, student => student.sales)
   @JoinColumn({
     name: 'id_alumno',
@@ -84,36 +96,43 @@ export class MiniStoreSale extends Base {
   })
   student: Student;
 
+  @Field(type => [MiniStoreSalePayment])
   @OneToMany(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreSale,
     {
       cascade: ['insert'],
     })
   miniStoreSalePayments: MiniStoreSalePayment[];
 
+  @Field(type => [MiniStoreSaleDetail])
   @OneToMany(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.miniStoreSale,
     {
       cascade: ['insert', 'update'],
     })
   miniStoreSaleDetails: MiniStoreSaleDetail[];
 
+  @Field(type => [MiniStoreInvoice])
   @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSale,
     {
       cascade: ['insert'],
     })
   miniStoreInvoices: MiniStoreInvoice[];
 
+  @Field(type => User)
   @ManyToOne(() => User, (user) => user.miniStoreBillingSales)
   agentBilling: User;
 
+  @Field(type => User)
   @ManyToOne(() => User, (user) => user.miniStoreCancelingSales)
   agentCanceling: User;
 
+  @Field(type => [SalesReturns])
   @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale,
     {
       cascade: ['insert'],
     })
   returnedProducts: SalesReturns[];
 
+  @Field(type => User)
   @ManyToOne(type => User, (u) => u.sales)
   @JoinColumn({
     name: 'id_agente',
@@ -121,17 +140,20 @@ export class MiniStoreSale extends Base {
   })
   cashier: User;
 
+  @Field(type => MiniStoreQuotation)
   @OneToOne(type => MiniStoreQuotation, quotation => quotation.quotation, {
     cascade: ['insert', 'update'],
   })
   quotation: MiniStoreQuotation;
 
+  @Field(type => MiniStoreQuotation)
   @OneToOne(type => MiniStoreQuotation, quotation => quotation.sale, {
     cascade: ['insert', 'update'],
   })
   sale: MiniStoreQuotation;
 
 
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
     width: 1,
@@ -140,6 +162,7 @@ export class MiniStoreSale extends Base {
   })
   isComplete: number;
 
+  @Field()
   @Column('timestamp', {
     nullable: true,
   })
@@ -148,6 +171,7 @@ export class MiniStoreSale extends Base {
   /**
    * @Deprecated
    */
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',
@@ -158,6 +182,7 @@ export class MiniStoreSale extends Base {
   /**
    * Deprecated
    */
+  @Field(type => Int)
   @Column('tinyint', {
     nullable: false,
     default: () => '\'0\'',
@@ -165,6 +190,7 @@ export class MiniStoreSale extends Base {
   })
   isIVA: boolean;
 
+  @Field(type => Int)
   @Column('tinyint', {
     nullable: false,
     width: 1,
@@ -176,6 +202,7 @@ export class MiniStoreSale extends Base {
   /**
    * Deprecated
    */
+  @Field(type => Int)
   @Column('decimal', {
     nullable: false,
     default: () => '0.000000',
@@ -188,6 +215,7 @@ export class MiniStoreSale extends Base {
   /**
    * Deprecated
    */
+  @Field(type => Int)
   @Column('tinyint', {
     nullable: false,
     width: 1,
@@ -199,6 +227,7 @@ export class MiniStoreSale extends Base {
   /**
    * Deprecated
    */
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',
@@ -209,6 +238,7 @@ export class MiniStoreSale extends Base {
   /**
    * @Deprecated
    */
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',
@@ -219,6 +249,7 @@ export class MiniStoreSale extends Base {
   /**
    * @Deprecated
    */
+  @Field(type => Int, { nullable: true})
   @Column('int', {
     nullable: true,
     name: 'id_metodo_pago',
@@ -228,6 +259,7 @@ export class MiniStoreSale extends Base {
   /**
    * Deprecated
    */
+  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 10,
@@ -238,6 +270,7 @@ export class MiniStoreSale extends Base {
   /**
    * @Deprecated
    */
+  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 5,
