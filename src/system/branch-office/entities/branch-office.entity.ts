@@ -26,7 +26,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType('planteles')
 @Entity('planteles')
 export class BranchOffice extends Base {
 

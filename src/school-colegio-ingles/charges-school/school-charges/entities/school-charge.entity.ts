@@ -9,10 +9,13 @@ import { SchoolChargePayment } from '../../school-charges-payments/entities/scho
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('school_charges')
 export class SchoolCharge extends Base {
 
+  @Field()
   @Column('varchar', {
     nullable: false,
     length: 40,
@@ -21,27 +24,32 @@ export class SchoolCharge extends Base {
   })
   folio: string;
 
+  @Field({ nullable: true })
   @Column('text', {
     nullable: true,
   })
   observations: string | null;
 
+  @Field({ nullable: true })
   @Column({
     type: 'timestamp',
     nullable: true,
   })
   dateCancellation: Date | null;
 
+  @Field({ nullable: true })
   @Column('text', {
     nullable: true,
   })
   reasonsCancellation: string | null;
 
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
   })
   iva: number;
 
+  @Field(type => Int)
   @Column('decimal', {
     nullable: false,
     default: () => '0.000000',
@@ -50,6 +58,7 @@ export class SchoolCharge extends Base {
   })
   change: number;
 
+  @Field()
   @Column({
     type: 'simple-enum',
     enum: PaymentStatus,
@@ -59,34 +68,43 @@ export class SchoolCharge extends Base {
   })
   status: PaymentStatus;
 
+  @Field(type => BranchOffice)
   @ManyToOne(() => BranchOffice, (campus) => campus.campusSchoolCharge)
   schoolCampus: BranchOffice;
 
+  @Field(type => BranchOfficeSetting)
   @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetSchool)
   schoolBranchOfficeSet: BranchOfficeSetting;
 
+  @Field(type => Cycle)
   @ManyToOne(() => Cycle, (cycle) => cycle.cycleSchoolCharge)
   schoolCycle: Cycle;
 
+  @Field(type => User)
   @ManyToOne(() => User, (user) => user.schoolCharges)
   cashier: User;
 
+  @Field(type => User)
   @ManyToOne(() => User, (user) => user.schoolChargesCancellation)
   cashierCancellation: User;
 
+  @Field(type => Student)
   @ManyToOne(() => Student, (student) => student.studentCharges)
   schoolStudent: Student;
 
+  @Field(type => [SchoolChargeDetails])
   @OneToMany(() => SchoolChargeDetails, (details) => details.schoolCharge, {
     cascade: ['insert', 'update'],
   })
   chargesDetails: SchoolChargeDetails[];
 
+  @Field(type => [SchoolChargePayment])
   @OneToMany(() => SchoolChargePayment, (detailspay) => detailspay.schoolCharge, {
     cascade: ['insert'],
   })
   chargesPayments: SchoolChargePayment[];
 
+  @Field(type => [SchoolChargesInvoice])
   @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolCharge,
     {
       cascade: ['insert'],

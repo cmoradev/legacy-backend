@@ -26,7 +26,7 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     quantity: number;
 
-    @Field(type => TypeChargeApplicationEnum)
+    @Field({ nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -34,7 +34,7 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     applicationType: TypeChargeApplicationEnum;
 
-    @Field(type => OperationApplicationEnum)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -42,7 +42,7 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     operationType: OperationApplicationEnum;
 
-    @Field(type => SystemTypeExtraChargesEnum)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: true,

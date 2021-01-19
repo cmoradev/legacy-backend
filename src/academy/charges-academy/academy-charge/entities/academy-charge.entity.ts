@@ -53,7 +53,7 @@ export class AcademyCharge extends Base {
     })
     nombreMetodoPago: string | null;
 
-    @Field(type => PaymentStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,

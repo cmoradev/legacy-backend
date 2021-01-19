@@ -1,6 +1,8 @@
 import { Column, CreateDateColumn, Generated, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
-import { Field, ID } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
+import { FilterableField } from '@nestjs-query/query-graphql';
 
+@ObjectType()
 export class Base {
     @Field(type => ID)
     @PrimaryGeneratedColumn({
@@ -8,17 +10,17 @@ export class Base {
     })
     id: number;
 
-    @Field()
+    @Field(type => GraphQLISODateTime)
     @CreateDateColumn({
         type: 'timestamp',
-       // transformer: new DateTimeZoneTransformer(),
+        // transformer: new DateTimeZoneTransformer(),
     })
     createdAt: Date;
 
-    @Field()
+    @Field(type => GraphQLISODateTime)
     @UpdateDateColumn({
         type: 'timestamp',
-       // transformer: new DateTimeZoneTransformer(),
+        // transformer: new DateTimeZoneTransformer(),
     })
     updatedAt: Date;
 

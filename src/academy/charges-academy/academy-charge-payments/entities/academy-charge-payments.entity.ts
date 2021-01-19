@@ -90,7 +90,7 @@ export class AcademyChargePayments extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyPayment)
     academyPaymentOfficeSet: BranchOfficeSetting;
 
-    @Field(type => PaymentStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,

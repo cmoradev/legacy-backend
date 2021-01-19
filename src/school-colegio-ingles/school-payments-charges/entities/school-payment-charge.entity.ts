@@ -7,20 +7,25 @@ import {
 import { SystemTypeExtraChargesEnum } from '../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SystemExtraCharges } from '../../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity()
 export class SchoolPaymentCharge extends Base{
 
+  @Field()
   @Column('varchar', {
     nullable: false,
   })
   name: string;
 
+  @Field(type => Int)
   @Column('int', {
     nullable: false,
   })
   quantity: number;
 
+  @Field()
   @Column({
     type: 'simple-enum',
     nullable: true,
@@ -28,6 +33,7 @@ export class SchoolPaymentCharge extends Base{
   })
   applicationType: TypeChargeApplicationEnum;
 
+  @Field()
   @Column({
     type: 'simple-enum',
     nullable: true,
@@ -35,6 +41,7 @@ export class SchoolPaymentCharge extends Base{
   })
   operationType: OperationApplicationEnum;
 
+  @Field()
   @Column({
     type: 'simple-enum',
     nullable: true,
@@ -42,9 +49,11 @@ export class SchoolPaymentCharge extends Base{
   })
   typeExtraCharge: SystemTypeExtraChargesEnum;
 
+  @Field(type => SchoolPayment)
   @ManyToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.extraCharges)
   schoolPaymentChargeDetail: SchoolPayment;
 
+  @Field(type => SystemExtraCharges)
   @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
   systemExtraCharges: SystemExtraCharges;
 }

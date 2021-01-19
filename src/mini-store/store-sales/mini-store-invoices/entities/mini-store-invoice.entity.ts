@@ -108,7 +108,7 @@ export class MiniStoreInvoice extends Base {
     })
     idPayment: number;
 
-    @Field(type => InvoiceType)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -117,7 +117,7 @@ export class MiniStoreInvoice extends Base {
     })
     invoiceType: InvoiceType;
 
-    @Field(type => InvoiceStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,

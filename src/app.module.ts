@@ -34,12 +34,12 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
       name: ColegioDBNameConnection,
       useClass: ColegioDBService,
     }),
-    // GraphQLModule.forRoot({
-    //   debug: true,
-    //   playground: true,
-    //   installSubscriptionHandlers: true,
-    //   autoSchemaFile: 'schema.gql',
-    // }),
+    GraphQLModule.forRoot({
+      debug: true,
+      playground: true,
+      installSubscriptionHandlers: true,
+      autoSchemaFile: 'schema.gql',
+    }),
 
     // GraphQLModule.forRoot({
     //   debug: true,

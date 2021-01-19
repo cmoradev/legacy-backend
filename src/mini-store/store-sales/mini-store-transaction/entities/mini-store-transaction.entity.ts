@@ -49,7 +49,7 @@ export class MiniStoreTransaction extends Base {
     })
     applicationDate: Date;
 
-    @Field(type => CashRegisterTransactionType)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,

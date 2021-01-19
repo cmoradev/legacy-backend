@@ -29,7 +29,7 @@ export class SalesReturns extends Base{
     })
     comments: string;
 
-    @Field(type => InvoicementStatusEnum)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,

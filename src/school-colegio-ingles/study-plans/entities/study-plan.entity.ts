@@ -7,30 +7,39 @@ import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity()
 export class StudyPlan extends Base {
 
+    @Field()
     @Column()
     name: string;
 
+    @Field()
     @Column()
     code: string;
 
+    @Field()
     @Column('varchar', {
         nullable: false,
     })
     status: string;
 
+    @Field(type => [StudyPlanVariant])
     @OneToMany(type => StudyPlanVariant, (studyPlanVariants) => studyPlanVariants.studyPlan)
     studyPlansVariants: StudyPlanVariant[];
 
+    @Field(type => Modality)
     @ManyToOne(type => Modality, (modality) => modality.studyPlans)
     modality: Modality;
 
+    @Field(type => Assignment)
     @OneToMany(type => Assignment, (assignment) => assignment.studyPlan)
     assignment: Assignment;
 
+    @Field()
     @Column({
         type: 'timestamp',
         nullable: false,
@@ -38,6 +47,7 @@ export class StudyPlan extends Base {
     })
     startDate: string;
 
+    @Field({ nullable: true})
     @Column({
         type: 'timestamp',
         nullable: true,
@@ -45,14 +55,19 @@ export class StudyPlan extends Base {
     })
     endDate: string | null;
 
+    @Field(type => Level)
     @ManyToOne(() => Level, (level) => level.studyPlans)
     level: Level;
+
+    @Field(type => [Classroom])
     @OneToMany(() => Classroom, (classroom) => classroom.studyPlan)
     classrooms: Classroom[];
 
+    @Field(type => [Inscription])
     @OneToMany(() => Inscription, (inscription) => inscription.inscripStudyPlan)
     studyPlaninscriptions: Inscription[];
 
+    @Field(type => [PaymentPlan])
     @ManyToOne(() => PaymentPlan, (paymentPlan) => paymentPlan.studyPlan )
     paymentPlans: PaymentPlan[];
 

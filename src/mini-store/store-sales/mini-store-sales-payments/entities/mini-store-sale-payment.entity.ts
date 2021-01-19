@@ -57,7 +57,7 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Deprecated
      */
-    @Field(type => PaymentStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -137,7 +137,7 @@ export class MiniStoreSalePayment extends Base {
     })
     miniStoreSale: MiniStoreSale;
 
-    @Field(type => PaymentStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,

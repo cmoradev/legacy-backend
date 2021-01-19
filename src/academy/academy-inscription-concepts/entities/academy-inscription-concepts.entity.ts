@@ -67,7 +67,7 @@ export class AcademyInscriptionConcepts extends Base {
     })
     idConceptoCobro: number;
 
-    @Field(type => PaymentStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,

@@ -10,7 +10,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @Entity({ name: 'cash_register_transactions' })
 export class CashRegisterTransaction extends Base {
 
-    @Field(type => CashRegisterTransactionType)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,

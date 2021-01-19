@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import  { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -15,7 +15,7 @@ import { MiniStoreQuotation } from '../../mini-store-quotation/entities/mini-sto
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { TypeormLoader } from 'type-graphql-dataloader';
 
-@ObjectType()
+@ObjectType('tie_ventas')
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
 

@@ -68,7 +68,7 @@ export class AcademyChargeInvoice extends Base {
     })
     reasonCancellation: string | null;
 
-    @Field(type => InvoiceType)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -77,7 +77,7 @@ export class AcademyChargeInvoice extends Base {
     })
     invoiceType: InvoiceType;
 
-    @Field(type => InvoiceStatus)
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,

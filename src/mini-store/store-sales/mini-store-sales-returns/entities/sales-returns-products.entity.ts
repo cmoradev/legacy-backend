@@ -1,25 +1,20 @@
-import {
-    BeforeInsert, BeforeUpdate,
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    VersionColumn,
-} from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne } from 'typeorm';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { SalesReturns } from './sales-returns.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity({ name: 'sale_return_products' })
 export class SalesReturnsProducts extends Base {
 
+    @Field(type => MiniStoreSaleDetail)
     @ManyToOne(type => MiniStoreSaleDetail, saleDetail => saleDetail.returnedProducts, {
         nullable: false,
     })
     saleDetail: MiniStoreSaleDetail;
 
+    @Field(type => Int)
     @Column({
         type: 'decimal',
         nullable: false,
@@ -29,6 +24,7 @@ export class SalesReturnsProducts extends Base {
     })
     quantity: number;
 
+    @Field()
     @Column({
         type: 'decimal',
         nullable: false,
@@ -38,6 +34,7 @@ export class SalesReturnsProducts extends Base {
     })
     amount: string;
 
+    @Field(type => SalesReturns)
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.details, {
         nullable: false,
     })
