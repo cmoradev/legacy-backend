@@ -114,11 +114,15 @@ export class SettingsController implements CrudController<Company> {
             relations: ['defaultClient'],
         });
         if (result) {
+            res.status(200);
             res.send(result.defaultClient);
+        } else {
+
+            res.status(500);
+            res.send({
+                error: 'COMPANY_NOT_EXIST',
+            });
         }
-        res.status(500).send({
-            error: 'COMPANY_NOT_EXIST',
-        });
     }
 
 }
