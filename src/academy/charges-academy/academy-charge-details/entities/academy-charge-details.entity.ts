@@ -3,7 +3,7 @@ import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-ex
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_cobro_detalle')

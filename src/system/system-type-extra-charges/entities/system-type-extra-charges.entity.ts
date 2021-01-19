@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
+import { Column, Entity, OneToMany, ValueTransformer } from 'typeorm';
 import { SystemExtraCharges } from '../../system-extra-charges/entities/system-extra-charges.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 export const myTransformer: ValueTransformer = {
 
@@ -19,9 +20,11 @@ export enum SystemTypeExtraChargesEnum {
     Becas = 3,
 }
 
+@ObjectType()
 @Entity('ac_tipo_descuento')
 export class SystemTypeExtraCharges extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 50,
@@ -29,6 +32,7 @@ export class SystemTypeExtraCharges extends Base {
     })
     name: string;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 100,
@@ -37,6 +41,7 @@ export class SystemTypeExtraCharges extends Base {
     })
     operations: string;
 
+    @Field(type => [SystemExtraCharges])
     @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesType)
     systemTyExCharCharge: SystemExtraCharges[];
 

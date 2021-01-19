@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseOrder } from '../../mini-store-warehouse-orders/entities/mini-store-warehouse-order.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('tie_almacen_pedidos_productos')

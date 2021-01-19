@@ -1,10 +1,5 @@
-import {
-    Column, CreateDateColumn,
-    Entity, Generated,
-    PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn,
-} from 'typeorm';
-import { DateTimeZoneTransformer } from './transformers/date-time-zone.transformer';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Column, CreateDateColumn, Generated, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
+import { Field, ID } from '@nestjs/graphql';
 
 export class Base {
     @Field(type => ID)

@@ -7,7 +7,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { InvoiceKeys } from '../../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { MiniStoreProductsProviders } from '../../mini-store-products-providers/entities/mini-store-products-providers.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 export const toJsonCal: ValueTransformer = {
 

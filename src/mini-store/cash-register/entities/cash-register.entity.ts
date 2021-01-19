@@ -3,7 +3,7 @@ import { CashRegisterTransaction } from '../../cash-register-transactions/entiti
 import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreTransaction } from '../../store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity({ name: 'cash_register' })

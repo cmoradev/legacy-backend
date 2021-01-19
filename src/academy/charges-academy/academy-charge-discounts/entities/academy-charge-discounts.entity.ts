@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_cobro_det_descuentos')

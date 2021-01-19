@@ -8,7 +8,7 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('tie_facturas')

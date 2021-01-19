@@ -11,7 +11,7 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_inscripciones_alumnos')
@@ -34,7 +34,6 @@ export class AcademyInscription extends Base {
   description: string | null;
 
   @Field({ nullable: true })
-  @Field()
   @Column('varchar', {
     nullable: true,
     length: 230,
@@ -97,7 +96,7 @@ export class AcademyInscription extends Base {
   })
   isActive: boolean;
 
-  @Field(type => InscriptionStatus)
+  @Field()
   @Column({
     type: 'simple-enum',
     enum: InscriptionStatus,

@@ -2,7 +2,7 @@ import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { Route } from '../../../../system/routes/entities/route.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('mini_store_quotation')

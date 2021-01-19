@@ -10,10 +10,13 @@ import {
     OperationApplicationEnum,
     TypeChargeApplicationEnum,
 } from '../enums/system-extra-charges.enum';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('ac_descuentos')
 export class SystemExtraCharges extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 300,
@@ -21,12 +24,14 @@ export class SystemExtraCharges extends Base {
     })
     name: string;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'porcentaje',
     })
     quantity: number;
 
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -35,6 +40,7 @@ export class SystemExtraCharges extends Base {
     })
     typeApplication: TypeChargeApplicationEnum;
 
+    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -43,32 +49,37 @@ export class SystemExtraCharges extends Base {
     })
     operation: OperationApplicationEnum;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: true,
         name: 'dia_inicio',
     })
     startDay: number | null;
 
+    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
         name: 'dia_fin',
     })
     endDay: number | null;
 
-    @Column( {
-        type:  'timestamp',
+    @Field()
+    @Column({
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_inicio',
     })
     startDate: Date;
 
+    @Field()
     @Column({
-        type:  'timestamp',
+        type: 'timestamp',
         nullable: true,
         name: 'fecha_fin',
     })
     endDate: Date;
 
+    @Field()
     @Column({
         type: 'simple-enum',
         name: 'id_formaplicacion',
@@ -78,6 +89,7 @@ export class SystemExtraCharges extends Base {
     })
     applicationForm: ApplicationFormEnum;
 
+    @Field(type => SystemTypeExtraCharges)
     @ManyToOne(type => SystemTypeExtraCharges, systemTypeExtraCharges => systemTypeExtraCharges.systemTyExCharCharge)
     @JoinColumn({
         name: 'id_tipo_descuento',
@@ -85,6 +97,7 @@ export class SystemExtraCharges extends Base {
     })
     extraChargesType: SystemTypeExtraCharges;
 
+    @Field(type => BranchOffice)
     @ManyToOne(type => BranchOffice, campus => campus.campusExtraCharges)
     @JoinColumn({
         name: 'id_plantel',
@@ -92,6 +105,7 @@ export class SystemExtraCharges extends Base {
     })
     extraChargesCampus: BranchOffice;
 
+    @Field(type => Cycle)
     @ManyToOne(type => Cycle, cycle => cycle.cycleSystemExtraCharges)
     @JoinColumn({
         name: 'id_ciclo',
@@ -99,6 +113,7 @@ export class SystemExtraCharges extends Base {
     })
     extraChargesCycle: Cycle;
 
+    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -106,9 +121,11 @@ export class SystemExtraCharges extends Base {
     })
     isActive: boolean;
 
+    @Field(type => [SchoolChargesDetailsExtraCharges])
     @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
     extraChargeSchool: SchoolChargesDetailsExtraCharges[];
 
+    @Field(type => [MiniStoreDetailsExtraCharges])
     @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
     extraChargeMiniStore: MiniStoreDetailsExtraCharges[];
 

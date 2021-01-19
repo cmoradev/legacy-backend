@@ -6,7 +6,7 @@ import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../../charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 import { AcademyInscriptionConceptCharges } from '../../academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_inscrip_conceptos')

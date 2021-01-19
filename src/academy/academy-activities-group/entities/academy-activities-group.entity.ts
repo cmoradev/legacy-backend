@@ -5,7 +5,7 @@ import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.enti
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_grupos')

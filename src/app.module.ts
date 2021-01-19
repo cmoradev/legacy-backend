@@ -16,8 +16,9 @@ import { SystemModule } from './system/system.module';
 import { IntegrationsModule } from './integrations/integrations.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { AcademyModule } from './academy/academy.module';
-import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
@@ -33,6 +34,24 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
       name: ColegioDBNameConnection,
       useClass: ColegioDBService,
     }),
+    // GraphQLModule.forRoot({
+    //   debug: true,
+    //   playground: true,
+    //   installSubscriptionHandlers: true,
+    //   autoSchemaFile: 'schema.gql',
+    // }),
+
+    // GraphQLModule.forRoot({
+    //   debug: true,
+    //   playground: true,
+    //
+    //   typeDefs: [__dirname + '**/*.graphql'],
+    //   installSubscriptionHandlers: true,
+    //   definitions: {
+    //     path: join(process.cwd(), './src/graphql.schema.ts'),
+    //     outputAs: 'class',
+    //   },
+    // }),
     ScheduleModule.forRoot(),
     ConfigModule,
     RouterModule.forRoutes(routes),

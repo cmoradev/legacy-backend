@@ -6,16 +6,20 @@ import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { MiniStoreSalesPaymentsModule } from '../mini-store-sales-payments/mini-store-sales-payments.module';
 import { MiniStoreQuotationModule } from '../mini-store-quotation/mini-store-quotation.module';
+import { MiniStoreSalesResolver } from './mini-store-sales.resolver';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([MiniStoreSale], ColegioDBNameConnection),
         MiniStoreSalesPaymentsModule,
-        MiniStoreQuotationModule
+        MiniStoreQuotationModule,
     ],
     exports: [MiniStoreSalesService],
     controllers: [MiniStoreSalesController],
-    providers: [MiniStoreSalesService],
+    providers: [
+        MiniStoreSalesService,
+        MiniStoreSalesResolver,
+    ],
 })
 export class MiniStoreSalesModule {
 }

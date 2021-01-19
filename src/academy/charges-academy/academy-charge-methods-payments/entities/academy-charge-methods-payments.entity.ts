@@ -3,7 +3,7 @@ import { Base } from '../../../../common/orm/entities/base.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { InvoicesBank } from '../../../../system/invoices-bank/entities/invoices-bank.entity';
 import { AcademyChargePayments } from '../../academy-charge-payments/entities/academy-charge-payments.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 /**
  * Esta tabla hacer referencia a metodo de pago pero llama ala tabla forma pago

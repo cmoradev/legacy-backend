@@ -5,7 +5,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
 import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_aconceptos')

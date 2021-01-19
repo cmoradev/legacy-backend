@@ -8,7 +8,7 @@ import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_academias')

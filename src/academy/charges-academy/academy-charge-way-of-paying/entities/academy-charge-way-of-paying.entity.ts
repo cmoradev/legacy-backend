@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 
 @ObjectType()

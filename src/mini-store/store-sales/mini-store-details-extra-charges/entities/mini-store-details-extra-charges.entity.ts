@@ -8,7 +8,7 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('mini-store-details-extra-charges')

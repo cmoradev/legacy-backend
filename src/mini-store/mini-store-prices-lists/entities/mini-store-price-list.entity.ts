@@ -7,7 +7,7 @@ import {
 import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ObjectType, Int } from 'type-graphql';
+import { Field, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('tie_listaprecios')

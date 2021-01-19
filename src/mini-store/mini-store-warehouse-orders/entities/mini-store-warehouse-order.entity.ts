@@ -4,7 +4,7 @@ import { MiniStoreWarehouseProvider } from '../../mini-store-warehouse-providers
 import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CashRegisterTransactionType } from '../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 
 @ObjectType()

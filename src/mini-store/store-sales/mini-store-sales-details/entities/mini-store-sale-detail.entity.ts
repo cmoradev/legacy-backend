@@ -1,15 +1,17 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreProduct } from '../../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreClassification } from '../../../mini-store-classifications/entities/mini-store-classification.entity';
 import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
-import { SchoolChargesDetailsExtraCharges } from '../../../../school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 import { MiniStoreDetailsExtraCharges } from '../../mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('tie_venta_detalle')
 export class MiniStoreSaleDetail extends Base {
 
+    @Field()
     @Column('varchar', {
         nullable: false,
         length: 8,
@@ -17,12 +19,14 @@ export class MiniStoreSaleDetail extends Base {
     })
     productCode: string;
 
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         name: 'product_name',
     })
     productName: string;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         name: 'cantidad',
@@ -32,12 +36,14 @@ export class MiniStoreSaleDetail extends Base {
     })
     quantity: number;
 
+    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'1\'',
     })
     unitMeasurement: number;
 
+    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         precision: 15,
@@ -45,6 +51,7 @@ export class MiniStoreSaleDetail extends Base {
     })
     priceWithIVA: number;
 
+    @Field()
     @Column('decimal', {
         nullable: false,
         precision: 15,
@@ -53,28 +60,34 @@ export class MiniStoreSaleDetail extends Base {
     })
     price: string;
 
+    @Field()
     @Column('tinyint', {
         nullable: false,
         default: 1,
     })
     isIva: boolean;
-    
+
+    @Field(type => MiniStoreSale)
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSaleDetails)
     miniStoreSale: MiniStoreSale;
 
+    @Field(type => MiniStoreProduct)
     @ManyToOne(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.miniStoreSaleDetails)
     miniStoreProduct: MiniStoreProduct;
 
+    @Field(type => MiniStoreClassification)
     @ManyToOne(() => MiniStoreClassification, (miniStoreClassification) => miniStoreClassification.miniStoreSaleDetails)
     miniStoreClassification: MiniStoreClassification;
 
+    @Field(type => SalesReturnsProducts)
     @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
     returnedProducts: SalesReturnsProducts;
 
+    @Field(type => [MiniStoreDetailsExtraCharges])
     @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.miniSaleChargeDetails,
-        {
-            cascade: ['insert'],
-        })
+      {
+          cascade: ['insert'],
+      })
     extraCharges: MiniStoreDetailsExtraCharges[];
 
 }

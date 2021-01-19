@@ -8,7 +8,7 @@ import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-
 import { MiniStoreSaleDetail } from '../../store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { CashRegisterTransactionType } from '../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 
 @ObjectType()

@@ -7,7 +7,7 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('ac_charges_details_extra_charges')

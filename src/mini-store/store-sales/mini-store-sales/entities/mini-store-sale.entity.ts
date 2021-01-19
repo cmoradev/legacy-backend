@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -11,15 +11,15 @@ import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { RouteAction } from '../../../../system/route-action/entities/route-action.entity';
 import { MiniStoreQuotation } from '../../mini-store-quotation/entities/mini-store-quotation.entity';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 @ObjectType()
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
 
-  @Field(type => MiniStoreSale)
+  @Field()
   @Column('varchar', {
     nullable: false,
     length: 40,
@@ -28,7 +28,7 @@ export class MiniStoreSale extends Base {
   })
   folio: string;
 
-  @Field(type => PaymentStatus)
+  @Field()
   @Column({
     type: 'simple-enum',
     enum: PaymentStatus,
@@ -68,7 +68,8 @@ export class MiniStoreSale extends Base {
   })
   iva: number;
 
-  @Field(type => BranchOffice)
+
+  @Field(() => BranchOffice)
   @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStore)
   @JoinColumn({
     name: 'storeBranchOfficeId',
@@ -76,7 +77,7 @@ export class MiniStoreSale extends Base {
   })
   storeBranchOffice: BranchOffice;
 
-  @Field(type => BranchOfficeSetting)
+  @Field((type) => BranchOfficeSetting)
   @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSetStore)
   storeBranchOfficeSet: BranchOfficeSetting;
 

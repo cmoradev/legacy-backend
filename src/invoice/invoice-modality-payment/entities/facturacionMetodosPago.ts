@@ -1,24 +1,12 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  RelationId,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-
+@ObjectType()
 @Entity('facturacion_metodos_pago')
 export class FacturacionMetodosPago extends Base {
 
+  @Field()
   @Column('varchar', {
     nullable: false,
     length: 90,
@@ -27,6 +15,7 @@ export class FacturacionMetodosPago extends Base {
   nombre: string;
 
 
+  @Field()
   @Column('varchar', {
     nullable: false,
     length: 5,
