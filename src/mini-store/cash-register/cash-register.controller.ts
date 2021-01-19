@@ -1,8 +1,7 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegister } from './entities/cash-register.entity';
 import { CashRegisterService } from './cash-register.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { ReportsCashQuery } from './types/reports.type';
 import { Response } from 'express';
 import { TransactionsReport } from './reports/transactions';
@@ -47,6 +46,7 @@ export class CashRegisterController implements CrudController<CashRegister> {
             await re.addMoneyOut(tra.moneyOut);
             await re.addSubIncomeMoneyOut(tra.subIncomeMoneyOut);
             await re.addTotal(tra.total);
+            await re.finalAmount(tra.finalAmount);
             res.send({
                 src: 'data:application/pdf;base64,' + await re.getDocument(),
             });

@@ -18,6 +18,7 @@ interface Convert {
     moneyOut: string | number | any;
     subIncomeMoneyOut: string | number | any;
     total: string | number | any;
+    finalAmount: number | string;
 }
 
 export function transactionsList(registro: CashRegister): Convert {
@@ -25,10 +26,12 @@ export function transactionsList(registro: CashRegister): Convert {
     const resultado = {
         data: [],
         box: roundQuantity(registro.initialAmount),
-        income: roundQuantity(registro.initialAmount),
+        income: 0,
+        finalAmount: roundQuantity(registro.finalAmount),
         moneyOut: 0,
         subIncomeMoneyOut: 0,
         total: 0,
+
     };
 
     let re: any = {
@@ -73,7 +76,8 @@ export function transactionsList(registro: CashRegister): Convert {
         };
     }
     resultado.subIncomeMoneyOut = subQuantity(resultado.income, resultado.moneyOut);
-    resultado.total = subQuantity(subQuantity(resultado.income, resultado.moneyOut), registro.initialAmount);
+    resultado.total = subQuantity(resultado.income, resultado.moneyOut);
+
     return resultado;
 }
 

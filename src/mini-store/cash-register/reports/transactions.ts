@@ -240,6 +240,10 @@ export class TransactionsReport {
         this.docDefinition.content[2].table.body[0][1].text[9] = { text: ' $ ' + total + '\n', style: { bold: true } };
     }
 
+    async finalAmount(total: string | number) {
+        this.docDefinition.content[2].table.body[0][1].text.push({ text: 'Monto Final:  $ ' + total + '\n', style: { bold: true } })
+    }
+
     async getDocument(options?: BufferOptions): Promise<string> {
         const bitmap = readFileSync(rootPath + '/public/images/logoOfficial.png');
         // convert binary data to base64 encoded string
