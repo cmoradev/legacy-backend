@@ -29,16 +29,19 @@ export class UsersService extends TypeOrmCrudService<User> {
         return this.repo.save(user);
     }
 
-    public async getUserCasher(): Promise<User[]> {
-        const cashiersAndSales = await this.repo.find({
-            relations: ['salePayments', 'department'],
-        });
-        const cashiers = cashiersAndSales.filter(cashier => {
-            if (cashier.department !== null && cashier.department.id === 2 || cashier.salePayments.length > 0) {
-                return cashier;
-            }
-        });
-        return cashiers;
+    public async get_user_with_store_sales(): Promise<User[]> {
+        // consulta para obtener solo los usuarios con ventas en tienda
+        const cashiersAndSales = await this.repo.createQueryBuilder('user')
+          .innerJoin('user.salePayments', 'salePayments')
+          .leftJoinAndSelect('user.role', 'role')
+          .select([
+              'user.id',
+              'user.name',
+              'role.id',
+              'role.name',
+          ])
+          .getMany();
+        return cashiersAndSales;
     }
 
     public async forDepartament(id: number): Promise<number> {

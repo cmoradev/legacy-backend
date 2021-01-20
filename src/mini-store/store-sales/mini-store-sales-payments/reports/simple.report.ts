@@ -6,6 +6,7 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
+import { CellRow } from '../utils/generate-matriz-by-payment';
 
 export class SimpleReport {
 
@@ -15,7 +16,7 @@ export class SimpleReport {
         salesReturns: SalesReturns[],
         paymentMethods: InvoiceMethodPayment[],
         sales: MiniStoreSale[],
-    }): Excel.Workbook {
+    }, matriz: CellRow[][]): Excel.Workbook {
         const workbook = new Excel.Workbook();
         const { sales, salesReturns } = data;
         workbook.views = [
@@ -55,14 +56,14 @@ export class SimpleReport {
                   },
               },
         });
-        this.fillPaymentsSheet(paymentsSheet, image, data);
+        this.fillPaymentsSheet(paymentsSheet, image, data, matriz);
         this.fillSalesSheet(salesSheet, sales);
         this.fillSalesReturnsSheet(salesReturnsSheet, salesReturns);
 
         return workbook;
     }
 
-    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data): Excel.Worksheet {
+    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data, matriz: CellRow[][]): Excel.Worksheet {
         const { cashiers, payments, paymentMethods } = data;
         paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
@@ -121,54 +122,9 @@ export class SimpleReport {
         paymentsSheet.getRow(1).values = headers.map((value: User) => value && value.name);
         const dynamicKeys = Array.from(Array(headers.length + 1).keys());
 
-        interface ResumeType {
-            paymentMethod: InvoiceMethodPayment;
-            cashier: User;
-            quantity: number;
-            change: number;
-            total: number;
-        }
-
-        const resume: ResumeType[] = [];
-
-        paymentMethods.forEach(paymentMethod => {
-            const paymentsByMethod = payments.filter(payment => payment.miniStoreSaleMethodPayments
-              .some(method => method.invoiceMethod.id === paymentMethod.id));
-            paymentsByMethod.forEach(payment => {
-                payment.miniStoreSaleMethodPayments.filter(method => method.invoiceMethod.id === paymentMethod.id)
-                  .forEach(filteredMethod => {
-                      const total = filteredMethod.quantity - (payment.change || 0);
-                      resume.push({
-                          paymentMethod,
-                          cashier: payment.agent,
-                          quantity: filteredMethod.quantity,
-                          change: payment.change || 0,
-                          total,
-                      });
-                  });
-            });
-        });
-
-        const resumeDataTable = [];
-
-        for (const paymentMethod of paymentMethods) {
-            const resumeDataTableItem: any[] = [paymentMethod.name];
-            for (const cashier of cashiers) {
-                const filteredResume = resume.filter(value => value.paymentMethod.id === paymentMethod.id && value.cashier.id === cashier.id);
-                resumeDataTableItem.push(filteredResume.reduce((previousValue, currentValue) => {
-                    return previousValue + currentValue.total;
-                }, 0));
-            }
-            resumeDataTableItem.push(resumeDataTableItem.reduce((previousValue, currentValue) => {
-                let amount = 0;
-                if (!isNaN(+currentValue)) {
-                    amount = +currentValue;
-                }
-                return previousValue + amount;
-            }, 0));
-
-            resumeDataTable.push(resumeDataTableItem);
-        }
+        const tableHead = matriz[0];
+        matriz.shift();
+        matriz.pop();
         paymentsSheet.addTable({
             name: 'resumen',
             ref: 'F1',
@@ -176,24 +132,38 @@ export class SimpleReport {
             style: {
                 showColumnStripes: true,
             },
-            columns: [{
-                name: 'Tipo',
-                totalsRowLabel: 'Total global',
-                filterButton: true,
-            }, ...cashiers.map(value => {
-                return {
-                    name: value.name,
-                    filterButton: false,
-                    totalsRowFunction: 'sum' as 'sum',
-                };
-            }).concat({
-                name: 'Total',
-                totalsRowFunction: 'sum' as 'sum',
-                filterButton: false,
+            columns: tableHead.map((head, i) => {
+                if (i === 0) {
+                    return {
+                        name: 'Tipo',
+                        totalsRowLabel: 'Total global',
+                        filterButton: true,
+                    };
+                } else if (i === matriz[0].length) {
+                    return {
+                        name: 'Total',
+                        totalsRowFunction: 'sum' as 'sum',
+                        filterButton: false,
+                    };
+                } else {
+                    return {
+                        name: head.value,
+                        filterButton: false,
+                        totalsRowFunction: 'sum' as 'sum',
+                    };
+                }
             }),
-            ],
-            rows: resumeDataTable.map(value => value),
-        });
+            rows: matriz.map((value, i) => {
+                const newList = [];
+                let k = 0;
+                for (const val of value) {
+                    newList.push(val.value);
+                    k++;
+                }
+                return newList;
+            }),
+        })
+        ;
 
         for (const row of Array.from(Array(2 + paymentMethods.length + 1).keys())) {
             if (row >= 2) {
@@ -359,7 +329,7 @@ export class SimpleReport {
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {
-                ['B', 'C', 'D', 'E', 'F', 'G', 'K', 'L', 'M'].forEach(column => {
+                ['B', 'C', 'D', 'E', 'F', 'G','J', 'K', 'L', ].forEach(column => {
                     salesSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                 });
                 startRow = nextRowToMerge;

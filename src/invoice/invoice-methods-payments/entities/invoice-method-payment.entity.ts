@@ -1,9 +1,7 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
-import { SchoolChargeDetails } from '../../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 

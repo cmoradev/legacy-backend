@@ -8,9 +8,17 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 @Injectable()
 export class InvoiceMethodsPaymentsService extends TypeOrmCrudService<InvoiceMethodPayment> {
     constructor(
-        @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly repo: Repository<InvoiceMethodPayment>,
+      @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly repo: Repository<InvoiceMethodPayment>,
     ) {
         super(repo);
     }
 
+    async get_payment_methods_active() {
+        return await this.repo.find({
+            where: {
+                showReport: true,
+                isActive: true,
+            },
+        });
+    }
 }

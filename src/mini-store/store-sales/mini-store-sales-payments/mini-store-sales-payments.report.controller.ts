@@ -1,30 +1,15 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
+import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { convertPaymentsComissionReport, convertPaymentsReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
-import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
-import { FactSw } from '../../../webService/FactSw';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { GenerateInvoice } from './utils/generateInvoice';
-import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
-import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
-import { User } from '../../../system/users/entities/user.entity';
-import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
+import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { PDF, XmlToJson } from '@signati/pdf';
-import * as fs from 'fs';
-import { XmlCdfi } from '@signati/core';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { readFileSync } from 'fs';
 import { Response } from 'express';
+import { UsersService } from '../../../system/users/users.service';
+import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
     constructor(
@@ -32,17 +17,22 @@ export class MiniStoreSalesPaymentsReportController {
       readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
       readonly branchOffice: BranchOfficeService,
       readonly branchOfficeSettingService: BranchOfficeSettingService,
+      readonly user: UsersService,
     ) {
     }
 
     @Get('/simple-report')
-    async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
+    async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
         const payments = await this.service.fetchFilteredPayments(query);
         const sales = await this.service.fetchFilteredSales(query);
         const salesReturns = await this.service.fetchFilteredReturns(query);
+        const cashiers = await this.user.get_user_with_store_sales();
+        const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
+        const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
+
         const result = {
             payments: {
-                matriz: [],
+                matriz,
                 payments: [],
             },
             sales: [],
@@ -50,19 +40,20 @@ export class MiniStoreSalesPaymentsReportController {
             file: '',
         };
         if (query.onlyFile) {
-            result.file = await this.service.simpleReport(payments, sales, salesReturns, { base64: true });
+            result.file = await this.service.simpleReport(
+              payments,
+              sales,
+              salesReturns,
+              cashiers,
+              paymentMethods,
+              matriz,
+              { base64: true });
         } else {
-            const cashiers = await this.service.getUserCasher();
-            const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
-                where: {
-                    showReport: true,
-                    isActive: true,
-                },
-            });
-            const viewPayments = convertPaymentsReport(payments, cashiers, paymenMethods);
+
+            const viewPayments = convertPaymentsReport(payments, cashiers, paymentMethods);
             result.payments = viewPayments;
         }
-        response.send(result);
+        res.send(result);
     }
 
     @Get('/commissions')

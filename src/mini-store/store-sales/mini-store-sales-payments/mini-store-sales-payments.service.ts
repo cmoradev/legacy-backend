@@ -8,15 +8,15 @@ import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import moment = require('moment');
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
-import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import * as nodemailer from 'nodemailer';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import Mail from 'nodemailer/lib/mailer';
 import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { CommissionsReport } from './reports/commissions.report';
+import { CellRow } from './utils/generate-matriz-by-payment';
+import moment = require('moment');
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -150,24 +150,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     async simpleReport(payments: MiniStoreSalePayment[],
                        sales: MiniStoreSale[],
                        salesReturns: SalesReturns[],
+                       cashiers: User[],
+                       paymentMethods: InvoiceMethodPayment[],
+                       matriz: CellRow[][],
                        options?: { base64: boolean }): Promise<string | any> {
 
-        const cashiersAndSales = await this.userRepository.find({
-            relations: ['salePayments', 'department', 'role'],
-        });
-
-        const paymentMethods = await this.invoiceMethodPaymentRepository.find({
-            where: {
-                showReport: true,
-                isActive: true,
-            },
-        });
-
-        const cashiers = cashiersAndSales.filter(cashier => {
-            if (cashier.role.id === 5 && cashier.department.id === 2 || cashier.salePayments.length > 0) {
-                return cashier;
-            }
-        });
 
         const workbook = new SimpleReport().generate({
             payments,
@@ -175,7 +162,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             paymentMethods,
             salesReturns,
             sales,
-        });
+        }, matriz);
         try {
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
