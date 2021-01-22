@@ -16,6 +16,7 @@ export interface ReportStructure {
   clientType: string
   level: string,
   grade: string,
+  group: string;
   description: string,
   payDay: Date | string,
   price: string | number,

@@ -5,7 +5,6 @@ import { TypeStudent } from '../../students/interface/studentsSchool.interface';
 
 export class ReportProcessor {
   public strutureReport(schoolPayments: SchoolPayment[]): ReportStructure[] {
-    console.log(schoolPayments);
     const flatReport: ReportStructure[] = [];
     for (const schoolPayment of schoolPayments) {
       let payDay;
@@ -16,6 +15,7 @@ export class ReportProcessor {
         clientType: schoolPayment.inscription.inscripStudent.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
         level: schoolPayment.inscription.inscripLevel.name,
         grade: schoolPayment.inscription.inscripGrade.name,
+        group: schoolPayment.inscription.inscripGroup.name,
         description: schoolPayment.description,
         price: schoolPayment.price,
         payDay,
