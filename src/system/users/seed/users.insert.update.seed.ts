@@ -11,31 +11,8 @@ export default class UsersInsertUpdateSeed implements Seeder {
             user.password = await hash(user.password, 8);
             return user;
         }));
-        await connection
-          .createQueryBuilder()
-          .insert()
-          .into(User)
-          .values(list)
-          .orUpdate({
-              conflict_target: ['id'],
-              overwrite: [
-                  'id',
-                  'name',
-                  'lastnameMother',
-                  'lastnameFather',
-                  'version',
-                  'uuid',
-                  'email',
-                  'password',
-                  'img',
-                  'isActive',
-                  'campus',
-                  'department',
-                  'role',
-              ],
-          })
-          .orIgnore()// para ignorar valores duplicado
-          .execute();
+        await connection.getRepository(User).save(list);
+
 
     }
 }

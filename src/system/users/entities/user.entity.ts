@@ -1,9 +1,4 @@
-import {
-    Column,
-    Entity, ManyToOne,
-    OneToMany, OneToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
@@ -132,15 +127,15 @@ export class User extends Base {
     teacher: Teacher;
 
     @Field(type => Role)
-    @ManyToOne(() => Role, (role) => role.users)
+    @ManyToOne(() => Role, (role) => role.users, { cascade: ['insert', 'update'] })
     role: Role;
 
     @Field(type => Department)
-    @ManyToOne(() => Department, (department) => department.users)
+    @ManyToOne(() => Department, (department) => department.users, { cascade: ['insert', 'update'] })
     department: Department;
 
     @Field(type => BranchOffice)
-    @ManyToOne(() => BranchOffice, (campus) => campus.users)
+    @ManyToOne(() => BranchOffice, (campus) => campus.users, { cascade: ['insert', 'update'] })
     campus: BranchOffice;
 
     @Field(type => [MiniStoreInvoice])

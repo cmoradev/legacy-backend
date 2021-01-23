@@ -26,20 +26,7 @@ export default class BranchOfficeInsertUpdateSeed implements Seeder {
           .into(BranchOffice)
           .values(list)
           .orUpdate({
-              conflict_target: ['id'],
-              overwrite: [
-                  'id',
-                  'name',
-                  'BranchType',
-                  'Email',
-                  'UserEmail',
-                  'EmailPass',
-                  'uuid',
-                  'version',
-                  'idLocation',
-                  'FolioOrder',
-                  'PrefixOrder',
-              ],
+              conflict_target: ['id']
           })
           .orIgnore()// para ignorar valores duplicado
           .execute();

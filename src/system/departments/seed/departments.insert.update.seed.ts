@@ -79,7 +79,7 @@ export default class DepartmentsInsertUpdateSeed implements Seeder {
               conflict_target: ['id'],
               overwrite: [
                   'id',
-                  'name',
+                  'nombre',
                   'uuid',
                   'version',
                   'description',

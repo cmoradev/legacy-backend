@@ -12,16 +12,7 @@ export default class PermissionsInsertUpdateSeed implements Seeder {
           .values([...permission])
           .orUpdate({
               conflict_target: ['id'],
-              overwrite: [
-                  'id',
-                  'isActive',
-                  'name',
-                  'fatherID',
-                  'level',
-                  'url',
-                  'icon',
-                  'mpath',
-              ],
+              overwrite: [],
           })
           .orIgnore()// para ignorar valores duplicado
           .execute();
