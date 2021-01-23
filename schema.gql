@@ -496,15 +496,35 @@ type BranchOfficeSetting {
   fiscalRegime: String!
   zip: String!
   country: Int!
+
+  """Prefijo Folio de Venta"""
   foliajeNota: String
-  foliajeFactura: String!
-  foliajePago: String!
-  folioCotizacion: Float
-  serieCotizacion: Int
+
+  """Numero Folio de Venta"""
   serieNota: Float
+
+  """Prefijo Folio de Factura"""
+  foliajeFactura: String!
+
+  """Numero Folio de Factura"""
   serieFactura: Int
-  seriePago: Int
+
+  """
+  Serie Folio de Factura SAT "A"
+  """
   serieFacturacion: String!
+
+  """Prefijo Folio de Pago"""
+  foliajePago: String!
+
+  """Numero Folio de Pago"""
+  seriePago: Int
+
+  """Prefijo Folio de Cotizacion"""
+  folioCotizacion: String
+
+  """Numero Folio de Cotizacion"""
+  serieCotizacion: Int
   daysQuoteValid: Int
   perCommissions: Int!
   cerCSD: String!

@@ -1,23 +1,8 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    RelationId,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { BranchOffice } from '../../branch-office/entities/branch-office.entity';
 import { TypeModule } from '../../../invoice/interface/FolioInvoice.interface';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { SchoolPayment } from '../../../school-colegio-ingles/school-payments/entities/school-payment.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
@@ -93,72 +78,94 @@ export class BranchOfficeSetting extends Base {
     })
     country: number;
 
-    @Field({ nullable: true })
+    @Field({ nullable: true, description: 'Prefijo Folio de Venta' })
     @Column('varchar', {
         nullable: true,
         length: 10,
         name: 'foliaje_nota',
+        comment: 'Prefijo Folio de Venta',
     })
     foliajeNota: string | null;
 
-    @Field()
+    @Field({ nullable: true, description: 'Numero Folio de Venta' })
+    @Column('int', {
+        nullable: true,
+        name: 'serie_nota',
+        comment: 'Numero Folio de Venta',
+    })
+    serieNota: number;
+
+    @Field({ description: 'Prefijo Folio de Factura' })
     @Column('varchar', {
         nullable: false,
         length: 10,
         name: 'foliaje_factura',
+        comment: 'Prefijo Folio de Factura',
     })
     foliajeFactura: string;
 
-    @Field()
-    @Column('varchar', {
-        nullable: false,
-        length: 10,
-        name: 'foliaje_pago',
-    })
-    foliajePago: string;
-
-    @Field({ nullable: true })
-    @Column('varchar', {
+    @Field(type => Int, {
         nullable: true,
-        name: 'folio_cotizacion',
+        description: 'Numero Folio de Factura',
     })
-    folioCotizacion: number;
-
-    @Field(type => Int ,{  nullable: true })
-    @Column('int', {
-        nullable: true,
-        name: 'serie_cotizacion',
-    })
-    serieCotizacion: number;
-
-    @Field({ nullable: true })
-    @Column('int', {
-        nullable: true,
-        name: 'serie_nota',
-    })
-    serieNota: number;
-
-    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
         name: 'serie_factura',
+        comment: 'Numero Folio de Factura',
+
     })
     serieFactura: number;
 
-    @Field(type => Int, { nullable: true })
-    @Column('int', {
-        nullable: true,
-        name: 'serie_pago',
+    @Field({
+        description: 'Serie Folio de Factura SAT "A"',
     })
-    seriePago: number;
-
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 5,
         name: 'serie_facturacion',
+        comment: 'Serie Folio de Factura SAT "A"',
     })
     serieFacturacion: string;
+
+    @Field({ description: 'Prefijo Folio de Pago' })
+    @Column('varchar', {
+        nullable: false,
+        length: 10,
+        name: 'foliaje_pago',
+        comment: 'Prefijo Folio de Pago',
+    })
+    foliajePago: string;
+
+    @Field(type => Int, {
+        nullable: true,
+        description: 'Numero Folio de Pago',
+    })
+    @Column('int', {
+        nullable: true,
+        name: 'serie_pago',
+        comment: 'Numero Folio de Pago',
+    })
+    seriePago: number;
+
+    @Field({ nullable: true, description: 'Prefijo Folio de Cotizacion' })
+    @Column('varchar', {
+        nullable: true,
+        name: 'folio_cotizacion',
+        comment: 'Prefijo Folio de Cotizacion',
+    })
+    folioCotizacion: string;
+
+    @Field(type => Int, {
+        nullable: true,
+        description: 'Numero Folio de Cotizacion',
+    })
+    @Column('int', {
+        nullable: true,
+        name: 'serie_cotizacion',
+        comment: 'Numero Folio de Cotizacion',
+    })
+    serieCotizacion: number;
+
 
     @Field(type => Int, { nullable: true })
     @Column('int', {
