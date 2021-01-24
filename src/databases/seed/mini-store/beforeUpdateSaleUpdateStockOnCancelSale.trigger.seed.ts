@@ -1,7 +1,7 @@
 import { Factory, Seeder } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
 
-export default class BeforeSaleInsertTriggerSeed implements Seeder {
+export default class BeforeUpdateSaleUpdateStockOnCancelSaleTriggerSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
         const queryRunner = connection;
         await queryRunner.query(`DROP TRIGGER IF EXISTS update_stock_on_cancel_sale`);
