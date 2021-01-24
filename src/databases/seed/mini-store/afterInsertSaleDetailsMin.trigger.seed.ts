@@ -6,14 +6,14 @@ export default class AfterInsertSaleDetailsMinTriggerSeed implements Seeder {
         const queryRunner = connection;
         await queryRunner.query(`DROP TRIGGER IF EXISTS tie_venta_detalle_after_insert`);
         await queryRunner.query(`
-        CREATE TRIGGER tie_venta_detalle_after_insert AFTER INSERT 
-        ON tie_venta_detalle 
-        FOR EACH ROW BEGIN
-            SET @currentStock = (SELECT stock FROM tie_productos WHERE id = NEW.id_producto);
-            SET @newStock = (@currentStock - NEW.cantidad);
-            
-            UPDATE tie_productos SET stock = @newStock WHERE id = NEW.id_producto;    
-        END
+           CREATE TRIGGER tie_venta_detalle_after_insert 
+            AFTER INSERT ON tie_venta_detalle 
+             FOR EACH ROW BEGIN
+              SET @currentStock = (SELECT stock FROM tie_productos WHERE id = NEW.miniStoreProductId);
+              SET @newStock = (@currentStock - NEW.cantidad);
+              
+              UPDATE tie_productos SET stock = @newStock WHERE id = NEW.miniStoreProductId;    
+           END
         `);
 
     }
