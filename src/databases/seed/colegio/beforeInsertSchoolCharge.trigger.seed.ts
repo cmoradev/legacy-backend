@@ -1,8 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { Factory, Seeder } from 'typeorm-seeding';
+import { Connection } from 'typeorm';
 
-export class AddTriggerFoliajeNotaSchoolCharges1609179928286 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
+export default class BeforeInsertSchoolChargeTriggerSeed implements Seeder {
+    public async run(factory: Factory, connection: Connection): Promise<any> {
+        const queryRunner = connection;
         await queryRunner.query(`DROP TRIGGER IF EXISTS before_school_charges_insert`);
         await queryRunner.query(`
         CREATE TRIGGER before_school_charges_insert
@@ -15,9 +16,6 @@ export class AddTriggerFoliajeNotaSchoolCharges1609179928286 implements Migratio
                 SET @folio = (CONCAT_WS('-', @prefix, @consecutive)); 
                 SET NEW.folio = @folio; UPDATE facturacion_empresas SET serie_nota = @consecutive WHERE id = NEW.schoolBranchOfficeSetId AND active = true;
             END`);
-    }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
     }
-
 }
