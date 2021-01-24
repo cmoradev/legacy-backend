@@ -1,8 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { Factory, Seeder } from 'typeorm-seeding';
+import { Connection } from 'typeorm';
 
-export class AcChargeFolio1596128406369 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<any> {
+export default class BeforeInsertAcPaymentsTriggerSeed implements Seeder {
+    public async run(factory: Factory, connection: Connection): Promise<any> {
+        const queryRunner = connection;
         await queryRunner.query(`DROP TRIGGER IF EXISTS before_ac_charge_payment_insert`);
         await queryRunner.query(`
         CREATE TRIGGER before_ac_charge_payment_insert
@@ -15,10 +16,6 @@ export class AcChargeFolio1596128406369 implements MigrationInterface {
                 SET @folio = (CONCAT_WS('-', @prefix, @consecutive)); 
                 SET NEW.folio = @folio; UPDATE facturacion_empresas SET serie_pago = @consecutive WHERE id = NEW.academyPaymentOfficeSetId AND active = true;
             END`);
-    }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(`DROP TRIGGER IF EXISTS before_ac_charge_payment_insert`);
     }
-
 }
