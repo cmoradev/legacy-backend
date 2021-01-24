@@ -87,6 +87,7 @@ npm run seeds:run --configName *.env
 ```bash
 #name for class seed to run
 db={env} npm run seed BranchOfficeInsertUpdateSeed
+db={env} npm run seed CycleInsertUpdateSeed
 db={env} npm run seed BranchOfficeSettingInsertUpdateSeed
 db={env} npm run seed RouteInsertUpdateSeed
 db={env} npm run seed ActionInsertUpdateSeed
