@@ -1678,6 +1678,17 @@ type Subject {
   assignmentsSubjects: [AssignmentSubject!]!
 }
 
+type OkGraphql {
+  status: Int!
+  message: String!
+}
+
+type ResponseRemoveSelectedDetailsGql {
+  id: String!
+  applicantName: String!
+  amountToRemove: Int!
+}
+
 type Cities {
   id: ID!
   name: String!
@@ -1703,4 +1714,18 @@ type Country {
 
 type Query {
   sales: [tie_ventas!]!
+}
+
+type Mutation {
+  removeSelectedDetails(input: RequestRemoveSelectedDetailsInput!): OkGraphql!
+}
+
+input RequestRemoveSelectedDetailsInput {
+  id: Int!
+  applicantName: String!
+  amountToRemove: Int!
+}
+
+type Subscription {
+  acceptor: ResponseRemoveSelectedDetailsGql!
 }

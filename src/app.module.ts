@@ -39,6 +39,10 @@ TypeOrmCrudService.prototype.getJoinType = function(s: string) {
       playground: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: 'schema.gql',
+      // definitions: {
+      //   path: join(process.cwd(), './src/graphql.schema.ts'),
+      //   outputAs: 'class',
+      // },
     }),
 
     // GraphQLModule.forRoot({
