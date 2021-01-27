@@ -82,9 +82,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     try {
       const logo = readFileSync('/var/www/logos/colegiologo.png');
       if (invoiceFinded) {
-        console.log('Factura encontrada === true', invoiceFinded);
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
-          console.log('PAGO FACTURADO');
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
             paymentId: query.chargePaymentId,
             status: StatusInvoce.invoiced,
