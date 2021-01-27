@@ -86,7 +86,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
 export async function GenerateInvoiceIedu(data: { serie: string; folio: string, },
                                           codigoFormaPago: string,
                                           emisor: BranchOfficeSetting,
-                                          receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
+                                          receptor: XmlReceptorAttribute, student: XmlIeduAttribute,factura: FacturaDetalles) {
   const key = '/var/www/CSD/' + emisor.keyCSD;
   const cer = '/var/www/CSD/' + emisor.cerCSD;
   const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
@@ -140,14 +140,7 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
       Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -5), 0, -5).toString(),
     });
     totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
-    const ieduObject: XmlIeduAttribute = {
-      version: '1.0',
-      autRVOE: '201587PRIM',
-      CURP: 'RARE991220HQRNNJ04',
-      nivelEducativo: 'Primaria',
-      nombreAlumno: 'EJEJPMLO GARCIA CORREA',
-      rfcPago: 'XAXX010101000',
-    };
+    const ieduObject: XmlIeduAttribute = student;
     const iedu = new Iedu(ieduObject);
     await concepto.complemento(iedu);
     await cfd.concepto(concepto);
