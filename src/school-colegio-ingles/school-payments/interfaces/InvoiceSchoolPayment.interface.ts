@@ -1,5 +1,6 @@
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 import { Student } from '../../students/entities/student.entity';
+import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 
 export class QuerySchoolPaymentBilling {
   agentBillingId: number;
@@ -12,5 +13,6 @@ export class QuerySchoolPaymentBilling {
     label: string
   };
   receiver: BusinessNameFamily;
-  student: Student
+  student: Student;
+  studyPlan: StudyPlan;
 }

@@ -8,6 +8,7 @@ import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
 
 @ObjectType()
 @Entity()
@@ -71,5 +72,6 @@ export class StudyPlan extends Base {
     @ManyToOne(() => PaymentPlan, (paymentPlan) => paymentPlan.studyPlan )
     paymentPlans: PaymentPlan[];
 
-
+    @OneToMany(() =>SchoolCharge, (schoolCharge) => schoolCharge.studyPlans)
+    schoolCharges: SchoolCharge[];
 }

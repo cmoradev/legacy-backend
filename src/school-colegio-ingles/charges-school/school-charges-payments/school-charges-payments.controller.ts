@@ -61,6 +61,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
 
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
+    console.log(query);
     const result = await this.service.findSaleByPayment(query);
     const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
     const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
@@ -108,11 +109,11 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             },
             {
               version: '1.0',
-              autRVOE: '201587PRIM',
-              CURP: 'RARE991220HQRNNJ04',
-              nivelEducativo: 'Primaria',
-              nombreAlumno: 'EJEJPMLO GARCIA CORREA',
-              rfcPago: 'XAXX010101000',
+              autRVOE: query.studyPlan.code,
+              CURP: query.student.curp,
+              nivelEducativo: query.studyPlan.level.name.toString(),
+              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
+              rfcPago: query.receiver.rfc,
             },
             invoiceDetails);
           const timbrado = await this.smartWeb.facturar(xml);
@@ -173,7 +174,6 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         const invoice = await this.schoolChargeInvoiceService.saveInvoice(factura);
         if (invoice) {
           const xml = await GenerateInvoiceIedu(
-            // TODO fix static string from student data
             {
               folio: invoice.folio,
               serie: branchOfficeSett.serieFacturacion,
@@ -187,9 +187,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             },
             {
               version: '1.0',
-              autRVOE: '201587PRIM',
+              autRVOE: query.studyPlan.code,
               CURP: query.student.curp,
-              nivelEducativo: 'PRIMARIA',
+              nivelEducativo: query.studyPlan.level.name.toString(),
               nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
               rfcPago: query.receiver.rfc,
             },

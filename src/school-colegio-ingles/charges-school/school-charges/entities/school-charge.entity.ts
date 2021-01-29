@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { Cycle } from '../../../cycles/entities/cycle.entity';
@@ -10,6 +10,8 @@ import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../../school-charges-details/entities/school-charge-details.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { PaymentPlan } from '../../../payment-plans/entities/payment-plan.entity';
+import { StudyPlan } from '../../../study-plans/entities/study-plan.entity';
 
 @ObjectType()
 @Entity('school_charges')
@@ -110,4 +112,8 @@ export class SchoolCharge extends Base {
       cascade: ['insert'],
     })
   chargesInvoice: SchoolChargesInvoice[];
+
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.schoolCharges)
+  studyPlans: StudyPlan[];
+
 }

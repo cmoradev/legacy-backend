@@ -28,6 +28,11 @@ import { SchoolChargesService } from './school-charges.service';
       chargesInvoice: {},
       'chargesInvoice.agentBilling': {},
       'chargesInvoice.agentCanceling': {},
+      studyPlans: {},
+      'studyPlans.level': {},
+      PaymentPlan: {},
+      'PaymentPlan.studyPlan': {},
+      'PaymentPlan.level': {},
     },
   },
 })
