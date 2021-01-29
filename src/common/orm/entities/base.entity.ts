@@ -10,14 +10,14 @@ export class Base {
     })
     id: number;
 
-    @Field(type => GraphQLISODateTime)
+    // @Field(type => GraphQLISODateTime)
     @CreateDateColumn({
         type: 'timestamp',
         // transformer: new DateTimeZoneTransformer(),
     })
     createdAt: Date;
 
-    @Field(type => GraphQLISODateTime)
+    // @Field(type => GraphQLISODateTime)
     @UpdateDateColumn({
         type: 'timestamp',
         // transformer: new DateTimeZoneTransformer(),
