@@ -13,7 +13,6 @@ export class AcademyInscriptionSubscriber implements EntitySubscriberInterface<A
 
   async afterInsert(insertEvent: InsertEvent<AcademyInscription>) {
     const { entity: order } = insertEvent;
-    console.log('sucripcion amir: ' + order.student.typeStudent + '-' + order.id);
     this.registerKeyInscription(order.id, order.student.typeStudent + '-' + order.id);
   }
 

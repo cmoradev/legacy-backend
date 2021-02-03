@@ -18,7 +18,6 @@ export class AcademyDashBoardController {
     try {
       return this.service.loadDash(query);
     } catch (e) {
-      console.log('The error ', e);
     }
   }
 
@@ -35,7 +34,6 @@ export class AcademyDashBoardController {
       }
       return data;
     } catch (e) {
-      console.log('The error ', e);
     }
   }
 

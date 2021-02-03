@@ -18,8 +18,6 @@ export const toJsonCal: ValueTransformer = {
         try {
             return JSON.parse(value);
         } catch (e) {
-            console.log(value)
-            console.log('fallo al parcear',e.message);
             return [];
         }
     },
