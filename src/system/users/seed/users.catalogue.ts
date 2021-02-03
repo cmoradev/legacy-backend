@@ -22,7 +22,7 @@ export const UsersCatalogue: User[] = [
         img: 'https://version.muunyal.app/muunyal.svg',
         isActive: 1,
         role: {
-            id: 1,
+            id: 2,
         } as Role,
 
     } as User,

@@ -11,7 +11,7 @@ import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
         join: {
             paymentPlan: {},
             grades: {},
-            schoolPayment: {}
+            schoolPayment: {},
         },
     },
 })

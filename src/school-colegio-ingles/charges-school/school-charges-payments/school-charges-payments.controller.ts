@@ -61,6 +61,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
 
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
+    console.log(query);
     const result = await this.service.findSaleByPayment(query);
     const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
     const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
@@ -82,9 +83,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     try {
       const logo = readFileSync('/var/www/logos/colegiologo.png');
       if (invoiceFinded) {
-        console.log('Factura encontrada === true', invoiceFinded);
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
-          console.log('PAGO FACTURADO');
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
             paymentId: query.chargePaymentId,
             status: StatusInvoce.invoiced,
@@ -108,6 +107,14 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
               Rfc: query.receiver.rfc,
               UsoCFDI: query.usoCfdi.value,
             },
+            {
+              version: '1.0',
+              autRVOE: query.studyPlan.code,
+              CURP: query.student.curp,
+              nivelEducativo: query.studyPlan.level.name.toString(),
+              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
+              rfcPago: query.receiver.rfc,
+            },
             invoiceDetails);
           const timbrado = await this.smartWeb.facturar(xml);
           await this.service.updatePayment({
@@ -128,7 +135,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
           });
           console.log(pdf);
           await pdf.save('/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase());
@@ -178,6 +185,14 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
               Rfc: query.receiver.rfc,
               UsoCFDI: query.usoCfdi.value,
             },
+            {
+              version: '1.0',
+              autRVOE: query.studyPlan.code,
+              CURP: query.student.curp,
+              nivelEducativo: query.studyPlan.level.name.toString(),
+              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
+              rfcPago: query.receiver.rfc,
+            },
             invoiceDetails);
           const timbrado = await this.smartWeb.facturar(xml);
           // console.log(timbrado);
@@ -198,7 +213,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
           });
           console.log(pdf);
           await pdf.save('/var/www/pdc/comprobantes/colegio/' + timbrado.data.uuid.toUpperCase());
@@ -231,7 +246,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       file: '',
     };
     if (query.onlyFile) {
-      res.file = await this.service.simpleReport(payments, charges, query,{ base64: true });
+      res.file = await this.service.simpleReport(payments, charges, query, { base64: true });
     } else {
       const cashiers = await this.service.getUserCasher();
       const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({

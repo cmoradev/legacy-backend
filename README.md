@@ -1,5 +1,7 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://scontent.fmid3-1.fna.fbcdn.net/v/t1.0-9/128100704_126094445973804_1804387544708312989_o.jpg?_nc_cat=105&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeG2jya-2NOJnNG3qwwMAeSH0TeFneKnZoLRN4Wd4qdmgmK2riqKvdO77NJGcArzi-gx-xupt8CkD5WAKlU5ISQh&_nc_ohc=4pUdqJx2m4IAX_rcmrw&_nc_ht=scontent.fmid3-1.fna&oh=6a72c9029057d17034a20194929a2a50&oe=5FEC689F" width="320" alt="Nest Logo" /></a>
+  <a href="https://version.muunyal.app" target="blank">
+    <img src="https://version.muunyal.app/muunyal.svg" width="320" alt="Muunyal Api Logo" />
+  </a>
 </p>
 
 [travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
@@ -10,7 +12,7 @@
  
 ## Description
 
-[Muuyal](https://github.com/nestjs/nest) 
+[Muuyal](https://github.com/DevelopersCI/colegio-api-core) 
 
 ## Development
 
@@ -71,6 +73,7 @@ db={env} npm run typeorm:migrate "name"
 db={env} npm run typeorm:run
 db={env} npm run typeorm:revert
 
+# Alternativa
 npm run orm --config *.env
 npm run orm:migrate "name"
 npm run orm:run --config *.env
@@ -82,13 +85,41 @@ npm run seeds:run --configName *.env
 ```
 
 
-## Run Seed For Deafault Routes
+## Run Seed For Deafault Values
 
 ```bash
 #name for class seed to run
+db={env} npm run seed BranchOfficeInsertUpdateSeed
+db={env} npm run seed CycleInsertUpdateSeed
+db={env} npm run seed BranchOfficeSettingInsertUpdateSeed
 db={env} npm run seed RouteInsertUpdateSeed
 db={env} npm run seed ActionInsertUpdateSeed
+db={env} npm run seed RouteActionInsertUpdateSeed
+db={env} npm run seed RolesInsertUpdateSeed
+db={env} npm run seed DepartmentsInsertUpdateSeed
+db={env} npm run seed PermissionsInsertUpdateSeed
+db={env} npm run seed UsersInsertUpdateSeed
+```
 
+## Triggers in data base 
+
+```bash
+#Academias
+db={env} npm run seed BeforeInsertAcChargeTriggerSeed
+db={env} npm run seed BeforeInsertAcInvoiceTriggerSeed
+db={env} npm run seed BeforeInsertAcPaymentsTriggerSeed
+#Colegio
+db={env} npm run seed BeforeInsertSchoolChargeTriggerSeed
+db={env} npm run seed BeforeInsertSchoolInvoiceTriggerSeed
+db={env} npm run seed BeforeInsertSchoolPaymentTriggerSeed
+#MiniStore
+db={env} npm run seed AfterInsertSaleDetailsMinTriggerSeed
+db={env} npm run seed AfterUpdateSaleTriggerSeed
+db={env} npm run seed BeforeInsertPedidosTriggerSeed
+db={env} npm run seed BeforeInsertSaleTriggerSeed
+db={env} npm run seed BeforeInsertSalePaymentTriggerSeed
+db={env} npm run seed BeforeInsertSalePaymentInvoiceTriggerSeed
+db={env} npm run seed BeforeUpdateSaleUpdateStockOnCancelSaleTriggerSeed
 ```
 ## Support
 

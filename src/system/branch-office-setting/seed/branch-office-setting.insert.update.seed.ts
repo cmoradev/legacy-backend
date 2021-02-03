@@ -48,40 +48,7 @@ export default class BranchOfficeSettingInsertUpdateSeed implements Seeder {
           .into(BranchOfficeSetting)
           .values(list)
           .orUpdate({
-              conflict_target: ['id'],
-              overwrite: [
-                  'id',
-                  'name',
-                  'uuid',
-                  'version',
-                  'rfc',
-                  'businessName',
-                  'address',
-                  'regime',
-                  'fiscalRegime',
-                  'zip',
-                  'country',
-                  'foliajeNota',
-                  'serieNota',
-                  'foliajeFactura',
-                  'serieFactura',
-                  'serieFacturacion',
-                  'foliajePago',
-                  'seriePago',
-                  'folioCotizacion',
-                  'serieCotizacion',
-                  'daysQuoteValid',
-                  'perCommissions',
-                  'cerCSD',
-                  'keyCSD',
-                  'password',
-                  'email',
-                  'bankAccount',
-                  'typeModule',
-                  'isActive',
-                  'isQuickSale',
-                  'invoiceCampus',
-              ],
+              conflict_target: ['id']
           })
           .orIgnore()// para ignorar valores duplicado
           .execute();

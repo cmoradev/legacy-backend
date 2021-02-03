@@ -86,7 +86,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
 export async function GenerateInvoiceIedu(data: { serie: string; folio: string, },
                                           codigoFormaPago: string,
                                           emisor: BranchOfficeSetting,
-                                          receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
+                                          receptor: XmlReceptorAttribute, student: XmlIeduAttribute,factura: FacturaDetalles) {
   const key = '/var/www/CSD/' + emisor.keyCSD;
   const cer = '/var/www/CSD/' + emisor.cerCSD;
   const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
@@ -119,8 +119,8 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
   let totalRetenido = '0.00';
-  console.log(factura.detalles);
   for (const detalle of factura.detalles) {
+    console.log(detalle);
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
       NoIdentificacion: detalle.NoIdentificacion,
@@ -130,24 +130,17 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
       Descripcion: detalle.descrption,
       ValorUnitario: detalle.unitPrice,
       Importe: detalle.importe,
-      Descuento: detalle.discount,
+      Descuento: detalle.discountTotal,
     } as XmlConceptoAttributes);
     concepto.traslado({
-      Base: subQuantity(detalle.importe, detalle.discount, -5).toString(),
+      Base: subQuantity(detalle.importe, detalle.discountTotal, -5).toString(),
       Impuesto: '002',
       TipoFactor: 'Tasa',
       TasaOCuota: '0.000000',
-      Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount, -5), 0, -5).toString(),
+      Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -5), 0, -5).toString(),
     });
-    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discount), 0), totalTranslado).toString();
-    const ieduObject: XmlIeduAttribute = {
-      version: '1.0',
-      autRVOE: '201587PRIM',
-      CURP: 'RARE991220HQRNNJ04',
-      nivelEducativo: 'Primaria',
-      nombreAlumno: 'EJEJPMLO GARCIA CORREA',
-      rfcPago: 'XAXX010101000',
-    };
+    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
+    const ieduObject: XmlIeduAttribute = student;
     const iedu = new Iedu(ieduObject);
     await concepto.complemento(iedu);
     await cfd.concepto(concepto);

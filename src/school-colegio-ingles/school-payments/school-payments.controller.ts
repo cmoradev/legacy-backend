@@ -16,6 +16,8 @@ import { SchoolPaymentsReport } from './report/schoolPayments.report';
       'schoolChargeDetail.extraCharges': {},
       inscription: {},
       extraCharges: { alias: 'schoolExtraCharges' },
+      paymentPlanConcept: {},
+      'paymentPlanConcept.paymentPlan': {},
     },
   },
 })

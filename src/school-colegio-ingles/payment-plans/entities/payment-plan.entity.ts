@@ -1,11 +1,12 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { PaymentPlanConcept } from '../../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { StudyPlan } from '../../study-plans/entities/study-plan.entity';
 import { Level } from '../../levels/entities/level.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+
 
 @ObjectType()
 @Entity()
