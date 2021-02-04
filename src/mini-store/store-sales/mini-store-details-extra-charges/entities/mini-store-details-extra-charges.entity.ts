@@ -11,7 +11,7 @@ import {
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity('mini-store-details-extra-charges')
+@Entity('mini_store_details_extra_charges')
 export class MiniStoreDetailsExtraCharges extends Base {
 
     @Field()
