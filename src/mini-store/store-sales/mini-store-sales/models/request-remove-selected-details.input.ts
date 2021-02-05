@@ -17,9 +17,6 @@ export class RequestRemoveSelectedDetailsInput {
 @InputType()
 export class NewSaleMiniStore {
 
-    @Field(type => Int)
-    id: string;
-
     @Field()
     branchOfficeId: number;
 
