@@ -1297,7 +1297,6 @@ type Grade {
   id: ID!
   version: Float!
   uuid: String!
-  idLevel: Int!
   name: String
   level: Level!
   levelId: Int!

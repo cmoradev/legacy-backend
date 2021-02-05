@@ -14,13 +14,6 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 @Entity('grados')
 export class Grade extends Base {
 
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_nivel',
-    })
-    idLevel: number;
-
     @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,

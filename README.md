@@ -99,6 +99,7 @@ db={env} npm run seed RolesInsertUpdateSeed
 db={env} npm run seed DepartmentsInsertUpdateSeed
 db={env} npm run seed PermissionsInsertUpdateSeed
 db={env} npm run seed UsersInsertUpdateSeed
+db={env} npm run seed KeysInsertUpdateSeed
 ```
 
 ## Triggers in data base 
@@ -124,3 +125,14 @@ db={env} npm run seed BeforeUpdateSaleUpdateStockOnCancelSaleTriggerSeed
 ## Support
 
 ## License
+
+
+use capecafe;
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE `capecafe`.`tie_ventas`;
+TRUNCATE `capecafe`.`tie_venta_detalle`;
+TRUNCATE `capecafe`.`tie_facturas`;
+TRUNCATE `capecafe`.`tie_venta_pagos`;
+TRUNCATE `capecafe`.`tie_venta_forma_pago`;
+TRUNCATE `capecafe`.`mini-store-details-extra-charges`;
+TRUNCATE `capecafe`.`mini_store_quotation`;
