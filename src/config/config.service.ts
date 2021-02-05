@@ -32,12 +32,14 @@ export class ConfigService {
             API_AUTH_ENABLED: Joi.boolean().default(true),
             API_SECRET: Joi.string(),
             DB_DBNAME_CONNECTION: Joi.string(),
-            DB_DBNAME_COLEGIO_INGLES: Joi.string(),
-            DB_USERNAME_COLEGIO_INGLES: Joi.string(),
-            DB_PASSWORD_COLEGIO_INGLES: Joi.string(),
-            DB_PORT_COLEGIO_INGLES: Joi.number(),
-            DB_HOST_COLEGIO_INGLES: Joi.string(),
-            DB_SYNCHRONIZE_COLEGIO_INGLES: Joi.boolean(),
+            DB_DBNAME: Joi.string(),
+            DB_USERNAME: Joi.string(),
+            DB_PASSWORD: Joi.string(),
+            DB_PORT: Joi.number(),
+            DB_HOST: Joi.string(),
+            DB_SYNCHRONIZE: Joi.boolean(),
+            API_MAIL: Joi.string(),
+            API_MAIL_PASSWORD: Joi.string(),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(
             envConfig,
@@ -95,7 +97,7 @@ export class ConfigService {
      * @return boolean
      */
     get isSynchronizeDBEnabled(): boolean {
-        return Boolean(this.envConfig.DB_SYNCHRONIZE_COLEGIO_INGLES);
+        return Boolean(this.envConfig.DB_SYNCHRONIZE);
     }
 
     /**
