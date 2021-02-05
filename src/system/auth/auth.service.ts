@@ -15,6 +15,8 @@ import * as moment from 'moment';
 import { AuthAccessTokensService } from '../auth-access-tokens/auth-access-tokens.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
 
 interface UserBody {
   name: string;
@@ -131,19 +133,21 @@ export class AuthService {
   }
 
   async sendMailForgotPassword(email: string, token: string, clientUrl: string) {
+    const environment = process.env.NODE_ENV || 'development';
+    const processEnv: any = dotenv.parse(fs.readFileSync(`${ environment }.env`));
     const transporter = nodemailer.createTransport({
       service: 'gmail.com',
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
       auth: {
-        user: 'developers@colegioinglesplaya.com',
-        pass: '7creamiste7',
+        user: processEnv.API_MAIL,
+        pass: processEnv.API_MAIL_PASSWORD,
       },
     });
     const mailOptions: Mail.Options = {
       to: email,
-      from: 'developers@colegioinglesplaya.com',
+      from: processEnv.API_MAIL,
       subject: 'Recuperación de contraseña',
       html: `
       <div>

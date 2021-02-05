@@ -38,6 +38,8 @@ export class ConfigService {
             DB_PORT: Joi.number(),
             DB_HOST: Joi.string(),
             DB_SYNCHRONIZE: Joi.boolean(),
+            API_MAIL: Joi.string(),
+            API_MAIL_PASSWORD: Joi.string(),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(
             envConfig,
