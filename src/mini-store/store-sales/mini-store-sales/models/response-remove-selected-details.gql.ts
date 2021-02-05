@@ -14,3 +14,16 @@ export class ResponseRemoveSelectedDetailsGql {
     @Field(type => Int)
     amountToRemove: number;
 }
+
+@ObjectType()
+export class ResponseNewSaleMiniStore {
+
+    @Field(type => Int)
+    id: string;
+
+    @Field()
+    branchOfficeId: number;
+
+    @Field(type => Int)
+    quantity: number;
+}

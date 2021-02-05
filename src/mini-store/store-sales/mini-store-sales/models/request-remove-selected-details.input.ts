@@ -13,3 +13,16 @@ export class RequestRemoveSelectedDetailsInput {
     @Field(type => Int)
     amountToRemove: number;
 }
+
+@InputType()
+export class NewSaleMiniStore {
+
+    @Field(type => Int)
+    id: string;
+
+    @Field()
+    branchOfficeId: number;
+
+    @Field(type => Int)
+    quantity: number;
+}

@@ -1510,6 +1510,12 @@ type ResponseRemoveSelectedDetailsGql {
   amountToRemove: Int!
 }
 
+type ResponseNewSaleMiniStore {
+  id: Int!
+  branchOfficeId: Float!
+  quantity: Int!
+}
+
 type Cities {
   id: ID!
   name: String!
@@ -1539,6 +1545,7 @@ type Query {
 
 type Mutation {
   removeSelectedDetails(input: RequestRemoveSelectedDetailsInput!): OkGraphql!
+  minisStoreNewSale(input: NewSaleMiniStore!): OkGraphql!
 }
 
 input RequestRemoveSelectedDetailsInput {
@@ -1547,6 +1554,13 @@ input RequestRemoveSelectedDetailsInput {
   amountToRemove: Int!
 }
 
+input NewSaleMiniStore {
+  id: Int!
+  branchOfficeId: Float!
+  quantity: Int!
+}
+
 type Subscription {
+  miniStoreListenNewSale: ResponseNewSaleMiniStore!
   acceptor: ResponseRemoveSelectedDetailsGql!
 }
