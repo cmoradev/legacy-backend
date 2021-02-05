@@ -14,16 +14,16 @@ if (fs.existsSync(`${environment}.env`)) {
     // tslint:disable-next-line:no-console
     console.log(`Migración corriendo --> en entorno ${environment}`);
     // tslint:disable-next-line:no-console
-    console.log(`Migración corriendo --> en la base de datos ${processEnv.DB_DBNAME_COLEGIO_INGLES}`);
+    console.log(`Migración corriendo --> en la base de datos ${processEnv.DB_DBNAME}`);
     config = {
         type: 'mysql',
         name: processEnv.DB_DBNAME_CONNECTION,
         migrationsTableName: 'migrations_typeorm',
-        host: processEnv.DB_HOST_COLEGIO_INGLES,
-        port: processEnv.DB_PORT_COLEGIO_INGLES,
-        username: processEnv.DB_USERNAME_COLEGIO_INGLES,
-        password: processEnv.DB_PASSWORD_COLEGIO_INGLES,
-        database: processEnv.DB_DBNAME_COLEGIO_INGLES,
+        host: processEnv.DB_HOST,
+        port: processEnv.DB_PORT,
+        username: processEnv.DB_USERNAME,
+        password: processEnv.DB_PASSWORD,
+        database: processEnv.DB_DBNAME,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         seeds: [__dirname + '/**/*.seed{.ts,.js}'],
         factories: [__dirname + '/**/*.factory{.ts,.js}'],
