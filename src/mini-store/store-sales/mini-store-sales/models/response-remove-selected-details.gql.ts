@@ -18,7 +18,7 @@ export class ResponseRemoveSelectedDetailsGql {
 @ObjectType()
 export class ResponseNewSaleMiniStore {
 
-    @Field()
+    @Field(type => Int)
     branchOfficeId: number;
 
     @Field(type => Int)

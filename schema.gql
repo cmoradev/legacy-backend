@@ -1511,8 +1511,7 @@ type ResponseRemoveSelectedDetailsGql {
 }
 
 type ResponseNewSaleMiniStore {
-  id: Int!
-  branchOfficeId: Float!
+  branchOfficeId: Int!
   quantity: Int!
 }
 
@@ -1555,8 +1554,7 @@ input RequestRemoveSelectedDetailsInput {
 }
 
 input NewSaleMiniStore {
-  id: Int!
-  branchOfficeId: Float!
+  branchOfficeId: Int!
   quantity: Int!
 }
 
