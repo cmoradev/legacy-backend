@@ -14,20 +14,20 @@ module.exports = {
                 NODE_ENV: 'production',
             },
         },
-        {
-            name: '6500-pachamama',
-            script: 'dist/main.js',
-            instances: 1,
-            autorestart: true,
-            watch: false,
-            max_memory_restart: '4G',
-            env_dev: {
-                NODE_ENV: 'development',
-            },
-            env_production: {
-                NODE_ENV: 'pachamama',
-            },
-        },
+        // {
+        //     name: '6500-pachamama',
+        //     script: 'dist/main.js',
+        //     instances: 1,
+        //     autorestart: true,
+        //     watch: false,
+        //     max_memory_restart: '4G',
+        //     env_dev: {
+        //         NODE_ENV: 'development',
+        //     },
+        //     env_production: {
+        //         NODE_ENV: 'pachamama',
+        //     },
+        // },
         {
             name: '4000-rancho',
             script: 'dist/main.js',
@@ -42,37 +42,37 @@ module.exports = {
                 NODE_ENV: 'rancho',
             },
         },
-        {
-            name: '5000-refaccionaria',
-            script: 'dist/main.js',
-            args: 'one two',
-            instances: 1,
-            autorestart: true,
-            watch: false,
-            max_memory_restart: '4G',
-            env_dev: {
-                NODE_ENV: 'development',
-            },
-            env_production: {
-                NODE_ENV: 'refaccionaria',
-            },
-        },
-        {
-            name: '1500-cremeria',
-            script: 'dist/main.js',
-            args: 'one two',
-            instances: 1,
-            autorestart: true,
-            watch: false,
-            max_memory_restart: '4G',
-            env_dev: {
-                NODE_ENV: 'development',
-            },
-            env_production: {
-                NODE_ENV: 'cremeria',
-            },
-
-        },
+        // {
+        //     name: '5000-refaccionaria',
+        //     script: 'dist/main.js',
+        //     args: 'one two',
+        //     instances: 1,
+        //     autorestart: true,
+        //     watch: false,
+        //     max_memory_restart: '4G',
+        //     env_dev: {
+        //         NODE_ENV: 'development',
+        //     },
+        //     env_production: {
+        //         NODE_ENV: 'refaccionaria',
+        //     },
+        // },
+        // {
+        //     name: '1500-cremeria',
+        //     script: 'dist/main.js',
+        //     args: 'one two',
+        //     instances: 1,
+        //     autorestart: true,
+        //     watch: false,
+        //     max_memory_restart: '4G',
+        //     env_dev: {
+        //         NODE_ENV: 'development',
+        //     },
+        //     env_production: {
+        //         NODE_ENV: 'cremeria',
+        //     },
+        //
+        // },
         {
             name: '3100-capecafe',
             script: 'dist/main.js',
