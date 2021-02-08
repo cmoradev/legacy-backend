@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -10,7 +10,11 @@ import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
 import { VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interface';
 import { sheetToObjPage } from '../../common/office/sheets';
+import { Response } from 'express';
+import { inscripcionesCiclo2 } from './catalogos/inscriptions-ciclo2.catalogue';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
+// @UseGuards(JwtGuard)
 @Crud({
   model: {
     type: Inscription,
@@ -53,6 +57,17 @@ export class InscriptionsController implements CrudController<Inscription> {
   @Get('/amir')
   async verify(): Promise<any> {
     return 'amir';
+  }
+
+  @Get('/add/inscripciones')
+  public async addStudents(@Req() req, @Res() res: Response) {
+    try {
+       // const data = await this.service.repo.save(inscripcionesCiclo2);
+      res.send({ save: true });
+    } catch (e) {
+      res.send(e);
+    }
+
   }
 
   @Post('/verifyinscription')

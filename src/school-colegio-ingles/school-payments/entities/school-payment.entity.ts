@@ -93,13 +93,13 @@ export class SchoolPayment extends Base {
     @Column('date', {
         nullable: true,
     })
-    paidDate: Date;
+    paidDate: Date; // fecha que pago
 
     @Field({ nullable: true })
     @Column('date', {
         nullable: true,
     })
-    payDate: Date;
+    payDate: Date; // fecha de pago
 
     @Field({ nullable: false })
     @Column('boolean', {

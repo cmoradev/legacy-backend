@@ -136,3 +136,7 @@ TRUNCATE `capecafe`.`tie_venta_pagos`;
 TRUNCATE `capecafe`.`tie_venta_forma_pago`;
 TRUNCATE `capecafe`.`mini-store-details-extra-charges`;
 TRUNCATE `capecafe`.`mini_store_quotation`;
+
+
+// para nuevo ingreso
+// por nuevo ingreso

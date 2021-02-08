@@ -11,10 +11,11 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
   constructor(
-    @InjectRepository(Inscription, ColegioDBNameConnection) readonly inscriptions: Repository<Inscription>,
+    @InjectRepository(Inscription, ColegioDBNameConnection) readonly repo: Repository<Inscription>,
     @InjectRepository(Student, ColegioDBNameConnection) readonly student: Repository<Student>,
+
   ) {
-    super(inscriptions);
+    super(repo);
   }
 
   public async verificarInscription(data: VerificarInscriprions, datainsc: VerifyregistratioDto): Promise<any> {

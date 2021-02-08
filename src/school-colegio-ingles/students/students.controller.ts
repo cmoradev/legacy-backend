@@ -1,11 +1,12 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
+import { Response } from 'express';
+import { alumnos } from './catalogue/students.catalogue';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-import { TypeStudent } from './interface/studentsSchool.interface';
 
-//  @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Student,
@@ -48,7 +49,7 @@ import { TypeStudent } from './interface/studentsSchool.interface';
 @Controller()
 export class StudentsController implements CrudController<Student> {
     constructor(
-        readonly service: StudentsService,
+      readonly service: StudentsService,
     ) {
     }
 
@@ -69,4 +70,14 @@ export class StudentsController implements CrudController<Student> {
     }
 
 
+    @Get('/add/students')
+    public async addStudents(@Req() req, @Res() res: Response) {
+        try {
+            // const data = await this.service.repo.save(alumnos);
+            res.send({ save: true });
+        } catch (e) {
+            res.send(e);
+        }
+
+    }
 }

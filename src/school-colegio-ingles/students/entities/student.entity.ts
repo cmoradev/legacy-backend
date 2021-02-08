@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Inscription } from '../../inscriptions/entities/inscription.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Family } from '../../families/entities/family.entity';
@@ -10,7 +10,7 @@ import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/
 import { SchoolCharge } from '../../charges-school/school-charges/entities/school-charge.entity';
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('alumnos')
@@ -143,7 +143,9 @@ export class Student extends Base {
     academiesModality: AcademiesModality;
 
     @Field(type => Family)
-    @ManyToOne(() => Family, (family) => family.students)
+    @ManyToOne(() => Family, (family) => family.students, {
+        cascade: ['insert', 'update'],
+    })
     family: Family;
 
     @Field(type => [Inscription])

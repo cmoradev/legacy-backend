@@ -22,70 +22,9 @@ export class Inscription extends Base {
     @Field(type => Int)
     @Column('int', {
         nullable: false,
-        name: 'id_alumnos',
-    })
-    idStudent: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_plantel',
-    })
-    idPlantel: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_ciclos',
-    })
-    idCycle: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_nivel',
-    })
-    idLevel: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_grados',
-    })
-    idGrade: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        name: 'id_grupos',
-    })
-    idGroup: number;
-
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
         name: 'id_status',
     })
     idStatus: number;
-
-    /*
-    @Column('int', {
-      nullable: false,
-    })
-    campusId: number;
-    @Column('int', {
-      nullable: false,
-    })
-    levelId: number;
-    @Column('int', {
-      nullable: false,
-    })
-    gradeId: number;
-    @Column('int', {
-      nullable: false,
-      name: 'cycleId',
-    })
-    cycleId: number;*/
 
     @Field(type => Student)
     @ManyToOne(() => Student, (student) => student.studentInscriptions)

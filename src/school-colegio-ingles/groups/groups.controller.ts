@@ -9,9 +9,11 @@ import { GroupsService } from './groups.service';
     },
     query: {
         join: {
-            groupGrade: {},
+            groupGrade: {
+                alias: 'groupGrade',
+            },
             'groupGrade.level': {
-                alias: 'level',
+                alias: 'groupGrade_level',
             },
             'groupGrade.level.campus': {
                 alias: 'campus',

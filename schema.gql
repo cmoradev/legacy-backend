@@ -1337,12 +1337,6 @@ type Inscription {
   id: ID!
   version: Float!
   uuid: String!
-  idStudent: Int!
-  idPlantel: Int!
-  idCycle: Int!
-  idLevel: Int!
-  idGrade: Int!
-  idGroup: Int!
   idStatus: Int!
   inscripStudent: Student!
   inscripGroup: Group!
