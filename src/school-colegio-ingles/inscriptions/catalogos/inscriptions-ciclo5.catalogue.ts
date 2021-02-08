@@ -47,7 +47,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1330,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -74,7 +74,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-08",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -101,7 +101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -128,7 +128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -155,7 +155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -182,7 +182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -209,7 +209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -236,7 +236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -263,7 +263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -290,7 +290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -317,7 +317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -344,7 +344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -371,7 +371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-08",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -398,7 +398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-08",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -425,7 +425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-08",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -452,7 +452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -479,7 +479,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -543,7 +543,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -570,7 +570,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -597,7 +597,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -624,7 +624,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -651,7 +651,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -678,7 +678,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -705,7 +705,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -732,7 +732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -759,7 +759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -786,7 +786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -813,7 +813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -840,7 +840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -904,7 +904,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -931,7 +931,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -958,7 +958,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -985,7 +985,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1012,7 +1012,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1039,7 +1039,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1066,7 +1066,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1093,7 +1093,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1120,7 +1120,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1147,7 +1147,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1174,7 +1174,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1201,7 +1201,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1228,7 +1228,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1255,7 +1255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1282,7 +1282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1309,7 +1309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1336,7 +1336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1363,7 +1363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1427,7 +1427,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1454,7 +1454,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1481,7 +1481,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1508,7 +1508,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1535,7 +1535,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1562,7 +1562,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1589,7 +1589,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1616,7 +1616,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1643,7 +1643,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1670,7 +1670,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1697,7 +1697,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1724,7 +1724,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1751,7 +1751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1778,7 +1778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1805,7 +1805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1869,7 +1869,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 970,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -1896,7 +1896,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1923,7 +1923,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1950,7 +1950,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -1977,7 +1977,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2004,7 +2004,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2031,7 +2031,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2058,7 +2058,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2085,7 +2085,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2112,7 +2112,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2139,7 +2139,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2166,7 +2166,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2193,7 +2193,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2220,7 +2220,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2247,7 +2247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2274,7 +2274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2301,7 +2301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2365,7 +2365,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 970,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2392,7 +2392,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2419,7 +2419,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2446,7 +2446,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2473,7 +2473,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2500,7 +2500,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2527,7 +2527,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2554,7 +2554,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2581,7 +2581,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2608,7 +2608,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2635,7 +2635,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2662,7 +2662,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2689,7 +2689,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2716,7 +2716,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2743,7 +2743,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2770,7 +2770,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2797,7 +2797,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1520,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2824,7 +2824,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2888,7 +2888,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -2915,7 +2915,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2942,7 +2942,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2969,7 +2969,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -2996,7 +2996,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3023,7 +3023,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3050,7 +3050,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3077,7 +3077,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3104,7 +3104,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3131,7 +3131,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3158,7 +3158,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3185,7 +3185,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3212,7 +3212,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3239,7 +3239,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3266,7 +3266,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3293,7 +3293,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3320,7 +3320,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3384,7 +3384,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3411,7 +3411,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3438,7 +3438,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3465,7 +3465,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3492,7 +3492,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3519,7 +3519,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3546,7 +3546,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3573,7 +3573,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3600,7 +3600,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3627,7 +3627,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3654,7 +3654,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3681,7 +3681,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3708,7 +3708,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3735,7 +3735,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3762,7 +3762,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3789,7 +3789,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3816,7 +3816,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3880,7 +3880,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 840,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -3907,7 +3907,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3934,7 +3934,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3961,7 +3961,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -3988,7 +3988,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4015,7 +4015,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4042,7 +4042,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4069,7 +4069,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4096,7 +4096,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4123,7 +4123,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4150,7 +4150,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4177,7 +4177,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4204,7 +4204,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4231,7 +4231,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4258,7 +4258,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4285,7 +4285,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4312,7 +4312,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4376,7 +4376,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4403,7 +4403,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4430,7 +4430,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4457,7 +4457,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4484,7 +4484,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4511,7 +4511,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4538,7 +4538,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4565,7 +4565,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4592,7 +4592,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4619,7 +4619,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4646,7 +4646,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4673,7 +4673,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4700,7 +4700,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4727,7 +4727,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4754,7 +4754,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4781,7 +4781,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4808,7 +4808,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4872,7 +4872,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 770,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -4899,7 +4899,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4926,7 +4926,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4953,7 +4953,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -4980,7 +4980,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5007,7 +5007,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5034,7 +5034,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5061,7 +5061,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5088,7 +5088,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5115,7 +5115,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5142,7 +5142,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5169,7 +5169,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5196,7 +5196,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5223,7 +5223,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5250,7 +5250,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5277,7 +5277,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5304,7 +5304,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5368,7 +5368,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5395,7 +5395,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5422,7 +5422,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5449,7 +5449,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5476,7 +5476,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5503,7 +5503,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5530,7 +5530,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5557,7 +5557,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5584,7 +5584,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5611,7 +5611,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5638,7 +5638,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5665,7 +5665,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5692,7 +5692,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5719,7 +5719,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5746,7 +5746,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-14",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5773,7 +5773,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5800,7 +5800,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5864,7 +5864,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5891,7 +5891,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -5918,7 +5918,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5945,7 +5945,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5972,7 +5972,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -5999,7 +5999,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6026,7 +6026,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6053,7 +6053,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6080,7 +6080,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6107,7 +6107,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6134,7 +6134,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6161,7 +6161,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6188,7 +6188,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6215,7 +6215,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6242,7 +6242,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6269,7 +6269,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6296,7 +6296,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6323,7 +6323,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 1470,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6387,7 +6387,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6414,7 +6414,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6441,7 +6441,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6468,7 +6468,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6495,7 +6495,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6522,7 +6522,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6549,7 +6549,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6576,7 +6576,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6603,7 +6603,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6630,7 +6630,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6657,7 +6657,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6684,7 +6684,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6711,7 +6711,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6738,7 +6738,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6765,7 +6765,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6792,7 +6792,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6819,7 +6819,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6883,7 +6883,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -6910,7 +6910,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6937,7 +6937,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6964,7 +6964,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -6991,7 +6991,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7018,7 +7018,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7045,7 +7045,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7072,7 +7072,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7099,7 +7099,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7126,7 +7126,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7153,7 +7153,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7180,7 +7180,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7207,7 +7207,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7234,7 +7234,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7261,7 +7261,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7288,7 +7288,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7315,7 +7315,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7379,7 +7379,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7406,7 +7406,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7433,7 +7433,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7460,7 +7460,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7487,7 +7487,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7514,7 +7514,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7541,7 +7541,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7568,7 +7568,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7595,7 +7595,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7622,7 +7622,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7649,7 +7649,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7676,7 +7676,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7703,7 +7703,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7730,7 +7730,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7757,7 +7757,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7784,7 +7784,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7811,7 +7811,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7875,7 +7875,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 735,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -7902,7 +7902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7929,7 +7929,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7956,7 +7956,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -7983,7 +7983,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8010,7 +8010,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8037,7 +8037,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8064,7 +8064,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8091,7 +8091,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8118,7 +8118,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8145,7 +8145,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8172,7 +8172,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8199,7 +8199,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8226,7 +8226,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8253,7 +8253,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8280,7 +8280,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8307,7 +8307,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8371,7 +8371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1130.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8398,7 +8398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8425,7 +8425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8452,7 +8452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8479,7 +8479,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8506,7 +8506,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8533,7 +8533,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8560,7 +8560,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8587,7 +8587,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8614,7 +8614,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8641,7 +8641,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 30,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8668,7 +8668,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8695,7 +8695,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8722,7 +8722,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8749,7 +8749,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-15",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8776,7 +8776,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8803,7 +8803,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1615,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8830,7 +8830,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1585,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8894,7 +8894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 840,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -8921,7 +8921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8948,7 +8948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -8975,7 +8975,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9002,7 +9002,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9029,7 +9029,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9056,7 +9056,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9083,7 +9083,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9110,7 +9110,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9137,7 +9137,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9164,7 +9164,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9191,7 +9191,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9218,7 +9218,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9245,7 +9245,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9272,7 +9272,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9299,7 +9299,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9326,7 +9326,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9390,7 +9390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9417,7 +9417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9444,7 +9444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9471,7 +9471,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9498,7 +9498,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9525,7 +9525,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9552,7 +9552,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9579,7 +9579,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9606,7 +9606,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9633,7 +9633,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9660,7 +9660,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9687,7 +9687,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9714,7 +9714,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9741,7 +9741,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9768,7 +9768,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9795,7 +9795,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9859,7 +9859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9886,7 +9886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9913,7 +9913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -9940,7 +9940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9967,7 +9967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -9994,7 +9994,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10021,7 +10021,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10048,7 +10048,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10075,7 +10075,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10102,7 +10102,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10129,7 +10129,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10156,7 +10156,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10183,7 +10183,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10210,7 +10210,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10237,7 +10237,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10301,7 +10301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10328,7 +10328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10355,7 +10355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10382,7 +10382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10409,7 +10409,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10436,7 +10436,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10463,7 +10463,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10490,7 +10490,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10517,7 +10517,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10544,7 +10544,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10571,7 +10571,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10598,7 +10598,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10625,7 +10625,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10652,7 +10652,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10679,7 +10679,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10706,7 +10706,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10733,7 +10733,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10797,7 +10797,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 367.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -10824,7 +10824,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10851,7 +10851,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10878,7 +10878,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10905,7 +10905,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10932,7 +10932,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10959,7 +10959,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -10986,7 +10986,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11013,7 +11013,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11040,7 +11040,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11067,7 +11067,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11094,7 +11094,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11121,7 +11121,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11148,7 +11148,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11175,7 +11175,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11202,7 +11202,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11229,7 +11229,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11293,7 +11293,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11320,7 +11320,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11347,7 +11347,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11374,7 +11374,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11401,7 +11401,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11428,7 +11428,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11455,7 +11455,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11482,7 +11482,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11509,7 +11509,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11536,7 +11536,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11563,7 +11563,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11590,7 +11590,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11617,7 +11617,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11644,7 +11644,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11671,7 +11671,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11698,7 +11698,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11725,7 +11725,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11789,7 +11789,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -11816,7 +11816,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11843,7 +11843,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11870,7 +11870,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11897,7 +11897,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11924,7 +11924,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11951,7 +11951,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -11978,7 +11978,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12005,7 +12005,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12032,7 +12032,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12059,7 +12059,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12086,7 +12086,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12113,7 +12113,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12140,7 +12140,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12167,7 +12167,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12194,7 +12194,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12221,7 +12221,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12285,7 +12285,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 710,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12312,7 +12312,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12339,7 +12339,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12366,7 +12366,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12393,7 +12393,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12420,7 +12420,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12447,7 +12447,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12474,7 +12474,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12501,7 +12501,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12528,7 +12528,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12555,7 +12555,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12582,7 +12582,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12609,7 +12609,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12636,7 +12636,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12663,7 +12663,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12690,7 +12690,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12717,7 +12717,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12781,7 +12781,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 613,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -12808,7 +12808,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12835,7 +12835,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12862,7 +12862,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12889,7 +12889,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12916,7 +12916,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12943,7 +12943,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12970,7 +12970,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -12997,7 +12997,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13024,7 +13024,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13051,7 +13051,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13078,7 +13078,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13105,7 +13105,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13132,7 +13132,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13159,7 +13159,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13186,7 +13186,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13213,7 +13213,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13277,7 +13277,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 560,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13304,7 +13304,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13331,7 +13331,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13358,7 +13358,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13385,7 +13385,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13412,7 +13412,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13439,7 +13439,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13466,7 +13466,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13493,7 +13493,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13520,7 +13520,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13547,7 +13547,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13574,7 +13574,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13601,7 +13601,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13628,7 +13628,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13655,7 +13655,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13682,7 +13682,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13709,7 +13709,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13773,7 +13773,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 560,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -13800,7 +13800,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13827,7 +13827,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13854,7 +13854,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13881,7 +13881,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13908,7 +13908,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13935,7 +13935,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13962,7 +13962,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -13989,7 +13989,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14016,7 +14016,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14043,7 +14043,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14070,7 +14070,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14097,7 +14097,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14124,7 +14124,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14151,7 +14151,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14178,7 +14178,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14205,7 +14205,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14269,7 +14269,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14296,7 +14296,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14323,7 +14323,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14350,7 +14350,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14377,7 +14377,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14404,7 +14404,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14431,7 +14431,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14458,7 +14458,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14485,7 +14485,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14512,7 +14512,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14539,7 +14539,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14566,7 +14566,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14593,7 +14593,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14620,7 +14620,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14647,7 +14647,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14674,7 +14674,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14701,7 +14701,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14765,7 +14765,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -14792,7 +14792,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14819,7 +14819,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14846,7 +14846,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14873,7 +14873,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14900,7 +14900,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14927,7 +14927,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14954,7 +14954,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -14981,7 +14981,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15008,7 +15008,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15035,7 +15035,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15062,7 +15062,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15089,7 +15089,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15116,7 +15116,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15143,7 +15143,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15170,7 +15170,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15197,7 +15197,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15261,7 +15261,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15288,7 +15288,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15315,7 +15315,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15342,7 +15342,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15369,7 +15369,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15396,7 +15396,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15423,7 +15423,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15450,7 +15450,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15477,7 +15477,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15504,7 +15504,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15531,7 +15531,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15558,7 +15558,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15585,7 +15585,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15612,7 +15612,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15639,7 +15639,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15666,7 +15666,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15693,7 +15693,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15757,7 +15757,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15784,7 +15784,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -15811,7 +15811,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15838,7 +15838,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15865,7 +15865,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15892,7 +15892,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15919,7 +15919,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15946,7 +15946,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -15973,7 +15973,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16000,7 +16000,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16027,7 +16027,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16054,7 +16054,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16081,7 +16081,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16108,7 +16108,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16135,7 +16135,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16162,7 +16162,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16189,7 +16189,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16250,7 +16250,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1330,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16277,7 +16277,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16304,7 +16304,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16331,7 +16331,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16358,7 +16358,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16385,7 +16385,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16412,7 +16412,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16439,7 +16439,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16466,7 +16466,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16493,7 +16493,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16520,7 +16520,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16547,7 +16547,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16574,7 +16574,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16601,7 +16601,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16628,7 +16628,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16655,7 +16655,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16682,7 +16682,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16709,7 +16709,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16773,7 +16773,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -16800,7 +16800,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16827,7 +16827,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16854,7 +16854,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16881,7 +16881,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16908,7 +16908,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16935,7 +16935,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16962,7 +16962,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -16989,7 +16989,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17016,7 +17016,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17043,7 +17043,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17070,7 +17070,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17097,7 +17097,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17124,7 +17124,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17151,7 +17151,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17178,7 +17178,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17205,7 +17205,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17269,7 +17269,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 245,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17296,7 +17296,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17323,7 +17323,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17350,7 +17350,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17377,7 +17377,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17404,7 +17404,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17431,7 +17431,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17458,7 +17458,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17485,7 +17485,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17512,7 +17512,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17539,7 +17539,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17566,7 +17566,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17593,7 +17593,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17620,7 +17620,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17647,7 +17647,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17674,7 +17674,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17701,7 +17701,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17765,7 +17765,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 266,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17792,7 +17792,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -17819,7 +17819,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17846,7 +17846,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17873,7 +17873,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17900,7 +17900,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17927,7 +17927,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17954,7 +17954,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -17981,7 +17981,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18008,7 +18008,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18035,7 +18035,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18062,7 +18062,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18089,7 +18089,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18116,7 +18116,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18143,7 +18143,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18170,7 +18170,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-22",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18197,7 +18197,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18224,7 +18224,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 380,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18288,7 +18288,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18315,7 +18315,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18342,7 +18342,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18369,7 +18369,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18396,7 +18396,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18423,7 +18423,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18450,7 +18450,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18477,7 +18477,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18504,7 +18504,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18531,7 +18531,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18558,7 +18558,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18585,7 +18585,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18612,7 +18612,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18639,7 +18639,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18666,7 +18666,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18693,7 +18693,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18720,7 +18720,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18784,7 +18784,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -18811,7 +18811,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18838,7 +18838,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18865,7 +18865,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18892,7 +18892,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18919,7 +18919,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18946,7 +18946,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -18973,7 +18973,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19000,7 +19000,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19027,7 +19027,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19054,7 +19054,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19081,7 +19081,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19108,7 +19108,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19135,7 +19135,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19162,7 +19162,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19189,7 +19189,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19216,7 +19216,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19280,7 +19280,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 840,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19307,7 +19307,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19334,7 +19334,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19361,7 +19361,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19388,7 +19388,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19415,7 +19415,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19442,7 +19442,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19469,7 +19469,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19496,7 +19496,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19523,7 +19523,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19550,7 +19550,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19577,7 +19577,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19604,7 +19604,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19631,7 +19631,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19658,7 +19658,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19685,7 +19685,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19712,7 +19712,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19739,7 +19739,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19803,7 +19803,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -19830,7 +19830,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19857,7 +19857,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19884,7 +19884,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19911,7 +19911,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19938,7 +19938,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19965,7 +19965,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -19992,7 +19992,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20019,7 +20019,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20046,7 +20046,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20073,7 +20073,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20100,7 +20100,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20127,7 +20127,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20154,7 +20154,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -20181,7 +20181,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20208,7 +20208,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20235,7 +20235,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20299,7 +20299,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 613,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20326,7 +20326,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20353,7 +20353,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20380,7 +20380,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20407,7 +20407,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20434,7 +20434,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20461,7 +20461,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20488,7 +20488,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20515,7 +20515,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20542,7 +20542,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20569,7 +20569,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20596,7 +20596,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20623,7 +20623,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20650,7 +20650,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -20677,7 +20677,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-23",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20704,7 +20704,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20731,7 +20731,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20795,7 +20795,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 735,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20822,7 +20822,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -20849,7 +20849,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20876,7 +20876,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20903,7 +20903,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20930,7 +20930,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20957,7 +20957,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -20984,7 +20984,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21011,7 +21011,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21038,7 +21038,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21065,7 +21065,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21092,7 +21092,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21119,7 +21119,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21146,7 +21146,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21173,7 +21173,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21200,7 +21200,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21227,7 +21227,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21254,7 +21254,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21318,7 +21318,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 595,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21345,7 +21345,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21372,7 +21372,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21399,7 +21399,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21426,7 +21426,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21453,7 +21453,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21480,7 +21480,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21507,7 +21507,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21534,7 +21534,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21561,7 +21561,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21588,7 +21588,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21615,7 +21615,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21642,7 +21642,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21669,7 +21669,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21696,7 +21696,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21723,7 +21723,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21750,7 +21750,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21814,7 +21814,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 280,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -21841,7 +21841,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21868,7 +21868,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21895,7 +21895,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21922,7 +21922,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21949,7 +21949,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -21976,7 +21976,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22003,7 +22003,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22030,7 +22030,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22057,7 +22057,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22084,7 +22084,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22111,7 +22111,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22138,7 +22138,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22165,7 +22165,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22192,7 +22192,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22219,7 +22219,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22246,7 +22246,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22273,7 +22273,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22337,7 +22337,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 340,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22364,7 +22364,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22391,7 +22391,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22418,7 +22418,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22445,7 +22445,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22472,7 +22472,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22499,7 +22499,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22526,7 +22526,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22553,7 +22553,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22580,7 +22580,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22607,7 +22607,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22634,7 +22634,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22661,7 +22661,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22688,7 +22688,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22715,7 +22715,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22742,7 +22742,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22769,7 +22769,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22796,7 +22796,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 10,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22860,7 +22860,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22887,7 +22887,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -22914,7 +22914,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -22941,7 +22941,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -22968,7 +22968,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -22995,7 +22995,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23022,7 +23022,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23049,7 +23049,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23076,7 +23076,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23103,7 +23103,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23130,7 +23130,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23157,7 +23157,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23184,7 +23184,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23211,7 +23211,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23238,7 +23238,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23265,7 +23265,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23292,7 +23292,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23319,7 +23319,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23346,7 +23346,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23373,7 +23373,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 1260,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23437,7 +23437,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 613,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23464,7 +23464,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23491,7 +23491,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23518,7 +23518,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23545,7 +23545,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23572,7 +23572,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23599,7 +23599,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23626,7 +23626,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23653,7 +23653,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23680,7 +23680,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23707,7 +23707,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23734,7 +23734,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23761,7 +23761,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23788,7 +23788,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23815,7 +23815,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23842,7 +23842,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23869,7 +23869,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23933,7 +23933,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -23960,7 +23960,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -23987,7 +23987,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24014,7 +24014,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24041,7 +24041,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24068,7 +24068,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24095,7 +24095,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24122,7 +24122,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24149,7 +24149,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24176,7 +24176,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24203,7 +24203,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24230,7 +24230,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24257,7 +24257,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24284,7 +24284,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24311,7 +24311,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24338,7 +24338,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24365,7 +24365,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24392,7 +24392,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24456,7 +24456,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24483,7 +24483,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24510,7 +24510,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24537,7 +24537,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24564,7 +24564,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24591,7 +24591,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24618,7 +24618,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24645,7 +24645,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24672,7 +24672,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24699,7 +24699,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24726,7 +24726,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24753,7 +24753,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24780,7 +24780,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24807,7 +24807,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24834,7 +24834,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24861,7 +24861,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24888,7 +24888,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -24952,7 +24952,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 665,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -24979,7 +24979,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25006,7 +25006,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25033,7 +25033,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25060,7 +25060,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25087,7 +25087,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25114,7 +25114,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25141,7 +25141,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25168,7 +25168,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25195,7 +25195,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25222,7 +25222,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25249,7 +25249,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25276,7 +25276,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25303,7 +25303,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25330,7 +25330,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25357,7 +25357,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25384,7 +25384,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25411,7 +25411,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25475,7 +25475,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25502,7 +25502,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25529,7 +25529,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25556,7 +25556,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25583,7 +25583,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25610,7 +25610,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25637,7 +25637,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25664,7 +25664,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25691,7 +25691,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25718,7 +25718,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25745,7 +25745,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25772,7 +25772,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25799,7 +25799,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25826,7 +25826,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25853,7 +25853,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25880,7 +25880,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25907,7 +25907,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -25971,7 +25971,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -25998,7 +25998,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26025,7 +26025,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26052,7 +26052,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26079,7 +26079,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26106,7 +26106,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26133,7 +26133,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26160,7 +26160,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26187,7 +26187,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26214,7 +26214,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26241,7 +26241,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26268,7 +26268,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26295,7 +26295,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26322,7 +26322,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26349,7 +26349,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26376,7 +26376,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26403,7 +26403,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26467,7 +26467,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26494,7 +26494,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26521,7 +26521,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26548,7 +26548,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26575,7 +26575,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26602,7 +26602,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26629,7 +26629,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26656,7 +26656,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26683,7 +26683,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26710,7 +26710,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26737,7 +26737,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26764,7 +26764,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26791,7 +26791,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26818,7 +26818,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26845,7 +26845,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26872,7 +26872,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26899,7 +26899,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -26963,7 +26963,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -26990,7 +26990,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27017,7 +27017,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27044,7 +27044,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27071,7 +27071,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27098,7 +27098,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27125,7 +27125,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27152,7 +27152,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27179,7 +27179,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27206,7 +27206,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27233,7 +27233,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27260,7 +27260,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27287,7 +27287,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27314,7 +27314,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27341,7 +27341,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27368,7 +27368,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27395,7 +27395,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27459,7 +27459,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27486,7 +27486,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27513,7 +27513,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27540,7 +27540,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27567,7 +27567,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27594,7 +27594,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27621,7 +27621,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27648,7 +27648,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27675,7 +27675,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27702,7 +27702,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27729,7 +27729,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27756,7 +27756,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27783,7 +27783,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27810,7 +27810,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27837,7 +27837,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -27864,7 +27864,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27891,7 +27891,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27918,7 +27918,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -27945,7 +27945,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28009,7 +28009,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28036,7 +28036,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28063,7 +28063,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28090,7 +28090,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28117,7 +28117,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28144,7 +28144,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28171,7 +28171,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28198,7 +28198,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28225,7 +28225,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28252,7 +28252,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28279,7 +28279,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28306,7 +28306,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28333,7 +28333,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28360,7 +28360,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28387,7 +28387,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28414,7 +28414,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28441,7 +28441,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28505,7 +28505,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28532,7 +28532,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28559,7 +28559,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28586,7 +28586,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28613,7 +28613,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28640,7 +28640,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28667,7 +28667,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28694,7 +28694,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28721,7 +28721,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28748,7 +28748,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28775,7 +28775,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28802,7 +28802,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28829,7 +28829,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28856,7 +28856,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28883,7 +28883,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -28910,7 +28910,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -28937,7 +28937,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29001,7 +29001,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1330,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29028,7 +29028,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29055,7 +29055,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29082,7 +29082,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29109,7 +29109,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29136,7 +29136,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29163,7 +29163,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29190,7 +29190,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29217,7 +29217,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29244,7 +29244,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29271,7 +29271,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29298,7 +29298,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29325,7 +29325,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29352,7 +29352,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29379,7 +29379,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29406,7 +29406,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29433,7 +29433,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29497,7 +29497,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 665,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29524,7 +29524,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29551,7 +29551,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29578,7 +29578,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29605,7 +29605,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29632,7 +29632,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29659,7 +29659,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29686,7 +29686,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29713,7 +29713,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29740,7 +29740,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29767,7 +29767,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29794,7 +29794,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29821,7 +29821,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29848,7 +29848,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29875,7 +29875,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29902,7 +29902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -29929,7 +29929,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -29956,7 +29956,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30020,7 +30020,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30047,7 +30047,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30074,7 +30074,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30101,7 +30101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30128,7 +30128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30155,7 +30155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30182,7 +30182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30209,7 +30209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30236,7 +30236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30263,7 +30263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30290,7 +30290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30317,7 +30317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30344,7 +30344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30371,7 +30371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30398,7 +30398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30425,7 +30425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30452,7 +30452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30516,7 +30516,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30543,7 +30543,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30570,7 +30570,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30597,7 +30597,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30624,7 +30624,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30651,7 +30651,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30678,7 +30678,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30705,7 +30705,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30732,7 +30732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30759,7 +30759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30786,7 +30786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30813,7 +30813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30840,7 +30840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30867,7 +30867,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30894,7 +30894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -30921,7 +30921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -30948,7 +30948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31012,7 +31012,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 665,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31039,7 +31039,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31066,7 +31066,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31093,7 +31093,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31120,7 +31120,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31147,7 +31147,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31174,7 +31174,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31201,7 +31201,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31228,7 +31228,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31255,7 +31255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31282,7 +31282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31309,7 +31309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31336,7 +31336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31363,7 +31363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31390,7 +31390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31417,7 +31417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31444,7 +31444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31471,7 +31471,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121601",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31535,7 +31535,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 930,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31562,7 +31562,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31589,7 +31589,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31616,7 +31616,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31643,7 +31643,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31670,7 +31670,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31697,7 +31697,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31724,7 +31724,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31751,7 +31751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31778,7 +31778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31805,7 +31805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31832,7 +31832,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31859,7 +31859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31886,7 +31886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31913,7 +31913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -31940,7 +31940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -31967,7 +31967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32031,7 +32031,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32058,7 +32058,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32085,7 +32085,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32112,7 +32112,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32139,7 +32139,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32166,7 +32166,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32193,7 +32193,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32220,7 +32220,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32247,7 +32247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32274,7 +32274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32301,7 +32301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32328,7 +32328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32355,7 +32355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32382,7 +32382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32409,7 +32409,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32436,7 +32436,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32463,7 +32463,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32527,7 +32527,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 840,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32554,7 +32554,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32581,7 +32581,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32608,7 +32608,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32635,7 +32635,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32662,7 +32662,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32689,7 +32689,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32716,7 +32716,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32743,7 +32743,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32770,7 +32770,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32797,7 +32797,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32824,7 +32824,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32851,7 +32851,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32878,7 +32878,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32905,7 +32905,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -32932,7 +32932,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -32959,7 +32959,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33020,7 +33020,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 613,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33047,7 +33047,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33074,7 +33074,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33101,7 +33101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33128,7 +33128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33155,7 +33155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33182,7 +33182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33209,7 +33209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33236,7 +33236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33263,7 +33263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33290,7 +33290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33317,7 +33317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33344,7 +33344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33371,7 +33371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -33398,7 +33398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33425,7 +33425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33452,7 +33452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33516,7 +33516,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33543,7 +33543,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33570,7 +33570,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33597,7 +33597,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33624,7 +33624,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33651,7 +33651,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33678,7 +33678,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33705,7 +33705,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33732,7 +33732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33759,7 +33759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33786,7 +33786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33813,7 +33813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33840,7 +33840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33867,7 +33867,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33894,7 +33894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -33921,7 +33921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -33948,7 +33948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34012,7 +34012,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 840,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34039,7 +34039,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34066,7 +34066,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34093,7 +34093,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34120,7 +34120,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34147,7 +34147,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34174,7 +34174,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34201,7 +34201,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34228,7 +34228,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34255,7 +34255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34282,7 +34282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34309,7 +34309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34336,7 +34336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34363,7 +34363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34390,7 +34390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34417,7 +34417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34444,7 +34444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34508,7 +34508,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34535,7 +34535,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34562,7 +34562,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34589,7 +34589,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34616,7 +34616,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34643,7 +34643,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34670,7 +34670,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34697,7 +34697,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34724,7 +34724,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34751,7 +34751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34778,7 +34778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34805,7 +34805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34832,7 +34832,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34859,7 +34859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34886,7 +34886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34913,7 +34913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-30",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -34940,7 +34940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -34967,7 +34967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 570,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35031,7 +35031,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35058,7 +35058,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2019-12-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35085,7 +35085,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-01-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35112,7 +35112,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-02-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35139,7 +35139,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-03-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35166,7 +35166,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-04-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35193,7 +35193,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-05-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35220,7 +35220,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-06-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35247,7 +35247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-07-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35274,7 +35274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-08-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35301,7 +35301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-09-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35328,7 +35328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-31",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35355,7 +35355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-31",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35382,7 +35382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-31",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35409,7 +35409,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-10-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35436,7 +35436,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-11-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35497,7 +35497,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35524,7 +35524,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35551,7 +35551,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35578,7 +35578,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35605,7 +35605,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35632,7 +35632,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35659,7 +35659,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35686,7 +35686,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35713,7 +35713,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35740,7 +35740,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35767,7 +35767,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35794,7 +35794,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35821,7 +35821,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35848,7 +35848,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35875,7 +35875,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -35902,7 +35902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35929,7 +35929,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -35993,7 +35993,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 665,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36020,7 +36020,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36047,7 +36047,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36074,7 +36074,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36101,7 +36101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36128,7 +36128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36155,7 +36155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36182,7 +36182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36209,7 +36209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36236,7 +36236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36263,7 +36263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36290,7 +36290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36317,7 +36317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36344,7 +36344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36371,7 +36371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36398,7 +36398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36425,7 +36425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36486,7 +36486,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36513,7 +36513,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36540,7 +36540,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36567,7 +36567,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36594,7 +36594,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36621,7 +36621,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36648,7 +36648,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36675,7 +36675,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36702,7 +36702,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36729,7 +36729,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36756,7 +36756,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36783,7 +36783,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36810,7 +36810,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36837,7 +36837,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36864,7 +36864,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -36891,7 +36891,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36918,7 +36918,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -36982,7 +36982,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37009,7 +37009,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37036,7 +37036,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37063,7 +37063,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37090,7 +37090,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37117,7 +37117,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37144,7 +37144,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37171,7 +37171,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37198,7 +37198,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37225,7 +37225,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37252,7 +37252,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37279,7 +37279,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37306,7 +37306,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37333,7 +37333,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37360,7 +37360,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-04",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37387,7 +37387,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37414,7 +37414,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37478,7 +37478,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37505,7 +37505,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37532,7 +37532,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37559,7 +37559,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37586,7 +37586,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37613,7 +37613,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37640,7 +37640,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37667,7 +37667,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37694,7 +37694,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37721,7 +37721,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37748,7 +37748,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37775,7 +37775,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37802,7 +37802,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37829,7 +37829,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37856,7 +37856,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -37883,7 +37883,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37910,7 +37910,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -37974,7 +37974,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38001,7 +38001,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38028,7 +38028,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38055,7 +38055,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38082,7 +38082,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38109,7 +38109,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38136,7 +38136,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38163,7 +38163,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38190,7 +38190,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38217,7 +38217,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38244,7 +38244,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38271,7 +38271,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38298,7 +38298,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38325,7 +38325,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38352,7 +38352,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38379,7 +38379,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38406,7 +38406,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38470,7 +38470,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38497,7 +38497,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38524,7 +38524,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38551,7 +38551,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38578,7 +38578,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38605,7 +38605,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38632,7 +38632,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38659,7 +38659,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38686,7 +38686,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38713,7 +38713,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38740,7 +38740,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38767,7 +38767,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38794,7 +38794,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38821,7 +38821,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38848,7 +38848,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38875,7 +38875,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38902,7 +38902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -38966,7 +38966,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -38993,7 +38993,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39020,7 +39020,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39047,7 +39047,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39074,7 +39074,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39101,7 +39101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39128,7 +39128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39155,7 +39155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39182,7 +39182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39209,7 +39209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39236,7 +39236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39263,7 +39263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39290,7 +39290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39317,7 +39317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39344,7 +39344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-05",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39371,7 +39371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39398,7 +39398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39462,7 +39462,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 665,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39489,7 +39489,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39516,7 +39516,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39543,7 +39543,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39570,7 +39570,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39597,7 +39597,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39624,7 +39624,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39651,7 +39651,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39678,7 +39678,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39705,7 +39705,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39732,7 +39732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39759,7 +39759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39786,7 +39786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39813,7 +39813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39840,7 +39840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39867,7 +39867,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -39894,7 +39894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39921,7 +39921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -39985,7 +39985,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40012,7 +40012,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40039,7 +40039,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40066,7 +40066,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40093,7 +40093,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40120,7 +40120,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40147,7 +40147,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40174,7 +40174,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40201,7 +40201,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40228,7 +40228,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40255,7 +40255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40282,7 +40282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40309,7 +40309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40336,7 +40336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40363,7 +40363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40390,7 +40390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40417,7 +40417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40481,7 +40481,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40508,7 +40508,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40535,7 +40535,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40562,7 +40562,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40589,7 +40589,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40616,7 +40616,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40643,7 +40643,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40670,7 +40670,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40697,7 +40697,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40724,7 +40724,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40751,7 +40751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40778,7 +40778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40805,7 +40805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40832,7 +40832,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40859,7 +40859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -40886,7 +40886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40913,7 +40913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -40977,7 +40977,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41004,7 +41004,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41031,7 +41031,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41058,7 +41058,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41085,7 +41085,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41112,7 +41112,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41139,7 +41139,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41166,7 +41166,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41193,7 +41193,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41220,7 +41220,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41247,7 +41247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41274,7 +41274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41301,7 +41301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41328,7 +41328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41355,7 +41355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41382,7 +41382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41409,7 +41409,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41473,7 +41473,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41500,7 +41500,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41527,7 +41527,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41554,7 +41554,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41581,7 +41581,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41608,7 +41608,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41635,7 +41635,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41662,7 +41662,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41689,7 +41689,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41716,7 +41716,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41743,7 +41743,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41770,7 +41770,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41797,7 +41797,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41824,7 +41824,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41851,7 +41851,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41878,7 +41878,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41905,7 +41905,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -41966,7 +41966,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -41993,7 +41993,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42020,7 +42020,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42047,7 +42047,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42074,7 +42074,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42101,7 +42101,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42128,7 +42128,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42155,7 +42155,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42182,7 +42182,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42209,7 +42209,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42236,7 +42236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42263,7 +42263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42290,7 +42290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42317,7 +42317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42344,7 +42344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42371,7 +42371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42398,7 +42398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42462,7 +42462,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42489,7 +42489,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42516,7 +42516,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42543,7 +42543,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42570,7 +42570,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42597,7 +42597,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42624,7 +42624,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42651,7 +42651,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42678,7 +42678,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42705,7 +42705,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42732,7 +42732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42759,7 +42759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42786,7 +42786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42813,7 +42813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42840,7 +42840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42867,7 +42867,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42894,7 +42894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -42958,7 +42958,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 280,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -42985,7 +42985,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43012,7 +43012,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43039,7 +43039,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43066,7 +43066,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43093,7 +43093,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43120,7 +43120,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43147,7 +43147,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43174,7 +43174,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43201,7 +43201,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43228,7 +43228,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43255,7 +43255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43282,7 +43282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43309,7 +43309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43336,7 +43336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43363,7 +43363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43390,7 +43390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43454,7 +43454,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43481,7 +43481,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43508,7 +43508,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43535,7 +43535,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43562,7 +43562,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43589,7 +43589,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43616,7 +43616,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43643,7 +43643,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43670,7 +43670,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43697,7 +43697,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43724,7 +43724,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43751,7 +43751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43778,7 +43778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43805,7 +43805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43832,7 +43832,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-06",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43859,7 +43859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43886,7 +43886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -43950,7 +43950,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -43977,7 +43977,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44004,7 +44004,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44031,7 +44031,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44058,7 +44058,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44085,7 +44085,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44112,7 +44112,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44139,7 +44139,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44166,7 +44166,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44193,7 +44193,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44220,7 +44220,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44247,7 +44247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44274,7 +44274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44301,7 +44301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44328,7 +44328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44355,7 +44355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44382,7 +44382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44446,7 +44446,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44473,7 +44473,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44500,7 +44500,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44527,7 +44527,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44554,7 +44554,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44581,7 +44581,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44608,7 +44608,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44635,7 +44635,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44662,7 +44662,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44689,7 +44689,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44716,7 +44716,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44743,7 +44743,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44770,7 +44770,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44797,7 +44797,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44824,7 +44824,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44851,7 +44851,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44878,7 +44878,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44942,7 +44942,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 770,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -44969,7 +44969,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -44996,7 +44996,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45023,7 +45023,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45050,7 +45050,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45077,7 +45077,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45104,7 +45104,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45131,7 +45131,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45158,7 +45158,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45185,7 +45185,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45212,7 +45212,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45239,7 +45239,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45266,7 +45266,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45293,7 +45293,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45320,7 +45320,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45347,7 +45347,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45374,7 +45374,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45438,7 +45438,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45465,7 +45465,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45492,7 +45492,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45519,7 +45519,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45546,7 +45546,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45573,7 +45573,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45600,7 +45600,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45627,7 +45627,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45654,7 +45654,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45681,7 +45681,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45708,7 +45708,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45735,7 +45735,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45762,7 +45762,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45789,7 +45789,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45816,7 +45816,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45843,7 +45843,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45870,7 +45870,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1000,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45934,7 +45934,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -45961,7 +45961,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -45988,7 +45988,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46015,7 +46015,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46042,7 +46042,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46069,7 +46069,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46096,7 +46096,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46123,7 +46123,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46150,7 +46150,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46177,7 +46177,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46204,7 +46204,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46231,7 +46231,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46258,7 +46258,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46285,7 +46285,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46312,7 +46312,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46339,7 +46339,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46366,7 +46366,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46430,7 +46430,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46457,7 +46457,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46484,7 +46484,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46511,7 +46511,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46538,7 +46538,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46565,7 +46565,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46592,7 +46592,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46619,7 +46619,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46646,7 +46646,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46673,7 +46673,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46700,7 +46700,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46727,7 +46727,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46754,7 +46754,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46781,7 +46781,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46808,7 +46808,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46835,7 +46835,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46862,7 +46862,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46926,7 +46926,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -46953,7 +46953,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -46980,7 +46980,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47007,7 +47007,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47034,7 +47034,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47061,7 +47061,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47088,7 +47088,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47115,7 +47115,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47142,7 +47142,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47169,7 +47169,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47196,7 +47196,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47223,7 +47223,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47250,7 +47250,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47277,7 +47277,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47304,7 +47304,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47331,7 +47331,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47358,7 +47358,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47422,7 +47422,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47449,7 +47449,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47476,7 +47476,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47503,7 +47503,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47530,7 +47530,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47557,7 +47557,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47584,7 +47584,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47611,7 +47611,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47638,7 +47638,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47665,7 +47665,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47692,7 +47692,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47719,7 +47719,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47746,7 +47746,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47773,7 +47773,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47800,7 +47800,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-07",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47827,7 +47827,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47854,7 +47854,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47918,7 +47918,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 595,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -47945,7 +47945,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47972,7 +47972,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -47999,7 +47999,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48026,7 +48026,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48053,7 +48053,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48080,7 +48080,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48107,7 +48107,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48134,7 +48134,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48161,7 +48161,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48188,7 +48188,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48215,7 +48215,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48242,7 +48242,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48269,7 +48269,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48296,7 +48296,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48323,7 +48323,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48350,7 +48350,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48414,7 +48414,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 420,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48441,7 +48441,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48468,7 +48468,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48495,7 +48495,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48522,7 +48522,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48549,7 +48549,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48576,7 +48576,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48603,7 +48603,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48630,7 +48630,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48657,7 +48657,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48684,7 +48684,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48711,7 +48711,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48738,7 +48738,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48765,7 +48765,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48792,7 +48792,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48819,7 +48819,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48846,7 +48846,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48910,7 +48910,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -48937,7 +48937,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48964,7 +48964,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -48991,7 +48991,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49018,7 +49018,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49045,7 +49045,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49072,7 +49072,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49099,7 +49099,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49126,7 +49126,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49153,7 +49153,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49180,7 +49180,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49207,7 +49207,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49234,7 +49234,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49261,7 +49261,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49288,7 +49288,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49315,7 +49315,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49342,7 +49342,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49406,7 +49406,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 910,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49433,7 +49433,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49460,7 +49460,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49487,7 +49487,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49514,7 +49514,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49541,7 +49541,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49568,7 +49568,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49595,7 +49595,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49622,7 +49622,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49649,7 +49649,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49676,7 +49676,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49703,7 +49703,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49730,7 +49730,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49757,7 +49757,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49784,7 +49784,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49811,7 +49811,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49838,7 +49838,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49902,7 +49902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -49929,7 +49929,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49956,7 +49956,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -49983,7 +49983,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50010,7 +50010,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50037,7 +50037,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50064,7 +50064,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50091,7 +50091,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50118,7 +50118,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50145,7 +50145,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50172,7 +50172,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50199,7 +50199,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50226,7 +50226,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50253,7 +50253,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50280,7 +50280,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50307,7 +50307,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50334,7 +50334,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50398,7 +50398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 490,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50425,7 +50425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50452,7 +50452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50479,7 +50479,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50506,7 +50506,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50533,7 +50533,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50560,7 +50560,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50587,7 +50587,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50614,7 +50614,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50641,7 +50641,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50668,7 +50668,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50695,7 +50695,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50722,7 +50722,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50749,7 +50749,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50776,7 +50776,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50803,7 +50803,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50830,7 +50830,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50894,7 +50894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -50921,7 +50921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50948,7 +50948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -50975,7 +50975,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51002,7 +51002,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51029,7 +51029,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51056,7 +51056,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51083,7 +51083,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51110,7 +51110,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51137,7 +51137,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51164,7 +51164,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51191,7 +51191,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51218,7 +51218,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51245,7 +51245,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51272,7 +51272,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51299,7 +51299,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51326,7 +51326,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51353,7 +51353,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51380,7 +51380,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51444,7 +51444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51471,7 +51471,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51498,7 +51498,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -51525,7 +51525,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51552,7 +51552,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51579,7 +51579,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51606,7 +51606,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51633,7 +51633,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51660,7 +51660,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51687,7 +51687,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51714,7 +51714,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51741,7 +51741,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-11",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51768,7 +51768,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51795,7 +51795,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51822,7 +51822,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51849,7 +51849,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51876,7 +51876,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51903,7 +51903,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2022-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -51967,7 +51967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 600,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -51994,7 +51994,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52021,7 +52021,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52048,7 +52048,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52075,7 +52075,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52102,7 +52102,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52129,7 +52129,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52156,7 +52156,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52183,7 +52183,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52210,7 +52210,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52237,7 +52237,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52264,7 +52264,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52291,7 +52291,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52318,7 +52318,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52345,7 +52345,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52372,7 +52372,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52399,7 +52399,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52426,7 +52426,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52490,7 +52490,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52517,7 +52517,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52544,7 +52544,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52571,7 +52571,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52598,7 +52598,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52625,7 +52625,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52652,7 +52652,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52679,7 +52679,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52706,7 +52706,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52733,7 +52733,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52760,7 +52760,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52787,7 +52787,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52814,7 +52814,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52841,7 +52841,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52868,7 +52868,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -52895,7 +52895,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52922,7 +52922,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -52986,7 +52986,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 760,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53013,7 +53013,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53040,7 +53040,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53067,7 +53067,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53094,7 +53094,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53121,7 +53121,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53148,7 +53148,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53175,7 +53175,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53202,7 +53202,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53229,7 +53229,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53256,7 +53256,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53283,7 +53283,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53310,7 +53310,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53337,7 +53337,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53364,7 +53364,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53391,7 +53391,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53418,7 +53418,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53445,7 +53445,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53509,7 +53509,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53536,7 +53536,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53563,7 +53563,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53590,7 +53590,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53617,7 +53617,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53644,7 +53644,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53671,7 +53671,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53698,7 +53698,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53725,7 +53725,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53752,7 +53752,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53779,7 +53779,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53806,7 +53806,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53833,7 +53833,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53860,7 +53860,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53887,7 +53887,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -53914,7 +53914,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -53941,7 +53941,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54005,7 +54005,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 980,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54032,7 +54032,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54059,7 +54059,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54086,7 +54086,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54113,7 +54113,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54140,7 +54140,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54167,7 +54167,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54194,7 +54194,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54221,7 +54221,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54248,7 +54248,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54275,7 +54275,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54302,7 +54302,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54329,7 +54329,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54356,7 +54356,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54383,7 +54383,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54410,7 +54410,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54437,7 +54437,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54501,7 +54501,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54528,7 +54528,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54555,7 +54555,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54582,7 +54582,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54609,7 +54609,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54636,7 +54636,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54663,7 +54663,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54690,7 +54690,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54717,7 +54717,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54744,7 +54744,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54771,7 +54771,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54798,7 +54798,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54825,7 +54825,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54852,7 +54852,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54879,7 +54879,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -54906,7 +54906,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54933,7 +54933,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -54997,7 +54997,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55024,7 +55024,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55051,7 +55051,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55078,7 +55078,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55105,7 +55105,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55132,7 +55132,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55159,7 +55159,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55186,7 +55186,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55213,7 +55213,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55240,7 +55240,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55267,7 +55267,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55294,7 +55294,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55321,7 +55321,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55348,7 +55348,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55375,7 +55375,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55402,7 +55402,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55429,7 +55429,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55493,7 +55493,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55520,7 +55520,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55547,7 +55547,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55574,7 +55574,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55601,7 +55601,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55628,7 +55628,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55655,7 +55655,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55682,7 +55682,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55709,7 +55709,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55736,7 +55736,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55763,7 +55763,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55790,7 +55790,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55817,7 +55817,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55844,7 +55844,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55871,7 +55871,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-12",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -55898,7 +55898,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55925,7 +55925,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -55989,7 +55989,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56016,7 +56016,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56043,7 +56043,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56070,7 +56070,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56097,7 +56097,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56124,7 +56124,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56151,7 +56151,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56178,7 +56178,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -56205,7 +56205,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56232,7 +56232,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56259,7 +56259,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56286,7 +56286,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56350,7 +56350,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56377,7 +56377,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56404,7 +56404,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56431,7 +56431,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56458,7 +56458,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56485,7 +56485,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56512,7 +56512,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56539,7 +56539,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56566,7 +56566,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56593,7 +56593,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56620,7 +56620,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56647,7 +56647,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56674,7 +56674,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56701,7 +56701,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56728,7 +56728,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56755,7 +56755,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56782,7 +56782,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56846,7 +56846,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -56873,7 +56873,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56900,7 +56900,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56927,7 +56927,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56954,7 +56954,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -56981,7 +56981,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57008,7 +57008,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57035,7 +57035,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57062,7 +57062,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -57089,7 +57089,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57116,7 +57116,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57143,7 +57143,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57170,7 +57170,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57197,7 +57197,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57224,7 +57224,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57251,7 +57251,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57278,7 +57278,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57342,7 +57342,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57369,7 +57369,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57396,7 +57396,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57423,7 +57423,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57450,7 +57450,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57477,7 +57477,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57504,7 +57504,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57531,7 +57531,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57558,7 +57558,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -57585,7 +57585,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57612,7 +57612,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57639,7 +57639,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -57666,7 +57666,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57693,7 +57693,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57720,7 +57720,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57747,7 +57747,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57774,7 +57774,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57838,7 +57838,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 700,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -57865,7 +57865,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57892,7 +57892,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57919,7 +57919,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57946,7 +57946,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -57973,7 +57973,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58000,7 +58000,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58027,7 +58027,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58054,7 +58054,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -58081,7 +58081,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58108,7 +58108,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58135,7 +58135,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58162,7 +58162,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58189,7 +58189,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58216,7 +58216,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-13",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58243,7 +58243,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58270,7 +58270,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58334,7 +58334,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58361,7 +58361,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58388,7 +58388,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58415,7 +58415,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58442,7 +58442,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58469,7 +58469,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58496,7 +58496,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58523,7 +58523,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58550,7 +58550,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58577,7 +58577,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58604,7 +58604,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58631,7 +58631,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58658,7 +58658,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58685,7 +58685,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -58712,7 +58712,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58739,7 +58739,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58803,7 +58803,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58830,7 +58830,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58857,7 +58857,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58884,7 +58884,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58911,7 +58911,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58938,7 +58938,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58965,7 +58965,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -58992,7 +58992,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -59019,7 +59019,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59046,7 +59046,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59073,7 +59073,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59100,7 +59100,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59164,7 +59164,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59191,7 +59191,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59218,7 +59218,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59245,7 +59245,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59272,7 +59272,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59299,7 +59299,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59326,7 +59326,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59353,7 +59353,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -59380,7 +59380,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59407,7 +59407,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59434,7 +59434,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59461,7 +59461,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59525,7 +59525,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59552,7 +59552,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59579,7 +59579,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59606,7 +59606,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59633,7 +59633,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59660,7 +59660,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59687,7 +59687,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59714,7 +59714,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -59741,7 +59741,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59768,7 +59768,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59795,7 +59795,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59822,7 +59822,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59886,7 +59886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 680,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -59913,7 +59913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59940,7 +59940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59967,7 +59967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -59994,7 +59994,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60021,7 +60021,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60048,7 +60048,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60075,7 +60075,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60102,7 +60102,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -60129,7 +60129,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60156,7 +60156,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60183,7 +60183,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60210,7 +60210,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60237,7 +60237,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60264,7 +60264,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60291,7 +60291,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60318,7 +60318,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60382,7 +60382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1330,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60409,7 +60409,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60436,7 +60436,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60463,7 +60463,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60490,7 +60490,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60517,7 +60517,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60544,7 +60544,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60571,7 +60571,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60598,7 +60598,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60625,7 +60625,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60652,7 +60652,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60679,7 +60679,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60706,7 +60706,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60733,7 +60733,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60760,7 +60760,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60787,7 +60787,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-18",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60814,7 +60814,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60841,7 +60841,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60905,7 +60905,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1330,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -60932,7 +60932,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60959,7 +60959,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -60986,7 +60986,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61013,7 +61013,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61040,7 +61040,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61067,7 +61067,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61094,7 +61094,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61121,7 +61121,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -61148,7 +61148,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61175,7 +61175,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61202,7 +61202,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61229,7 +61229,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61256,7 +61256,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61283,7 +61283,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61310,7 +61310,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61337,7 +61337,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61364,7 +61364,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61428,7 +61428,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61455,7 +61455,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61482,7 +61482,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61509,7 +61509,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61536,7 +61536,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61563,7 +61563,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61590,7 +61590,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61617,7 +61617,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61644,7 +61644,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -61671,7 +61671,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61698,7 +61698,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61725,7 +61725,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61752,7 +61752,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61779,7 +61779,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61806,7 +61806,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61833,7 +61833,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61860,7 +61860,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61921,7 +61921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -61948,7 +61948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -61975,7 +61975,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62002,7 +62002,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62029,7 +62029,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62056,7 +62056,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62083,7 +62083,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62110,7 +62110,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62137,7 +62137,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62164,7 +62164,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62191,7 +62191,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62218,7 +62218,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62245,7 +62245,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62272,7 +62272,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62299,7 +62299,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62326,7 +62326,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62353,7 +62353,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62417,7 +62417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 540,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62444,7 +62444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62471,7 +62471,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62498,7 +62498,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62525,7 +62525,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62552,7 +62552,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62579,7 +62579,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62606,7 +62606,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62633,7 +62633,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -62660,7 +62660,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62687,7 +62687,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62714,7 +62714,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62741,7 +62741,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62768,7 +62768,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62795,7 +62795,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62822,7 +62822,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62849,7 +62849,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 650,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62913,7 +62913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -62940,7 +62940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62967,7 +62967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -62994,7 +62994,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63021,7 +63021,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63048,7 +63048,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63075,7 +63075,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63102,7 +63102,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63129,7 +63129,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -63156,7 +63156,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63183,7 +63183,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63210,7 +63210,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63237,7 +63237,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63264,7 +63264,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63291,7 +63291,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63318,7 +63318,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63345,7 +63345,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63372,7 +63372,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1400,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63436,7 +63436,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1040,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63463,7 +63463,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63490,7 +63490,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63517,7 +63517,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63544,7 +63544,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63571,7 +63571,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63598,7 +63598,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63625,7 +63625,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63652,7 +63652,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -63679,7 +63679,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63706,7 +63706,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63733,7 +63733,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63760,7 +63760,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63787,7 +63787,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63814,7 +63814,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63841,7 +63841,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63868,7 +63868,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -63932,7 +63932,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63959,7 +63959,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -63986,7 +63986,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64013,7 +64013,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64040,7 +64040,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64104,7 +64104,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121601",
                 "price": 210,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64131,7 +64131,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64158,7 +64158,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64185,7 +64185,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64212,7 +64212,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64239,7 +64239,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64266,7 +64266,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64293,7 +64293,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64320,7 +64320,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64347,7 +64347,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -64374,7 +64374,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64401,7 +64401,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64428,7 +64428,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64455,7 +64455,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64482,7 +64482,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64509,7 +64509,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64536,7 +64536,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121601",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64600,7 +64600,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 560,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64627,7 +64627,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64654,7 +64654,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64681,7 +64681,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64708,7 +64708,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64735,7 +64735,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64762,7 +64762,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64789,7 +64789,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64816,7 +64816,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -64843,7 +64843,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64870,7 +64870,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -64897,7 +64897,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64924,7 +64924,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64951,7 +64951,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -64978,7 +64978,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65005,7 +65005,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65032,7 +65032,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65059,7 +65059,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 800,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65123,7 +65123,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65150,7 +65150,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65177,7 +65177,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65204,7 +65204,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65231,7 +65231,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65258,7 +65258,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65285,7 +65285,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65312,7 +65312,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65339,7 +65339,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65366,7 +65366,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65393,7 +65393,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65420,7 +65420,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65447,7 +65447,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65474,7 +65474,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65501,7 +65501,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-19",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65565,7 +65565,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 595,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65592,7 +65592,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65619,7 +65619,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65646,7 +65646,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65673,7 +65673,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65700,7 +65700,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65727,7 +65727,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65754,7 +65754,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65781,7 +65781,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1900,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -65808,7 +65808,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65835,7 +65835,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65862,7 +65862,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65889,7 +65889,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65916,7 +65916,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65943,7 +65943,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -65970,7 +65970,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -65997,7 +65997,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 850,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66061,7 +66061,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 525,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66088,7 +66088,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66115,7 +66115,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66142,7 +66142,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66169,7 +66169,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66196,7 +66196,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66223,7 +66223,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66250,7 +66250,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66277,7 +66277,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66304,7 +66304,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66331,7 +66331,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66358,7 +66358,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66385,7 +66385,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66412,7 +66412,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66439,7 +66439,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-20",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66466,7 +66466,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66493,7 +66493,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66557,7 +66557,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121601",
                 "price": 1050,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -66584,7 +66584,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66611,7 +66611,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66638,7 +66638,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66665,7 +66665,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66692,7 +66692,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66719,7 +66719,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66746,7 +66746,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66773,7 +66773,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66800,7 +66800,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66827,7 +66827,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66854,7 +66854,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -66881,7 +66881,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121601",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66908,7 +66908,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121601",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66935,7 +66935,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121601",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66962,7 +66962,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121601",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -66989,7 +66989,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -67016,7 +67016,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121601",
                 "price": 2100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -67080,7 +67080,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 950,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67107,7 +67107,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67134,7 +67134,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67161,7 +67161,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67188,7 +67188,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67252,7 +67252,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67279,7 +67279,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67306,7 +67306,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67333,7 +67333,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67360,7 +67360,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67387,7 +67387,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67414,7 +67414,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67441,7 +67441,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67468,7 +67468,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -67495,7 +67495,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67522,7 +67522,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67549,7 +67549,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67576,7 +67576,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67603,7 +67603,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67630,7 +67630,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67657,7 +67657,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67684,7 +67684,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67748,7 +67748,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 612.5,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -67775,7 +67775,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67802,7 +67802,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67829,7 +67829,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67856,7 +67856,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67883,7 +67883,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67910,7 +67910,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67937,7 +67937,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -67964,7 +67964,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -67991,7 +67991,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68018,7 +68018,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68045,7 +68045,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68072,7 +68072,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68099,7 +68099,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68126,7 +68126,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-26",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68153,7 +68153,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68180,7 +68180,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68244,7 +68244,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68271,7 +68271,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68298,7 +68298,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68325,7 +68325,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68352,7 +68352,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68379,7 +68379,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68406,7 +68406,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68433,7 +68433,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68460,7 +68460,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -68487,7 +68487,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68514,7 +68514,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68541,7 +68541,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-27",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68568,7 +68568,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-27",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68595,7 +68595,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-27",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68622,7 +68622,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-27",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68649,7 +68649,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68676,7 +68676,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68703,7 +68703,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 200,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68767,7 +68767,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 240,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -68794,7 +68794,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68821,7 +68821,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68848,7 +68848,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68875,7 +68875,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68902,7 +68902,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68929,7 +68929,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68956,7 +68956,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -68983,7 +68983,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -69010,7 +69010,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69037,7 +69037,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69064,7 +69064,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69091,7 +69091,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69118,7 +69118,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69145,7 +69145,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69172,7 +69172,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69236,7 +69236,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69263,7 +69263,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69290,7 +69290,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69317,7 +69317,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69344,7 +69344,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69371,7 +69371,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69398,7 +69398,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69425,7 +69425,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69452,7 +69452,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -69479,7 +69479,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69506,7 +69506,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69533,7 +69533,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69560,7 +69560,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69587,7 +69587,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69614,7 +69614,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69641,7 +69641,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69668,7 +69668,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 300,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69732,7 +69732,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -69759,7 +69759,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69786,7 +69786,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69813,7 +69813,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69840,7 +69840,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69867,7 +69867,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69894,7 +69894,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69921,7 +69921,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -69948,7 +69948,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -69975,7 +69975,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70002,7 +70002,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70029,7 +70029,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70056,7 +70056,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70083,7 +70083,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70110,7 +70110,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-28",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70137,7 +70137,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70164,7 +70164,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70191,7 +70191,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 100,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70255,7 +70255,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1180,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70282,7 +70282,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70309,7 +70309,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70336,7 +70336,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70363,7 +70363,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70390,7 +70390,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70417,7 +70417,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70444,7 +70444,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70471,7 +70471,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70498,7 +70498,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70525,7 +70525,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70552,7 +70552,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70579,7 +70579,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70606,7 +70606,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70633,7 +70633,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70660,7 +70660,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70687,7 +70687,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1225,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 1,
@@ -70751,7 +70751,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -70778,7 +70778,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70805,7 +70805,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70832,7 +70832,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-02-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70859,7 +70859,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-03-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70886,7 +70886,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-04-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70913,7 +70913,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-05-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70940,7 +70940,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-06-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70967,7 +70967,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-07-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -70994,7 +70994,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-08-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -71021,7 +71021,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-09-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -71048,7 +71048,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71075,7 +71075,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71102,7 +71102,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71129,7 +71129,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71156,7 +71156,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-10-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -71183,7 +71183,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-11-01",
                 "satCode": "86121500",
                 "price": 1750,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -71247,7 +71247,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2020-12-01",
                 "satCode": "86121500",
                 "price": 875,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71274,7 +71274,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 160,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71301,7 +71301,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 150,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71328,7 +71328,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 250,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": false,
                 "statusPayment": 1,
@@ -71355,7 +71355,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 500,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,
@@ -71382,7 +71382,7 @@ export const inscripcionesCiclo5 =     [
                 "payDate": "2021-01-29",
                 "satCode": "86121500",
                 "price": 350,
-                "withIva": "",
+                
                 "iva": 0,
                 "isActive": true,
                 "statusPayment": 2,

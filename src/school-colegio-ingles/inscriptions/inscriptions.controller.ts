@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -12,7 +12,6 @@ import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interfac
 import { sheetToObjPage } from '../../common/office/sheets';
 import { Response } from 'express';
 import { inscripcionesCiclo2 } from './catalogos/inscriptions-ciclo2.catalogue';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -60,10 +59,11 @@ export class InscriptionsController implements CrudController<Inscription> {
   }
 
   @Get('/add/inscripciones')
-  public async addStudents(@Req() req, @Res() res: Response) {
+  public async addInsccripciones(@Req() req, @Res() res: Response) {
     try {
-       // const data = await this.service.repo.save(inscripcionesCiclo2);
-      res.send({ save: true });
+      // @ts-ignore
+      const data = await this.service.repo.save(inscripcionesCiclo2);
+      res.send({ save: true, data });
     } catch (e) {
       res.send(e);
     }

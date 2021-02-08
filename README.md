@@ -140,3 +140,4 @@ TRUNCATE `capecafe`.`mini_store_quotation`;
 
 // para nuevo ingreso
 // por nuevo ingreso
+// calcular el iva de los conceptos agregado
