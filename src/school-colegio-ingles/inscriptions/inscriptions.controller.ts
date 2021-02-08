@@ -11,7 +11,6 @@ import { VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interface';
 import { sheetToObjPage } from '../../common/office/sheets';
 import { Response } from 'express';
-import { inscripcionesCiclo2 } from './catalogos/inscriptions-ciclo2.catalogue';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -62,8 +61,8 @@ export class InscriptionsController implements CrudController<Inscription> {
   public async addInsccripciones(@Req() req, @Res() res: Response) {
     try {
       // @ts-ignore
-      const data = await this.service.repo.save(inscripcionesCiclo2);
-      res.send({ save: true, data });
+     // const data = await this.service.repo.save(inscripcionesCiclo5);
+      res.send({ save: true });
     } catch (e) {
       res.send(e);
     }

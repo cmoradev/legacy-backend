@@ -114,6 +114,6 @@ export class SchoolCharge extends Base {
   chargesInvoice: SchoolChargesInvoice[];
 
   @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.schoolCharges)
-  studyPlans: StudyPlan[];
+  studyPlans: StudyPlan;
 
 }
