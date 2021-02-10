@@ -1,11 +1,12 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { SchoolPaymentsService } from './school-payments.service';
 import { IQueryReport } from './interfaces/IQueryReport';
 import { ReportProcessor } from './report/report.processor';
 import { SchoolPaymentsReport } from './report/schoolPayments.report';
-
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolPayment,

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -11,8 +11,9 @@ import { VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interface';
 import { sheetToObjPage } from '../../common/office/sheets';
 import { Response } from 'express';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: Inscription,

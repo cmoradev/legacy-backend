@@ -1,7 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Cycle } from './entities/cycle.entity';
 import { CyclesService } from './cycles.service';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Cycle,

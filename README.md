@@ -100,6 +100,8 @@ db={env} npm run seed DepartmentsInsertUpdateSeed
 db={env} npm run seed PermissionsInsertUpdateSeed
 db={env} npm run seed UsersInsertUpdateSeed
 db={env} npm run seed KeysInsertUpdateSeed
+db={env} npm run seed InvoiceMethodsInsertUpdateSeed
+db={env} npm run seed InvoicesBankSeed
 ```
 
 ## Triggers in data base 
@@ -141,3 +143,4 @@ TRUNCATE `capecafe`.`mini_store_quotation`;
 // para nuevo ingreso
 // por nuevo ingreso
 // calcular el iva de los conceptos agregado
+// studyPlans en cobros falta relacionar con el plan de estudio

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
@@ -11,7 +11,9 @@ import { SchoolChargesPaymentsService } from '../school-charges-payments/school-
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
 import { readFileSync } from 'fs';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolChargesInvoice,

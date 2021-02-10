@@ -120,6 +120,8 @@ export class SchoolChargePayment extends Base {
      * Relación Bidireccional del pago de una venta con la Facturas
     */
     @Field(type => [SchoolChargesInvoice])
-    @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolChargePayment)
+    @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolChargePayment, {
+        cascade: ['insert'],
+    })
     schoolChargesInvoice: SchoolChargesInvoice[];
 }

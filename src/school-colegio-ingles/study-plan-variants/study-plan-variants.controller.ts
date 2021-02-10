@@ -1,9 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { StudyPlanVariant } from './entities/study-plan-variants.entity';
 import { StudyPlanVariantsService } from './study-plan-variants.service';
 import { StudyPlan } from '../study-plans/entities/study-plan.entity';
-
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: StudyPlanVariant,
