@@ -12,6 +12,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { AcademyChargePaymentsModule } from '../academy-charge-payments/academy-charge-payments.module';
 import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
 import {AcademyChargeDiscountsModule} from '../academy-charge-discounts/academy-charge-discounts.module';
+import { ConfigModule } from '../../../config/config.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import {AcademyChargeDiscountsModule} from '../academy-charge-discounts/academy-
         BranchOfficeSettingModule,
         AcademyChargeDiscountsModule,
         forwardRef(() => AcademyChargePaymentsModule),
+        ConfigModule
     ],
     controllers: [AcademyChargeInvoiceController],
     providers: [AcademyChargeInvoiceService, SmartWeb],

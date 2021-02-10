@@ -23,6 +23,7 @@ import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -31,6 +32,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
         @InjectRepository(AcademyCharge, ColegioDBNameConnection) readonly academyRepository: Repository<AcademyCharge>,
+        private readonly configService: ConfigService,
     ) {
         super(repo);
     }
@@ -218,7 +220,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/academias/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/academias/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,

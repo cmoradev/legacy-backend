@@ -12,6 +12,7 @@ import * as Moment from 'moment';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
@@ -19,6 +20,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     @InjectRepository(SchoolChargesInvoice, ColegioDBNameConnection)
       repo: Repository<SchoolChargesInvoice>,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
+    private readonly configService: ConfigService,
   ) {
     super(repo);
   }
@@ -64,7 +66,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
         pass: currentBranch.EmailPass,
       },
     });
-    const pathInvoice = '/var/www/pdc/comprobantes/colegio/' + uuid.toUpperCase();
+    const pathInvoice = `${this.configService.getPath()}comprobantes/colegio/` + uuid.toUpperCase();
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,
@@ -97,7 +99,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
         pass: currentBranch.EmailPass,
       },
     });
-    const pathInvoice = '/var/www/pdc/comprobantes/colegio/' + uuid.toUpperCase();
+    const pathInvoice = `${this.configService.getPath()}comprobantes/colegio/` + uuid.toUpperCase();
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,

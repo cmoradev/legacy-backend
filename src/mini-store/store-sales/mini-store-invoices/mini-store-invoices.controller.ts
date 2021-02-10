@@ -101,8 +101,8 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 },
             });
 
-            const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
-            const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
+            const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
+            const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -120,7 +120,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
              * 4.- Rechazado
              */
             if (status === '201' || +status === 201) {
-                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+                fs.writeFileSync(`${this.configService.getPath()}comprobantes/tienda/` + invoce.uuid + '-acuse.xml', result.data.acuse);
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
                         const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
@@ -140,7 +140,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 }).status(200);
             }
             if (status === '202' || +status === 202) {
-                fs.writeFileSync('/var/www/pdc/comprobantes/tienda/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+                fs.writeFileSync(`${this.configService.getPath()}/comprobantes/tienda/` + invoce.uuid + '-acuse.xml', result.data.acuse);
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
@@ -269,7 +269,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         try {
             const factura = new FacturacionModerna(this.option);
             let total = '0';
-            const totalxml = await factura.getTotalXml(`/var/www/pdc/comprobantes/tienda/${checkInvoice.uuid}.xml`);
+            const totalxml = await factura.getTotalXml(`${this.configService.getPath()}comprobantes/tienda/${checkInvoice.uuid}.xml`);
             total = totalxml === checkInvoice.total ? checkInvoice.total : totalxml;
             const response = await factura.estadoCancelacion('GUCE910701NHA', checkInvoice.receptorRFC, checkInvoice.uuid, total);
             let status = 3;

@@ -5,15 +5,16 @@ import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyChargeInvoice> {
     constructor(
-        @InjectRepository(AcademyChargeInvoice, ColegioDBNameConnection) readonly repo: Repository<AcademyChargeInvoice>,
+      @InjectRepository(AcademyChargeInvoice, ColegioDBNameConnection) readonly repo: Repository<AcademyChargeInvoice>,
+      private readonly configService: ConfigService,
     ) {
         super(repo);
     }
@@ -60,7 +61,7 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/academias/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/academias/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -93,7 +94,7 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/academias/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/academias/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,

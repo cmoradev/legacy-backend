@@ -18,6 +18,7 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
@@ -26,6 +27,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         readonly salesPaymentService: MiniStoreSalesPaymentsService,
         readonly userService: UsersService,
         readonly serviceInvoiceCompany: BranchOfficeSettingService,
+        private readonly configService: ConfigService,
     ) {
         super(repo);
     }
@@ -69,7 +71,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     async findInvoiceByPayment(options: { paymentId: number, status: StatusInvoce, stamping?: number }) {
         const invoice = this.repo.createQueryBuilder('invoice')
             .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
-            //.leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
+            // .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
             .where('invoice.status = :status', {
                 status: options.status,
             })
@@ -145,7 +147,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/tienda/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -178,7 +180,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/tienda/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,

@@ -9,9 +9,11 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 export async function GenerateInvoice(data: { serie: string; folio: string, },
                                       codigoFormaPago: string,
                                       emisor: BranchOfficeSetting,
-                                      receptor: XmlReceptorAttribute, factura: FacturaDetalles) {
-  const key = '/var/www/CSD/' + emisor.keyCSD;
-  const cer = '/var/www/CSD/' + emisor.cerCSD;
+                                      receptor: XmlReceptorAttribute, factura: FacturaDetalles,
+                                      instancePath: string,
+) {
+  const key = instancePath + 'CSD/' + emisor.keyCSD;
+  const cer = instancePath + 'CSD/' + emisor.cerCSD;
   const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
   const comprobante: Comprobante = {
     Serie: data.serie,
@@ -86,9 +88,12 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
 export async function GenerateInvoiceIedu(data: { serie: string; folio: string, },
                                           codigoFormaPago: string,
                                           emisor: BranchOfficeSetting,
-                                          receptor: XmlReceptorAttribute, student: XmlIeduAttribute,factura: FacturaDetalles) {
-  const key = '/var/www/CSD/' + emisor.keyCSD;
-  const cer = '/var/www/CSD/' + emisor.cerCSD;
+                                          receptor: XmlReceptorAttribute,
+                                          student: XmlIeduAttribute,
+                                          factura: FacturaDetalles,
+                                          instancePath: string) {
+  const key = instancePath + 'CSD/' + emisor.keyCSD;
+  const cer = instancePath + 'CSD/' + emisor.cerCSD;
   const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
   const comprobante: Comprobante = {
     Serie: data.serie,

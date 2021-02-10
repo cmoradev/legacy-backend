@@ -11,15 +11,13 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
-import moment = require('moment');
 
-import { ReportData } from './dto/reportData.dto'
-import {AcademyInscriptionConcepts} from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
-import {AcademyChargeDiscountsService} from '../academy-charge-discounts/academy-charge-discounts.service';
-import {Workbook} from 'exceljs';
-import {Between} from 'typeorm';
+import { ReportData } from './dto/reportData.dto';
+import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
+import { Between } from 'typeorm';
 import * as Moment from 'moment';
 import { ReportInvoice } from './reports/invoice.reports';
+import { ConfigService } from '../../../config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -34,12 +32,13 @@ import { ReportInvoice } from './reports/invoice.reports';
 @Controller()
 export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
     constructor(
-        readonly service: AcademyChargeInvoiceService,
-        readonly branchOffice: BranchOfficeService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        readonly academyChargePaymentsService: AcademyChargePaymentsService,
-        readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
-        private  smartWeb: FactSw,
+      readonly service: AcademyChargeInvoiceService,
+      readonly branchOffice: BranchOfficeService,
+      readonly branchOfficeSettingService: BranchOfficeSettingService,
+      readonly academyChargePaymentsService: AcademyChargePaymentsService,
+      readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
+      private  smartWeb: FactSw,
+      private readonly configService: ConfigService,
     ) {
     }
 
@@ -50,7 +49,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     @Get('/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
-            const pdf64 = readFileSync('/var/www/pdc/comprobantes/academias/' + query.uuid + '.pdf');
+            const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
             res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
         } catch (e) {
@@ -81,8 +80,8 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 },
             });
 
-            const cer = readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
-            const key = readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
+            const cer = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
+            const key = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -100,7 +99,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
              * 4.- Rechazado
              */
             if (status === '201' || +status === 201) {
-                writeFileSync('/var/www/pdc/comprobantes/academias/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoce.uuid + '-acuse.xml', result.data.acuse);
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
                         const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
@@ -120,7 +119,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 }).status(200);
             }
             if (status === '202' || +status === 202) {
-                writeFileSync('/var/www/pdc/comprobantes/academias/' + invoce.uuid + '-acuse.xml', result.data.acuse);
+                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoce.uuid + '-acuse.xml', result.data.acuse);
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {

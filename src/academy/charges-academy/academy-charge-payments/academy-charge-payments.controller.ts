@@ -2,36 +2,29 @@ import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import {
-    QueryBilling,
-    QuerySimpleReport,
-} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { convertPaymentsReportAc } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { AcademyChargeInvoiceService } from '../academy-charge-invoice/academy-charge-invoice.service';
 import { FactSw } from '../../../webService/FactSw';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
 import { Response } from 'express';
-import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { User } from '../../../system/users/entities/user.entity';
-import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
-import { readFileSync } from 'fs';
+import { ConfigService } from '../../../config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -57,12 +50,13 @@ import { readFileSync } from 'fs';
 @Controller()
 export class AcademyChargePaymentsController implements CrudController<AcademyChargePayments> {
     constructor(
-        readonly service: AcademyChargePaymentsService,
-        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
-        readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
-        readonly branchOffice: BranchOfficeService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private  smartWeb: FactSw,
+      readonly service: AcademyChargePaymentsService,
+      readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+      readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
+      readonly branchOffice: BranchOfficeService,
+      readonly branchOfficeSettingService: BranchOfficeSettingService,
+      private  smartWeb: FactSw,
+      private readonly configService: ConfigService,
     ) {
     }
 
@@ -132,7 +126,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         };
 
         try {
-            const logo = readFileSync('/var/www/logos/academiaslogo.png');
+            const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
             if (invoiceFind) {
                 if (invoiceFind.academyChargePayment.stamping === 1) {
                     const invocePayment = await this.academyChargeInvoiceService.findInvoiceByPayment({
@@ -151,21 +145,22 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                        result.highestPayment.codePaymentMethod,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails);
+                      result.highestPayment.codePaymentMethod,
+                      branchOfficeSett,
+                      {
+                          Nombre: query.receiver.businessName,
+                          Rfc: query.receiver.rfc,
+                          UsoCFDI: query.usoCfdi.value,
+                      },
+                      invoiceDetails,
+                      this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.chargePaymentId,
                         stamping: 1,
                     } as AcademyChargePayments);
                     // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    const pathXml = `${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
                     const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -179,7 +174,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
+                    await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
@@ -220,14 +215,15 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                        result.highestPayment.codePaymentMethod,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails);
+                      result.highestPayment.codePaymentMethod,
+                      branchOfficeSett,
+                      {
+                          Nombre: query.receiver.businessName,
+                          Rfc: query.receiver.rfc,
+                          UsoCFDI: query.usoCfdi.value,
+                      },
+                      invoiceDetails,
+                      this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     // console.log(timbrado);
                     await this.service.updatePayment({
@@ -235,7 +231,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                         stamping: 1,
                     } as AcademyChargePayments);
                     // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    const pathXml = `${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
                     const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -249,7 +245,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/academias/' + timbrado.data.uuid.toUpperCase());
+                    await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato

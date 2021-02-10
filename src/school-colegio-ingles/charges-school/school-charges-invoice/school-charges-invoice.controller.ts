@@ -4,14 +4,15 @@ import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
 import { Response } from 'express';
 import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesPaymentsService } from '../school-charges-payments/school-charges-payments.service';
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
-import { readFileSync } from 'fs';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { ConfigService } from '../../../config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -37,6 +38,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     readonly branchOffice: BranchOfficeService,
     readonly schoolChargePayment: SchoolChargesPaymentsService,
     private  smartWeb: FactSw,
+    private readonly configService: ConfigService,
   ) {
   }
 
@@ -47,7 +49,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
   @Get('/pdf')
   public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
     try {
-      const pdf64 = readFileSync('/var/www/pdc/comprobantes/colegio/' + query.uuid + '.pdf');
+      const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.pdf');
       // data:application/pdf;filename=generated.pdf;base64,
       res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
     } catch (e) {
@@ -90,9 +92,9 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
           id: invoice.schoolChargePayment.id,
         },
       });
-      const cer = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.cerCSD).toString('base64');
-      console.log(cer);
-      const key = fs.readFileSync('/var/www/CSD/' + branchOfficeSett.keyCSD).toString('base64');
+      const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
+      // console.log(cer);
+      const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
       const responseSmartWeb = await this.smartWeb.cancelarCSD({
         rfc: branchOfficeSett.rfc,
         password: branchOfficeSett.password,
@@ -101,9 +103,9 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         key,
       });
       const status = responseSmartWeb.data.uuid[invoice.uuid];
-      console.log(responseSmartWeb);
+     //  console.log(responseSmartWeb);
       if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-        fs.writeFileSync('/var/www/pdc/comprobantes/colegio/' + invoice.uuid + '-acuse.xml', responseSmartWeb.data.acuse);
+        fs.writeFileSync(`${this.configService.getPath()}comprobantes/colegio/` + invoice.uuid + '-acuse.xml', responseSmartWeb.data.acuse);
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {
             const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);

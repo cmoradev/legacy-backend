@@ -13,6 +13,7 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { AcademyChargeInvoiceModule } from '../academy-charge-invoice/academy-charge-invoice.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
+import { ConfigModule } from '../../../config/config.module';
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
         forwardRef(() => AcademyChargeInvoiceModule),
         InvoiceMethodsPaymentsModule,
         AcademyChargeModule,
+        ConfigModule
     ],
     controllers: [AcademyChargePaymentsController],
     providers: [AcademyChargePaymentsService, SmartWeb],

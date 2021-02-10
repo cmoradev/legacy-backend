@@ -16,6 +16,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 import { MiniStoreSalesPaymentsReportController } from './mini-store-sales-payments.report.controller';
 import { UsersModule } from '../../../system/users/users.module';
+import { ConfigModule } from '../../../config/config.module';
 
 @Module({
     imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from '../../../system/users/users.module';
         BranchOfficeSettingModule,
         InvoiceMethodsPaymentsModule,
         UsersModule,
+        ConfigModule
     ],
     exports: [
         MiniStoreSalesPaymentsService,

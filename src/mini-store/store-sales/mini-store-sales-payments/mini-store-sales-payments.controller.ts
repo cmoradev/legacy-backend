@@ -1,10 +1,9 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { convertPaymentsReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
-import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
+import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { FactSw } from '../../../webService/FactSw';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
@@ -17,12 +16,12 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { readFileSync } from 'fs';
-import { Response } from 'express';
+import { ConfigService } from '../../../config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -49,6 +48,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
       readonly branchOffice: BranchOfficeService,
       readonly branchOfficeSettingService: BranchOfficeSettingService,
       private  smartWeb: FactSw,
+      private readonly configService: ConfigService,
     ) {
     }
 
@@ -80,7 +80,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         };
 
         try {
-            const logo = readFileSync('/var/www/logos/tienditalogo.png');
+            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -107,14 +107,15 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                           Rfc: query.receiver.rfc,
                           UsoCFDI: query.usoCfdi.value,
                       },
-                      invoiceDetails);
+                      invoiceDetails,
+                      this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
                     } as MiniStoreSalePayment);
                     // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
                     const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -126,10 +127,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     // Generamos el PDf del xml
 
                     const pdf = new PDF(pathXml, 0, {
+                        // todo
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
+                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/`+ timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
@@ -176,14 +178,15 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                           Rfc: query.receiver.rfc,
                           UsoCFDI: query.usoCfdi.value,
                       },
-                      invoiceDetails);
+                      invoiceDetails,
+                      this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
                     } as MiniStoreSalePayment);
                     // Guardamos el xml
-                    const pathXml = '/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase() + '.xml';
+                    const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
                     const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -197,7 +200,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
-                    await pdf.save('/var/www/pdc/comprobantes/tienda/' + timbrado.data.uuid.toUpperCase());
+                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato

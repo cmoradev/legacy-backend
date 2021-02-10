@@ -16,6 +16,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
+import { ConfigService } from '../../../config/config.service';
 import moment = require('moment');
 
 @Injectable()
@@ -27,6 +28,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
       @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
       @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection)
       readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
+      private readonly configService: ConfigService,
     ) {
         super(repo);
     }
@@ -286,7 +288,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = '/var/www/pdc/comprobantes/tienda/' + uuid.toUpperCase();
+        const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
