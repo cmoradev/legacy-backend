@@ -36,7 +36,7 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
       schoolCharge: {},
       'schoolCharge.schoolStudent': { alias: 'schoolStudent' },
       paymentStatus: {},
-      methodsPñayments: {},
+      methodsPayments: {},
       cashierCharge: {},
       cashierChargeCancellation: {},
       schoolChargesInvoice: {},
