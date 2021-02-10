@@ -20,16 +20,19 @@
 $ npm install
 
 mkdir /var/www
-mkdir /var/www/CSD <= include csd of rfc test
 mkdir /var/www/facturas
-mkdir /var/www/logos <= include logo.png
 mkdir /var/www/uploads
 mkdir /var/www/uploads/temp
-mkdir /var/www/pdc
-chmod 777 -R /var/www/pdc
-mkdir /var/www/pdc/comprobantes/
-mkdir /var/www/pdc/comprobantes/academias
-mkdir /var/www/pdc/comprobantes/tienda
+
+mkdir /var/www/{folder}
+chmod 777 -R /var/www/{folder}
+mkdir /var/www/{folder}/logos <= include logo.png
+mkdir /var/www/{folder}/comprobantes/
+mkdir /var/www/{folder}/comprobantes/academias
+mkdir /var/www/{folder}/comprobantes/tienda
+mkdir /var/www/{folder}/comprobantes/colegio
+mkdir /var/www/{folder}/CSD <= include csd of rfc test
+
 ```
 
 ## Running the app

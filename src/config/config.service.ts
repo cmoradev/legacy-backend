@@ -109,4 +109,8 @@ export class ConfigService {
     public get<T = any>(key: string): T {
         return this.envConfig[key];
     }
+
+    public getPath(): string {
+        return this.envConfig.INVOICES_PATH as string;
+    }
 }

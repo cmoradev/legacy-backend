@@ -6,22 +6,18 @@ import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
 import { FacturacionModerna } from 'invoice-modern';
 import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
-import { CfdiClass, Concepto, Impuesto } from '@signati/sdk-node';
-import axios from 'axios';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
-import { QueryBilling } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import * as nodemailer from 'nodemailer';
-import Mail = require('nodemailer/lib/mailer');
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
-import { readFileSync } from 'fs';
+import { ConfigService } from '../../../config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -54,6 +50,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 readonly branchOfficeSettingService: BranchOfficeSettingService,
                 readonly branchOffice: BranchOfficeService,
                 readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
+                private readonly configService: ConfigService,
                 private  smartWeb: FactSw) {
     }
 
@@ -65,15 +62,15 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string, rebuild: string }) {
         try {
             if (query.rebuild === '1' || +query.rebuild === 1) {
-                const logo = readFileSync('/var/www/logos/tienditalogo.png');
-                const pathXml = '/var/www/pdc/comprobantes/tienda/' + query.uuid + '.xml';
+                const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
+                const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.xml';
                 const pdf = new PDF(pathXml, 0, {
                     lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                     logo: `data:image/png;base64, ${logo.toString('base64')}`,
                 });
-                await pdf.save('/var/www/pdc/comprobantes/tienda/' + query.uuid);
+                await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid);
             }
-            const pdf64 = fs.readFileSync('/var/www/pdc/comprobantes/tienda/' + query.uuid + '.pdf');
+            const pdf64 = fs.readFileSync(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
             // data:image/png;base64,
             res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
