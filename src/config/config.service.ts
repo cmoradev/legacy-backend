@@ -40,6 +40,7 @@ export class ConfigService {
             DB_SYNCHRONIZE: Joi.boolean(),
             API_MAIL: Joi.string(),
             API_MAIL_PASSWORD: Joi.string(),
+            INVOICES_PATH: Joi.string(),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(
             envConfig,
