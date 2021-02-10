@@ -9,6 +9,7 @@ import { BranchOfficeSettingModule } from '../../../system/branch-office-setting
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
+import { ConfigModule } from '../../../config/config.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
@@ -16,6 +17,7 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
         BranchOfficeModule,
         BranchOfficeSettingModule,
         MiniStoreSalesPaymentsModule,
+        ConfigModule
     ],
     exports: [MiniStoreInvoicesService],
     providers: [MiniStoreInvoicesService, SmartWeb],
