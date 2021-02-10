@@ -67,6 +67,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 id: query.branchOfficeSettingId,
             },
         });
+
         const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
             paymentId: query.salePaymentId,
             status: StatusInvoce.noBilling,
@@ -128,7 +129,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
                     const pdf = new PDF(pathXml, 0, {
                         // todo
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        lugarExpedicion: branchOfficeSett.address,
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/`+ timbrado.data.uuid.toUpperCase());
@@ -197,7 +198,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        lugarExpedicion: branchOfficeSett.address,
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());

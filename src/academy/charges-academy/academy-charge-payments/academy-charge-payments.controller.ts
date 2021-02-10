@@ -171,7 +171,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        lugarExpedicion: branchOfficeSett.address,
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
@@ -242,7 +242,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(invoice);
                     // Generamos el PDf del xml
                     const pdf = new PDF(pathXml, 0, {
-                        lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
+                        lugarExpedicion: branchOfficeSett.address,
                         logo: `data:image/png;base64, ${logo.toString('base64')}`,
                     });
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
