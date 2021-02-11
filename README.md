@@ -105,6 +105,8 @@ db={env} npm run seed UsersInsertUpdateSeed
 db={env} npm run seed KeysInsertUpdateSeed
 db={env} npm run seed InvoiceMethodsInsertUpdateSeed
 db={env} npm run seed InvoicesBankSeed
+db={env} npm run seed SystemTypeExtraChargesSeed
+db={env} npm run seed AcademyModalitiesSeed
 ```
 
 ## Triggers in data base 
