@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import * as Moment from 'moment';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import { ConfigService } from '../../../config/config.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
@@ -142,22 +142,41 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     branchOfficeSettingId: number;
     onlyData: boolean
   }) {
-    const invoices = await this.repo.find({
-      where: {
+    // const invoices = await this.repo.find({
+    //   where: {
+    //     status: query.status,
+    //     createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).endOf('day').toDate()),
+    //   },
+    //   relations: [
+    //     'agentBilling',
+    //     'agentCanceling',
+    //     'schoolChargePayment',
+    //     'schoolChargePayment.methodsPayments',
+    //     'schoolChargePayment.methodsPayments.invoiceMethodPayment',
+    //     'schoolCharge',
+    //     'schoolCharge.schoolStudent',
+    //   ],
+    // });
+    const invoices = this.repo.createQueryBuilder('invoices');
+    invoices.leftJoinAndSelect('invoices.agentBilling', 'agentBilling');
+    invoices.leftJoinAndSelect('invoices.agentCanceling', 'agentCanceling');
+    invoices.leftJoinAndSelect('invoices.schoolChargePayment', 'schoolChargePayment');
+    invoices.leftJoinAndSelect('schoolChargePayment.methodsPayments', 'methodsPayments');
+    invoices.leftJoinAndSelect('methodsPayments.invoiceMethodPayment', 'invoiceMethodPayment');
+    invoices.leftJoinAndSelect('invoices.schoolCharge', 'schoolCharge');
+    invoices.leftJoinAndSelect('schoolCharge.schoolStudent', 'schoolStudent');
+    invoices.andWhere('invoices.createdAt BETWEEN :startDate AND :endDate',
+      {
+        startDate: moment(query.startDate).startOf('day').toDate(),
+        endDate: moment(query.endDate).endOf('day').toDate(),
+      });
+    if (query.status !== 0) {
+      invoices.andWhere('invoices.status = :status', {
         status: query.status,
-        createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).endOf('day').toDate()),
-      },
-      relations: [
-        'agentBilling',
-        'agentCanceling',
-        'schoolChargePayment',
-        'schoolChargePayment.methodsPayments',
-        'schoolChargePayment.methodsPayments.invoiceMethodPayment',
-        'schoolCharge',
-        'schoolCharge.schoolStudent',
-      ],
-    });
-    const report = new InvoiceProcessorCollege().structureInvoiceReport(invoices);
+      });
+    }
+
+    const report = new InvoiceProcessorCollege().structureInvoiceReport(await invoices.getMany());
     switch (query.data) {
       case 'file':
         const company = await this.serviceInvoiceCompany.findCompany(query.branchOfficeSettingId);
