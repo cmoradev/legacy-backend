@@ -138,11 +138,14 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
 
   @Get('report-invoices')
   async reportInvoices(@Res()response, @Query() query: {
-    startDate: string,
-    endDate: string,
-    billingAgent: number,
-    status: number,
+    startDate: string;
+    endDate: string;
+    billingAgent: number;
+    status: number;
     data: string,
+    branchOfficeId: number,
+    branchOfficeSettingId: number;
+    onlyData: boolean
   }) {
     try {
       const dataReport = await this.service.reportInvoices(query);

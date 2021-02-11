@@ -132,11 +132,20 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     return await transporter.sendMail(mailOptions);
   }
 
-  async reportInvoices(query: { startDate: string; endDate: string; billingAgent: number; status: number; data: string }) {
+  async reportInvoices(query: {
+    startDate: string;
+    endDate: string;
+    billingAgent: number;
+    status: number;
+    data: string,
+    branchOfficeId: number,
+    branchOfficeSettingId: number;
+    onlyData: boolean
+  }) {
     const invoices = await this.repo.find({
       where: {
         status: query.status,
-        createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).startOf('day').toDate()),
+        createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).endOf('day').toDate()),
       },
       relations: [
         'agentBilling',
@@ -151,7 +160,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     const report = new InvoiceProcessorCollege().structureInvoiceReport(invoices);
     switch (query.data) {
       case 'file':
-        const company = await this.serviceInvoiceCompany.findCompany(3);
+        const company = await this.serviceInvoiceCompany.findCompany(query.branchOfficeSettingId);
         const workbook = new ReportInvoice().generateReport(report, query, company);
         const dateName = new Date();
         const fileName = dateName.toTimeString() + '.xlsx';
