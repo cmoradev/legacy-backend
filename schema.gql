@@ -4,6 +4,8 @@
 
 type BusinessNameFamily {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   familyName: String
@@ -14,8 +16,15 @@ type BusinessNameFamily {
   family: Family!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Family {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -30,6 +39,8 @@ type Family {
 
 type MiniStorePriceList {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -41,6 +52,8 @@ type MiniStorePriceList {
 
 type MiniStoreClassification {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -52,6 +65,8 @@ type MiniStoreClassification {
 
 type MiniStoreProductsProviders {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   product: MiniStoreProduct!
@@ -61,6 +76,8 @@ type MiniStoreProductsProviders {
 
 type MiniStoreWarehouseProvider {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -83,6 +100,8 @@ type MiniStoreWarehouseProvider {
 
 type MiniStoreWarehouseOrder {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String
@@ -99,13 +118,10 @@ type MiniStoreWarehouseOrder {
   branchOfficeMiniStoreWherehouse: planteles!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type MiniStoreWarehouseOrderProduct {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   requestedAmount: Int!
@@ -121,6 +137,8 @@ type MiniStoreWarehouseOrderProduct {
 
 type InvoiceKeys {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -132,6 +150,8 @@ type InvoiceKeys {
 
 type MiniStoreProduct {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -162,6 +182,8 @@ type MiniStoreProduct {
 
 type ClassroomPermission {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   classroom: Classroom!
@@ -171,6 +193,8 @@ type ClassroomPermission {
 
 type Classroom {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -190,6 +214,8 @@ type Classroom {
 
 type Shift {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -198,6 +224,8 @@ type Shift {
 
 type AcademyInscription {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   keyInscription: String!
@@ -226,6 +254,8 @@ type AcademyInscription {
 
 type AcademyActivitiesGroup {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -243,6 +273,8 @@ type AcademyActivitiesGroup {
 
 type AcademyActivity {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -258,6 +290,8 @@ type AcademyActivity {
 
 type SystemTypeExtraCharges {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -267,6 +301,8 @@ type SystemTypeExtraCharges {
 
 type PaymentPlan {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -282,6 +318,8 @@ type PaymentPlan {
 
 type PaymentPlanConcept {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -304,6 +342,8 @@ type PaymentPlanConcept {
 
 type SchoolPaymentCharge {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -317,6 +357,8 @@ type SchoolPaymentCharge {
 
 type SchoolPayment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   productCode: String!
@@ -342,6 +384,8 @@ type SchoolPayment {
 
 type SchoolChargeDetails {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   codeConcept: String!
@@ -357,6 +401,8 @@ type SchoolChargeDetails {
 
 type SchoolChargesDetailsExtraCharges {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -370,6 +416,8 @@ type SchoolChargesDetailsExtraCharges {
 
 type MiniStoreDetailsExtraCharges {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -383,6 +431,8 @@ type MiniStoreDetailsExtraCharges {
 
 type SystemExtraCharges {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -400,10 +450,13 @@ type SystemExtraCharges {
   isActive: Int!
   extraChargeSchool: [SchoolChargesDetailsExtraCharges!]!
   extraChargeMiniStore: [MiniStoreDetailsExtraCharges!]!
+  extraChargeSchoolPayments: [SchoolChargesDetailsExtraCharges!]!
 }
 
 type AcademyChargeDetailsExtraCharge {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -417,6 +470,8 @@ type AcademyChargeDetailsExtraCharge {
 
 type AcademyChargeMethodsPayments {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   codePaymentMethod: String!
@@ -430,6 +485,8 @@ type AcademyChargeMethodsPayments {
 
 type BranchOfficeSetting {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -493,6 +550,8 @@ type BranchOfficeSetting {
 
 type AcademyChargeInvoice {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String
@@ -513,6 +572,8 @@ type AcademyChargeInvoice {
 
 type AcademyChargePayments {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -535,6 +596,8 @@ type AcademyChargePayments {
 
 type AcademyCharge {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -563,6 +626,8 @@ type AcademyCharge {
 
 type AcademyChargeDetails {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   codeProduct: String!
@@ -580,6 +645,8 @@ type AcademyChargeDetails {
 
 type AcademyInscriptionConceptCharges {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -593,6 +660,8 @@ type AcademyInscriptionConceptCharges {
 
 type AcademyInscriptionConcepts {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   keyInscription: String
@@ -621,6 +690,8 @@ type AcademyInscriptionConcepts {
 
 type SystemConceptsType {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -630,6 +701,8 @@ type SystemConceptsType {
 
 type AcademyConcepts {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -653,6 +726,8 @@ type AcademyConcepts {
 
 type Periods {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -665,6 +740,8 @@ type Periods {
 
 type Cycle {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -687,6 +764,8 @@ type Cycle {
 
 type SchoolChargesInvoice {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String
   folio: String
@@ -708,6 +787,8 @@ type SchoolChargesInvoice {
 
 type SchoolCharge {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -730,6 +811,8 @@ type SchoolCharge {
 
 type SchoolChargePayment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -752,6 +835,8 @@ type SchoolChargePayment {
 
 type SchoolChargesMethodsPayments {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   codePaymentMethod: String!
@@ -765,6 +850,8 @@ type SchoolChargesMethodsPayments {
 
 type InvoicesBank {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -774,6 +861,8 @@ type InvoicesBank {
 
 type MiniStoreSaleMethodPayment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   invoiceMethod: InvoiceMethodPayment!
@@ -790,6 +879,8 @@ type MiniStoreSaleMethodPayment {
 
 type InvoiceMethodPayment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -805,6 +896,8 @@ type InvoiceMethodPayment {
 
 type SalesReturns {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -820,6 +913,8 @@ type SalesReturns {
 
 type SalesReturnsProducts {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   saleDetail: MiniStoreSaleDetail!
@@ -830,6 +925,8 @@ type SalesReturnsProducts {
 
 type MiniStoreSaleDetail {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   productCode: String!
@@ -848,6 +945,8 @@ type MiniStoreSaleDetail {
 
 type MiniStoreQuotation {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   sale: tie_ventas!
@@ -856,6 +955,8 @@ type MiniStoreQuotation {
 
 type tie_ventas {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -893,6 +994,8 @@ type tie_ventas {
 
 type MiniStoreTransaction {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -907,6 +1010,8 @@ type MiniStoreTransaction {
 
 type CashRegister {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   openAt: DateTime!
@@ -920,6 +1025,8 @@ type CashRegister {
 
 type CashRegisterTransaction {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   transactionType: String!
@@ -930,6 +1037,8 @@ type CashRegisterTransaction {
 
 type MiniStoreSalePayment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String!
@@ -957,6 +1066,8 @@ type MiniStoreSalePayment {
 
 type MiniStoreInvoice {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   folio: String
@@ -982,6 +1093,8 @@ type MiniStoreInvoice {
 
 type Action {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1000,6 +1113,8 @@ type RouteAction {
 
 type Route {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   isActive: Int!
@@ -1015,6 +1130,8 @@ type Route {
 
 type Permission {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   routeId: Int
@@ -1025,6 +1142,8 @@ type Permission {
 
 type Role {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   isActive: Boolean!
@@ -1035,6 +1154,8 @@ type Role {
 
 type CheckIn {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1050,6 +1171,8 @@ type CheckIn {
 
 type Classification {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   description: String!
@@ -1058,6 +1181,8 @@ type Classification {
 
 type Location {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   description: String!
@@ -1068,6 +1193,8 @@ type Location {
 
 type FixedAsset {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1088,6 +1215,8 @@ type FixedAsset {
 
 type FixedAssetAssignment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   employee: Employee!
@@ -1100,6 +1229,8 @@ type FixedAssetAssignment {
 
 type Employee {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   firstName: String!
@@ -1113,6 +1244,8 @@ type Employee {
 
 type ResponsiveLetter {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   expeditionDate: DateTime!
@@ -1126,6 +1259,8 @@ type ResponsiveLetter {
 
 type MatrixCompany {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1135,6 +1270,8 @@ type MatrixCompany {
 
 type BranchCompany {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1147,6 +1284,8 @@ type BranchCompany {
 
 type JobPosition {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1158,6 +1297,8 @@ type JobPosition {
 
 type Department {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1170,6 +1311,8 @@ type Department {
 
 type User {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1222,6 +1365,8 @@ type User {
 
 type planteles {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1257,6 +1402,8 @@ type planteles {
 
 type AutRvoe {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1266,6 +1413,8 @@ type AutRvoe {
 
 type Level {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   idPlantel: Int!
@@ -1283,6 +1432,8 @@ type Level {
 
 type AssignmentSubject {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   credits: Int!
@@ -1295,6 +1446,8 @@ type AssignmentSubject {
 
 type Grade {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String
@@ -1311,6 +1464,8 @@ type Grade {
 
 type Group {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   idGrade: Int!
@@ -1327,6 +1482,8 @@ type Group {
 
 type AssignmentInscription {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   assignmentsInscription: Inscription!
@@ -1335,6 +1492,8 @@ type AssignmentInscription {
 
 type Inscription {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   idStatus: Int!
@@ -1356,6 +1515,8 @@ type Inscription {
 
 type AcademiesModality {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1364,6 +1525,8 @@ type AcademiesModality {
 
 type Student {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   matricula: String!
@@ -1394,6 +1557,8 @@ type Student {
 
 type IncidentClassification {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1403,6 +1568,8 @@ type IncidentClassification {
 
 type Incident {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   subject: String!
@@ -1415,6 +1582,8 @@ type Incident {
 
 type Teacher {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   firstName: String!
@@ -1428,6 +1597,8 @@ type Teacher {
 
 type Assignment {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   cycle: Cycle!
@@ -1441,6 +1612,8 @@ type Assignment {
 
 type Modality {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1449,6 +1622,8 @@ type Modality {
 
 type StudyPlan {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1467,6 +1642,8 @@ type StudyPlan {
 
 type StudyPlanVariant {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
@@ -1483,6 +1660,8 @@ type StudyPlanVariant {
 
 type Subject {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   version: Float!
   uuid: String!
   name: String!
