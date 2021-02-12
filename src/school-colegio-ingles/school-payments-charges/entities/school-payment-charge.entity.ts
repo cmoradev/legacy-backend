@@ -54,6 +54,6 @@ export class SchoolPaymentCharge extends Base{
   schoolPaymentChargeDetail: SchoolPayment;
 
   @Field(type => SystemExtraCharges)
-  @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchoolPayments)
+  @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
   systemExtraCharges: SystemExtraCharges;
 }

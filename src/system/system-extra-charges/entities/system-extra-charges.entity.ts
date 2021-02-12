@@ -128,8 +128,4 @@ export class SystemExtraCharges extends Base {
     @Field(type => [MiniStoreDetailsExtraCharges])
     @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
     extraChargeMiniStore: MiniStoreDetailsExtraCharges[];
-
-    @Field(type => [SchoolChargesDetailsExtraCharges])
-    @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
-    extraChargeSchoolPayments: SchoolChargesDetailsExtraCharges[];
 }

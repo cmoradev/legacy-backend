@@ -450,7 +450,6 @@ type SystemExtraCharges {
   isActive: Int!
   extraChargeSchool: [SchoolChargesDetailsExtraCharges!]!
   extraChargeMiniStore: [MiniStoreDetailsExtraCharges!]!
-  extraChargeSchoolPayments: [SchoolChargesDetailsExtraCharges!]!
 }
 
 type AcademyChargeDetailsExtraCharge {
