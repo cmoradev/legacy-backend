@@ -53,7 +53,9 @@ export class AcademyInscriptionConceptCharges extends Base {
     @ManyToOne(() => AcademyInscriptionConcepts, (academy) => academy.extraCharges)
     inscChargeDetail: AcademyInscriptionConcepts;
 
+    // todo
+    // FALTA PONER EL ID CORRECTO DEL NOMBRE DE LA COLUMNA
     @Field(type => SystemExtraCharges)
-    @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeSchool)
+    @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeAcademiaPayment)
     systemExtraCharges: SystemExtraCharges;
 }

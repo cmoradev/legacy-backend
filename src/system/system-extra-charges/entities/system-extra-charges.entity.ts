@@ -11,6 +11,9 @@ import {
     TypeChargeApplicationEnum,
 } from '../enums/system-extra-charges.enum';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { SchoolPaymentCharge } from '../../../school-colegio-ingles/school-payments-charges/entities/school-payment-charge.entity';
+import { AcademyInscriptionConceptCharges } from '../../../academy/academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
+import { AcademyChargeDetailsExtraCharge } from '../../../academy/charges-academy/academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
 
 @ObjectType()
 @Entity('ac_descuentos')
@@ -123,7 +126,19 @@ export class SystemExtraCharges extends Base {
 
     @Field(type => [SchoolChargesDetailsExtraCharges])
     @OneToMany(() => SchoolChargesDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
-    extraChargeSchool: SchoolChargesDetailsExtraCharges[];
+    extraChargeSchoolDetails: SchoolChargesDetailsExtraCharges[];
+
+    @Field(type => [SchoolPaymentCharge])
+    @OneToMany(() => SchoolPaymentCharge, (extraCharges) => extraCharges.systemExtraCharges)
+    extraChargeSchoolPayment: SchoolPaymentCharge[];
+
+    @Field(type => [AcademyChargeDetailsExtraCharge])
+    @OneToMany(() => AcademyChargeDetailsExtraCharge, (extraCharges) => extraCharges.systemExtraCharges)
+    extraChargeAcademiaDetails: AcademyChargeDetailsExtraCharge[];
+
+    @Field(type => [AcademyInscriptionConceptCharges])
+    @OneToMany(() => AcademyInscriptionConceptCharges, (extraCharges) => extraCharges.systemExtraCharges)
+    extraChargeAcademiaPayment: AcademyInscriptionConceptCharges[];
 
     @Field(type => [MiniStoreDetailsExtraCharges])
     @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.systemExtraCharges)
