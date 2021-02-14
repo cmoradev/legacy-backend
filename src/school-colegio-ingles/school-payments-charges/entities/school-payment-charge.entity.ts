@@ -10,7 +10,7 @@ import { SchoolPayment } from '../../school-payments/entities/school-payment.ent
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity()
+@Entity('school_payment_charge')
 export class SchoolPaymentCharge extends Base{
 
   @Field()
@@ -52,7 +52,7 @@ export class SchoolPaymentCharge extends Base{
   @Field(type => SchoolPayment)
   @ManyToOne(() => SchoolPayment, (schoolPayment) => schoolPayment.extraCharges)
   schoolPaymentChargeDetail: SchoolPayment;
-  
+
   // todo
   // FALTA PONER EL ID CORRECTO DEL NOMBRE DE LA COLUMNA
   @Field(type => SystemExtraCharges)

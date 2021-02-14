@@ -8,7 +8,7 @@ import { SchoolPaymentCharge } from '../../school-payments-charges/entities/scho
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity()
+@Entity('school_payment')
 export class SchoolPayment extends Base {
 
     @Field()
