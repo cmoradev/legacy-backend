@@ -40,14 +40,16 @@ export class FactSw {
         user: this.user,
         password: this.password,
       };
-      console.log(obj);
       const stamp = StampService.Set(obj);
       stamp.StampV4(xml, (err, data) => {
         if (err) {
-          console.log(err);
-          reject(err);
+          const errRes = {
+            status: 'error',
+            message: err.message,
+            messageDetail: err.messageDetail
+          }
+          reject(errRes);
         } else {
-          console.log(data);
           resolve(data);
         }
       });

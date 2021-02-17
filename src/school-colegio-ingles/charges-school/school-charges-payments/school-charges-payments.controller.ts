@@ -82,7 +82,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       uuid: '',
     };
     try {
-      const logo = readFileSync(`${this.configService.getPath()}logos/colegiologo.png`);
+      const logo = readFileSync(`${ this.configService.getPath() }logos/colegiologo.png`);
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
@@ -113,7 +113,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
               autRVOE: query.studyPlan.code,
               CURP: query.student.curp,
               nivelEducativo: query.studyPlan.level.name.toString(),
-              nombreAlumno: `${query.student.name} ${query.student.lastNameFather} ${query.student.lastNameMother}`,
+              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
               rfcPago: query.receiver.rfc,
             },
             invoiceDetails,
@@ -125,7 +125,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = `${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml = `${ this.configService.getPath() }comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
           // console.log(pathXml, timbrado);
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
@@ -138,10 +138,10 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
           });
           // console.log(pdf);
-          await pdf.save(`${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
+          await pdf.save(`${ this.configService.getPath() }comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
           // falta regresar el dato
@@ -205,7 +205,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = `${this.configService.getPath()}/comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml = `${ this.configService.getPath() }/comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
           const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -217,12 +217,12 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           // Generamos el PDf del xml
           const pdf = new PDF(pathXml, 0, {
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
           });
           // console.log(pdf);
-          await pdf.save(`${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
+          await pdf.save(`${ this.configService.getPath() }comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+          await this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
           // falta regresar el dato
           invoiceResponse.stamping = true;
           invoiceResponse.msg = 'Pago Facturado';
@@ -232,7 +232,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         }
       }
     } catch (e) {
-      console.error(e);
+      response.status(400).send(e);
     }
   }
 
