@@ -118,9 +118,7 @@ export class SchoolPayment extends Base {
     statusPayment: PaymentStatus;
 
     @Field(type => [SchoolChargeDetails])
-    @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment, {
-        cascade: ['update', 'insert'],
-    })
+    @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
     schoolChargeDetail: SchoolChargeDetails[];
 
     // @OneToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
@@ -128,20 +126,14 @@ export class SchoolPayment extends Base {
     // paymentPlanConcept: PaymentPlanConcept;
 
     @Field(type => PaymentPlanConcept)
-    @ManyToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment, {
-        cascade: ['update', 'insert'],
-    })
+    @ManyToOne(() => PaymentPlanConcept, (paymentPlanConcept) => paymentPlanConcept.schoolPayment)
     paymentPlanConcept: PaymentPlanConcept;
 
     @Field(type => Inscription)
-    @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments, {
-        cascade: ['update', 'insert'],
-    })
+    @ManyToOne(() => Inscription, (inscription) => inscription.schoolPayments)
     inscription: Inscription;
 
     @Field(type => [SchoolPaymentCharge])
-    @OneToMany(() => SchoolPaymentCharge, (extraCharges) => extraCharges.schoolPaymentChargeDetail, {
-        cascade: ['insert'],
-    })
+    @OneToMany(() => SchoolPaymentCharge, (extraCharges) => extraCharges.schoolPaymentChargeDetail)
     extraCharges: SchoolPaymentCharge[];
 }
