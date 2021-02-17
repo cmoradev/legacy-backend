@@ -39,7 +39,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
 
     async fetchFilteredPayments(query: QuerySimpleReport): Promise<AcademyChargePayments[]> {
         const paymentsQueryBuilder = this.repo.createQueryBuilder('payment');
-        // paymentsQueryBuilder.leftJoinAndSelect('payment.storePaymentOffice', 'storePaymentOffice');
+        paymentsQueryBuilder.leftJoinAndSelect('payment.academyPaymentOffice', 'academyPaymentOffice');
         paymentsQueryBuilder.leftJoinAndSelect('payment.cashierCharge', 'cashierCharge');
         paymentsQueryBuilder.leftJoinAndSelect('payment.academyCharge', 'academyCharge');
         paymentsQueryBuilder.leftJoinAndSelect('academyCharge.schoolStudent', 'schoolStudent');
@@ -48,9 +48,9 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         paymentsQueryBuilder.leftJoinAndSelect('payment.academyChargesInvoice', 'academyChargesInvoice');
         if (query) {
 
-            /* paymentsQueryBuilder.where('storePaymentOffice.id= :officeId', {
+            paymentsQueryBuilder.where('academyPaymentOffice.id= :officeId', {
                 officeId: query.branchOfficeId,
-            }); */
+            });
 
             paymentsQueryBuilder.andWhere('payment.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
@@ -81,9 +81,9 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         salesQueryBuilder.leftJoinAndSelect('chargesDetails.extraCharges', 'extraCharges');
         salesQueryBuilder.leftJoinAndSelect('chargesDetails.academyInscriptionConcept', 'academyInscriptionConcept');
         if (query) {
-            /*salesQueryBuilder.where('storeBranchOffice.id= :officeId', {
+            salesQueryBuilder.where('chargeCampus.id= :officeId', {
                 officeId: query.branchOfficeId,
-            });*/
+            });
             salesQueryBuilder.andWhere('chargesPayments.paymentStatus= :paymentStatus', {
                 paymentStatus: query.status,
             });

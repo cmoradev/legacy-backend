@@ -429,6 +429,21 @@ type MiniStoreDetailsExtraCharges {
   systemExtraCharges: SystemExtraCharges!
 }
 
+type AcademyInscriptionConceptCharges {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  version: Float!
+  uuid: String!
+  name: String!
+  quantity: Int!
+  applicationType: Float
+  operationType: String!
+  typeExtraCharge: Float!
+  inscChargeDetail: AcademyInscriptionConcepts!
+  systemExtraCharges: SystemExtraCharges!
+}
+
 type SystemExtraCharges {
   id: ID!
   createdAt: DateTime!
@@ -448,7 +463,10 @@ type SystemExtraCharges {
   extraChargesCampus: planteles!
   extraChargesCycle: Cycle!
   isActive: Int!
-  extraChargeSchool: [SchoolChargesDetailsExtraCharges!]!
+  extraChargeSchoolDetails: [SchoolChargesDetailsExtraCharges!]!
+  extraChargeSchoolPayment: [SchoolPaymentCharge!]!
+  extraChargeAcademiaDetails: [AcademyChargeDetailsExtraCharge!]!
+  extraChargeAcademiaPayment: [AcademyInscriptionConceptCharges!]!
   extraChargeMiniStore: [MiniStoreDetailsExtraCharges!]!
 }
 
@@ -640,21 +658,6 @@ type AcademyChargeDetails {
   extraCharges: [AcademyChargeDetailsExtraCharge!]!
   academyInscriptionConcept: AcademyInscriptionConcepts!
   idConceptoCobro: Int!
-}
-
-type AcademyInscriptionConceptCharges {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  version: Float!
-  uuid: String!
-  name: String!
-  quantity: Int!
-  applicationType: Float
-  operationType: String!
-  typeExtraCharge: Float!
-  inscChargeDetail: AcademyInscriptionConcepts!
-  systemExtraCharges: SystemExtraCharges!
 }
 
 type AcademyInscriptionConcepts {
