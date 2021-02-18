@@ -81,17 +81,17 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
     };
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
-        const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
-        const discount = mulQuantity(discountTotal, base);
+        const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
+        const discountTotal = mulQuantity(discount, base);
         const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
 
-        resultad.discount = sumQuantity(discount, resultad.discount);
+        resultad.discount = sumQuantity(discountTotal, resultad.discount);
 
-        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discount, detail.quantity)));
+        const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discountTotal, detail.quantity)));
         console.log(nativeCalculo);
         // const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
         // const importe = (+nativeCalculo.amountWithOutIva + (discount / detail.quantity)) * detail.quantity;
-        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discount, detail.quantity));
+        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
         const importe = mulQuantity(unitPrice, detail.quantity);
 
         resultad.subtotal = sumQuantity(importe, resultad.subtotal);
@@ -101,10 +101,10 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
             unidad: 'E48', // detail.miniStoreProduct.unity,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
             unitPrice, // mulQuantity(conceptPrice, base),
-            discount,
+            discountTotal,
             importe, // mulQuantity(totalAmountConcept(detail), base),
         };
-        const totalconcetp = sumQuantity(subQuantity(importe, discount).toString(), mulQuantity(subQuantity(importe, discount), .16));
+        const totalconcetp = sumQuantity(subQuantity(importe, discountTotal).toString(), mulQuantity(subQuantity(importe, discountTotal), .16));
         resultad.total = sumQuantity(resultad.total, totalconcetp);
         generalizedConcepts.push(concept);
     });

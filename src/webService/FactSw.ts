@@ -86,7 +86,7 @@ export class FactSw {
   }
 }
 
-interface StampV4 {
+export interface StampV4 {
   data: TDF;
   status: string;
 }

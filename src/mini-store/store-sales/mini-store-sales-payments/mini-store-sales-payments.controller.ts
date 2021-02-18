@@ -222,6 +222,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             // response.send(xml);
 
         } catch (e) {
+            console.log(e);
             response.status(400);
             response.send(e);
         }

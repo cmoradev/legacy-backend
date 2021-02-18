@@ -10,7 +10,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
                                       codigoFormaPago: string,
                                       emisor: BranchOfficeSetting,
                                       receptor: XmlReceptorAttribute, factura: FacturaDetalles,
-                                      instancePath: string,
+                                      instancePath: string, importeImpuesto = .16,
 ) {
   const key = instancePath + 'CSD/' + emisor.keyCSD;
   const cer = instancePath + 'CSD/' + emisor.cerCSD;
@@ -47,38 +47,47 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
-      NoIdentificacion: '23243012',
+      NoIdentificacion: detalle.NoIdentificacion,
       Cantidad: detalle.quantity,
       ClaveUnidad: 'E48',
       Unidad: 'Pieza',
       Descripcion: detalle.descrption,
       ValorUnitario: detalle.unitPrice,
       Importe: detalle.importe,
-      Descuento: detalle.discount,
+      Descuento: detalle.discountTotal,
     } as XmlConceptoAttributes);
-
-    concepto.traslado({
-      Base: subQuantity(detalle.importe, detalle.discount, -5).toString(),
-      Impuesto: '002',
-      TipoFactor: 'Tasa',
-      TasaOCuota: '0.160000',
-      Importe: mulQuantity(subQuantity(detalle.importe, detalle.discount, -5), .16, -5).toString(),
-    });
-    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discount), .16), totalTranslado).toString();
+    if (importeImpuesto !== 0) {
+      concepto.traslado({
+        Base: subQuantity(detalle.importe, detalle.discountTotal, -5).toString(),
+        Impuesto: '002',
+        TipoFactor: 'Tasa',
+        TasaOCuota: '0.160000',
+        Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -5), importeImpuesto, -5).toString(),
+      });
+      totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), importeImpuesto), totalTranslado).toString();
+    }
     await cfd.concepto(concepto);
   }
-
   const impuesto: Impuestos = new Impuestos({
     TotalImpuestosTrasladados: totalTranslado,
   });
 
-  impuesto.traslados({
-    Impuesto: '002',
-    TipoFactor: 'Tasa',
-    TasaOCuota: '0.160000',
-    Importe: totalTranslado,
-  });
-  await cfd.impuesto(impuesto);
+  if (importeImpuesto !== 0) {
+    impuesto.traslados({
+      Impuesto: '002',
+      TipoFactor: 'Tasa',
+      TasaOCuota: '0.160000',
+      Importe: totalTranslado,
+    });
+    await cfd.impuesto(impuesto);
+  } /*else {
+    impuesto.traslados({
+      Impuesto: '002',
+      TipoFactor: 'Exento',
+      TasaOCuota: '0.000000',
+      Importe: totalTranslado,
+    });
+  }*/
   await cfd.certificar(cer);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();
@@ -125,7 +134,6 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   let totalTranslado = '0.00';
   let totalRetenido = '0.00';
   for (const detalle of factura.detalles) {
-    console.log(detalle);
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
       NoIdentificacion: detalle.NoIdentificacion,
@@ -137,29 +145,12 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
       Importe: detalle.importe,
       Descuento: detalle.discountTotal,
     } as XmlConceptoAttributes);
-    concepto.traslado({
-      Base: subQuantity(detalle.importe, detalle.discountTotal, -5).toString(),
-      Impuesto: '002',
-      TipoFactor: 'Tasa',
-      TasaOCuota: '0.000000',
-      Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -5), 0, -5).toString(),
-    });
     totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
     const ieduObject: XmlIeduAttribute = student;
     const iedu = new Iedu(ieduObject);
     await concepto.complemento(iedu);
     await cfd.concepto(concepto);
   }
-  const impuesto: Impuestos = new Impuestos({
-    TotalImpuestosTrasladados: totalTranslado,
-  });
-  impuesto.traslados({
-    Impuesto: '002',
-    TipoFactor: 'Tasa',
-    TasaOCuota: '0.000000',
-    Importe: totalTranslado,
-  });
-  await cfd.impuesto(impuesto);
   await cfd.certificar(cer);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();

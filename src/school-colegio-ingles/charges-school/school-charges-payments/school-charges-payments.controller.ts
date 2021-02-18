@@ -11,11 +11,14 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { GenerateInvoiceIedu } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+import {
+  GenerateInvoice,
+  GenerateInvoiceIedu,
+} from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';
-import { FactSw } from '../../../webService/FactSw';
+import { FactSw, StampV4 } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
@@ -85,6 +88,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       const logo = readFileSync(`${ this.configService.getPath() }logos/colegiologo.png`);
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
+          console.log('1');
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
             paymentId: query.chargePaymentId,
             status: StatusInvoce.invoiced,
@@ -96,30 +100,51 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoiceResponse.uuid = invoicePayment.uuid;
           response.send(invoiceResponse);
         } else {
-          const xml = await GenerateInvoiceIedu(
-            {
-              folio: invoiceFinded.folio,
-              serie: branchOfficeSett.serieFacturacion,
-            },
-            result.highestPayment.codePaymentMethod,
-            branchOfficeSett,
-            {
-              Nombre: query.receiver.businessName,
-              Rfc: query.receiver.rfc,
-              UsoCFDI: query.usoCfdi.value,
-            },
-            {
-              version: '1.0',
-              autRVOE: query.studyPlan.code,
-              CURP: query.student.curp,
-              nivelEducativo: query.studyPlan.level.name.toString(),
-              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
-              rfcPago: query.receiver.rfc,
-            },
-            invoiceDetails,
-            this.configService.getPath(),
-          );
-          const timbrado = await this.smartWeb.facturar(xml);
+          let timbrado: StampV4;
+          if (query.usoCfdi.value === 'D10') {
+            const xml = await GenerateInvoiceIedu(
+              {
+                folio: invoiceFinded.folio,
+                serie: branchOfficeSett.serieFacturacion,
+              },
+              result.highestPayment.codePaymentMethod,
+              branchOfficeSett,
+              {
+                Nombre: query.receiver.businessName,
+                Rfc: query.receiver.rfc,
+                UsoCFDI: query.usoCfdi.value,
+              },
+              {
+                version: '1.0',
+                autRVOE: query.studyPlan.code,
+                CURP: query.student.curp,
+                nivelEducativo: query.studyPlan.level.name.toString(),
+                nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
+                rfcPago: query.receiver.rfc,
+              },
+              invoiceDetails,
+              this.configService.getPath(),
+            );
+            timbrado = await this.smartWeb.facturar(xml);
+          } else {
+            const xml = await GenerateInvoice(
+              {
+                folio: invoiceFinded.folio,
+                serie: branchOfficeSett.serieFacturacion,
+              },
+              result.highestPayment.codePaymentMethod,
+              branchOfficeSett,
+              {
+                Nombre: query.receiver.businessName,
+                Rfc: query.receiver.rfc,
+                UsoCFDI: query.usoCfdi.value,
+              },
+              invoiceDetails,
+              this.configService.getPath(),
+              0
+            );
+            timbrado = await this.smartWeb.facturar(xml);
+          }
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
@@ -150,7 +175,6 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoiceResponse.invoice = resultInvoice;
           invoiceResponse.uuid = timbrado.data.uuid.toUpperCase();
           response.send(invoiceResponse);
-
         }
       } else {
         const factura = new SchoolChargesInvoice();
@@ -176,30 +200,50 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         } as BranchOfficeSetting;
         const invoice = await this.schoolChargeInvoiceService.saveInvoice(factura);
         if (invoice) {
-          const xml = await GenerateInvoiceIedu(
-            {
-              folio: invoice.folio,
-              serie: branchOfficeSett.serieFacturacion,
-            },
-            result.highestPayment.codePaymentMethod,
-            branchOfficeSett,
-            {
-              Nombre: query.receiver.businessName,
-              Rfc: query.receiver.rfc,
-              UsoCFDI: query.usoCfdi.value,
-            },
-            {
-              version: '1.0',
-              autRVOE: query.studyPlan.code,
-              CURP: query.student.curp,
-              nivelEducativo: query.studyPlan.level.name.toString(),
-              nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
-              rfcPago: query.receiver.rfc,
-            },
-            invoiceDetails,
-            this.configService.getPath());
-          const timbrado = await this.smartWeb.facturar(xml);
-          // console.log(timbrado);
+          let timbrado: StampV4;
+          if (query.usoCfdi.value === 'D10') {
+            const xml = await GenerateInvoiceIedu(
+              {
+                folio: invoice.folio,
+                serie: branchOfficeSett.serieFacturacion,
+              },
+              result.highestPayment.codePaymentMethod,
+              branchOfficeSett,
+              {
+                Nombre: query.receiver.businessName,
+                Rfc: query.receiver.rfc,
+                UsoCFDI: query.usoCfdi.value,
+              },
+              {
+                version: '1.0',
+                autRVOE: query.studyPlan.code,
+                CURP: query.student.curp,
+                nivelEducativo: query.studyPlan.level.name.toString(),
+                nombreAlumno: `${ query.student.name } ${ query.student.lastNameFather } ${ query.student.lastNameMother }`,
+                rfcPago: query.receiver.rfc,
+              },
+              invoiceDetails,
+              this.configService.getPath());
+            timbrado = await this.smartWeb.facturar(xml);
+          } else {
+            const xml = await GenerateInvoice(
+              {
+                folio: invoice.folio,
+                serie: branchOfficeSett.serieFacturacion,
+              },
+              result.highestPayment.codePaymentMethod,
+              branchOfficeSett,
+              {
+                Nombre: query.receiver.businessName,
+                Rfc: query.receiver.rfc,
+                UsoCFDI: query.usoCfdi.value,
+              },
+              invoiceDetails,
+              this.configService.getPath(),
+              0
+            );
+            timbrado = await this.smartWeb.facturar(xml);
+          }
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
@@ -232,6 +276,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         }
       }
     } catch (e) {
+      console.log(e);
       response.status(400).send(e);
     }
   }
