@@ -14,20 +14,20 @@ module.exports = {
                 NODE_ENV: 'production',
             },
         },
-        // {
-        //     name: '6500-pachamama',
-        //     script: 'dist/main.js',
-        //     instances: 1,
-        //     autorestart: true,
-        //     watch: false,
-        //     max_memory_restart: '4G',
-        //     env_dev: {
-        //         NODE_ENV: 'development',
-        //     },
-        //     env_production: {
-        //         NODE_ENV: 'pachamama',
-        //     },
-        // },
+        {
+            name: '3300-herbart',
+            script: 'dist/main.js',
+            instances: 1,
+            autorestart: true,
+            watch: false,
+            max_memory_restart: '4G',
+            env_dev: {
+                NODE_ENV: 'development',
+            },
+            env_production: {
+                NODE_ENV: 'herbart',
+            },
+        },
         {
             name: '4000-rancho',
             script: 'dist/main.js',
