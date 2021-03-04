@@ -107,6 +107,7 @@ db={env} npm run seed InvoiceMethodsInsertUpdateSeed
 db={env} npm run seed InvoicesBankSeed
 db={env} npm run seed SystemTypeExtraChargesSeed
 db={env} npm run seed AcademyModalitiesSeed
+db={env} npm run seed ShiftInserUpdateSeed
 ```
 
 ## Triggers in data base 
@@ -149,3 +150,4 @@ TRUNCATE `capecafe`.`mini_store_quotation`;
 // por nuevo ingreso
 // calcular el iva de los conceptos agregado
 // studyPlans en cobros falta relacionar con el plan de estudio
+// iTeck2014$
