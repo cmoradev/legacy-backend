@@ -108,6 +108,7 @@ db={env} npm run seed InvoicesBankSeed
 db={env} npm run seed SystemTypeExtraChargesSeed
 db={env} npm run seed AcademyModalitiesSeed
 db={env} npm run seed ShiftInserUpdateSeed
+db={env} npm run seed ConceptTypeInserUpdateSeed
 ```
 
 ## Triggers in data base 
