@@ -71,4 +71,13 @@ export class MiniStoreDashBoardService {
       .groupBy('users.id')
       .getRawMany();
   }
+
+  public async salesGraphic(query: { month: string, year: string,}){
+    return await this.miniStoreSalesPaymentsService.repo.createQueryBuilder('sales')
+    .select(['SUM(sales.quantity) - SUM(sales.change ) as total, MONTH(sales.createdAt) as mes'])
+    .where('MONTH(sales.createdAt) = :month', {month: query.month})
+    .andWhere('YEAR(sales.createdAt) = :year', {year: query.year})
+    .groupBy('mes')
+    .getRawOne();
+  }
 }
