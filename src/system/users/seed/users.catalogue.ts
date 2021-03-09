@@ -13,6 +13,7 @@ export const UsersCatalogue: User[] = [
         uuid: 'dd828b00-5da1-11eb-ae93-0242ac130002',
         email: 'admin@gmail.com',
         password: 'muunyal',
+        idCampus: 1,
         campus: {
             id: 1,
         } as BranchOffice,
