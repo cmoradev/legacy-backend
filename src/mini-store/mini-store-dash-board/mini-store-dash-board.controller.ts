@@ -28,4 +28,11 @@ export class MiniStoreDashBoardController {
     const jwt = await this.service.cashierSales(query);
     res.send(jwt);
   }
+
+  @Get('salesGraphic')
+  async salesGraph(@Query() query: {month: string, year: string }, @Res() res: Response){
+    const jwt = await this.service.salesGraphic(query);
+    res.send(jwt);
+  }
+  
 }
