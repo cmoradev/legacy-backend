@@ -75,7 +75,7 @@ export class SimpleReportAcademy {
             left: { style: 'thin' },
         };
 
-        bussinessNameCell.value = 'COLEGIO INGLÉS QUINTANA ROO, S.C ';
+        bussinessNameCell.value = 'COLEGIO ';
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
         dateRangeCell.value = 'RANGO CONSULTADO: []';
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
