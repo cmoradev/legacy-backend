@@ -77,13 +77,28 @@ export class AcademyConcepts extends Base {
     academyConceptsCampus: BranchOffice;
 
     @Field(type => Level)
-    @ManyToOne(type => Level, level => level.levelAcademyConcepts)
-    @JoinColumn({
+    @Column('varchar', {
+        nullable: true,
         name: 'id_nivel',
-        referencedColumnName: 'id',
     })
-    academyConceptsLevel: Level;
+    academyConceptsLevel: string;
 
+    // @Field(type => Level)
+    // @ManyToOne(type => Level, level => level.levelAcademyConcepts)
+    // @JoinColumn({
+    //     name: 'id_nivel',
+    //     referencedColumnName: 'id',
+    // })
+    // academyConceptsLevel: Level;
+    /*
+    * ALTER TABLE `colegio_herbart`.`ac_aconceptos`
+DROP FOREIGN KEY `FK_0c0ad3bf9d8d9b8153c6d1a8e5e`;
+ALTER TABLE `colegio_herbart`.`ac_aconceptos`
+DROP COLUMN `id_nivel`,
+DROP INDEX `FK_0c0ad3bf9d8d9b8153c6d1a8e5e` ;
+;
+
+    * */
     @Field(type => SystemConceptsType)
     @ManyToOne(type => SystemConceptsType, state => state.systemConceptAcademy)
     @JoinColumn({

@@ -1427,7 +1427,6 @@ type Level {
   levelInscriptions: [Inscription!]!
   studyPlans: [StudyPlan!]!
   classrooms: [Classroom!]!
-  levelAcademyConcepts: [AcademyConcepts!]!
   levelAcademyInscription: [AcademyInscription!]!
   autRvoe: [AutRvoe!]!
 }

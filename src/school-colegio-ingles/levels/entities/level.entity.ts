@@ -54,9 +54,9 @@ export class Level extends Base {
   @OneToMany(() => Classroom, (classroom) => classroom.level)
   classrooms: Classroom[];
 
-  @Field(type => [AcademyConcepts])
-  @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsLevel)
-  levelAcademyConcepts: AcademyConcepts[];
+  // @Field(type => [AcademyConcepts])
+  // @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsLevel)
+  // levelAcademyConcepts: AcademyConcepts[];
 
   @Field(type => [AcademyInscription])
   @OneToMany(() => AcademyInscription, (acInscription) => acInscription.schoolLevel)
