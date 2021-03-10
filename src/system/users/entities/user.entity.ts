@@ -127,15 +127,21 @@ export class User extends Base {
     teacher: Teacher;
 
     @Field(type => Role)
-    @ManyToOne(() => Role, (role) => role.users, { cascade: ['insert', 'update'] })
+    @ManyToOne(() => Role, (role) => role.users, {
+        cascade: ['insert'],
+    })
     role: Role;
 
     @Field(type => Department)
-    @ManyToOne(() => Department, (department) => department.users, { cascade: ['insert', 'update'] })
+    @ManyToOne(() => Department, (department) => department.users, {
+        cascade: ['insert'],
+    })
     department: Department;
 
     @Field(type => BranchOffice)
-    @ManyToOne(() => BranchOffice, (campus) => campus.users, { cascade: ['insert', 'update'] })
+    @ManyToOne(() => BranchOffice, (campus) => campus.users, {
+        cascade: ['insert'],
+    })
     campus: BranchOffice;
 
     @Field(type => [MiniStoreInvoice])
