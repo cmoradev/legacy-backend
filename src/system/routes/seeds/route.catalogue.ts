@@ -667,7 +667,7 @@ const routes: Partial<Route>[] = [
     {
         'id': 87,
         'isActive': 1,
-        'name': 'Alumnos Planes',
+        'name': 'Inscripciones',
         'fatherID': 41,
         'level': 2,
         'url': '/colegio/alumnos/planestudios/conceptos/',
