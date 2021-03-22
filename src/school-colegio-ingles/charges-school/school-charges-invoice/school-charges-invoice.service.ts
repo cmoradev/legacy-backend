@@ -70,7 +70,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,
-      subject: 'Academias - Comprobantes de pago CFDI',
+      subject: 'Comprobantes de pago CFDI',
       text: 'CFDI',
       html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Academias del Colegio Inglés</p></div>',
       attachments: [

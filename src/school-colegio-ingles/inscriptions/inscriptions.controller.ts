@@ -12,6 +12,7 @@ import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interfac
 import { sheetToObjPage } from '../../common/office/sheets';
 import { Response } from 'express';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+import { Student } from '../students/entities/student.entity';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -62,7 +63,7 @@ export class InscriptionsController implements CrudController<Inscription> {
   public async addInsccripciones(@Req() req, @Res() res: Response) {
     try {
       // @ts-ignore
-     // const data = await this.service.repo.save(inscripcionesCiclo5);
+      // const data = await this.service.repo.save([] as unknown as Inscription[]);
       res.send({ save: true });
     } catch (e) {
       res.send(e);

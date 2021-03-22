@@ -49,7 +49,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 @Controller()
 export class StudentsController implements CrudController<Student> {
     constructor(
-      readonly service: StudentsService,
+        readonly service: StudentsService,
     ) {
     }
 
@@ -73,8 +73,60 @@ export class StudentsController implements CrudController<Student> {
     @Get('/add/students')
     public async addStudents(@Req() req, @Res() res: Response) {
         try {
-            // const data = await this.service.repo.save(alumnos);
-            res.send({ save: true });
+            const alumnos = [
+                {
+                    'name_search': 'chrristopher enrique ibañez valencia',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'diego macìas melendez',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'julieta ramìrez ramìrez',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'marian sotelo rojas',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'mauricio olvera lópez',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'perla ramìrez ulloa',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'sebastián carrera damián',
+                    'Total': 2,
+                },
+                {
+                    'name_search': 'victoria zyznawsky ramírez',
+                    'Total': 2,
+                },
+            ];
+            const data = [];
+            for (const st of alumnos) {
+                const alu = await this.service.repo.createQueryBuilder('alumnos')
+                    .leftJoinAndSelect('alumnos.studentInscriptions', 'studentInscriptions')
+                    .leftJoinAndSelect('studentInscriptions.inscripGrade', 'inscripGrade')
+                    .leftJoinAndSelect('studentInscriptions.inscripClassroom', 'inscripClassroom')
+
+                    // .leftJoinAndSelect('studentInscriptions.schoolPayments', 'schoolPayments')
+                    .select([
+                        'alumnos.id', 'alumnos.searchName',
+                        'studentInscriptions.id',
+                        'inscripGrade.id', 'inscripGrade.name',
+                        'inscripClassroom.id', 'inscripClassroom.name',
+                        // 'schoolPayments.id',
+                    ])
+                    .where('alumnos.name_search like :name', { name: st.name_search })
+                    .getMany();
+                data.push(alu);
+            }
+            res.send({ save: true, data });
         } catch (e) {
             res.send(e);
         }

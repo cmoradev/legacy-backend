@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { SchoolPaymentsService } from './school-payments.service';
@@ -6,6 +6,8 @@ import { IQueryReport } from './interfaces/IQueryReport';
 import { ReportProcessor } from './report/report.processor';
 import { SchoolPaymentsReport } from './report/schoolPayments.report';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
+import { Response } from 'express';
+
 @UseGuards(JwtGuard)
 @Crud({
   model: {
@@ -31,6 +33,18 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
 
   get base(): CrudController<SchoolPayment> {
     return this;
+  }
+
+  @Get('/add/payments')
+  public async addSchoolPayment(@Req() req, @Res() res: Response) {
+    try {
+
+      // const data = await this.service.repo.save([] as unknown as SchoolPayment[]);
+      res.send({ save: true });
+    } catch (e) {
+      res.send(e);
+    }
+
   }
 
   @Get('report-by-status-payment')

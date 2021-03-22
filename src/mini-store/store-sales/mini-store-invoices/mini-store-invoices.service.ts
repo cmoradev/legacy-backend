@@ -151,7 +151,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
-            subject: 'Tienda - Comprobantes de pago CFDI',
+            subject: 'Comprobantes de pago CFDI',
             text: 'CFDI',
             html: '<div> <h2>Gracias por su compra</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Tienda Escolar del Colegio Inglés</p></div>',
             attachments: [

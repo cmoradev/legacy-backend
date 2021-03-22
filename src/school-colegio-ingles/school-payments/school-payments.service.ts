@@ -10,8 +10,7 @@ import * as moment from 'moment';
 @Injectable()
 export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
   constructor(
-    @InjectRepository(SchoolPayment, ColegioDBNameConnection)
-      repo: Repository<SchoolPayment>,
+    @InjectRepository(SchoolPayment, ColegioDBNameConnection) public repo: Repository<SchoolPayment>,
   ) {
     super(repo);
   }

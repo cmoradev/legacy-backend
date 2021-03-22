@@ -152,3 +152,4 @@ TRUNCATE `capecafe`.`mini_store_quotation`;
 // calcular el iva de los conceptos agregado
 // studyPlans en cobros falta relacionar con el plan de estudio
 // iTeck2014$
+npm run caps --muunyalapi:VAR=foo
