@@ -81,9 +81,7 @@ export class AcademyChargeDetails extends Base {
     extraCharges: AcademyChargeDetailsExtraCharge[];
 
     @Field(type => AcademyInscriptionConcepts)
-    @ManyToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail, {
-        cascade: ['insert'],
-    })
+    @ManyToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail)
     academyInscriptionConcept: AcademyInscriptionConcepts;
 
     @Field(type => Int)
