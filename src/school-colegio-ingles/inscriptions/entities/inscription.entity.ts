@@ -14,7 +14,6 @@ import { SchoolPayment } from '../../school-payments/entities/school-payment.ent
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { InscriptionStatus } from '../../../common/enums/PaymentStatus';
 
 @ObjectType()
 @Entity('inscripciones')
@@ -26,14 +25,6 @@ export class Inscription extends Base {
         name: 'id_status',
     })
     idStatus: number;
-
-    @Field()
-    @Column('simple-enum', {
-        enum: InscriptionStatus,
-        default: InscriptionStatus.Registered,
-        nullable: false,
-    })
-    statusInscription: InscriptionStatus;
 
     @Field(type => Student)
     @ManyToOne(() => Student, (student) => student.studentInscriptions, {
