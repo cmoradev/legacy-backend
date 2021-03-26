@@ -19,6 +19,7 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
             cashierCancellation: {},
             schoolStudent: {},
             chargesDetails: {},
+            'chargesDetails.academyInscriptionConcept': {},
             'chargesDetails.extraCharges': {},
             chargesPayments: {},
             'chargesPayments.academyChargesInvoice': {},
