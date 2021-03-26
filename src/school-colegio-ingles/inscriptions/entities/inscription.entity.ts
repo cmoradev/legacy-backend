@@ -27,7 +27,7 @@ export class Inscription extends Base {
     })
     idStatus: number;
 
-    @Field(type => InscriptionStatus)
+    @Field()
     @Column('simple-enum', {
         enum: InscriptionStatus,
         default: InscriptionStatus.Registered,
