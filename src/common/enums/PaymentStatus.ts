@@ -12,3 +12,10 @@ export enum InscriptionStatus {
     SignedUp = 2, // Inscrito
     Baja = 3, // de baja
 }
+
+export enum StudentInscriptionStatus {
+    NewEnrollment = '0',
+    ReEnrollment = '1',
+    ReEntry = '2',
+    UnSubscribed = '3',
+}

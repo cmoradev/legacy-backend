@@ -11,6 +11,7 @@ import { SchoolCharge } from '../../charges-school/school-charges/entities/schoo
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { StudentInscriptionStatus } from '../../../common/enums/PaymentStatus';
 
 @ObjectType()
 @Entity('alumnos')
@@ -171,4 +172,12 @@ export class Student extends Base {
     @Field(type => [AcademyCharge])
     @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.schoolStudent)
     academyCharges: AcademyCharge[];
+
+    @Field()
+    @Column('simple-enum', {
+        enum: StudentInscriptionStatus,
+        default: StudentInscriptionStatus.NewEnrollment,
+        nullable: false,
+    })
+    statusStudentInscription: StudentInscriptionStatus;
 }
