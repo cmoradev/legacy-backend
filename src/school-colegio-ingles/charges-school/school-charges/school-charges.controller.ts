@@ -20,7 +20,7 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
       schoolStudent: {},
       chargesDetails: {},
       'chargesDetails.extraCharges': {},
-      'chargesDetails.schoolPayment':{},
+      'chargesDetails.schoolPlanPayment':{},
       'chargesDetails.extraCharges.systemExtraCharges': {},
       chargesPayments: {},
       'chargesPayments.methodsPayments': { alias: 'chargesPayments_methodsPayments' },
