@@ -5,7 +5,7 @@ import { RouteAction } from '../../route-action/entities/route-action.entity';
 import { Field, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity()
+@Entity('action')
 export class Action extends Base {
 
     @Field()
