@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -14,6 +14,9 @@ import { Response } from 'express';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Student } from '../students/entities/student.entity';
 import { QueryBilling } from '../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { ListQuery } from './types/listQuery';
+import {  reportInscriptionList } from './reports/inscription-group.report';
+import * as moment from 'moment';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -73,18 +76,21 @@ export class InscriptionsController implements CrudController<Inscription> {
     }
 
     @Get('/report/attendance')
-    public async attendance(@Body() query: Attendance, @Req() req, @Res() res: Response) {
+    public async attendance(@Query() query: Attendance, @Req() req, @Res() res: Response) {
         try {
-            const result = {
-                data: [],
+            const result: {data:ListQuery, file: string} = {
+                data: {} as ListQuery,
                 file: '',
             };
+            const data = await this.service.reportAttendance(query);
             if (query.onlyFile) {
-                result.data = await this.service.reportAttendance(query)
+                const year = moment().year();
+                const month = moment().month() + 1;
+                result.file = await reportInscriptionList(data,{ year, month })
             } else {
-
+                result.data = data
             }
-            res.send(query);
+            res.send(result);
         } catch (e) {
             res.send(e);
         }

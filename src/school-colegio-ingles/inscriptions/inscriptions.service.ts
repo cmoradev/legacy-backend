@@ -7,17 +7,30 @@ import { Student } from '../students/entities/student.entity';
 import { Attendance, VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ClassroomsService } from '../classrooms/classrooms.service';
+import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
+import { Cycle } from '../cycles/entities/cycle.entity';
+import { Classroomembers, ListQuery } from './types/listQuery';
+import { LevelsService } from '../levels/levels.service';
 
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
     constructor(
         @InjectRepository(Inscription, ColegioDBNameConnection) readonly repo: Repository<Inscription>,
         @InjectRepository(Student, ColegioDBNameConnection) readonly student: Repository<Student>,
+        readonly classroomService: ClassroomsService,
+        readonly levelService: LevelsService,
     ) {
         super(repo);
     }
 
     public async reportAttendance(query: Attendance) {
+        const result: ListQuery = {
+            name: (await this.levelService.findOne({ where: { id: query.levelId } })).name,
+            branchOffice: {} as BranchOffice,
+            cycle: {} as Cycle,
+            classroom: [],
+        };
         const inscripcion = this.repo.createQueryBuilder('inscription')
             .leftJoinAndSelect('inscription.inscripStudent', 'inscripStudent')
             .leftJoinAndSelect('inscription.inscripCampus', 'inscripCampus')
@@ -26,29 +39,92 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             .leftJoinAndSelect('inscription.inscripGrade', 'inscripGrade')
             .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom');
 
-        inscripcion.where('inscripCampus.id= :officeId', {
-            officeId: query.branchOfficeId,
-        });
+        // @ts-ignore
+        if (query.classRoomId === 0 || query.classRoomId === '0') {
+            const classRooms = await this.classroomService.getClassRoomByLevel(query.levelId, query.gradeId, query.cycleId);
 
-        inscripcion.andWhere('inscripCycle.id = :cycleId', {
-            cycleId: query.cycleId,
-        });
+            for (const clasro of classRooms) {
+                const room: Classroomembers = {
+                    name: clasro.name,
+                    students: [],
+                };
+                const ins = inscripcion;
+                ins.andWhere('inscripCycle.id = :cycleId', {
+                    cycleId: query.cycleId,
+                });
 
-        inscripcion.andWhere('inscripLevel.id = :levelId', {
-            levelId: query.levelId,
-        });
+                ins.andWhere('inscripLevel.id = :levelId', {
+                    levelId: query.levelId,
+                });
 
-        inscripcion.andWhere('inscripGrade.id = :gradeId', {
-            gradeId: query.gradeId,
-        });
-        if (query.classRoomId !== 0) {
+                ins.andWhere('inscripGrade.id = :gradeId', {
+                    gradeId: query.gradeId,
+                });
+                inscripcion.andWhere('inscripClassroom.id = :classroomId', {
+                    classroomId: clasro.id,
+                });
+                const data = await ins.getMany();
+                let i = 1;
+                for (const studen of data) {
+                    result.branchOffice = studen.inscripCampus;
+                    result.cycle = studen.inscripCycle;
+                    room.students.push({
+                        id: i,
+                        matricula: studen.inscripStudent.matricula,
+                        name: studen.inscripStudent.name + ' ' + studen.inscripStudent.lastNameFather + ' ' + studen.inscripStudent.lastNameMother,
+                    });
+                    i++;
+                }
+                result.classroom.push(room);
+            }
+
+        } else {
+
+            inscripcion.where('inscripCampus.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });
+
+            inscripcion.andWhere('inscripCycle.id = :cycleId', {
+                cycleId: query.cycleId,
+            });
+
+            inscripcion.andWhere('inscripLevel.id = :levelId', {
+                levelId: query.levelId,
+            });
+
+            inscripcion.andWhere('inscripGrade.id = :gradeId', {
+                gradeId: query.gradeId,
+            });
+
             inscripcion.andWhere('inscripClassroom.id = :classroomId', {
                 classroomId: query.classRoomId,
             });
+
+            const room: Classroomembers = {
+                name: '',
+                students: [],
+            };
+
+            const data = await inscripcion.getMany();
+            let i = 1;
+            for (const studen of data) {
+                room.name = studen.inscripClassroom.name;
+                result.branchOffice = studen.inscripCampus;
+                result.cycle = studen.inscripCycle;
+                room.students.push({
+                    id: i,
+                    matricula: studen.inscripStudent.matricula,
+                    name: studen.inscripStudent.name + ' ' + studen.inscripStudent.lastNameFather + ' ' + studen.inscripStudent.lastNameMother,
+                });
+                i++;
+            }
+            result.classroom.push(room);
+
         }
 
-        return await inscripcion.getMany();
+        return result;
     }
+
 
     public async verificarInscription(data: VerificarInscriprions, datainsc: VerifyregistratioDto): Promise<any> {
         /*  const result: any = {
