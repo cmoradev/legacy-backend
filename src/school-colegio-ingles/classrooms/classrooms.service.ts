@@ -4,6 +4,7 @@ import { Classroom } from './entities/classroom.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { Attendance } from '../inscriptions/interfaces/inscriptions.interface';
 
 @Injectable()
 export class ClassroomsService extends TypeOrmCrudService<Classroom> {
@@ -11,5 +12,24 @@ export class ClassroomsService extends TypeOrmCrudService<Classroom> {
         @InjectRepository(Classroom, ColegioDBNameConnection) readonly repo: Repository<Classroom>,
     ) {
         super(repo);
+    }
+
+    public async getClassRoomByLevel(levelId: number, gradeId: number, cycleId: number) {
+        return await this.repo.find({
+            where: {
+                level: {
+                    id: levelId,
+                },
+                grade: {
+                    id: gradeId,
+                },
+                cycle: {
+                    id: cycleId,
+                },
+            },
+            order: {
+                id: 'ASC',
+            },
+        });
     }
 }

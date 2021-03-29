@@ -9,3 +9,12 @@ interface VerInsData {
     apellido_materno: string;
     nombre: string;
 }
+
+export interface Attendance {
+    onlyFile: boolean,
+    branchOfficeId: number;
+    cycleId: number;
+    levelId: number;
+    gradeId: number;
+    classRoomId: number;
+}
