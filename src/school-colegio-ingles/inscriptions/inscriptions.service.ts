@@ -37,8 +37,10 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             .leftJoinAndSelect('inscription.inscripCycle', 'inscripCycle')
             .leftJoinAndSelect('inscription.inscripLevel', 'inscripLevel')
             .leftJoinAndSelect('inscription.inscripGrade', 'inscripGrade')
-            .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom');
-
+            .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom')
+            .where('inscription.idStatus= :status', {
+                status: 1,
+            });
         // @ts-ignore
         if (query.classRoomId === 0 || query.classRoomId === '0') {
             const classRooms = await this.classroomService.getClassRoomByLevel(query.levelId, query.gradeId, query.cycleId);
@@ -80,7 +82,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
         } else {
 
-            inscripcion.where('inscripCampus.id= :officeId', {
+            inscripcion.andWhere('inscripCampus.id= :officeId', {
                 officeId: query.branchOfficeId,
             });
 

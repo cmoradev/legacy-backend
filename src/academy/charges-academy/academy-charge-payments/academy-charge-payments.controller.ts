@@ -25,7 +25,7 @@ import { readFileSync } from 'fs';
 import { XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../config/config.service';
-
+import {A117} from '../../../pdf/A117/desing/A117'
 @UseGuards(JwtGuard)
 @Crud({
     model: {
@@ -170,10 +170,11 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     invoiceFind.total = cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
-                    const pdf = new PDF(pathXml, 0, {
+                    const desingpdf = new A117(pathXml,{
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`
+                    })
+                    const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
@@ -241,10 +242,11 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     invoice.total = cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(invoice);
                     // Generamos el PDf del xml
-                    const pdf = new PDF(pathXml, 0, {
+                    const desingpdf = new A117(pathXml,{
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`
+                    })
+                    const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);

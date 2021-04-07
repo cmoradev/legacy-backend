@@ -153,3 +153,9 @@ TRUNCATE `capecafe`.`mini_store_quotation`;
 // studyPlans en cobros falta relacionar con el plan de estudio
 // iTeck2014$
 npm run caps --muunyalapi:VAR=foo
+// borrar esta lineas cuando el pdf de signati este completo
+"rootDir": "./src",
+"allowJs": true,
+"include": [
+"src/**/*"
+],

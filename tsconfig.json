@@ -7,11 +7,15 @@
     "experimentalDecorators": true,
     "target": "es2017",
     "sourceMap": true,
+    "rootDir": "./src",
     "outDir": "./dist",
+    "allowJs": true,
     "baseUrl": "./",
     "incremental": true,
     "allowSyntheticDefaultImports": true,
-
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }

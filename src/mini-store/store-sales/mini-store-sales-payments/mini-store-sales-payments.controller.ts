@@ -22,6 +22,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../config/config.service';
+import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -127,11 +128,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
 
-                    const pdf = new PDF(pathXml, 0, {
-                        // todo
+                    const desingpdf = new A117(pathXml,{
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`
+                    })
+                    const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/`+ timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
@@ -197,10 +198,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     // Generamos el PDf del xml
-                    const pdf = new PDF(pathXml, 0, {
+                    const desingpdf = new A117(pathXml,{
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`
+                    })
+                    const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);

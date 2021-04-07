@@ -28,6 +28,7 @@ import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sa
 import { convertPaymentsReportCollege } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { ConfigService } from '../../../config/config.service';
+import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -161,10 +162,11 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoiceFinded.total = +cfdi['cfdi:Comprobante']._attributes.Total;
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(invoiceFinded);
           // Generamos el PDf del xml
-          const pdf = new PDF(pathXml, 0, {
+          const desingpdf = new A117(pathXml,{
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
-          });
+            logo: `data:image/png;base64, ${logo.toString('base64')}`
+          })
+          const pdf = new PDF<A117>(desingpdf);
           // console.log(pdf);
           await pdf.save(`${ this.configService.getPath() }comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
@@ -259,10 +261,11 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(invoice);
           // Generamos el PDf del xml
-          const pdf = new PDF(pathXml, 0, {
+          const desingpdf = new A117(pathXml,{
             lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${ logo.toString('base64') }`,
-          });
+            logo: `data:image/png;base64, ${logo.toString('base64')}`
+          })
+          const pdf = new PDF<A117>(desingpdf);
           // console.log(pdf);
           await pdf.save(`${ this.configService.getPath() }comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
