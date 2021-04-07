@@ -12,6 +12,8 @@ import { BranchOffice } from '../../system/branch-office/entities/branch-office.
 import { Cycle } from '../cycles/entities/cycle.entity';
 import { Classroomembers, ListQuery } from './types/listQuery';
 import { LevelsService } from '../levels/levels.service';
+import { InscriptionStatusStudent, StudentInscriptionStatus } from '../../common/enums/PaymentStatus';
+import { TypeStudent } from '../students/interface/studentsSchool.interface';
 
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
@@ -38,8 +40,8 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             .leftJoinAndSelect('inscription.inscripLevel', 'inscripLevel')
             .leftJoinAndSelect('inscription.inscripGrade', 'inscripGrade')
             .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom')
-            .where('inscription.idStatus= :status', {
-                status: 1,
+            .where('inscription.idStatus != :status', {
+                status: 0,
             });
         // @ts-ignore
         if (query.classRoomId === 0 || query.classRoomId === '0') {
@@ -176,5 +178,22 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
           }
           return result;*/
+    }
+
+    async getInscriptions() {
+        const getStudentsByStatus = async (type: InscriptionStatusStudent) => {
+            return await this.repo
+              .createQueryBuilder('student')
+              .andWhere('student.idStatus = :status',
+                { status: type }
+              )
+              .getCount();
+        }
+        return {
+            totalNewStudents: await getStudentsByStatus(InscriptionStatusStudent.NewEnrollment),
+            totalReEnrollment: await getStudentsByStatus(InscriptionStatusStudent.ReEnrollment),
+            totalReEntry: await getStudentsByStatus(InscriptionStatusStudent.ReEntry),
+            totalUnsubscribed: await getStudentsByStatus(InscriptionStatusStudent.UnSubscribed),
+        }
     }
 }

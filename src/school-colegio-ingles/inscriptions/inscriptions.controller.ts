@@ -114,4 +114,9 @@ export class InscriptionsController implements CrudController<Inscription> {
         const inscripcion: VerificarInscriprions = await sheetToObjPage(Sheets);
         return await this.service.verificarInscription(inscripcion, data);
     }
+
+    @Get('dashboard')
+    public async dashboard(){
+        return this.service.getInscriptions();
+    }
 }

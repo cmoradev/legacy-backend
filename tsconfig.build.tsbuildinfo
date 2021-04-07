@@ -6306,8 +6306,8 @@
         "affectsGlobalScope": false
       },
       "./src/common/enums/paymentstatus.ts": {
-        "version": "a4097b92e13668efba5941f7680bd175f807925b33c7b0eae0e1ed6de00dc421",
-        "signature": "500df7ece487bb2f903487896b49127cd7525643f9ef03688497c98c016c1814",
+        "version": "ae4ff02fe317641104718b899674f88dd7a3ae1bd77e399ce20fecc992582668",
+        "signature": "f638f892cabefae256559298e167202838b407a787a38e805b54adba264316c7",
         "affectsGlobalScope": false
       },
       "./src/system/system-extra-charges/enums/system-extra-charges.enum.ts": {
@@ -7441,8 +7441,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/inscriptions/entities/inscription.entity.ts": {
-        "version": "a56bd9adc28c423200d811d219164fed6036c0fddf19129c451df5f7ccedb813",
-        "signature": "d89a49d26bef3f754c9b1519383c043e41010bf139e83d29668f8d4b21ed100b",
+        "version": "39b3ac1bbf92844f6a6bb58994e7e19239ede70bd1a051f2baba768b7a4551b8",
+        "signature": "1c324d8aa196af50122a60d0486de2fd95f5294dbefd8878639078eaf93a74f9",
         "affectsGlobalScope": false
       },
       "./src/academy/academy-modalities/entities/academy-modality.entity.ts": {
@@ -7456,7 +7456,7 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/entities/student.entity.ts": {
-        "version": "e484da0761940a279d53ce6947ee495a4a3b3c7ca254dfe52c573f1650ccb2de",
+        "version": "b4daf75882951c04d345b53582936610f333d1fbaa4668dcad6584b97e919a5d",
         "signature": "eab52f2b33632e6b2cf8859362d5366a9d60d3e282b2271a2f0f19a4f86432ac",
         "affectsGlobalScope": false
       },
@@ -7676,8 +7676,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/students.service.ts": {
-        "version": "5d6d29e684e3d6fdd22e9cc7837b22ff96d81391b3509aa1e4cfc97d7c653565",
-        "signature": "f4972a3c3cefa5626e24b4ba53641ab699d7a4a0eb39dd63dee866c60d67a288",
+        "version": "3d1a3e60c538977a3f5dd562e93b53819ea3e4f93db532fdd6505a834c20e9e8",
+        "signature": "ae430c412cb55381950ffdc7057ffb3109a02b92d1babba27c3fc44c38bd15fe",
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/catalogue/students.catalogue.ts": {
@@ -7686,8 +7686,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/students.controller.ts": {
-        "version": "8d06147577ac5cd552da81007aa3c0312f6656408c5f21b0f4b37f7575dc6608",
-        "signature": "a045a122e3a92f9ae4db77bf74906a1e29de749d0fe7fbc7909d409e9a568cd2",
+        "version": "d9d215d50b816a8eab7373c4c79611fe47484effa109f6f08695e96c2de98caa",
+        "signature": "c2581180800ee3b135b8c57a435bb093975d37e53e4dc94cf77ffe3cf6f0fc0e",
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/students.module.ts": {
@@ -7791,8 +7791,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/inscriptions/inscriptions.service.ts": {
-        "version": "ed105a4a338cbbca85f157d87e02c4dded594bfad3bd5a5698b8c6c70f0a2460",
-        "signature": "f493368aa414f9b5bc6be03149fec94599e613e099d57e19620ad763b2c5ccba",
+        "version": "24e8ed06e63e4942e459085f4e97bc6de0cb4394474287c5f8c56ca069103b18",
+        "signature": "27b212a383d992952ece6ba482d65604e7d2950e2f2d7e903548f68a79d88057",
         "affectsGlobalScope": false
       },
       "./node_modules/@types/multer/index.d.ts": {
@@ -7916,8 +7916,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/inscriptions/inscriptions.controller.ts": {
-        "version": "e9f61ab9da8add06591f656379ec5198ca145aec2cbdc3dc201761f35d124260",
-        "signature": "86df2242138021f20ed74b3ace07d1d9f04acafc03d842a590a6774870328717",
+        "version": "e0a97c86c1c494c615a3d8d6a9d6ebdffb813133aa760dfab3fc2028fc684543",
+        "signature": "5408b408ce31d17e8784664d0fb391be3acde91d1ff95460c1cf0ce191cc8cac",
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/classrooms/classrooms.controller.ts": {
@@ -11927,7 +11927,7 @@
       },
       "./src/databases/index.ts": {
         "version": "01ccb45a466daf34079888e18309a15b1469346797f5dd6451e5ed76dfe629a8",
-        "signature": "81cb67239b21a338b9e8154449ad0cc779d036d41a680acfc20cfeb2bf346fa6",
+        "signature": "ba3a4ad392af91f490e582334f365d78828a7978a16b957ef26ff453bc1d1f6e",
         "affectsGlobalScope": false
       },
       "./src/databases/seed/academias/beforeinsertaccharge.trigger.seed.ts": {
@@ -12053,6 +12053,16 @@
       "./src/migrations/1616769068777-statusstudentinscription.ts": {
         "version": "8d7eb5c310122da63df09b7ad27d9af5ba6fef31e96e5ec1bae0deb6e64e3d58",
         "signature": "b0be02a14af48652cd2885125f0a786cf2049f35a7ca44ccc98da7b869a100f0",
+        "affectsGlobalScope": false
+      },
+      "./src/migrations/1617814889056-addstatus.ts": {
+        "version": "ed13716c3c85ae22cfe3212918c2661e39f1dc7cb5b31c6024f41f7e8b56551a",
+        "signature": "42c6bdf70043c8fbaf248e2cb544ec6425eab10dc74a937b30bcca92e3529879",
+        "affectsGlobalScope": false
+      },
+      "./src/migrations/1617820651931-removeenums.ts": {
+        "version": "e3e096b99de37fedcf45f7a1c5e30f312a28cc0ba57fc7236daa1b69f32d8992",
+        "signature": "dbc7c7194efbc258541f8f7d48f125db3ea37b49a279289ac28dbebaf598f0e7",
         "affectsGlobalScope": false
       },
       "./src/mini-store/store-sales/mini-store-details-extra-charges/mini-store-details-extra-charges.service.ts": {
@@ -37424,6 +37434,26 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/typeorm/index.d.ts"
       ],
+      "./src/migrations/1617814889056-addstatus.ts": [
+        "./node_modules/@types/graceful-fs/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/process.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/process.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/typeorm/index.d.ts"
+      ],
+      "./src/migrations/1617820651931-removeenums.ts": [
+        "./node_modules/@types/graceful-fs/index.d.ts",
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/process.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/process.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/typeorm/index.d.ts"
+      ],
       "./src/mini-store/cash-register-transactions/cash-register-transactions.controller.ts": [
         "./node_modules/@nestjs/common/index.d.ts",
         "./node_modules/@nestjsx/crud/lib/index.d.ts",
@@ -40959,6 +40989,7 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/typeorm/index.d.ts",
+        "./src/common/enums/paymentstatus.ts",
         "./src/common/orm/entities/base.entity.ts",
         "./src/school-colegio-ingles/assignment-incription/entities/assignment-inscription.entity.ts",
         "./src/school-colegio-ingles/classrooms/entities/classroom.entity.ts",
@@ -41033,6 +41064,7 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/typeorm/index.d.ts",
+        "./src/common/enums/paymentstatus.ts",
         "./src/databases/colegiodb.service.ts",
         "./src/school-colegio-ingles/classrooms/classrooms.service.ts",
         "./src/school-colegio-ingles/cycles/entities/cycle.entity.ts",
@@ -41042,6 +41074,7 @@
         "./src/school-colegio-ingles/inscriptions/types/listquery.ts",
         "./src/school-colegio-ingles/levels/levels.service.ts",
         "./src/school-colegio-ingles/students/entities/student.entity.ts",
+        "./src/school-colegio-ingles/students/interface/studentsschool.interface.ts",
         "./src/system/branch-office/entities/branch-office.entity.ts"
       ],
       "./src/school-colegio-ingles/inscriptions/interfaces/inscriptions.interface.ts": [
@@ -66275,11 +66308,11 @@
         "./src/system/cities/entities/cities.entity.ts",
         "./src/system/countries/entities/country.entity.ts",
         "./src/system/folios/entities/folio.entity.ts",
+        "./src/system/inscription-status/entities/inscription-status.entity.ts",
         "./src/system/municipalities/entities/municipalities.entity.ts",
         "./src/system/permissions/entities/permission.entity.ts",
         "./src/system/route-action/entities/route-action.entity.ts",
-        "./src/system/states/entities/states.entity.ts",
-        "./src/system/system-payments-status/entities/system-payment-status.entity.ts"
+        "./src/system/states/entities/states.entity.ts"
       ],
       "./src/databases/seed/academias/beforeinsertaccharge.trigger.seed.ts": [
         "./node_modules/typeorm-seeding/dist/typeorm-seeding.d.ts",
@@ -66539,6 +66572,12 @@
         "./node_modules/typeorm/index.d.ts"
       ],
       "./src/migrations/1616769068777-statusstudentinscription.ts": [
+        "./node_modules/typeorm/index.d.ts"
+      ],
+      "./src/migrations/1617814889056-addstatus.ts": [
+        "./node_modules/typeorm/index.d.ts"
+      ],
+      "./src/migrations/1617820651931-removeenums.ts": [
         "./node_modules/typeorm/index.d.ts"
       ],
       "./src/mini-store/cash-register-transactions/cash-register-transactions.controller.ts": [
@@ -67526,6 +67565,7 @@
         "./src/school-colegio-ingles/incidents/entities/incident.entity.ts"
       ],
       "./src/school-colegio-ingles/inscriptions/entities/inscription.entity.ts": [
+        "./src/common/enums/paymentstatus.ts",
         "./src/common/orm/entities/base.entity.ts",
         "./src/school-colegio-ingles/assignment-incription/entities/assignment-inscription.entity.ts",
         "./src/school-colegio-ingles/classrooms/entities/classroom.entity.ts",
@@ -70463,6 +70503,8 @@
       "./src/migrations/1613337410892-addrelations.ts",
       "./src/migrations/1615319308464-removenivel.ts",
       "./src/migrations/1616769068777-statusstudentinscription.ts",
+      "./src/migrations/1617814889056-addstatus.ts",
+      "./src/migrations/1617820651931-removeenums.ts",
       "./src/mini-store/cash-register-transactions/cash-register-transactions.controller.ts",
       "./src/mini-store/cash-register-transactions/cash-register-transactions.module.ts",
       "./src/mini-store/cash-register-transactions/cash-register-transactions.service.ts",

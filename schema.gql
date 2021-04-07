@@ -1497,7 +1497,7 @@ type Inscription {
   updatedAt: DateTime!
   version: Float!
   uuid: String!
-  idStatus: Int!
+  idStatus: Float!
   inscripStudent: Student!
   inscripGroup: Group!
   inscripGrade: Grade!

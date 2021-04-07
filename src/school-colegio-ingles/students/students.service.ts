@@ -30,33 +30,6 @@ export class StudentsService extends TypeOrmCrudService<Student> {
             case TypeStudent.externo:
                 return 'PDCACE-' + (total + 1);
             case TypeStudent.prospecto:
-                return 'PDCPR-' + (total + 1);
-        }
-    }
-
-    async getInscriptions() {
-        const getStudentsByStatus = async (type: StudentInscriptionStatus) => {
-            return await this.repo
-                .createQueryBuilder('student')
-                .where('student.typeStudent = :typeStudent',
-                    { typeStudent: TypeStudent.student }
-                )
-                .andWhere('student.statusStudentInscription = :status',
-                    { status: type }
-                )
-                .getCount();
-        }
-        return {
-            totalStudents: await this.repo
-                .createQueryBuilder('student')
-                .where('student.typeStudent = :typeStudent',
-                    { typeStudent: TypeStudent.student }
-                )
-                .getCount(),
-            totalNewStudents: await getStudentsByStatus(StudentInscriptionStatus.NewEnrollment),
-            totalReEnrollment: await getStudentsByStatus(StudentInscriptionStatus.ReEnrollment),
-            totalReEntry: await getStudentsByStatus(StudentInscriptionStatus.ReEntry),
-            totalUnsubscribed: await getStudentsByStatus(StudentInscriptionStatus.UnSubscribed),
         }
     }
 }

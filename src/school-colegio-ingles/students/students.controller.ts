@@ -133,8 +133,4 @@ export class StudentsController implements CrudController<Student> {
 
     }
 
-    @Get('dashboard')
-    public async dashboard(){
-        return this.service.getInscriptions();
-    }
 }

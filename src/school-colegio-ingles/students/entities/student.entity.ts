@@ -176,7 +176,7 @@ export class Student extends Base {
     @Field()
     @Column('simple-enum', {
         enum: StudentInscriptionStatus,
-        default: StudentInscriptionStatus.NewEnrollment,
+        default: StudentInscriptionStatus.activated,
         nullable: false,
     })
     statusStudentInscription: StudentInscriptionStatus;
