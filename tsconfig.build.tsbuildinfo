@@ -7456,8 +7456,8 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/students/entities/student.entity.ts": {
-        "version": "b4daf75882951c04d345b53582936610f333d1fbaa4668dcad6584b97e919a5d",
-        "signature": "eab52f2b33632e6b2cf8859362d5366a9d60d3e282b2271a2f0f19a4f86432ac",
+        "version": "26699744aa80a4446c960d058e6aedbc26b1f2e1f86365df76eca4f195fc3d4d",
+        "signature": "fcdaac6a0e93dfcc39a2327a75f7deeb18eaa4afd504a28875c69d21c792584d",
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/incident-classification/entities/incident-classification.entity.ts": {
@@ -7791,7 +7791,7 @@
         "affectsGlobalScope": false
       },
       "./src/school-colegio-ingles/inscriptions/inscriptions.service.ts": {
-        "version": "24e8ed06e63e4942e459085f4e97bc6de0cb4394474287c5f8c56ca069103b18",
+        "version": "17f4c02cc6839c5417d38fac7ae641f72260723aa87f77580989b0ba59eef26e",
         "signature": "27b212a383d992952ece6ba482d65604e7d2950e2f2d7e903548f68a79d88057",
         "affectsGlobalScope": false
       },
@@ -10662,7 +10662,7 @@
       },
       "./src/system/permissions/permissions.controller.ts": {
         "version": "abb4a455e454257b4646822557938ec3fc24bc2c2ecab0c071944f509a76a919",
-        "signature": "9196541486645f672f7f3b7d50b4e27a10cdc0772ebd2166c3256c0ca3d38f95",
+        "signature": "efbe2174d9442a565576c911141e238c1e21a49397c34a6a609877af4157e39d",
         "affectsGlobalScope": false
       },
       "./src/system/permissions/permissions.module.ts": {
@@ -11927,7 +11927,7 @@
       },
       "./src/databases/index.ts": {
         "version": "01ccb45a466daf34079888e18309a15b1469346797f5dd6451e5ed76dfe629a8",
-        "signature": "ba3a4ad392af91f490e582334f365d78828a7978a16b957ef26ff453bc1d1f6e",
+        "signature": "f081def96a8521de1b586f50c95c4944f5454e618ac922a398729e86a57a0e37",
         "affectsGlobalScope": false
       },
       "./src/databases/seed/academias/beforeinsertaccharge.trigger.seed.ts": {
@@ -12056,12 +12056,12 @@
         "affectsGlobalScope": false
       },
       "./src/migrations/1617814889056-addstatus.ts": {
-        "version": "ed13716c3c85ae22cfe3212918c2661e39f1dc7cb5b31c6024f41f7e8b56551a",
+        "version": "ef674541441009e29399ce797066d621e0a26ca283cfa1fedb1d882c80326c88",
         "signature": "42c6bdf70043c8fbaf248e2cb544ec6425eab10dc74a937b30bcca92e3529879",
         "affectsGlobalScope": false
       },
       "./src/migrations/1617820651931-removeenums.ts": {
-        "version": "e3e096b99de37fedcf45f7a1c5e30f312a28cc0ba57fc7236daa1b69f32d8992",
+        "version": "9f3435bfec2dabb3449e8dfe841a37507792b568fba3dcb1de51609ba9bcd8cd",
         "signature": "dbc7c7194efbc258541f8f7d48f125db3ea37b49a279289ac28dbebaf598f0e7",
         "affectsGlobalScope": false
       },

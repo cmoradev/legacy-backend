@@ -178,6 +178,7 @@ export class Student extends Base {
         enum: StudentInscriptionStatus,
         default: StudentInscriptionStatus.activated,
         nullable: false,
+        name:'statusStudentInscription'
     })
-    statusStudentInscription: StudentInscriptionStatus;
+    statusStudent: StudentInscriptionStatus;
 }

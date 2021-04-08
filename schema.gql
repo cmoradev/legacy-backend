@@ -1554,7 +1554,7 @@ type Student {
   sales: [tie_ventas!]!
   studentCharges: [SchoolCharge!]!
   academyCharges: [AcademyCharge!]!
-  statusStudentInscription: String!
+  statusStudent: String!
 }
 
 type IncidentClassification {
