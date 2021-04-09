@@ -59,6 +59,16 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     }
   }
 
+  @Get('/xml')
+  public async xml(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
+    try {
+      const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.xml');
+      res.send({ src: 'data:application/ssml+xml;base64,' + pdf64.toString('base64') });
+    } catch (e) {
+      res.send({ error: e }).status(400);
+    }
+  }
+
   @Post('/send-invoice')
   async sendMail(@Body() data: {
     email: string;
