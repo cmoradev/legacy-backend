@@ -142,21 +142,6 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     branchOfficeSettingId: number;
     onlyData: boolean
   }) {
-    // const invoices = await this.repo.find({
-    //   where: {
-    //     status: query.status,
-    //     createdAt: Between(Moment(query.startDate).startOf('day').toDate(), Moment(query.endDate).endOf('day').toDate()),
-    //   },
-    //   relations: [
-    //     'agentBilling',
-    //     'agentCanceling',
-    //     'schoolChargePayment',
-    //     'schoolChargePayment.methodsPayments',
-    //     'schoolChargePayment.methodsPayments.invoiceMethodPayment',
-    //     'schoolCharge',
-    //     'schoolCharge.schoolStudent',
-    //   ],
-    // });
     const invoices = this.repo.createQueryBuilder('invoices');
     invoices.leftJoinAndSelect('invoices.agentBilling', 'agentBilling');
     invoices.leftJoinAndSelect('invoices.agentCanceling', 'agentCanceling');
@@ -177,22 +162,6 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     }
 
     const report = new InvoiceProcessorCollege().structureInvoiceReport(await invoices.getMany());
-    switch (query.data) {
-      case 'file':
-        const company = await this.serviceInvoiceCompany.findCompany(query.branchOfficeSettingId);
-        const workbook = new ReportInvoice().generateReport(report, query, company);
-        const dateName = new Date();
-        const fileName = dateName.toTimeString() + '.xlsx';
-        const result = await workbook.xlsx.writeBuffer({ filename: fileName });
-        const buffer = Buffer.from(result);
-        const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
-        return {
-          src: b64Encoding + buffer.toString('base64'),
-        };
-        break;
-      default:
-        return report;
-        break;
-    }
+    return report;
   }
 }

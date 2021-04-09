@@ -13,6 +13,8 @@ import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-i
 import { User } from '../../../system/users/entities/user.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { ConfigService } from '../../../config/config.service';
+import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
+import * as AdmZip from 'adm-zip';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -103,7 +105,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         key,
       });
       const status = responseSmartWeb.data.uuid[invoice.uuid];
-     //  console.log(responseSmartWeb);
+      //  console.log(responseSmartWeb);
       if (status === '201' || +status === 201 || status === '202' || +status === 202) {
         fs.writeFileSync(`${this.configService.getPath()}comprobantes/colegio/` + invoice.uuid + '-acuse.xml', responseSmartWeb.data.acuse);
         if (cancelInvoiceSw.sendMail) {
@@ -137,7 +139,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
   }
 
   @Get('report-invoices')
-  async reportInvoices(@Res()response, @Query() query: {
+  async reportInvoices(@Res()res: Response, @Query() query: {
     startDate: string;
     endDate: string;
     billingAgent: number;
@@ -149,11 +151,42 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
   }) {
     try {
       const dataReport = await this.service.reportInvoices(query);
-      response.status(200);
-      response.send(dataReport);
+      switch (query.data) {
+        case 'excel':
+          const company = await this.branchOfficeSettingService.findCompany(query.branchOfficeSettingId);
+          const workbook = new ReportInvoice().generateReport(dataReport, query, company);
+          const dateName = new Date();
+          const fileName = dateName.toTimeString() + '.xlsx';
+          const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+          const buffer = Buffer.from(result);
+          const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+          res.status(200);
+          res.send({
+            src: b64Encoding + buffer.toString('base64'),
+          });
+          break;
+        case 'zip':
+          const zip = new AdmZip();
+          for (const invoce of dataReport) {
+            zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${invoce.uuid}.pdf`);
+            zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${invoce.uuid}.xml`);
+          }
+
+          const downloadName = `${Date.now()}.zip`;
+          const data = zip.toBuffer();
+          res.set('Content-Type', 'application/octet-stream');
+          res.set('Content-Disposition', `attachment; filename=${downloadName}`);
+          res.set('Content-Length', data.length.toString());
+          res.send(data);
+          break;
+        default:
+          res.status(200);
+          res.send(dataReport);
+          break;
+      }
     } catch (e) {
-      response.status(401);
-      response.send(e.message);
+      res.status(401);
+      res.send(e.message);
     }
   }
 }
