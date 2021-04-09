@@ -15,7 +15,7 @@ import {
   GenerateInvoice,
   GenerateInvoiceIedu,
 } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
-import { XmlCdfi } from '@signati/core';
+import { FormaPago, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';
 import { FactSw, StampV4 } from '../../../webService/FactSw';
@@ -108,7 +108,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
                 folio: invoiceFinded.folio,
                 serie: branchOfficeSett.serieFacturacion,
               },
-              result.highestPayment.codePaymentMethod,
+              result.highestPayment.codePaymentMethod as FormaPago,
               branchOfficeSett,
               {
                 Nombre: query.receiver.businessName,
@@ -133,7 +133,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
                 folio: invoiceFinded.folio,
                 serie: branchOfficeSett.serieFacturacion,
               },
-              result.highestPayment.codePaymentMethod,
+              result.highestPayment.codePaymentMethod as FormaPago,
               branchOfficeSett,
               {
                 Nombre: query.receiver.businessName,
@@ -209,7 +209,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
                 folio: invoice.folio,
                 serie: branchOfficeSett.serieFacturacion,
               },
-              result.highestPayment.codePaymentMethod,
+              result.highestPayment.codePaymentMethod as FormaPago,
               branchOfficeSett,
               {
                 Nombre: query.receiver.businessName,
@@ -233,7 +233,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
                 folio: invoice.folio,
                 serie: branchOfficeSett.serieFacturacion,
               },
-              result.highestPayment.codePaymentMethod,
+              result.highestPayment.codePaymentMethod as FormaPago,
               branchOfficeSett,
               {
                 Nombre: query.receiver.businessName,

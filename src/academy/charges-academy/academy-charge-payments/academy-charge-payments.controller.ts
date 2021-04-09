@@ -22,7 +22,7 @@ import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity'
 import { GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { XmlCdfi } from '@signati/core';
+import { FormaPago, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../config/config.service';
 import {A117} from '../../../pdf/A117/desing/A117'
@@ -145,7 +145,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                      result.highestPayment.codePaymentMethod,
+                      result.highestPayment.codePaymentMethod as FormaPago,
                       branchOfficeSett,
                       {
                           Nombre: query.receiver.businessName,
@@ -216,7 +216,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                      result.highestPayment.codePaymentMethod,
+                      result.highestPayment.codePaymentMethod as FormaPago,
                       branchOfficeSett,
                       {
                           Nombre: query.receiver.businessName,

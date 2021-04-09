@@ -1,4 +1,4 @@
-import { CFDI, Comprobante, Concepts, Emisor, Iedu, Impuestos, Receptor, XmlIeduAttribute } from '@signati/core';
+import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Impuestos, Receptor, XmlIeduAttribute } from '@signati/core';
 import { XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { mulQuantity, subQuantity, sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
 import { FacturaDetalles } from '../../../../common/point-of-sale/miniStore-point-of-sale';
@@ -7,7 +7,7 @@ import { XmlReceptorAttribute } from '@signati/core/lib/signati/types/Tags/recep
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 
 export async function GenerateInvoice(data: { serie: string; folio: string, },
-                                      codigoFormaPago: string,
+                                      codigoFormaPago: FormaPago | FormaPagoType,
                                       emisor: BranchOfficeSetting,
                                       receptor: XmlReceptorAttribute, factura: FacturaDetalles,
                                       instancePath: string, importeImpuesto = .16,
@@ -95,7 +95,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
 }
 
 export async function GenerateInvoiceIedu(data: { serie: string; folio: string, },
-                                          codigoFormaPago: string,
+                                          codigoFormaPago: FormaPago | FormaPagoType,
                                           emisor: BranchOfficeSetting,
                                           receptor: XmlReceptorAttribute,
                                           student: XmlIeduAttribute,
