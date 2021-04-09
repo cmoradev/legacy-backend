@@ -44,7 +44,7 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
       count: options.limit,
       data: [],
       page: options.page,
-      pageCount: Math.ceil(total / options.limit),
+      pageCount: Math.ceil(total / +options.limit),
       total,
     };
     const data = await this.repo.createQueryBuilder('products')
@@ -66,8 +66,8 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
           endDate: moment(query.endDate).endOf('day').toDate(),
         })
       .groupBy('products.id')
-      .offset(options.page === 1 ? 1 : (options.page * options.limit) - options.limit)
-      .limit(options.limit)
+      .offset(options.page === 1 ? 1 : ((+options.page) * (+options.limit)) - (+options.limit))
+      .limit(+options.limit)
       .getRawMany();
     for (const result of data) {
       result.quantity = roundQuantity(result.quantity);

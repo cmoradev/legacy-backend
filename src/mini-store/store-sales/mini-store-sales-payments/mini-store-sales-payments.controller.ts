@@ -17,7 +17,7 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { XmlCdfi } from '@signati/core';
+import { FormaPago, XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -102,7 +102,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                           folio: invoiceFind.folio,
                           serie: branchOfficeSett.serieFacturacion,
                       },
-                      result.highestPayment.codePaymentMethod,
+                      result.highestPayment.codePaymentMethod as FormaPago,
                       branchOfficeSett,
                       {
                           Nombre: query.receiver.businessName,
@@ -173,7 +173,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                           folio: invoice.folio,
                           serie: branchOfficeSett.serieFacturacion,
                       },
-                      result.highestPayment.codePaymentMethod,
+                      result.highestPayment.codePaymentMethod as FormaPago,
                       branchOfficeSett,
                       {
                           Nombre: query.receiver.businessName,
