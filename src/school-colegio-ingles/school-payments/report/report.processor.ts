@@ -15,7 +15,7 @@ export class ReportProcessor {
         clientType: schoolPayment.inscription.inscripStudent.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
         level: schoolPayment.inscription.inscripLevel.name,
         grade: schoolPayment.inscription.inscripGrade.name,
-        group: schoolPayment.inscription.inscripGroup.name,
+        group: schoolPayment.inscription.inscripClassroom.name,
         description: schoolPayment.description,
         price: schoolPayment.price,
         payDay,
