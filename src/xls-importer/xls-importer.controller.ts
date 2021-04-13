@@ -1,28 +1,28 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Get, Res, Body } from '@nestjs/common';
+import { Body, Controller, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as xlsx from 'xlsx';
-import { Workbook } from 'exceljs';
-import { WorkBook } from 'xlsx';
-import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini-store-products.service';
-import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
-import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
-import { InvoiceKeys } from '../invoice/invoice-keys/entities/invoice-keys.entity';
-import { MiniStoreProduct } from '../mini-store/mini-store-products/entities/mini-store-product.entity';
+import * as ExcelJS from 'exceljs';
 import { Response } from 'express';
-import { xlsType } from './dto/xlsType.dto';
-import { MiniStorePricesListsService } from '../mini-store/mini-store-prices-lists/mini-store-prices-lists.service';
-import { MiniStoreClassificationsService } from '../mini-store/mini-store-classifications/mini-store-classifications.service';
+import * as fs from 'fs';
+import { diskStorage } from 'multer';
+import { ObjectLiteral } from 'typeorm';
+import * as xlsx from 'xlsx';
+import { WorkBook } from 'xlsx';
+import { DataConverter } from '../common/office/excel-tools/data-converter';
+import { InvoiceKeys } from '../invoice/invoice-keys/entities/invoice-keys.entity';
 import { InvoiceKeysService } from '../invoice/invoice-keys/invoice-keys.service';
+import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
+import { MiniStoreClassificationsService } from '../mini-store/mini-store-classifications/mini-store-classifications.service';
+import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
+import { MiniStorePricesListsService } from '../mini-store/mini-store-prices-lists/mini-store-prices-lists.service';
+import { MiniStoreProduct } from '../mini-store/mini-store-products/entities/mini-store-product.entity';
+import { MiniStoreProductsService } from '../mini-store/mini-store-products/mini-store-products.service';
+import { StudentsService } from '../school-colegio-ingles/students/students.service';
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
-import { number } from '@hapi/joi';
-import { tableLayouts } from 'pdfmake/build/pdfmake';
-import { DataConverter } from '../common/office/excel-tools/data-converter';
+import { xlsType } from './dto/xlsType.dto';
+import { generateCatalog, generateTemplateStudents } from './template/alumnos';
 import { templateProducts } from './template/productos';
-
+import { convertToXlsx } from './utils/convertToXlsx';
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
 /**
@@ -60,6 +60,7 @@ export class XlsImporterController {
     readonly miniStoreClassificationsService: MiniStoreClassificationsService,
     readonly invoiceKeysService: InvoiceKeysService,
     readonly branchOfficeService: BranchOfficeService,
+    readonly studentsService: StudentsService,
   ) {
   }
 
@@ -158,7 +159,7 @@ export class XlsImporterController {
   @Post('layout')
   public async setLayout(@Res() res: Response, @Body() requestData: xlsType) {
     console.log('Here...', requestData);
-    const workbook = new Workbook();
+    const workbook = new ExcelJS.Workbook();
     res.set({
       'Content-Type': 'application/vnd.ms-excel',
     });
@@ -178,15 +179,15 @@ export class XlsImporterController {
     relationship = JSON.parse(JSON.stringify(relationship));
     relationship.relations.push('unitMeasurement');
     const unitMeasurements = ['Kilogramos', 'Pieza', 'Litros'];
-    const workbook = new Workbook();
+    const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet('Layout', {
       views: [{ state: 'frozen', xSplit: 1, ySplit: 1 }],
       properties:
-        {
-          tabColor: {
-            argb: '359c5b',
-          },
+      {
+        tabColor: {
+          argb: '359c5b',
         },
+      },
     });
 
     const columns = [];
@@ -333,5 +334,31 @@ export class XlsImporterController {
     return res.send({ success: true });
   }
 
-
+  @Post('download-layout-students')
+  async download() {
+    const fields: Object = {
+      id: 'id',
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+      version: 'version',
+      uuid: 'uuid',
+      idFamily: 'idFamily',
+      idCampus: 'idCampus',
+      profilePicture: 'profilePicture',
+      academiesModality: 'academiesModality',
+      studentInscriptions: 'studentInscriptions',
+      incidents: 'incidents',
+      studentAcInscriptions: 'studentAcInscriptions',
+      sales: 'sales',
+      studentCharges: 'studentCharges',
+      academyCharges: 'academyCharges',
+      searchName: 'searchName',
+      statusStudent: 'statusStudent'
+    };
+    const headers = await this.studentsService.getNamesAtributesStudents(fields);
+    const layout = await generateTemplateStudents(new ExcelJS.Workbook(), headers);
+    const test = await this.studentsService.relationships();
+    const workBook = await generateCatalog(layout,  [], []);
+    return await convertToXlsx(workBook);
+  }
 }
