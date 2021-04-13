@@ -70,6 +70,7 @@ export class SchoolPaymentsReport {
       rowsItem.push(schoolPayment.group);
       rowsItem.push(schoolPayment.statusPayment);
       rowsItem.push(schoolPayment.payDay);
+      rowsItem.push(schoolPayment.description);
       rowsTable.push(rowsItem);
     });
     reportSheet.addTable({
@@ -88,6 +89,7 @@ export class SchoolPaymentsReport {
         { name: 'Grupo', filterButton: true },
         { name: 'Pago', filterButton: true },
         { name: 'Fecha de pago', filterButton: true },
+        { name: 'Descripcion', filterButton: true },
       ],
       rows: rowsTable,
     });

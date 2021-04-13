@@ -22,7 +22,7 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
       .leftJoinAndSelect('inscription.inscripLevel', 'inscripLevel')
       .leftJoinAndSelect('inscription.inscripGrade', 'inscripGrade')
       .leftJoinAndSelect('inscription.inscripCycle', 'inscripCycle')
-      .leftJoinAndSelect('inscription.inscripGroup', 'inscripGroup')
+      .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom')
       .leftJoinAndSelect('inscription.inscripCampus', 'branchOffice')
       .where('schoolPayments.isActive = :isActive', { isActive: true });
     if (options.month !== null && options.month !== '' && typeof options.month !== 'undefined') {
