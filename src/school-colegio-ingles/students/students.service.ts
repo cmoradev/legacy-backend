@@ -5,6 +5,7 @@ import { getRepository, Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { Student } from './entities/student.entity';
 import { TypeStudent } from './interface/studentsSchool.interface';
+import { Family } from '../families/entities/family.entity';
 
 interface IResponseDashboardStudents {
     totalStudents: number,
@@ -49,14 +50,18 @@ export class StudentsService extends TypeOrmCrudService<Student> {
         const relationsTrash = ['AcademiesModality', 'Inscription', 'Incident', 'AcademyInscription', 'MiniStoreSale', 'SchoolCharge', 'AcademyCharge'];
         const filteredRelations = relationships.filter(value => !relationsTrash.includes(value));
         let relationsResult = {};
-        filteredRelations.forEach(async relation => {
+        for (const relation of filteredRelations) {
             const repository = await getRepository(relation, ColegioDBNameConnection);
             let relationData = await repository.find({ select: ['id', 'name'] });
-            console.log(relationData);
             relationData = JSON.parse(JSON.stringify(relationData));
             relationsResult[relation] = relationData;
-        })
-        console.log(relationsResult);
-        return []
+        }
+        return {
+            relations: relationsResult
+        }
+    }
+
+    async bulkStudents(students: Student[]){
+        return await this.repo.save(students);
     }
 }

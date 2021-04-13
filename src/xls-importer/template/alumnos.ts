@@ -1,6 +1,7 @@
 import * as ExcelJS from 'exceljs';
+
 function nameColumn(item: string) {
-    let columnName = {
+    const columnName = {
         matricula: { name: 'Matricula' },
         name: { name: 'Nombre' },
         lastNameFather: { name: 'Apellido paterno' },
@@ -14,9 +15,10 @@ function nameColumn(item: string) {
         typeStudent: { name: 'Tipo de estudiante' },
         studentCampus: { name: 'Plantel' },
         family: { name: 'Familia' },
-    }
+    };
     return columnName[item];
 }
+
 export async function generateTemplateStudents(workBook: ExcelJS.Workbook, headers: string[]) {
     const sheet = workBook.addWorksheet('Layout', {
         views: [{
@@ -24,15 +26,15 @@ export async function generateTemplateStudents(workBook: ExcelJS.Workbook, heade
         }],
         properties: {
             tabColor: {
-                argb: '08A8D4'
+                argb: '08A8D4',
             },
         },
     });
-    let columns = [];
-    let optionalColumns = [];
+    const columns = [];
+    const optionalColumns = [];
     headers.forEach((item) => {
         columns.push({
-            header: nameColumn(item).name, key: item, style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } }
+            header: nameColumn(item).name, key: item, style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } },
         });
         if (nameColumn(item).isOptional) {
             optionalColumns.push(nameColumn(item).name);
@@ -43,27 +45,28 @@ export async function generateTemplateStudents(workBook: ExcelJS.Workbook, heade
         sheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: '08A8D4' }
+            fgColor: { argb: '08A8D4' },
         };
         sheet.getCell(key).font = {
             color: {
-                argb: 'FFFFFF'
+                argb: 'FFFFFF',
             },
-            bold: true
-        }
+            bold: true,
+        };
     });
 
-    sheet.columns = [...sheet.columns, { header: 'Campos optionales', key: 'optionalFields' }]
+    sheet.columns = [...sheet.columns, { header: 'Campos optionales', key: 'optionalFields' }];
     optionalColumns.forEach(item => {
-        sheet.addRow({ optionalFields: item })
-    })
+        sheet.addRow({ optionalFields: item });
+    });
     sheet.eachRow((row, rowNumber) => {
         if (rowNumber === 1) {
-            row.eachCell((cell) => cell.protection = { locked: true })
+            row.eachCell((cell) => cell.protection = { locked: true });
         }
-    })
+    });
     return workBook;
 }
+
 export async function generateCatalog(workBook: ExcelJS.Workbook, dataCampus: any[], dataFamilies: any[]) {
     /*   student = 1,
     externo = 2,
@@ -74,7 +77,7 @@ export async function generateCatalog(workBook: ExcelJS.Workbook, dataCampus: an
         }],
         properties: {
             tabColor: {
-                argb: '08A8D4'
+                argb: '08A8D4',
             },
         },
     });
@@ -100,7 +103,7 @@ export async function generateCatalog(workBook: ExcelJS.Workbook, dataCampus: an
             showRowStripes: true,
         },
         columns: [{ name: 'ID' }, { name: 'Plantel' }],
-        rows: [['TEST'], ['TEST'], ['TEST']],
+        rows: dataCampus,
     });
     sheetCatalog.addTable({
         name: 'Catalogo familias',
@@ -112,7 +115,7 @@ export async function generateCatalog(workBook: ExcelJS.Workbook, dataCampus: an
             showRowStripes: true,
         },
         columns: [{ name: 'ID' }, { name: 'Familia' }],
-        rows: [['TEST'], ['TEST'], ['TEST']],
+        rows: dataFamilies,
     });
     return workBook;
 }
