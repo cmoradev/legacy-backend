@@ -26,6 +26,7 @@ import { Student } from '../school-colegio-ingles/students/entities/student.enti
 import { FamiliesService } from '../school-colegio-ingles/families/families.service';
 import { Family } from '../school-colegio-ingles/families/entities/family.entity';
 
+
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
 /**
@@ -52,11 +53,6 @@ interface Product {
     storeClassificationId: string;
     storeInvoiceKeyId: string;
     branchOfficeId: string;
-}
-
-interface IWorkbookStudents {
-    Layout: any[],
-    Catalogo: any[],
 }
 
 @Controller()
@@ -167,6 +163,7 @@ export class XlsImporterController {
 
     @Post('layout')
     public async setLayout(@Res() res: Response, @Body() requestData: xlsType) {
+        console.log('Here...', requestData);
         const workbook = new ExcelJS.Workbook();
         res.set({
             'Content-Type': 'application/vnd.ms-excel',
@@ -217,8 +214,8 @@ export class XlsImporterController {
             formatCells: true,
         });
         sheet.eachRow((row, rowNumber) => {
-            if (rowNumber === 1) {
-                row.eachCell((cell) => {
+            if (rowNumber == 1) {
+                row.eachCell((cell, cellNumber) => {
                     cell.style.alignment = { horizontal: 'center' };
                     cell.border = {
                         top: { style: 'thin' },
@@ -435,6 +432,7 @@ export class XlsImporterController {
                     } as Student);
                 }
             }
+            fs.unlinkSync(`/var/www/uploads/temp/${file.filename}`);
             return await this.studentsService.bulkStudents(studentsData);
         } catch (e) {
             console.error(e.message);
