@@ -25,6 +25,9 @@ import { convertToXlsx } from './utils/convertToXlsx';
 import { Student } from '../school-colegio-ingles/students/entities/student.entity';
 import { FamiliesService } from '../school-colegio-ingles/families/families.service';
 import { Family } from '../school-colegio-ingles/families/entities/family.entity';
+import { InscriptionsService, IRelationsInscriptions } from '../school-colegio-ingles/inscriptions/inscriptions.service';
+import { generateTemplateInscriptions } from './template/inscripciones';
+import { ColumnsCatalog, setCatalog } from './utils/setCatalog';
 
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
@@ -66,6 +69,7 @@ export class XlsImporterController {
         readonly branchOfficeService: BranchOfficeService,
         readonly studentsService: StudentsService,
         readonly familyService: FamiliesService,
+        readonly inscriptionService: InscriptionsService,
     ) {
     }
 
@@ -340,9 +344,9 @@ export class XlsImporterController {
     }
 
     @Post('download-layout-students')
-    async download() {
+    async downloadLayoutStudents() {
         // tslint:disable-next-line:ban-types
-        const fields: Object = {
+        const fields = {
             id: 'id',
             createdAt: 'createdAt',
             updatedAt: 'updatedAt',
@@ -375,6 +379,50 @@ export class XlsImporterController {
         const workBook = await generateCatalog(layout, dataCampus, dataFamilies);
         return await convertToXlsx(workBook);
     }
+
+    @Post('download-layout-inscriptions')
+    async downloadLayoutInscriptions() {
+        const fields = {
+            createdAt: 'createdAt',
+            updatedAt: 'updatedAt',
+            version: 'version',
+            uuid: 'uuid',
+            inscripAgentCreator: 'inscripAgentCreator',
+            inscripAgentEditor: 'inscripAgentEditor',
+            inscripAssignmentsInscription: 'inscripAssignmentsInscription',
+        };
+        const headers = await this.inscriptionService.getNamesAttributesInscriptions(fields);
+        const layout = await generateTemplateInscriptions(new ExcelJS.Workbook(), headers);
+        /*
+               * ESTUDIANTES
+               * GRUPOS
+               * GRADOS
+               * NIVELES
+               * CICLO
+               * PLANTELES
+               * SALONES
+               * PLANES DE PAGOS
+               * PLANES DE ESTUDIO
+               * VARIANTES DE PLAN DE ESTUDIO
+                   * CONCEPTOS
+       * */
+        const { relations } = await this.inscriptionService.relationships();
+        const columns: ColumnsCatalog[] = [];
+        const tableHeader: any[] = [{ name: 'ID' }, { name: 'Valor' }];
+        const tableRows: any[] = [];
+        Object.keys(relations).map((key, index) => {
+            relations[key].map(item => {
+                /*console.log(item, item.name ? item.name : item.description);*/
+                tableRows.push([item.id]);
+            });
+            console.log(tableHeader);
+            columns.push({ tableName: key, cell: `A1`, columns: tableHeader, rows: tableRows });
+        });
+
+        const _xlsx = await setCatalog(layout, columns);
+        return await convertToXlsx(_xlsx);
+    }
+
 
     @Post('bulk-students')
     @UseInterceptors(FileInterceptor('file', { dest: '/var/www/uploads/temp' }))

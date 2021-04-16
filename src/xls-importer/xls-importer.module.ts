@@ -9,6 +9,7 @@ import { InvoiceKeysModule } from '../invoice/invoice-keys/invoice-keys.module';
 import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
 import { StudentsModule } from '../school-colegio-ingles/students/students.module';
 import { FamiliesModule } from '../school-colegio-ingles/families/families.module';
+import { InscriptionsModule } from '../school-colegio-ingles/inscriptions/inscriptions.module';
 
 
 @Module({
@@ -23,6 +24,7 @@ import { FamiliesModule } from '../school-colegio-ingles/families/families.modul
         BranchOfficeModule,
         StudentsModule,
         FamiliesModule,
+        InscriptionsModule
     ],
     controllers: [XlsImporterController],
     providers: [XlsImporterService],
