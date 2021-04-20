@@ -103,13 +103,15 @@ export class Student extends Base {
     })
     searchName: string;
 
-
-    @Field(type => Int)
+    /**
+     * @Deprecated
+     */
+    /*@Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_familia',
     })
-    idFamily: number;
+    idFamily: number;*/
 
     @Field()
     @Column({
@@ -121,12 +123,16 @@ export class Student extends Base {
     })
     typeStudent: TypeStudent;
 
+    /**
+     * @Deprecated
+     */
+    /*
     @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_plantel',
     })
-    idCampus: number;
+    idCampus: number;*/
 
     @Field({ nullable: true })
     @Column('text', {

@@ -1541,9 +1541,7 @@ type Student {
   birthdate: String
   curp: String
   searchName: String!
-  idFamily: Int!
   typeStudent: Float!
-  idCampus: Int!
   profilePicture: String
   studentCampus: planteles!
   academiesModality: AcademiesModality!
