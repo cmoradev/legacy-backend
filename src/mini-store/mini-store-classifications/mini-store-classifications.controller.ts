@@ -12,7 +12,9 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         join: {
             storeProducts: {},
             miniStoreSaleDetails: {},
-            branchOffice: { alias: 'branchId' },
+            branchOffice: {
+                alias: 'branchOffice'
+            },
         },
     },
 })
