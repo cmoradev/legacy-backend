@@ -14,7 +14,7 @@ import { Classroomembers, ListQuery } from './types/listQuery';
 import { LevelsService } from '../levels/levels.service';
 import { InscriptionStatusStudent } from '../../common/enums/PaymentStatus';
 import { Group } from '../groups/entities/group.entity';
-import {Grade} from '../grades/entities/grade.entity';
+import { Grade } from '../grades/entities/grade.entity';
 import { Level } from '../levels/entities/level.entity';
 import { User } from '../../system/users/entities/user.entity';
 import { Classroom } from '../classrooms/entities/classroom.entity';
@@ -22,6 +22,14 @@ import { PaymentPlan } from '../payment-plans/entities/payment-plan.entity';
 import { StudyPlanVariant } from '../study-plan-variants/entities/study-plan-variants.entity';
 import { StudyPlan } from '../study-plans/entities/study-plan.entity';
 import { SchoolPayment } from '../school-payments/entities/school-payment.entity';
+import { StudentsService } from '../students/students.service';
+import { GradesService } from '../grades/grades.service';
+import { GroupsService } from '../groups/groups.service';
+import { CyclesService } from '../cycles/cycles.service';
+import { BranchOfficeService } from '../../system/branch-office/branch-office.service';
+import { PaymentPlansService } from '../payment-plans/payment-plans.service';
+import { StudyPlansService } from '../study-plans/study-plans.service';
+import { StudyPlanVariantsService } from '../study-plan-variants/study-plan-variants.service';
 
 export interface IRelationsInscriptions {
     Student: Student[],
@@ -45,6 +53,14 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         @InjectRepository(Student, ColegioDBNameConnection) readonly student: Repository<Student>,
         readonly classroomService: ClassroomsService,
         readonly levelService: LevelsService,
+        readonly studentService: StudentsService,
+        readonly gradesService: GradesService,
+        readonly groupsService: GroupsService,
+        readonly cyclesService: CyclesService,
+        readonly branchOfficeService: BranchOfficeService,
+        readonly paymentPlansService: PaymentPlansService,
+        readonly studyPlansService: StudyPlansService,
+        readonly studyPlanVariantService: StudyPlanVariantsService,
     ) {
         super(repo);
     }
@@ -239,12 +255,34 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         const relationsResult: IRelationsInscriptions = {} as IRelationsInscriptions;
         for (const relation of filteredRelations) {
             const repository = await getRepository(relation, ColegioDBNameConnection);
-            let relationData = await repository.find();
+            let relationData = await repository.find({ cache: true });
             relationData = JSON.parse(JSON.stringify(relationData));
             relationsResult[relation] = relationData;
         }
+        const lastRecord = await this.repo.createQueryBuilder('inscriptions').select('inscriptions.id').addOrderBy('inscriptions.id', 'DESC').limit(1).getOne();
         return {
             relations: relationsResult,
+            lastRecord,
         };
+    }
+
+    async validateData(data: any[]) {
+        const studentNoExist = [];
+        for (const item of data) {
+            const student = await this.studentService.findStudentByFullName(item.Estudiante);
+            if (typeof student === 'undefined') {
+                const studentById = await this.studentService.findOne(item.Estudiante);
+                if (typeof studentById === 'undefined') {
+                    studentNoExist.push(item.Estudiante);
+                }
+            }
+            if (typeof item.Plantel === 'number' && typeof item.Nivel === 'number') {
+                const branchOffice = await this.branchOfficeService.findOne(item.Plantel, { relations: ['levels'] });
+                const level = await this.levelService.findOne(item.Nivel, { relations: ['grades'] });
+                const test = branchOffice.levels.includes(level);
+                console.log(test);
+            }
+        }
+        console.log(studentNoExist);
     }
 }

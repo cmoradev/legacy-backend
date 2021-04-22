@@ -9,7 +9,7 @@ export interface ColumnsCatalog {
 
 export async function setCatalog(workbook: Workbook, columns: ColumnsCatalog[]) {
     columns.forEach((item, index) => {
-        const sheetCatalog = workbook.addWorksheet(`Catelogo ${item.tableName} ${index}`, {
+        const sheetCatalog = workbook.addWorksheet(`Catelogo ${item.tableName}`, {
             views: [{
                 state: 'normal',
             }],

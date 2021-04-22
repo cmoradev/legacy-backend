@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as ExcelJS from 'exceljs';
 import { Response } from 'express';
@@ -28,7 +28,8 @@ import { Family } from '../school-colegio-ingles/families/entities/family.entity
 import { InscriptionsService, IRelationsInscriptions } from '../school-colegio-ingles/inscriptions/inscriptions.service';
 import { generateTemplateInscriptions } from './template/inscripciones';
 import { ColumnsCatalog, setCatalog } from './utils/setCatalog';
-
+import { Inscription } from '../school-colegio-ingles/inscriptions/entities/inscription.entity';
+import { Request } from 'express';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -345,7 +346,6 @@ export class XlsImporterController {
 
     @Post('download-layout-students')
     async downloadLayoutStudents() {
-        // tslint:disable-next-line:ban-types
         const fields = {
             id: 'id',
             createdAt: 'createdAt',
@@ -390,39 +390,69 @@ export class XlsImporterController {
             inscripAgentCreator: 'inscripAgentCreator',
             inscripAgentEditor: 'inscripAgentEditor',
             inscripAssignmentsInscription: 'inscripAssignmentsInscription',
+            inscripLevel: 'inscripLevel',
+            inscripCycle: 'inscripCycle',
+            inscripCampus: 'inscripCampus',
         };
         const headers = await this.inscriptionService.getNamesAttributesInscriptions(fields);
         const layout = await generateTemplateInscriptions(new ExcelJS.Workbook(), headers);
-        /*
-               * ESTUDIANTES
-               * GRUPOS
-               * GRADOS
-               * NIVELES
-               * CICLO
-               * PLANTELES
-               * SALONES
-               * PLANES DE PAGOS
-               * PLANES DE ESTUDIO
-               * VARIANTES DE PLAN DE ESTUDIO
-                   * CONCEPTOS
-       * */
-        const { relations } = await this.inscriptionService.relationships();
+        const { relations, lastRecord } = await this.inscriptionService.relationships();
+        console.log(lastRecord);
         const columns: ColumnsCatalog[] = [];
         const tableHeader: any[] = [{ name: 'ID' }, { name: 'Valor' }];
-        const tableRows: any[] = [];
+        let tableRows: any[] = [];
         Object.keys(relations).map((key, index) => {
-            relations[key].map(item => {
-                /*console.log(item, item.name ? item.name : item.description);*/
-                tableRows.push([item.id]);
+            tableRows = [];
+            relations[key].map((item) => {
+                tableRows.push([item.id, item.name ? item.name : item.description]);
             });
-            console.log(tableHeader);
             columns.push({ tableName: key, cell: `A1`, columns: tableHeader, rows: tableRows });
         });
 
         const _xlsx = await setCatalog(layout, columns);
+        _xlsx.getWorksheet('Layout').getCell('A2').value = lastRecord.id;
         return await convertToXlsx(_xlsx);
     }
 
+    @Post('bulk-inscriptions')
+    @UseInterceptors(FileInterceptor('file', { dest: '/var/www/uploads/temp' }))
+    async bulkInscriptionsByLayout(@UploadedFile() file: Express.Multer.File) {
+        const uploadedFile = fs.readFileSync(file.path);
+        const workBook = xlsx.read(uploadedFile);
+        const fields = {
+            createdAt: 'createdAt',
+            updatedAt: 'updatedAt',
+            version: 'version',
+            uuid: 'uuid',
+            inscripAgentCreator: 'inscripAgentCreator',
+            inscripAgentEditor: 'inscripAgentEditor',
+            inscripAssignmentsInscription: 'inscripAssignmentsInscription',
+        };
+        const headers = await this.inscriptionService.getNamesAttributesInscriptions(fields);
+        const data: any[] = this.xlsWorkbookToJSON<Inscription>(workBook, {
+            defaultValue: null,
+            range: 'A2:W500',
+            headers,
+        });
+        const inscriptionsData: Inscription[] = [];
+        try {
+            for (const inscription of data['Layout'] as Inscription[]) {
+                if (inscription.inscripStudent !== null && inscription.inscripStudent) {
+                    if (typeof inscription.inscripStudent === 'number') {
+                        inscriptionsData.push({ ...inscription, inscripStudent: { id: inscription.inscripStudent } as unknown as Student });
+                    }
+                    if (typeof inscription.inscripStudent === 'string') {
+                        const studentExist = await this.studentsService.findStudentByFullName(inscription.inscripStudent);
+                        console.log(studentExist);
+                    }
+                }
+            }
+            fs.unlinkSync(`${file.path}`);
+        } catch (e) {
+            console.error(e.message);
+            return e;
+        }
+    }
 
     @Post('bulk-students')
     @UseInterceptors(FileInterceptor('file', { dest: '/var/www/uploads/temp' }))
@@ -486,5 +516,11 @@ export class XlsImporterController {
             console.error(e.message);
             return e.message;
         }
+    }
+
+    @Post('validate-inscriptions-import')
+    async validateDataInscription(@Body() request) {
+        const inscriptions = request.value;
+        await this.inscriptionService.validateData(inscriptions);
     }
 }
