@@ -383,6 +383,8 @@ export class XlsImporterController {
     @Post('download-layout-inscriptions')
     async downloadLayoutInscriptions() {
         const fields = {
+            id: 'id',
+
             createdAt: 'createdAt',
             updatedAt: 'updatedAt',
             version: 'version',
@@ -396,22 +398,28 @@ export class XlsImporterController {
         };
         const headers = await this.inscriptionService.getNamesAttributesInscriptions(fields);
         const layout = await generateTemplateInscriptions(new ExcelJS.Workbook(), headers);
-        const { relations, lastRecord } = await this.inscriptionService.relationships();
-        console.log(lastRecord);
+        return await convertToXlsx(layout);
+    }
+
+    @Post('download-catalogs-inscriptions')
+    async downloadCatalogsInscriptions() {
+        const { relations } = await this.inscriptionService.relationships();
         const columns: ColumnsCatalog[] = [];
         const tableHeader: any[] = [{ name: 'ID' }, { name: 'Valor' }];
         let tableRows: any[] = [];
         Object.keys(relations).map((key, index) => {
             tableRows = [];
             relations[key].map((item) => {
-                tableRows.push([item.id, item.name ? item.name : item.description]);
+                if (item.name && item.lastNameFather && item.lastNameMother) {
+                    tableRows.push([item.id, `${item.name} ${item.lastNameMother} ${item.lastNameMother}`]);
+                } else {
+                    tableRows.push([item.id, item.name ? item.name : item.description]);
+                }
             });
             columns.push({ tableName: key, cell: `A1`, columns: tableHeader, rows: tableRows });
         });
-
-        const _xlsx = await setCatalog(layout, columns);
-        _xlsx.getWorksheet('Layout').getCell('A2').value = lastRecord.id;
-        return await convertToXlsx(_xlsx);
+        const catalog = await setCatalog(new ExcelJS.Workbook(), columns);
+        return await convertToXlsx(catalog);
     }
 
     @Post('bulk-inscriptions')
@@ -520,7 +528,8 @@ export class XlsImporterController {
 
     @Post('validate-inscriptions-import')
     async validateDataInscription(@Body() request) {
-        const inscriptions = request.value;
-        await this.inscriptionService.validateData(inscriptions);
+        const inscriptions = request.data.value;
+        const dataPre = request.dataPre.value;
+        return await this.inscriptionService.validateData(inscriptions, dataPre);
     }
 }

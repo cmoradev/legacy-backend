@@ -46,6 +46,20 @@ export interface IRelationsInscriptions {
     SchoolPayment: SchoolPayment[],
 }
 
+interface ITableImportInscription {
+    Id: number,
+    Estado: number | string,
+    Estudiante: number | string,
+    Grupo: number | string,
+    Grado: number | string,
+    Salon: number | string,
+    'Plan de pago': number | string,
+    'Variante de plan de estudio': number | string,
+    'Plan de estudio': number | string,
+    Mensualidades: number,
+    Inscripciones: number
+}
+
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
     constructor(
@@ -250,7 +264,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
     async relationships() {
         const relationships = this.repo.metadata.ownRelations.map(relation => relation.inverseEntityMetadata.targetName);
-        const relationsTrash = ['AssignmentInscription'];
+        const relationsTrash = ['AssignmentInscription', 'InscripCampus', 'InscripAgentCreator', 'InscripAgentEditor', 'SchoolPayments'];
         const filteredRelations = relationships.filter(value => !relationsTrash.includes(value));
         const relationsResult: IRelationsInscriptions = {} as IRelationsInscriptions;
         for (const relation of filteredRelations) {
@@ -266,23 +280,42 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         };
     }
 
-    async validateData(data: any[]) {
-        const studentNoExist = [];
-        for (const item of data) {
-            const student = await this.studentService.findStudentByFullName(item.Estudiante);
-            if (typeof student === 'undefined') {
-                const studentById = await this.studentService.findOne(item.Estudiante);
-                if (typeof studentById === 'undefined') {
-                    studentNoExist.push(item.Estudiante);
+    async validateData(dataTable: ITableImportInscription[], preData: any) {
+        const exceptions: { error: string, value: number | string }[] = [];
+        const inscriptions: Inscription[] = [];
+        let inscription: Inscription = {} as Inscription;
+        for (const item of dataTable) {
+            inscription = {} as Inscription;
+            if (typeof item.Estudiante === 'number') {
+                const student = await this.studentService.findOne(item.Estudiante, { relations: ['studentCampus'] });
+                if (typeof student === 'undefined') {
+                    exceptions.push({ error: 'Estudiante no existe', value: item.Estudiante });
+                }
+                if (typeof student !== 'undefined') {
+                    if (student.studentCampus.id !== preData.branchOfficeSchool.id) {
+                        exceptions.push({ error: `Estudiante no existe en el plantel`, value: item.Estudiante });
+                    } else {
+                        inscription.inscripStudent = student;
+                    }
+                }
+            } else {
+                const student = await this.studentService.findStudentByFullName(item.Estudiante);
+                if (typeof student !== 'undefined') inscription.inscripStudent = student;
+            }
+            if (typeof item.Grado === 'number' && typeof item.Grupo === 'number') {
+                const grade = await this.gradesService.findOne(item.Grado, { relations: ['groups'] });
+                const group = await this.groupsService.findOne(item.Grupo);
+                if (typeof grade !== 'undefined' && typeof group !== 'undefined') {
+                    if (grade.groups.some(_group => _group === group)) {
+                        console.log('Si existe el grupo en el grado');
+                    } else {
+                        console.log('No encontrado');
+                    }
+                } else {
+                    exceptions.push({ error: 'No existe el grado', value: item.Grado });
                 }
             }
-            if (typeof item.Plantel === 'number' && typeof item.Nivel === 'number') {
-                const branchOffice = await this.branchOfficeService.findOne(item.Plantel, { relations: ['levels'] });
-                const level = await this.levelService.findOne(item.Nivel, { relations: ['grades'] });
-                const test = branchOffice.levels.includes(level);
-                console.log(test);
-            }
         }
-        console.log(studentNoExist);
+        return { exceptions, inscriptions };
     }
 }

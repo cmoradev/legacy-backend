@@ -34,15 +34,21 @@ export async function generateTemplateInscriptions(workBook: ExcelJS.Workbook, h
     const columns = [];
     const optionalColumns = [];
     headers.forEach((item) => {
-        columns.push({
-            header: nameColumn(item).name, key: item, style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } },
-        });
+        if (item === 'schoolPayments') {
+            columns.push({ header: 'Mensualidades', key: 'mensualidad', style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } } });
+            columns.push({ header: 'Inscripciones', key: 'inscripciones', style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } } });
+        }
+        if (item !== 'schoolPayments') {
+            columns.push({
+                header: nameColumn(item).name, key: item, style: { border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } } },
+            });
+        }
         if (nameColumn(item).isOptional) {
             optionalColumns.push(nameColumn(item).name);
         }
     });
     sheet.columns = columns;
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1'].map(key => {
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
         sheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'solid',
