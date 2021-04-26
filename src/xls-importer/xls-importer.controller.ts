@@ -445,8 +445,7 @@ export class XlsImporterController {
 
     @Post('bulk-inscriptions')
     async bulkInscriptionsByLayout(@Body() request) {
-        const inscriptions = request.data;
-        console.log(inscriptions);
+        await this.inscriptionService.repo.save(request);
     }
 
     @Post('bulk-students')

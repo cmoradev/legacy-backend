@@ -305,14 +305,14 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             dates.push({
                 name: moment.months(i),
                 numberMonth: i + 1,
-                date: dateStart.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1)
+                date: dateStart.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1),
             });
         }
         for (let i = 0; i <= dateEnd.month(); i++) {
             dates.push({
                 name: moment.months(i),
                 numberMonth: i + 1,
-                date: dateEnd.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1)
+                date: dateEnd.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1),
             });
         }
         return dates;
@@ -324,7 +324,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         const inscriptions: Inscription[] = [];
         let inscription: Inscription = {} as Inscription;
         for (const item of dataTable) {
-            inscription = {} as Inscription;
+            inscription = { schoolPayments: [] as unknown as SchoolPayment } as unknown as Inscription;
             if (typeof item.Estudiante === 'number') {
                 const student = await this.studentService.findOne(item.Estudiante, { relations: ['studentCampus'] });
                 if (typeof student === 'undefined') {
@@ -334,119 +334,172 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
                     if (student.studentCampus.id !== preData.branchOfficeSchool.id) {
                         exceptions.push({ error: `Estudiante no existe en el plantel`, value: item.Estudiante });
                     } else {
-                        inscription.inscripStudent = student;
+                        inscription.inscripStudent = { id: student.id } as Student;
                     }
                 }
             } else {
                 const student = await this.studentService.findStudentByFullName(item.Estudiante);
-                if (typeof student !== 'undefined') inscription.inscripStudent = student;
+                if (typeof student !== 'undefined') inscription.inscripStudent = { id: student.id } as Student;
             }
             if (typeof item.Grado === 'number' && typeof item.Grupo === 'number') {
                 const grade = await this.gradesService.findOne(item.Grado, { relations: ['groups'] });
                 const group = await this.groupsService.findOne(item.Grupo);
                 if (typeof grade === 'undefined') {
                     exceptions.push({ error: 'Grado no existe', value: item.Grado });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripGrade = { id: grade.id } as Grade;
                 }
                 if (typeof group === 'undefined') {
                     exceptions.push({ error: 'Grupo no existe', value: item.Grupo });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripGroup = { id: group.id } as Group;
                 }
-                inscription.inscripGrade = grade;
-                inscription.inscripGroup = group;
             }
             if (typeof item['Plan de pago'] === 'number') {
                 const paymentPlan = await this.paymentPlansService.findOne(item['Plan de pago']);
                 if (typeof paymentPlan === 'undefined') {
                     exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
-                    return;
+                    break;
+                } else {
+                    inscription.paymentPlan = { id: paymentPlan.id } as PaymentPlan;
                 }
-                inscription.paymentPlan = paymentPlan;
             }
             if (typeof item['Plan de pago'] === 'string') {
-                const paymentPlan = await this.paymentPlansService.findOne({ name: Like(`%${item['Plan de pago']}%`) })
+                const paymentPlan = await this.paymentPlansService.findOne({ name: Like(`%${item['Plan de pago']}%`) });
                 if (typeof paymentPlan === 'undefined') {
                     exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
-                    return;
+                    break;
+                } else {
+                    inscription.paymentPlan = { id: paymentPlan.id } as PaymentPlan;
                 }
-                inscription.paymentPlan = paymentPlan;
             }
             if (typeof item['Plan de estudio'] === 'number') {
                 const studyPlan = await this.studyPlansService.findOne(item['Plan de estudio']);
                 if (typeof studyPlan === 'undefined') {
                     exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripStudyPlan = { id: studyPlan.id } as StudyPlan;
                 }
-                inscription.inscripStudyPlan = studyPlan;
             }
             if (typeof item['Plan de estudio'] === 'string') {
                 const studyPlan = await this.studyPlansService.findOne({ name: Like(item['Plan de estudio']) });
                 if (typeof studyPlan === 'undefined') {
                     exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripStudyPlan = { id: studyPlan.id } as StudyPlan;
                 }
-                inscription.inscripStudyPlan = studyPlan;
             }
             if (typeof item['Variante de plan de estudio'] === 'number') {
                 const studyPlanVariant = await this.studyPlanVariantService.findOne(item['Variante de plan de estudio']);
                 if (typeof studyPlanVariant === 'undefined') {
-                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] })
+                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] });
+                } else {
+                    inscription.inscripStudyPlanVariant = { id: studyPlanVariant.id } as StudyPlanVariant;
                 }
-                inscription.inscripStudyPlanVariant = studyPlanVariant;
             }
             if (typeof item['Variante de plan de estudio'] === 'string') {
                 const studyPlanVariant = await this.studyPlanVariantService.findOne({ name: Like(item['Variante de plan de estudio']) });
                 if (typeof studyPlanVariant === 'undefined') {
-                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] })
+                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] });
+                } else {
+                    inscription.inscripStudyPlanVariant = { id: studyPlanVariant.id } as StudyPlanVariant;
                 }
-                inscription.inscripStudyPlanVariant = studyPlanVariant;
             }
             if (typeof item.Salon === 'number') {
                 const classroom = await this.classroomService.findOne(item.Salon);
                 if (typeof classroom === 'undefined') {
                     exceptions.push({ error: 'Salon no existe', value: item.Salon });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripClassroom = { id: classroom.id } as Classroom;
                 }
-                inscription.inscripClassroom = classroom;
             }
             if (typeof item.Salon === 'string') {
                 const classroom = await this.classroomService.findOne({ name: Like(item.Salon) });
                 if (typeof classroom === 'undefined') {
                     exceptions.push({ error: 'Salon no existe', value: item.Salon });
-                    return;
+                    break;
+                } else {
+                    inscription.inscripClassroom = { id: classroom.id } as Classroom;
                 }
-                inscription.inscripClassroom = classroom;
             }
             if (item.Estado !== null && typeof item.Estado === 'number') {
-                inscription.idStatus = Number(item.Estado)
+                inscription.idStatus = Number(item.Estado);
             }
-            if (item.Mensualidades !== null && typeof item['Plan de pago'] === 'number') {
+            if (item.Mensualidades !== null && typeof item.Mensualidades !== 'undefined' && typeof item['Plan de pago'] === 'number') {
                 const concept = await this.paymentPlansConceptsService.paymentPlanConceptRepository.createQueryBuilder('concept')
                     .innerJoinAndSelect('concept.paymentPlan', 'paymentPlan')
                     .where('paymentPlan.id = :id', { id: item['Plan de pago'] })
                     .andWhere('concept.name = :name', { name: item.Mensualidades })
                     .getOne();
-                const dates = this.getMonthsBetweenDate(moment(preData.cycleSchool.dateStart), moment(preData.cycleSchool.dateEnd));
-                for (const date of dates) {
+                if (typeof concept === 'undefined') {
+                    exceptions.push({ error: `Concepto no existe en plan de pago ${item['Plan de pago']}`, value: item.Mensualidades });
+                    break;
+                } else {
+                    const dates = this.getMonthsBetweenDate(moment(preData.cycleSchool.dateStart), moment(preData.cycleSchool.dateEnd));
+                    for (const date of dates) {
+                        inscription.schoolPayments.push({
+                            description: `${concept.description} - ${date.name}` as string,
+                            price: concept.price,
+                            quantity: 1,
+                            productCode: '',
+                            satCode: concept.satCode || '',
+                            payDate: date.date,
+                            payDay: concept.startDay || 1,
+                            payMonth: date.numberMonth as number,
+                            unit: concept.unity,
+                            unitCode: concept.unitCode,
+                            withIva: concept.withIva || true,
+                            paymentPlanConcept: {
+                                id: concept.id,
+                            } as PaymentPlanConcept,
+                        } as unknown as SchoolPayment);
+                    }
+                }
+            }
+            if (item.Inscripciones !== null && typeof item.Inscripciones !== 'undefined' && typeof item['Plan de pago'] === 'number') {
+                const concept = await this.paymentPlansConceptsService.paymentPlanConceptRepository.createQueryBuilder('concept')
+                    .innerJoinAndSelect('concept.paymentPlan', 'paymentPlan')
+                    .where('paymentPlan.id = :id', { id: item['Plan de pago'] })
+                    .andWhere('concept.name = :name', { name: item.Inscripciones })
+                    .getOne();
+                if (typeof concept === 'undefined') {
+                    exceptions.push({ error: `Concepto no existe en plan de pago ${item['Plan de pago']}`, value: item.Inscripciones });
+                    break;
+                } else {
+                    const dates = this.getMonthsBetweenDate(moment(preData.cycleSchool.dateStart), moment(preData.cycleSchool.dateEnd));
                     inscription.schoolPayments.push({
                         id: concept.id,
-                        description: `${concept.description} - ${date.name}` as string,
+                        description: `${concept.description} - ${dates[0].name}` as string,
                         price: concept.price,
                         quantity: 1,
                         productCode: '',
                         satCode: concept.satCode || '',
-                        payDate: date.date,
+                        payDate: dates[0].date,
                         payDay: concept.startDay || 1,
-                        payMonth: date.numberMonth as number,
+                        payMonth: dates[0].numberMonth as number,
                         unit: concept.unity,
                         unitCode: concept.unitCode,
                         withIva: concept.withIva || true,
                         paymentPlanConcept: {
-                            id: concept.id
-                        } as PaymentPlanConcept
+                            id: concept.id,
+                        } as PaymentPlanConcept,
                     } as unknown as SchoolPayment);
                 }
             }
+            inscription.inscripCampus = {
+                id: preData.branchOfficeSchool.id,
+            } as BranchOffice;
+            inscription.inscripCycle = {
+                id: preData.cycleSchool.id,
+            } as Cycle;
+            inscription.inscripLevel = {
+                id: preData.levelSchool,
+            } as Level;
             inscriptions.push(inscription);
         }
         return { exceptions, inscriptions };
