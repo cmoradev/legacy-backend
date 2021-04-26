@@ -12,4 +12,8 @@ export class StudyPlanVariantsService extends TypeOrmCrudService<StudyPlanVarian
     ) {
         super(repo);
     }
+
+    async getVariantsWithPaymentPlan() {
+        return await this.repo.createQueryBuilder('variant').innerJoinAndSelect('variant.studyPlan', 'studyPlan').getMany();
+    }
 }

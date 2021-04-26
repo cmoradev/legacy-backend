@@ -12,4 +12,8 @@ export class GradesService extends TypeOrmCrudService<Grade> {
     ) {
         super(repo);
     }
+
+    async getGradesWithLevel() {
+        return await this.repo.createQueryBuilder('grade').innerJoinAndSelect('grade.level', 'level').getMany();
+    }
 }

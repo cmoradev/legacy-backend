@@ -9,5 +9,11 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 export class GroupsService extends TypeOrmCrudService<Group> {
     constructor(
         @InjectRepository(Group, ColegioDBNameConnection) readonly repo: Repository<Group>,
-    ) { super(repo); }
+    ) {
+        super(repo);
+    }
+
+    async getGroupsWithGrades() {
+        return await this.repo.createQueryBuilder('group').innerJoinAndSelect('group.groupGrade', 'grade').getMany();
+    }
 }

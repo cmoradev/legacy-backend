@@ -12,4 +12,7 @@ export class StudyPlansService extends TypeOrmCrudService<StudyPlan> {
         super(repo);
     }
 
+    async getStudyPlansWithLevel() {
+        return await this.repo.createQueryBuilder('studyPlan').innerJoinAndSelect('studyPlan.level', 'level').getMany();
+    }
 }

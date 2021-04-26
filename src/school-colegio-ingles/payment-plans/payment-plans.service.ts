@@ -7,11 +7,20 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class PaymentPlansService extends TypeOrmCrudService<PaymentPlan> {
-  constructor(@InjectRepository(PaymentPlan, ColegioDBNameConnection) private readonly paymentPlanRepository: Repository<PaymentPlan>) {
-    super(paymentPlanRepository);
-  }
+    constructor(@InjectRepository(PaymentPlan, ColegioDBNameConnection) private readonly paymentPlanRepository: Repository<PaymentPlan>) {
+        super(paymentPlanRepository);
+    }
 
-  async getPaymentsPlayWithConcepts() {
-    return this.paymentPlanRepository.createQueryBuilder('paymentPlan').innerJoinAndSelect('paymentPlan.paymentPlanConcepts', 'concepts').getMany();
-  }
+    async getPaymentsPlayWithConcepts() {
+        return this.paymentPlanRepository.createQueryBuilder('paymentPlan')
+            .innerJoinAndSelect('paymentPlan.paymentPlanConcepts', 'concepts')
+            .getMany();
+    }
+
+    async getPaymentPlanWIthLevel() {
+        return this.paymentPlanRepository.createQueryBuilder('paymentPlan')
+            .innerJoinAndSelect('paymentPlan.level', 'level')
+            .innerJoinAndSelect('paymentPlan.studyPlan', 'studyPlan')
+            .getMany();
+    }
 }

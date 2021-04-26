@@ -29,10 +29,15 @@ import { InscriptionsService, IRelationsInscriptions } from '../school-colegio-i
 import { generateTemplateInscriptions } from './template/inscripciones';
 import { ColumnsCatalog, setCatalog } from './utils/setCatalog';
 import { Inscription } from '../school-colegio-ingles/inscriptions/entities/inscription.entity';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 import { LevelsService } from '../school-colegio-ingles/levels/levels.service';
 import { PaymentPlansService } from '../school-colegio-ingles/payment-plans/payment-plans.service';
 import { PaymentPlanConceptsService } from '../school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.service';
+import { GradesService } from '../school-colegio-ingles/grades/grades.service';
+import { GroupsService } from '../school-colegio-ingles/groups/groups.service';
+import { ClassroomsService } from '../school-colegio-ingles/classrooms/classrooms.service';
+import { StudyPlansService } from '../school-colegio-ingles/study-plans/study-plans.service';
+import { StudyPlanVariantsService } from '../school-colegio-ingles/study-plan-variants/study-plan-variants.service';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -77,6 +82,11 @@ export class XlsImporterController {
         readonly levelService: LevelsService,
         readonly paymentPlansService: PaymentPlansService,
         readonly paymentPlansConcepts: PaymentPlanConceptsService,
+        readonly gradeService: GradesService,
+        readonly groupService: GroupsService,
+        readonly classroomService: ClassroomsService,
+        readonly studyPlansService: StudyPlansService,
+        readonly studyPlanVariantService: StudyPlanVariantsService,
     ) {
     }
 
@@ -199,11 +209,11 @@ export class XlsImporterController {
         const sheet = workbook.addWorksheet('Layout', {
             views: [{ state: 'frozen', xSplit: 1, ySplit: 1 }],
             properties:
-            {
-                tabColor: {
-                    argb: '359c5b',
+                {
+                    tabColor: {
+                        argb: '359c5b',
+                    },
                 },
-            },
         });
 
         const columns = [];
@@ -409,37 +419,121 @@ export class XlsImporterController {
 
     @Post('download-catalogs-inscriptions')
     async downloadCatalogsInscriptions() {
-        const { relations } = await this.inscriptionService.relationships();
-        const columns: ColumnsCatalog[] = [];
-        let tableHeader: any[] = [{ name: 'ID' }, { name: 'Nombre' }];
-        let tableRows: any[] = [];
-        Object.keys(relations).map((key, index) => {
-            tableRows = [];
-            relations[key].map((item) => {
-                if (item.name && item.lastNameFather && item.lastNameMother) {
-                    tableRows.push([item.id, `${item.name} ${item.lastNameMother} ${item.lastNameMother}`]);
-                } else {
-                    tableRows.push([item.id, item.name ? item.name : item.description]);
-                }
-            });
-            columns.push({ tableName: key, cell: `A1`, columns: tableHeader, rows: tableRows });
+        const catalog = new ExcelJS.Workbook();
+        /*
+        * Students w/ branch office +
+        * Grade w/ level +
+        * Group w/ grade +
+        * Classroom w/ group +
+        * paymentPlan w/ level +
+        * paymentPlanConcepts w/ paymentPlan +
+        * studyPlan w/ level +
+        * studyPLanVariant w/ studyPlan
+        * */
+        const studentsWithBranchOffice = await this.studentsService.getStudentsWithBranchOffice();
+        const studentsRows: any[] = [];
+        studentsWithBranchOffice.map((curr) => {
+            studentsRows.push([curr.id, `${curr.name} ${curr.lastNameFather} ${curr.lastNameMother}`, curr.studentCampus.name]);
         });
-        const paymensPlayWithConcepts = await this.paymentPlansService.getPaymentsPlayWithConcepts();
-        let paymentsRows: any[] = []
-        paymensPlayWithConcepts.map((curr, index) => {
+        const sheetStudents = catalog.addWorksheet('CATALOGO ESTUDIANTES');
+        sheetStudents.addTable({
+            name: 'Estudiantes',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Plantel' }],
+            rows: studentsRows,
+        });
+        const gradesWithLevel = await this.gradeService.getGradesWithLevel();
+        const gradesRows: any[] = [];
+        gradesWithLevel.map((curr) => {
+            gradesRows.push([curr.id, curr.name, curr.level.name]);
+        });
+        const sheetGrades = catalog.addWorksheet('CATALOGO GRADOS');
+        sheetGrades.addTable({
+            name: 'GRADOS',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Nivel' }],
+            rows: gradesRows,
+        });
+        const groupWithGrades = await this.groupService.getGroupsWithGrades();
+        const groupRows: any[] = [];
+        groupWithGrades.map((_group) => {
+            groupRows.push([_group.id, _group.name, _group.groupGrade.name]);
+        });
+        const sheetGroups = catalog.addWorksheet('CATALOGO GRUPOS');
+        sheetGroups.addTable({
+            name: 'GRUPOS',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Grado' }],
+            rows: groupRows,
+        });
+        const classroomWithGroup = await this.classroomService.getClassroomWithGroup();
+        const classroomRows: any[] = [];
+        classroomWithGroup.map((_classroom) => {
+            classroomRows.push([_classroom.id, _classroom.name, _classroom.group.name]);
+        });
+        const sheetClassroom = catalog.addWorksheet('CATALOGO CLASSROOM');
+        sheetClassroom.addTable({
+            name: 'CLASSROOM',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Grupo' }],
+            rows: classroomRows,
+        });
+        const studyPlansWithLevel = await this.studyPlansService.getStudyPlansWithLevel();
+        const studyPlanRows: any[] = [];
+        studyPlansWithLevel.map((_studyPlan) => {
+            studyPlanRows.push([_studyPlan.id, _studyPlan.name, _studyPlan.level.name]);
+        });
+        const sheetStudyPlan = catalog.addWorksheet('CATALOGO PLANES DE ESTUDIO');
+        sheetStudyPlan.addTable({
+            name: 'PLANES DE ESTUDIO',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Nivel' }],
+            rows: studyPlanRows,
+        });
+        const studyPlanVariants = await this.studyPlanVariantService.getVariantsWithPaymentPlan();
+        const VariantsRows: any[] = [];
+        studyPlanVariants.map((_variant) => {
+            VariantsRows.push([_variant.id, _variant.name, _variant.studyPlan.name]);
+        });
+        const sheetVariant = catalog.addWorksheet('CATALOGO VARIANTES DE PLANES');
+        sheetVariant.addTable({
+            name: 'VARIANTES',
+            ref: 'A1',
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Plan de estudio' }],
+            rows: VariantsRows,
+        });
+        const paymentPlanWithLevel = await this.paymentPlansService.getPaymentPlanWIthLevel();
+        const paymentPlanRows: any[] = [];
+        paymentPlanWithLevel.map((_paymentPlan) => {
+            paymentPlanRows.push([_paymentPlan.id, _paymentPlan.name, _paymentPlan.studyPlan.name, _paymentPlan.level.name]);
+        });
+        const sheetPaymentPlanLevel = catalog.addWorksheet('CATALOGO PLANES DE PAGO');
+        sheetPaymentPlanLevel.addTable({
+            name: 'PLANES DE PAGO',
+            ref: 'A1',
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Plan de estudio' }, { name: 'Nivel' }],
+            rows: paymentPlanRows,
+        });
+        const paymentsPlayWithConcepts = await this.paymentPlansService.getPaymentsPlayWithConcepts();
+        const paymentsRows: any[] = [];
+        paymentsPlayWithConcepts.map((curr, index) => {
             curr.paymentPlanConcepts.map((val) => {
-                paymentsRows.push([curr.id, curr.name, val.name]);
+                paymentsRows.push([val.id, val.name, curr.name]);
             });
         });
-        const catalog = await setCatalog(new ExcelJS.Workbook(), columns);
         const sheetConcepts = catalog.addWorksheet('CONCEPTOS POR PLANES DE PAGO');
         sheetConcepts.addTable({
             name: 'CONCEPTOS',
             ref: 'A1',
             headerRow: true,
-            columns: [{ name: 'ID' }, { name: 'Plan de pago' }, { name: 'Concepto' }],
-            rows: paymentsRows
-        })
+            columns: [{ name: 'ID' }, { name: 'Concepto' }, { name: 'Plan de pago' }],
+            rows: paymentsRows,
+        });
         return await convertToXlsx(catalog);
     }
 

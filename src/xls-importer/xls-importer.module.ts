@@ -13,6 +13,11 @@ import { InscriptionsModule } from '../school-colegio-ingles/inscriptions/inscri
 import { LevelsModule } from '../school-colegio-ingles/levels/levels.module';
 import { PaymentPlansModule } from '../school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from '../school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
+import { GradesModule } from '../school-colegio-ingles/grades/grades.module';
+import { GroupsModule } from '../school-colegio-ingles/groups/groups.module';
+import { ClassroomsModule } from '../school-colegio-ingles/classrooms/classrooms.module';
+import { StudyPlansModule } from '../school-colegio-ingles/study-plans/study-plans.module';
+import { StudyPlanVariantsModule } from '../school-colegio-ingles/study-plan-variants/study-plan-variants.module';
 
 
 @Module({
@@ -26,6 +31,11 @@ import { PaymentPlanConceptsModule } from '../school-colegio-ingles/payment-plan
         InvoiceKeysModule,
         BranchOfficeModule,
         LevelsModule,
+        GradesModule,
+        GroupsModule,
+        ClassroomsModule,
+        StudyPlansModule,
+        StudyPlanVariantsModule,
         PaymentPlansModule,
         PaymentPlanConceptsModule,
         StudentsModule,

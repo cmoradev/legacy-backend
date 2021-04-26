@@ -68,4 +68,8 @@ export class StudentsService extends TypeOrmCrudService<Student> {
     async findStudentByFullName(student: string) {
         return await this.repo.createQueryBuilder('student').select(['student.id', 'student.name', 'student.lastNameFather, student.lastNameMother']).where(`CONCAT(student.nombre,' ',student.ap_paterno,' ',student.ap_materno) LIKE :fullName`, { fullName: student }).getRawOne();
     }
+
+    async getStudentsWithBranchOffice() {
+        return await this.repo.createQueryBuilder('student').innerJoinAndSelect('student.studentCampus', 'campus').getMany()
+    }
 }
