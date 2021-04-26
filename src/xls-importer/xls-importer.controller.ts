@@ -29,7 +29,10 @@ import { InscriptionsService, IRelationsInscriptions } from '../school-colegio-i
 import { generateTemplateInscriptions } from './template/inscripciones';
 import { ColumnsCatalog, setCatalog } from './utils/setCatalog';
 import { Inscription } from '../school-colegio-ingles/inscriptions/entities/inscription.entity';
-import { Request } from 'express';
+import * as _ from 'lodash'
+import { LevelsService } from '../school-colegio-ingles/levels/levels.service';
+import { PaymentPlansService } from '../school-colegio-ingles/payment-plans/payment-plans.service';
+import { PaymentPlanConceptsService } from '../school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.service';
 
 // import {productsMiniStoreService} from "../../../ci-control/src/services/miniStore/products.miniStore.service";
 
@@ -71,6 +74,9 @@ export class XlsImporterController {
         readonly studentsService: StudentsService,
         readonly familyService: FamiliesService,
         readonly inscriptionService: InscriptionsService,
+        readonly levelService: LevelsService,
+        readonly paymentPlansService: PaymentPlansService,
+        readonly paymentPlansConcepts: PaymentPlanConceptsService,
     ) {
     }
 
@@ -193,11 +199,11 @@ export class XlsImporterController {
         const sheet = workbook.addWorksheet('Layout', {
             views: [{ state: 'frozen', xSplit: 1, ySplit: 1 }],
             properties:
-                {
-                    tabColor: {
-                        argb: '359c5b',
-                    },
+            {
+                tabColor: {
+                    argb: '359c5b',
                 },
+            },
         });
 
         const columns = [];
@@ -405,7 +411,7 @@ export class XlsImporterController {
     async downloadCatalogsInscriptions() {
         const { relations } = await this.inscriptionService.relationships();
         const columns: ColumnsCatalog[] = [];
-        const tableHeader: any[] = [{ name: 'ID' }, { name: 'Valor' }];
+        let tableHeader: any[] = [{ name: 'ID' }, { name: 'Nombre' }];
         let tableRows: any[] = [];
         Object.keys(relations).map((key, index) => {
             tableRows = [];
@@ -418,48 +424,29 @@ export class XlsImporterController {
             });
             columns.push({ tableName: key, cell: `A1`, columns: tableHeader, rows: tableRows });
         });
+        const paymensPlayWithConcepts = await this.paymentPlansService.getPaymentsPlayWithConcepts();
+        let paymentsRows: any[] = []
+        paymensPlayWithConcepts.map((curr, index) => {
+            curr.paymentPlanConcepts.map((val) => {
+                paymentsRows.push([curr.id, curr.name, val.name]);
+            });
+        });
         const catalog = await setCatalog(new ExcelJS.Workbook(), columns);
+        const sheetConcepts = catalog.addWorksheet('CONCEPTOS POR PLANES DE PAGO');
+        sheetConcepts.addTable({
+            name: 'CONCEPTOS',
+            ref: 'A1',
+            headerRow: true,
+            columns: [{ name: 'ID' }, { name: 'Plan de pago' }, { name: 'Concepto' }],
+            rows: paymentsRows
+        })
         return await convertToXlsx(catalog);
     }
 
     @Post('bulk-inscriptions')
-    @UseInterceptors(FileInterceptor('file', { dest: '/var/www/uploads/temp' }))
-    async bulkInscriptionsByLayout(@UploadedFile() file: Express.Multer.File) {
-        const uploadedFile = fs.readFileSync(file.path);
-        const workBook = xlsx.read(uploadedFile);
-        const fields = {
-            createdAt: 'createdAt',
-            updatedAt: 'updatedAt',
-            version: 'version',
-            uuid: 'uuid',
-            inscripAgentCreator: 'inscripAgentCreator',
-            inscripAgentEditor: 'inscripAgentEditor',
-            inscripAssignmentsInscription: 'inscripAssignmentsInscription',
-        };
-        const headers = await this.inscriptionService.getNamesAttributesInscriptions(fields);
-        const data: any[] = this.xlsWorkbookToJSON<Inscription>(workBook, {
-            defaultValue: null,
-            range: 'A2:W500',
-            headers,
-        });
-        const inscriptionsData: Inscription[] = [];
-        try {
-            for (const inscription of data['Layout'] as Inscription[]) {
-                if (inscription.inscripStudent !== null && inscription.inscripStudent) {
-                    if (typeof inscription.inscripStudent === 'number') {
-                        inscriptionsData.push({ ...inscription, inscripStudent: { id: inscription.inscripStudent } as unknown as Student });
-                    }
-                    if (typeof inscription.inscripStudent === 'string') {
-                        const studentExist = await this.studentsService.findStudentByFullName(inscription.inscripStudent);
-                        console.log(studentExist);
-                    }
-                }
-            }
-            fs.unlinkSync(`${file.path}`);
-        } catch (e) {
-            console.error(e.message);
-            return e;
-        }
+    async bulkInscriptionsByLayout(@Body() request) {
+        const inscriptions = request.data;
+        console.log(inscriptions);
     }
 
     @Post('bulk-students')

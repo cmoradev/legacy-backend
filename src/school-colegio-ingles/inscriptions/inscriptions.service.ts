@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Inscription } from './entities/inscription.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import { Student } from '../students/entities/student.entity';
 import { Attendance, VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
@@ -30,6 +30,10 @@ import { BranchOfficeService } from '../../system/branch-office/branch-office.se
 import { PaymentPlansService } from '../payment-plans/payment-plans.service';
 import { StudyPlansService } from '../study-plans/study-plans.service';
 import { StudyPlanVariantsService } from '../study-plan-variants/study-plan-variants.service';
+import { PaymentPlanConceptsService } from '../payment-plan-concepts/payment-plan-concepts.service';
+import { Moment } from 'moment';
+import * as moment from 'moment';
+import { PaymentPlanConcept } from '../payment-plan-concepts/entities/payment-plan-concept.entity';
 
 export interface IRelationsInscriptions {
     Student: Student[],
@@ -44,6 +48,12 @@ export interface IRelationsInscriptions {
     StudyPlanVariant: StudyPlanVariant[],
     StudyPlan: StudyPlan[],
     SchoolPayment: SchoolPayment[],
+}
+
+interface MonthDate {
+    name: string;
+    numberMonth: string | number;
+    date: string;
 }
 
 interface ITableImportInscription {
@@ -75,6 +85,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         readonly paymentPlansService: PaymentPlansService,
         readonly studyPlansService: StudyPlansService,
         readonly studyPlanVariantService: StudyPlanVariantsService,
+        readonly paymentPlansConceptsService: PaymentPlanConceptsService,
     ) {
         super(repo);
     }
@@ -264,7 +275,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
     async relationships() {
         const relationships = this.repo.metadata.ownRelations.map(relation => relation.inverseEntityMetadata.targetName);
-        const relationsTrash = ['AssignmentInscription', 'InscripCampus', 'InscripAgentCreator', 'InscripAgentEditor', 'SchoolPayments'];
+        const relationsTrash = ['SchoolPayment', 'AssignmentInscription', 'User', 'BranchOffice', 'Cycle', 'Level'];
         const filteredRelations = relationships.filter(value => !relationsTrash.includes(value));
         const relationsResult: IRelationsInscriptions = {} as IRelationsInscriptions;
         for (const relation of filteredRelations) {
@@ -273,11 +284,39 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             relationData = JSON.parse(JSON.stringify(relationData));
             relationsResult[relation] = relationData;
         }
-        const lastRecord = await this.repo.createQueryBuilder('inscriptions').select('inscriptions.id').addOrderBy('inscriptions.id', 'DESC').limit(1).getOne();
+
         return {
             relations: relationsResult,
-            lastRecord,
         };
+    }
+
+    addZeroDateMonth(day: number) {
+
+        if (day <= 9) {
+            return '0' + day;
+        }
+        return day;
+    }
+
+    getMonthsBetweenDate(dateStart: Moment, dateEnd: Moment): MonthDate[] {
+
+        const dates: MonthDate[] = [];
+        for (let i = dateStart.month(); i < 12; i++) {
+            dates.push({
+                name: moment.months(i),
+                numberMonth: i + 1,
+                date: dateStart.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1)
+            });
+        }
+        for (let i = 0; i <= dateEnd.month(); i++) {
+            dates.push({
+                name: moment.months(i),
+                numberMonth: i + 1,
+                date: dateEnd.year() + '-' + this.addZeroDateMonth(i + 1) + '-' + this.addZeroDateMonth(1)
+            });
+        }
+        return dates;
+        // dateStart.year() + '-' + addZeroDateMonth(dateStart.month()) + '-' + addZeroDateMonth(dateStart.date());
     }
 
     async validateData(dataTable: ITableImportInscription[], preData: any) {
@@ -305,17 +344,112 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             if (typeof item.Grado === 'number' && typeof item.Grupo === 'number') {
                 const grade = await this.gradesService.findOne(item.Grado, { relations: ['groups'] });
                 const group = await this.groupsService.findOne(item.Grupo);
-                if (typeof grade !== 'undefined' && typeof group !== 'undefined') {
-                    if (grade.groups.some(_group => _group === group)) {
-                        console.log('Si existe el grupo en el grado');
-                    } else {
-                        console.log('No encontrado');
-                    }
-                } else {
-                    exceptions.push({ error: 'No existe el grado', value: item.Grado });
+                if (typeof grade === 'undefined') {
+                    exceptions.push({ error: 'Grado no existe', value: item.Grado });
+                    return;
+                }
+                if (typeof group === 'undefined') {
+                    exceptions.push({ error: 'Grupo no existe', value: item.Grupo });
+                    return;
+                }
+                inscription.inscripGrade = grade;
+                inscription.inscripGroup = group;
+            }
+            if (typeof item['Plan de pago'] === 'number') {
+                const paymentPlan = await this.paymentPlansService.findOne(item['Plan de pago']);
+                if (typeof paymentPlan === 'undefined') {
+                    exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
+                    return;
+                }
+                inscription.paymentPlan = paymentPlan;
+            }
+            if (typeof item['Plan de pago'] === 'string') {
+                const paymentPlan = await this.paymentPlansService.findOne({ name: Like(`%${item['Plan de pago']}%`) })
+                if (typeof paymentPlan === 'undefined') {
+                    exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
+                    return;
+                }
+                inscription.paymentPlan = paymentPlan;
+            }
+            if (typeof item['Plan de estudio'] === 'number') {
+                const studyPlan = await this.studyPlansService.findOne(item['Plan de estudio']);
+                if (typeof studyPlan === 'undefined') {
+                    exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
+                    return;
+                }
+                inscription.inscripStudyPlan = studyPlan;
+            }
+            if (typeof item['Plan de estudio'] === 'string') {
+                const studyPlan = await this.studyPlansService.findOne({ name: Like(item['Plan de estudio']) });
+                if (typeof studyPlan === 'undefined') {
+                    exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
+                    return;
+                }
+                inscription.inscripStudyPlan = studyPlan;
+            }
+            if (typeof item['Variante de plan de estudio'] === 'number') {
+                const studyPlanVariant = await this.studyPlanVariantService.findOne(item['Variante de plan de estudio']);
+                if (typeof studyPlanVariant === 'undefined') {
+                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] })
+                }
+                inscription.inscripStudyPlanVariant = studyPlanVariant;
+            }
+            if (typeof item['Variante de plan de estudio'] === 'string') {
+                const studyPlanVariant = await this.studyPlanVariantService.findOne({ name: Like(item['Variante de plan de estudio']) });
+                if (typeof studyPlanVariant === 'undefined') {
+                    exceptions.push({ error: 'Variante deplan de estudio no existe', value: item['Variante de plan de estudio'] })
+                }
+                inscription.inscripStudyPlanVariant = studyPlanVariant;
+            }
+            if (typeof item.Salon === 'number') {
+                const classroom = await this.classroomService.findOne(item.Salon);
+                if (typeof classroom === 'undefined') {
+                    exceptions.push({ error: 'Salon no existe', value: item.Salon });
+                    return;
+                }
+                inscription.inscripClassroom = classroom;
+            }
+            if (typeof item.Salon === 'string') {
+                const classroom = await this.classroomService.findOne({ name: Like(item.Salon) });
+                if (typeof classroom === 'undefined') {
+                    exceptions.push({ error: 'Salon no existe', value: item.Salon });
+                    return;
+                }
+                inscription.inscripClassroom = classroom;
+            }
+            if (item.Estado !== null && typeof item.Estado === 'number') {
+                inscription.idStatus = Number(item.Estado)
+            }
+            if (item.Mensualidades !== null && typeof item['Plan de pago'] === 'number') {
+                const concept = await this.paymentPlansConceptsService.paymentPlanConceptRepository.createQueryBuilder('concept')
+                    .innerJoinAndSelect('concept.paymentPlan', 'paymentPlan')
+                    .where('paymentPlan.id = :id', { id: item['Plan de pago'] })
+                    .andWhere('concept.name = :name', { name: item.Mensualidades })
+                    .getOne();
+                const dates = this.getMonthsBetweenDate(moment(preData.cycleSchool.dateStart), moment(preData.cycleSchool.dateEnd));
+                for (const date of dates) {
+                    inscription.schoolPayments.push({
+                        id: concept.id,
+                        description: `${concept.description} - ${date.name}` as string,
+                        price: concept.price,
+                        quantity: 1,
+                        productCode: '',
+                        satCode: concept.satCode || '',
+                        payDate: date.date,
+                        payDay: concept.startDay || 1,
+                        payMonth: date.numberMonth as number,
+                        unit: concept.unity,
+                        unitCode: concept.unitCode,
+                        withIva: concept.withIva || true,
+                        paymentPlanConcept: {
+                            id: concept.id
+                        } as PaymentPlanConcept
+                    } as unknown as SchoolPayment);
                 }
             }
+            inscriptions.push(inscription);
         }
         return { exceptions, inscriptions };
+
     }
 }

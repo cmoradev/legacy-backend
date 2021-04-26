@@ -10,6 +10,9 @@ import { BranchOfficeModule } from '../system/branch-office/branch-office.module
 import { StudentsModule } from '../school-colegio-ingles/students/students.module';
 import { FamiliesModule } from '../school-colegio-ingles/families/families.module';
 import { InscriptionsModule } from '../school-colegio-ingles/inscriptions/inscriptions.module';
+import { LevelsModule } from '../school-colegio-ingles/levels/levels.module';
+import { PaymentPlansModule } from '../school-colegio-ingles/payment-plans/payment-plans.module';
+import { PaymentPlanConceptsModule } from '../school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
 
 
 @Module({
@@ -22,6 +25,9 @@ import { InscriptionsModule } from '../school-colegio-ingles/inscriptions/inscri
         MiniStoreClassificationsModule,
         InvoiceKeysModule,
         BranchOfficeModule,
+        LevelsModule,
+        PaymentPlansModule,
+        PaymentPlanConceptsModule,
         StudentsModule,
         FamiliesModule,
         InscriptionsModule

@@ -16,6 +16,7 @@ import { BranchOfficeModule } from '../../system/branch-office/branch-office.mod
 import { PaymentPlansModule } from '../payment-plans/payment-plans.module';
 import { StudyPlanVariantsModule } from '../study-plan-variants/study-plan-variants.module';
 import { StudyPlansModule } from '../study-plans/study-plans.module';
+import { PaymentPlanConceptsModule } from '../payment-plan-concepts/payment-plan-concepts.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { StudyPlansModule } from '../study-plans/study-plans.module';
         BranchOfficeModule,
         ClassroomsModule,
         PaymentPlansModule,
+        PaymentPlanConceptsModule,
         StudyPlanVariantsModule,
         StudyPlansModule,
         MulterModule.register({

@@ -10,4 +10,8 @@ export class PaymentPlansService extends TypeOrmCrudService<PaymentPlan> {
   constructor(@InjectRepository(PaymentPlan, ColegioDBNameConnection) private readonly paymentPlanRepository: Repository<PaymentPlan>) {
     super(paymentPlanRepository);
   }
+
+  async getPaymentsPlayWithConcepts() {
+    return this.paymentPlanRepository.createQueryBuilder('paymentPlan').innerJoinAndSelect('paymentPlan.paymentPlanConcepts', 'concepts').getMany();
+  }
 }

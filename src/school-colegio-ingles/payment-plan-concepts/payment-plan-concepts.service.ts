@@ -7,7 +7,7 @@ import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 
 @Injectable()
 export class PaymentPlanConceptsService extends TypeOrmCrudService<PaymentPlanConcept> {
-  constructor(@InjectRepository(PaymentPlanConcept, ColegioDBNameConnection) private readonly paymentPlanConceptRepository: Repository<PaymentPlanConcept>) {
+  constructor(@InjectRepository(PaymentPlanConcept, ColegioDBNameConnection) readonly paymentPlanConceptRepository: Repository<PaymentPlanConcept>) {
     super(paymentPlanConceptRepository);
   }
 
