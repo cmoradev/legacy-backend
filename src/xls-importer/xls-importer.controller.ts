@@ -572,6 +572,7 @@ export class XlsImporterController {
         try {
             for (const student of (students['Layout'] as Student[])) {
                 const family = await this.familyService.repo.findOne({ lastNameFather: student.lastNameFather, lastNameMother: student.lastNameMother });
+                const studentFound = await this.studentsService.findStudentByFullName(`${student.name} ${student.lastNameFather} ${student.lastNameMother}`);
                 if (student.family === null && typeof family === 'undefined') {
                     studentsData.push({
                         ...student,
@@ -585,7 +586,15 @@ export class XlsImporterController {
                         } as unknown as Family,
                     } as Student);
                 }
-                if (typeof family !== 'undefined') {
+                if (typeof family !== 'undefined' && student.family !== null && typeof studentFound !== 'undefined') {
+                    studentsData.push({
+                        ...student,
+                        id: studentFound.id,
+                        searchName: `${studentFound.name} ${studentFound.lastNameFather} ${studentFound.lastNameMother}`,
+                        family: { id: studentFound.family } as unknown as Family,
+                    } as Student);
+                }
+                if (typeof family !== 'undefined' && student.family !== null && typeof studentFound === 'undefined') {
                     studentsData.push({
                         ...student,
                         searchName: `${student.name} ${student.lastNameFather} ${student.lastNameMother}`,
@@ -594,6 +603,7 @@ export class XlsImporterController {
                 }
             }
             fs.unlinkSync(`/var/www/uploads/temp/${file.filename}`);
+            console.log(studentsData);
             return await this.studentsService.bulkStudents(studentsData);
         } catch (e) {
             console.error(e.message);
