@@ -537,11 +537,6 @@ export class XlsImporterController {
         return await convertToXlsx(catalog);
     }
 
-    @Post('bulk-inscriptions')
-    async bulkInscriptionsByLayout(@Body() request) {
-        await this.inscriptionService.repo.save(request);
-    }
-
     @Post('bulk-students')
     @UseInterceptors(FileInterceptor('file', { dest: '/var/www/uploads/temp' }))
     async bulkStudentsByLayout(@UploadedFile() file: Express.Multer.File) {

@@ -26,10 +26,15 @@ import * as moment from 'moment';
     query: {
         maxLimit: 200,
         join: {
-            inscripStudent: {},
-            inscripCampus: {},
-            inscripGrade: {},
-            inscripGroup: {},
+            inscripStudent: {
+               eager: true,
+            },
+            inscripCampus: {
+            },
+            inscripGrade: {
+            },
+            inscripGroup: {
+            },
             inscripLevel: {},
             inscripCycle: {},
             inscripAgentCreator: {},
