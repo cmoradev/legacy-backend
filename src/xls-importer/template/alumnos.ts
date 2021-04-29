@@ -8,13 +8,13 @@ function nameColumn(item: string) {
         lastNameMother: { name: 'Apellido materno' },
         age: { name: 'Edad', isOptional: true },
         gender: { name: 'Sexo', isOptional: true },
-        address: { name: 'Direccion', IsOptional: true },
+        address: { name: 'Direccion', isOptional: true },
         bloodType: { name: 'Tipo de sangre', isOptional: true },
         birthdate: { name: 'Fecha de nacimiento', isOptional: true },
         curp: { name: 'CURP' },
         typeStudent: { name: 'Tipo de estudiante' },
         studentCampus: { name: 'Plantel' },
-        family: { name: 'Familia' },
+        family: { name: 'Familia', isOptional: true },
     };
     return columnName[item];
 }
@@ -41,7 +41,7 @@ export async function generateTemplateStudents(workBook: ExcelJS.Workbook, heade
         }
     });
     sheet.columns = columns;
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1'].map(key => {
+    ['A1', 'B1', 'C1', 'D1', 'J1', 'K1', 'L1'].map(key => {
         sheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'solid',

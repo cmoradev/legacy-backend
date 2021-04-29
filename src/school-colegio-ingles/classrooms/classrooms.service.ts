@@ -34,6 +34,6 @@ export class ClassroomsService extends TypeOrmCrudService<Classroom> {
     }
 
     async getClassroomWithGroup() {
-        return await this.repo.createQueryBuilder('classroom').innerJoinAndSelect('classroom.group', 'group').getMany();
+        return await this.repo.createQueryBuilder('classroom').innerJoinAndSelect('classroom.grade', 'grade').getMany();
     }
 }
