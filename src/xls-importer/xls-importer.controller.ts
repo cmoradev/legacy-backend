@@ -400,7 +400,6 @@ export class XlsImporterController {
     async downloadLayoutInscriptions() {
         const fields = {
             id: 'id',
-
             createdAt: 'createdAt',
             updatedAt: 'updatedAt',
             version: 'version',
@@ -433,14 +432,14 @@ export class XlsImporterController {
         const studentsWithBranchOffice = await this.studentsService.getStudentsWithBranchOffice();
         const studentsRows: any[] = [];
         studentsWithBranchOffice.map((curr) => {
-            studentsRows.push([curr.id, `${curr.name} ${curr.lastNameFather} ${curr.lastNameMother}`, curr.studentCampus.name]);
+            studentsRows.push([curr.id, curr.matricula, `${curr.name} ${curr.lastNameFather} ${curr.lastNameMother}`, curr.studentCampus.name]);
         });
         const sheetStudents = catalog.addWorksheet('CATALOGO ESTUDIANTES');
         sheetStudents.addTable({
             name: 'Estudiantes',
             ref: 'A1',
             headerRow: true,
-            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Plantel' }],
+            columns: [{ name: 'ID' }, { name: 'Matricula' }, { name: 'Nombre' }, { name: 'Plantel' }],
             rows: studentsRows,
         });
         const gradesWithLevel = await this.gradeService.getGradesWithLevel();
@@ -472,14 +471,14 @@ export class XlsImporterController {
         const classroomWithGroup = await this.classroomService.getClassroomWithGroup();
         const classroomRows: any[] = [];
         classroomWithGroup.map((_classroom) => {
-            classroomRows.push([_classroom.id, _classroom.name, _classroom.group.name]);
+            classroomRows.push([_classroom.id, _classroom.name, _classroom.grade.name]);
         });
         const sheetClassroom = catalog.addWorksheet('CATALOGO CLASSROOM');
         sheetClassroom.addTable({
             name: 'CLASSROOM',
             ref: 'A1',
             headerRow: true,
-            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Grupo' }],
+            columns: [{ name: 'ID' }, { name: 'Nombre' }, { name: 'Grado' }],
             rows: classroomRows,
         });
         const studyPlansWithLevel = await this.studyPlansService.getStudyPlansWithLevel();

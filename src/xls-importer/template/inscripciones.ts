@@ -4,7 +4,7 @@ import { setCatalog } from '../utils/setCatalog';
 function nameColumn(item: string) {
     const columnName = {
         id: { name: 'Id' },
-        idStatus: { name: 'Estado' },
+        idStatus: { name: 'Estado' , isOptional: true},
         inscripStudent: { name: 'Estudiante' },
         inscripGroup: { name: 'Grupo' },
         inscripGrade: { name: 'Grado' },
@@ -48,7 +48,7 @@ export async function generateTemplateInscriptions(workBook: ExcelJS.Workbook, h
         }
     });
     sheet.columns = columns;
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
+    ['B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
         sheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'solid',
@@ -62,7 +62,7 @@ export async function generateTemplateInscriptions(workBook: ExcelJS.Workbook, h
         };
     });
 
-    sheet.columns = [...sheet.columns, { header: 'Campos optionales', key: 'optionalFields' }];
+    sheet.columns = [...sheet.columns, { header: 'Campos opcionales', key: 'optionalFields' }];
     optionalColumns.forEach(item => {
         sheet.addRow({ optionalFields: item });
     });
