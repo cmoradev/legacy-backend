@@ -67,7 +67,7 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
             from: currentBranch.Email,
             subject: 'Comprobantes de pago CFDI',
             text: 'CFDI',
-            html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br><p>Academias del Colegio Inglés</p></div>',
+            html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br></div>',
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
