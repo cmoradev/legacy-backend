@@ -96,7 +96,6 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
   const detalles = saleDetailsAcademySchool(details || []);
   const pago = payment.quantity - payment.change;
   const base = (pago / detalles.total) || 1;
-  console.log(ivaFromFinalAmount(pago));
   const resultad = {
     total: 0,
     subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
@@ -127,11 +126,11 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     const concept = {
       quantity: detail.quantity,
       claveProd: detail.codeConcept,
-      unidad: 'E48', // detail.miniStoreProduct.unity,
+      unidad: 'E48',
       descrption: detail.concept ? detail.concept : detail.academyInscriptionConcept.description,
-      unitPrice, // mulQuantity(conceptPrice, base),
+      unitPrice,
       discountTotal,
-      importe, // mulQuantity(totalAmountConcept(detail), base),
+      importe,
     };
     const totalconcetp = sumQuantity(subQuantity(importe, discountTotal).toString(), mulQuantity(subQuantity(importe, discountTotal), .16));
     resultad.total = sumQuantity(resultad.total, totalconcetp);
