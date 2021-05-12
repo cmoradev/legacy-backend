@@ -58,6 +58,9 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
       },
       relations: [
         'methodsPayments',
+        'methodsPayments.Bank', // se agregaron para crear el recibo en el server
+        'methodsPayments.invoiceMethodPayment', // se agregaron para crear el recibo en el server
+        'cashierCharge', // se agregaron para crear el recibo en el server
       ],
     });
     const highestPayment = this.getHighestPayment(payment.methodsPayments);

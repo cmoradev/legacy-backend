@@ -15,7 +15,7 @@ import {
   GenerateInvoice,
   GenerateInvoiceIedu,
 } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
-import { FormaPago, XmlCdfi } from '@signati/core';
+import { FormaPago, RegimenFiscalList, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';
 import { FactSw, StampV4 } from '../../../webService/FactSw';
@@ -29,6 +29,12 @@ import { convertPaymentsReportCollege } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { ConfigService } from '../../../config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
+import { Recibo } from '../../../common/pdfmake/Recibo';
+import { NewReport } from '../../../common/types/recibo.interface';
+import * as moment from 'moment';
+import { Student } from '../../students/entities/student.entity';
+import { StudentsService } from '../../students/students.service';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 
 // @UseGuards(JwtGuard)
 @Crud({
@@ -55,6 +61,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
     readonly schoolChargeInvoiceService: SchoolChargesInvoiceService,
     readonly branchOffice: BranchOfficeService,
+    readonly student: StudentsService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private smartWeb: FactSw,
     private readonly configService: ConfigService,
@@ -65,23 +72,107 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     return this;
   }
 
-  // @Get('/billing')
-  // async billingGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
-  //   try {
-  //     query.chargeId = 335;
-  //     query.chargePaymentId = 344;
-  //     const result = await this.service.findSaleByPayment(query);
-  //     const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
-  //     const data = invoiceDetails;
-  //     res.send({
-  //       data,
-  //     });
-  //   } catch (e) {
-  //     res.send({
-  //       error: e,
-  //     });
-  //   }
-  // }
+  @Post('/receipt')
+  async billingGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
+    try {
+      // query.chargeId = 335;
+      // query.chargePaymentId = 344;
+      // query.branchOfficeId = 1;
+      // query.branchOfficeSettingId = 1;
+      // query.student = {
+      //   id: 1,
+      // } as Student;
+      const student = await this.student.findOne({ id: query.student.id });
+      const result = await this.service.findSaleByPayment(query);
+      const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: query.branchOfficeSettingId,
+        },
+      });
+
+      const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
+      const data = invoiceDetails;
+      const detalles = invoiceDetails.detalles.map((d: NewReport) => {
+        return {
+          cantidad: d.quantity,
+          preciou: d.unitPrice,
+          descripcion: d.descrption,
+          recargo: d.surcharge,
+          descuento: d.discountTotal,
+          beca: d.scholarships,
+          importe: d.importe,
+        };
+      });
+      const logo = readFileSync(`${this.configService.getPath()}logos/colegiologo.png`);
+      const Receip = new Recibo();
+      Receip.addLogo({
+        width: 100,
+        height: 100,
+        image: `data:image/png;base64, ${logo.toString('base64')}`,
+      });
+      Receip.addFolio(result.charge.folio);
+      Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      const regimen = RegimenFiscalList.find((f) => f.value === branchOfficeSett.regime);
+      Receip.addEmisor({
+        name: branchOfficeSett.name,
+        rfc: branchOfficeSett.rfc,
+        regimen: branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+        expedido: branchOfficeSett.address,
+      });
+      const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
+      Receip.addReceptor({
+        name,
+        curp: student.curp ? student.curp : '',
+        matricula: student.matricula,
+      });
+      const ven = result.payment.cashierCharge.name + ' ' + result.payment.cashierCharge.lastnameFather + ' ' + result.payment.cashierCharge.lastnameMother;
+      Receip.addInformacion({
+        vendedor: ven,
+      });
+
+
+      Receip.addCatidad({
+        SubTotal: invoiceDetails.subtotal,
+        Recargo: invoiceDetails.surcharges,
+        Descuento: invoiceDetails.discount,
+        Impuesto: '0',
+        Total: invoiceDetails.total,
+      });
+      Receip.addDetalles(detalles);
+
+      Receip.addNumberToLetter(invoiceDetails.total);
+      Receip.addObervations(result.payment.observations);
+      const forma = result.payment.methodsPayments.map((m) => {
+        return {
+          forma: m.invoiceMethodPayment.name,
+          cantidad: roundQuantity(m.quantity),
+          banco: m.Bank ? m.Bank.name : '',
+          cuenta: m.account,
+          fecha: m.date,
+        };
+      });
+      Receip.addFormaPago(forma);
+      // await pdf.save('/home/misael/Documents/proyectos/amir')
+      const download = Buffer.from(await Receip.getBase64(), 'base64');
+
+      if (true) {
+        res.contentType('application/pdf');
+        res.send(download);
+      } else {
+
+        res.send({
+
+          data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      res.send({
+        error: e,
+      });
+    }
+  }
 
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {

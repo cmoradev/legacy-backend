@@ -18,6 +18,7 @@ import { ChargesSchoolModule } from '../charges-school.module';
 import { SchoolPaymentsModule } from '../../school-payments/school-payments.module';
 import { SchoolChargesInvoiceModule } from '../school-charges-invoice/school-charges-invoice.module';
 import { ConfigModule } from '../../../config/config.module';
+import { StudentsModule } from '../../students/students.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { ConfigModule } from '../../../config/config.module';
     forwardRef(() => ChargesSchoolModule),
     SchoolPaymentsModule,
     SchoolChargesInvoiceModule,
-    ConfigModule
+    ConfigModule,
+    StudentsModule,
   ],
   providers: [SchoolChargesPaymentsService, SmartWeb],
   controllers: [SchoolChargesPaymentsController],
