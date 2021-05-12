@@ -36,7 +36,7 @@ import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolChargePayment,
