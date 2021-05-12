@@ -155,17 +155,17 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       Receip.addFormaPago(forma);
       // await pdf.save('/home/misael/Documents/proyectos/amir')
       const download = Buffer.from(await Receip.getBase64(), 'base64');
-
-      if (true) {
-        res.contentType('application/pdf');
-        res.send(download);
-      } else {
-
-        res.send({
-
-          data,
-        });
-      }
+      res.send({ src: 'data:application/pdf;base64,' + await Receip.getBase64() });
+      // if (true) {
+      //   res.contentType('application/pdf');
+      //   res.send(download);
+      // } else {
+      //
+      //   res.send({
+      //
+      //     data,
+      //   });
+      // }
     } catch (e) {
       console.log(e);
       res.send({
