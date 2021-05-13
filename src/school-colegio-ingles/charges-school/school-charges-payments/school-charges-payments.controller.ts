@@ -82,7 +82,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       // query.student = {
       //   id: 1,
       // } as Student;
-      const student = await this.student.findOne({ id: query.student.id });
+      const student = query.student
       const result = await this.service.findSaleByPayment(query);
       const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
       const branchOfficeSett = await this.branchOfficeSettingService.findOne({
