@@ -82,7 +82,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       // query.student = {
       //   id: 1,
       // } as Student;
-      const student = query.student
+      const student = query.student;
       const result = await this.service.findSaleByPayment(query);
       // const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
       const branchOfficeSett = await this.branchOfficeSettingService.findOne({
@@ -115,7 +115,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
       const regimen = RegimenFiscalList.find((f) => f.value === branchOfficeSett.regime);
       Receip.addEmisor({
-        name: branchOfficeSett.name,
+        name: branchOfficeSett.businessName,
         rfc: branchOfficeSett.rfc,
         regimen: branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
         expedido: branchOfficeSett.address,
