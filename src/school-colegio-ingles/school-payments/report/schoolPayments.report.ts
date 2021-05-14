@@ -50,7 +50,7 @@ export class SchoolPaymentsReport {
       border: borders as Partial<Borders>,
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
-    dateRangeCell.value = `MES CONSULTADO: ${ query.month !== '' ? moment(query.month).format('MMM-YYYY') : 'Todo el ciclo escolar' }`;
+    dateRangeCell.value = `MES CONSULTADO: ${query.month !== '' ? moment(query.month).format('MMM-YYYY') : 'Todo el ciclo escolar'}`;
     dateRangeCell.style = {
       border: borders as Partial<Borders>,
       alignment: { horizontal: 'center', vertical: 'middle' },
@@ -71,6 +71,7 @@ export class SchoolPaymentsReport {
       rowsItem.push(schoolPayment.statusPayment);
       rowsItem.push(schoolPayment.payDay);
       rowsItem.push(schoolPayment.description);
+      rowsItem.push(schoolPayment.price);
       rowsTable.push(rowsItem);
     });
     reportSheet.addTable({
@@ -80,6 +81,7 @@ export class SchoolPaymentsReport {
         theme: 'TableStyleLight9',
         showColumnStripes: true,
       },
+      totalsRow: true,
       headerRow: true,
       columns: [
         { name: 'Matricula', filterButton: true },
@@ -90,8 +92,24 @@ export class SchoolPaymentsReport {
         { name: 'Pago', filterButton: true },
         { name: 'Fecha de pago', filterButton: true },
         { name: 'Descripcion', filterButton: true },
+        { name: 'Precio', filterButton: true, totalsRowLabel: 'Total', totalsRowFunction: 'sum' },
       ],
       rows: rowsTable,
+    });
+
+    reportSheet.columns.forEach((cell, colNumber) => {
+      // tslint:disable-next-line:no-unused-expression
+      colNumber === 1 ? cell.width = 15 : null;
+      // tslint:disable-next-line:no-unused-expression
+      colNumber === 2 ? cell.width = 30 : null;
+      // tslint:disable-next-line:no-unused-expression
+      if (colNumber >= 3 && colNumber < 8) {
+        cell.width = 10;
+      }
+      // tslint:disable-next-line:no-unused-expression
+      colNumber === 8 ? cell.width = 35 : null;
+      // tslint:disable-next-line:no-unused-expression
+      colNumber === 9 ? cell.width = 15 : null;
     });
     return reportSheet;
   }

@@ -2,6 +2,7 @@ import { ReportStructure } from '../interfaces/IQueryReport';
 import { SchoolPayment } from '../entities/school-payment.entity';
 import { formatDate } from '../../../common/date';
 import { TypeStudent } from '../../students/interface/studentsSchool.interface';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 
 export class ReportProcessor {
   public strutureReport(schoolPayments: SchoolPayment[]): ReportStructure[] {
@@ -11,13 +12,13 @@ export class ReportProcessor {
       payDay = formatDate(schoolPayment.payDate);
       flatReport.push({
         enrollment: schoolPayment.inscription.inscripStudent.matricula,
-        clientName: `${ schoolPayment.inscription.inscripStudent.name } ${ schoolPayment.inscription.inscripStudent.lastNameFather } ${ schoolPayment.inscription.inscripStudent.lastNameMother }`.toUpperCase(),
+        clientName: `${schoolPayment.inscription.inscripStudent.name} ${schoolPayment.inscription.inscripStudent.lastNameFather} ${schoolPayment.inscription.inscripStudent.lastNameMother}`.toUpperCase(),
         clientType: schoolPayment.inscription.inscripStudent.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
         level: schoolPayment.inscription.inscripLevel.name,
         grade: schoolPayment.inscription.inscripGrade.name,
         group: schoolPayment.inscription.inscripClassroom.name,
         description: schoolPayment.description,
-        price: schoolPayment.price,
+        price: roundQuantity(schoolPayment.price),
         payDay,
         statusPayment: this.checkStatusPayment(schoolPayment.statusPayment),
       });

@@ -38,9 +38,7 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
   @Get('/add/payments')
   public async addSchoolPayment(@Req() req, @Res() res: Response) {
     try {
-
-      // const data = await this.service.repo.save([] as unknown as SchoolPayment[]);
-      res.send({ save: true });
+      res.send({ save: 'data' });
     } catch (e) {
       res.send(e);
     }
