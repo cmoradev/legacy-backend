@@ -13,14 +13,17 @@ export class InvoiceProcessorCollege {
       let paymentMethod = '';
       let billingAgent = '';
       let typeInvoice = 'Ingreso';
-      payDay = formatDate(invoice.schoolChargePayment.createdAt);
-      paymentFolio = invoice.schoolChargePayment.folio;
-      paymentMethod = invoice.schoolChargePayment.methodsPayments.sort((a: SchoolChargesMethodsPayments, b: SchoolChargesMethodsPayments) => {
+      if (!invoice.schoolChargePayment) {
+        console.log(invoice);
+      }
+      payDay = formatDate(invoice.schoolChargePayment ? invoice.schoolChargePayment.createdAt : '');
+      paymentFolio = invoice.schoolChargePayment ? invoice.schoolChargePayment.folio : '';
+      paymentMethod = invoice.schoolChargePayment?.methodsPayments?.sort((a: SchoolChargesMethodsPayments, b: SchoolChargesMethodsPayments) => {
         if (a.quantity < b.quantity) {
           return 1;
         }
         return -1;
-      })[0]?.invoiceMethodPayment.name;
+      })[0]?.invoiceMethodPayment.name || '';
       billingAgent = `${invoice.agentBilling.name} ${invoice.agentBilling.lastnameFather}  ${invoice.agentBilling.lastnameMother}`.toUpperCase();
       flatReport.push({
         status: this.checkStatusInvoice(invoice.status),
