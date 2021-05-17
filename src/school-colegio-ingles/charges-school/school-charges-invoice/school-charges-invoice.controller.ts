@@ -16,7 +16,7 @@ import { ConfigService } from '../../../config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 
-//@UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolChargesInvoice,
