@@ -46,6 +46,13 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
       });
     }
 
+    if (query.ActivityGroupId !== 0 && query.ActivityGroupId !== '0') {
+      activities.andWhere('group.id = :groupId', {
+        groupId: query.ActivityGroupId,
+      });
+    }
+
+
     if (query.branchOfficeId !== 0 && query.branchOfficeId !== '0') {
       activities.andWhere('branchOffice.id = :branchOfficeId', {
         branchOfficeId: query.branchOfficeId,
