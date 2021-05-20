@@ -121,7 +121,7 @@ export class AuthService {
     return null;
   }
 
-  generateJWT(user: Partial<User>, expiration: number = 86400): { access_token: string, decode: PayloadToken | any } {
+  generateJWT(user: Partial<User>, expiration: number = 60): { access_token: string, decode: PayloadToken | any } {
     const payload = { username: user.email, sub: user.id };
     const token = this.jwtService.sign(payload, {
       expiresIn: expiration,
