@@ -21,13 +21,12 @@ export class AuthAccessTokensService extends TypeOrmCrudService<AuthAccessTokens
     }
 
     async findToken(token: string) {
-        console.log(token)
-        const a = await this.repo.findOne({
+        const tokenFound = await this.repo.findOne({
             where: {
                 jwt: token,
             },
         });
-        return a;
+        return tokenFound;
     }
 
 }
