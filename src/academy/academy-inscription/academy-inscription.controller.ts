@@ -24,6 +24,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             'concepts.acInsConActivity': {},
             'concepts.acInsConConcepType': {},
             'concepts.acInsConStatusPayment': {},
+            'concepts.academyChargeDetail':{},
             'concepts.extraCharges': {},
         },
     },
