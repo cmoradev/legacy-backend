@@ -18,6 +18,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             acInsConConcepType: {},
             acInsConStatusPayment: {},
             acInscription: {},
+            academyChargeDetail:{},
             extraCharges: {},
         },
     },
