@@ -11,6 +11,7 @@ export const connections = [
     'rancho',
     'pachamama',
     'kiinbeh',
-    'herbart'
+    'herbart',
+    'tortilleria.salmo'
 ];
 
