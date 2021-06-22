@@ -10,8 +10,12 @@ import { ClassroomsService } from './classrooms.service';
     query: {
         join: {
             grade: {},
-            'grade.level': {},
-            'grade.level.campus': {},
+             'grade.level': {
+                alias: 'grade_level' 
+            },
+            'grade.level.campus': {
+                alias: 'grade_level_campus' 
+            },
             cycle: {},
             studyPlan: {},
             studyPlanVariant: {},
