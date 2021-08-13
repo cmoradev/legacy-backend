@@ -1,8 +1,5 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {} from 'passport-jwt';
-import { PayloadToken } from '../../../common/types/jwt';
-import { getAction, getFeature } from '@nestjsx/crud';
 
 @Injectable()
 export class JwtGuard extends AuthGuard('jwt') {
@@ -15,7 +12,6 @@ export class JwtGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err: any, user: any, info: any, context: ExecutionContext, status?: any) {
-        console.log('JWT');
         // You can throw an exception based on either "info" or "err" arguments
         if (err || !user) {
             throw err || new UnauthorizedException();
