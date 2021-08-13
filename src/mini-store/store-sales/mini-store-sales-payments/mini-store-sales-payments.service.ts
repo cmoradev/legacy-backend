@@ -148,6 +148,21 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         });
     }
 
+    async downloadReport(payments: MiniStoreSalePayment[],
+                         sales: MiniStoreSale[],
+                         salesReturns: SalesReturns[],
+                         cashiers: User[],
+                         paymentMethods: InvoiceMethodPayment[],
+                         matriz: CellRow[][]) {
+        return new SimpleReport().generate({
+            payments,
+            cashiers,
+            paymentMethods,
+            salesReturns,
+            sales,
+        }, matriz);
+    }
+
     async simpleReport(payments: MiniStoreSalePayment[],
                        sales: MiniStoreSale[],
                        salesReturns: SalesReturns[],

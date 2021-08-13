@@ -24,19 +24,12 @@ export class MiniStoreSalesPaymentsReportController {
     @Get('/simple-report')
     async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
         try {
-            console.log('QUERY DATA', query);
             const payments = await this.service.fetchFilteredPayments(query);
-            console.log('PAYMENTS', payments);
             const sales = await this.service.fetchFilteredSales(query);
-            console.log('SALES', sales);
             const salesReturns = await this.service.fetchFilteredReturns(query);
-            console.log('SALE RETURNS', salesReturns);
             const cashiers = await this.user.get_user_with_store_sales();
-            console.log('CASHIERS', cashiers);
             const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
-            console.log('PAYMENT METHODS', paymentMethods);
             const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
-            console.log('MATRIZ', matriz);
             const result = {
                 payments: {
                     matriz,
@@ -47,21 +40,23 @@ export class MiniStoreSalesPaymentsReportController {
                 file: '',
             };
             if (query.onlyFile) {
-                result.file = await this.service.simpleReport(
+                const workbook = await this.service.downloadReport(
                     payments,
                     sales,
                     salesReturns,
                     cashiers,
                     paymentMethods,
-                    matriz,
-                    { base64: true });
-                console.log('FILE', result.file);
+                    matriz);
+                res.status(200);
+                res.setHeader('Content-Type', 'text/xlsx');
+                res.setHeader('Content-Disposition', 'attachment; filename=FILENAME.xlsx');
+                workbook.xlsx.write(res).then(() => {
+                    res.end();
+                }).catch((error) => Promise.reject(error));
             } else {
                 result.payments = convertPaymentsReport(payments, cashiers, paymentMethods);
-                console.log('PAYMENTS RESULT', result.payments);
+                res.send(result);
             }
-            console.log(result);
-            res.send(result);
         } catch (error) {
             console.error(error.message);
         }
