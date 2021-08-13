@@ -13,47 +13,58 @@ import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
     constructor(
-      readonly service: MiniStoreSalesPaymentsService,
-      readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
-      readonly branchOffice: BranchOfficeService,
-      readonly branchOfficeSettingService: BranchOfficeSettingService,
-      readonly user: UsersService,
+        readonly service: MiniStoreSalesPaymentsService,
+        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        readonly user: UsersService,
     ) {
     }
 
     @Get('/simple-report')
     async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
-        const payments = await this.service.fetchFilteredPayments(query);
-        const sales = await this.service.fetchFilteredSales(query);
-        const salesReturns = await this.service.fetchFilteredReturns(query);
-        const cashiers = await this.user.get_user_with_store_sales();
-        const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
-        const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
-
-        const result = {
-            payments: {
-                matriz,
-                payments: [],
-            },
-            sales: [],
-            returns: [],
-            file: '',
-        };
-        if (query.onlyFile) {
-            result.file = await this.service.simpleReport(
-              payments,
-              sales,
-              salesReturns,
-              cashiers,
-              paymentMethods,
-              matriz,
-              { base64: true });
-        } else {
-
-            const viewPayments = convertPaymentsReport(payments, cashiers, paymentMethods);
-            result.payments = viewPayments;
+        try {
+            console.log('QUERY DATA', query);
+            const payments = await this.service.fetchFilteredPayments(query);
+            console.log('PAYMENTS', payments);
+            const sales = await this.service.fetchFilteredSales(query);
+            console.log('SALES', sales);
+            const salesReturns = await this.service.fetchFilteredReturns(query);
+            console.log('SALE RETURNS', salesReturns);
+            const cashiers = await this.user.get_user_with_store_sales();
+            console.log('CASHIERS', cashiers);
+            const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
+            console.log('PAYMENT METHODS', paymentMethods);
+            const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
+            console.log('MATRIZ', matriz);
+            const result = {
+                payments: {
+                    matriz,
+                    payments: [],
+                },
+                sales: [],
+                returns: [],
+                file: '',
+            };
+            if (query.onlyFile) {
+                result.file = await this.service.simpleReport(
+                    payments,
+                    sales,
+                    salesReturns,
+                    cashiers,
+                    paymentMethods,
+                    matriz,
+                    { base64: true });
+                console.log('FILE', result.file);
+            } else {
+                result.payments = convertPaymentsReport(payments, cashiers, paymentMethods);
+                console.log('PAYMENTS RESULT', result.payments);
+            }
+            console.log(result);
+            res.send(result);
+        } catch (error) {
+            console.error(error.message);
         }
-        res.send(result);
     }
 
     @Get('/commissions')
@@ -82,8 +93,7 @@ export class MiniStoreSalesPaymentsReportController {
                     isActive: true,
                 },
             });
-            const viewPayments = convertPaymentsComissionReport(quantityCommissions, payments, cashiers, paymenMethods);
-            result.payments = viewPayments;
+            result.payments = convertPaymentsComissionReport(quantityCommissions, payments, cashiers, paymenMethods);
         }
         response.send(result);
     }
