@@ -37,7 +37,6 @@ export class MiniStoreSalesPaymentsReportController {
                 },
                 sales: [],
                 returns: [],
-                file: '',
             };
             if (query.onlyFile) {
                 const workbook = await this.service.downloadReport(
@@ -49,7 +48,7 @@ export class MiniStoreSalesPaymentsReportController {
                     matriz);
                 res.status(200);
                 res.setHeader('Content-Type', 'text/xlsx');
-                res.setHeader('Content-Disposition', 'attachment; filename=FILENAME.xlsx');
+                res.setHeader('Content-Disposition', `attachment; filename=Ingresos-${query.startDate} A ${query.endDate}.xlsx`);
                 workbook.xlsx.write(res).then(() => {
                     res.end();
                 }).catch((error) => Promise.reject(error));
