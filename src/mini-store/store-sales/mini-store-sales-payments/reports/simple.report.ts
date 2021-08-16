@@ -1,11 +1,10 @@
 import * as Excel from 'exceljs';
 import { Borders } from 'exceljs';
-import { MiniStoreSalePayment } from '../entities/mini-store-sale-payment.entity';
-import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
-import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { User } from '../../../../system/users/entities/user.entity';
 import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
+import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
+import { MiniStoreSalePayment } from '../entities/mini-store-sale-payment.entity';
 import { CellRow } from '../utils/generate-matriz-by-payment';
 
 export class SimpleReport {
@@ -26,52 +25,44 @@ export class SimpleReport {
             },
         ];
 
-        const image = workbook.addImage({
-            filename: './public/images/little-store-logo.png',
-            extension: 'png',
-        });
-
         const paymentsSheet = workbook.addWorksheet('Pagos', {
             properties:
-              {
-                  tabColor: {
-                      argb: '359c5b',
-                  },
-              },
+            {
+                tabColor: {
+                    argb: '359c5b',
+                },
+            },
         });
         const salesSheet = workbook.addWorksheet('Ventas', {
             properties:
-              {
-                  tabColor: {
-                      argb: '1C86CA',
-                  },
-              },
+            {
+                tabColor: {
+                    argb: '1C86CA',
+                },
+            },
         });
 
         const salesReturnsSheet = workbook.addWorksheet('Devoluciones', {
             properties:
-              {
-                  tabColor: {
-                      argb: 'E53935',
-                  },
-              },
+            {
+                tabColor: {
+                    argb: 'E53935',
+                },
+            },
         });
-        this.fillPaymentsSheet(paymentsSheet, image, data, matriz);
+        this.fillPaymentsSheet(paymentsSheet, data, matriz);
         this.fillSalesSheet(salesSheet, sales);
         this.fillSalesReturnsSheet(salesReturnsSheet, salesReturns);
 
         return workbook;
     }
 
-    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data, matriz: CellRow[][]): Excel.Worksheet {
+    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, data, matriz: CellRow[][]): Excel.Worksheet {
         const { cashiers, payments, paymentMethods } = data;
-        paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
         paymentsSheet.mergeCells('C3:D3');
         paymentsSheet.mergeCells('C4:D4');
         paymentsSheet.mergeCells('C5:D5');
-
-        const bussinessNameCell = paymentsSheet.getCell('C2');
         const reportTypeCell = paymentsSheet.getCell('C3');
         const dateRangeCell = paymentsSheet.getCell('C4');
         const dateOfIssueCell = paymentsSheet.getCell('C5');
@@ -83,7 +74,6 @@ export class SimpleReport {
             left: { style: 'thin' },
         };
 
-        bussinessNameCell.value = 'QUINTANA ROO, S.C ';
         reportTypeCell.value = 'TIPO DE REPORTE: Reporte de pagos';
         dateRangeCell.value = 'RANGO CONSULTADO: *';
         dateOfIssueCell.value = 'FECHA DE EMISIÓN:' + new Date().toISOString().substr(0, 10);
@@ -163,7 +153,7 @@ export class SimpleReport {
                 return newList;
             }),
         })
-        ;
+            ;
 
         for (const row of Array.from(Array(2 + paymentMethods.length + 1).keys())) {
             if (row >= 2) {
@@ -219,21 +209,14 @@ export class SimpleReport {
                 }
                 payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
                     const paymentItem = [];
-                    const totalPaymentsAmount = payment.miniStoreSaleMethodPayments.reduce((previousValue, currentValue) => {
-                        return previousValue + currentValue.quantity;
-                    }, 0);
                     paymentItem.push(payment.createdAt || '');
                     paymentItem.push(payment.agent.name);
                     paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
                     paymentItem.push(payment.folio);
-                    paymentItem.push(payment.miniStoreSale.folio);
-                    paymentItem.push(payment.miniStoreSale.student.matricula);
                     paymentItem.push(fullName);
                     paymentItem.push(payment.miniStoreSale.observations || '');
                     paymentItem.push(paymentMethod?.invoiceMethod?.name || '');
-                    paymentItem.push(paymentMethod.quantity);
-                    paymentItem.push(payment.change);
-                    paymentItem.push(totalPaymentsAmount - payment.change);
+                    paymentItem.push(Number(paymentMethod.quantity).toFixed(2));
                     paymentsDetails.push(paymentItem);
                 });
                 startRow += 1;
@@ -251,14 +234,10 @@ export class SimpleReport {
                 { name: 'Vendedor' },
                 { name: 'Facturado' },
                 { name: 'Folio de pago' },
-                { name: 'Folio de venta' },
-                { name: 'Matricula' },
                 { name: 'Cliente' },
                 { name: 'Observación' },
                 { name: 'Formas de pago' },
                 { name: 'Monto pagado', totalsRowFunction: 'sum' },
-                { name: 'Cambio', totalsRowFunction: 'sum' },
-                { name: 'Total', totalsRowFunction: 'sum' },
             ],
             rows: paymentsDetails,
         });
@@ -297,9 +276,10 @@ export class SimpleReport {
                 });
             }
         });
-        for (let row = 15; row <= paymentsDetails.length + 15; row++) {
+        let initialRow = 15
+        for (let row = initialRow; row <= paymentsDetails.length + initialRow; row++) {
             paymentsSheet.getRow(row).eachCell((cell, colNumber) => {
-                if (colNumber > 10 && colNumber < 14) {
+                if (colNumber > 8) {
                     cell.numFmt = '"$"#,##0.00;[Red]\-"$"#,##0.00';
                 }
             });
@@ -314,22 +294,10 @@ export class SimpleReport {
             const { student } = sale;
             const { name, lastNameFather, lastNameMother } = student;
             const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            let studentType = '';
-            switch (student.typeStudent) {
-                case TypeStudent.student:
-                    studentType = 'Alumno';
-                    break;
-                case TypeStudent.externo:
-                    studentType = 'Externo';
-                    break;
-                default:
-                    studentType = 'Prospecto';
-                    break;
-            }
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {
-                ['B', 'C', 'D', 'E', 'F', 'G','J', 'K', 'L', ].forEach(column => {
+                ['B', 'C', 'D', 'E', 'F', 'G', 'J', 'K', 'L',].forEach(column => {
                     salesSheet.mergeCells(`${column}${startRow}:${column}${nextRowToMerge}`);
                 });
                 startRow = nextRowToMerge;
@@ -343,7 +311,6 @@ export class SimpleReport {
                 const productPrice = detail.miniStoreProduct.IVA ? detail.priceWithIVA : +detail.price;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
-                salesRowItem.push(student.matricula);
                 salesRowItem.push(fullName);
                 salesRowItem.push(sale.cashier.name);
                 salesRowItem.push(detail.quantity);
@@ -364,7 +331,6 @@ export class SimpleReport {
             columns: [
                 { name: 'Folio' },
                 { name: 'Fecha' },
-                { name: 'Matricula' },
                 { name: 'Cliente' },
                 { name: 'Vendedor' },
                 { name: 'Cantidad' },
@@ -416,7 +382,7 @@ export class SimpleReport {
         });
         for (let row = 3; row <= salesRows.length + 3; row++) {
             salesSheet.getRow(row).eachCell((cell, colNumber) => {
-                if (colNumber > 9 && colNumber < 12) {
+                if (colNumber > 8 && colNumber < 11) {
                     cell.numFmt = '"$"#,##0.00;[Red]\-"$"#,##0.00';
                 }
             });
@@ -441,7 +407,6 @@ export class SimpleReport {
             salesSheetItem.push(saleReturn.agent.name || '');
             salesSheetItem.push(saleReturn.folio || '');
             salesSheetItem.push(saleReturn.sale.folio);
-            salesSheetItem.push(matricula);
             salesSheetItem.push(fullName);
             salesSheetItem.push(saleReturn.comments);
             salesSheetItem.push(saleReturn.paymentMethod.name || '');
@@ -457,7 +422,6 @@ export class SimpleReport {
                 { name: 'Agente' },
                 { name: 'Folio de devolución' },
                 { name: 'Folio de venta' },
-                { name: 'Matricula' },
                 { name: 'Cliente' },
                 { name: 'Observación' },
                 { name: 'Forma' },
