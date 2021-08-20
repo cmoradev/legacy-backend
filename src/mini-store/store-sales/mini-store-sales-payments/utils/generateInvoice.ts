@@ -58,13 +58,13 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     } as XmlConceptoAttributes);
     if (importeImpuesto !== 0) {
       concepto.traslado({
-        Base: subQuantity(detalle.importe, detalle.discountTotal, -5).toString(),
+        Base: subQuantity(detalle.importe, detalle.discountTotal, -2).toString(),
         Impuesto: '002',
         TipoFactor: 'Tasa',
         TasaOCuota: '0.160000',
-        Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -5), importeImpuesto, -5).toString(),
+        Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2).toString(),
       });
-      totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), importeImpuesto), totalTranslado).toString();
+      totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
     }
     await cfd.concepto(concepto);
   }
