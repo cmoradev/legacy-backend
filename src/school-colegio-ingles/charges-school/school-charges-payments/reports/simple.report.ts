@@ -2,7 +2,6 @@ import * as Excel from 'exceljs';
 import { Borders } from 'exceljs';
 import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/school-academy-point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
@@ -25,11 +24,6 @@ export class SimpleReportCollege {
             },
         ];
 
-        const image = workbook.addImage({
-            filename: './public/images/little-store-logo.png',
-            extension: 'png',
-        });
-
         const paymentsSheet = workbook.addWorksheet('Pagos', {
             properties:
                 {
@@ -47,18 +41,17 @@ export class SimpleReportCollege {
                 },
         });
 
-        this.fillPaymentsSheet(paymentsSheet, image, data);
+        this.fillPaymentsSheet(paymentsSheet, data);
         this.fillSalesSheet(salesSheet, sales);
 
         return workbook;
     }
 
-    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, imageID, data): Excel.Worksheet {
+    public fillPaymentsSheet(paymentsSheet: Excel.Worksheet, data): Excel.Worksheet {
         const cashiers: User[] = data.cashiers;
         const payments: SchoolChargePayment[] = data.payments;
         const paymentMethods: InvoiceMethodPayment[] = data.paymentMethods;
 
-        // paymentsSheet.addImage(imageID, { ext: { height: 100, width: 90 }, tl: { col: 1, row: 1 } });
         paymentsSheet.mergeCells('C2:D2');
         paymentsSheet.mergeCells('C3:D3');
         paymentsSheet.mergeCells('C4:D4');
@@ -233,18 +226,6 @@ export class SimpleReportCollege {
             if (payment.schoolCharge) {
                 const { name, lastNameFather, lastNameMother } = payment.schoolCharge.schoolStudent;
                 const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-                let studentType = '';
-                switch (payment.schoolCharge.schoolStudent.typeStudent) {
-                    case TypeStudent.externo:
-                        studentType = 'Externo';
-                        break;
-                    case TypeStudent.student:
-                        studentType = 'Alumno';
-                        break;
-                    default:
-                        studentType = 'Prospecto';
-                        break;
-                }
                 /*const nextRowToMerge = startRow + (payment.methodsPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
@@ -254,22 +235,15 @@ export class SimpleReportCollege {
                 }*/
                 payment.methodsPayments.forEach(paymentMethod => {
                     const paymentItem = [];
-                    const totalPaymentsAmount = payment.methodsPayments.reduce((previousValue, currentValue) => {
-                        return previousValue + currentValue.quantity;
-                    }, 0);
                     paymentItem.push(payment.createdAt || '');
                     paymentItem.push(payment.cashierCharge.name);
                     paymentItem.push(payment.stamping === 1 ? 'Si' : 'No');
                     paymentItem.push(payment.folio);
                     paymentItem.push(payment.schoolCharge.folio);
-                    paymentItem.push(studentType);
-                    paymentItem.push(payment.schoolCharge.schoolStudent.matricula);
                     paymentItem.push(fullName);
                     paymentItem.push(payment.schoolCharge.observations || '');
                     paymentItem.push(paymentMethod?.invoiceMethodPayment?.name || '');
                     paymentItem.push(paymentMethod.quantity);
-                    paymentItem.push(payment.change);
-                    paymentItem.push(totalPaymentsAmount - payment.change);
                     paymentsDetails.push(paymentItem);
                 });
                 startRow += 1;
@@ -288,14 +262,10 @@ export class SimpleReportCollege {
                 { name: 'Facturado' },
                 { name: 'Folio de pago' },
                 { name: 'Folio de venta' },
-                { name: 'Tipo' },
-                { name: 'Matricula' },
-                { name: 'Alumno/Cliente' },
+                { name: 'Cliente' },
                 { name: 'Observación' },
                 { name: 'Formas de pago' },
                 { name: 'Monto pagado', totalsRowFunction: 'sum' },
-                { name: 'Cambio', totalsRowFunction: 'sum' },
-                { name: 'Total', totalsRowFunction: 'sum' },
             ],
             rows: paymentsDetails,
         });
@@ -351,18 +321,6 @@ export class SimpleReportCollege {
             const { schoolStudent } = sale;
             const { name, lastNameFather, lastNameMother } = schoolStudent;
             const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
-            let studentType = '';
-            switch (schoolStudent.typeStudent) {
-                case TypeStudent.student:
-                    studentType = 'Alumno';
-                    break;
-                case TypeStudent.externo:
-                    studentType = 'Externo';
-                    break;
-                default:
-                    studentType = 'Prospecto';
-                    break;
-            }
 
             /*const nextRowToMerge = startRow + (sale.chargesDetails.length) - 1;
             if (nextRowToMerge > startRow) {
@@ -371,10 +329,6 @@ export class SimpleReportCollege {
                 });
                 startRow = nextRowToMerge;
             }*/
-            const totalSale = sale.chargesDetails.reduce((previousValue, currentValue) => {
-                const productPrice = sale.iva ? +currentValue.price * 1.16 : +currentValue.price;
-                return previousValue + (productPrice * parseFloat(currentValue.quantity.toString()));
-            }, 0);
             sale.chargesDetails.forEach(detail => {
                 const salesRowItem: any[] = [];
                 const productPrice = sale.iva ? +detail.price * 1.16 : +detail.price;
@@ -385,8 +339,6 @@ export class SimpleReportCollege {
                 const totaldetail = productPrice + recargos - becas - descuentos;
                 salesRowItem.push(sale.folio);
                 salesRowItem.push(sale.createdAt);
-                salesRowItem.push(studentType);
-                salesRowItem.push(schoolStudent.matricula);
                 salesRowItem.push(fullName);
                 salesRowItem.push(sale.cashier.name);
                 salesRowItem.push(detail.quantity);
@@ -410,9 +362,7 @@ export class SimpleReportCollege {
             columns: [
                 { name: 'Folio' },
                 { name: 'Fecha' },
-                { name: 'Persona' },
-                { name: 'Matricula' },
-                { name: 'Alumno/Cliente' },
+                { name: 'Cliente' },
                 { name: 'Vendedor' },
                 { name: 'Cantidad' },
                 { name: 'Productos' },
