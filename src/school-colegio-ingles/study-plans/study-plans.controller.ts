@@ -14,6 +14,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
       group: {},
       level: {},
       studyPlansVariants: {},
+      classrooms: {},
     },
   },
 })

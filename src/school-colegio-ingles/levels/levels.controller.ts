@@ -14,7 +14,7 @@ import { LevelsService } from './levels.service';
             paymentPlans: {},
             'paymentPlans.paymentConcepts': {},
             levelInscriptions: {},
-
+            classrooms: {}
         },
     },
 })
