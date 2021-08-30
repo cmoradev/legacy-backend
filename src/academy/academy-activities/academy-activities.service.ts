@@ -31,6 +31,7 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
         'group.id',
         'group.name',
         'group.schedule',
+        'group.isActive',
         'branchOffice.id',
         'branchOffice.name',
         'cycle.id',
@@ -38,7 +39,8 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
       ])
       .where('activities.isActive= :isActive', {
         isActive: true,
-      });
+      }).where('group.isActive= :isActive', {
+      isActive: true, });
 
     if (query.activityId !== 0 && query.activityId !== '0') {
       activities.andWhere('activities.id = :activityId', {
