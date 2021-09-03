@@ -1,7 +1,6 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreProductsProviders } from './entities/mini-store-products-providers.entity';
-import { MiniStoreSalesService } from '../store-sales/mini-store-sales/mini-store-sales.service';
 import { MiniStoreProductsProvidersService } from './mini-store-products-providers.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { MiniStoreProductsService } from '../mini-store-products/mini-store-products.service';
@@ -9,12 +8,17 @@ import { mulQuantity } from '../../common/point-of-sale/point-of-sale';
 import { MiniStoreProduct } from '../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseProvider } from '../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
 
-//@UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreProductsProviders,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {},
     },
 })
@@ -29,6 +33,16 @@ export class MiniStoreProductsProvidersController implements CrudController<Mini
 
     get base(): CrudController<MiniStoreProductsProviders> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('update')

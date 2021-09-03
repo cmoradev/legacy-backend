@@ -1,29 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import {
-    QueryBilling,
-    QuerySimpleReport,
-} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import moment = require('moment');
-import { SimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/reports/simple.report';
 import { SimpleReportAcademy } from './reports/simple.report';
-import { add, round, sub } from 'exact-math';
-import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
-import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { ConfigService } from '../../../config/config.service';
+import moment = require('moment');
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -35,6 +27,22 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         private readonly configService: ConfigService,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     async fetchFilteredPayments(query: QuerySimpleReport): Promise<AcademyChargePayments[]> {

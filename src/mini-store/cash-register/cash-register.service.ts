@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { CashRegister } from './entities/cash-register.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +11,22 @@ import { ReportsCashQuery } from './types/reports.type';
 export class CashRegisterService extends TypeOrmCrudService<CashRegister> {
     constructor(@InjectRepository(CashRegister, ColegioDBNameConnection) repo: Repository<CashRegister>) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     async generateDataReport(query: ReportsCashQuery) {

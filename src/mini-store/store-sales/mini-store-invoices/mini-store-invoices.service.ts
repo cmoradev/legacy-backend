@@ -1,14 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import * as MomentTimeZone from 'moment-timezone';
 import * as Moment from 'moment';
 import { ChangeStatusInvoiceMiniStoreInterface } from './interface/ChangeStatusInvoiceMiniStore.interface';
 import { UsersService } from '../../../system/users/users.service';
-import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { InvoiceProcessor } from './processor/invoice.processor';
 import { ReportInvoice } from './reports/invoice.report';
 import { InvoiceReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
@@ -30,6 +29,22 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         private readonly configService: ConfigService,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     async updateInvoice(data: MiniStoreInvoice) {

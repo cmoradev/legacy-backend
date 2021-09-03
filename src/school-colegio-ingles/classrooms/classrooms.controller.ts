@@ -8,13 +8,18 @@ import { ClassroomsService } from './classrooms.service';
         type: Classroom,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             grade: {},
-             'grade.level': {
-                alias: 'grade_level' 
+            'grade.level': {
+                alias: 'grade_level',
             },
             'grade.level.campus': {
-                alias: 'grade_level_campus' 
+                alias: 'grade_level_campus',
             },
             cycle: {},
             studyPlan: {},

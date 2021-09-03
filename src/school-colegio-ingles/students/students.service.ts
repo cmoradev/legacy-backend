@@ -1,19 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { getRepository, Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
 import { Student } from './entities/student.entity';
 import { TypeStudent } from './interface/studentsSchool.interface';
-import { Family } from '../families/entities/family.entity';
-
-interface IResponseDashboardStudents {
-    totalStudents: number,
-    totalNewStudents: number,
-    totalReEnrollment: number,
-    totalReEntry: number,
-    totalUnsubscribed: number
-}
 
 @Injectable()
 export class StudentsService extends TypeOrmCrudService<Student> {
@@ -21,6 +12,22 @@ export class StudentsService extends TypeOrmCrudService<Student> {
         @InjectRepository(Student, ColegioDBNameConnection) readonly repo: Repository<Student>,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     generateMatricula(total: number, studentType: TypeStudent) {
@@ -70,6 +77,6 @@ export class StudentsService extends TypeOrmCrudService<Student> {
     }
 
     async getStudentsWithBranchOffice() {
-        return await this.repo.createQueryBuilder('student').innerJoinAndSelect('student.studentCampus', 'campus').getMany()
+        return await this.repo.createQueryBuilder('student').innerJoinAndSelect('student.studentCampus', 'campus').getMany();
     }
 }

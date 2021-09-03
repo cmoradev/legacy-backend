@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
@@ -26,6 +26,11 @@ import { A117 } from '../../../pdf/A117/desing/A117';
         type: MiniStoreInvoice,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             miniStoreSalePayment: {},
             miniStoreSale: {},
@@ -52,11 +57,21 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 readonly branchOffice: BranchOfficeService,
                 readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
                 private readonly configService: ConfigService,
-                private  smartWeb: FactSw) {
+                private smartWeb: FactSw) {
     }
 
     get base(): CrudController<MiniStoreInvoice> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('/pdf')
@@ -65,11 +80,11 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             if (query.rebuild === '1' || +query.rebuild === 1) {
                 const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
                 const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.xml';
-                const desingpdf = new A117(pathXml,{
+                const desingpdf = new A117(pathXml, {
                     lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
                     // lugarExpedicion: branchOfficeSett.address,
-                    logo: `data:image/png;base64, ${logo.toString('base64')}`
-                })
+                    logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                });
                 const pdf = new PDF<A117>(desingpdf);
                 await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid);
             }

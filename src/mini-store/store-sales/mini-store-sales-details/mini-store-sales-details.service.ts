@@ -1,18 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TopTrendingProductsReport } from './reports/top-trending-products.report';
 import { DataConverter } from '../../../common/office/excel-tools/data-converter';
-import moment = require('moment');
 import { TopTrendingProduct } from './interfaces/top-trending-product.interface';
 import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import moment = require('moment');
 
 @Injectable()
 export class MiniStoreSalesDetailsService extends TypeOrmCrudService<MiniStoreSaleDetail> {
   constructor(@InjectRepository(MiniStoreSaleDetail, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSaleDetail>) {
     super(repo);
+  }
+
+  public async softDeleteOne(id: number) {
+    const object = await this.findOne(id);
+    if (!object) {
+      throw new NotFoundException('This entity does not exists')
+    }
+    return await this.repo.softDelete(id);
+  }
+
+  public async softRestoreOne(id: number) {
+    const object = await this.repo.findOne({ id }, {withDeleted: true});
+    if (!object) {
+      throw new NotFoundException('This entity does not exists')
+    }
+    return await this.repo.restore(id);
   }
 
   public async topTrendingProductsReport(query: {

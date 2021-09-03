@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
@@ -25,6 +25,11 @@ import { ConfigService } from '../../../config/config.service';
         type: AcademyChargeInvoice,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
         join: {},
     },
@@ -32,18 +37,28 @@ import { ConfigService } from '../../../config/config.service';
 @Controller()
 export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
     constructor(
-      readonly service: AcademyChargeInvoiceService,
-      readonly branchOffice: BranchOfficeService,
-      readonly branchOfficeSettingService: BranchOfficeSettingService,
-      readonly academyChargePaymentsService: AcademyChargePaymentsService,
-      readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
-      private  smartWeb: FactSw,
-      private readonly configService: ConfigService,
+        readonly service: AcademyChargeInvoiceService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        readonly academyChargePaymentsService: AcademyChargePaymentsService,
+        readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
+        private smartWeb: FactSw,
+        private readonly configService: ConfigService,
     ) {
     }
 
     get base(): CrudController<AcademyChargeInvoice> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('/pdf')
@@ -181,7 +196,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     }
 
     @Post('/report')
-    public async getReportGlobal( @Body() request: ReportData,  @Res() res: Response ){
+    public async getReportGlobal(@Body() request: ReportData, @Res() res: Response) {
 
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -189,29 +204,29 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             },
         });
 
-        let whereParamsBilled = { }
-        let whereParamsUnBilled = { }
-        let whereParamsCancelled = { }
+        let whereParamsBilled = {};
+        let whereParamsUnBilled = {};
+        let whereParamsCancelled = {};
 
-        if(request.idUsuario === 'all'){
+        if (request.idUsuario === 'all') {
             whereParamsBilled = {
                 status: 1,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsUnBilled = {
                 status: 0,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsCancelled = {
                 status: 2,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
         } else {
             whereParamsBilled = {
                 agentBilling: request.idUsuario,
@@ -219,21 +234,21 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsUnBilled = {
                 agentBilling: request.idUsuario,
                 status: 0,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsCancelled = {
                 agentCanceling: request.idUsuario,
                 status: 2,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
         }
 
         // Billed
@@ -246,7 +261,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 'academyCharge',
                 'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges'
+                'academyCharge.chargesDetails.extraCharges',
             ],
         });
 
@@ -260,7 +275,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 'academyCharge',
                 'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges'
+                'academyCharge.chargesDetails.extraCharges',
             ],
         });
 
@@ -280,16 +295,16 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         });
 
         const workSheets = [
-             {name: 'Facturas Pagadas', data: invoiceBilled},
-             {name: 'Pagos No Facturados', data: invoiceUnBilled},
-             {name: 'Facturas Canceladas', data: invoiceCancelled},
-        ]
+            { name: 'Facturas Pagadas', data: invoiceBilled },
+            { name: 'Pagos No Facturados', data: invoiceUnBilled },
+            { name: 'Facturas Canceladas', data: invoiceCancelled },
+        ];
 
         let workbook = null;
         let b64Encoding = '';
         let buffer = null;
 
-        if(request.file){
+        if (request.file) {
             workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
 
             const dateName = new Date();
@@ -301,21 +316,21 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
         const data = {
             facturado: {
-                rows: invoiceBilled
+                rows: invoiceBilled,
             },
             nofacturado: {
-                rows: invoiceUnBilled
+                rows: invoiceUnBilled,
             },
-            cancelados:{
-                rows: invoiceCancelled
+            cancelados: {
+                rows: invoiceCancelled,
             },
             file: '',
-        }
+        };
 
-        if(request.file){
-            data.file = b64Encoding + buffer.toString('base64')
+        if (request.file) {
+            data.file = b64Encoding + buffer.toString('base64');
         }
-        res.send({ success:true, data });
+        res.send({ success: true, data });
     }
 }
 
