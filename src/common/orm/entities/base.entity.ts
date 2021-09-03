@@ -24,7 +24,7 @@ export class Base {
     })
     updatedAt: Date;
 
-    @DeleteDateColumn({ type: 'timestamp', transformer: new DateTimeZoneTransformer() })
+    @DeleteDateColumn({ type: 'timestamp' })
     deletedAt: Date;
 
     @Field()
