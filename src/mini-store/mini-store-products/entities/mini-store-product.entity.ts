@@ -69,6 +69,9 @@ export class MiniStoreProduct extends Base {
     })
     isActive: boolean;
 
+    /**
+   * @Deprecated
+   */
     @Field({ nullable: true })
     @Column('decimal', {
         nullable: true,
@@ -79,9 +82,12 @@ export class MiniStoreProduct extends Base {
     })
     price: string | null;
 
+    /**
+   * @Deprecated
+   */
     @Field()
     @Column('decimal', {
-        nullable: false,
+        nullable: true,
         default: () => '\'0.000000\'',
         precision: 15,
         scale: 6,
