@@ -6,10 +6,10 @@ import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreSalesPaymentsModule } from '../mini-store-sales-payments/mini-store-sales-payments.module';
 import { UsersModule } from '../../../system/users/users.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
-import { ConfigModule } from '../../../config/config.module';
+import { ConfigModule } from '../../../common/config/config.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),

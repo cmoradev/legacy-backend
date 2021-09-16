@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MiniStoreDetailsExtraCharges } from './entities/mini-store-details-extra-charges.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 
 @Injectable()
 export class MiniStoreDetailsExtraChargesService extends TypeOrmCrudService<MiniStoreDetailsExtraCharges> {

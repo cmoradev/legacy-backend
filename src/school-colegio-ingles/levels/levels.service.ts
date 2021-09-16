@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Level } from './entities/level.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Injectable()
 export class LevelsService extends TypeOrmCrudService<Level> {

@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InvoiceMethodPayment } from './entities/invoice-method-payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Injectable()
 export class InvoiceMethodsPaymentsService extends TypeOrmCrudService<InvoiceMethodPayment> {

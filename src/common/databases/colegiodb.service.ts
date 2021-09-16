@@ -7,7 +7,6 @@ import * as fs from 'fs';
 const environment = process.env.NODE_ENV || 'development';
 const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
 export const ColegioDBNameConnection = processEnv.DB_DBNAME_CONNECTION;
-console.log('varible de entorno export ' + ColegioDBNameConnection);
 
 @Injectable()
 export class ColegioDBService implements TypeOrmOptionsFactory {

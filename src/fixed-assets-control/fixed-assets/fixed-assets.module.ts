@@ -3,7 +3,7 @@ import { FixedAssetsService } from './fixed-assets.service';
 import { FixedAssetsController } from './fixed-assets.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FixedAsset } from './entities/fixed-asset.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([FixedAsset], ColegioDBNameConnection)],

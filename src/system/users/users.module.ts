@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([User, Teacher], ColegioDBNameConnection) ],

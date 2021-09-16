@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AcademyInscription } from './entities/academy-inscription.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import * as moment from 'moment';
 import { AcademyInscriptionConcepts } from '../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { InscriptionStatus } from '../../common/enums/PaymentStatus';

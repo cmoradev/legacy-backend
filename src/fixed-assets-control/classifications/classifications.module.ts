@@ -3,7 +3,7 @@ import { ClassificationsService } from './classifications.service';
 import { ClassificationsController } from './classifications.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Classification } from './entities/classification.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Classification], ColegioDBNameConnection)],

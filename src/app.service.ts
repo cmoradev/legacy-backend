@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from './config/config.service';
+import { ConfigService } from './common/config/config.service';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import * as Path from 'path';

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
+import { Activity } from '../../academy-activities/entities/academy-activity.entity';
 import { SystemConceptsType } from '../../../system/system-concepts-type/entities/system-concepts-type.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
@@ -45,13 +45,13 @@ export class AcademyInscriptionConcepts extends Base {
     })
     unit: string | null;
 
-    @Field(type => AcademyActivity)
-    @ManyToOne(type => AcademyActivity, activity => activity.academyActAcInsConcept)
+    @Field(type => Activity)
+    @ManyToOne(type => Activity, activity => activity.academyActAcInsConcept)
     @JoinColumn({
         name: 'id_academia',
         referencedColumnName: 'id',
     })
-    acInsConActivity: AcademyActivity;
+    acInsConActivity: Activity;
 
     @Field(type => SystemConceptsType)
     @ManyToOne(type => SystemConceptsType, sysConType => sysConType.systemConceptAcInsConcept)

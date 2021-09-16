@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { AcademyChargePaymentsController } from './academy-charge-payments.controller';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -13,7 +13,7 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { AcademyChargeInvoiceModule } from '../academy-charge-invoice/academy-charge-invoice.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
-import { ConfigModule } from '../../../config/config.module';
+import { ConfigModule } from '../../../common/config/config.module';
 
 @Module({
     imports: [

@@ -5,7 +5,7 @@ import { getRepository, Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { DataConverter } from '../../common/office/excel-tools/data-converter';
 import { PriceProductsListReport } from './reports/price-products-list.report';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import * as moment from 'moment';
 import { formatOperation } from '../store-sales/mini-store-sales/reports/mini-store-sale.report';

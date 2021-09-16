@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { TopTrendingProductsReport } from './reports/top-trending-products.report';
 import { DataConverter } from '../../../common/office/excel-tools/data-converter';
 import { TopTrendingProduct } from './interfaces/top-trending-product.interface';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import moment = require('moment');
 
 @Injectable()

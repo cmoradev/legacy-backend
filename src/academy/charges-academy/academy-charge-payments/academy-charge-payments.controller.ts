@@ -24,7 +24,7 @@ import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)

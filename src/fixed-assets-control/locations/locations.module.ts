@@ -3,7 +3,7 @@ import { LocationsService } from './locations.service';
 import { LocationsController } from './locations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Location } from './entities/location.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Location], ColegioDBNameConnection)],
