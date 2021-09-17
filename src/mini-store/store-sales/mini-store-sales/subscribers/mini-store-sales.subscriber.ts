@@ -1,6 +1,6 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
 import { MiniStoreSale } from '../entities/mini-store-sale.entity';
-import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../../common/databases/colegiodb.service';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { CashRegisterTransactionType } from '../../../cash-register-transactions/enums/cash-register-transaction-type.enum';

@@ -2,22 +2,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, Repository, Raw } from 'typeorm';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import * as MomentTimeZone from 'moment-timezone';
-import * as Moment from 'moment';
+import * as moment from 'moment';
 import { ChangeStatusInvoiceMiniStoreInterface } from './interface/ChangeStatusInvoiceMiniStore.interface';
 import { UsersService } from '../../../system/users/users.service';
 import { InvoiceProcessor } from './processor/invoice.processor';
 import { ReportInvoice } from './reports/invoice.report';
 import { InvoiceReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
@@ -110,32 +110,31 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         data: string,
     }): Promise<string | InvoiceReport[] | any> {
         const invoices = await this.repo.find({
-            where: {
-                status: query.status,
-                createdAt: Between(
-                    Moment(query.startDate).startOf('day').toDate(),
-                    Moment(query.endDate).endOf('day').toDate()),
-            },
-            relations: [
-                'agentBilling',
-                'agentCanceling',
-                'miniStoreSalePayment',
-                'miniStoreSalePayment.miniStoreSaleMethodPayments',
-                'miniStoreSalePayment.miniStoreSaleMethodPayments.invoiceMethod',
-                'miniStoreSale',
-                'miniStoreSale.student',
-                'saleReturn',
-                'saleReturn.agent',
-                'saleReturn.paymentMethod',
-            ],
-        });
+                where: {
+                    /*status: query.status,*/
+                    createdAt: Between(moment(query.startDate).toDate(),
+                        moment(query.endDate).toDate()),
+                },
+                relations: [
+                    'agentBilling',
+                    'agentCanceling',
+                    'miniStoreSalePayment',
+                    'miniStoreSalePayment.miniStoreSaleMethodPayments',
+                    'miniStoreSalePayment.miniStoreSaleMethodPayments.invoiceMethod',
+                    'miniStoreSale',
+                    'miniStoreSale.student',
+                    'saleReturn',
+                    'saleReturn.agent',
+                    'saleReturn.paymentMethod',
+                ],
+            })
+        ;
         const report = new InvoiceProcessor().structureInvoiceReport(invoices);
         switch (query.data) {
             case 'data':
                 return report;
-                break;
             case 'file':
-                //Todo convertir dinamico
+                // TODO convertir dinamico
                 const company = await this.serviceInvoiceCompany.findCompany(3);
                 const workbook = new ReportInvoice().generateReport(report, query, company);
                 const dateName = new Date();

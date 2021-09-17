@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-status.enum';
 
 @Injectable()

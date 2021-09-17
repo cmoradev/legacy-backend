@@ -3,7 +3,7 @@ import { ModalitiesController } from './modalities.controller';
 import { ModalitiesService } from './modalities.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Modality } from './entities/modality.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [

@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 
 @Injectable()
 export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyChargeInvoice> {

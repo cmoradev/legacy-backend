@@ -5,7 +5,7 @@ import { MatrixCompany } from './entities/matrix-company.entity';
 import { MatrixCompaniesService } from './matrix-companies.service';
 import { MatrixCompaniesController } from './matrix-companies.controller';
 
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([MatrixCompany], ColegioDBNameConnection)],

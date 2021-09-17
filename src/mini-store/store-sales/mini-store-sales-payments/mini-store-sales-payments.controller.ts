@@ -21,7 +21,7 @@ import { FormaPago, XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)

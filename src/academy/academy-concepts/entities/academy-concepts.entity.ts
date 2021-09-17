@@ -3,7 +3,7 @@ import { SystemConceptsType } from '../../../system/system-concepts-type/entitie
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
-import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
+import { Activity } from '../../academy-activities/entities/academy-activity.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
@@ -107,13 +107,13 @@ DROP INDEX `FK_0c0ad3bf9d8d9b8153c6d1a8e5e` ;
     })
     academyConceptsType: SystemConceptsType;
 
-    @Field(type => AcademyActivity)
-    @ManyToOne(type => AcademyActivity, activity => activity.academyActivityConcepts)
+    @Field(type => Activity)
+    @ManyToOne(type => Activity, activity => activity.academyActivityConcepts)
     @JoinColumn({
         name: 'id_academia',
         referencedColumnName: 'id',
     })
-    academyConceptsActivity: AcademyActivity;
+    academyConceptsActivity: Activity;
 
     @Field(type => Int, { nullable: true })
     @Column('int', {

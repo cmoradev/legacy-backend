@@ -3,7 +3,7 @@ import { StudyPlanVariantsController } from './study-plan-variants.controller';
 import { StudyPlanVariantsService } from './study-plan-variants.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudyPlanVariant } from './entities/study-plan-variants.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [

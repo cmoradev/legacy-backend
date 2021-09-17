@@ -17,7 +17,7 @@ import { AcademyChargeDiscountsService } from '../academy-charge-discounts/acade
 import { Between } from 'typeorm';
 import * as Moment from 'moment';
 import { ReportInvoice } from './reports/invoice.reports';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({

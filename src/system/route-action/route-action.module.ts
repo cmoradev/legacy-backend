@@ -3,7 +3,7 @@ import { RouteActionController } from './route-action.controller';
 import { RouteActionService } from './route-action.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Route } from '../routes/entities/route.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { RouteAction } from './entities/route-action.entity';
 
 @Module({

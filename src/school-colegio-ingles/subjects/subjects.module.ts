@@ -3,7 +3,7 @@ import { SubjectsController } from './subjects.controller';
 import { SubjectsService } from './subjects.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Subject } from './entities/subject.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [

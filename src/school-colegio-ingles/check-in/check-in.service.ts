@@ -6,7 +6,7 @@ import { Between, Repository } from 'typeorm';
 
 import { Department } from '../../system/departments/entities/department.entity';
 import { DateQueryObject } from '../../common/time-utils';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 export enum StatusCheckIn {
     Inside = 'Inside',

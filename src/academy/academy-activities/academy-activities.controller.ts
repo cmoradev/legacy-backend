@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { AcademyActivity } from './entities/academy-activity.entity';
+import { Activity } from './entities/academy-activity.entity';
 import { AcademyActivitiesService } from './academy-activities.service';
 import { QueryMensualidades } from './types/academyActvities.interface';
 import { AcademyActivityReport } from './reports/academy-activity.report';
@@ -10,7 +10,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 @UseGuards(JwtGuard)
 @Crud({
     model: {
-        type: AcademyActivity,
+        type: Activity,
     },
     query: {
         filter: {
@@ -30,13 +30,13 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
     },
 })
 @Controller()
-export class AcademyActivitiesController implements CrudController<AcademyActivity> {
+export class AcademyActivitiesController implements CrudController<Activity> {
     constructor(
         readonly service: AcademyActivitiesService,
     ) {
     }
 
-    get base(): CrudController<AcademyActivity> {
+    get base(): CrudController<Activity> {
         return this;
     }
 

@@ -3,7 +3,7 @@ import { FixedAssetsAssignmentsService } from './fixed-assets-assignments.servic
 import { FixedAssetsAssignmentsController } from './fixed-assets-assignments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FixedAssetAssignment } from './entities/fixed-asset-assignment.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([FixedAssetAssignment], ColegioDBNameConnection)],

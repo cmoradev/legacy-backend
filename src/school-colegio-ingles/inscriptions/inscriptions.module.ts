@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inscription } from './entities/inscription.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { Student } from '../students/entities/student.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { ClassroomsModule } from '../classrooms/classrooms.module';
 import { LevelsModule } from '../levels/levels.module';
 import { StudentsModule } from '../students/students.module';
