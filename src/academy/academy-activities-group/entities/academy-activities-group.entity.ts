@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
+import { Activity } from '../../academy-activities/entities/academy-activity.entity';
 import { Shift } from '../../../system/shift/entities/shift.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
@@ -58,13 +58,13 @@ export class AcademyActivitiesGroup extends Base {
     })
     isActive: number;
 
-    @Field(type => AcademyActivity)
-    @ManyToOne(type => AcademyActivity, activity => activity.academyActivityGroups)
+    @Field(type => Activity)
+    @ManyToOne(type => Activity, activity => activity.academyActivityGroups)
     @JoinColumn({
         name: 'id_academia',
         referencedColumnName: 'id',
     })
-    academyGroupActivity: AcademyActivity;
+    academyGroupActivity: Activity;
 
     @Field(type => [AcademyInscription])
     @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.academyGroup)

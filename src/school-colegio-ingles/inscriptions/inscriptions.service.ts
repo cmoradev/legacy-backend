@@ -6,7 +6,7 @@ import { getRepository, Like, Repository } from 'typeorm';
 import { Student } from '../students/entities/student.entity';
 import { Attendance, VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { ClassroomsService } from '../classrooms/classrooms.service';
 import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
 import { Cycle } from '../cycles/entities/cycle.entity';

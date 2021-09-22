@@ -3,7 +3,7 @@ import { GroupsController } from './groups.controller';
 import { GroupsService } from './groups.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([ Group ], ColegioDBNameConnection) ],

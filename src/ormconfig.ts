@@ -1,10 +1,8 @@
-import { ConnectionOptions } from 'typeorm';
-
 // You can load you .env file here synchronously using dotenv package (not installed here),
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { connections } from './config/config.env';
 import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 
 const environment = process.env.NODE_ENV || 'development';
@@ -16,7 +14,7 @@ if (fs.existsSync(`${environment}.env`)) {
     // tslint:disable-next-line:no-console
     console.log(`Migración corriendo --> en la base de datos ${processEnv.DB_DBNAME}`);
     config = {
-        type: 'mysql',
+        type: 'postgres',
         name: processEnv.DB_DBNAME_CONNECTION,
         migrationsTableName: 'migrations_typeorm',
         host: processEnv.DB_HOST,
@@ -46,6 +44,7 @@ if (fs.existsSync(`${environment}.env`)) {
             entitiesDir: 'src/entity',
             subscribersDir: 'src/subscriber',
         },
-    } as BaseConnectionOptions;
+        insecureAuth: true,
+    } as PostgresConnectionOptions;
 }
 export = config;

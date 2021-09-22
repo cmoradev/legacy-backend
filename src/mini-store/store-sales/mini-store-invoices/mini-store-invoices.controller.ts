@@ -17,7 +17,7 @@ import { BranchOfficeService } from '../../../system/branch-office/branch-office
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)

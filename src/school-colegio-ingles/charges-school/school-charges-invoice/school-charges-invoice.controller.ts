@@ -12,7 +12,7 @@ import { SchoolChargesPaymentsService } from '../school-charges-payments/school-
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 

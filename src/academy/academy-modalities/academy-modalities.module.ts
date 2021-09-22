@@ -3,7 +3,7 @@ import { AcademyModalitiesController } from './academy-modalities.controller';
 import { AcademyModalitiesService } from './academy-modalities.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AcademiesModality } from './entities/academy-modality.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([ AcademiesModality ], ColegioDBNameConnection) ],

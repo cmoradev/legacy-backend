@@ -1,8 +1,4 @@
-import {
-  Column,
-  Entity, OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AcademyConcepts } from '../../academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';
@@ -11,14 +7,13 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity('ac_academias')
-export class AcademyActivity extends Base {
+@Entity({database: 'academy'})
+export class Activity extends Base {
 
   @Field()
   @Column('varchar', {
     nullable: false,
     length: 300,
-    name: 'nombre',
   })
   name: string;
 
@@ -26,8 +21,7 @@ export class AcademyActivity extends Base {
   @Column('tinyint', {
     nullable: false,
     width: 1,
-    default: () => '\'0\'',
-    name: 'escolar',
+    default: () => '0',
   })
   school: boolean;
 

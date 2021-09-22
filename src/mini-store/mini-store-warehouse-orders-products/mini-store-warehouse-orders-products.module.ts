@@ -3,7 +3,7 @@ import { MiniStoreWarehouseOrdersProductsController } from './mini-store-warehou
 import { MiniStoreWarehouseOrdersProductsService } from './mini-store-warehouse-orders-products.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreWarehouseOrderProduct } from './entities/mini-store-warehouse-order-product.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([ MiniStoreWarehouseOrderProduct ], ColegioDBNameConnection) ],

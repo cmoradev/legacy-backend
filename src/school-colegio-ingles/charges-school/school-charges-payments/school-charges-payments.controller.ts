@@ -27,7 +27,7 @@ import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { convertPaymentsReportCollege } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { NewReport } from '../../../common/types/recibo.interface';

@@ -3,7 +3,7 @@ import { CashRegisterTransactionsController } from './cash-register-transactions
 import { CashRegisterTransactionsService } from './cash-register-transactions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CashRegisterTransaction } from './entities/cash-register-transaction.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([CashRegisterTransaction], ColegioDBNameConnection)],

@@ -3,7 +3,7 @@ import { BranchOfficeController } from './branch-office.controller';
 import { BranchOfficeService } from './branch-office.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BranchOffice } from './entities/branch-office.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([BranchOffice], ColegioDBNameConnection) ],

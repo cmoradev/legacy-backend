@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
