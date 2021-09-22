@@ -19,6 +19,7 @@ import { LevelsService } from './levels.service';
             paymentPlans: {},
             'paymentPlans.paymentConcepts': {},
             levelInscriptions: {},
+            'levelInscriptions.inscripCycle':{alias: 'inscripCycle'},
             classrooms: {},
         },
     },
