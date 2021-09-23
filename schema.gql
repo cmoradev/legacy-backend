@@ -239,7 +239,7 @@ type AcademyInscription {
   isIncluded: Int!
   isActive: Int!
   inscriptionStatus: Float!
-  activity: Activity!
+  activity: AcademyActivity!
   student: Student!
   schoolLevel: Level!
   schoolGrade: Grade!
@@ -264,14 +264,14 @@ type AcademyActivitiesGroup {
   min: Float
   max: Float!
   isActive: Float!
-  academyGroupActivity: Activity!
+  academyGroupActivity: AcademyActivity!
   acGroupAcInsc: [AcademyInscription!]!
   academyGroupCycle: [Cycle!]!
   academyGroupCampus: planteles!
   academyGroupShift: Shift!
 }
 
-type Activity {
+type AcademyActivity {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -670,7 +670,7 @@ type AcademyInscriptionConcepts {
   productCode: String!
   unitCode: String!
   unit: String
-  acInsConActivity: Activity!
+  acInsConActivity: AcademyActivity!
   acInsConConcepType: SystemConceptsType!
   idConceptoCobro: Int!
   paymentStatus: Float!
@@ -717,7 +717,7 @@ type AcademyConcepts {
   academyConceptsCampus: planteles!
   academyConceptsLevel: Level!
   academyConceptsType: SystemConceptsType!
-  academyConceptsActivity: Activity!
+  academyConceptsActivity: AcademyActivity!
   school: Int
   external: Boolean
   isIva: Float!

@@ -1,6 +1,6 @@
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { User } from '../../system/users/entities/user.entity';
-import { Activity } from '../../academy/academy-activities/entities/academy-activity.entity';
+import { AcademyActivity } from '../../academy/academy-activities/entities/academy-activity.entity';
 import { AcademyConcepts } from '../../academy/academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../academy/academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../../academy/academy-inscription/entities/academy-inscription.entity';
@@ -105,7 +105,7 @@ import { InscriptionStatus } from '../../system/inscription-status/entities/insc
 import { Impuestos } from '../../system/tax/entities/impuestos';
 
 const entities = [
-  Activity,
+  AcademyActivity,
   AcademyActivitiesGroup,
   AcademyConcepts,
   AcademyInscription,

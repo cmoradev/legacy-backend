@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Activity } from './entities/academy-activity.entity';
+import { AcademyActivity } from './entities/academy-activity.entity';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { QueryMensualidades, QueryResultMoths } from './types/academyActvities.interface';
 import { AcademyInscription } from '../academy-inscription/entities/academy-inscription.entity';
@@ -11,9 +11,9 @@ import { AcademyInscriptionService } from '../academy-inscription/academy-inscri
 import { InscriptionStatus } from '../../common/enums/PaymentStatus';
 
 @Injectable()
-export class AcademyActivitiesService extends TypeOrmCrudService<Activity> {
+export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity> {
   constructor(
-    @InjectRepository(Activity, ColegioDBNameConnection) readonly repo: Repository<Activity>,
+    @InjectRepository(AcademyActivity, ColegioDBNameConnection) readonly repo: Repository<AcademyActivity>,
     @InjectRepository(AcademyInscription, ColegioDBNameConnection) readonly repoAcademyInscription: Repository<AcademyInscription>,
     readonly serviceInscriptionAc: AcademyInscriptionService,
   ) {

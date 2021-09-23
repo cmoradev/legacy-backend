@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Activity } from '../../academy-activities/entities/academy-activity.entity';
+import { AcademyActivity } from '../../academy-activities/entities/academy-activity.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
@@ -106,13 +106,13 @@ export class AcademyInscription extends Base {
   })
   inscriptionStatus: InscriptionStatus;
 
-  @Field(type => Activity)
-  @ManyToOne(type => Activity, activity => activity.academyActInscription)
+  @Field(type => AcademyActivity)
+  @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
   @JoinColumn({
     name: 'id_academia',
     referencedColumnName: 'id',
   })
-  activity: Activity;
+  activity: AcademyActivity;
 
   @Field(type => Student)
   @ManyToOne(() => Student, (student) => student.studentAcInscriptions)

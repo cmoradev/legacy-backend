@@ -7,8 +7,8 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-@Entity({database: 'academy'})
-export class Activity extends Base {
+@Entity('ac_academias')
+export class AcademyActivity extends Base {
 
   @Field()
   @Column('varchar', {
