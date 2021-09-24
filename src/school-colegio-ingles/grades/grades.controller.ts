@@ -20,6 +20,8 @@ import { GradesService } from './grades.service';
             gradeInscriptions: {},
             'gradeInscriptions.inscripCampus': {},
             'gradeInscriptions.inscripCycle': {},
+            'gradeInscriptions.inscripClassroom':{}
+            
         },
     },
 })
