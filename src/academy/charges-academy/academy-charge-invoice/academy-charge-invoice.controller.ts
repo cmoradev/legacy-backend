@@ -31,7 +31,12 @@ import { ConfigService } from '../../../common/config/config.service';
             },
         },
         limit: 200,
-        join: {},
+        join: {
+            academyChargePayment: {},
+            academyCharge: {},
+            agentBilling: {},
+            agentCanceling: {}
+        },
     },
 })
 @Controller()

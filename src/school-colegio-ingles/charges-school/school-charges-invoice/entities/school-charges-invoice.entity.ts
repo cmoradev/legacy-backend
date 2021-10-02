@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
@@ -7,6 +7,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { CreditNoteSchool } from '../../../../credit-note-school/entities/credit-note-school.entity';
 
 @ObjectType()
 @Entity('school_charges_invoice')
@@ -126,4 +127,7 @@ export class SchoolChargesInvoice extends Base {
     @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
+
+    @OneToMany(() => CreditNoteSchool, (creditNoteSchool) => creditNoteSchool.invoiceSchool)
+    creditNotesSchool: CreditNoteSchool[];
 }
