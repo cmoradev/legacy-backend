@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { User } from '../../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
@@ -8,6 +8,7 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { CreditNoteAcademy } from '../../../../credit-note-academy/entities/credit-note-academy.entity';
 
 @ObjectType()
 @Entity('ac_facturas')
@@ -127,4 +128,6 @@ export class AcademyChargeInvoice extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
+    @OneToMany(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy)
+    creditNoteAcademy: CreditNoteAcademy[];
 }

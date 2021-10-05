@@ -7,7 +7,8 @@ export class AppController {
     }
 
     @Get()
-    getHello(): string {
+    async getHello(): Promise<string> {
+        await this.appService.generateFactura();
         return this.appService.getHello();
     }
 }

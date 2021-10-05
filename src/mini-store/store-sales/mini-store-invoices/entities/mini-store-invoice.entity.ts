@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
@@ -9,6 +9,7 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { CreditNoteStore } from '../../../../credit-note-store/entities/credit-note-store.entity';
 
 @ObjectType()
 @Entity('tie_facturas')
@@ -162,4 +163,7 @@ export class MiniStoreInvoice extends Base {
     @Field(type => SalesReturns)
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
     saleReturn: SalesReturns;
+
+    @OneToMany(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore)
+    creditNoteStore: CreditNoteStore[];
 }
