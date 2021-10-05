@@ -128,6 +128,6 @@ export class AcademyChargeInvoice extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
-    @OneToMany(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy)
-    creditNoteAcademy: CreditNoteAcademy[];
+    @ManyToOne(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy, {nullable: true})
+    creditNoteAcademy: CreditNoteAcademy;
 }

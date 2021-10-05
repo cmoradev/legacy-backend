@@ -164,6 +164,6 @@ export class MiniStoreInvoice extends Base {
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
     saleReturn: SalesReturns;
 
-    @OneToMany(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore)
-    creditNoteStore: CreditNoteStore[];
+    @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, {nullable: true})
+    creditNoteStore: CreditNoteStore;
 }

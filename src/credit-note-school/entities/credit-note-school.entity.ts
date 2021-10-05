@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, ID, Int, ObjectType } from "@nestjs/graphql";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { DateTimeZoneTransformer } from "../../common/orm/entities/transformers/date-time-zone.transformer";
 import { InvoiceStatus } from "../../invoice/types/invoice-status";
 import { InvoiceType } from "../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum";
@@ -120,6 +120,6 @@ export class CreditNoteSchool {
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
 
-    @ManyToOne(() => SchoolChargesInvoice, (invoiceSchool) => invoiceSchool.creditNotesSchool)
-    invoiceSchool: SchoolChargesInvoice;
+    @OneToMany(() => SchoolChargesInvoice, (invoiceSchool) => invoiceSchool.creditNotesSchool)
+    invoiceSchool: SchoolChargesInvoice[];
 }
