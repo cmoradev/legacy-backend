@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor, Relacionado, XmlEmisorAttribute, XmlReceptorAttribute } from '@signati/core';
-import { readFileSync } from 'fs';
-import { keys } from 'lodash';
+import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor, Relacionado, XmlReceptorAttribute } from '@signati/core';
+import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
 import { mulQuantity } from '../common/point-of-sale/point-of-sale';
@@ -53,7 +52,6 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
     async createCreditNote(
         invoice: Partial<Comprobante>,
         receiver: Partial<XmlReceptorAttribute>,
-        issuer: Partial<XmlEmisorAttribute>,
         concepts: ConceptWithTaxes[],
         cfdiRelations: string[],
         branchOfficeId: string | number,
@@ -82,7 +80,7 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                 MetodoPago: invoice.MetodoPago,
                 LugarExpedicion: invoice.LugarExpedicion,
             }
-            const cfdi = new CFDI(cfdiAttributes);
+            const cfdi = new CFDI(cfdiAttributes, {debug: true});
             await cfdi.setAttributesXml({ version: '1.0', encoding: 'utf-8' });
             const receptor = new Receptor({
                 Nombre: receiver.Nombre,
@@ -90,9 +88,9 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                 UsoCFDI: receiver.UsoCFDI,
             })
             const emisor = new Emisor({
-                Rfc: issuer.Rfc,
-                Nombre: issuer.Nombre,
-                RegimenFiscal: issuer.RegimenFiscal,
+                Rfc: settingsBranchOffice.rfc,
+                Nombre: settingsBranchOffice.businessName,
+                RegimenFiscal: settingsBranchOffice.regime,
             });
             await cfdi.emisor(emisor);
             await cfdi.receptor(receptor);
@@ -130,29 +128,58 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                 }
                 await cfdi.concepto(concepto);
             })
-            const impuestos = new Impuestos({
-                TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-                TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
-            });
+
+
             if (totalImpuestosTrasladados > 0) {
-                impuestos.traslados({
+                const impuestosTransladados = new Impuestos({
+                    TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
+                });
+                console.log(totalImpuestosTrasladados)
+                impuestosTransladados.traslados({
                     Base: totalImpuestosTrasladados.toString(),
                     Impuesto: '002',
                     TasaOCuota: 'Tasa',
                     TipoFactor: '0.16',
                     Importe: mulQuantity(totalImpuestosTrasladados, 0.16, -2).toString(),
                 });
+                await cfdi.impuesto(impuestosTransladados);
             }
             if (totalImpuestosRetenidos > 0) {
-                impuestos.retenciones({
+                const impuestosRetenidos = new Impuestos({
+                    TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
+                    TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
+                });
+                impuestosRetenidos.retenciones({
                     Base: totalImpuestosRetenidos.toString(),
                     Impuesto: '002',
                     TasaOCuota: 'Tasa',
                     TipoFactor: '0.16',
                     Importe: mulQuantity(totalImpuestosRetenidos, 0.16, -2).toString(),
                 });
+                await cfdi.impuesto(impuestosRetenidos);
             }
-            await cfdi.impuesto(impuestos);
+            if (totalImpuestosRetenidos > 0 && totalImpuestosTrasladados > 0) {
+                const impuestosRetenidosTransladados = new Impuestos({
+                    TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
+                    TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
+                });
+                impuestosRetenidosTransladados.traslados({
+                    Base: totalImpuestosTrasladados.toString(),
+                    Impuesto: '002',
+                    TasaOCuota: 'Tasa',
+                    TipoFactor: '0.16',
+                    Importe: mulQuantity(totalImpuestosTrasladados, 0.16, -2).toString(),
+                });
+                impuestosRetenidosTransladados.retenciones({
+                    Base: totalImpuestosRetenidos.toString(),
+                    Impuesto: '002',
+                    TasaOCuota: 'Tasa',
+                    TipoFactor: '0.16',
+                    Importe: mulQuantity(totalImpuestosRetenidos, 0.16, -2).toString(),
+                });
+                console.log(totalImpuestosRetenidos, totalImpuestosTrasladados)
+                await cfdi.impuesto(impuestosRetenidosTransladados);
+            }
             const relation = new Relacionado({ TipoRelacion: '01' })
             cfdiRelations.map(async (document) => {
                 relation.addRelation(document);

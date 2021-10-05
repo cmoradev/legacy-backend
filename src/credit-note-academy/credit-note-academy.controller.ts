@@ -45,9 +45,6 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         if (!request.receiver) {
             throw new HttpException('Receiver data is required', HttpStatus.BAD_REQUEST);
         }
-        if (!request.issuer) {
-            throw new HttpException('Issuer data is required', HttpStatus.BAD_REQUEST);
-        }
         if (typeof request.concepts === 'undefined' || request.concepts.length === 0) {
             throw new HttpException('Must send al least one concept', HttpStatus.BAD_REQUEST);
         }
@@ -65,14 +62,14 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             const xmlCreditNote = await this.service.createCreditNote(
                 request.invoice,
                 request.receiver,
-                request.issuer,
                 request.concepts,
                 request.cfdiRelations,
                 request.branchOfficeId,
                 request.branchOfficeModuleId,
                 workPath,
-            );                  
-            this.smartWebService.facturar(xmlCreditNote);
+            );
+            const timbrado = await this.smartWebService.facturar(xmlCreditNote);
+            console.log(timbrado);
         } catch (err) {
             console.log(err);
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
