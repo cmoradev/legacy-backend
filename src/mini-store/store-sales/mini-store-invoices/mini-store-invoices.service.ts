@@ -109,26 +109,22 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         status: number,
         data: string,
     }): Promise<string | InvoiceReport[] | any> {
-        const invoices = await this.repo.find({
-                where: {
-                    /*status: query.status,*/
-                    createdAt: Between(moment(query.startDate).toDate(),
-                        moment(query.endDate).toDate()),
-                },
-                relations: [
-                    'agentBilling',
-                    'agentCanceling',
-                    'miniStoreSalePayment',
-                    'miniStoreSalePayment.miniStoreSaleMethodPayments',
-                    'miniStoreSalePayment.miniStoreSaleMethodPayments.invoiceMethod',
-                    'miniStoreSale',
-                    'miniStoreSale.student',
-                    'saleReturn',
-                    'saleReturn.agent',
-                    'saleReturn.paymentMethod',
-                ],
-            })
-        ;
+        const invoices = await this.repo.createQueryBuilder(
+            'invoice'
+        )
+        .leftJoinAndSelect('invoice.agentBilling', 'agentBilling')
+        .leftJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
+        .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
+        .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
+        .leftJoinAndSelect('miniStoreSaleMethodPayments.invoiceMethod', 'invoiceMethod')
+        .leftJoinAndSelect('invoice.miniStoreSale', 'miniStoreSale')
+        .leftJoinAndSelect('miniStoreSale.student', 'student')
+        .leftJoinAndSelect('invoice.saleReturn', 'saleReturn')
+        .leftJoinAndSelect('saleReturn.agent', 'agent')
+        .leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod')
+        .where('invoice.createdAt Between :startDate and :endDate',{startDate: query.startDate, endDate: query.endDate})
+        .getMany()
+
         const report = new InvoiceProcessor().structureInvoiceReport(invoices);
         switch (query.data) {
             case 'data':
