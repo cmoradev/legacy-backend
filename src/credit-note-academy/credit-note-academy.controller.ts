@@ -39,7 +39,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             invoice: Partial<Comprobante>,
             receiver: Partial<XmlReceptorAttribute>,
             concepts: ConceptWithTaxes[],
-            invoicesRelations: AcademyChargeInvoice[],            
+            invoicesRelations: AcademyChargeInvoice[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
@@ -62,7 +62,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         if (!request.branchOfficeModuleId) {
             throw new HttpException('branchOfficeModuleId data is required', HttpStatus.BAD_REQUEST);
         }
-        if(!request.userCreatorId) {
+        if (!request.userCreatorId) {
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
@@ -80,7 +80,15 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
             const cfdi: XmlCdfi = await XmlToJson(pathXml);
-            await this.service.saveCreditNote(cfdi, timbrado, request.invoicesRelations, request.branchOfficeId, request.userCreatorId);
+            await this.service.saveCreditNote(
+                cfdi,
+                timbrado,
+                request.invoicesRelations,
+                request.branchOfficeId,
+                request.branchOfficeModuleId,
+                request.userCreatorId,
+                workPath
+            );
         } catch (err) {
             console.log(err);
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);

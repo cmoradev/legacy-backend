@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor, Relacionado, XmlCdfi, XmlReceptorAttribute } from '@signati/core';
+import { PDF } from '@signati/pdf';
+import { readFileSync } from 'fs';
 import { Repository } from 'typeorm';
 import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
-import { mulQuantity } from '../common/point-of-sale/point-of-sale';
 import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import { A117 } from '../pdf/A117/desing/A117';
 import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { User } from '../system/users/entities/user.entity';
@@ -55,7 +57,15 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
         return 1;
     }
 
-    async saveCreditNote(cfdi: XmlCdfi, timbrado: StampV4, invoicesAcademy: AcademyChargeInvoice[], branchOfficeId: string | number, userCreatorId: string | number) {
+    async saveCreditNote(
+        cfdi: XmlCdfi,
+        timbrado: StampV4,
+        invoicesAcademy: AcademyChargeInvoice[],
+        branchOfficeId: string | number,
+        branchOfficeModuleId: string | number,
+        userCreatorId: string | number,
+        workPath: string
+    ) {
         const academyInvoicesId = invoicesAcademy.map((invoice) => {
             return invoice.id;
         })
@@ -72,6 +82,18 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
             invoicesAcademy: academyInvoicesId as unknown as AcademyChargeInvoice[],
         }
         await this.repo.save(creditNoteAcademy);
+        const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
+        const pathXml = `${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
+        console.log(pathXml);
+        const logo = readFileSync(`${workPath}logos/academiaslogo.png`);
+        const desingpdf = new A117(pathXml, {
+            lugarExpedicion: settingsBranchOffice.address,
+            logo: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+        const pdf = new PDF<A117>(desingpdf);
+        console.log(desingpdf);
+        await pdf.save(`${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase());
+        console.log('save');
     }
     async createCreditNote(
         invoice: Partial<Comprobante>,

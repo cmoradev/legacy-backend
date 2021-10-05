@@ -96,14 +96,14 @@ class A117 extends generic_1.Generic {
                                     alignment: 'right',
                                     body: [
                                         [{
-                                                text: 'FOLIO',
-                                                style: {
-                                                    bold: true,
-                                                    fontSize: 9,
-                                                    alignment: 'center',
-                                                    margin: [0, 0, 0, 0],
-                                                }
-                                            }],
+                                            text: 'FOLIO',
+                                            style: {
+                                                bold: true,
+                                                fontSize: 9,
+                                                alignment: 'center',
+                                                margin: [0, 0, 0, 0],
+                                            }
+                                        }],
                                     ],
                                 },
                                 layout: {
@@ -132,14 +132,14 @@ class A117 extends generic_1.Generic {
                                     heights: 10,
                                     body: [
                                         [{
-                                                text: 'FECHA',
-                                                style: {
-                                                    bold: true,
-                                                    fontSize: 9,
-                                                    alignment: 'center',
-                                                    margin: [0, 0, 0, 0],
-                                                }
-                                            }],
+                                            text: 'FECHA',
+                                            style: {
+                                                bold: true,
+                                                fontSize: 9,
+                                                alignment: 'center',
+                                                margin: [0, 0, 0, 0],
+                                            }
+                                        }],
                                     ],
                                 },
                                 layout: {
@@ -190,7 +190,23 @@ class A117 extends generic_1.Generic {
                                 color: '#a76d09',
                             }
                         },
-                        { text: '' }
+                        { text: '' },
+                        {
+                            text: 'Tipo de relacion: ',
+                            style: {
+                                bold: true,
+                                color: '#a76d09',
+                            }
+                        },
+                        { text: '' },
+                        {
+                            text: 'Relacionados: ',
+                            style: {
+                                bold: true,
+                                color: '#a76d09',
+                            }
+                        },
+                        { text: '' },
                     ],
                     style: {
                         fontSize: 10,
@@ -567,6 +583,7 @@ class A117 extends generic_1.Generic {
         this.addFolio(this.xml['cfdi:Comprobante']._attributes);
         this.addDate(this.xml['cfdi:Comprobante']._attributes.Fecha);
         this.addReceptor(this.xml['cfdi:Comprobante']['cfdi:Receptor']);
+        this.addRelacionados(this.xml["cfdi:Comprobante"]["cfdi:CfdiRelacionados"])
         this.addDetalles(this.xml['cfdi:Comprobante']['cfdi:Conceptos']);
         this.addCatidad(this.xml['cfdi:Comprobante']._attributes);
         this.addImpuesto(this.xml['cfdi:Comprobante']['cfdi:Impuestos']);
@@ -621,14 +638,14 @@ class A117 extends generic_1.Generic {
     }
     addFolio(c) {
         const data = [{
-                text: c.Serie + ' - ' + c.Folio,
-                style: {
-                    fontSize: 10,
-                    alignment: 'center',
-                    color: 'red',
-                    margin: [0, 0, 0, 0],
-                }
-            }];
+            text: c.Serie + ' - ' + c.Folio,
+            style: {
+                fontSize: 10,
+                alignment: 'center',
+                color: 'red',
+                margin: [0, 0, 0, 0],
+            }
+        }];
         this.docDefinition.content[0].columns[3][1].table.body.push(data);
     }
     addEmisorData(emisor, expedido) {
@@ -640,14 +657,14 @@ class A117 extends generic_1.Generic {
     }
     addDate(date) {
         const data = [{
-                text: date,
-                style: {
-                    fontSize: 10,
-                    alignment: 'center',
-                    color: 'red',
-                    margin: [0, 0, 0, 0],
-                }
-            }];
+            text: date,
+            style: {
+                fontSize: 10,
+                alignment: 'center',
+                color: 'red',
+                margin: [0, 0, 0, 0],
+            }
+        }];
         this.docDefinition.content[0].columns[3][2].table.body.push(data);
     }
     addDetalles(detalles) {
@@ -718,6 +735,13 @@ class A117 extends generic_1.Generic {
         this.docDefinition.content[1].text[4] = { text: receptor ? receptor._attributes ? receptor._attributes.Rfc + '\n' : '' : '' };
         this.docDefinition.content[1].text[6] = { text: receptor ? receptor._attributes ? receptor._attributes.UsoCFDI + '\n' : '' : '' };
     }
+
+    addRelacionados(relacionados) {
+        const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());        
+        this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
+        this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };
+    }
+
     addCatidad(comprobante) {
         this.docDefinition.content[3].table.body[0][1].text[1] = { text: '$' + comprobante.SubTotal + '\n' };
         this.docDefinition.content[3].table.body[0][1].text[3] = { text: '$' + comprobante.Descuento + '\n' };
