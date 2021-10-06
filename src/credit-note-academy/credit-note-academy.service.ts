@@ -106,16 +106,13 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
         await this.repo.save(creditNoteAcademy);
         const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
         const pathXml = `${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
-        console.log(pathXml);
         const logo = readFileSync(`${workPath}logos/academiaslogo.png`);
         const desingpdf = new A117(pathXml, {
             lugarExpedicion: settingsBranchOffice.address,
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
         });
         const pdf = new PDF<A117>(desingpdf);
-        console.log(desingpdf);
         await pdf.save(`${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase());
-        console.log('save');
     }
     async createCreditNote(
         invoice: InvoiceSat,
@@ -196,8 +193,7 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                 }
                 await cfdi.concepto(concepto);
             })
-            if (totalImpuestosTrasladados > 0) {
-                console.log(totalImpuestosTrasladados, totalImpuestosTrasladados > 0)
+            if (totalImpuestosTrasladados > 0) {            
                 const impuestosTransladados = new Impuestos({
                     TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
                 });
