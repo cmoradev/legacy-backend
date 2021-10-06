@@ -1,17 +1,13 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { Comprobante, XmlCdfi, XmlEmisorAttribute, XmlReceptorAttribute } from '@signati/core';
+import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
+import { XmlToJson } from '@signati/pdf';
+import * as fs from 'fs';
+import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
-import { ConceptWithTaxes, CreditNoteAcademyService } from './credit-note-academy.service';
+import { ConceptWithTaxes, CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
 import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
-import * as fs from 'fs';
-import { XmlToJson } from '@signati/pdf';
-import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
-import { InvoiceStatus } from '../invoice/types/invoice-status';
-import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
-import { User } from '../system/users/entities/user.entity';
-import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Crud({
     model: {
@@ -36,7 +32,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     @Post('/generate-credit-note')
     async generateCreditNote(
         @Body() request: {
-            invoice: Partial<Comprobante>,
+            invoice: InvoiceSat,
             receiver: Partial<XmlReceptorAttribute>,
             concepts: ConceptWithTaxes[],
             invoicesRelations: AcademyChargeInvoice[],
