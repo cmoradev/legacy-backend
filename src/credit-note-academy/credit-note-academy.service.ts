@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor, Relacionado, XmlCdfi, XmlReceptorAttribute } from '@signati/core';
+import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Impuestos, MetodoPago, MetodoPagoType, Receptor, Relacionado, TipoComprobante, TypeComprobante, XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { PDF } from '@signati/pdf';
 import { readFileSync } from 'fs';
 import { Repository } from 'typeorm';
@@ -40,6 +40,28 @@ export interface ConceptWithTaxes {
         TasaOCuota: string;
         Importe: string;
     },
+}
+
+export interface InvoiceSat {
+    Version?: string;
+    Serie: string;
+    Folio: string;
+    Fecha: string;
+    Sello: string;
+    FormaPago: FormaPago | FormaPagoType;
+    NoCertificado: string;
+    Certificado: string;
+    condicionesDePago?: string;
+    SubTotal: string;
+    Descuento: string;
+    Moneda: string;
+    Total: string;
+    TipoDeComprobante: TipoComprobante | TypeComprobante;
+    MetodoPago: MetodoPago | MetodoPagoType;
+    LugarExpedicion: string;
+    Impuesto: string;
+    TasaOCuota: string;
+    TipoFactor: string;
 }
 
 @Injectable()
@@ -96,7 +118,7 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
         console.log('save');
     }
     async createCreditNote(
-        invoice: Partial<Comprobante>,
+        invoice: InvoiceSat,
         receiver: Partial<XmlReceptorAttribute>,
         concepts: ConceptWithTaxes[],
         relations: AcademyChargeInvoice[],
@@ -163,7 +185,7 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                     });
                 }
                 if (typeof concept.impuestosRetenidos !== 'undefined') {
-                    totalImpuestosRetenidos += +concept.impuestosRetenidos.Importe;
+                    totalImpuestosRetenidos += Number(concept.impuestosRetenidos.Importe);
                     concepto.retencion({
                         Importe: concept.impuestosRetenidos.Importe,
                         Impuesto: concept.impuestosRetenidos.Impuesto,
@@ -180,9 +202,9 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                     TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
                 });
                 await impuestosTransladados.traslados({
-                    Impuesto: '002',
-                    TasaOCuota: '0.160000',
-                    TipoFactor: 'Tasa',
+                    Impuesto: invoice.Impuesto,
+                    TasaOCuota: invoice.TasaOCuota,
+                    TipoFactor: invoice.TipoFactor,
                     Importe: totalImpuestosTrasladados.toString(),
                 });
                 await cfdi.impuesto(impuestosTransladados);
@@ -192,9 +214,9 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                     TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
                 });
                 await impuestosRetenidos.retenciones({
-                    Impuesto: '002',
-                    TasaOCuota: '0.160000',
-                    TipoFactor: 'Tasa',
+                    Impuesto: invoice.Impuesto,
+                    TasaOCuota: invoice.TasaOCuota,
+                    TipoFactor: invoice.TipoFactor,
                     Importe: totalImpuestosRetenidos.toString(),
                 });
                 await cfdi.impuesto(impuestosRetenidos);
@@ -205,15 +227,15 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
                     TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
                 });
                 impuestosRetenidosTransladados.traslados({
-                    Impuesto: '002',
-                    TasaOCuota: '0.160000',
-                    TipoFactor: 'Tasa',
+                    Impuesto: invoice.Impuesto,
+                    TasaOCuota: invoice.TasaOCuota,
+                    TipoFactor: invoice.TipoFactor,
                     Importe: totalImpuestosTrasladados.toString(),
                 });
                 impuestosRetenidosTransladados.retenciones({
-                    Impuesto: '002',
-                    TasaOCuota: '0.160000',
-                    TipoFactor: 'Tasa',
+                    Impuesto: invoice.Impuesto,
+                    TasaOCuota: invoice.TasaOCuota,
+                    TipoFactor: invoice.TipoFactor,
                     Importe: totalImpuestosRetenidos.toString(),
                 });
                 await cfdi.impuesto(impuestosRetenidosTransladados);
