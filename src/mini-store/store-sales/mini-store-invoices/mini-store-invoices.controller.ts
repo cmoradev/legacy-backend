@@ -1,24 +1,38 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
-import { MiniStoreInvoicesService } from './mini-store-invoices.service';
-import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
-import { FacturacionModerna } from 'invoice-modern';
-import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
-import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException, HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    Req,
+    Res,
+    UseGuards
+} from '@nestjs/common';
+import {Response} from 'express';
+import {Crud, CrudController} from '@nestjsx/crud';
+import {MiniStoreInvoice} from './entities/mini-store-invoice.entity';
+import {MiniStoreInvoicesService} from './mini-store-invoices.service';
+import {CancelInvoiceMinistoreDto} from './dto/cancel.invoice.ministore.dto';
+import {FacturacionModerna} from 'invoice-modern';
+import {CheckInvoiceMinistoreDto} from './dto/check.invoice.ministore.dto';
+import {OptionsFactMod} from 'invoice-modern/lib/interfaces/FactMod';
 import * as fs from 'fs';
-import { readFileSync } from 'fs';
-import { FactSw } from '../../../webService/FactSw';
-import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
-import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
-import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { User } from '../../../system/users/entities/user.entity';
-import { PDF } from '@signati/pdf';
-import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
+import {readFileSync} from 'fs';
+import {FactSw} from '../../../webService/FactSw';
+import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
+import {CancelInvoiceSwDto} from './dto/cancel.invoice.sw.dto';
+import {MiniStoreSalesPaymentsService} from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
+import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
+import {User} from '../../../system/users/entities/user.entity';
+import {PDF} from '@signati/pdf';
+import {ConfigService} from '../../../common/config/config.service';
+import {A117} from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -91,9 +105,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             const pdf64 = fs.readFileSync(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
             // data:image/png;base64,
-            res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
+            res.send({src: `data:application/pdf;base64, ${pdf64.toString('base64')}`});
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.send({error: e}).status(400);
         }
     }
 
@@ -318,4 +332,26 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
+    @Get('/download-xml')
+    getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = readFileSync(`${workPath}/comprobantes/tienda/${request.UUID}.xml`);
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = readFileSync(`${workPath}/comprobantes/tienda/${request.UUID}.pdf`);
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+
+    }
 }

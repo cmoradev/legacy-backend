@@ -1,23 +1,36 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
-import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { Response } from 'express';
-import { readFileSync, writeFileSync } from 'fs';
-import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { FactSw } from '../../../webService/FactSw';
-import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
-import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
-import { User } from '../../../system/users/entities/user.entity';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get, HttpException, HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    Req,
+    Res,
+    UseGuards
+} from '@nestjs/common';
+import {Crud, CrudController} from '@nestjsx/crud';
+import {AcademyChargeInvoice} from './entities/academy-charge-invoice.entity';
+import {AcademyChargeInvoiceService} from './academy-charge-invoice.service';
+import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
+import {Response} from 'express';
+import {readFileSync, writeFileSync} from 'fs';
+import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
+import {FactSw} from '../../../webService/FactSw';
+import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
+import {AcademyChargePaymentsService} from '../academy-charge-payments/academy-charge-payments.service';
+import {CancelInvoiceSwDto} from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
+import {User} from '../../../system/users/entities/user.entity';
 
-import { ReportData } from './dto/reportData.dto';
-import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
-import { Between } from 'typeorm';
+import {ReportData} from './dto/reportData.dto';
+import {AcademyChargeDiscountsService} from '../academy-charge-discounts/academy-charge-discounts.service';
+import {Between} from 'typeorm';
 import * as Moment from 'moment';
-import { ReportInvoice } from './reports/invoice.reports';
-import { ConfigService } from '../../../common/config/config.service';
+import {ReportInvoice} from './reports/invoice.reports';
+import {ConfigService} from '../../../common/config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -71,9 +84,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            res.send({src: 'data:application/pdf;base64,' + pdf64.toString('base64')});
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.send({error: e}).status(400);
         }
     }
 
@@ -300,9 +313,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         });
 
         const workSheets = [
-            { name: 'Facturas Pagadas', data: invoiceBilled },
-            { name: 'Pagos No Facturados', data: invoiceUnBilled },
-            { name: 'Facturas Canceladas', data: invoiceCancelled },
+            {name: 'Facturas Pagadas', data: invoiceBilled},
+            {name: 'Pagos No Facturados', data: invoiceUnBilled},
+            {name: 'Facturas Canceladas', data: invoiceCancelled},
         ];
 
         let workbook = null;
@@ -314,7 +327,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
             const dateName = new Date();
             const fileName = dateName.toTimeString() + '.xlsx';
-            const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+            const result = await workbook.xlsx.writeBuffer({filename: fileName});
             buffer = Buffer.from(result);
             b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
         }
@@ -335,7 +348,30 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         if (request.file) {
             data.file = b64Encoding + buffer.toString('base64');
         }
-        res.send({ success: true, data });
+        res.send({success: true, data});
+    }
+
+    @Get('/download-xml')
+    async getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = readFileSync(`${workPath}/comprobantes/academias/${request.UUID}.xml`);
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+
+    }
+
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = readFileSync(`${workPath}/comprobantes/academias/${request.UUID}.pdf`);
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 }
 
