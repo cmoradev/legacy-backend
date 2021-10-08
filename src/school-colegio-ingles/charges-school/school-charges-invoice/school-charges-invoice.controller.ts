@@ -205,19 +205,18 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     async getXmlInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = readFileSync(`${workPath}/comprobantes/colegio/${request.UUID}.xml`);
+            const xml = `${workPath}/comprobantes/colegio/${request.UUID}.xml`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
     }
 
     @Get('/download-pdf')
     getPdfInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = readFileSync(`${workPath}/comprobantes/colegio/${request.UUID}.pdf`);
+            const xml = `${workPath}/comprobantes/colegio/${request.UUID}.pdf`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
