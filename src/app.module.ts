@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,6 +20,7 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { routes } from './routes';
 import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegio-ingles.module';
+import { JwtGuard } from './system/auth/guards/jwt.guard';
 import { SystemModule } from './system/system.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
 
@@ -74,7 +76,12 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
     CreditNoteStoreModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
 })
 export class AppModule {
   constructor() {
