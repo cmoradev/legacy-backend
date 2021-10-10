@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import {Body, Controller, Get, HttpException, HttpStatus, Post} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -91,5 +91,10 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             console.log(err);
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Get('/folio')
+    async getFolio(){
+        return await this.service.getLastFolio()
     }
 }

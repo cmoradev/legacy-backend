@@ -249,4 +249,10 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
             return err.message;
         }
     }
+
+    async getLastFolio(){
+        return await this.repo.createQueryBuilder('creditNote')
+            .select('MAX(creditNote.id)', 'last')
+            .getRawOne();
+    }
 }

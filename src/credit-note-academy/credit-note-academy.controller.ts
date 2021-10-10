@@ -91,8 +91,8 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         }
     }
 
-    @Get('/get-folio')
-    async getfolio(): Promise<Number> {
-        return await this.service.getFolio();
+    @Get('/folio')
+    async getFolio(){
+        return await this.service.getLastFolio()
     }
 }

@@ -26,6 +26,12 @@ import * as AdmZip from 'adm-zip';
         join: {
             schoolChargePayment: {},
             schoolCharge: {},
+            'schoolCharge.chargesDetails': {
+                alias: 'details'
+            },
+            'schoolCharge.chargesDetails.schoolPlanPayment': {
+                alias: 'concepts'
+            },
             agentBilling: {},
             agentCanceling: {},
         },

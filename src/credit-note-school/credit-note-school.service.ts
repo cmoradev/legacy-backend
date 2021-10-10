@@ -1,23 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { CFDI, Comprobante, Concepts, Emisor, Impuestos, Receptor, Relacionado, XmlCdfi, XmlReceptorAttribute } from '@signati/core';
-import { PDF } from '@signati/pdf';
-import { readFileSync } from 'fs';
-import { Repository } from 'typeorm';
-import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
-import { ConceptWithTaxes, InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
-import { CreditNoteAcademy } from '../credit-note-academy/entities/credit-note-academy.entity';
-import { InvoiceStatus } from '../invoice/types/invoice-status';
-import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
-import { A117 } from '../pdf/A117/desing/A117';
-import { SchoolChargesInvoice } from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
-import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
-import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
-import { User } from '../system/users/entities/user.entity';
-import { StampV4 } from '../webService/FactSw';
-import { CreditNoteSchool } from './entities/credit-note-school.entity';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {TypeOrmCrudService} from '@nestjsx/crud-typeorm';
+import {
+    CFDI,
+    Comprobante,
+    Concepts,
+    Emisor,
+    Impuestos,
+    Receptor,
+    Relacionado,
+    XmlCdfi,
+    XmlReceptorAttribute
+} from '@signati/core';
+import {PDF} from '@signati/pdf';
+import {readFileSync} from 'fs';
+import {Repository} from 'typeorm';
+import {ColegioDBNameConnection} from '../common/databases/colegiodb.service';
+import {ConceptWithTaxes, InvoiceSat} from '../credit-note-academy/credit-note-academy.service';
+import {InvoiceStatus} from '../invoice/types/invoice-status';
+import {InvoiceType} from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import {A117} from '../pdf/A117/desing/A117';
+import {SchoolChargesInvoice} from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
+import {BranchOfficeSetting} from '../system/branch-office-setting/entities/branch-office-setting.entity';
+import {BranchOffice} from '../system/branch-office/entities/branch-office.entity';
+import {User} from '../system/users/entities/user.entity';
+import {StampV4} from '../webService/FactSw';
+import {CreditNoteSchool} from './entities/credit-note-school.entity';
 
 @Injectable()
 export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool> {
@@ -197,5 +205,11 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         } catch (err) {
             return err.message;
         }
+    }
+
+    async getLastFolio(){
+        return await this.repo.createQueryBuilder('creditNote')
+            .select('MAX(creditNote.id)', 'last')
+            .getRawOne();
     }
 }
