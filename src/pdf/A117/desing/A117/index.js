@@ -191,22 +191,6 @@ class A117 extends generic_1.Generic {
                             }
                         },
                         { text: '' },
-                        {
-                            text: 'Tipo de relacion: ',
-                            style: {
-                                bold: true,
-                                color: '#a76d09',
-                            }
-                        },
-                        { text: '' },
-                        {
-                            text: 'Relacionados: ',
-                            style: {
-                                bold: true,
-                                color: '#a76d09',
-                            }
-                        },
-                        { text: '' },
                     ],
                     style: {
                         fontSize: 10,
@@ -737,9 +721,30 @@ class A117 extends generic_1.Generic {
     }
 
     addRelacionados(relacionados) {
-        const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());        
-        this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
-        this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };
+        if(typeof relacionados === 'undefined'){
+            return;
+        }
+        if (typeof relacionados['cfdi:CfdiRelacionado'] !== 'undefined') {
+            this.docDefinition.content[1].text.push({
+                text: 'Tipo relacion: ', style: {
+                    bold: true,
+                    color: '#a76d09',
+                }
+            })
+            this.docDefinition.content[1].push({ text: '' })
+
+            this.docDefinition.content[1].text.push({
+                text: 'Relacionados: ',
+                style: {
+                    bold: true,
+                    color: '#a76d09',
+                }
+            })
+            this.docDefinition.content[1].push({ text: '' });
+            const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());
+            this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
+            this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };
+        }
     }
 
     addCatidad(comprobante) {

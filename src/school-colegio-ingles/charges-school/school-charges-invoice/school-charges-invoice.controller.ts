@@ -15,6 +15,7 @@ import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
 import {ConfigService} from '../../../common/config/config.service';
 import {ReportInvoice} from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -207,6 +208,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         }
     }
 
+    @Public()
     @Get('/download-xml')
     async getXmlInvoice(@Query() request, @Res() response) {
         try {
@@ -218,6 +220,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         }
     }
 
+    @Public()
     @Get('/download-pdf')
     getPdfInvoice(@Query() request, @Res() response) {
         try {
