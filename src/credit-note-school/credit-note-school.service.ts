@@ -63,7 +63,7 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         await this.repo.save(creditNoteAcademy);
         const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
         const pathXml = `${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
-        const logo = readFileSync(`${workPath}logos/academiaslogo.png`);
+        const logo = readFileSync(`${workPath}logos/colegiologo.png`);
         const desingpdf = new A117(pathXml, {
             lugarExpedicion: settingsBranchOffice.address,
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
@@ -149,7 +149,7 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
                     });
                 }
                 await cfdi.concepto(concepto);
-            })
+            });
             if (totalImpuestosTrasladados > 0) {
                 const impuestosTransladados = new Impuestos({
                     TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''

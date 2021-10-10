@@ -21,7 +21,7 @@ export interface ConceptWithTaxes {
     NoIdentificacion: string;
     Cantidad: number | string;
     ClaveUnidad: string;
-    Unidad: string;
+    Unidad?: string;
     Descripcion: string;
     ValorUnitario: number | string;
     Importe: number | string;
@@ -71,12 +71,6 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
         @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
     ) {
         super(repo);
-    }
-
-    async getFolio() {
-        const folio = await this.repo.createQueryBuilder('creditNote').select('MAX(creditNote.id)', 'folio').getRawOne();
-        console.log(folio);
-        return 1;
     }
 
     async saveCreditNote(
