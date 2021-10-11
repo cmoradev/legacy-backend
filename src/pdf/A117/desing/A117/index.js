@@ -740,10 +740,9 @@ class A117 extends generic_1.Generic {
                     color: '#a76d09',
                 }
             })
-            this.docDefinition.content[1].text.push({ text: '' });
-            console.log(typeof relacionados['cfdi:CfdiRelacionado'], relacionados['cfdi:CfdiRelacionado']);
-            if (typeof relacionados['cfdi:CfdiRelacionado'] === 'object') {
-                if (Array.isArray(relacionados['cfdi:CfdiRelacionado']._attributes)) {
+            this.docDefinition.content[1].text.push({ text: '' });            
+            if (typeof relacionados['cfdi:CfdiRelacionado'] === 'object') {                
+                if (Array.isArray(relacionados['cfdi:CfdiRelacionado'])) {
                     const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());
                     this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
                     this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };    
