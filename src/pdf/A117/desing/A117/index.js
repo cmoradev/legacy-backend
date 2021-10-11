@@ -741,13 +741,16 @@ class A117 extends generic_1.Generic {
                 }
             })
             this.docDefinition.content[1].text.push({ text: '' });
+            console.log(typeof relacionados['cfdi:CfdiRelacionado'], relacionados['cfdi:CfdiRelacionado']);
             if (typeof relacionados['cfdi:CfdiRelacionado'] === 'object') {
-                this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
-                this.docDefinition.content[1].text[10] = relacionados['cfdi:CfdiRelacionado']._attributes.UUID.toUpperCase();
-            } else {
-                const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());
-                this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
-                this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };
+                if (Array.isArray(relacionados['cfdi:CfdiRelacionado']._attributes)) {
+                    const uuidRelacionados = relacionados['cfdi:CfdiRelacionado'].map((relation) => relation._attributes.UUID.toUpperCase());
+                    this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
+                    this.docDefinition.content[1].text[10] = { text: uuidRelacionados.join(' | ') };    
+                } else {
+                    this.docDefinition.content[1].text[8] = { text: relacionados ? relacionados._attributes ? relacionados._attributes.TipoRelacion + '\n' : '' : '' };
+                    this.docDefinition.content[1].text[10] = relacionados['cfdi:CfdiRelacionado']._attributes.UUID.toUpperCase();
+                }
             }
         }
     }
