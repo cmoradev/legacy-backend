@@ -14,6 +14,7 @@ export class AcademyActivity extends Base {
   @Column('varchar', {
     nullable: false,
     length: 300,
+    name: 'nombre',
   })
   name: string;
 
@@ -21,7 +22,8 @@ export class AcademyActivity extends Base {
   @Column('tinyint', {
     nullable: false,
     width: 1,
-    default: () => '0',
+    default: () => '\'0\'',
+    name: 'escolar',
   })
   school: boolean;
 
