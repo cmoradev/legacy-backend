@@ -8,6 +8,7 @@ import { BranchOfficeService } from '../../../system/branch-office/branch-office
 import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
+import { Public } from '../../../common/docorators/public.decorator';
 
 // @UseGuards(JwtGuard)
 @Controller('report')
@@ -21,6 +22,7 @@ export class MiniStoreSalesPaymentsReportController {
     ) {
     }
 
+    @Public()
     @Get('/simple-report')
     async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
         try {

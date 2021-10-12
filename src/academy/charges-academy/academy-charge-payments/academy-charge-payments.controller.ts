@@ -26,6 +26,7 @@ import { FormaPago, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -80,6 +81,7 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         return await this.service.softRestoreOne(id);
     }
 
+    @Public()
     @Get('/simple-report')
     async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
         const payments = await this.service.fetchFilteredPayments(query);
