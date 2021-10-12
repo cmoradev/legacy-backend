@@ -35,6 +35,7 @@ import * as moment from 'moment';
 import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -393,6 +394,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     }
   }
 
+  @Public()
   @Get('/simple-report')
   async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
     const payments = await this.service.fetchFilteredPayments(query);
