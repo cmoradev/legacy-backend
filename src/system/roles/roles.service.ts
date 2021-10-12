@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Injectable()
 export class RolesService extends TypeOrmCrudService<Role> {

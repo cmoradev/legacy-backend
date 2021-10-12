@@ -3,7 +3,7 @@ import { CountriesService } from './countries.service';
 import { CountriesController } from './countries.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Country } from './entities/country.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Country], ColegioDBNameConnection)],

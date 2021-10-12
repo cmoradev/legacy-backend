@@ -8,6 +8,11 @@ import { ClassroomsService } from './classrooms.service';
         type: Classroom,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             grade: {},
              'grade.level': {

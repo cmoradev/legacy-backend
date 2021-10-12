@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MiniStoreSale } from '../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { Repository } from 'typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import * as moment from 'moment';
 import { Moment } from 'moment';

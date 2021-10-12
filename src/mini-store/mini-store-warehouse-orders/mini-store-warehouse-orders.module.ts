@@ -3,7 +3,7 @@ import { MiniStoreWarehouseOrdersController } from './mini-store-warehouse-order
 import { MiniStoreWarehouseOrdersService } from './mini-store-warehouse-orders.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { BranchOfficeSettingModule } from '../../system/branch-office-setting/branch-office-setting.module';
 import { BranchOfficeModule } from "../../system/branch-office/branch-office.module";
 

@@ -1,6 +1,6 @@
 import { EventSubscriber, EntitySubscriberInterface, UpdateEvent, InsertEvent, getRepository } from 'typeorm';
 import { AcademyInscription } from '../entities/academy-inscription.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import moment = require('moment');
 
 @EventSubscriber()

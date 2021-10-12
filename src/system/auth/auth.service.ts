@@ -8,7 +8,7 @@ import { BranchOffice } from '../branch-office/entities/branch-office.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { PayloadToken } from '../../common/types/jwt';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import * as moment from 'moment';

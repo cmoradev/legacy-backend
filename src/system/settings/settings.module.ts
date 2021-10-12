@@ -3,7 +3,7 @@ import { SettingsService } from './settings.service';
 import { SettingsController } from './settings.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { Company } from './entities/company.entity';
 
 @Module({

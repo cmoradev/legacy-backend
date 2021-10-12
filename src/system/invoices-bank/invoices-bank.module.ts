@@ -3,7 +3,7 @@ import { InvoicesBankController } from './invoices-bank.controller';
 import { InvoicesBankService } from './invoices-bank.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InvoicesBank } from './entities/invoices-bank.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([ InvoicesBank ], ColegioDBNameConnection) ],

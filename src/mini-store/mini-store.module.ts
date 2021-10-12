@@ -16,6 +16,7 @@ import { StoreSalesModule } from './store-sales/store-sales.module';
 import { MiniStoreProductsProvidersModule } from './mini-store-products-providers/mini-store-products-providers.module';
 import { CashRegisterModule } from './cash-register/cash-register.module';
 import { CashRegisterTransactionsModule } from './cash-register-transactions/cash-register-transactions.module';
+import { MiniStorePrices } from './mini-store-prices/entities/mini-store-prices.entity';
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { CashRegisterTransactionsModule } from './cash-register-transactions/cas
         MiniStoreProductsProvidersModule,
         CashRegisterModule,
         CashRegisterTransactionsModule,
+        MiniStorePrices
     ],
 })
 export class MiniStoreModule {

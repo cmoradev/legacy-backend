@@ -1,23 +1,36 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
-import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { Response } from 'express';
-import { readFileSync, writeFileSync } from 'fs';
-import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { FactSw } from '../../../webService/FactSw';
-import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
-import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
-import { User } from '../../../system/users/entities/user.entity';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get, HttpException, HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    Req,
+    Res,
+    UseGuards
+} from '@nestjs/common';
+import {Crud, CrudController} from '@nestjsx/crud';
+import {AcademyChargeInvoice} from './entities/academy-charge-invoice.entity';
+import {AcademyChargeInvoiceService} from './academy-charge-invoice.service';
+import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
+import {Response} from 'express';
+import {readFileSync, writeFileSync} from 'fs';
+import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
+import {FactSw} from '../../../webService/FactSw';
+import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
+import {AcademyChargePaymentsService} from '../academy-charge-payments/academy-charge-payments.service';
+import {CancelInvoiceSwDto} from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
+import {User} from '../../../system/users/entities/user.entity';
 
-import { ReportData } from './dto/reportData.dto';
-import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
-import { Between } from 'typeorm';
+import {ReportData} from './dto/reportData.dto';
+import {AcademyChargeDiscountsService} from '../academy-charge-discounts/academy-charge-discounts.service';
+import {Between} from 'typeorm';
 import * as Moment from 'moment';
-import { ReportInvoice } from './reports/invoice.reports';
-import { ConfigService } from '../../../config/config.service';
+import {ReportInvoice} from './reports/invoice.reports';
+import {ConfigService} from '../../../common/config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -25,20 +38,30 @@ import { ConfigService } from '../../../config/config.service';
         type: AcademyChargeInvoice,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
-        join: {},
+        join: {
+            academyChargePayment: {},
+            academyCharge: {},
+            agentBilling: {},
+            agentCanceling: {}
+        },
     },
 })
 @Controller()
 export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
     constructor(
-      readonly service: AcademyChargeInvoiceService,
-      readonly branchOffice: BranchOfficeService,
-      readonly branchOfficeSettingService: BranchOfficeSettingService,
-      readonly academyChargePaymentsService: AcademyChargePaymentsService,
-      readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
-      private  smartWeb: FactSw,
-      private readonly configService: ConfigService,
+        readonly service: AcademyChargeInvoiceService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        readonly academyChargePaymentsService: AcademyChargePaymentsService,
+        readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
+        private smartWeb: FactSw,
+        private readonly configService: ConfigService,
     ) {
     }
 
@@ -46,14 +69,24 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         return this;
     }
 
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
+    }
+
     @Get('/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            res.send({src: 'data:application/pdf;base64,' + pdf64.toString('base64')});
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.send({error: e}).status(400);
         }
     }
 
@@ -181,7 +214,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     }
 
     @Post('/report')
-    public async getReportGlobal( @Body() request: ReportData,  @Res() res: Response ){
+    public async getReportGlobal(@Body() request: ReportData, @Res() res: Response) {
 
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -189,29 +222,29 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             },
         });
 
-        let whereParamsBilled = { }
-        let whereParamsUnBilled = { }
-        let whereParamsCancelled = { }
+        let whereParamsBilled = {};
+        let whereParamsUnBilled = {};
+        let whereParamsCancelled = {};
 
-        if(request.idUsuario === 'all'){
+        if (request.idUsuario === 'all') {
             whereParamsBilled = {
                 status: 1,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsUnBilled = {
                 status: 0,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsCancelled = {
                 status: 2,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
         } else {
             whereParamsBilled = {
                 agentBilling: request.idUsuario,
@@ -219,21 +252,21 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsUnBilled = {
                 agentBilling: request.idUsuario,
                 status: 0,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
             whereParamsCancelled = {
                 agentCanceling: request.idUsuario,
                 status: 2,
                 createdAt: Between(
                     Moment(request.startDate).startOf('day').toDate(),
                     Moment(request.endDate).endOf('day').toDate()),
-            }
+            };
         }
 
         // Billed
@@ -246,7 +279,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 'academyCharge',
                 'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges'
+                'academyCharge.chargesDetails.extraCharges',
             ],
         });
 
@@ -260,7 +293,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 'academyCharge',
                 'academyCharge.schoolStudent',
                 'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges'
+                'academyCharge.chargesDetails.extraCharges',
             ],
         });
 
@@ -280,42 +313,65 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         });
 
         const workSheets = [
-             {name: 'Facturas Pagadas', data: invoiceBilled},
-             {name: 'Pagos No Facturados', data: invoiceUnBilled},
-             {name: 'Facturas Canceladas', data: invoiceCancelled},
-        ]
+            {name: 'Facturas Pagadas', data: invoiceBilled},
+            {name: 'Pagos No Facturados', data: invoiceUnBilled},
+            {name: 'Facturas Canceladas', data: invoiceCancelled},
+        ];
 
         let workbook = null;
         let b64Encoding = '';
         let buffer = null;
 
-        if(request.file){
+        if (request.file) {
             workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
 
             const dateName = new Date();
             const fileName = dateName.toTimeString() + '.xlsx';
-            const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+            const result = await workbook.xlsx.writeBuffer({filename: fileName});
             buffer = Buffer.from(result);
             b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
         }
 
         const data = {
             facturado: {
-                rows: invoiceBilled
+                rows: invoiceBilled,
             },
             nofacturado: {
-                rows: invoiceUnBilled
+                rows: invoiceUnBilled,
             },
-            cancelados:{
-                rows: invoiceCancelled
+            cancelados: {
+                rows: invoiceCancelled,
             },
             file: '',
+        };
+
+        if (request.file) {
+            data.file = b64Encoding + buffer.toString('base64');
+        }
+        res.send({success: true, data});
+    }
+
+    @Get('/download-xml')
+    async getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/academias/${request.UUID}.xml`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-        if(request.file){
-            data.file = b64Encoding + buffer.toString('base64')
+    }
+
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/academias/${request.UUID}.pdf`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        res.send({ success:true, data });
     }
 }
 

@@ -1,24 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
+import { Between, Repository, Raw } from 'typeorm';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import * as MomentTimeZone from 'moment-timezone';
-import * as Moment from 'moment';
+import * as moment from 'moment';
 import { ChangeStatusInvoiceMiniStoreInterface } from './interface/ChangeStatusInvoiceMiniStore.interface';
 import { UsersService } from '../../../system/users/users.service';
-import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { InvoiceProcessor } from './processor/invoice.processor';
 import { ReportInvoice } from './reports/invoice.report';
 import { InvoiceReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
@@ -30,6 +29,22 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         private readonly configService: ConfigService,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     async updateInvoice(data: MiniStoreInvoice) {
@@ -94,33 +109,28 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         status: number,
         data: string,
     }): Promise<string | InvoiceReport[] | any> {
-        const invoices = await this.repo.find({
-            where: {
-                status: query.status,
-                createdAt: Between(
-                    Moment(query.startDate).startOf('day').toDate(),
-                    Moment(query.endDate).endOf('day').toDate()),
-            },
-            relations: [
-                'agentBilling',
-                'agentCanceling',
-                'miniStoreSalePayment',
-                'miniStoreSalePayment.miniStoreSaleMethodPayments',
-                'miniStoreSalePayment.miniStoreSaleMethodPayments.invoiceMethod',
-                'miniStoreSale',
-                'miniStoreSale.student',
-                'saleReturn',
-                'saleReturn.agent',
-                'saleReturn.paymentMethod',
-            ],
-        });
+        const invoices = await this.repo.createQueryBuilder(
+            'invoice'
+        )
+        .leftJoinAndSelect('invoice.agentBilling', 'agentBilling')
+        .leftJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
+        .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
+        .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
+        .leftJoinAndSelect('miniStoreSaleMethodPayments.invoiceMethod', 'invoiceMethod')
+        .leftJoinAndSelect('invoice.miniStoreSale', 'miniStoreSale')
+        .leftJoinAndSelect('miniStoreSale.student', 'student')
+        .leftJoinAndSelect('invoice.saleReturn', 'saleReturn')
+        .leftJoinAndSelect('saleReturn.agent', 'agent')
+        .leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod')
+        .where('invoice.createdAt Between :startDate and :endDate',{startDate: query.startDate, endDate: query.endDate})
+        .getMany()
+
         const report = new InvoiceProcessor().structureInvoiceReport(invoices);
         switch (query.data) {
             case 'data':
                 return report;
-                break;
             case 'file':
-                //Todo convertir dinamico
+                // TODO convertir dinamico
                 const company = await this.serviceInvoiceCompany.findCompany(3);
                 const workbook = new ReportInvoice().generateReport(report, query, company);
                 const dateName = new Date();

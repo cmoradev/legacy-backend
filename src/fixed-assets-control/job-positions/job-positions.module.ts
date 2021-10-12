@@ -3,7 +3,7 @@ import { JobPositionsService } from './job-positions.service';
 import { JobPositionsController } from './job-positions.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobPosition } from './entities/job-position.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([JobPosition], ColegioDBNameConnection)],

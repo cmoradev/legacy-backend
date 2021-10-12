@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
@@ -21,7 +21,7 @@ import { FormaPago, XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)
@@ -30,6 +30,11 @@ import { A117 } from '../../../pdf/A117/desing/A117';
         type: MiniStoreSalePayment,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
         join: {
             agent: {},
@@ -43,13 +48,13 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 @Controller()
 export class MiniStoreSalesPaymentsController implements CrudController<MiniStoreSalePayment> {
     constructor(
-      readonly service: MiniStoreSalesPaymentsService,
-      readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
-      readonly miniStoreInvoicesService: MiniStoreInvoicesService,
-      readonly branchOffice: BranchOfficeService,
-      readonly branchOfficeSettingService: BranchOfficeSettingService,
-      private  smartWeb: FactSw,
-      private readonly configService: ConfigService,
+        readonly service: MiniStoreSalesPaymentsService,
+        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+        readonly miniStoreInvoicesService: MiniStoreInvoicesService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private smartWeb: FactSw,
+        private readonly configService: ConfigService,
     ) {
     }
 
@@ -57,6 +62,15 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         return this;
     }
 
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
+    }
 
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
@@ -98,19 +112,19 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.send(respuesta);
                 } else {
                     const xml = await GenerateInvoice(
-                      {
-                          folio: invoiceFind.folio,
-                          serie: branchOfficeSett.serieFacturacion,
-                      },
-                      result.highestPayment.codePaymentMethod as FormaPago,
-                      branchOfficeSett,
-                      {
-                          Nombre: query.receiver.businessName,
-                          Rfc: query.receiver.rfc,
-                          UsoCFDI: query.usoCfdi.value,
-                      },
-                      invoiceDetails,
-                      this.configService.getPath());
+                        {
+                            folio: invoiceFind.folio,
+                            serie: branchOfficeSett.serieFacturacion,
+                        },
+                        result.highestPayment.codePaymentMethod as FormaPago,
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails,
+                        this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
@@ -128,12 +142,12 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
 
-                    const desingpdf = new A117(pathXml,{
+                    const desingpdf = new A117(pathXml, {
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`
-                    })
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                    });
                     const pdf = new PDF<A117>(desingpdf);
-                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/`+ timbrado.data.uuid.toUpperCase());
+                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
@@ -169,19 +183,19 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
                 if (invoice) {
                     const xml = await GenerateInvoice(
-                      {
-                          folio: invoice.folio,
-                          serie: branchOfficeSett.serieFacturacion,
-                      },
-                      result.highestPayment.codePaymentMethod as FormaPago,
-                      branchOfficeSett,
-                      {
-                          Nombre: query.receiver.businessName,
-                          Rfc: query.receiver.rfc,
-                          UsoCFDI: query.usoCfdi.value,
-                      },
-                      invoiceDetails,
-                      this.configService.getPath());
+                        {
+                            folio: invoice.folio,
+                            serie: branchOfficeSett.serieFacturacion,
+                        },
+                        result.highestPayment.codePaymentMethod as FormaPago,
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails,
+                        this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
@@ -198,10 +212,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     // Generamos el PDf del xml
-                    const desingpdf = new A117(pathXml,{
+                    const desingpdf = new A117(pathXml, {
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`
-                    })
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                    });
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)

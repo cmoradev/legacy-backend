@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { RefreshGuard } from './guards/refresh.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Public } from '../../common/docorators/public.decorator';
 
 
 @Controller()
@@ -21,6 +22,7 @@ export class AuthController {
                 readonly jwtService: JwtService) {
     }
 
+    @Public()
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response) {
@@ -47,7 +49,7 @@ export class AuthController {
             company,
         });
     }
-
+    
     @UseGuards(RegisterGuard)
     @Post('register')
     async register(@Req() req, @Res() res: Response) {

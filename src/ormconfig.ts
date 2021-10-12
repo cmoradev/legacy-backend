@@ -3,7 +3,7 @@ import { ConnectionOptions } from 'typeorm';
 // You can load you .env file here synchronously using dotenv package (not installed here),
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { connections } from './config/config.env';
+import { connections } from './common/config/config.env';
 import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
 
 

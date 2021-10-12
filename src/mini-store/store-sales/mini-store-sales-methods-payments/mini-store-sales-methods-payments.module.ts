@@ -3,7 +3,7 @@ import { MiniStoreSalesMethodsPaymentsService } from './mini-store-sales-methods
 import { MiniStoreSalesMethodsPaymentsController } from './mini-store-sales-methods-payments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreSaleMethodPayment } from './entities/mini-store-sale-method-payment.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 
 @Module({
     imports: [ TypeOrmModule.forFeature([ MiniStoreSaleMethodPayment ], ColegioDBNameConnection) ],

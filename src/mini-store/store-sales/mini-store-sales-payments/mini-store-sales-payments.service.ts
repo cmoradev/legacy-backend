@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SimpleReport } from './reports/simple.report';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -16,7 +16,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
 
 @Injectable()
@@ -31,6 +31,22 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         private readonly configService: ConfigService,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.restore(id);
     }
 
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {

@@ -23,7 +23,7 @@ export class ColegioDBService implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('DB_USERNAME'),
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_DBNAME'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
       synchronize: this.configService.isSynchronizeDBEnabled,
       migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
       subscribers: [__dirname + '/../**/*.subscriber{.ts,.js}'],

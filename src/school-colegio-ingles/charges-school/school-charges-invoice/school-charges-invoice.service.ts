@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
@@ -11,7 +11,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import * as moment from 'moment';
 
 @Injectable()

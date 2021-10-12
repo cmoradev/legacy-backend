@@ -3,7 +3,7 @@ import { SchoolChargesPaymentsService } from './school-charges-payments.service'
 import { SchoolChargesPaymentsController } from './school-charges-payments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SchoolChargesMethodsPayments } from '../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
@@ -17,7 +17,7 @@ import { SchoolChargesModule } from '../school-charges/school-charges.module';
 import { ChargesSchoolModule } from '../charges-school.module';
 import { SchoolPaymentsModule } from '../../school-payments/school-payments.module';
 import { SchoolChargesInvoiceModule } from '../school-charges-invoice/school-charges-invoice.module';
-import { ConfigModule } from '../../../config/config.module';
+import { ConfigModule } from '../../../common/config/config.module';
 import { StudentsModule } from '../../students/students.module';
 
 @Module({

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
@@ -7,7 +7,6 @@ import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini
 import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
-import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
@@ -17,6 +16,11 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
         type: MiniStoreSale,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             cashier: {},
             student: {},
@@ -75,14 +79,24 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 @Controller()
 export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     constructor(
-      readonly service: MiniStoreSalesService,
-      readonly paymentService: MiniStoreSalesPaymentsService,
-      readonly miniStoreQuotationService: MiniStoreQuotationService,
+        readonly service: MiniStoreSalesService,
+        readonly paymentService: MiniStoreSalesPaymentsService,
+        readonly miniStoreQuotationService: MiniStoreQuotationService,
     ) {
     }
 
     get base(): CrudController<MiniStoreSale> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Override()

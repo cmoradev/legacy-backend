@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service';
@@ -16,12 +16,18 @@ import { InvoiceType } from '../mini-store-invoices/enums/invoice-type.enum';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoicementStatusEnum } from '../mini-store-invoices/enums/invoicement-status.enum';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SalesReturns,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             sale: {},
             details: {},
@@ -42,6 +48,16 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
 
     get base(): CrudController<SalesReturns> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Post('/facturar')

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyActivity } from './entities/academy-activity.entity';
 import { AcademyActivitiesService } from './academy-activities.service';
@@ -13,6 +13,11 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         type: AcademyActivity,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
         join: {
             academyActivityConcepts: {},
@@ -33,6 +38,16 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
 
     get base(): CrudController<AcademyActivity> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('/monthly-payments')

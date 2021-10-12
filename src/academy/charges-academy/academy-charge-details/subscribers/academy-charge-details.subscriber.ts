@@ -1,5 +1,5 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
-import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../../common/databases/colegiodb.service';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { AcademyChargeDetails } from '../entities/academy-charge-details.entity';
 import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';

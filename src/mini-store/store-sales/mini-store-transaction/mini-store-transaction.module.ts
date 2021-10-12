@@ -3,7 +3,7 @@ import { MiniStoreTransactionService } from './mini-store-transaction.service';
 import { MiniStoreTransactionController } from './mini-store-transaction.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
-import { ColegioDBNameConnection } from '../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { MiniStoreTransaction } from './entities/mini-store-transaction.entity';
 
 @Module({

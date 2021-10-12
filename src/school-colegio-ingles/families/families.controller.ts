@@ -11,6 +11,11 @@ import { Response } from 'express';
         type: Family,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             students: {},
             campus: {},

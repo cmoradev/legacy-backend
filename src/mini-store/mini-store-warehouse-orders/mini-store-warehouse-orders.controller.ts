@@ -1,10 +1,9 @@
-import { Controller, Get, Param, Res, Post, Body, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
-import { CrudController, Crud } from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
 import { MiniStoreWarehouseOrdersService } from './mini-store-warehouse-orders.service';
 import { orderRecipe } from './reports/ordersRecipe';
-import { TableRowsDocx } from '../../common/office/docx/Table.docx';
 import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
@@ -17,12 +16,17 @@ import * as nodemailer from 'nodemailer';
 import { pdfMailDto } from './dto/pdfMail.dto';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-//@UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreWarehouseOrder,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             miniStoreWareHouseOrdersProducts: {},
             'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
@@ -43,6 +47,16 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
     get base(): CrudController<MiniStoreWarehouseOrder> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('pdf/:id')
