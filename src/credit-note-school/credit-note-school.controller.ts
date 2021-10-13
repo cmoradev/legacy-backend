@@ -1,14 +1,16 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post} from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
 import { ConfigService } from '../common/config/config.service';
+import { Public } from '../common/docorators/public.decorator';
 import { ConceptWithTaxes, InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
 import { SchoolChargesInvoice } from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
+import { Response } from 'express';
 @Crud({
     model: {
         type: CreditNoteSchool,
@@ -20,7 +22,10 @@ import { CreditNoteSchool } from './entities/credit-note-school.entity';
             },
         },
         join: {
-
+            invoiceBranchOffice: {},
+            agentBilling: {},
+            agentCanceling: {},
+            invoiceSchool: {}
         }
     }
 })
@@ -94,7 +99,51 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
     }
 
     @Get('/folio')
-    async getFolio(){
+    async getFolio() {
         return await this.service.getLastFolio()
+    }
+
+    @Public()
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.pdf`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Public()
+    @Get('/download-xml')
+    async getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.xml`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Post('/send-credit-note')
+    async sendMail(@Body() request, @Res() response: Response) {
+        if (!request.branchOfficeId) {
+            throw new HttpException('branchOfficeId is required', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.email) {
+            throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.invoice) {
+            throw new HttpException('uuid invoice is required', HttpStatus.BAD_REQUEST);
+        }
+        try {
+            const invoice = `${this.configService.getPath()}comprobantes/notas-credito/` + request.invoice.toUpperCase();
+            await this.service.sendMail(request.branchOfficeId, request.email, invoice, request.invoice);
+            response.status(HttpStatus.CREATED).send();
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
