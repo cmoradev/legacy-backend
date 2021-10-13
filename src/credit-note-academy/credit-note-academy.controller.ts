@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -20,7 +20,10 @@ import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
             },
         },
         join: {
-
+            invoiceBranchOffice: {},
+            agentBilling: {},
+            agentCanceling: {},
+            invoicesAcademy: {}
         }
     }
 })
@@ -95,4 +98,27 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     async getFolio(){
         return await this.service.getLastFolio()
     }
+
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.pdf`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Get('/download-xml')
+    async getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.xml`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
 }

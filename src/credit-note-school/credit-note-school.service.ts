@@ -26,16 +26,18 @@ import {BranchOffice} from '../system/branch-office/entities/branch-office.entit
 import {User} from '../system/users/entities/user.entity';
 import {StampV4} from '../webService/FactSw';
 import {CreditNoteSchool} from './entities/credit-note-school.entity';
-
+import * as nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 @Injectable()
 export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool> {
     constructor(
         @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
         @InjectRepository(CreditNoteSchool, ColegioDBNameConnection) repo: Repository<CreditNoteSchool>,
+        @InjectRepository(BranchOffice, ColegioDBNameConnection) readonly branchOfficeRepository: Repository<BranchOffice>,
     ) {
         super(repo);
     }
-
+    
     async saveCreditNote(
         cfdi: XmlCdfi,
         timbrado: StampV4,
@@ -71,6 +73,7 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         const pdf = new PDF<A117>(desingpdf);
         await pdf.save(`${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase());
     }
+    
     async createCreditNote(
         invoice: InvoiceSat,
         receiver: Partial<XmlReceptorAttribute>,
@@ -211,5 +214,39 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         return await this.repo.createQueryBuilder('creditNote')
             .select('MAX(creditNote.id)', 'last')
             .getRawOne();
+    }
+
+    async sendMail(branchOfficeId: string | number, email: string, invoice: string, uuid) {
+        const branchOffice = await this.branchOfficeRepository.createQueryBuilder('branchOffice')        
+        .where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).getOne();    
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: branchOffice.Email,
+                pass: branchOffice.EmailPass,
+            },
+        });
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: branchOffice.Email,
+            subject: 'Comprobantes de pago CFDI',
+            text: 'CFDI',
+            html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br></div>',
+            attachments: [
+                {
+                    filename: uuid.toUpperCase() + '.xml',
+                    path: `${invoice}.xml`,
+                },
+                {
+                    filename: uuid.toUpperCase() + '.pdf',
+                    path: `${invoice}.pdf`,
+                },
+            ],
+        };
+        return await transporter.sendMail(mailOptions);
+        
     }
 }

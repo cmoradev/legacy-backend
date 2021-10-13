@@ -1,5 +1,5 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post} from '@nestjs/common';
-import { CrudController } from '@nestjsx/crud';
+import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res} from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../common/config/config.service';
@@ -9,6 +9,25 @@ import { FactSw } from '../webService/FactSw';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
 import * as fs from 'fs';
+
+@Crud({
+    model: {
+        type: CreditNoteStore,
+    },
+    query: {
+        filter: {
+            deletedAt: {
+                $eq: null
+            },
+        },
+        join: {
+            invoiceBranchOffice: {},
+            agentBilling: {},
+            agentCanceling: {},
+            invoiceStore: {}
+        }
+    }
+})
 @Controller('credit-note-store')
 export class CreditNoteStoreController implements CrudController<CreditNoteStore>{
     constructor(readonly service: CreditNoteStoreService,
@@ -81,5 +100,27 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
     @Get('/folio')
     async getFolio(){
         return await this.service.getLastFolio()
+    }
+
+    @Get('/download-pdf')
+    getPdfInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.pdf`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Get('/download-xml')
+    async getXmlInvoice(@Query() request, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.xml`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 }
