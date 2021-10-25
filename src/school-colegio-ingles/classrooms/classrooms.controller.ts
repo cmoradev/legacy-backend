@@ -15,19 +15,11 @@ import { ClassroomsService } from './classrooms.service';
         },
         join: {
             grade: {},
-<<<<<<< HEAD
              'grade.level': {
                 alias: 'grade_level'
             },
             'grade.level.campus': {
                 alias: 'grade_level_campus'
-=======
-            'grade.level': {
-                alias: 'grade_level',
-            },
-            'grade.level.campus': {
-                alias: 'grade_level_campus',
->>>>>>> a2b59d7797993440b61f47aac3aa7e6572e3be48
             },
             cycle: {},
             studyPlan: {},

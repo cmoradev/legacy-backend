@@ -49,7 +49,7 @@ export class AuthController {
             company,
         });
     }
-    
+        
     @UseGuards(RegisterGuard)
     @Post('register')
     async register(@Req() req, @Res() res: Response) {
