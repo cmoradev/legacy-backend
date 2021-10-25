@@ -1,4 +1,4 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyInscriptionConceptCharges } from './entites/academy-inscription-concept-charges.entity';
 import { IncriptionAcademyChargeDetailsExtraChargeService } from './inscription-academy-charge-details-extra-charge.service';
@@ -10,6 +10,11 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         type: AcademyInscriptionConceptCharges,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
         join: {},
     },
@@ -23,5 +28,15 @@ export class AcademyInscriptionChargesController implements CrudController<Acade
 
     get base(): CrudController<AcademyInscriptionConceptCharges> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 }

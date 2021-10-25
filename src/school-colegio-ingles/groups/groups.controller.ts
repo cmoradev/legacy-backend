@@ -8,6 +8,11 @@ import { GroupsService } from './groups.service';
         type: Group,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             groupGrade: {
                 alias: 'groupGrade',

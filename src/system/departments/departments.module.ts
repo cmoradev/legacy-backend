@@ -3,7 +3,7 @@ import { DepartmentsController } from './departments.controller';
 import { DepartmentsService } from './departments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Department } from './entities/department.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Department], ColegioDBNameConnection)],

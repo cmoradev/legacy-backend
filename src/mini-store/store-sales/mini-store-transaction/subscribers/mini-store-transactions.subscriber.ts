@@ -1,5 +1,5 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
-import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../../common/databases/colegiodb.service';
 import { MiniStoreTransaction } from '../entities/mini-store-transaction.entity';
 
 @EventSubscriber()

@@ -1,12 +1,13 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
+import { CreditNoteSchool } from '../../../../credit-note-school/entities/credit-note-school.entity';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
+import { User } from '../../../../system/users/entities/user.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
-import { User } from '../../../../system/users/entities/user.entity';
-import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity('school_charges_invoice')
@@ -126,4 +127,7 @@ export class SchoolChargesInvoice extends Base {
     @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
+
+    @ManyToOne(() => CreditNoteSchool, (creditNoteSchool) => creditNoteSchool.invoiceSchool, { nullable: true })
+    creditNotesSchool: CreditNoteSchool;
 }

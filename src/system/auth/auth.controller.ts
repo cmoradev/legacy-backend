@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { RefreshGuard } from './guards/refresh.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Public } from '../../common/docorators/public.decorator';
 
 
 @Controller()
@@ -21,6 +22,7 @@ export class AuthController {
                 readonly jwtService: JwtService) {
     }
 
+    @Public()
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response) {
@@ -47,7 +49,7 @@ export class AuthController {
             company,
         });
     }
-
+    
     @UseGuards(RegisterGuard)
     @Post('register')
     async register(@Req() req, @Res() res: Response) {
@@ -55,6 +57,7 @@ export class AuthController {
         res.send(req.user);
     }
 
+    @Public()
     @UseGuards(RefreshGuard)
     @Post('refresh-token')
     async refresToken(@Req() req, @Res() res: Response) {
@@ -94,11 +97,13 @@ export class AuthController {
         res.status(201).json(req.user);
     }
 
+    @Public()
     @Post('forgot-password')
     public async forgotPassword(@Body(new ValidationPipe()) forgotPassword: ForgotPasswordDto): Promise<void> {
         await this.authService.forgotPassword(forgotPassword);
     }
 
+    @Public()
     @Get('reset-password')
     public resetPassword(@Req() req, @Res() res: Response) {
         try {

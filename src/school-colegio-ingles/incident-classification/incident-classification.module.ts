@@ -3,7 +3,7 @@ import { IncidentClassificationController } from './incident-classification.cont
 import { IncidentClassificationService } from './incident-classification.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IncidentClassification } from './entities/incident-classification.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ IncidentClassification ], ColegioDBNameConnection)],

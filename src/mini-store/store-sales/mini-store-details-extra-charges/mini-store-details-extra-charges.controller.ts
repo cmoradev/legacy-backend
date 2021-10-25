@@ -1,14 +1,20 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreDetailsExtraCharges } from './entities/mini-store-details-extra-charges.entity';
 import { MiniStoreDetailsExtraChargesService } from './mini-store-details-extra-charges.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreDetailsExtraCharges,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             miniSaleChargeDetails: {},
             systemExtraCharges: {},
@@ -24,5 +30,15 @@ export class MiniStoreDetailsExtraChargesController implements CrudController<Mi
 
     get base(): CrudController<MiniStoreDetailsExtraCharges> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 }

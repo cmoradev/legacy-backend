@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegister } from './entities/cash-register.entity';
 import { CashRegisterService } from './cash-register.service';
@@ -6,13 +6,19 @@ import { ReportsCashQuery } from './types/reports.type';
 import { Response } from 'express';
 import { TransactionsReport } from './reports/transactions';
 import { transactionsList } from './reports/transactions.report';
+import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-//@UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: CashRegister,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
             agent: { exclude: ['password'] },
             transactions: {},
@@ -32,6 +38,16 @@ import { transactionsList } from './reports/transactions.report';
 @Controller()
 export class CashRegisterController implements CrudController<CashRegister> {
     constructor(public service: CashRegisterService) {
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('/cash-report')

@@ -6,7 +6,7 @@ import { CheckIn } from './entities/check-in.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { Department } from '../../system/departments/entities/department.entity';
 import { IntegrationsModule } from '../../integrations/integrations.module';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [

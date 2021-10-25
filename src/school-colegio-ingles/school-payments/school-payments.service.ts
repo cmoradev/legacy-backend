@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { IQueryReport } from './interfaces/IQueryReport';
 import * as moment from 'moment';

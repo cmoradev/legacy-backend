@@ -3,7 +3,7 @@ import { InscriptionStatusService } from './inscription-status.service';
 import { InscriptionStatusController } from './inscription-status.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InscriptionStatus } from './entities/inscription-status.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([InscriptionStatus], ColegioDBNameConnection)],

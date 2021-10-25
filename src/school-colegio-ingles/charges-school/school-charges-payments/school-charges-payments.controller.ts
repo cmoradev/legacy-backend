@@ -27,7 +27,7 @@ import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { convertPaymentsReportCollege } from './reports/payments.util';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { ConfigService } from '../../../config/config.service';
+import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { NewReport } from '../../../common/types/recibo.interface';
@@ -35,6 +35,7 @@ import * as moment from 'moment';
 import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -393,6 +394,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     }
   }
 
+  @Public()
   @Get('/simple-report')
   async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
     const payments = await this.service.fetchFilteredPayments(query);

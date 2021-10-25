@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
@@ -24,14 +24,21 @@ import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
-import { ConfigService } from '../../../config/config.service';
-import {A117} from '../../../pdf/A117/desing/A117'
+import { ConfigService } from '../../../common/config/config.service';
+import { A117 } from '../../../pdf/A117/desing/A117';
+import { Public } from '../../../common/docorators/public.decorator';
+
 @UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyChargePayments,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 200,
         join: {
             academyCharge: {},
@@ -50,13 +57,13 @@ import {A117} from '../../../pdf/A117/desing/A117'
 @Controller()
 export class AcademyChargePaymentsController implements CrudController<AcademyChargePayments> {
     constructor(
-      readonly service: AcademyChargePaymentsService,
-      readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
-      readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
-      readonly branchOffice: BranchOfficeService,
-      readonly branchOfficeSettingService: BranchOfficeSettingService,
-      private  smartWeb: FactSw,
-      private readonly configService: ConfigService,
+        readonly service: AcademyChargePaymentsService,
+        readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
+        readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private smartWeb: FactSw,
+        private readonly configService: ConfigService,
     ) {
     }
 
@@ -64,6 +71,17 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
         return this;
     }
 
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
+    }
+
+    @Public()
     @Get('/simple-report')
     async simpleReport(@Req() request, @Res() response, @Query() query: QuerySimpleReport) {
         const payments = await this.service.fetchFilteredPayments(query);
@@ -145,15 +163,15 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoiceFind.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                      result.highestPayment.codePaymentMethod as FormaPago,
-                      branchOfficeSett,
-                      {
-                          Nombre: query.receiver.businessName,
-                          Rfc: query.receiver.rfc,
-                          UsoCFDI: query.usoCfdi.value,
-                      },
-                      invoiceDetails,
-                      this.configService.getPath());
+                        result.highestPayment.codePaymentMethod as FormaPago,
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails,
+                        this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.chargePaymentId,
@@ -170,10 +188,10 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     invoiceFind.total = cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(invoiceFind);
                     // Generamos el PDf del xml
-                    const desingpdf = new A117(pathXml,{
+                    const desingpdf = new A117(pathXml, {
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`
-                    })
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                    });
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
@@ -216,15 +234,15 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                             folio: invoice.folio,
                             serie: branchOfficeSett.serieFacturacion,
                         },
-                      result.highestPayment.codePaymentMethod as FormaPago,
-                      branchOfficeSett,
-                      {
-                          Nombre: query.receiver.businessName,
-                          Rfc: query.receiver.rfc,
-                          UsoCFDI: query.usoCfdi.value,
-                      },
-                      invoiceDetails,
-                      this.configService.getPath());
+                        result.highestPayment.codePaymentMethod as FormaPago,
+                        branchOfficeSett,
+                        {
+                            Nombre: query.receiver.businessName,
+                            Rfc: query.receiver.rfc,
+                            UsoCFDI: query.usoCfdi.value,
+                        },
+                        invoiceDetails,
+                        this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
                     // console.log(timbrado);
                     await this.service.updatePayment({
@@ -242,10 +260,10 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                     invoice.total = cfdi['cfdi:Comprobante']._attributes.Total;
                     const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(invoice);
                     // Generamos el PDf del xml
-                    const desingpdf = new A117(pathXml,{
+                    const desingpdf = new A117(pathXml, {
                         lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`
-                    })
+                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
+                    });
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/academias/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)

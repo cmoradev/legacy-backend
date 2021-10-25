@@ -1,8 +1,4 @@
-import {
-  Column,
-  Entity, OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AcademyConcepts } from '../../academy-concepts/entities/academy-concepts.entity';
 import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/academy-activities-group.entity';
 import { AcademyInscription } from '../../academy-inscription/entities/academy-inscription.entity';

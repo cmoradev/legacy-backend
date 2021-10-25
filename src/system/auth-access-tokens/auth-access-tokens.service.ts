@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { AuthAccessTokensEntity } from './entities/auth-access-tokens.entity';
 

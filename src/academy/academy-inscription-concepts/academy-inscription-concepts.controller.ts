@@ -1,9 +1,7 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyInscriptionConcepts } from './entities/academy-inscription-concepts.entity';
 import { AcademyInscriptionConceptsService } from './academy-inscription-concepts.service';
-import { query, Response } from 'express';
-import * as moment from 'moment';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @UseGuards(JwtGuard)
@@ -12,6 +10,11 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         type: AcademyInscriptionConcepts,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null
+            }
+        },
         limit: 200,
         join: {
             acInsConActivity: {},
@@ -32,6 +35,16 @@ export class AcademyInscriptionConceptsController implements CrudController<Acad
 
     get base(): CrudController<AcademyInscriptionConcepts> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     // @Get('/fix')

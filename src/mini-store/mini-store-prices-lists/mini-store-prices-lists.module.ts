@@ -3,7 +3,7 @@ import { MiniStorePricesListsController } from './mini-store-prices-lists.contro
 import { MiniStorePricesListsService } from './mini-store-prices-lists.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([MiniStorePriceList], ColegioDBNameConnection)],

@@ -1,5 +1,5 @@
 import { EntitySubscriberInterface, EventSubscriber, getRepository, InsertEvent, UpdateEvent } from 'typeorm';
-import { ColegioDBNameConnection } from '../../../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../../../common/databases/colegiodb.service';
 import { MiniStoreSalePayment } from '../entities/mini-store-sale-payment.entity';
 import { CashRegisterTransaction } from '../../../cash-register-transactions/entities/cash-register-transaction.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';

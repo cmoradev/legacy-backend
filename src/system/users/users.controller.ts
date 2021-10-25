@@ -1,15 +1,4 @@
-import {
-    Body,
-    Controller, Get,
-    HttpStatus,
-    Param,
-    Patch,
-    Post,
-    Req,
-    Res,
-    UnauthorizedException,
-    UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -17,7 +6,7 @@ import { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
-import { ColegioDBNameConnection } from '../../databases/colegiodb.service';
+import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
@@ -27,6 +16,11 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
         type: User,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         exclude: ['password', 'rememberToken'],
         join: {
             teacher: {}, // Teacher;
@@ -62,6 +56,16 @@ export class UsersController implements CrudController<User> {
 
     get base(): CrudController<User> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('/amir/data')
