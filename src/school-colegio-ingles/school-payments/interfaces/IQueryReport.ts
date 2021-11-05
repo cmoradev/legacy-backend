@@ -1,5 +1,12 @@
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 
+export interface IQueryReportConcept {
+  conceptStatus: PaymentStatus;
+  conceptPay: string | Date;
+  cycleId: number | string;
+  isExported: boolean;
+}
+
 export interface IQueryReport {
   statusPayment: PaymentStatus,
   month: string | Date,

@@ -7,7 +7,6 @@ import { ColegioDBNameConnection } from '../../common/databases/colegiodb.servic
 
 @Module({
   imports: [TypeOrmModule.forFeature([SchoolPayment], ColegioDBNameConnection)],
-  exports: [SchoolPaymentsService],
   controllers: [SchoolPaymentsController],
   providers: [SchoolPaymentsService],
 })
