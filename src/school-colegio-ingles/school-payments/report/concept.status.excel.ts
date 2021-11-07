@@ -5,6 +5,8 @@ import { IReportConceptRow } from '../interfaces/IReportConceptRow.interface';
 import { getNameStatusConcept } from './helpers';
 import * as moment from 'moment';
 
+const esMx = require('moment/locale/es-mx');
+
 export class ConceptStatusExcel {
   private rows: IReportConceptRow[] = [];
   private params: IQueryReportConcept;
@@ -80,7 +82,8 @@ export class ConceptStatusExcel {
     };
     worksheet.mergeCells(`B3:K3`);
     const description = worksheet.getCell('B3');
-    description.value = `Reporte emitido en ${moment().format(
+    moment?.updateLocale('es', esMx);
+    description.value = `Reporte emitido en ${moment().locale('es').format(
       'MMMM Do YYYY, h:mm:ss a',
     )}`;
     description.style = {

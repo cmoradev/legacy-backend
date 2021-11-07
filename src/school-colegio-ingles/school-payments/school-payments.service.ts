@@ -92,8 +92,9 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
     conceptPay,
     cycleId,
     conceptStatus,
+    branchOfficeId
   }: IQueryReportConcept): Promise<IReportConceptRow[]> {
-    let queryString = `SELECT * FROM vw_status_concepts WHERE conceptPay < '${conceptPay}' AND cycleId = ${cycleId}`;
+    let queryString = `SELECT * FROM vw_status_concepts WHERE conceptPay < '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
       queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL`;

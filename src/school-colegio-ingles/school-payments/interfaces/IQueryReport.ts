@@ -4,6 +4,7 @@ export interface IQueryReportConcept {
   conceptStatus: PaymentStatus;
   conceptPay: string | Date;
   cycleId: number | string;
+  branchOfficeId: number | string;
   isExported: boolean;
 }
 
