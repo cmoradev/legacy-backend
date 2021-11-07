@@ -3,6 +3,7 @@ import { formatDate } from './../../../common/date';
 import { IQueryReportConcept } from '../interfaces/IQueryReport';
 import { IReportConceptRow } from '../interfaces/IReportConceptRow.interface';
 import { getNameStatusConcept } from './helpers';
+import * as moment from 'moment';
 
 export class ConceptStatusExcel {
   private rows: IReportConceptRow[] = [];
@@ -67,17 +68,28 @@ export class ConceptStatusExcel {
 
     worksheet.mergeCells(`B2:K2`);
     const title = worksheet.getCell('B2');
-    title.value = `REPORTE DE ${getNameStatusConcept(parseInt(`${this.params.conceptStatus}`))}`.toUpperCase()
+    title.value = `REPORTE DE ${getNameStatusConcept(
+      parseInt(`${this.params.conceptStatus}`),
+    )}S`.toUpperCase();
     title.style = {
-        alignment: {horizontal: 'center', vertical: 'middle'}
+      alignment: { horizontal: 'center', vertical: 'middle' },
     };
     title.font = {
-        bold: true,
-        
-    }
+      bold: true,
+      size: 16,
+    };
     worksheet.mergeCells(`B3:K3`);
     const description = worksheet.getCell('B3');
-    
+    description.value = `Reporte emitido en ${moment().format(
+      'MMMM Do YYYY, h:mm:ss a',
+    )}`;
+    description.style = {
+      alignment: { horizontal: 'center', vertical: 'middle' },
+    };
+    description.font = {
+      bold: true,
+      size: 12,
+    };
     const rows = [];
 
     this.rows.forEach((value: IReportConceptRow) => {
@@ -111,18 +123,18 @@ export class ConceptStatusExcel {
     });
 
     worksheet.columns.forEach((column) => {
-        column.width = 10;
+      column.width = 10;
 
-        if (column.letter === 'K') {
-            column.numFmt = '$#,##0.00';
-        };
-        if (column.letter === 'C' || column.letter === 'J') {
-            column.width = 45;
-        }
+      if (column.letter === 'K') {
+        column.numFmt = '$#,##0.00';
+      }
+      if (column.letter === 'C' || column.letter === 'J') {
+        column.width = 45;
+      }
 
-        if (column.letter === 'K') {
-          column.width = 12;
-        }
+      if (column.letter === 'K') {
+        column.width = 15;
+      }
     });
 
     return worksheet;
