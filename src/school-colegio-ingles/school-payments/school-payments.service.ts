@@ -94,7 +94,7 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
     conceptStatus,
     branchOfficeId
   }: IQueryReportConcept): Promise<IReportConceptRow[]> {
-    let queryString = `SELECT * FROM vw_status_concepts WHERE conceptPay < '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
+    let queryString = `SELECT * FROM vw_status_concepts WHERE conceptPay <= '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
       queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL`;
@@ -105,7 +105,6 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
     }
 
     try {
-      console.log(queryString);
       return this.connection.query(queryString);
     } catch (e) {
       throw new NotFoundException(
