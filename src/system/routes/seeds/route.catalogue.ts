@@ -714,5 +714,36 @@ const routes: Partial<Route>[] = [
         'icon': 'mdi-cash-usd',
         'mpath': '89.91.',
     },
+    {
+        'id': 92,
+        'isActive': 1,
+        'name': 'Facturación',
+        'fatherID': null,
+        'level': 2,
+        'url': '/facturacion',
+        'icon': 'mdi-file',
+        'mpath': '',
+    },
+    {
+        'id': 93,
+        'isActive': 1,
+        'name': 'Notas de credito',
+        'fatherID': 92,
+        'level': 2,
+        'url': '/notas-credito',
+        'icon': 'mdi-file-account-outline',
+        'mpath': '',
+    },
+    {
+        'id': 94,
+        'isActive': 1,
+        'name': 'Facturas',
+        'fatherID': 92,
+        'level': 2,
+        'url': '/facturas',
+        'icon': 'mdi-file-account',
+        'mpath': '',
+    }
+
 ];
 export default routes;

@@ -1,15 +1,15 @@
 import { Factory, Seeder } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
 import { Permission } from '../entities/permission.entity';
-import permission from './permission.catalogue';
+import permissionDev from './permission.dev.catalogue';
 
-export default class PermissionsInsertUpdateSeed implements Seeder {
+export default class PermissionsDevInsertUpdateSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
         await connection
           .createQueryBuilder()
           .insert()
           .into(Permission)
-          .values([...permission])
+          .values([...permissionDev])
           .orUpdate({
               conflict_target: ['id'],
               overwrite: [],

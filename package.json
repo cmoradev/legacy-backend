@@ -33,7 +33,7 @@
     "orm:revert": "npm run orm migration:revert",
     "orm:drop": "npm run orm schema:drop",
     "orm:sync": "npm run orm schema:sync",
-    "seeds:run": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed --configName"
+    "seeds:run": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed --configName src/ormconfig.ts"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

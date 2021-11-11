@@ -11,8 +11,8 @@ export const UsersCatalogue: User[] = [
         lastnameFather: '',
         version: 1,
         uuid: 'dd828b00-5da1-11eb-ae93-0242ac130002',
-        email: 'admin@gmail.com',
-        password: 'muunyal',
+        email: 'developers@munyaal.app',
+        password: 'S0p0rt3.01',
         idCampus: 1,
         campus: {
             id: 1,
@@ -23,7 +23,7 @@ export const UsersCatalogue: User[] = [
         img: 'https://version.muunyal.app/muunyal.svg',
         isActive: 1,
         role: {
-            id: 2,
+            id: 6,
         } as Role,
 
     } as User,

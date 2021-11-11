@@ -40,6 +40,13 @@ export default class RolesInsertUpdateSeed implements Seeder {
                 'isActive': true,
                 'name': 'Vendedor o Cajero',
             },
+            {
+                'id': 6,
+                'version': 0,
+                'uuid': '',
+                'isActive': true,
+                'name': 'Desarrollador'
+            }
 
         ];
         await connection
