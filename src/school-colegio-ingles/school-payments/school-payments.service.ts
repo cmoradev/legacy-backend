@@ -97,11 +97,11 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
     let queryString = `SELECT * FROM vw_status_concepts WHERE conceptPay <= '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
-      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL`;
+      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus != '0' AND studentStatus != '0';`;
     } else if (`${conceptStatus}` === `${PaymentStatus.PaiOut}`) {
       queryString = `${queryString} AND (conceptStatus = ${conceptStatus} OR conceptPaid IS NOT NULL);`;
     } else {
-      queryString = `${queryString} AND conceptStatus = ${conceptStatus}`;
+      queryString = `${queryString} AND conceptStatus = ${conceptStatus};`;
     }
 
     try {

@@ -17,7 +17,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { InscriptionStatusStudent } from '../../../common/enums/PaymentStatus';
 
 @ObjectType()
-@Entity('inscripciones')
+@Entity('')
 export class Inscription extends Base {
 
     @Field()
