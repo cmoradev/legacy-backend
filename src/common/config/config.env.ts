@@ -1,17 +1,11 @@
 export const connections = [
-    'development',
-    'production',
-    'desarrollo',
-    'capecafe',
-    'cremeria',
-    'test',
-    'staging',
-    'refaccionaria',
-    'tortilleria',
-    'rancho',
-    'pachamama',
-    'kiinbeh',
-    'herbart',
-    'tortilleria.salmo'
+  'production',
+  'herbart',
+  'kiinbeh',
+  'development',
+  'cipdc',
+  'citul',
+  'naturale',
+  'pachamama',
+  'refaccionaria',
 ];
-

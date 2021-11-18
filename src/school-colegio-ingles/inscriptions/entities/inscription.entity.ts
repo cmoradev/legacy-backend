@@ -19,98 +19,108 @@ import { InscriptionStatusStudent } from '../../../common/enums/PaymentStatus';
 @ObjectType()
 @Entity('inscripciones')
 export class Inscription extends Base {
+  @Field()
+  @Column('simple-enum', {
+    enum: InscriptionStatusStudent,
+    default: InscriptionStatusStudent.NewEnrollment,
+    nullable: false,
+    name: 'id_status',
+  })
+  idStatus: InscriptionStatusStudent;
 
-    @Field()
-    @Column('simple-enum', {
-        enum: InscriptionStatusStudent,
-        default: InscriptionStatusStudent.NewEnrollment,
-        nullable: false,
-        name: 'id_status',
-    })
-    idStatus: InscriptionStatusStudent;
+  @Field((type) => Student)
+  @ManyToOne(() => Student, (student) => student.studentInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripStudent: Student;
 
-    @Field(type => Student)
-    @ManyToOne(() => Student, (student) => student.studentInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripStudent: Student;
+  @Field((type) => Group)
+  @ManyToOne(() => Group, (group) => group.groupInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripGroup: Group;
 
-    @Field(type => Group)
-    @ManyToOne(() => Group, (group) => group.groupInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripGroup: Group;
+  @Field((type) => Grade)
+  @ManyToOne(() => Grade, (grade) => grade.gradeInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripGrade: Grade;
 
-    @Field(type => Grade)
-    @ManyToOne(() => Grade, (grade) => grade.gradeInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripGrade: Grade;
+  @Field((type) => Level)
+  @ManyToOne(() => Level, (level) => level.levelInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripLevel: Level;
 
-    @Field(type => Level)
-    @ManyToOne(() => Level, (level) => level.levelInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripLevel: Level;
+  @Field((type) => Cycle)
+  @ManyToOne(() => Cycle, (cycle) => cycle.cycleInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripCycle: Cycle;
 
-    @Field(type => Cycle)
-    @ManyToOne(() => Cycle, (cycle) => cycle.cycleInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripCycle: Cycle;
+  @Field((type) => BranchOffice)
+  @ManyToOne(() => BranchOffice, (campus) => campus.campusInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripCampus: BranchOffice;
 
-    @Field(type => BranchOffice)
-    @ManyToOne(() => BranchOffice, (campus) => campus.campusInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripCampus: BranchOffice;
+  @Field((type) => User)
+  @ManyToOne(() => User, (user) => user.userCchoolCreatorInscription, {
+    cascade: ['update', 'insert'],
+  })
+  inscripAgentCreator: User;
 
-    @Field(type => User)
-    @ManyToOne(() => User, (user) => user.userCchoolCreatorInscription, {
-        cascade: ['update', 'insert'],
-    })
-    inscripAgentCreator: User;
+  @Field((type) => User)
+  @ManyToOne(() => User, (user) => user.userCchoolEditorInscription, {
+    cascade: ['update', 'insert'],
+  })
+  inscripAgentEditor: User;
 
-    @Field(type => User)
-    @ManyToOne(() => User, (user) => user.userCchoolEditorInscription, {
-        cascade: ['update', 'insert'],
-    })
-    inscripAgentEditor: User;
+  @Field((type) => Classroom)
+  @ManyToOne(() => Classroom, (classroom) => classroom.classroomInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripClassroom: Classroom;
 
-    @Field(type => Classroom)
-    @ManyToOne(() => Classroom, (classroom) => classroom.classroomInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripClassroom: Classroom;
+  @Field((type) => PaymentPlan)
+  @ManyToOne((type) => PaymentPlan, (p) => p.studentsInscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  paymentPlan: PaymentPlan;
 
-    @Field(type => PaymentPlan)
-    @ManyToOne(type => PaymentPlan, (p) => p.studentsInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    paymentPlan: PaymentPlan;
+  @Field((type) => [AssignmentInscription])
+  @OneToMany(
+    () => AssignmentInscription,
+    (assignmentInscription) => assignmentInscription.assignmentsInscription,
+    {
+      cascade: ['update', 'insert'],
+    },
+  )
+  inscripAssignmentsInscription: AssignmentInscription[];
 
-    @Field(type => [AssignmentInscription])
-    @OneToMany(() => AssignmentInscription, (assignmentInscription) => assignmentInscription.assignmentsInscription, {
-        cascade: ['update', 'insert'],
-    })
-    inscripAssignmentsInscription: AssignmentInscription[];
+  @Field((type) => StudyPlanVariant)
+  @ManyToOne(
+    () => StudyPlanVariant,
+    (studyPlanVariant) => studyPlanVariant.studyPlanVaInscriptions,
+    {
+      cascade: ['update', 'insert'],
+    },
+  )
+  inscripStudyPlanVariant: StudyPlanVariant;
 
-    @Field(type => StudyPlanVariant)
-    @ManyToOne(() => StudyPlanVariant, (studyPlanVariant) => studyPlanVariant.studyPlanVaInscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripStudyPlanVariant: StudyPlanVariant;
+  @Field((type) => StudyPlan)
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlaninscriptions, {
+    cascade: ['update', 'insert'],
+  })
+  inscripStudyPlan: StudyPlan;
 
-    @Field(type => StudyPlan)
-    @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlaninscriptions, {
-        cascade: ['update', 'insert'],
-    })
-    inscripStudyPlan: StudyPlan;
-
-    @Field(type => [SchoolPayment])
-    @OneToMany(() => SchoolPayment, (schoolPayment) => schoolPayment.inscription, {
-        cascade: ['update', 'insert'],
-    })
-    schoolPayments: SchoolPayment[];
-
+  @Field((type) => [SchoolPayment])
+  @OneToMany(
+    () => SchoolPayment,
+    (schoolPayment) => schoolPayment.inscription,
+    {
+      cascade: ['update', 'insert'],
+    },
+  )
+  schoolPayments: SchoolPayment[];
 }
