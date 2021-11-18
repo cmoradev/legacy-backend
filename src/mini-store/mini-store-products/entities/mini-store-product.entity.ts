@@ -53,7 +53,15 @@ export class MiniStoreProduct extends Base {
     })
     code: string;
 
-    @Field({ nullable: true })
+    @Field()
+    @Column('varchar', {
+        nullable: false,
+        length: 25,
+        name: 'sat_code',
+    })
+    sat_code:string;
+
+    @Field({ nullable: false })
     @Column('varchar', {
         nullable: true,
         length: 25,
