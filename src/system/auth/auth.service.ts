@@ -169,7 +169,7 @@ export class AuthService {
 
   generateJWT(
     user: Partial<User>,
-    expiration: number = 30,
+    expiration: number = 60 * 60 * 10,
   ): { access_token: string; decode: PayloadToken | any } {
     const payload = { username: user.email, sub: user.id };
     const token = this.jwtService.sign(payload, {
