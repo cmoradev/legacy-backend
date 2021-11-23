@@ -174,4 +174,8 @@ export class MiniStoreProductsService extends TypeOrmCrudService<MiniStoreProduc
             rowCount: rowsCount,
         });
     }
+
+    async bulkStudents(products: MiniStoreProduct[]) {
+        return await this.repo.save(products);
+    }
 }
