@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
@@ -56,7 +65,8 @@ import { Public } from '../../../common/docorators/public.decorator';
   },
 })
 @Controller()
-export class SchoolChargesPaymentsController implements CrudController<SchoolChargePayment> {
+export class SchoolChargesPaymentsController
+  implements CrudController<SchoolChargePayment> {
   constructor(
     readonly service: SchoolChargesPaymentsService,
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
@@ -66,8 +76,7 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private smartWeb: FactSw,
     private readonly configService: ConfigService,
-  ) {
-  }
+  ) {}
 
   get base(): CrudController<SchoolChargePayment> {
     return this;
@@ -92,7 +101,10 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         },
       });
 
-      const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
+      const invoiceDetails = ConceptsPriceByPaymentBilligAS(
+        result.payment,
+        result.charge.chargesDetails,
+      );
       const data = invoiceDetails;
       const detalles = invoiceDetails.detalles.map((d: NewReport) => {
         return {
@@ -105,7 +117,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           importe: d.importe,
         };
       });
-      const logo = readFileSync(`${this.configService.getPath()}logos/colegiologo.png`);
+      const logo = readFileSync(
+        `${this.configService.getPath()}logos/colegiologo.png`,
+      );
       const Receip = new Recibo();
       Receip.addLogo({
         width: 100,
@@ -114,11 +128,14 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       });
       Receip.addFolio(result.charge.folio);
       Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
-      const regimen = RegimenFiscalList.find((f) => f.value === branchOfficeSett.regime);
+      const regimen = RegimenFiscalList.find(
+        (f) => f.value === branchOfficeSett.regime,
+      );
       Receip.addEmisor({
         name: branchOfficeSett.businessName,
         rfc: branchOfficeSett.rfc,
-        regimen: branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+        regimen:
+          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
         expedido: branchOfficeSett.address,
       });
       const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
@@ -127,11 +144,15 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         curp: student.curp ? student.curp : '',
         matricula: student.matricula,
       });
-      const ven = result.payment.cashierCharge.name + ' ' + result.payment.cashierCharge.lastnameFather + ' ' + result.payment.cashierCharge.lastnameMother;
+      const ven =
+        result.payment.cashierCharge.name +
+        ' ' +
+        result.payment.cashierCharge.lastnameFather +
+        ' ' +
+        result.payment.cashierCharge.lastnameMother;
       Receip.addInformacion({
         vendedor: ven,
       });
-
 
       Receip.addCatidad({
         SubTotal: invoiceDetails.subtotal,
@@ -156,7 +177,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       Receip.addFormaPago(forma);
       // await pdf.save('/home/misael/Documents/proyectos/amir')
       const download = Buffer.from(await Receip.getBase64(), 'base64');
-      res.send({ src: 'data:application/pdf;base64,' + await Receip.getBase64() });
+      res.send({
+        src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
+      });
       // if (true) {
       //   res.contentType('application/pdf');
       //   res.send(download);
@@ -178,17 +201,24 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBilligAS(result.payment, result.charge.chargesDetails);
-    const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+    const invoiceDetails = ConceptsPriceByPaymentBilligAS(
+      result.payment,
+      result.charge.chargesDetails,
+    );
+    const currentOffice = await this.branchOffice.findBranch(
+      query.branchOfficeId,
+    );
     const branchOfficeSett = await this.branchOfficeSettingService.findOne({
       where: {
         id: query.branchOfficeSettingId,
       },
     });
-    const invoiceFinded = await this.schoolChargeInvoiceService.findInvoiceByPayment({
-      paymentId: query.chargePaymentId,
-      status: StatusInvoce.noBilling,
-    });
+    const invoiceFinded = await this.schoolChargeInvoiceService.findInvoiceByPayment(
+      {
+        paymentId: query.chargePaymentId,
+        status: StatusInvoce.noBilling,
+      },
+    );
     const invoiceResponse = {
       stamping: false,
       msg: '',
@@ -196,15 +226,19 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       uuid: '',
     };
     try {
-      const logo = readFileSync(`${this.configService.getPath()}logos/colegiologo.png`);
+      const logo = readFileSync(
+        `${this.configService.getPath()}logos/colegiologo.png`,
+      );
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
           console.log('1');
-          const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment({
-            paymentId: query.chargePaymentId,
-            status: StatusInvoce.invoiced,
-            stamping: 1,
-          });
+          const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment(
+            {
+              paymentId: query.chargePaymentId,
+              status: StatusInvoce.invoiced,
+              stamping: 1,
+            },
+          );
           invoiceResponse.stamping = true;
           invoiceResponse.invoice = invoicePayment;
           invoiceResponse.msg = 'PAGO FACTURADO';
@@ -261,7 +295,10 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = `${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml =
+            `${this.configService.getPath()}comprobantes/colegio/` +
+            timbrado.data.uuid.toUpperCase() +
+            '.xml';
           // console.log(pathXml, timbrado);
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
@@ -270,7 +307,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
           invoiceFinded.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-          const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(invoiceFinded);
+          const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
+            invoiceFinded,
+          );
           // Generamos el PDf del xml
           const desingpdf = new A117(pathXml, {
             lugarExpedicion: branchOfficeSett.address,
@@ -278,9 +317,16 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           });
           const pdf = new PDF<A117>(desingpdf);
           // console.log(pdf);
-          await pdf.save(`${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
+          await pdf.save(
+            `${this.configService.getPath()}comprobantes/colegio/` +
+              timbrado.data.uuid.toUpperCase(),
+          );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+          this.schoolChargeInvoiceService.sendMail(
+            currentOffice,
+            timbrado.data.uuid,
+            query.receiver.email,
+          );
           // falta regresar el dato
           invoiceResponse.stamping = true;
           invoiceResponse.msg = 'Pago Facturado';
@@ -310,7 +356,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         factura.invoiceBranchOfficeSet = {
           id: query.branchOfficeSettingId,
         } as BranchOfficeSetting;
-        const invoice = await this.schoolChargeInvoiceService.saveInvoice(factura);
+        const invoice = await this.schoolChargeInvoiceService.saveInvoice(
+          factura,
+        );
         if (invoice) {
           let timbrado: StampV4;
           if (query.usoCfdi.value === 'D10') {
@@ -335,7 +383,8 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
                 rfcPago: query.receiver.rfc,
               },
               invoiceDetails,
-              this.configService.getPath());
+              this.configService.getPath(),
+            );
             timbrado = await this.smartWeb.facturar(xml);
           } else {
             const xml = await GenerateInvoice(
@@ -361,7 +410,10 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
             stamping: 1,
           } as SchoolChargePayment);
           // Guardamos el xml
-          const pathXml = `${this.configService.getPath()}/comprobantes/colegio/` + timbrado.data.uuid.toUpperCase() + '.xml';
+          const pathXml =
+            `${this.configService.getPath()}/comprobantes/colegio/` +
+            timbrado.data.uuid.toUpperCase() +
+            '.xml';
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
           const cfdi: XmlCdfi = await XmlToJson(pathXml);
@@ -369,7 +421,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
           invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
-          const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(invoice);
+          const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
+            invoice,
+          );
           // Generamos el PDf del xml
           const desingpdf = new A117(pathXml, {
             lugarExpedicion: branchOfficeSett.address,
@@ -377,9 +431,16 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           });
           const pdf = new PDF<A117>(desingpdf);
           // console.log(pdf);
-          await pdf.save(`${this.configService.getPath()}comprobantes/colegio/` + timbrado.data.uuid.toUpperCase());
+          await pdf.save(
+            `${this.configService.getPath()}comprobantes/colegio/` +
+              timbrado.data.uuid.toUpperCase(),
+          );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          await this.schoolChargeInvoiceService.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+          await this.schoolChargeInvoiceService.sendMail(
+            currentOffice,
+            timbrado.data.uuid,
+            query.receiver.email,
+          );
           // falta regresar el dato
           invoiceResponse.stamping = true;
           invoiceResponse.msg = 'Pago Facturado';
@@ -389,14 +450,19 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
         }
       }
     } catch (e) {
-      console.log(e);
-      response.status(400).send(e);
+      console.warn(e);
+      response.status(400);
+      response.send(e);
     }
   }
 
   @Public()
   @Get('/simple-report')
-  async simpleReport(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
+  async simpleReport(
+    @Req() request,
+    @Res() response: Response,
+    @Query() query: QuerySimpleReport,
+  ) {
     const payments = await this.service.fetchFilteredPayments(query);
     const charges = await this.service.fetchFilteredSales(query);
     const res = {
@@ -409,7 +475,9 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
       file: '',
     };
     if (query.onlyFile) {
-      res.file = await this.service.simpleReport(payments, charges, query, { base64: true });
+      res.file = await this.service.simpleReport(payments, charges, query, {
+        base64: true,
+      });
     } else {
       const cashiers = await this.service.getUserCasher();
       const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
@@ -418,7 +486,11 @@ export class SchoolChargesPaymentsController implements CrudController<SchoolCha
           isActive: true,
         },
       });
-      const viewPayments = convertPaymentsReportCollege(payments, cashiers, paymenMethods);
+      const viewPayments = convertPaymentsReportCollege(
+        payments,
+        cashiers,
+        paymenMethods,
+      );
       res.payments = viewPayments;
     }
     return response.send(res);
