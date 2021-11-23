@@ -11,12 +11,10 @@ export class SchoolChargesSubscriber implements EntitySubscriberInterface<School
 
     async beforeInsert(insertEvent: InsertEvent<SchoolCharge>) {
         const { entity: sale } = insertEvent;
-        // console.log(sale, 'antes de guardar ' + sale.id);
     }
 
     async afterInsert(insertEvent: InsertEvent<SchoolCharge>) {
         const { entity: sale } = insertEvent;
-        console.log(sale, 'antes despues de guardar ' + sale.id);
 
     }
 

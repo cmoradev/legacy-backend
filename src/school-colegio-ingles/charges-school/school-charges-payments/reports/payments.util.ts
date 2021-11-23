@@ -96,7 +96,6 @@ export function convertPaymentsReportCollege(payments: SchoolChargePayment[], ca
         paymentsDetails.push(paymentItem);
       });
     } else {
-      // console.log(payment);
     }
   });
   data.matriz = resumeDataTable;

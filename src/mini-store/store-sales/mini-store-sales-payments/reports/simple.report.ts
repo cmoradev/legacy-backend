@@ -221,7 +221,7 @@ export class SimpleReport {
                 });
                 startRow += 1;
             } else {
-                console.log(payment);
+   
             }
         });
 

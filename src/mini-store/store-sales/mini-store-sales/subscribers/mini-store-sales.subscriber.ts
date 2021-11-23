@@ -16,11 +16,6 @@ export class MiniStoreSaleSubscriber implements EntitySubscriberInterface<MiniSt
 
     async afterInsert(insertEvent: InsertEvent<MiniStoreSale>) {
         const { entity: sale } = insertEvent;
-        try {
-            //this.generateDocFolio(sale.id);
-        } catch (e) {
-            console.log('ventas :' + sale, 'error', e);
-        }
     }
 
     async beforeUpdate(updateEvent: UpdateEvent<MiniStoreSale>) {

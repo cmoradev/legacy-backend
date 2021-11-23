@@ -35,7 +35,6 @@ export async function templateProducts(workbook: Workbook, productData: any[]) {
     formatCells: true,
   });
   sheet.eachRow((row, rowNumber) => {
-    console.log('Row count', rowNumber);
     if (rowNumber == 1) {
       row.eachCell((cell, cellNumber) => {
         cell.protection = {

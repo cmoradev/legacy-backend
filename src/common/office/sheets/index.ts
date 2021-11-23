@@ -72,7 +72,7 @@ async function tObjet(sheet: ExcelSheet) {
     };
     for (const [k, sheetData] of sheet.data.entries()) {
         if (k === 0) {
-            head.items = sheetData; // console.log(Object.assign({}, sheetData))
+            head.items = sheetData;
         } else {
             const objtArray = {};
             for (let p = 0; p < head.items.length; p++) {

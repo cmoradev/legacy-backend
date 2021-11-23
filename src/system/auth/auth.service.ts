@@ -1,5 +1,9 @@
 import * as bcrypt from 'bcrypt';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Role } from '../roles/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -42,14 +46,28 @@ export class AuthService {
     private readonly campusRepository: Repository<BranchOffice>,
     private readonly jwtService: JwtService,
     private readonly tokensService: AuthAccessTokensService,
-  ) {
+  ) {}
+
+  public renewToken(token: string): { access_token: string; decode: any } {
+    const decode: any = this.jwtService.decode(token);
+    return this.generateJWT({ id: decode?.sub, email: decode?.username });
   }
 
   public async registerUserIfNotExist(userBody: UserBody): Promise<any> {
-    const { name, email, passw, lastnameMother, lastnameFather, department, role, campus, status } = userBody;
+    const {
+      name,
+      email,
+      passw,
+      lastnameMother,
+      lastnameFather,
+      department,
+      role,
+      campus,
+      status,
+    } = userBody;
     let user: User | undefined = await this.usersService.findOne({ email });
 
-    if (user && await bcrypt.compare(passw, user.password)) {
+    if (user && (await bcrypt.compare(passw, user.password))) {
       const { password, ...result } = user;
       return result;
     }
@@ -63,17 +81,19 @@ export class AuthService {
     const newCampus = this.campusRepository.create();
     newCampus.id = campus;
 
-    user = await this.usersService.save(await this.usersService.create({
-      lastnameFather,
-      isActive: status,
-      role: newRole,
-      department: newDepartment,
-      campus: newCampus,
-      lastnameMother,
-      name,
-      email,
-      password: passw,
-    }));
+    user = await this.usersService.save(
+      await this.usersService.create({
+        lastnameFather,
+        isActive: status,
+        role: newRole,
+        department: newDepartment,
+        campus: newCampus,
+        lastnameMother,
+        name,
+        email,
+        password: passw,
+      }),
+    );
     if (user) {
       const { password, ...result } = user;
       return result;
@@ -82,7 +102,10 @@ export class AuthService {
     return null;
   }
 
-  async validateUser(email: string, passw: string): Promise<Partial<User> | null> {
+  async validateUser(
+    email: string,
+    passw: string,
+  ): Promise<Partial<User> | null> {
     // const user: User | undefined = await this.usersService
     //     .findOne({ email }, {
     //         relations: [
@@ -94,7 +117,10 @@ export class AuthService {
     //             'role.permissions.actions',
     //         ],
     //     });
-    const user: User | undefined = await this.usersService.repo.createQueryBuilder('users')
+    const user:
+      | User
+      | undefined = await this.usersService.repo
+      .createQueryBuilder('users')
       .leftJoinAndSelect('users.role', 'role')
       .leftJoinAndSelect('users.campus', 'campus')
       .leftJoinAndSelect('users.department', 'department')
@@ -102,18 +128,38 @@ export class AuthService {
       .leftJoinAndSelect('permissions.route', 'route')
       .leftJoinAndSelect('permissions.actions', 'actions')
       .select([
-        'users.id', 'users.name', 'users.lastnameFather', 'users.lastnameMother',
-        'users.email', 'users.password', 'users.isActive', 'users.img',
-        'campus.id', 'campus.name',
-        'department.id', 'department.name', 'department.description',
-        'role.id', 'role.isActive', 'role.name', 'permissions.id',
-        'route.id', 'route.isActive', 'route.name', 'route.fatherID',
-        'route.level', 'route.url', 'route.icon',
+        'users.id',
+        'users.name',
+        'users.lastnameFather',
+        'users.lastnameMother',
+        'users.email',
+        'users.password',
+        'users.isActive',
+        'users.img',
+        'campus.id',
+        'campus.name',
+        'department.id',
+        'department.name',
+        'department.description',
+        'role.id',
+        'role.isActive',
+        'role.name',
+        'permissions.id',
+        'route.id',
+        'route.isActive',
+        'route.name',
+        'route.fatherID',
+        'route.level',
+        'route.url',
+        'route.icon',
         'actions.id',
       ])
       .where('users.email = :email', { email })
       .getOne();
-    if (user && bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))) {
+    if (
+      user &&
+      bcrypt.compareSync(passw, user.password.replace('$2y$', '$2a$'))
+    ) {
       const { password, ...result } = user;
       return result;
     }
@@ -121,7 +167,10 @@ export class AuthService {
     return null;
   }
 
-  generateJWT(user: Partial<User>, expiration: number = 86400): { access_token: string, decode: PayloadToken | any } {
+  generateJWT(
+    user: Partial<User>,
+    expiration: number = 30,
+  ): { access_token: string; decode: PayloadToken | any } {
     const payload = { username: user.email, sub: user.id };
     const token = this.jwtService.sign(payload, {
       expiresIn: expiration,
@@ -132,9 +181,13 @@ export class AuthService {
     };
   }
 
-  async sendMailForgotPassword(email: string, token: string, clientUrl: string) {
+  async sendMailForgotPassword(
+    email: string,
+    token: string,
+    clientUrl: string,
+  ) {
     const environment = process.env.NODE_ENV || 'development';
-    const processEnv: any = dotenv.parse(fs.readFileSync(`${ environment }.env`));
+    const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
     const transporter = nodemailer.createTransport({
       service: 'gmail.com',
       host: 'smtp.gmail.com',
@@ -156,7 +209,7 @@ export class AuthService {
             Ha solicitado recuperar su contraseña.
             Si fue usted haga click en el enlace que se encuentra debajo. De lo contrario, ignore este correo.
         </p>
-        <a href='${ clientUrl }/#/reset-password/${ token }'>Recuperar contraseña</a>
+        <a href='${clientUrl}/#/reset-password/${token}'>Recuperar contraseña</a>
       </div>
       `,
     };
@@ -183,7 +236,11 @@ export class AuthService {
         clientId: 1,
         expiresAt: moment().add(5, 'minutes').toDate(),
       });
-      await this.sendMailForgotPassword(user.email, jwt.access_token, forgotPassword.clientUrl);
+      await this.sendMailForgotPassword(
+        user.email,
+        jwt.access_token,
+        forgotPassword.clientUrl,
+      );
     } catch (e) {
       // tslint:disable-next-line:no-console
       console.error(e.message);

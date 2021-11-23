@@ -31,7 +31,6 @@ export class FactMod {
             await this.factura.saveFile(res.txt, dirPath, `${res.uuid}.txt`);
             return res;
         } catch (e) {
-            console.log(e);
             return e;
         }
     }

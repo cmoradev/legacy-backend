@@ -168,7 +168,6 @@ export class CheckInController implements CrudController<CheckIn> {
     async getStatusStudent(@Param('matricula') code: string) {
         const students = await this.academicService.getAllStudents();
         const studentsList = List(students);
-        console.log(code);
         return students;
     }
 }

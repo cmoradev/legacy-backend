@@ -197,14 +197,13 @@ export class CommissionsReport {
             });
         }
         resumeDataTable.push(sumtotal);
-        console.log(resumeDataTable);
 
         const head = [{
             name: 'Tipo',
             totalsRowLabel: 'Total global',
             filterButton: true,
         }, ...cashiers.map(value => {
-            console.log(value);
+
             return {
                 name: value.name,
                 filterButton: false,
@@ -216,7 +215,7 @@ export class CommissionsReport {
             filterButton: false,
         }),
         ];
-        console.log(head);
+    
         paymentsSheet.addTable({
             name: 'resumen',
             ref: 'F1',
@@ -311,7 +310,7 @@ export class CommissionsReport {
                 });
                 startRow += 1;
             } else {
-                console.log(payment);
+
             }
         });
 

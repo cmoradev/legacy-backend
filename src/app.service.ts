@@ -25,7 +25,7 @@ export class AppService {
     //   method: 'GET',
     //   responseType: 'blob',
     //   onDownloadProgress: (d) => {
-    //     console.log(d);
+  
     //   },// important
     // }).then((response) => {
     //   const path = Path.resolve(__dirname, 'public', '..', '..', '..', 'amir.zip');
@@ -45,7 +45,6 @@ export class AppService {
         id: 1,
       },
     })
-    console.log(settings);
     /*const cer = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
     const key = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');*/
     const comprobanteAttribute: Comprobante = {
@@ -123,6 +122,5 @@ export class AppService {
     const relation = new Relacionado({ TipoRelacion: '01' });
     relation.addRelation('4A1B43E2-1183-4AD4-A3DE-C2DA787AE56A');
     await comprobante.relacionados(relation);
-    console.log(await comprobante.getXmlCdfi())
   }
 }

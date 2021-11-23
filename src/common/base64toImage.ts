@@ -20,7 +20,6 @@ export function base64ToImage(base64Str: string, path: string, optionalObj: any 
     fs.writeFile(abs, imageBuffer.data, 'base64', (err) => {
         if (err && optionalObj.debug) {
             // tslint:disable-next-line:no-console
-            console.log('File image write error', err);
         }
 
     });

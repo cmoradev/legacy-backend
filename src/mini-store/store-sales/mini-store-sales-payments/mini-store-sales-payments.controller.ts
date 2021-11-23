@@ -231,14 +231,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 }
             }
 
-            // console.log(await sw.getToken());
             // const timbrado = await sw.facturar(xml);
-            // console.log(timbrado);
             // response.set('Content-Type', 'text/xml');
             // response.send(xml);
 
         } catch (e) {
-            console.log(e);
             response.status(400);
             response.send(e);
         }

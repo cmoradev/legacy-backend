@@ -89,7 +89,6 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 workPath
             );
         } catch (err) {
-            console.log(err);
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

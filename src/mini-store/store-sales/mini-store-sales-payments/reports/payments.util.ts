@@ -97,7 +97,7 @@ export function convertPaymentsReport(payments: MiniStoreSalePayment[], cashiers
                 paymentsDetails.push(paymentItem);
             });
         } else {
-            // console.log(payment);
+    
         }
     });
     data.matriz = resumeDataTable;
@@ -216,7 +216,7 @@ export function convertPaymentsComissionReport(quantityCommissions: number, paym
                 paymentsDetails.push(paymentItem);
             });
         } else {
-            // console.log(payment);
+      
         }
     });
     data.matriz = resumeDataTable;

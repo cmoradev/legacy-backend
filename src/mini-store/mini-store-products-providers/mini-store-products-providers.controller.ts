@@ -59,8 +59,7 @@ export class MiniStoreProductsProvidersController implements CrudController<Mini
             produ.provider = { id: 1 } as MiniStoreWarehouseProvider;
             produ.product = { id: product.id } as MiniStoreProduct;
             produ.supplierPrice = mulQuantity(product.priceWithIVA, .70).toString();
-            // await this.service.repo.save(produ);
-            console.log(i);
+
             i++;
         }
         return data;

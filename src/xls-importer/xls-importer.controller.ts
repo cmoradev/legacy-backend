@@ -184,7 +184,6 @@ export class XlsImporterController {
 
     @Post('layout')
     public async setLayout(@Res() res: Response, @Body() requestData: xlsType) {
-        console.log('Here...', requestData);
         const workbook = new ExcelJS.Workbook();
         res.set({
             'Content-Type': 'application/vnd.ms-excel',
@@ -336,14 +335,12 @@ export class XlsImporterController {
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
 
                 } catch (e) {
-                    console.log('error en añadir al objeto');
                     return res.send({ success: false, error: e });
                 }
 
                 try {
                     await this.miniStoreProductsService.createProduct(productToAdd);
                 } catch (e) {
-                    console.log('error al guardar objecto');
                     return res.send({ success: false, error: e });
                 }
 
@@ -351,9 +348,7 @@ export class XlsImporterController {
         }
         try {
             fs.unlinkSync(`/tmp/${file.filename}`);
-            console.log(`successfully deleted tmp/${file.filename}`);
         } catch (err) {
-            console.log('Error on delete ', err);
             return res.send({ success: false, error: err });
         }
 
@@ -602,7 +597,6 @@ export class XlsImporterController {
                 }
             }
             fs.unlinkSync(`/var/www/uploads/temp/${file.filename}`);
-            console.log(studentsData);
             return await this.studentsService.bulkStudents(studentsData);
         } catch (e) {
             console.error(e.message);

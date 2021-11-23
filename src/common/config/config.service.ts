@@ -13,7 +13,6 @@ export class ConfigService {
     private readonly envConfig: EnvConfig;
 
     constructor(filePath: string) {
-        console.log('Env File: ' + filePath);
         const config = dotenv.parse(fs.readFileSync(filePath));
         this.envConfig = this.validateInput(config);
     }

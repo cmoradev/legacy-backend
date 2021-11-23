@@ -73,10 +73,8 @@ export class AcademyInscriptionConceptsController implements CrudController<Acad
     //         // @ts-ignore
     //         concept.payDate = year + '-' + format + '-01';
     //         if (data.save) {
-    //             console.log('guardando');
     //             await this.service.repo.save(concept);
     //         } else {
-    //             console.log('consulta');
     //         }
     //         if (concept.description.split('-')[1].trim() === 'diciembre') {
     //             year = 2021;

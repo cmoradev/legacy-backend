@@ -40,7 +40,6 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
     }
 
     async updateQuotation(data: MiniStoreQuotation) {
-        console.log(data);
         return await this.repo.save(data);
     }
 

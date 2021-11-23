@@ -11,10 +11,7 @@ const environment = process.env.NODE_ENV || 'development';
 let config: BaseConnectionOptions;
 if (fs.existsSync(`${environment}.env`)) {
     const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
-    // tslint:disable-next-line:no-console
-    console.log(`Migración corriendo --> en entorno ${environment}`);
-    // tslint:disable-next-line:no-console
-    console.log(`Migración corriendo --> en la base de datos ${processEnv.DB_DBNAME}`);
+
     config = {
         type: 'mysql',
         name: processEnv.DB_DBNAME_CONNECTION,

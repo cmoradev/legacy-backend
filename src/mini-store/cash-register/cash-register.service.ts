@@ -40,9 +40,7 @@ export class CashRegisterService extends TypeOrmCrudService<CashRegister> {
                 id: query.casherId,
             });
         // } else {
-        //     console.log('in date');
-        //     console.log(moment(query.startDate).startOf('day').toDate());
-        //     console.log(moment(query.startDate).endOf('day').toDate());
+
         //     salesReturnsQB.where('cashRegister.openAt BETWEEN :startDate AND :endDate',
         //         {
         //             startDate: moment(query.startDate).startOf('day').toDate(),

@@ -15,8 +15,6 @@ export class RefreshGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err: any, user: any, info: any, context: ExecutionContext, status?: any) {
-        // You can throw an exception based on either "info" or "err" arguments
-        console.log('refresh guards');
         if (err || !user) {
             throw err || new UnauthorizedException();
         }

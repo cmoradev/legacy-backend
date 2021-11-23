@@ -72,7 +72,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
     const detalles = saleDetails(details || []);
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
-    console.log(ivaFromFinalAmount(pago));
     const resultad = {
         total: 0,
         subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
@@ -88,7 +87,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         resultad.discount = sumQuantity(discountTotal, resultad.discount);
 
         const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discountTotal, detail.quantity)));
-        console.log(nativeCalculo);
         // const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
         // const importe = (+nativeCalculo.amountWithOutIva + (discount / detail.quantity)) * detail.quantity;
         const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
@@ -109,7 +107,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         generalizedConcepts.push(concept);
     });
     resultad.detalles = generalizedConcepts;
-    console.log('total: ' + resultad.total);
     return resultad;
 };
 
@@ -120,7 +117,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
     const pago = payment.quantity - payment.change;
     const base = ((payment.quantity - payment.change) / saleAmount) || 1;
 
-    console.log(ivaFromFinalAmount(pago));
     const resultad = {
         total: pago,
         subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
@@ -136,7 +132,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         resultad.discount = sumQuantity(discount, resultad.discount);
         // @ts-ingore
         const nativeCalculo = ivaFromFinalAmount((conceptPrice * base).toFixed(2));
-        console.log(nativeCalculo);
         const importe = mulQuantity(nativeCalculo.amountWithOutIva, detail.quantity);
         // const importe = (+nativeCalculo.amountWithOutIva + discount) * detail.quantity;
 
@@ -150,7 +145,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
             discount,
             importe: importe, // mulQuantity(totalAmountConcept(detail), base),
         };
-        console.log(conceptos);
         generalizedConcepts.push(conceptos);
     });
     resultad.detalles = generalizedConcepts;

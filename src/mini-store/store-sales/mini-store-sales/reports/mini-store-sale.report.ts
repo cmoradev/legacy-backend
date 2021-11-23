@@ -29,7 +29,6 @@ export function totalForProducts(sales: MiniStoreSale[]) {
     return r;
   }, []);
 
-  console.log(prod);
   return prod.reduce((preValue, curValue, i) => {
     preValue[i] = {
       name: curValue.productName,
@@ -175,7 +174,6 @@ export function formatOperation(items: OperationCalculate[], cantidad: string | 
           const letf = item.leftOperation[i];
           text += letf;
           if (i === item.leftOperation.length - 1) {
-            console.log(item.take);
             text += item.take ? '(' + cantidad + ')' : '(' + item.value + ')';
             if (item.type === 1) {
               text += '*' + '(' + cantidad + ')';
@@ -183,7 +181,7 @@ export function formatOperation(items: OperationCalculate[], cantidad: string | 
           }
         }
         if (item.leftOperation.length === 0) {
-          console.log(item.take);
+       
           text += item.take ? '(' + cantidad + ')' : '(' + item.value + ')';
           if (item.type === 1) {
             text += '*' + '(' + cantidad + ')';

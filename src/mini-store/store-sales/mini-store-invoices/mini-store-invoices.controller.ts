@@ -224,12 +224,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         branchOfficeSettingId: number;
     }) {
         try {
-
             const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
             const message = this.service.sendMail(currentBranch, data.uuid, data.email);
-            // console.log(message);
         } catch (e) {
-            // console.log(e);
         }
     }
 

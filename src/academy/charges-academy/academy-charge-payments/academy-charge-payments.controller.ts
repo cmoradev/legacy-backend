@@ -244,7 +244,6 @@ export class AcademyChargePaymentsController implements CrudController<AcademyCh
                         invoiceDetails,
                         this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
-                    // console.log(timbrado);
                     await this.service.updatePayment({
                         id: query.chargePaymentId,
                         stamping: 1,

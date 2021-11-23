@@ -112,7 +112,6 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 },
             });
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
-            // console.log(cer);
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
             const responseSmartWeb = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
@@ -122,7 +121,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 key,
             });
             const status = responseSmartWeb.data.uuid[invoice.uuid];
-            //  console.log(responseSmartWeb);
+
             if (status === '201' || +status === 201 || status === '202' || +status === 202) {
                 fs.writeFileSync(`${this.configService.getPath()}comprobantes/colegio/` + invoice.uuid + '-acuse.xml', responseSmartWeb.data.acuse);
                 if (cancelInvoiceSw.sendMail) {
@@ -151,7 +150,6 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 payment: '',
                 invoice: '',
             }).status(400);
-            console.log(e);
         }
     }
 
@@ -202,7 +200,6 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                     break;
             }
         } catch (e) {
-            console.log(e)
             res.status(401);
             res.send(e.message);
         }

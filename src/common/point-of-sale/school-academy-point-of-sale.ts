@@ -117,7 +117,6 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     resultad.discount = sumQuantity(scholarships, resultad.discount);
 
     const nativeCalculo = ivaFromFinalAmount(subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discountTotal, detail.quantity)));
-    console.log('Nativo', nativeCalculo);
 
     const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
     const importe = mulQuantity(unitPrice, detail.quantity);
@@ -137,6 +136,5 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     generalizedConcepts.push(concept);
   });
   resultad.detalles = generalizedConcepts;
-  console.log('total: ' + resultad.total);
   return resultad;
 };

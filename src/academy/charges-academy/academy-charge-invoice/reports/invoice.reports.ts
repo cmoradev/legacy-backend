@@ -29,7 +29,6 @@ export class ReportInvoice {
                         },
                 });
 
-                console.log('Ws lenght ', workSheets[i].data.length);
                 this.addfilltoSheet(invoiceSheet, image, workSheets[i].data, query, company, workSheets[i].name);
             }
         }

@@ -14,7 +14,7 @@ export class InvoiceProcessorCollege {
       let billingAgent = '';
       let typeInvoice = 'Ingreso';
       if (!invoice.schoolChargePayment) {
-        console.log(invoice);
+
       }
       payDay = formatDate(invoice.schoolChargePayment ? invoice.schoolChargePayment.createdAt : '');
       paymentFolio = invoice.schoolChargePayment ? invoice.schoolChargePayment.folio : '';

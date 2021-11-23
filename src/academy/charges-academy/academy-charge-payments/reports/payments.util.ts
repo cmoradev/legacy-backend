@@ -96,7 +96,6 @@ export function convertPaymentsReportAc(payments: AcademyChargePayments[], cashi
                 paymentsDetails.push(paymentItem);
             });
         } else {
-            // console.log(payment);
         }
     });
     data.matriz = resumeDataTable;

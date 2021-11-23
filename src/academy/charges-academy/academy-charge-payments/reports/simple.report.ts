@@ -274,7 +274,6 @@ export class SimpleReportAcademy {
                 });
                 startRow += 1;
             } else {
-                console.log(payment);
             }
         });
 

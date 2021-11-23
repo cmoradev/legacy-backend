@@ -247,8 +247,6 @@ export class SimpleReportCollege {
                     paymentsDetails.push(paymentItem);
                 });
                 startRow += 1;
-            } else {
-                console.log(payment);
             }
         });
 
