@@ -5,6 +5,7 @@ import { FacturaDetalles } from '../../../../common/point-of-sale/miniStore-poin
 import * as moment from 'moment-timezone';
 import { XmlReceptorAttribute } from '@signati/core/lib/signati/types/Tags/receptor.inteface';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { add } from 'exact-math';
 
 export async function GenerateInvoice(data: { serie: string; folio: string, },
                                       codigoFormaPago: FormaPago | FormaPagoType,
@@ -54,7 +55,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       Descripcion: detalle.descrption,
       ValorUnitario: detalle.unitPrice,
       Importe: detalle.importe,
-      Descuento: detalle.discountTotal,
+      Descuento: add(detalle.discountTotal, detalle.scholarships),
     } as XmlConceptoAttributes);
     if (importeImpuesto !== 0) {
       concepto.traslado({
@@ -143,7 +144,7 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
       Descripcion: detalle.descrption,
       ValorUnitario: detalle.unitPrice,
       Importe: detalle.importe,
-      Descuento: detalle.discountTotal,
+      Descuento: add(detalle.discountTotal, detalle.scholarships),
     } as XmlConceptoAttributes);
     totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
     const ieduObject: XmlIeduAttribute = student;
