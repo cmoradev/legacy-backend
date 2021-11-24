@@ -81,14 +81,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       Importe: totalTranslado,
     });
     await cfd.impuesto(impuesto);
-  } /*else {
-    impuesto.traslados({
-      Impuesto: '002',
-      TipoFactor: 'Exento',
-      TasaOCuota: '0.000000',
-      Importe: totalTranslado,
-    });
-  }*/
+  } 
   await cfd.certificar(cer);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();

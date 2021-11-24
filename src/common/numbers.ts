@@ -38,7 +38,6 @@ export function ivaFromFinalAmount(amount: number | string, decimal: number = -2
             });
         }
         return { finalAmount, amountWithOutIva, iva };
-    } else {
     }
     return { finalAmount: 0.000000, amountWithOutIva: 0.000000, iva: 0.00 };
 }
