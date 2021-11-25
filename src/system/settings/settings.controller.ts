@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
+import { Public } from 'src/common/docorators/public.decorator';
 
 @Crud({
     model: {
@@ -55,6 +56,7 @@ export class SettingsController implements CrudController<Company> {
     }
 
     @Get('files/logo')
+    @Public()
     async getFile(@Query() params, @Res() res) {
         if (!params.companyID) {
             res.status(500).send({
