@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
-import { Public } from 'src/common/docorators/public.decorator';
+import { Public } from './../../common/docorators/public.decorator';
 
 @Crud({
     model: {
