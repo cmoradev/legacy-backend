@@ -126,5 +126,19 @@ module.exports = {
         NODE_ENV: 'refaccionaria',
       },
     },
+    {
+      name: '5106-erp-pachamama2',
+      script: 'dist/main.js',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '420M',
+      env_dev: {
+        NODE_ENV: 'development',
+      },
+      env_production: {
+        NODE_ENV: 'pachamama2',
+      },
+    },
   ],
 };
