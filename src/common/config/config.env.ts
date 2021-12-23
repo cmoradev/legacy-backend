@@ -7,5 +7,6 @@ export const connections = [
   'citul',
   'naturale',
   'pachamama',
+  'pachamama2',
   'refaccionaria',
 ];
