@@ -11,9 +11,11 @@ export default class ConceptTodayViewSeeds implements Seeder {
         SELECT 
             ins.id AS inscriptionId,
             ins.inscripCycleId AS cycleId, 
+            ins.id_status AS inscriptionStatus,
             a.id AS studentId,
             a.matricula AS studentRegistration,
             CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno) AS studentName,
+            a.statusStudentInscription AS studentStatus,
             n.id AS levelId,
             n.nivel AS levelName,
             gd.id AS gradeId,
@@ -24,22 +26,22 @@ export default class ConceptTodayViewSeeds implements Seeder {
             sp.description AS conceptName,
             sp.paidDate AS conceptPaid,
             sp.payDate AS conceptPay,
-            sp.quantity AS conceptQuantity,
+        sp.quantity AS conceptQuantity,
             sp.price AS conceptPrice,
             sp.statusPayment AS conceptStatus,
             pt.id AS branchOfficeId,
             pt.plantel AS branchOffice
         FROM school_payment sp
-
+        
         LEFT JOIN inscripciones ins ON ins.id = sp.inscriptionId
         LEFT JOIN alumnos a ON a.id = ins.inscripStudentId
         LEFT JOIN niveles n ON n.id = ins.inscripLevelId
         LEFT JOIN grados gd ON gd.id = ins.inscripGradeId
         LEFT JOIN classroom cr ON cr.id = ins.inscripClassroomId
         LEFT JOIN planteles pt ON pt.id = ins.inscripCampusId
-
-        WHERE sp.isActive = 1 AND ins.id_status != 1 AND a.statusStudentInscription != 0
-
+        
+        WHERE sp.isActive = 1 AND sp.price != 0
+        
         ORDER BY n.id, gd.id, cr.id, a.id DESC`);
 
     }
