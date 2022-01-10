@@ -29,6 +29,14 @@ export class MiniStoreSale extends Base {
   folio: string;
 
   @Field()
+  @Column('varchar', {
+    nullable: true,
+    length: 100,
+    name: 'quoteName',
+  })
+  quoteName: string;
+
+  @Field()
   @Column({
     type: 'simple-enum',
     enum: PaymentStatus,
