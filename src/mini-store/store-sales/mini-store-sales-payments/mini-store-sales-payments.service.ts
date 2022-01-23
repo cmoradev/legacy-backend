@@ -42,7 +42,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -52,7 +52,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {
         return await this.repo.createQueryBuilder('payments')
             .select('SUM(payments.quantity)', 'sum')
-            .where('payments.cashierBillingId = :id', { id })
+            .where('payments.cashierBillingId = :id', {id})
             .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
 
@@ -80,7 +80,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                salesReturnsQB.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
         return salesReturnsQB.getMany();
@@ -110,10 +110,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.invoiceStatus) {
-                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
+                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', {invoiceStatus: query.invoiceStatus});
             }
             if (query.cashier) {
-                paymentsQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                paymentsQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
         return await paymentsQueryBuilder.getMany();
@@ -146,7 +146,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                salesQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
         return await salesQueryBuilder.getMany();
@@ -301,8 +301,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async updatePayment(data: MiniStoreSalePayment) {
-        let payment = await this.repo.findOne({ id: data.id });
-        payment = { ...data };
+        let payment = await this.repo.findOne({id: data.id});
+        payment = {...data};
         return await this.repo.save(payment);
     }
 

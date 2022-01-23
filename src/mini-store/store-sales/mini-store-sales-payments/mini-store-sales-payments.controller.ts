@@ -76,6 +76,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -94,7 +95,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             invoice: {},
             uuid: '',
         };
-
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             if (invoiceFind) {
@@ -125,6 +125,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         },
                         invoiceDetails,
                         this.configService.getPath());
+                    console.log(xml);
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
