@@ -128,7 +128,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         },
                         invoiceDetails,
                         this.configService.getPath());
-                    console.log(xml);
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
@@ -155,7 +154,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
 
-                    console.log('Correo Enviado', JSON.stringify(respuesta));
+                    console.log('Respuesta: ', JSON.stringify(respuesta));
                     // falta regresar el dato
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
@@ -188,8 +187,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
 
-
-
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {
@@ -206,7 +203,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         invoiceDetails,
                         this.configService.getPath());
                     const timbrado = await this.smartWeb.facturar(xml);
-                    console.log('Timbrado', timbrado)
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
@@ -230,7 +226,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-                    console.log('Correo Enviado');
                     // falta regresar el dato
 
                     respuesta.stamping = true;
@@ -238,6 +233,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.invoice = resultInvoiceFirst;
                     respuesta.uuid = timbrado.data.uuid.toUpperCase();
                     response.status(200);
+                    console.log('RESPONSE: ', JSON.stringify(respuesta))
                     response.send(respuesta);
                 }
             }
