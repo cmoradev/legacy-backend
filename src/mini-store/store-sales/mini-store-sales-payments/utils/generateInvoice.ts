@@ -44,7 +44,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
   const recep = new Receptor(receptor);
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
-  console.log(importeImpuesto);
+  console.log(`Sale: ${data.folio}`);
   console.table(factura.detalles)
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
