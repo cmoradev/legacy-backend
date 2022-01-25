@@ -150,7 +150,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+
+                    console.log('Correo Enviado', JSON.stringify(respuesta));
                     // falta regresar el dato
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
@@ -220,7 +222,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
 
                     respuesta.stamping = true;
