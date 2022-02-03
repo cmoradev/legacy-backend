@@ -85,7 +85,7 @@ export class UsersController implements CrudController<User> {
                 'role.id', 'role.isActive', 'role.name', 'permissions.id',
                 'route.id', 'route.isActive', 'route.name', 'route.fatherID',
                 'route.level', 'route.url', 'route.icon',
-                'actions.id',
+                'actions.id','actions.icon', 'actions.name',
             ])
             //.where('users.email = :email', { email })
             .getOne();

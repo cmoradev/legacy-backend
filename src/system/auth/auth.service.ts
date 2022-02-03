@@ -153,6 +153,8 @@ export class AuthService {
         'route.url',
         'route.icon',
         'actions.id',
+        'actions.icon',
+        'actions.name',
       ])
       .where('users.email = :email', { email })
       .getOne();

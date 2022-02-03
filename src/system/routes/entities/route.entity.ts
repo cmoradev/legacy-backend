@@ -40,9 +40,8 @@ export class Route extends Base {
     url: string | null;
 
     @Field()
-    @Column('varchar', {
+    @Column('text', {
         nullable: false,
-        length: 50,
     })
     icon: string;
 

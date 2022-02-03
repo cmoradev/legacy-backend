@@ -22,9 +22,8 @@ export class Action extends Base {
     description: string;
 
     @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 60,
+    @Column('text', {
+        nullable: true
     })
     icon: string;
 
