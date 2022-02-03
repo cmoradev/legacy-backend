@@ -33,7 +33,6 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     MetodoPago: 'PUE',
     LugarExpedicion: emisor.zip, // ,
   };
-
   const cfd = new CFDI(comprobante);
   const emi = new Emisor({
     Rfc: emisor.rfc,
@@ -45,6 +44,8 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
   const recep = new Receptor(receptor);
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
+  console.log(`Sale: ${data.folio}`);
+  console.table(factura.detalles)
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
@@ -56,7 +57,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
       Importe: parseFloat(`${detalle.importe}`).toFixed(2),
       Descuento: parseFloat(
-        `${add(detalle.discountTotal, detalle.scholarships)}`,
+        `${add(detalle.discountTotal, detalle?.scholarships || 0)}`,
       ).toFixed(2),
     } as XmlConceptoAttributes);
     if (importeImpuesto !== 0) {
@@ -83,7 +84,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       Importe: totalTranslado,
     });
     await cfd.impuesto(impuesto);
-  } 
+  }
   await cfd.certificar(cer);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();

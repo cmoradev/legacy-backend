@@ -40,7 +40,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -48,17 +48,17 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     async updateInvoice(data: MiniStoreInvoice) {
-        let invoice = await this.repo.findOne({ id: data.id });
-        invoice = { ...data };
+        let invoice = await this.repo.findOne({id: data.id});
+        invoice = {...data};
         return await this.repo.save(invoice);
     }
 
     async changeStautsInvoice(data: ChangeStatusInvoiceMiniStoreInterface) {
         const fecha = MomentTimeZone().tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
-        const invoice = await this.repo.findOne({ id: data.id });
+        const invoice = await this.repo.findOne({id: data.id});
         invoice.status = data.status;
         invoice.idCancelingAgent = data.idCancelingAgent;
-        invoice.agentCanceling = await this.userService.findOne({ id: data.idCancelingAgent });
+        invoice.agentCanceling = await this.userService.findOne({id: data.idCancelingAgent});
         invoice.reasonCancellation = data.reasonCancellation;
         // @ts-ignore
         invoice.cancellationDate = fecha;
@@ -66,13 +66,13 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     async changeStautsInvoiceC(id: number, status: number) {
-        const invoice = await this.repo.findOne({ id });
+        const invoice = await this.repo.findOne({id});
         invoice.status = status;
         return await this.repo.save(invoice);
     }
 
     async changeStautsPayment(id: number, status: number) {
-        const payment = await this.salesPaymentService.findOne({ id });
+        const payment = await this.salesPaymentService.findOne({id});
         payment.stamping = status;
         return await this.salesPaymentService.repo.save(payment);
     }
@@ -80,7 +80,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     async saveInvoice(data: MiniStoreInvoice) {
         const invoice = await this.repo.create(data);
         const result = await this.repo.save(invoice);
-        return await this.repo.findOne({ id: result.id });
+        return await this.repo.findOne({id: result.id});
     }
 
     async findInvoiceByPayment(options: { paymentId: number, status: StatusInvoce, stamping?: number }) {
@@ -112,18 +112,18 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         const invoices = await this.repo.createQueryBuilder(
             'invoice'
         )
-        .leftJoinAndSelect('invoice.agentBilling', 'agentBilling')
-        .leftJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
-        .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
-        .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
-        .leftJoinAndSelect('miniStoreSaleMethodPayments.invoiceMethod', 'invoiceMethod')
-        .leftJoinAndSelect('invoice.miniStoreSale', 'miniStoreSale')
-        .leftJoinAndSelect('miniStoreSale.student', 'student')
-        .leftJoinAndSelect('invoice.saleReturn', 'saleReturn')
-        .leftJoinAndSelect('saleReturn.agent', 'agent')
-        .leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod')
-        .where('invoice.createdAt Between :startDate and :endDate',{startDate: query.startDate, endDate: query.endDate})
-        .getMany()
+            .leftJoinAndSelect('invoice.agentBilling', 'agentBilling')
+            .leftJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
+            .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
+            .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
+            .leftJoinAndSelect('miniStoreSaleMethodPayments.invoiceMethod', 'invoiceMethod')
+            .leftJoinAndSelect('invoice.miniStoreSale', 'miniStoreSale')
+            .leftJoinAndSelect('miniStoreSale.student', 'student')
+            .leftJoinAndSelect('invoice.saleReturn', 'saleReturn')
+            .leftJoinAndSelect('saleReturn.agent', 'agent')
+            .leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod')
+            .where('invoice.createdAt Between :startDate and :endDate', {startDate: query.startDate, endDate: query.endDate})
+            .getMany()
 
         const report = new InvoiceProcessor().structureInvoiceReport(invoices);
         switch (query.data) {
@@ -135,7 +135,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 const workbook = new ReportInvoice().generateReport(report, query, company);
                 const dateName = new Date();
                 const fileName = dateName.toTimeString() + '.xlsx';
-                const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+                const result = await workbook.xlsx.writeBuffer({filename: fileName});
                 // await workbook.xlsx.writeFile('./xls-imports/' + fileName);
                 const buffer = Buffer.from(result);
                 const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
@@ -157,6 +157,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
+        console.table([{email: currentBranch.Email, pasword: currentBranch.EmailPass}])
         const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,

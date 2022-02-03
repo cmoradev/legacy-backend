@@ -76,6 +76,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
@@ -94,9 +95,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             invoice: {},
             uuid: '',
         };
-
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
+
+            console.log('Invoice Find: ', invoiceFind)
+
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -149,7 +152,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+
+                    console.log('Respuesta: ', JSON.stringify(respuesta));
                     // falta regresar el dato
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
@@ -181,6 +186,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     id: query.branchOfficeSettingId,
                 } as BranchOfficeSetting;
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
+
                 if (invoice) {
                     const xml = await GenerateInvoice(
                         {
@@ -219,7 +225,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pdf = new PDF<A117>(desingpdf);
                     await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
                     // falta regresar el dato
 
                     respuesta.stamping = true;
@@ -227,6 +233,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.invoice = resultInvoiceFirst;
                     respuesta.uuid = timbrado.data.uuid.toUpperCase();
                     response.status(200);
+                    console.log('RESPONSE: ', JSON.stringify(respuesta))
                     response.send(respuesta);
                 }
             }
