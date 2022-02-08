@@ -74,7 +74,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 3,
@@ -84,7 +97,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 4,
@@ -94,7 +120,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 5,
@@ -104,7 +143,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 6,
@@ -114,7 +166,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 7,
@@ -124,7 +189,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 8,
@@ -134,7 +212,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 9,
@@ -144,7 +235,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 10,
@@ -154,7 +258,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 11,
@@ -164,7 +281,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 12,
@@ -174,7 +304,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 13,
@@ -184,7 +327,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 14,
@@ -194,7 +350,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 15,
@@ -204,7 +373,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 16,
@@ -214,7 +396,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 17,
@@ -224,7 +419,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 18,
@@ -234,7 +442,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 19,
@@ -244,7 +465,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 20,
@@ -254,7 +488,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 21,
@@ -264,7 +511,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 22,
@@ -274,7 +534,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 23,
@@ -284,7 +557,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 24,
@@ -294,7 +580,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 25,
@@ -304,7 +603,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 26,
@@ -314,7 +626,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 27,
@@ -324,7 +649,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 28,
@@ -334,7 +672,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 29,
@@ -344,7 +695,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 30,
@@ -354,7 +718,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 31,
@@ -364,7 +741,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 32,
@@ -374,7 +764,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 33,
@@ -384,7 +787,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 34,
@@ -394,7 +810,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 35,
@@ -404,7 +833,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 36,
@@ -414,7 +856,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 37,
@@ -424,7 +879,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 38,
@@ -434,7 +902,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 39,
@@ -444,7 +925,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 40,
@@ -454,7 +948,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 41,
@@ -464,7 +971,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 42,
@@ -474,7 +994,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 43,
@@ -484,7 +1017,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 44,
@@ -494,7 +1040,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 45,
@@ -504,7 +1063,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 46,
@@ -514,7 +1086,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 47,
@@ -524,7 +1109,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 48,
@@ -534,7 +1132,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 49,
@@ -544,7 +1155,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 50,
@@ -554,7 +1178,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 51,
@@ -564,7 +1201,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 52,
@@ -574,7 +1224,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 53,
@@ -584,7 +1247,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 54,
@@ -594,7 +1270,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 55,
@@ -604,7 +1293,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 56,
@@ -614,7 +1316,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 57,
@@ -624,7 +1339,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 58,
@@ -634,7 +1362,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 59,
@@ -644,7 +1385,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 60,
@@ -654,7 +1408,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 61,
@@ -664,7 +1431,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 62,
@@ -674,7 +1454,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 63,
@@ -684,7 +1477,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 64,
@@ -694,7 +1500,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 65,
@@ -704,7 +1523,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 66,
@@ -714,7 +1546,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 67,
@@ -724,7 +1569,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 68,
@@ -734,7 +1592,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 69,
@@ -744,7 +1615,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 70,
@@ -754,7 +1638,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 71,
@@ -764,7 +1661,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 72,
@@ -774,7 +1684,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 73,
@@ -784,7 +1707,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
     {
         'id': 74,
@@ -794,7 +1730,20 @@ const permissionDev: Permission[] = [
         'role': {
             'id': 6,
         },
-        'actions': [],
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+        ] as Action[],
     },
-    ] as unknown as Permission[];
+] as unknown as Permission[];
 export default permissionDev;
