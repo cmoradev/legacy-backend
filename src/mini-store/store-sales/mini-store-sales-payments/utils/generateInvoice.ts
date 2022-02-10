@@ -39,13 +39,14 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     Nombre: emisor.businessName,
     RegimenFiscal: emisor.fiscalRegime,
   });
+  console.log('EMISOR: ', JSON.stringify(emi, null, 3));
   await cfd.emisor(emi);
   const total: number = 0;
   const recep = new Receptor(receptor);
+  console.log('RECEPTOR: ', JSON.stringify(receptor, null, 3));
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
-  console.log(`Sale: ${data.folio}`);
-  console.table(factura.detalles)
+  const conceptos = [];
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
@@ -70,8 +71,11 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       });
       totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
     }
+    conceptos.push(concepto);
     await cfd.concepto(concepto);
   }
+  console.log('CONCEPTOS:')
+  console.table(conceptos);
   const impuesto: Impuestos = new Impuestos({
     TotalImpuestosTrasladados: totalTranslado,
   });
@@ -85,8 +89,10 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     });
     await cfd.impuesto(impuesto);
   }
+  console.log('IMPUESTOS: ', JSON.stringify(impuesto, null, 3));
   await cfd.certificar(cer);
-  console.log('getXmlCdfi: ', cfd.getXmlCdfi())
+  const asd = await cfd.getXmlCdfi();
+  console.log('XML SIN SELLAR', asd);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();
   return xml;
