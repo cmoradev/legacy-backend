@@ -106,17 +106,7 @@ export class AuthService {
     email: string,
     passw: string,
   ): Promise<Partial<User> | null> {
-    // const user: User | undefined = await this.usersService
-    //     .findOne({ email }, {
-    //         relations: [
-    //             'role',
-    //             'campus',
-    //             'department',
-    //             'role.permissions',
-    //             'role.permissions.route',
-    //             'role.permissions.actions',
-    //         ],
-    //     });
+
     const user:
       | User
       | undefined = await this.usersService.repo
