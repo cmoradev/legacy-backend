@@ -86,9 +86,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     await cfd.impuesto(impuesto);
   }
   await cfd.certificar(cer);
-  console.log('Sellar: ', {
-    key, emisor: emisor.password
-  })
+  console.log('getXmlCdfi: ', cfd.getXmlCdfi())
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();
   return xml;
