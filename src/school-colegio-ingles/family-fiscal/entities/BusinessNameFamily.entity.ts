@@ -34,17 +34,32 @@ export class BusinessNameFamily extends Base{
     @Field()
     @Column('varchar', {
         nullable: false,
+        length: 5,
+        name: 'domicilioFiscalReceptor',
+    })
+    domicilioFiscalReceptor: string;
+
+    @Field()
+    @Column('varchar', {
+        nullable: false,
+        name: 'regimenFiscalReceptor',
+    })
+    regimenFiscalReceptor: string;
+
+    @Field()
+    @Column('varchar', {
+        nullable: false,
         length: 100,
         name: 'correo',
     })
     email: string;
 
-    @Field(type => Int)
-    @Column('int', {
-        nullable: true,
-        name: 'id_regimen',
+    @Field()
+    @Column('varchar', {
+        nullable: false,
+        name: 'keyRegimen',
     })
-    idRegimen: number;
+    keyRegimen: string;
 
     @Field(type => Family)
     @ManyToOne(() => Family, (family) => family.businessName)
