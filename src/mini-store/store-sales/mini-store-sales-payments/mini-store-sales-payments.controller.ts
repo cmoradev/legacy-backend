@@ -98,8 +98,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
 
-            console.log('Invoice Find: ', invoiceFind)
-
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({

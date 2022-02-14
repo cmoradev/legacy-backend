@@ -35,18 +35,14 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
   };
   const cfd = new CFDI(comprobante);
   const emi = new Emisor({
-    Rfc: emisor.rfc,
-    Nombre: emisor.businessName,
-    RegimenFiscal: emisor.fiscalRegime,
+    Rfc: emisor.rfc.trim().toUpperCase(),
+    Nombre: emisor.businessName.trim().toUpperCase(),
+    RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
   });
-  console.log('EMISOR: ', JSON.stringify(emi, null, 3));
   await cfd.emisor(emi);
-  const total: number = 0;
   const recep = new Receptor(receptor);
-  console.log('RECEPTOR: ', JSON.stringify(receptor, null, 3));
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
-  const conceptos = [];
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
@@ -71,11 +67,8 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
       });
       totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
     }
-    conceptos.push(concepto);
     await cfd.concepto(concepto);
   }
-  console.log('CONCEPTOS:')
-  console.table(conceptos);
   const impuesto: Impuestos = new Impuestos({
     TotalImpuestosTrasladados: totalTranslado,
   });
@@ -89,10 +82,7 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
     });
     await cfd.impuesto(impuesto);
   }
-  console.log('IMPUESTOS: ', JSON.stringify(impuesto, null, 3));
   await cfd.certificar(cer);
-  const asd = await cfd.getXmlCdfi();
-  console.log('XML SIN SELLAR', asd);
   await cfd.sellar(key, emisor.password);
   const xml = await cfd.getXmlCdfi();
   return xml;
@@ -127,16 +117,14 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   };
   const cfd = new CFDI(comprobante);
   const emi = new Emisor({
-    Rfc: emisor.rfc,
-    Nombre: emisor.businessName,
-    RegimenFiscal: emisor.fiscalRegime,
+    Rfc: emisor.rfc.trim().toUpperCase(),
+    Nombre: emisor.businessName.trim().toUpperCase(),
+    RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
   });
   await cfd.emisor(emi);
-  const total: number = 0;
   const recep = new Receptor(receptor);
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
-  let totalRetenido = '0.00';
   for (const detalle of factura.detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
