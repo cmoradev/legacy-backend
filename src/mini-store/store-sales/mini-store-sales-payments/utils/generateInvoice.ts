@@ -35,9 +35,9 @@ export async function GenerateInvoice(data: { serie: string; folio: string, },
   };
   const cfd = new CFDI(comprobante);
   const emi = new Emisor({
-    Rfc: emisor.rfc,
-    Nombre: emisor.businessName,
-    RegimenFiscal: emisor.fiscalRegime,
+    Rfc: emisor.rfc.trim().toUpperCase(),
+    Nombre: emisor.businessName.trim().toUpperCase(),
+    RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
   });
   console.log('EMISOR: ', JSON.stringify(emi, null, 3));
   await cfd.emisor(emi);
@@ -127,9 +127,9 @@ export async function GenerateInvoiceIedu(data: { serie: string; folio: string, 
   };
   const cfd = new CFDI(comprobante);
   const emi = new Emisor({
-    Rfc: emisor.rfc,
-    Nombre: emisor.businessName,
-    RegimenFiscal: emisor.fiscalRegime,
+    Rfc: emisor.rfc.trim().toUpperCase(),
+    Nombre: emisor.businessName.trim().toUpperCase(),
+    RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
   });
   await cfd.emisor(emi);
   const total: number = 0;
