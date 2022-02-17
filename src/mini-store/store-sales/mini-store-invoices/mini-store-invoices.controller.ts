@@ -13,26 +13,26 @@ import {
     Res,
     UseGuards
 } from '@nestjs/common';
-import {Response} from 'express';
-import {Crud, CrudController} from '@nestjsx/crud';
-import {MiniStoreInvoice} from './entities/mini-store-invoice.entity';
-import {MiniStoreInvoicesService} from './mini-store-invoices.service';
-import {CancelInvoiceMinistoreDto} from './dto/cancel.invoice.ministore.dto';
-import {FacturacionModerna} from 'invoice-modern';
-import {CheckInvoiceMinistoreDto} from './dto/check.invoice.ministore.dto';
-import {OptionsFactMod} from 'invoice-modern/lib/interfaces/FactMod';
+import { Response } from 'express';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
+import { MiniStoreInvoicesService } from './mini-store-invoices.service';
+import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
+import { FacturacionModerna } from 'invoice-modern';
+import { CheckInvoiceMinistoreDto } from './dto/check.invoice.ministore.dto';
+import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import * as fs from 'fs';
-import {readFileSync} from 'fs';
-import {FactSw} from '../../../webService/FactSw';
-import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
-import {CancelInvoiceSwDto} from './dto/cancel.invoice.sw.dto';
-import {MiniStoreSalesPaymentsService} from '../mini-store-sales-payments/mini-store-sales-payments.service';
-import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
-import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
-import {User} from '../../../system/users/entities/user.entity';
-import {PDF} from '@signati/pdf';
-import {ConfigService} from '../../../common/config/config.service';
-import {A117} from '../../../pdf/A117/desing/A117';
+import { readFileSync } from 'fs';
+import { FactSw } from '../../../webService/FactSw';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
+import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { User } from '../../../system/users/entities/user.entity';
+import { PDF } from '@signati/pdf';
+import { ConfigService } from '../../../common/config/config.service';
+import { A117 } from '../../../pdf/A117/desing/A117';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -46,10 +46,11 @@ import {A117} from '../../../pdf/A117/desing/A117';
             },
         },
         join: {
-            miniStoreSalePayment: {},
-            miniStoreSale: {},
-            agentBilling: {},
-            agentCanceling: {},
+            miniStoreSalePayment: {eager: false},
+            miniStoreSale: {eager: false},
+            'miniStoreSale.student': {eager: false},
+            agentBilling: {eager: false},
+            agentCanceling: {eager: false},
         },
     },
 })
