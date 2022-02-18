@@ -47,6 +47,7 @@ import {ConfigService} from '../../../common/config/config.service';
         join: {
             academyChargePayment: {},
             academyCharge: {},
+            "academyCharge.schoolStudent": {eager: false},
             agentBilling: {},
             agentCanceling: {}
         },

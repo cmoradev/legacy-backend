@@ -30,6 +30,7 @@ import { Public } from '../../../common/docorators/public.decorator';
             'schoolCharge.chargesDetails': {
                 alias: 'details'
             },
+            "schoolCharge.schoolStudent": {eager: false},
             'schoolCharge.chargesDetails.schoolPlanPayment': {
                 alias: 'concepts'
             },
