@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { CFDI, Comprobante, Concepts, Emisor, FormaPago, Impuestos, MetodoPago, Receptor, Relacionado } from '@signati/core';
+import { CFDI, Comprobante, Concepts, Emisor, ExportacionEnum, FormaPago, Impuestos, MetodoPago, ObjetoImpEnum, Receptor, Relacionado } from '@signati/core';
 import { getRepository } from 'typeorm';
 import { ConfigService } from './common/config/config.service';
 import { ColegioDBNameConnection } from './common/databases/colegiodb.service';
@@ -25,7 +25,7 @@ export class AppService {
     //   method: 'GET',
     //   responseType: 'blob',
     //   onDownloadProgress: (d) => {
-  
+
     //   },// important
     // }).then((response) => {
     //   const path = Path.resolve(__dirname, 'public', '..', '..', '..', 'amir.zip');
@@ -63,8 +63,10 @@ export class AppService {
       TipoDeComprobante: 'I',
       MetodoPago: MetodoPago.PAGO_EN_UNA_EXHIBICION,
       LugarExpedicion: 'México',
+      Exportacion: ExportacionEnum.NoAplica
     };
-    const comprobante = new CFDI(comprobanteAttribute);
+    const comprobante = new CFDI(comprobanteAttribute, { debug: true });
+
     const emisor = new Emisor({
       Nombre: 'ALBA XKARAJAM MENDEZ',
       Rfc: 'XAMA620210DQ5',
@@ -74,7 +76,9 @@ export class AppService {
     const receptor = new Receptor({
       Nombre: 'PUBLICO EN GENERAL',
       Rfc: 'XAXX010101000',
-      UsoCFDI: 'G02'
+      UsoCFDI: 'G02',
+      DomicilioFiscalReceptor: '77728',
+      RegimenFiscalReceptor: '601'
     });
     await comprobante.receptor(receptor);
 
@@ -88,6 +92,7 @@ export class AppService {
       ValorUnitario: '',
       Importe: '',
       Descuento: '',
+      ObjetoImp: ObjetoImpEnum.SíObjetoDeImpuesto
     });
     concepto.traslado({
       Base: '',
@@ -111,11 +116,10 @@ export class AppService {
       TipoFactor: '',
       TasaOCuota: '',
       Importe: '',
+      Base: '',
     });
     impuesto.retenciones({
       Impuesto: '',
-      TipoFactor: '',
-      TasaOCuota: '',
       Importe: '',
     });
     await comprobante.impuesto(impuesto);

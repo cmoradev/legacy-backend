@@ -75,10 +75,12 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 request.branchOfficeModuleId,
                 workPath,
             );
+            // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            const cfdi: XmlCdfi = await XmlToJson(pathXml);
+            // @cfdiv4
+            const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
                 timbrado,
@@ -94,7 +96,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     }
 
     @Get('/folio')
-    async getFolio(){
+    async getFolio() {
         return await this.service.getLastFolio()
     }
 

@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res} from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -46,6 +46,8 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
         }): Promise<void> {
+
+
         if (!request) {
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
@@ -69,6 +71,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
         }
         try {
             const workPath = this.configService.getPath();
+            console.log('workPath', workPath)
             const xmlCreditNote = await this.service.createCreditNote(
                 request.invoice,
                 request.receiver,
@@ -78,10 +81,12 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 request.branchOfficeModuleId,
                 workPath,
             );
+            // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            const cfdi: XmlCdfi = await XmlToJson(pathXml);
+            // @cfdiv4
+            const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
                 timbrado,
@@ -97,7 +102,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
     }
 
     @Get('/folio')
-    async getFolio(){
+    async getFolio() {
         return await this.service.getLastFolio()
     }
 

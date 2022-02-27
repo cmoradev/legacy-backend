@@ -3,6 +3,9 @@ import { divNumber, ivaFromFinalAmount } from '../numbers';
 import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { ItemRecibo } from '../types/recibo.interface';
+import { BranchOfficeSetting } from 'src/system/branch-office-setting/entities/branch-office-setting.entity';
+import { FormaPago, FormaPagoType, XmlReceptorAttribute } from '@signati/core';
+import { InformacionGlobal } from 'src/mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 
 export const totalAmountConceptAfterExCharge = (detail: MiniStoreSaleDetail) => {
     const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
@@ -66,6 +69,21 @@ export interface FacturaDetalles {
     discount: number | string;
     detalles: any[];
 
+}
+
+export interface Environment {
+    instancePath: string
+    xslt: string
+}
+export interface CFDIWebtel extends FacturaDetalles {
+    serie: string;
+    folio: string;
+    codigoFormaPago: FormaPago | FormaPagoType;
+    emisor: BranchOfficeSetting;
+    receptor: XmlReceptorAttribute;
+    env: Environment;
+    informacionGlobal?: InformacionGlobal;
+    importeImpuesto?: number;
 }
 
 export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
