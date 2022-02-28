@@ -124,10 +124,6 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
 
 export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIeduAttribute }): Promise<string> {
 
-
-
-  //   factura: FacturaDetalles,
-
   const {
     folio,
     serie,
