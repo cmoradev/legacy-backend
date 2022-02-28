@@ -247,7 +247,6 @@ export class SchoolChargesPaymentsController
       autRVOE: query.studyPlan.code,
       rfcPago: query.receiver.rfc,
     };
-    // @cfdiv4
     try {
       const logo = readFileSync(
         `${this.configService.getPath()}logos/colegiologo.png`,

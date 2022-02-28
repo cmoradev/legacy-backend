@@ -106,7 +106,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
             RegimenFiscalReceptor: query.receiver.keyRegimen,
         }
-        // @cfdiv4
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
 
