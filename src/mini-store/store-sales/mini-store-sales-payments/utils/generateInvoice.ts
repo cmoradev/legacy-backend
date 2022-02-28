@@ -122,65 +122,82 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
   return xml;
 }
 
-export async function GenerateInvoiceIedu(data: { serie: string; folio: string, },
-  codigoFormaPago: FormaPago | FormaPagoType,
-  emisor: BranchOfficeSetting,
-  receptor: XmlReceptorAttribute,
-  student: XmlIeduAttribute,
-  factura: FacturaDetalles,
-  instancePath: string) {
-  // const key = instancePath + 'CSD/' + emisor.keyCSD;
-  // const cer = instancePath + 'CSD/' + emisor.cerCSD;
-  // const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
-  // const comprobante: Comprobante = {
-  //   Serie: data.serie,
-  //   Folio: data.folio,
-  //   Fecha: fecha,
-  //   Sello: '',
-  //   FormaPago: codigoFormaPago,
-  //   NoCertificado: '',
-  //   Certificado: '',
-  //   // condicionesDePago: 'Contado',
-  //   SubTotal: parseFloat(`${factura.subtotal}`).toFixed(2),
-  //   Descuento: parseFloat(`${factura.discount}`).toFixed(2),
-  //   Total: parseFloat(`${factura.total}`).toFixed(2),
-  //   Moneda: 'MXN',
-  //   TipoDeComprobante: 'I',
-  //   MetodoPago: 'PUE',
-  //   LugarExpedicion: emisor.zip, // ,
-  // };
-  // const cfd = new CFDI(comprobante);
-  // const emi = new Emisor({
-  //   Rfc: emisor.rfc.trim().toUpperCase(),
-  //   Nombre: emisor.businessName.trim().toUpperCase(),
-  //   RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
-  // });
-  // await cfd.emisor(emi);
-  // const recep = new Receptor(receptor);
-  // await cfd.receptor(recep);
-  // let totalTranslado = '0.00';
-  // for (const detalle of factura.detalles) {
-  //   const concepto = new Concepts({
-  //     ClaveProdServ: detalle.claveProd,
-  //     NoIdentificacion: detalle.NoIdentificacion,
-  //     Cantidad: detalle.quantity,
-  //     ClaveUnidad: detalle.unidad,
-  //     Unidad: 'Pieza',
-  //     Descripcion: detalle.descrption,
-  //     ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
-  //     Importe: parseFloat(`${detalle.importe}`).toFixed(2),
-  //     Descuento: parseFloat(
-  //       `${add(detalle.discountTotal, detalle.scholarships)}`,
-  //     ).toFixed(2),
-  //   } as XmlConceptoAttributes);
-  //   totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
-  //   const ieduObject: XmlIeduAttribute = student;
-  //   const iedu = new Iedu(ieduObject);
-  //   await concepto.complemento(iedu);
-  //   await cfd.concepto(concepto);
-  // }
-  // await cfd.certificar(cer);
-  // await cfd.sellar(key, emisor.password);
-  // const xml = await cfd.getXmlCdfi();
-  // return xml;
+export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIeduAttribute }): Promise<string> {
+
+
+
+  //   factura: FacturaDetalles,
+
+  const {
+    folio,
+    serie,
+    subtotal,
+    total,
+    discount,
+    informacionGlobal,
+    emisor,
+    receptor,
+    codigoFormaPago,
+    detalles = [],
+    env,
+    student,
+    importeImpuesto = .16,
+  } = payload;
+  const { instancePath, xslt } = env
+  const key = instancePath + 'CSD/' + emisor.keyCSD;
+  const cer = instancePath + 'CSD/' + emisor.cerCSD;
+  const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+  const comprobante: Comprobante = {
+    Serie: serie,
+    Folio: folio,
+    Fecha: fecha,
+    Sello: '',
+    FormaPago: codigoFormaPago,
+    NoCertificado: '',
+    Certificado: '',
+    // condicionesDePago: 'Contado',
+    SubTotal: parseFloat(`${subtotal}`).toFixed(2),
+    Descuento: parseFloat(`${discount}`).toFixed(2),
+    Total: parseFloat(`${total}`).toFixed(2),
+    Moneda: 'MXN',
+    TipoDeComprobante: 'I',
+    MetodoPago: 'PUE',
+    LugarExpedicion: emisor.zip, // ,
+    Exportacion: ExportacionEnum.NoAplica
+  };
+  const cfd = new CFDI(comprobante, { debug: true, xslt });
+  const emi = new Emisor({
+    Rfc: emisor.rfc.trim().toUpperCase(),
+    Nombre: emisor.businessName.trim().toUpperCase(),
+    RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
+  });
+  await cfd.emisor(emi);
+  const recep = new Receptor(receptor);
+  await cfd.receptor(recep);
+  let totalTranslado = '0.00';
+  for (const detalle of detalles) {
+    const concepto = new Concepts({
+      ClaveProdServ: detalle.claveProd,
+      NoIdentificacion: detalle.NoIdentificacion,
+      Cantidad: detalle.quantity,
+      ClaveUnidad: detalle.unidad,
+      Unidad: 'Pieza',
+      Descripcion: detalle.descrption,
+      ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
+      Importe: parseFloat(`${detalle.importe}`).toFixed(2),
+      Descuento: parseFloat(
+        `${add(detalle.discountTotal, detalle.scholarships)}`,
+      ).toFixed(2),
+      ObjetoImp: ObjetoImpEnum.NoobjetoDeimpuesto
+    });
+    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
+    const ieduObject: XmlIeduAttribute = student;
+    const iedu = new Iedu(ieduObject);
+    await concepto.complemento(iedu);
+    await cfd.concepto(concepto);
+  }
+  await cfd.certificar(cer);
+  await cfd.sellar(key, emisor.password);
+  const xml = await cfd.getXmlCdfi();
+  return xml;
 }

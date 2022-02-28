@@ -99,6 +99,13 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             instancePath: this.configService.getPath(),
             xslt: this.configService.getXsltPath()
         };
+        const receptor = {
+            Nombre: query.receiver.businessName,
+            Rfc: query.receiver.rfc,
+            UsoCFDI: query.usoCfdi.value,
+            DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
+            RegimenFiscalReceptor: query.receiver.keyRegimen,
+        }
         // @cfdiv4
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
@@ -124,13 +131,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         emisor: branchOfficeSett,
                         env,
                         informacionGlobal: query.informacionGlobal,
-                        receptor: {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                            DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-                            RegimenFiscalReceptor: query.receiver.keyRegimen,
-                        },
+                        receptor,
                         codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
                     });
 
@@ -201,13 +202,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         emisor: branchOfficeSett,
                         env,
                         informacionGlobal: query.informacionGlobal,
-                        receptor: {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                            DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-                            RegimenFiscalReceptor: query.receiver.keyRegimen,
-                        },
+                        receptor,
                         codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
                     });
                     const timbrado = await this.smartWeb.facturar(xml);
