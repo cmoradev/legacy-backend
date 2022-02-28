@@ -12,7 +12,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity({ name: 'sale_returns' })
-export class SalesReturns extends Base{
+export class SalesReturns extends Base {
 
     @Field()
     @Column({

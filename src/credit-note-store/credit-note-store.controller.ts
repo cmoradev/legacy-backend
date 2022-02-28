@@ -9,6 +9,7 @@ import { FactSw } from '../webService/FactSw';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
 import * as fs from 'fs';
+import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 
 @Crud({
     model: {
@@ -71,16 +72,19 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
         }
         try {
             const workPath = this.configService.getPath();
-            console.log('workPath', workPath)
-            const xmlCreditNote = await this.service.createCreditNote(
-                request.invoice,
-                request.receiver,
-                request.concepts,
-                request.invoicesRelations,
-                request.branchOfficeId,
-                request.branchOfficeModuleId,
-                workPath,
-            );
+            const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId);
+            const xmlCreditNote = await CreditNote({
+                concepts: request.concepts,
+                invoice: request.invoice,
+                receiver: request.receiver,
+                relations: request.invoicesRelations,
+                settingsBranchOffice: branchOfficeSetting,
+                env: {
+                    instancePath: workPath,
+                    xslt: this.configService.getXsltPath()
+                }
+            })
+
             // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';

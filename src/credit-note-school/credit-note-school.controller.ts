@@ -11,6 +11,7 @@ import { FactSw } from '../webService/FactSw';
 import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import { Response } from 'express';
+import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 @Crud({
     model: {
         type: CreditNoteSchool,
@@ -70,19 +71,22 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         }
         try {
             const workPath = this.configService.getPath();
-            const xmlCreditNote = await this.service.createCreditNote(
-                request.invoice,
-                request.receiver,
-                request.concepts,
-                request.invoicesRelations,
-                request.branchOfficeId,
-                request.branchOfficeModuleId,
-                workPath,
-            );
+            const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId)
+            const xmlCreditNote = await CreditNote({
+                concepts: request.concepts,
+                invoice: request.invoice,
+                receiver: request.receiver,
+                relations: request.invoicesRelations,
+                settingsBranchOffice: branchOfficeSetting,
+                env: {
+                    instancePath: workPath,
+                    xslt: this.configService.getXsltPath()
+                }
+            })
+
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            // @cfdiv4
             const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
