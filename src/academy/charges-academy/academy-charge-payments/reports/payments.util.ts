@@ -60,7 +60,7 @@ export function convertPaymentsReportAc(payments: AcademyChargePayments[], cashi
     payments.forEach(payment => {
         if (payment.academyCharge) {
             const { name, lastNameFather, lastNameMother } = payment.academyCharge.schoolStudent;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
             let studentType = '';
             switch (payment.academyCharge.schoolStudent.typeStudent) {
                 case TypeStudent.externo:
