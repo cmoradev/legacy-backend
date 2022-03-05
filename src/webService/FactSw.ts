@@ -43,6 +43,7 @@ export class FactSw {
       const stamp = StampService.Set(obj);
       stamp.StampV4(xml, (err, data) => {
         if (err) {
+          console.log("method Facturar", err)
           const errRes = {
             status: 'error',
             message: err.message,

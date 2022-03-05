@@ -239,11 +239,16 @@ export class SchoolChargesPaymentsController
       RegimenFiscalReceptor: query.receiver.keyRegimen,
     };
 
+
+    const capitalizarPrimeraLetra = (str: string) => {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     const student = {
       version: '1.0',
       nombreAlumno: `${query.student.name} ${query.student.lastNameFather} ${query.student.lastNameMother}`,
       CURP: query.student.curp,
-      nivelEducativo: query.studyPlan.level.name.toString(),
+      nivelEducativo: capitalizarPrimeraLetra(query.studyPlan.level.name.toLocaleLowerCase()),
       autRVOE: query.studyPlan.code,
       rfcPago: query.receiver.rfc,
     };
