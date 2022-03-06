@@ -23,7 +23,7 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
             cashier: {},
             cashierCancellation: {},
             schoolStudent: {},
-            chargesDetails: {alias: 'chargeDetail'},
+            chargesDetails: { alias: 'chargeDetail' },
             'chargesDetails.extraCharges': {},
             'chargesDetails.schoolPlanPayment': {},
             'chargesDetails.extraCharges.systemExtraCharges': {},
