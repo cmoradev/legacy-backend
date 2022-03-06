@@ -8,11 +8,11 @@ import { BranchOfficeSetting } from './system/branch-office-setting/entities/bra
 
 @Injectable()
 export class AppService {
-  constructor(private readonly configService: ConfigService) {
-  }
+  // constructor(private readonly configService: ConfigService) {
+  // }
 
   async getHello(): Promise<string> {
-    return 'Hello World! ' + this.configService.get('APP_NAME');
+    return 'Hello World! ' // + this.configService.get('APP_NAME');
   }
 
   private readonly logger = new Logger(AppService.name);
