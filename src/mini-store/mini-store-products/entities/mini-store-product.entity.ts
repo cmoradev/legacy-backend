@@ -164,9 +164,9 @@ export class MiniStoreProduct extends Base {
     })
     maxStock: number | null;
 
-    // tslint:disable-next-line:jsdoc-format
-    /** @Deprecated **/
-        // @By Amir no se ocupa en nigun lado pero falta verificar en la vista
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
+    objetoImp: string;
 
     @Field({nullable: false})
     @Column('varchar', {nullable: false, length: 20, default: () => '\'Pz\'', name: 'unidad'})
