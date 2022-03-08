@@ -75,7 +75,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             prod.push({ text: i.toString(), align: AlignmentType.CENTER });
             prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
             prod.push({ text: product.requestedAmount.toString() });
-            prod.push({ text: this.unitProd(product.miniStoreProduct.unitMeasurement).name });
+            prod.push({ text: product.miniStoreProduct.unity });
             prod.push({ text: product.receivedAmount.toString() });
             prod.push({ text: round(product.providerPriceReceived, -2, { returnString: true, trim: false }) });
             prod.push({ text: totalProd });
@@ -125,7 +125,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             prod.push({ text: i.toString(), align: AlignmentType.CENTER });
             prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
             prod.push({ text: product.requestedAmount.toString() });
-            prod.push({ text: this.unitProd(product.miniStoreProduct.unitMeasurement).name });
+            prod.push({ text: product.miniStoreProduct.unity });
             prod.push({ text: product.receivedAmount.toString() });
             prod.push({ text: round(product.providerPriceReceived, -2, { returnString: true, trim: false }) });
             prod.push({ text: totalProd });

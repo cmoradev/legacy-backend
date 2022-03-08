@@ -59,9 +59,9 @@ export class MiniStoreProduct extends Base {
         length: 25,
         name: 'sat_code',
     })
-    sat_code:string;
+    sat_code: string;
 
-    @Field({ nullable: false })
+    @Field({nullable: false})
     @Column('varchar', {
         nullable: true,
         length: 25,
@@ -78,9 +78,9 @@ export class MiniStoreProduct extends Base {
     isActive: boolean;
 
     /**
-   * @Deprecated
-   */
-    @Field({ nullable: true })
+     * @Deprecated
+     */
+    @Field({nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000000\'',
@@ -91,8 +91,8 @@ export class MiniStoreProduct extends Base {
     price: string | null;
 
     /**
-   * @Deprecated
-   */
+     * @Deprecated
+     */
     @Field()
     @Column('decimal', {
         nullable: true,
@@ -128,7 +128,7 @@ export class MiniStoreProduct extends Base {
     })
     isFavorite: boolean;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('text', {
         nullable: true,
     })
@@ -144,7 +144,7 @@ export class MiniStoreProduct extends Base {
     })
     stock: number;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000\'',
@@ -154,7 +154,7 @@ export class MiniStoreProduct extends Base {
     })
     minStock: number | null;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '\'0.000\'',
@@ -168,21 +168,13 @@ export class MiniStoreProduct extends Base {
     /** @Deprecated **/
         // @By Amir no se ocupa en nigun lado pero falta verificar en la vista
 
-    @Field({ nullable: false })
-    @Column('varchar', {
-        nullable: false,
-        length: 20,
-        default: () => '\'Pieza\'',
-        name: 'unidad',
-    })
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 20, default: () => '\'Pz\'', name: 'unidad'})
     unity: string;
 
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        default: () => '\'1\'',
-    })
-    unitMeasurement: number;
+    @Field({ nullable: false })
+    @Column('varchar', {nullable: false, default: () => '\'H87\''})
+    unitMeasurement: string;
 
     // '[{\"value\":0,\"leftOperation\":[],\"rightOperation\":[],\"type\":1,\"position\":1}]'
     @Field()

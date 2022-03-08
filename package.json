@@ -25,7 +25,7 @@
     "typeorm": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts --connection development",
     "typeorm:migrate": "npm run typeorm  migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
-    "seed": "cross-env NODE_ENV=${db:-development} ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed --configName src/ormconfig.ts --connection ${db:-development} --seed ",
+    "seed": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed --configName src/ormconfig.ts --seed ",
     "typeorm:revert": "npm run typeorm migration:revert",
     "orm": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "orm:migrate": "npm run orm migration:generate -- -n",
