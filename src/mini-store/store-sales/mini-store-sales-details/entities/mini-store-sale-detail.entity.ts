@@ -36,12 +36,13 @@ export class MiniStoreSaleDetail extends Base {
     })
     quantity: number;
 
-    @Field(type => Int)
-    @Column('int', {
-        nullable: false,
-        default: () => '\'1\'',
-    })
-    unitMeasurement: number;
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, default: () => '\'H87\''})
+    unitMeasurement: string;
+
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
+    objetoImp: string;
 
     @Field(type => Int)
     @Column('decimal', {
