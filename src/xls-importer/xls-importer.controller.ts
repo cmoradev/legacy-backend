@@ -327,7 +327,7 @@ export class XlsImporterController {
                     productToAdd.unitMeasurement = 'H87';
                     productToAdd.unity = 'Pz';
                     productToAdd.storePriceList = await this.miniStorePricesListsService.getListLike(String(product.storePriceList)) as MiniStorePriceList;
-                    productToAdd.storeInvoiceKey = await this.invoiceKeysService.getInvoiceKeyLike(String(product.storeInvoiceKey)) as InvoiceKeys;
+                    productToAdd.sat_code = product.sat_code;
                     productToAdd.storeClassification = await this.miniStoreClassificationsService.getClasificationLike(String(product.storeClassification)) as MiniStoreClassification;
                     productToAdd.branchOffice = await this.branchOfficeService.getBranchLike(String(product.branchOffice)) as BranchOffice;
 

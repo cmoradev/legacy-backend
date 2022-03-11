@@ -96,7 +96,7 @@ export class MiniStoreSalesReturnsController implements CrudController<SalesRetu
         });
         for (const product of saleReturn.details) {
             const concept = new Concepto({
-                ClaveProdServ: product.saleDetail.miniStoreProduct.storeInvoiceKey.key,
+                ClaveProdServ: product.saleDetail.miniStoreProduct.sat_code,
                 //  NoIdentificacion: 'AULOG001',
                 Cantidad: MultNumber(product.quantity, 1),
                 ClaveUnidad: 'H87',
