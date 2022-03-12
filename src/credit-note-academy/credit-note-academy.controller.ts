@@ -3,6 +3,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
+import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
@@ -66,19 +67,24 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         }
         try {
             const workPath = this.configService.getPath();
-            const xmlCreditNote = await this.service.createCreditNote(
-                request.invoice,
-                request.receiver,
-                request.concepts,
-                request.invoicesRelations,
-                request.branchOfficeId,
-                request.branchOfficeModuleId,
-                workPath,
-            );
+            const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId,)
+
+            const xmlCreditNote = await CreditNote({
+                concepts: request.concepts,
+                invoice: request.invoice,
+                receiver: request.receiver,
+                relations: request.invoicesRelations,
+                settingsBranchOffice: branchOfficeSetting,
+                env: {
+                    instancePath: workPath,
+                    xslt: this.configService.getXsltPath()
+                }
+            })
+
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            const cfdi: XmlCdfi = await XmlToJson(pathXml);
+            const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
                 timbrado,
@@ -94,7 +100,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     }
 
     @Get('/folio')
-    async getFolio(){
+    async getFolio() {
         return await this.service.getLastFolio()
     }
 

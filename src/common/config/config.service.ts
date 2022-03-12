@@ -40,6 +40,7 @@ export class ConfigService {
             API_MAIL: Joi.string(),
             API_MAIL_PASSWORD: Joi.string(),
             INVOICES_PATH: Joi.string(),
+            XSLT: Joi.string(),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(
             envConfig,
@@ -111,5 +112,9 @@ export class ConfigService {
 
     public getPath(): string {
         return this.envConfig.INVOICES_PATH as string;
+    }
+
+    public getXsltPath(): string {
+        return this.envConfig.XSLT as string;
     }
 }

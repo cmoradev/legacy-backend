@@ -1,3 +1,4 @@
+import { InformacionGlobal } from 'src/mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BusinessNameFamily } from '../../../../school-colegio-ingles/family-fiscal/entities/BusinessNameFamily.entity';
 
 export class QueryBillingAcademy {
@@ -9,6 +10,7 @@ export class QueryBillingAcademy {
         value: string,
         label: string
     };
+    informacionGlobal?: InformacionGlobal;
     receiver: BusinessNameFamily;
     agentBillingId: number;
 }

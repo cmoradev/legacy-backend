@@ -78,7 +78,7 @@ export class AcademyChargePaymentsController
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private smartWeb: FactSw,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   get base(): CrudController<AcademyChargePayments> {
     return this;
@@ -173,6 +173,19 @@ export class AcademyChargePaymentsController
       uuid: '',
     };
 
+    const env = {
+      instancePath: this.configService.getPath(),
+      xslt: this.configService.getXsltPath(),
+    };
+
+    const receptor = {
+      Nombre: query.receiver.businessName,
+      Rfc: query.receiver.rfc,
+      UsoCFDI: query.usoCfdi.value,
+      DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
+      RegimenFiscalReceptor: query.receiver.keyRegimen,
+    };
+
     try {
       const logo = readFileSync(
         `${this.configService.getPath()}logos/academiaslogo.png`,
@@ -192,21 +205,16 @@ export class AcademyChargePaymentsController
           respuesta.uuid = invocePayment.uuid;
           res.send(respuesta);
         } else {
-          const xml = await GenerateInvoice(
-            {
-              folio: invoiceFind.folio,
-              serie: branchOfficeSett.serieFacturacion,
-            },
-            result.highestPayment.codePaymentMethod as FormaPago,
-            branchOfficeSett,
-            {
-              Nombre: query.receiver.businessName,
-              Rfc: query.receiver.rfc,
-              UsoCFDI: query.usoCfdi.value,
-            },
-            invoiceDetails,
-            this.configService.getPath(),
-          );
+          const xml = await GenerateInvoice({
+            ...invoiceDetails,
+            folio: invoiceFind.folio,
+            serie: branchOfficeSett.serieFacturacion,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            emisor: branchOfficeSett,
+            informacionGlobal: query.informacionGlobal,
+            receptor,
+            env
+          });
           const timbrado = await this.smartWeb.facturar(xml);
           await this.service.updatePayment({
             id: query.chargePaymentId,
@@ -219,7 +227,7 @@ export class AcademyChargePaymentsController
             '.xml';
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
-          const cfdi: XmlCdfi = await XmlToJson(pathXml);
+          const cfdi = await XmlToJson(pathXml);
           // 4. Actualizamos los campos con la factura los datos del sat
           invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFind.status = 1;
@@ -235,7 +243,7 @@ export class AcademyChargePaymentsController
           const pdf = new PDF<A117>(desingpdf);
           await pdf.save(
             `${this.configService.getPath()}comprobantes/academias/` +
-              timbrado.data.uuid.toUpperCase(),
+            timbrado.data.uuid.toUpperCase(),
           );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           this.service.sendMail(
@@ -277,21 +285,16 @@ export class AcademyChargePaymentsController
           factura,
         );
         if (invoice) {
-          const xml = await GenerateInvoice(
-            {
-              folio: invoice.folio,
-              serie: branchOfficeSett.serieFacturacion,
-            },
-            result.highestPayment.codePaymentMethod as FormaPago,
-            branchOfficeSett,
-            {
-              Nombre: query.receiver.businessName,
-              Rfc: query.receiver.rfc,
-              UsoCFDI: query.usoCfdi.value,
-            },
-            invoiceDetails,
-            this.configService.getPath(),
-          );
+          const xml = await GenerateInvoice({
+            ...invoiceDetails,
+            folio: invoice.folio,
+            serie: branchOfficeSett.serieFacturacion,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            emisor: branchOfficeSett,
+            informacionGlobal: query.informacionGlobal,
+            receptor,
+            env
+          });
           const timbrado = await this.smartWeb.facturar(xml);
           await this.service.updatePayment({
             id: query.chargePaymentId,
@@ -304,7 +307,7 @@ export class AcademyChargePaymentsController
             '.xml';
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
-          const cfdi: XmlCdfi = await XmlToJson(pathXml);
+          const cfdi = await XmlToJson(pathXml);
           // 4. Actualizamos los campos con la factura los datos del sat
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
@@ -320,7 +323,7 @@ export class AcademyChargePaymentsController
           const pdf = new PDF<A117>(desingpdf);
           await pdf.save(
             `${this.configService.getPath()}comprobantes/academias/` +
-              timbrado.data.uuid.toUpperCase(),
+            timbrado.data.uuid.toUpperCase(),
           );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           this.service.sendMail(

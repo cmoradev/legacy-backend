@@ -27,12 +27,17 @@ export interface QuerySimpleReport {
     invoiceStatus?: number;
     branchOfficeId: number;
 }
-
+export interface InformacionGlobal {
+    Periodicidad: string;
+    Meses: string;
+    Año: string;
+}
 export class QueryBilling {
     saleId: number;
     salePaymentId: number;
     branchOfficeId: number;
     branchOfficeSettingId: number;
+    informacionGlobal?: InformacionGlobal;
     usoCfdi: {
         value: string,
         label: string

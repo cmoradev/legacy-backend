@@ -49,7 +49,7 @@ export class CreditNoteStoreService extends TypeOrmCrudService<CreditNoteStore> 
             status: InvoiceStatus.billed,
             invoiceBranchOffice: { id: branchOfficeId } as BranchOffice,
             agentBilling: { id: userCreatorId } as User,
-            invoiceSchool: invoicesId as unknown  as SchoolChargesInvoice[],
+            invoiceSchool: invoicesId as unknown as SchoolChargesInvoice[],
         }
         await this.repo.save(creditNoteAcademy);
         const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
@@ -62,143 +62,17 @@ export class CreditNoteStoreService extends TypeOrmCrudService<CreditNoteStore> 
         const pdf = new PDF<A117>(desingpdf);
         await pdf.save(`${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase());
     }
-    async createCreditNote(
-        invoice: InvoiceSat,
-        receiver: Partial<XmlReceptorAttribute>,
-        concepts: ConceptWithTaxes[],
-        relations: MiniStoreInvoice[],
-        branchOfficeId: string | number,
-        branchOfficeModuleId: string | number,
-        workPath: string,
-    ) {
-        try {
-            const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
-            const cerSAT = `${workPath}CSD/` + settingsBranchOffice.cerCSD;
-            const keySAT = `${workPath}CSD/` + settingsBranchOffice.keyCSD;
-            let totalImpuestosTrasladados = 0;
-            let totalImpuestosRetenidos = 0;
-            const cfdiAttributes: Comprobante = {
-                Serie: invoice.Serie,
-                Folio: invoice.Folio,
-                Fecha: invoice.Fecha,
-                Sello: '',
-                FormaPago: invoice.FormaPago,
-                NoCertificado: '',
-                Certificado: '',
-                SubTotal: invoice.SubTotal,
-                Descuento: invoice.Descuento,
-                Moneda: invoice.Moneda,
-                Total: invoice.Total,
-                TipoDeComprobante: invoice.TipoDeComprobante,
-                MetodoPago: invoice.MetodoPago,
-                LugarExpedicion: invoice.LugarExpedicion,
-            }
-            const cfdi = new CFDI(cfdiAttributes, { debug: true });
-            await cfdi.setAttributesXml({ version: '1.0', encoding: 'utf-8' });
-            const receptor = new Receptor({
-                Nombre: receiver.Nombre,
-                Rfc: receiver.Rfc,
-                UsoCFDI: receiver.UsoCFDI,
-            })
-            const emisor = new Emisor({
-                Rfc: settingsBranchOffice.rfc,
-                Nombre: settingsBranchOffice.businessName,
-                RegimenFiscal: settingsBranchOffice.regime,
-            });
-            await cfdi.emisor(emisor);
-            await cfdi.receptor(receptor);
-            concepts.map(async (concept) => {
-                const concepto = new Concepts({
-                    ClaveProdServ: concept.ClaveProdServ,
-                    NoIdentificacion: concept.NoIdentificacion,
-                    Cantidad: concept.Cantidad,
-                    ClaveUnidad: concept.ClaveUnidad,
-                    Descripcion: concept.Descripcion,
-                    Descuento: concept.Descuento,
-                    Importe: concept.Importe,
-                    Unidad: concept.Unidad,
-                    ValorUnitario: concept.ValorUnitario,
-                });
-                if (typeof concept.impuestosTransladados !== 'undefined') {
-                    totalImpuestosTrasladados += Number(concept.impuestosTransladados.Importe);
-                    concepto.traslado({
-                        Importe: concept.impuestosTransladados.Importe,
-                        Impuesto: concept.impuestosTransladados.Impuesto,
-                        TasaOCuota: concept.impuestosTransladados.TasaOCuota,
-                        TipoFactor: concept.impuestosTransladados.TipoFactor,
-                        Base: concept.impuestosTransladados.Base,
-                    });
-                }
-                if (typeof concept.impuestosRetenidos !== 'undefined') {
-                    totalImpuestosRetenidos += Number(concept.impuestosRetenidos.Importe);
-                    concepto.retencion({
-                        Importe: concept.impuestosRetenidos.Importe,
-                        Impuesto: concept.impuestosRetenidos.Impuesto,
-                        TasaOCuota: concept.impuestosRetenidos.TasaOCuota,
-                        TipoFactor: concept.impuestosRetenidos.TipoFactor,
-                        Base: concept.impuestosRetenidos.Base,
-                    });
-                }
-                await cfdi.concepto(concepto);
-            })
-            if (totalImpuestosTrasladados > 0) {
-                const impuestosTransladados = new Impuestos({
-                    TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
-                });
-                await impuestosTransladados.traslados({
-                    Impuesto: invoice.Impuesto,
-                    TasaOCuota: invoice.TasaOCuota,
-                    TipoFactor: invoice.TipoFactor,
-                    Importe: totalImpuestosTrasladados.toString(),
-                });
-                await cfdi.impuesto(impuestosTransladados);
-            }
-            if (totalImpuestosRetenidos > 0) {
-                const impuestosRetenidos = new Impuestos({
-                    TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-                });
-                await impuestosRetenidos.retenciones({
-                    Impuesto: invoice.Impuesto,
-                    TasaOCuota: invoice.TasaOCuota,
-                    TipoFactor: invoice.TipoFactor,
-                    Importe: totalImpuestosRetenidos.toString(),
-                });
-                await cfdi.impuesto(impuestosRetenidos);
-            }
-            if (totalImpuestosRetenidos > 0 && totalImpuestosTrasladados > 0) {
-                const impuestosRetenidosTransladados = new Impuestos({
-                    TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-                    TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
-                });
-                impuestosRetenidosTransladados.traslados({
-                    Impuesto: invoice.Impuesto,
-                    TasaOCuota: invoice.TasaOCuota,
-                    TipoFactor: invoice.TipoFactor,
-                    Importe: totalImpuestosTrasladados.toString(),
-                });
-                impuestosRetenidosTransladados.retenciones({
-                    Impuesto: invoice.Impuesto,
-                    TasaOCuota: invoice.TasaOCuota,
-                    TipoFactor: invoice.TipoFactor,
-                    Importe: totalImpuestosRetenidos.toString(),
-                });
-                await cfdi.impuesto(impuestosRetenidosTransladados);
-            }
-            const relation = new Relacionado({ TipoRelacion: '01' })
-            relations.map(async (document) => {
-                await relation.addRelation(document.uuid);
-            })
-            await cfdi.relacionados(relation);
-            await cfdi.certificar(cerSAT);
-            await cfdi.sellar(keySAT, settingsBranchOffice.password);
-            return await cfdi.getXmlCdfi();
+    async branchOfficeSetting(branchOfficeId: string | number, branchOfficeModuleId: string | number) {
 
-        } catch (err) {
-            return err.message;
-        }
+        const settingsBranchOffice = await this.branchOfficeSettingRepository
+            .createQueryBuilder('setting')
+            .leftJoin('setting.invoiceCampus', 'branchOffice')
+            .where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId })
+            .andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId })
+            .getOne();
+        return settingsBranchOffice
     }
-
-    async getLastFolio(){
+    async getLastFolio() {
         return await this.repo.createQueryBuilder('creditNote')
             .select('MAX(creditNote.id)', 'last')
             .getRawOne();

@@ -4,7 +4,7 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { CFDIWebtel, ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { FactSw } from '../../../webService/FactSw';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { GenerateInvoice } from './utils/generateInvoice';
@@ -17,7 +17,7 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { FormaPago, XmlCdfi } from '@signati/core';
+import { CFDI, FormaPago, XmlCdfi } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -95,6 +95,17 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             invoice: {},
             uuid: '',
         };
+        const env = {
+            instancePath: this.configService.getPath(),
+            xslt: this.configService.getXsltPath()
+        };
+        const receptor = {
+            Nombre: query.receiver.businessName,
+            Rfc: query.receiver.rfc,
+            UsoCFDI: query.usoCfdi.value,
+            DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
+            RegimenFiscalReceptor: query.receiver.keyRegimen,
+        }
         try {
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
 
@@ -112,20 +123,17 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.status(200);
                     response.send(respuesta);
                 } else {
-                    const xml = await GenerateInvoice(
-                        {
-                            folio: invoiceFind.folio,
-                            serie: branchOfficeSett.serieFacturacion,
-                        },
-                        result.highestPayment.codePaymentMethod as FormaPago,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails,
-                        this.configService.getPath());
+                    const xml = await GenerateInvoice({
+                        ...invoiceDetails,
+                        folio: invoiceFind.folio,
+                        serie: branchOfficeSett.serieFacturacion,
+                        emisor: branchOfficeSett,
+                        env,
+                        informacionGlobal: query.informacionGlobal,
+                        receptor,
+                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
+                    });
+
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
@@ -135,7 +143,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
-                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
+                    const cfdi = await XmlToJson(pathXml);
                     // 4. Actualizamos los campos con la factura los datos del sat
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
@@ -186,20 +194,16 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
 
                 if (invoice) {
-                    const xml = await GenerateInvoice(
-                        {
-                            folio: invoice.folio,
-                            serie: branchOfficeSett.serieFacturacion,
-                        },
-                        result.highestPayment.codePaymentMethod as FormaPago,
-                        branchOfficeSett,
-                        {
-                            Nombre: query.receiver.businessName,
-                            Rfc: query.receiver.rfc,
-                            UsoCFDI: query.usoCfdi.value,
-                        },
-                        invoiceDetails,
-                        this.configService.getPath());
+                    const xml = await GenerateInvoice({
+                        ...invoiceDetails,
+                        folio: invoice.folio,
+                        serie: branchOfficeSett.serieFacturacion,
+                        emisor: branchOfficeSett,
+                        env,
+                        informacionGlobal: query.informacionGlobal,
+                        receptor,
+                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
+                    });
                     const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
@@ -209,7 +213,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
                     fs.writeFileSync(pathXml, timbrado.data.cfdi);
                     // Obtenemos los datos del xml
-                    const cfdi: XmlCdfi = await XmlToJson(pathXml);
+                    const cfdi = await XmlToJson(pathXml);
                     // 4. Actualizamos los campos con la factura los datos del sat
                     invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;

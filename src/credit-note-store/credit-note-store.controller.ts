@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res} from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -9,6 +9,7 @@ import { FactSw } from '../webService/FactSw';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
 import * as fs from 'fs';
+import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 
 @Crud({
     model: {
@@ -46,6 +47,8 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
         }): Promise<void> {
+
+
         if (!request) {
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
@@ -69,19 +72,25 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
         }
         try {
             const workPath = this.configService.getPath();
-            const xmlCreditNote = await this.service.createCreditNote(
-                request.invoice,
-                request.receiver,
-                request.concepts,
-                request.invoicesRelations,
-                request.branchOfficeId,
-                request.branchOfficeModuleId,
-                workPath,
-            );
+            const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId);
+            const xmlCreditNote = await CreditNote({
+                concepts: request.concepts,
+                invoice: request.invoice,
+                receiver: request.receiver,
+                relations: request.invoicesRelations,
+                settingsBranchOffice: branchOfficeSetting,
+                env: {
+                    instancePath: workPath,
+                    xslt: this.configService.getXsltPath()
+                }
+            })
+
+            // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            const cfdi: XmlCdfi = await XmlToJson(pathXml);
+            // @cfdiv4
+            const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
                 timbrado,
@@ -92,12 +101,13 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 workPath
             );
         } catch (err) {
+            console.log(err)
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Get('/folio')
-    async getFolio(){
+    async getFolio() {
         return await this.service.getLastFolio()
     }
 
