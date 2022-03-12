@@ -120,6 +120,8 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 uuid: invoice.uuid,
                 cer,
                 key,
+                motivo: cancelInvoiceSw.movito,
+                folioSustitucion: cancelInvoiceSw.folioSustitucion
             });
             const status = responseSmartWeb.data.uuid[invoice.uuid];
 
@@ -133,6 +135,8 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 invoice.status = 2;
                 invoice.reasonCancellation = cancelInvoiceSw.reason;
                 invoice.cancellationDate = new Date();
+                invoice.motivo = cancelInvoiceSw.movito;
+                invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
                 invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
@@ -145,6 +149,21 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                     invoice: updateInvoice,
                 }).status(200);
             }
+            if (status === '203' || +status === 203) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+            if (status === '205' || +status === 205) {
+                res.send({
+                    msg: 'Error',
+                    payment: '',
+                    invoice: '',
+                }).status(400);
+            }
+
         } catch (e) {
             res.send({
                 msg: e,
