@@ -44,7 +44,4 @@ export class InvoiceKeys extends Base {
   })
   idRazonSocial: number;
 
-  @Field(type => [MiniStoreProduct])
-  @OneToMany(() => MiniStoreProduct, (storeProduct) => storeProduct.storeInvoiceKey)
-  storeProducts: MiniStoreProduct[];
 }
