@@ -88,6 +88,20 @@ export class AcademyChargeInvoice extends Base {
     })
     status: InvoiceStatus;
 
+    @Field()
+    @Column({
+        nullable: true,
+        name: 'motivo',
+    })
+    motivo: string | null;
+
+    @Field()
+    @Column({
+        nullable: true,
+        name: 'folioSustitucion',
+    })
+    folioSustitucion: string | null;
+
     @Field(type => User)
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)
     @JoinColumn({
@@ -128,6 +142,6 @@ export class AcademyChargeInvoice extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
-    @ManyToOne(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy, {nullable: true})
+    @ManyToOne(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy, { nullable: true })
     creditNoteAcademy: CreditNoteAcademy;
 }
