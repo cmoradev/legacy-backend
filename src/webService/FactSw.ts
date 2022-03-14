@@ -67,8 +67,6 @@ export class FactSw {
     motivo: '01' | '02' | '03' | '04',
     folioSustitucion?: string
   }): Promise<Cancelacion | any> {
-
-
     return new Promise((resolve, reject) => {
       const params = {
         uuid: options.uuid,
@@ -81,11 +79,12 @@ export class FactSw {
       if (options.folioSustitucion) {
         Object.assign(params, { folioSustitucion: options.folioSustitucion })
       }
+      console.log(params)
       CancelationRequest.sendReqCSD(this.url, this.token, params, (err, data) => {
-        if (err) {
-          reject(err);
-        } else {
+        if (data) {
           resolve(data);
+        } else {
+          reject(err);
         }
       })
     });

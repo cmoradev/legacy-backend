@@ -3,7 +3,7 @@ export class CancelInvoiceSwDto {
     uuid: string;
     invoiceId: number;
     reason: string;
-    movito: '01' | '02' | '03' | '04';
+    motivo: '01' | '02' | '03' | '04';
     folioSustitucion: string;
     sendMail: boolean;
     subject: string;
