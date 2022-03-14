@@ -79,7 +79,7 @@ export class FactSw {
       if (options.folioSustitucion) {
         Object.assign(params, { folioSustitucion: options.folioSustitucion })
       }
-      console.log(params)
+      console.log(this.url)
       CancelationRequest.sendReqCSD(this.url, this.token, params, (err, data) => {
         if (data) {
           resolve(data);
