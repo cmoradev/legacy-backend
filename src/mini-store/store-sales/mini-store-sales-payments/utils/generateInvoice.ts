@@ -2,10 +2,8 @@ import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Im
 import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
 import { mulQuantity, subQuantity, sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
-import { CFDIWebtel, FacturaDetalles } from '../../../../common/point-of-sale/miniStore-point-of-sale';
+import { CFDIWebtel } from '../../../../common/point-of-sale/miniStore-point-of-sale';
 import * as moment from 'moment-timezone';
-import { XmlReceptorAttribute } from '@signati/core/lib/signati/types/Tags/receptor.inteface';
-import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { add } from 'exact-math';
 import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
 
@@ -65,32 +63,31 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
   });
   await cfd.emisor(emi);
 
-  //delete receptor.RegimenFiscalReceptor
   const recep = new Receptor({
     ...receptor,
     Rfc: sanitizeStringToXml(receptor.Rfc),
     Nombre: sanitizeStringToXml(receptor.Nombre),
-    DomicilioFiscalReceptor: isGeneric ? emisor.zip : receptor.ResidenciaFiscal
+    DomicilioFiscalReceptor: isGeneric ? emisor.zip : receptor.DomicilioFiscalReceptor
   });
 
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
+
   for (const detalle of detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
       NoIdentificacion: detalle.NoIdentificacion,
       Cantidad: detalle.quantity,
-      ClaveUnidad: 'E48',
-      Unidad: 'Pieza',
+      ClaveUnidad: detalle.unidad || 'E48',
       Descripcion: sanitizeStringToXml(detalle.descrption),
       ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
       Importe: parseFloat(`${detalle.importe}`).toFixed(2),
       Descuento: parseFloat(
         `${add(detalle.discountTotal, detalle?.scholarships || 0)}`,
       ).toFixed(2),
-      ObjetoImp: ObjetoImpEnum.SíObjetoDeImpuesto
+      ObjetoImp: detalle.objectoImp
     } as XmlConceptoAttributes);
-    if (importeImpuesto !== 0) {
+    if (importeImpuesto !== 0 && detalle.objectoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
       concepto.traslado({
         Base: subQuantity(detalle.importe, detalle.discountTotal, -2).toString(),
         Impuesto: '002',

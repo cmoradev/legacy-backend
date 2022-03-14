@@ -86,7 +86,7 @@ export interface CFDIWebtel extends FacturaDetalles {
     importeImpuesto?: number;
 }
 
-export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
+export const  ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
     const detalles = saleDetails(details || []);
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
@@ -114,11 +114,12 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         const concept = {
             quantity: detail.quantity,
             claveProd: detail.productCode,
-            unidad: 'E48', // detail.miniStoreProduct.unity,
+            unidad: detail.unitMeasurement, // detail.miniStoreProduct.unity,
             descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
             unitPrice, // mulQuantity(conceptPrice, base),
             discountTotal,
             importe, // mulQuantity(totalAmountConcept(detail), base),
+            objectoImp: detail.objetoImp
         };
         const totalconcetp = sumQuantity(subQuantity(importe, discountTotal).toString(), mulQuantity(subQuantity(importe, discountTotal), .16));
         resultad.total = sumQuantity(resultad.total, totalconcetp);
