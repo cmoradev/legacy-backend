@@ -74,6 +74,20 @@ export class SchoolChargesInvoice extends Base {
 
     @Field()
     @Column({
+        nullable: true,
+        name: 'motivo',
+    })
+    motivo: string | null;
+
+    @Field()
+    @Column({
+        nullable: true,
+        name: 'folioSustitucion',
+    })
+    folioSustitucion: string | null;
+
+    @Field()
+    @Column({
         type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,

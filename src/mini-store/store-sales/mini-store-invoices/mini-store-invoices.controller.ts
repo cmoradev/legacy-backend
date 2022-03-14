@@ -46,11 +46,11 @@ import { A117 } from '../../../pdf/A117/desing/A117';
             },
         },
         join: {
-            miniStoreSalePayment: {eager: false},
-            miniStoreSale: {eager: false},
-            'miniStoreSale.student': {eager: false},
-            agentBilling: {eager: false},
-            agentCanceling: {eager: false},
+            miniStoreSalePayment: { eager: false },
+            miniStoreSale: { eager: false },
+            'miniStoreSale.student': { eager: false },
+            agentBilling: { eager: false },
+            agentCanceling: { eager: false },
         },
     },
 })
@@ -68,11 +68,11 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     };
 
     constructor(readonly service: MiniStoreInvoicesService,
-                readonly branchOfficeSettingService: BranchOfficeSettingService,
-                readonly branchOffice: BranchOfficeService,
-                readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
-                private readonly configService: ConfigService,
-                private smartWeb: FactSw) {
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
+        readonly branchOffice: BranchOfficeService,
+        readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
+        private readonly configService: ConfigService,
+        private smartWeb: FactSw) {
     }
 
     get base(): CrudController<MiniStoreInvoice> {
@@ -106,9 +106,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             const pdf64 = fs.readFileSync(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
             // data:image/png;base64,
-            res.send({src: `data:application/pdf;base64, ${pdf64.toString('base64')}`});
+            res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
         } catch (e) {
-            res.send({error: e}).status(400);
+            res.send({ error: e }).status(400);
         }
     }
 
@@ -116,7 +116,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
 
-            const invoce = await this.service.findOne({
+            const invoice = await this.service.findOne({
                 where: {
                     id: cancelInvoiceSw.invoiceId,
                 },
@@ -130,7 +130,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             });
             const payment = await this.miniStoreSalesPaymentsService.findOne({
                 where: {
-                    id: invoce.miniStoreSalePayment.id,
+                    id: invoice.miniStoreSalePayment.id,
                 },
             });
 
@@ -139,12 +139,14 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
-                uuid: invoce.uuid,
+                uuid: invoice.uuid,
                 cer,
                 key,
+                motivo: cancelInvoiceSw.movito,
+                folioSustitucion: cancelInvoiceSw.folioSustitucion
             });
 
-            const status = result.data.uuid[invoce.uuid];
+            const status = result.data.uuid[invoice.uuid];
             /** Nuevos estados para la venta:
              * 0.- Sin facturar
              * 1.- Facturado
@@ -152,40 +154,25 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
              * 3.- En cola
              * 4.- Rechazado
              */
-            if (status === '201' || +status === 201) {
-                fs.writeFileSync(`${this.configService.getPath()}comprobantes/tienda/` + invoce.uuid + '-acuse.xml', result.data.acuse);
-                if (cancelInvoiceSw.sendMail) {
-                    for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
-                    }
-                }
-                invoce.status = 2;
-                invoce.reasonCancellation = cancelInvoiceSw.reason;
-                // invoce. = cancelInvoiceSw.reason;
-                payment.stamping = 0;
-                const updateInvoice = await this.service.updateInvoice(invoce);
-                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
-
-                res.send({
-                    msg: 'Cancelado',
-                    payment: updatePay,
-                    invoice: updateInvoice,
-                }).status(200);
-            }
-            if (status === '202' || +status === 202) {
-                fs.writeFileSync(`${this.configService.getPath()}/comprobantes/tienda/` + invoce.uuid + '-acuse.xml', result.data.acuse);
+            if (status === '201' || +status === 201 || status === '202' || +status === 202) {
+                fs.writeFileSync(`${this.configService.getPath()}comprobantes/tienda/` + invoice.uuid + '-acuse.xml', result.data.acuse);
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
                     }
                 }
-                invoce.status = 2;
-                invoce.agentCanceling = {
+
+                invoice.status = 2;
+                invoice.reasonCancellation = cancelInvoiceSw.reason;
+                invoice.cancellationDate = new Date();
+                invoice.motivo = cancelInvoiceSw.movito;
+                invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
+                invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
                 payment.stamping = 0;
-                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updateInvoice = await this.service.updateInvoice(invoice);
                 const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
                 res.send({
                     msg: 'Cancelado',

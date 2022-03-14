@@ -30,7 +30,7 @@ export class MiniStoreInvoice extends Base {
     })
     uuid: string;
 
-    @Field({ nullable: true})
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 300,
@@ -38,7 +38,7 @@ export class MiniStoreInvoice extends Base {
     })
     businessName: string | null;
 
-    @Field({ nullable: true})
+    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 20,
@@ -46,7 +46,7 @@ export class MiniStoreInvoice extends Base {
     })
     rfc: string | null;
 
-    @Field(typev => Int,{ nullable: true})
+    @Field(typev => Int, { nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -80,7 +80,7 @@ export class MiniStoreInvoice extends Base {
     })
     cancellationDate: Date | null;
 
-    @Field({ nullable: true})
+    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'motivo_cancelacion',
@@ -128,6 +128,20 @@ export class MiniStoreInvoice extends Base {
     })
     status: InvoiceStatus;
 
+    @Field()
+    @Column({
+        nullable: true,
+        name: 'motivo',
+    })
+    motivo: string | null;
+
+    @Field()
+    @Column({
+        nullable: true,
+        name: 'folioSustitucion',
+    })
+    folioSustitucion: string | null;
+
     /**
      * Relación que corresponde al la factura al pago de una venta
      */
@@ -164,6 +178,6 @@ export class MiniStoreInvoice extends Base {
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
     saleReturn: SalesReturns;
 
-    @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, {nullable: true})
+    @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, { nullable: true })
     creditNoteStore: CreditNoteStore;
 }

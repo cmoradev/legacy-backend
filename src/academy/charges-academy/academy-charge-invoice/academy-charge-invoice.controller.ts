@@ -12,25 +12,25 @@ import {
     Res,
     UseGuards
 } from '@nestjs/common';
-import {Crud, CrudController} from '@nestjsx/crud';
-import {AcademyChargeInvoice} from './entities/academy-charge-invoice.entity';
-import {AcademyChargeInvoiceService} from './academy-charge-invoice.service';
-import {JwtGuard} from '../../../system/auth/guards/jwt.guard';
-import {Response} from 'express';
-import {readFileSync, writeFileSync} from 'fs';
-import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
-import {FactSw} from '../../../webService/FactSw';
-import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
-import {AcademyChargePaymentsService} from '../academy-charge-payments/academy-charge-payments.service';
-import {CancelInvoiceSwDto} from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
-import {User} from '../../../system/users/entities/user.entity';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
+import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
+import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { Response } from 'express';
+import { readFileSync, writeFileSync } from 'fs';
+import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
+import { FactSw } from '../../../webService/FactSw';
+import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
+import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
+import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
+import { User } from '../../../system/users/entities/user.entity';
 
-import {ReportData} from './dto/reportData.dto';
-import {AcademyChargeDiscountsService} from '../academy-charge-discounts/academy-charge-discounts.service';
-import {Between} from 'typeorm';
+import { ReportData } from './dto/reportData.dto';
+import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
+import { Between } from 'typeorm';
 import * as Moment from 'moment';
-import {ReportInvoice} from './reports/invoice.reports';
-import {ConfigService} from '../../../common/config/config.service';
+import { ReportInvoice } from './reports/invoice.reports';
+import { ConfigService } from '../../../common/config/config.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -47,7 +47,7 @@ import {ConfigService} from '../../../common/config/config.service';
         join: {
             academyChargePayment: {},
             academyCharge: {},
-            "academyCharge.schoolStudent": {eager: false},
+            "academyCharge.schoolStudent": { eager: false },
             agentBilling: {},
             agentCanceling: {}
         },
@@ -85,9 +85,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({src: 'data:application/pdf;base64,' + pdf64.toString('base64')});
+            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
         } catch (e) {
-            res.send({error: e}).status(400);
+            res.send({ error: e }).status(400);
         }
     }
 
@@ -95,7 +95,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
 
-            const invoce = await this.service.findOne({
+            const invoice = await this.service.findOne({
                 where: {
                     id: cancelInvoiceSw.invoiceId,
                 },
@@ -110,7 +110,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             });
             const payment = await this.academyChargePaymentsService.findOne({
                 where: {
-                    id: invoce.academyChargePayment.id,
+                    id: invoice.academyChargePayment.id,
                 },
             });
 
@@ -119,12 +119,14 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
-                uuid: invoce.uuid,
+                uuid: invoice.uuid,
                 cer,
                 key,
+                motivo: cancelInvoiceSw.movito,
+                folioSustitucion: cancelInvoiceSw.folioSustitucion
             });
 
-            const status = result.data.uuid[invoce.uuid];
+            const status = result.data.uuid[invoice.uuid];
             /** Nuevos estados para la venta:
              * 0.- Sin facturar
              * 1.- Facturado
@@ -132,40 +134,25 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
              * 3.- En cola
              * 4.- Rechazado
              */
-            if (status === '201' || +status === 201) {
-                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoce.uuid + '-acuse.xml', result.data.acuse);
-                if (cancelInvoiceSw.sendMail) {
-                    for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
-                    }
-                }
-                invoce.status = 2;
-                invoce.reasonCancellation = cancelInvoiceSw.reason;
-                // invoce. = cancelInvoiceSw.reason;
-                payment.stamping = 0;
-                const updateInvoice = await this.service.updateInvoice(invoce);
-                const updatePay = await this.academyChargePaymentsService.updatePayment(payment);
-
-                res.send({
-                    msg: 'Cancelado',
-                    payment: updatePay,
-                    invoice: updateInvoice,
-                }).status(200);
-            }
-            if (status === '202' || +status === 202) {
-                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoce.uuid + '-acuse.xml', result.data.acuse);
+            if (status === '201' || +status === 201 || status === '202' || +status === 202) {
+                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoice.uuid + '-acuse.xml', result.data.acuse);
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoce.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
                     }
                 }
-                invoce.agentCanceling = {
+
+                invoice.status = 2;
+                invoice.reasonCancellation = cancelInvoiceSw.reason;
+                invoice.cancellationDate = new Date();
+                invoice.motivo = cancelInvoiceSw.movito;
+                invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
+                invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
-                invoce.status = 2;
                 payment.stamping = 0;
-                const updateInvoice = await this.service.updateInvoice(invoce);
+                const updateInvoice = await this.service.updateInvoice(invoice);
                 const updatePay = await this.academyChargePaymentsService.updatePayment(payment);
                 res.send({
                     msg: 'Cancelado',
@@ -314,9 +301,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         });
 
         const workSheets = [
-            {name: 'Facturas Pagadas', data: invoiceBilled},
-            {name: 'Pagos No Facturados', data: invoiceUnBilled},
-            {name: 'Facturas Canceladas', data: invoiceCancelled},
+            { name: 'Facturas Pagadas', data: invoiceBilled },
+            { name: 'Pagos No Facturados', data: invoiceUnBilled },
+            { name: 'Facturas Canceladas', data: invoiceCancelled },
         ];
 
         let workbook = null;
@@ -328,7 +315,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
             const dateName = new Date();
             const fileName = dateName.toTimeString() + '.xlsx';
-            const result = await workbook.xlsx.writeBuffer({filename: fileName});
+            const result = await workbook.xlsx.writeBuffer({ filename: fileName });
             buffer = Buffer.from(result);
             b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
         }
@@ -349,7 +336,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         if (request.file) {
             data.file = b64Encoding + buffer.toString('base64');
         }
-        res.send({success: true, data});
+        res.send({ success: true, data });
     }
 
     @Get('/download-xml')
