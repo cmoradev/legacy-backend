@@ -160,7 +160,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
 
-                    console.log('Respuesta: ', JSON.stringify(respuesta));
                     // falta regresar el dato
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
@@ -235,7 +234,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     respuesta.invoice = resultInvoiceFirst;
                     respuesta.uuid = timbrado.data.uuid.toUpperCase();
                     response.status(200);
-                    console.log('RESPONSE: ', JSON.stringify(respuesta))
                     response.send(respuesta);
                 }
             }

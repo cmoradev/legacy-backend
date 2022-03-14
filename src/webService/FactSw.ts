@@ -38,12 +38,10 @@ export class FactSw {
         user: this.user,
         password: this.password,
       };
-      console.log(xml);
-      console.log(obj);
       const stamp = StampService.Set(obj);
+      console.log(xml)
       stamp.StampV4(xml, (err, data) => {
         if (err) {
-          console.log(err)
           const errRes = {
             status: 'error',
             message: err.message,
@@ -78,7 +76,6 @@ export class FactSw {
       if (options.folioSustitucion) {
         Object.assign(params, { folioSustitucion: options.folioSustitucion })
       }
-      console.log(this.url)
       CancelationRequest.sendReqCSD(this.url, this.token, params, (err, data) => {
         if (data) {
           resolve(data);

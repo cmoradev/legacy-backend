@@ -191,7 +191,6 @@ export class SchoolChargesPaymentsController
       //   });
       // }
     } catch (e) {
-      console.log(e);
       res.send({
         error: e,
       });
@@ -258,7 +257,6 @@ export class SchoolChargesPaymentsController
       );
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
-          console.log('1');
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment(
             {
               paymentId: query.chargePaymentId,
@@ -310,7 +308,6 @@ export class SchoolChargesPaymentsController
             `${this.configService.getPath()}comprobantes/colegio/` +
             timbrado.data.uuid.toUpperCase() +
             '.xml';
-          // console.log(pathXml, timbrado);
           fs.writeFileSync(pathXml, timbrado.data.cfdi);
           // Obtenemos los datos del xml
           const cfdi = await XmlToJson(pathXml);
@@ -327,7 +324,6 @@ export class SchoolChargesPaymentsController
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
           });
           const pdf = new PDF<A117>(desingpdf);
-          // console.log(pdf);
           await pdf.save(
             `${this.configService.getPath()}comprobantes/colegio/` +
             timbrado.data.uuid.toUpperCase(),
@@ -425,7 +421,6 @@ export class SchoolChargesPaymentsController
             logo: `data:image/png;base64, ${logo.toString('base64')}`,
           });
           const pdf = new PDF<A117>(desingpdf);
-          // console.log(pdf);
           await pdf.save(
             `${this.configService.getPath()}comprobantes/colegio/` +
             timbrado.data.uuid.toUpperCase(),
