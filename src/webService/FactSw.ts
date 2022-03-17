@@ -37,9 +37,10 @@ export class FactSw {
         url: this.url,
         user: this.user,
         password: this.password,
+        token: this.token
       };
       const stamp = StampService.Set(obj);
-      console.log(xml)
+
       stamp.StampV4(xml, (err, data) => {
         if (err) {
           const errRes = {
