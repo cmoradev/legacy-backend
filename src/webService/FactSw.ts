@@ -33,15 +33,14 @@ export class FactSw {
 
   public async facturar(xml: string): Promise<StampV4> {
     return new Promise((resolve, reject) => {
-      const obj = {
+      const stamp = StampService.Set({
         url: this.url,
         user: this.user,
         password: this.password,
         token: this.token
-      };
-      const stamp = StampService.Set(obj);
+      });
 
-      stamp.StampV4(xml, (err, data) => {
+      stamp.StampV1(xml, (err, data) => {
         if (err) {
           const errRes = {
             status: 'error',
