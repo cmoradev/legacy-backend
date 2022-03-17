@@ -72,20 +72,20 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
 
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
-
+  console.log(detalles)
   for (const detalle of detalles) {
     const concepto = new Concepts({
       ClaveProdServ: detalle.claveProd,
       NoIdentificacion: detalle.NoIdentificacion,
       Cantidad: detalle.quantity,
-      ClaveUnidad: detalle.unidad || 'E48',
+      ClaveUnidad: detalle?.unidad || 'E48',
       Descripcion: sanitizeStringToXml(detalle.descrption),
       ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
       Importe: parseFloat(`${detalle.importe}`).toFixed(2),
       Descuento: parseFloat(
         `${add(detalle.discountTotal, detalle?.scholarships || 0)}`,
       ).toFixed(2),
-      ObjetoImp: detalle.objectoImp
+      ObjetoImp: detalle?.objectoImp || ObjetoImpEnum.SíObjetoDeImpuesto
     } as XmlConceptoAttributes);
     if (importeImpuesto !== 0 && detalle.objectoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
       concepto.traslado({
@@ -95,17 +95,18 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
         TasaOCuota: '0.160000',
         Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2).toString(),
       });
-      totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
     }
+    totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
     await cfd.concepto(concepto);
   }
+
   const impuesto: Impuestos = new Impuestos({
     TotalImpuestosTrasladados: totalTranslado,
   });
 
   if (importeImpuesto !== 0) {
     impuesto.traslados({
-      Base: parseFloat(`${subtotal}`).toFixed(2),
+      Base: parseFloat(`${subQuantity(subtotal, discount)}`).toFixed(2),
       Impuesto: '002',
       TipoFactor: 'Tasa',
       TasaOCuota: '0.160000',

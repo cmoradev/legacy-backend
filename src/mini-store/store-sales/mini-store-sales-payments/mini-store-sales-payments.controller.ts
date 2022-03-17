@@ -204,6 +204,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
                     });
                     const timbrado = await this.smartWeb.facturar(xml);
+
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
@@ -237,10 +238,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.send(respuesta);
                 }
             }
-
-            // const timbrado = await sw.facturar(xml);
-            // response.set('Content-Type', 'text/xml');
-            // response.send(xml);
 
         } catch (e) {
             console.warn(e);

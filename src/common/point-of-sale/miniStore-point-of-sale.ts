@@ -8,8 +8,7 @@ import { FormaPago, FormaPagoType, XmlReceptorAttribute } from '@signati/core';
 import { InformacionGlobal } from 'src/mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 
 export const totalAmountConceptAfterExCharge = (detail: MiniStoreSaleDetail) => {
-    const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
-    const total = mulQuantity(conceptPrice, detail.quantity);
+    const total = totalAmountConcept(detail);
 
     return amountAfterExtraCharge(total, detail.extraCharges.map(value => {
         return { quantity: value.quantity, type: value.applicationType };
@@ -24,8 +23,6 @@ export const totalAmountConcept = (detail: MiniStoreSaleDetail) => {
 export const saleDetails = (details: MiniStoreSaleDetail[]) => {
     let subtotal = 0;
     let discounts = 0;
-    const taxes = 0;
-    const total = 0;
     const surcharges = 0;
     details.forEach((detail) => {
         subtotal += totalAmountConcept(detail);
@@ -87,8 +84,8 @@ export interface CFDIWebtel extends FacturaDetalles {
 }
 
 export const  ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
-    const detalles = saleDetails(details || []);
     const pago = payment.quantity - payment.change;
+    const detalles = saleDetails(details || []);
     const base = (pago / detalles.total) || 1;
     const resultad = {
         total: 0,
@@ -128,45 +125,3 @@ export const  ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, det
     resultad.detalles = generalizedConcepts;
     return resultad;
 };
-
-/*
-export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
-    const saleAmount = saleDetails(details || []).total;
-
-    const pago = payment.quantity - payment.change;
-    const base = ((payment.quantity - payment.change) / saleAmount) || 1;
-
-    const resultad = {
-        total: pago,
-        subtotal: 0, // sumQuantity(ivaFromFinalAmount(pago).amountWithOutIva, '0.01'),
-        discount: 0,
-        detalles: [],
-    };
-    const generalizedConcepts: any[] = [];
-    details.forEach((detail) => {
-        const discountTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExCharge(detail));
-        const discount = (discountTotal * base).toFixed(2);
-        const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
-
-        resultad.discount = sumQuantity(discount, resultad.discount);
-        // @ts-ingore
-        const nativeCalculo = ivaFromFinalAmount((conceptPrice * base).toFixed(2));
-        const importe = mulQuantity(nativeCalculo.amountWithOutIva, detail.quantity);
-        // const importe = (+nativeCalculo.amountWithOutIva + discount) * detail.quantity;
-
-        resultad.subtotal = sumQuantity(importe, resultad.subtotal);
-        const conceptos = {
-            quantity: detail.quantity,
-            claveProd: detail.productCode,
-            unidad: 'E48', // detail.miniStoreProduct.unity,
-            descrption: detail.productName ? detail.productName : detail.miniStoreProduct.name,
-            unitPrice: nativeCalculo.amountWithOutIva, // mulQuantity(conceptPrice, base),
-            discount,
-            importe: importe, // mulQuantity(totalAmountConcept(detail), base),
-        };
-        generalizedConcepts.push(conceptos);
-    });
-    resultad.detalles = generalizedConcepts;
-    return resultad;
-};
-*/
