@@ -28,7 +28,7 @@ export class AcademyInscriptionConcepts extends Base {
     objetoImp: string;
 
     @Field()
-    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'01010101\''})
+    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'14111514\''})
     sat_code: string;
 
     @Field(type => AcademyActivity)

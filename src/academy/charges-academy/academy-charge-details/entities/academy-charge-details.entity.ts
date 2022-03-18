@@ -17,7 +17,7 @@ export class AcademyChargeDetails extends Base {
     objetoImp: string;
 
     @Field()
-    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'01010101\''})
+    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'14111514\''})
     sat_code: string;
 
     @Field()
@@ -26,14 +26,6 @@ export class AcademyChargeDetails extends Base {
         name: 'concepto',
     })
     concept: string;
-
-    @Field()
-    @Column('varchar', {
-        nullable: false,
-        length: 8,
-        name: 'codigo_concepto',
-    })
-    codeConcept: string;
 
     @Field(type => Int)
     @Column('int', {
