@@ -11,8 +11,6 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('ac_inscrip_conceptos')
 export class AcademyInscriptionConcepts extends Base {
-
-
     @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
@@ -21,29 +19,17 @@ export class AcademyInscriptionConcepts extends Base {
     })
     keyInscription: string | null;
 
-    @Field()
-    @Column('varchar', {
-        nullable: false,
-        length: 20,
-        name: 'codigo_producto',
-    })
-    productCode: string;
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, default: () => '\'E48\''})
+    unitMeasurement: string;
+
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
+    objetoImp: string;
 
     @Field()
-    @Column('varchar', {
-        nullable: false,
-        length: 20,
-        name: 'codigo_unidad',
-    })
-    unitCode: string;
-
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 100,
-        name: 'unidad',
-    })
-    unit: string | null;
+    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'01010101\''})
+    sat_code: string;
 
     @Field(type => AcademyActivity)
     @ManyToOne(type => AcademyActivity, activity => activity.academyActAcInsConcept)

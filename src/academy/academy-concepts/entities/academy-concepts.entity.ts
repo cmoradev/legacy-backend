@@ -10,7 +10,6 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('ac_aconceptos')
 export class AcademyConcepts extends Base {
-
     @Field()
     @Column('varchar', {
         nullable: false,
@@ -19,7 +18,7 @@ export class AcademyConcepts extends Base {
     })
     name: string;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('varchar', {
         nullable: true,
         name: 'descripcion',
@@ -36,29 +35,17 @@ export class AcademyConcepts extends Base {
     })
     price: number;
 
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 70,
-        name: 'codigo_producto',
-    })
-    productCode: string | null;
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, default: () => '\'E48\''})
+    unitMeasurement: string;
 
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 20,
-        name: 'codigo_unidad',
-    })
-    unitCode: string | null;
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
+    objetoImp: string;
 
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 100,
-        name: 'unidad',
-    })
-    unity: string | null;
+    @Field()
+    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'01010101\''})
+    sat_code: string;
 
     @Field(type => Cycle)
     @ManyToOne(type => Cycle, cycle => cycle.cycleAcademyConcepts)
@@ -83,22 +70,6 @@ export class AcademyConcepts extends Base {
     })
     academyConceptsLevel: string;
 
-    // @Field(type => Level)
-    // @ManyToOne(type => Level, level => level.levelAcademyConcepts)
-    // @JoinColumn({
-    //     name: 'id_nivel',
-    //     referencedColumnName: 'id',
-    // })
-    // academyConceptsLevel: Level;
-    /*
-    * ALTER TABLE `colegio_herbart`.`ac_aconceptos`
-DROP FOREIGN KEY `FK_0c0ad3bf9d8d9b8153c6d1a8e5e`;
-ALTER TABLE `colegio_herbart`.`ac_aconceptos`
-DROP COLUMN `id_nivel`,
-DROP INDEX `FK_0c0ad3bf9d8d9b8153c6d1a8e5e` ;
-;
-
-    * */
     @Field(type => SystemConceptsType)
     @ManyToOne(type => SystemConceptsType, state => state.systemConceptAcademy)
     @JoinColumn({
@@ -115,7 +86,7 @@ DROP INDEX `FK_0c0ad3bf9d8d9b8153c6d1a8e5e` ;
     })
     academyConceptsActivity: AcademyActivity;
 
-    @Field(type => Int, { nullable: true })
+    @Field(type => Int, {nullable: true})
     @Column('int', {
         nullable: true,
         default: () => '\'1\'',
@@ -123,7 +94,7 @@ DROP INDEX `FK_0c0ad3bf9d8d9b8153c6d1a8e5e` ;
     })
     school: number | null;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('tinyint', {
         nullable: true,
         width: 1,

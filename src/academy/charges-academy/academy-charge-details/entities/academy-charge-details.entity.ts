@@ -8,31 +8,17 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('ac_cobro_detalle')
 export class AcademyChargeDetails extends Base {
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, default: () => '\'E48\''})
+    unitMeasurement: string;
 
+    @Field({nullable: false})
+    @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
+    objetoImp: string;
 
     @Field()
-    @Column('varchar', {
-        nullable: false,
-        length: 20,
-        name: 'codigo_producto',
-    })
-    codeProduct: string;
-
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 20,
-        name: 'codigo_unidad',
-    })
-    codeUnit: string | null;
-
-    @Field({ nullable: true })
-    @Column('varchar', {
-        nullable: true,
-        length: 100,
-        name: 'unidad',
-    })
-    unit: string | null;
+    @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'01010101\''})
+    sat_code: string;
 
     @Field()
     @Column('varchar', {

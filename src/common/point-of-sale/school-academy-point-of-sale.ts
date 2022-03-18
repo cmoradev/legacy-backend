@@ -92,7 +92,7 @@ export const generalizeConceptsPriceByPaymentAcSc = (payment: SchoolChargePaymen
 };
 
 
-export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | AcademyChargePayments, details: SchoolChargeDetails[] | AcademyChargeDetails[]): FacturaDetalles => {
+export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | SchoolChargePayment, details: AcademyChargeDetails[] | SchoolChargeDetails[]): FacturaDetalles => {
   const detalles = saleDetailsAcademySchool(details || []);
   const pago = payment.quantity - payment.change;
   const base = (pago / detalles.total) || 1;
@@ -124,8 +124,9 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     resultad.subtotal = sumQuantity(importe, resultad.subtotal);
     const concept = {
       quantity: detail.quantity,
-      claveProd: detail.codeConcept,
-      unidad: 'E48',
+      claveProd: detail.sat_code,
+      unidad: detail.unitMeasurement,
+      objectoImp: detail.objetoImp,
       descrption: detail.concept ? detail.concept : detail.academyInscriptionConcept.description,
       unitPrice,
       discountTotal,
