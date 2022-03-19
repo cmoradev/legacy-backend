@@ -7,6 +7,7 @@ import * as moment from 'moment-timezone';
 import { add } from 'exact-math';
 import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
 
+const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
   const {
     folio,
@@ -25,7 +26,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
   const { instancePath, xslt } = env
   const key = instancePath + 'CSD/' + emisor.keyCSD;
   const cer = instancePath + 'CSD/' + emisor.cerCSD;
-  const genericRFC = ['XEXX010101000', 'XAXX010101000'];
+
   const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
   const comprobante: Comprobante = {
     Serie: serie,
@@ -160,13 +161,27 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
     Exportacion: ExportacionEnum.NoAplica
   };
   const cfd = new CFDI(comprobante, { debug: true, xslt });
+
+  const isGeneric = genericRFC.includes(receptor.Rfc.replace(/\s/g, ''))
+
+  if (isGeneric) {
+    cfd.informacionGlobal(informacionGlobal)
+  }
+
   const emi = new Emisor({
-    Rfc: emisor.rfc.trim().toUpperCase(),
-    Nombre: emisor.businessName.trim().toUpperCase(),
+    Rfc: sanitizeStringToXml(emisor.rfc.trim().toUpperCase()),
+    Nombre: sanitizeStringToXml(emisor.businessName.trim().toUpperCase()),
     RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
   });
   await cfd.emisor(emi);
-  const recep = new Receptor(receptor);
+
+  const recep = new Receptor({
+    ...receptor,
+    Rfc: sanitizeStringToXml(receptor.Rfc),
+    Nombre: sanitizeStringToXml(receptor.Nombre),
+    DomicilioFiscalReceptor: isGeneric ? emisor.zip : receptor.DomicilioFiscalReceptor
+  });
+
   await cfd.receptor(recep);
   let totalTranslado = '0.00';
   for (const detalle of detalles) {

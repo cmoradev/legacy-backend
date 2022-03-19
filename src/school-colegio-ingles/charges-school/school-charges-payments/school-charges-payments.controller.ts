@@ -271,34 +271,20 @@ export class SchoolChargesPaymentsController
           response.send(invoiceResponse);
         } else {
           let timbrado: StampV4;
-          if (query.usoCfdi.value === 'D10') {
-            const xml = await GenerateInvoiceIedu(
-              {
-                ...invoiceDetails,
-                folio: invoiceFinded.folio,
-                serie: branchOfficeSett.serieFacturacion,
-                codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                emisor: branchOfficeSett,
-                receptor,
-                student,
-                env,
-              });
-            timbrado = await this.smartWeb.facturar(xml);
-          } else {
-            const xml = await GenerateInvoice(
-              {
-                ...invoiceDetails,
-                folio: invoiceFinded.folio,
-                serie: branchOfficeSett.serieFacturacion,
-                codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                emisor: branchOfficeSett,
-                receptor,
-                informacionGlobal: query.informacionGlobal,
-                env,
-                importeImpuesto: 0,
-              });
-            timbrado = await this.smartWeb.facturar(xml);
-          }
+          const xml = await GenerateInvoiceIedu(
+            {
+              ...invoiceDetails,
+              folio: invoiceFinded.folio,
+              serie: branchOfficeSett.serieFacturacion,
+              codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+              emisor: branchOfficeSett,
+              receptor,
+              informacionGlobal: query.informacionGlobal,
+              student,
+              env,
+            });
+          timbrado = await this.smartWeb.facturar(xml);
+
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
@@ -368,34 +354,21 @@ export class SchoolChargesPaymentsController
         );
         if (invoice) {
           let timbrado: StampV4;
-          if (query.usoCfdi.value === 'D10') {
-            const xml = await GenerateInvoiceIedu(
-              {
-                folio: invoice.folio,
-                serie: branchOfficeSett.serieFacturacion,
-                codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                emisor: branchOfficeSett,
-                receptor,
-                student,
-                ...invoiceDetails,
-                env,
-              });
-            timbrado = await this.smartWeb.facturar(xml);
-          } else {
-            const xml = await GenerateInvoice(
-              {
-                ...invoiceDetails,
-                folio: invoice.folio,
-                serie: branchOfficeSett.serieFacturacion,
-                codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                emisor: branchOfficeSett,
-                receptor,
-                informacionGlobal: query.informacionGlobal,
-                env,
-                importeImpuesto: 0,
-              });
-            timbrado = await this.smartWeb.facturar(xml);
-          }
+          const xml = await GenerateInvoiceIedu(
+            {
+
+              ...invoiceDetails,
+              folio: invoice.folio,
+              serie: branchOfficeSett.serieFacturacion,
+              codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+              emisor: branchOfficeSett,
+              receptor,
+              informacionGlobal: query.informacionGlobal,
+              student,
+              env,
+            });
+          timbrado = await this.smartWeb.facturar(xml);
+
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
