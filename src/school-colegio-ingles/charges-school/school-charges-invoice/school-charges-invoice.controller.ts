@@ -1,5 +1,13 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
+import {
+    Crud,
+    CrudController,
+    Override,
+    CrudRequest,
+    ParsedRequest,
+    ParsedBody,
+    CreateManyDto,
+} from '@nestjsx/crud';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
 import { Response } from 'express';
@@ -16,8 +24,8 @@ import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
+import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-college-point-of-sale';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SchoolChargesInvoice,
@@ -28,7 +36,10 @@ import { Public } from '../../../common/docorators/public.decorator';
             schoolChargePayment: {},
             schoolCharge: {},
             'schoolCharge.chargesDetails': {
-                alias: 'details'
+                alias: 'details_chargesDetails'
+            },
+            'schoolCharge.chargesDetails.extraCharges': {
+                alias: 'details_chargesDetails_extraCharges'
             },
             "schoolCharge.schoolStudent": { eager: false },
             'schoolCharge.chargesDetails.schoolPlanPayment': {
@@ -56,7 +67,30 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         return this;
     }
 
-    @Get('/pdf')
+    @Override('getOneBase')
+    async getOneAndDoStuff(
+        @ParsedRequest() req: CrudRequest,
+    ) {
+        const invoice = await this.base.getOneBase(req);
+        const { schoolChargePayment, schoolCharge } = invoice
+        const { chargesDetails } = schoolCharge
+        if (schoolChargePayment && schoolCharge && chargesDetails) {
+            const factor = ConceptsPriceByPaymentBilligAS(schoolChargePayment, chargesDetails);
+            const { detalles } = factor
+            // @ts-ignore
+            invoice.detalles = detalles
+            detalles.map((detalle) => {
+                const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
+                if (findIndex > -1) {
+                    // @ts-ignore
+                    chargesDetails[findIndex].sat = detalle
+                }
+            })
+        }
+        return invoice
+    }
+
+    @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.pdf');

@@ -14,7 +14,15 @@ import {
     UseGuards
 } from '@nestjs/common';
 import { Response } from 'express';
-import { Crud, CrudController } from '@nestjsx/crud';
+import {
+    Crud,
+    CrudController,
+    Override,
+    CrudRequest,
+    ParsedRequest,
+    ParsedBody,
+    CreateManyDto,
+} from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import { CancelInvoiceMinistoreDto } from './dto/cancel.invoice.ministore.dto';
@@ -33,8 +41,8 @@ import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreInvoice,
@@ -48,6 +56,12 @@ import { A117 } from '../../../pdf/A117/desing/A117';
         join: {
             miniStoreSalePayment: { eager: false },
             miniStoreSale: { eager: false },
+            "miniStoreSale.miniStoreSaleDetails": {
+                alias: 'miniStoreSale_miniStoreSaleDetails'
+            },
+            "miniStoreSale.miniStoreSaleDetails.extraCharges": {
+                alias: 'miniStoreSale_miniStoreSaleDetails_extraCharges'
+            },
             'miniStoreSale.student': { eager: false },
             agentBilling: { eager: false },
             agentCanceling: { eager: false },
@@ -79,6 +93,29 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         return this;
     }
 
+    @Override('getOneBase')
+    async getOneAndDoStuff(
+        @ParsedRequest() req: CrudRequest,
+    ) {
+        const invoice = await this.base.getOneBase(req);
+        const { miniStoreSalePayment, miniStoreSale } = invoice
+        const { miniStoreSaleDetails } = miniStoreSale
+        if (miniStoreSalePayment && miniStoreSale && miniStoreSaleDetails) {
+            const factor = ConceptsPriceByPaymentBillig(miniStoreSalePayment, miniStoreSaleDetails);
+            const { detalles } = factor
+            // @ts-ignore
+            invoice.detalles = detalles
+            detalles.map((detalle) => {
+                const findIndex = miniStoreSaleDetails.findIndex((mssd) => mssd.id === detalle.id)
+                if (findIndex > -1) {
+                    // @ts-ignore
+                    miniStoreSaleDetails[findIndex].sat = detalle
+                }
+            })
+        }
+        return invoice
+    }
+
     @Delete('soft-deleted/:id')
     public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
         return await this.service.softDeleteOne(id);
@@ -89,7 +126,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         return await this.service.softRestoreOne(id);
     }
 
-    @Get('/pdf')
+    @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string, rebuild: string }) {
         try {
             if (query.rebuild === '1' || +query.rebuild === 1) {
