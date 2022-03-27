@@ -9,8 +9,8 @@ import { InformacionGlobal } from 'src/mini-store/store-sales/mini-store-sales-p
 
 export const totalAmountConceptAfterExCharge = (detail: MiniStoreSaleDetail) => {
     const total = totalAmountConcept(detail);
-
-    return amountAfterExtraCharge(total, detail.extraCharges.map(value => {
+    const { extraCharges = [] } = detail;
+    return amountAfterExtraCharge(total, extraCharges.map(value => {
         return { quantity: value.quantity, type: value.applicationType };
     }));
 };
@@ -83,7 +83,7 @@ export interface CFDIWebtel extends FacturaDetalles {
     importeImpuesto?: number;
 }
 
-export const  ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
+export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
     const pago = payment.quantity - payment.change;
     const detalles = saleDetails(details || []);
     const base = (pago / detalles.total) || 1;
@@ -109,6 +109,7 @@ export const  ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, det
 
         resultad.subtotal = sumQuantity(importe, resultad.subtotal);
         const concept = {
+            id: detail.id,
             quantity: detail.quantity,
             claveProd: detail.productCode,
             unidad: detail.unitMeasurement, // detail.miniStoreProduct.unity,
