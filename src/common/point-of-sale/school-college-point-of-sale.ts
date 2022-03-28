@@ -104,11 +104,11 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos));
     const surchargesTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos));
     const scholarshipsTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas));
-    
+
     const discountTotal = mulQuantity(discount, base);
     const surcharges = mulQuantity(surchargesTotal, base);
     const scholarships = mulQuantity(scholarshipsTotal, base);
-    
+
     const conceptPrice = detail.price;
     resultad.discount = sumQuantity(discountTotal, resultad.discount);
     resultad.discount = sumQuantity(scholarships, resultad.discount);
@@ -122,6 +122,7 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
 
     resultad.subtotal = sumQuantity(importe, resultad.subtotal);
     const concept = {
+      id: detail.id,
       quantity: detail.quantity,
       claveProd: detail.codeConcept,
       unidad: 'E48',

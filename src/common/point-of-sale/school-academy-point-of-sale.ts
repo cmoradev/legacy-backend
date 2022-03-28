@@ -123,6 +123,7 @@ export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | 
 
     resultad.subtotal = sumQuantity(importe, resultad.subtotal);
     const concept = {
+      id: detail.id,
       quantity: detail.quantity,
       claveProd: detail.sat_code,
       unidad: detail.unitMeasurement,

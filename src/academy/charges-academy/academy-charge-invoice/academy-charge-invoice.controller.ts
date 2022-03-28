@@ -12,7 +12,15 @@ import {
     Res,
     UseGuards
 } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
+import {
+    Crud,
+    CrudController,
+    Override,
+    CrudRequest,
+    ParsedRequest,
+    ParsedBody,
+    CreateManyDto,
+} from '@nestjsx/crud';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
@@ -31,8 +39,8 @@ import { Between } from 'typeorm';
 import * as Moment from 'moment';
 import { ReportInvoice } from './reports/invoice.reports';
 import { ConfigService } from '../../../common/config/config.service';
+import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyChargeInvoice,
@@ -47,6 +55,12 @@ import { ConfigService } from '../../../common/config/config.service';
         join: {
             academyChargePayment: {},
             academyCharge: {},
+            'academyCharge.chargesDetails': {
+                alias: "academyCharge_chargesDetails"
+            },
+            'academyCharge.chargesDetails.extraCharges': {
+                alias: "academyCharge_chargesDetails_extraCharges"
+            },
             "academyCharge.schoolStudent": { eager: false },
             agentBilling: {},
             agentCanceling: {}
@@ -70,6 +84,30 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         return this;
     }
 
+    @Override('getOneBase')
+    async getOneAndDoStuff(
+        @ParsedRequest() req: CrudRequest,
+    ) {
+        const invoice = await this.base.getOneBase(req);
+        const { academyChargePayment, academyCharge } = invoice
+        const { chargesDetails } = academyCharge
+        if (academyChargePayment && academyCharge && chargesDetails) {
+            const factor = ConceptsPriceByPaymentBilligAS(academyChargePayment, chargesDetails);
+            const { detalles } = factor
+            // @ts-ignore
+            invoice.detalles = detalles
+            detalles.map((detalle) => {
+                const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
+                if (findIndex > -1) {
+                    // @ts-ignore
+                    chargesDetails[findIndex].sat = detalle
+                }
+            })
+        }
+        return invoice
+    }
+
+
     @Delete('soft-deleted/:id')
     public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
         return await this.service.softDeleteOne(id);
@@ -80,7 +118,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         return await this.service.softRestoreOne(id);
     }
 
-    @Get('/pdf')
+    @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
