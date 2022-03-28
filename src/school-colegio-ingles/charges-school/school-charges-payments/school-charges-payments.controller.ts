@@ -180,16 +180,6 @@ export class SchoolChargesPaymentsController
       res.send({
         src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
       });
-      // if (true) {
-      //   res.contentType('application/pdf');
-      //   res.send(download);
-      // } else {
-      //
-      //   res.send({
-      //
-      //     data,
-      //   });
-      // }
     } catch (e) {
       res.send({
         error: e,

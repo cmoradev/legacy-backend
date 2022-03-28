@@ -9,11 +9,19 @@ import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { CreditNoteAcademy } from '../../../../credit-note-academy/entities/credit-note-academy.entity';
+import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
 
 @ObjectType()
 @Entity('ac_facturas')
 export class AcademyChargeInvoice extends Base {
-
+    @Field()
+    @Column({
+        type: 'simple-enum',
+        nullable: false,
+        default: InvoiceGlobalEnum.IS_NOT_GLOBAL,
+        enum: InvoiceGlobalEnum,
+    })
+    isGlobal: InvoiceGlobalEnum;
 
     @Field({ nullable: true })
     @Column('varchar', {

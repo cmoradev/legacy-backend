@@ -13,7 +13,7 @@ export default class BeforeUpdateSaleUpdateStockOnCancelSaleTriggerSeed implemen
              DECLARE cantidad_venta DECIMAL(15,3);
              
              DECLARE productos_venta
-             CURSOR FOR SELECT id_producto, cantidad FROM tie_venta_detalle where id_tie_venta= OLD.id;
+             CURSOR FOR SELECT id_producto, cantidad FROM tie_venta_detalle where miniStoreSaleId= OLD.id;
              DECLARE CONTINUE HANDLER FOR NOT FOUND SET done := TRUE;
              
              OPEN productos_venta;

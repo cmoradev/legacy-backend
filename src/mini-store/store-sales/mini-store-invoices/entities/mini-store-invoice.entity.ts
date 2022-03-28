@@ -10,10 +10,19 @@ import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CreditNoteStore } from '../../../../credit-note-store/entities/credit-note-store.entity';
+import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
 
 @ObjectType()
 @Entity('tie_facturas')
 export class MiniStoreInvoice extends Base {
+    @Field()
+    @Column({
+        type: 'simple-enum',
+        nullable: false,
+        default: InvoiceGlobalEnum.IS_NOT_GLOBAL,
+        enum: InvoiceGlobalEnum,
+    })
+    isGlobal: InvoiceGlobalEnum;
 
     @Field({ nullable: true })
     @Column('varchar', {

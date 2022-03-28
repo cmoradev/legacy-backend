@@ -8,10 +8,19 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { User } from '../../../../system/users/entities/user.entity';
 import { SchoolChargePayment } from '../../school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
+import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
 
 @ObjectType()
 @Entity('school_charges_invoice')
 export class SchoolChargesInvoice extends Base {
+    @Field()
+    @Column({
+        type: 'simple-enum',
+        nullable: false,
+        default: InvoiceGlobalEnum.IS_NOT_GLOBAL,
+        enum: InvoiceGlobalEnum,
+    })
+    isGlobal: InvoiceGlobalEnum;
 
     @Field({ nullable: true })
     @Column('varchar', {
