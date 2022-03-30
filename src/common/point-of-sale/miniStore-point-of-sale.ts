@@ -6,12 +6,13 @@ import { ItemRecibo } from '../types/recibo.interface';
 import { BranchOfficeSetting } from 'src/system/branch-office-setting/entities/branch-office-setting.entity';
 import { FormaPago, FormaPagoType, XmlReceptorAttribute } from '@signati/core';
 import { InformacionGlobal } from 'src/mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import { NotInvoiced } from '../interface/not-invoiced.interface';
 
 export const totalAmountConceptAfterExCharge = (detail: MiniStoreSaleDetail) => {
     const total = totalAmountConcept(detail);
-    const { extraCharges = [] } = detail;
+    const {extraCharges = []} = detail;
     return amountAfterExtraCharge(total, extraCharges.map(value => {
-        return { quantity: value.quantity, type: value.applicationType };
+        return {quantity: value.quantity, type: value.applicationType};
     }));
 };
 
@@ -29,7 +30,7 @@ export const saleDetails = (details: MiniStoreSaleDetail[]) => {
         discounts += totalAmountConceptAfterExCharge(detail);
     });
     discounts = subtotal - discounts;
-    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount((subtotal - discounts));
+    const {finalAmount, iva, amountWithOutIva} = ivaFromFinalAmount((subtotal - discounts));
     return {
         subtotal: amountWithOutIva,
         surcharges,
@@ -64,14 +65,15 @@ export interface FacturaDetalles {
     total: number | string;
     subtotal: number | string;
     discount: number | string;
+    taxes?: number | string;
     detalles: any[];
-
 }
 
 export interface Environment {
     instancePath: string
     xslt: string
 }
+
 export interface CFDIWebtel extends FacturaDetalles {
     serie: string;
     folio: string;
@@ -102,8 +104,6 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
         resultad.discount = sumQuantity(discountTotal, resultad.discount);
 
         const nativeCalculo = ivaFromFinalAmount(subQuantity(mulQuantity(conceptPrice, base), divQuantity(discountTotal, detail.quantity)));
-        // const importe = mulQuantity(sumQuantity(nativeCalculo.amountWithOutIva, discount), detail.quantity);
-        // const importe = (+nativeCalculo.amountWithOutIva + (discount / detail.quantity)) * detail.quantity;
         const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
         const importe = mulQuantity(unitPrice, detail.quantity);
 
@@ -125,4 +125,71 @@ export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, deta
     });
     resultad.detalles = generalizedConcepts;
     return resultad;
+};
+
+export interface Concept {
+    keyProdServ: string;
+    noIdentity: string;
+    quantity: string;
+    keyUnit: string;
+    description: string;
+    unitValue: string;
+    amount: string;
+    discount: string;
+    objectImp: string;
+}
+
+export interface InvoiceDetails {
+    total: number;
+    subtotal: number;
+    discount: number;
+    taxes: number;
+    details: Concept[];
+}
+
+export const getAmounts = (payments: NotInvoiced[]) => {
+    let subtotal = 0;
+    let taxes = 0;
+    let total = 0;
+
+    for (const value of payments) {
+        const {finalAmount, iva, amountWithOutIva} = ivaFromFinalAmount(value.p_income);
+
+        total = sumQuantity(finalAmount, total);
+        taxes = sumQuantity(iva, taxes);
+        subtotal = sumQuantity(amountWithOutIva, subtotal);
+    }
+
+
+    return {
+        subtotal,
+        taxes,
+        total,
+    };
+}
+
+export const getDetailsPaymentsGlobal = (payments: NotInvoiced[] = [], objectImp: string): InvoiceDetails => {
+    const {total, subtotal, taxes} = getAmounts(payments);
+
+    const details: Concept[] = payments.map((payment): Concept => {
+        return {
+            keyProdServ: '01010101',
+            noIdentity: payment.p_folio,
+            quantity: '1',
+            keyUnit: 'ACT',
+            description: `Venta ${payment.v_folio}, Pago ${payment.p_folio}`,
+            unitValue: `${payment.p_income}`,
+            amount: `${payment.p_income}`,
+            discount: '0.00',
+            objectImp
+        }
+    });
+
+    return {
+        total,
+        taxes,
+        subtotal,
+        discount: 0,
+        details
+    };
 };

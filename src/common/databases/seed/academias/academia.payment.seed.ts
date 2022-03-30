@@ -7,6 +7,8 @@ export default class AcademiaPaymentSeed implements Seeder {
         await connection.query(`
         CREATE VIEW vw_aca_payments AS
         SELECT
+            p.id AS p_id,
+            f.id AS f_id,
             v.folio AS v_folio,
             p.folio AS p_folio,
             f.folio AS f_folio,
@@ -14,7 +16,7 @@ export default class AcademiaPaymentSeed implements Seeder {
             f.rfc AS f_rfc,
             f.invoiceType AS f_type,
             f.status AS f_status,
-            (p.quantity - p.change) AS p_income,
+            CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.academyBranchOfficeSetId AS v_branch_office,

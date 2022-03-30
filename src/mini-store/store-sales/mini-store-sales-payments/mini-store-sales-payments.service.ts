@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository, IsNull } from 'typeorm';
 import { SimpleReport } from './reports/simple.report';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
@@ -18,6 +18,17 @@ import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
+import { NotInvoicedDto } from './dtos/not-invoiced.dto';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { InvoiceStatus } from '../../../invoice/types/invoice-status';
+import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import { readFileSync, writeFileSync } from 'fs';
+import { PDF, XmlToJson } from '@signati/pdf';
+import { XmlComprobante } from '@signati/core';
+import { A117 } from '../../../pdf/A117/desing/A117';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -26,8 +37,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
         @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
         @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
-        @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection)
-        readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
+        @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
+        @InjectRepository(MiniStoreInvoice, ColegioDBNameConnection) readonly invoiceRepository: Repository<MiniStoreInvoice>,
+        @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
     ) {
         super(repo);
@@ -336,5 +348,112 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             ],
         };
         return await transporter.sendMail(mailOptions);
+    }
+
+    public async saveXmlAndPdf(uuid: string, xml: string, address: string): Promise<XmlComprobante> {
+        try {
+            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
+
+            const path = `${this.configService.getPath()}comprobantes/tienda/${uuid}.xml`;
+
+            writeFileSync(path, xml);
+
+            const cfdi = await XmlToJson(path);
+
+            const desingpdf = new A117(path, {
+                lugarExpedicion: address,
+                logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            });
+
+            const pdf = new PDF<A117>(desingpdf);
+
+            await pdf.save(`${this.configService.getPath()}comprobantes/tienda/${uuid}`);
+
+            return cfdi['cfdi:Comprobante'] as XmlComprobante;
+        } catch (e) {
+            throw new NotFoundException('Could not save xml or pdf');
+        }
+    }
+
+    public async updateStampingPayments(ids: number[]): Promise<any> {
+        try {
+            return this.connection.query(`
+                UPDATE tie_venta_pagos p
+                SET timbrado = 1
+                WHERE p.id IN (${ids.join(',')});
+            `);
+        } catch (e) {
+            throw new NotFoundException('Error updating payments to invoiced');
+        }
+    }
+
+    public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
+        const data: NotInvoiced[] = await this.connection.query(`
+                SELECT *
+                FROM vw_tie_payments vw
+                WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+                  AND vw.p_stamping = '0'
+                  AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+            `);
+
+
+        if (!data.length) {
+            throw new NotFoundException('Concepts not exists');
+        }
+
+        data.forEach((value: NotInvoiced) => {
+            value.p_income = parseFloat(`${value.p_income}`)
+        });
+
+        return data
+    }
+
+    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPago> {
+        const ids = payments.map<number>((value) => value.p_id);
+
+        const data = await this.connection.query(`
+            SELECT vw.p_way, SUM(vw.p_ingreso) as p_total
+            FROM vw_tie_way_payments vw
+            WHERE vw.p_id IN (${ids.join(', ')})
+            GROUP BY vw.p_way;
+        `);
+
+        const way = data?.[0]?.p_way;
+
+        if (!way) {
+            throw new NotFoundException('Concepts not exists');
+        } else {
+            return way;
+        }
+    }
+
+    public async getGlobalInvoice(branchOffice: BranchOffice, branchOfficeConfig: BranchOfficeSetting): Promise<MiniStoreInvoice> {
+        const finded = await this.invoiceRepository.findOne({
+            where: {
+                isGlobal: `${InvoiceGlobalEnum.IS_GLOBAL}`,
+                status: `${InvoiceStatus.Unbilled}`,
+                invoiceBranchOffice: {id: branchOffice.id},
+                invoiceBranchOfficeSet: {id: branchOfficeConfig.id},
+            }
+        });
+
+        if (finded?.id) {
+            return finded;
+        } else {
+            const payload = new MiniStoreInvoice();
+            payload.folio = '';
+            payload.uuid = '';
+            payload.businessName = 'PUBLICO EN GENERAL';
+            payload.rfc = 'XAXX010101000';
+            payload.status = InvoiceStatus.Unbilled;
+            payload.isGlobal = InvoiceGlobalEnum.IS_GLOBAL;
+            payload.invoiceBranchOffice = {id: branchOffice.id} as BranchOffice;
+            payload.invoiceBranchOfficeSet = {id: branchOfficeConfig.id} as BranchOfficeSetting;
+            const invoice = await this.invoiceRepository.save(payload);
+
+            return this.invoiceRepository.findOne({
+                where: {id: invoice.id}
+            })
+        }
     }
 }

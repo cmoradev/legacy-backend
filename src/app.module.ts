@@ -38,28 +38,6 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
       name: ColegioDBNameConnection,
       useClass: ColegioDBService,
     }),
-    // GraphQLModule.forRoot({
-    //   debug: true,
-    //   playground: true,
-    //   installSubscriptionHandlers: true,
-    //   autoSchemaFile: 'schema.gql',
-    //   // definitions: {
-    //   //   path: join(process.cwd(), './src/graphql.schema.ts'),
-    //   //   outputAs: 'class',
-    //   // },
-    // }),
-
-    // GraphQLModule.forRoot({
-    //   debug: true,
-    //   playground: true,
-    //
-    //   typeDefs: [__dirname + '**/*.graphql'],
-    //   installSubscriptionHandlers: true,
-    //   definitions: {
-    //     path: join(process.cwd(), './src/graphql.schema.ts'),
-    //     outputAs: 'class',
-    //   },
-    // }),
     ScheduleModule.forRoot(),
     ConfigModule,
     RouterModule.forRoutes(routes),
