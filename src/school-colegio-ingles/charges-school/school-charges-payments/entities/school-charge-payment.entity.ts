@@ -12,6 +12,9 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('school_charge_payments')
 export class SchoolChargePayment extends Base {
+    @Field()
+    @Column('varchar', {nullable: true})
+    globalUuid: string;
 
     @Field()
     @Column('varchar', {
@@ -22,7 +25,7 @@ export class SchoolChargePayment extends Base {
     })
     folio: string;
 
-    @Field(type => Int, { nullable: true })
+    @Field(type => Int, {nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -31,7 +34,7 @@ export class SchoolChargePayment extends Base {
     })
     change: number | null;
 
-    @Field(type => Int, { nullable: true })
+    @Field(type => Int, {nullable: true})
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -40,20 +43,20 @@ export class SchoolChargePayment extends Base {
     })
     quantity: number;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column({
         type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('text', {
         nullable: true,
     })
     reasonCancellation: string | null;
 
-    @Field({ nullable: true })
+    @Field({nullable: true})
     @Column('text', {
         nullable: true,
     })
@@ -62,7 +65,7 @@ export class SchoolChargePayment extends Base {
     /**
      * Timbrado
      */
-    @Field(type => Int, { nullable: false })
+    @Field(type => Int, {nullable: false})
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -70,7 +73,7 @@ export class SchoolChargePayment extends Base {
     })
     stamping: number;
 
-    @Field(type => Int, { nullable: false })
+    @Field(type => Int, {nullable: false})
     @Column('tinyint', {
         nullable: false,
         width: 1,

@@ -343,11 +343,11 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         }
     }
 
-    public async updateStampingPayments(ids: number[]): Promise<any> {
+    public async updateStampingPayments(ids: number[], uuid: string): Promise<any> {
         try {
             return this.connection.query(`
-                UPDATE tie_venta_pagos p
-                SET timbrado = 1
+                UPDATE ac_charge_payments p
+                SET timbrado = 1, globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {

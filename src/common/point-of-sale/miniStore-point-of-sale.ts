@@ -147,13 +147,13 @@ export interface InvoiceDetails {
     details: Concept[];
 }
 
-export const getAmounts = (payments: NotInvoiced[]) => {
+export const getAmounts = (payments: NotInvoiced[], percentageTax: number = 0.16) => {
     let subtotal = 0;
     let taxes = 0;
     let total = 0;
 
     for (const value of payments) {
-        const {finalAmount, iva, amountWithOutIva} = ivaFromFinalAmount(value.p_income);
+        const {finalAmount, iva, amountWithOutIva} = ivaFromFinalAmount(value.p_income, -2, sumQuantity(percentageTax, 1));
 
         total = sumQuantity(finalAmount, total);
         taxes = sumQuantity(iva, taxes);
@@ -168,8 +168,8 @@ export const getAmounts = (payments: NotInvoiced[]) => {
     };
 }
 
-export const getDetailsPaymentsGlobal = (payments: NotInvoiced[] = [], objectImp: string): InvoiceDetails => {
-    const {total, subtotal, taxes} = getAmounts(payments);
+export const getDetailsPaymentsGlobal = (payments: NotInvoiced[] = [], objectImp: string, percentageTax: number = 0.16): InvoiceDetails => {
+    const {total, subtotal, taxes} = getAmounts(payments, percentageTax);
 
     const details: Concept[] = payments.map((payment): Concept => {
         return {

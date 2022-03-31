@@ -291,9 +291,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
             const stamping = await this.smartWeb.facturar(xml);
 
-            await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id))
-
             const uuid = stamping.data.uuid.toUpperCase();
+
+            await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
 
             const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
 

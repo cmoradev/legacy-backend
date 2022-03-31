@@ -10,19 +10,18 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
-import { AcademyChargeInvoiceModule } from '../../../academy/charges-academy/academy-charge-invoice/academy-charge-invoice.module';
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
 import { User } from '../../../system/users/entities/user.entity';
-import { SchoolChargesModule } from '../school-charges/school-charges.module';
 import { ChargesSchoolModule } from '../charges-school.module';
 import { SchoolPaymentsModule } from '../../school-payments/school-payments.module';
 import { SchoolChargesInvoiceModule } from '../school-charges-invoice/school-charges-invoice.module';
 import { ConfigModule } from '../../../common/config/config.module';
 import { StudentsModule } from '../../students/students.module';
+import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([SchoolChargePayment, SchoolCharge, InvoiceMethodPayment, User], ColegioDBNameConnection),
+    TypeOrmModule.forFeature([SchoolChargePayment, SchoolCharge, SchoolChargesInvoice, InvoiceMethodPayment, User], ColegioDBNameConnection),
     BranchOfficeModule,
     BranchOfficeSettingModule,
     InvoiceMethodsPaymentsModule,

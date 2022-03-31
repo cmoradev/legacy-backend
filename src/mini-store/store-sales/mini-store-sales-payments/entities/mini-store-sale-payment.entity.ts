@@ -13,6 +13,9 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment extends Base {
+    @Field()
+    @Column('varchar', {nullable: true})
+    globalUuid: string;
 
     @Field()
     @Column('varchar', {

@@ -1,12 +1,12 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, NotFoundException,
   Post,
   Query,
   Req,
   Res,
-  UseGuards,
+  UseGuards, UsePipes, ValidationPipe,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
@@ -21,6 +21,7 @@ import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-ch
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import {
+  GenerateGlobalInvoice,
   GenerateInvoice,
   GenerateInvoiceIedu,
 } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
@@ -45,6 +46,10 @@ import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Public } from '../../../common/docorators/public.decorator';
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { Environment, getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -67,6 +72,11 @@ import { Public } from '../../../common/docorators/public.decorator';
 @Controller()
 export class SchoolChargesPaymentsController
   implements CrudController<SchoolChargePayment> {
+  private env: Environment = {
+    instancePath: this.configService.getPath(),
+    xslt: this.configService.getXsltPath()
+  };
+
   constructor(
     readonly service: SchoolChargesPaymentsService,
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
@@ -448,4 +458,69 @@ export class SchoolChargesPaymentsController
     }
     return response.send(res);
   }
+
+
+  @Post('/global-billing')
+  @UsePipes(ValidationPipe)
+  public async globalBilling(@Body() query: NotInvoicedDto, @Res() response): Promise<any> {
+    try {
+      const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
+
+      const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.NoobjetoDeimpuesto, 0);
+
+      const wayPayment = await this.service.getWayPayment(concepts);
+
+      const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+
+      const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
+        where: {id: query.branchOfficeId}
+      });
+
+      let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
+
+      const xml = await GenerateGlobalInvoice({
+        branchOfficeConfig,
+        wayPayment,
+        details,
+        env: this.env,
+        folio: invoice.folio,
+        infoGlobal: {
+          periodicity: query.periodicity,
+          month: query.month,
+          year: query.year,
+        },
+        percentageTax: '0'
+      });
+
+      const stamping = await this.smartWeb.facturar(xml);
+
+      const uuid = stamping.data.uuid.toUpperCase();
+
+      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
+
+      const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
+
+      invoice.uuid = uuid;
+      invoice.status = 1;
+      invoice.total = +cfdi._attributes.Total;
+
+      invoice = await this.schoolChargeInvoiceService.updateInvoice(invoice);
+
+      await this.schoolChargeInvoiceService.sendMail(branchOffice, uuid, branchOfficeConfig.email);
+
+      response.status(200);
+      response.send({
+        uuid,
+        invoice,
+        stamping,
+        concepts,
+        msg: 'Factura global timbrada',
+      });
+    } catch (e) {
+      console.warn(e);
+      response.status(400);
+      response.send(e);
+    }
+  }
+
 }

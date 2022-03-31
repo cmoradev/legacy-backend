@@ -12,6 +12,9 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity('ac_charge_payments')
 export class AcademyChargePayments extends Base {
+    @Field()
+    @Column('varchar', {nullable: true})
+    globalUuid: string;
 
     @Field()
     @Column('varchar', {

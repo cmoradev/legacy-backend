@@ -375,11 +375,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         }
     }
 
-    public async updateStampingPayments(ids: number[]): Promise<any> {
+    public async updateStampingPayments(ids: number[], uuid: string): Promise<any> {
         try {
             return this.connection.query(`
                 UPDATE tie_venta_pagos p
-                SET timbrado = 1
+                SET timbrado = 1, globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {
