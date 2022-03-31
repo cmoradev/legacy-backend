@@ -263,6 +263,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         try {
             const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
 
+            if (!concepts.length) {
+                throw new NotFoundException('Concepts not exists');
+            }
+
             const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.SíObjetoDeImpuesto);
 
             const wayPayment = await this.service.getWayPayment(concepts);

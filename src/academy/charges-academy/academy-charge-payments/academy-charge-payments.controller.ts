@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -356,11 +356,21 @@ export class AcademyChargePaymentsController
     }
   }
 
+  @Post('/not-invoiced')
+  @UsePipes(ValidationPipe)
+  public async notInvoiced(@Body() query: NotInvoicedDto): Promise<NotInvoiced[]> {
+    return this.service.notInvoiced(query);
+  }
+
   @Post('/global-billing')
   @UsePipes(ValidationPipe)
   public async globalBilling(@Body() query: NotInvoicedDto, @Res() response): Promise<any> {
     try {
       const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
+
+      if (!concepts.length) {
+        throw new NotFoundException('Concepts not exists');
+      }
 
       const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.SíObjetoDeImpuesto);
 

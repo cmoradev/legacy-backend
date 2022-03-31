@@ -396,11 +396,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                   AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
             `);
 
-
-        if (!data.length) {
-            throw new NotFoundException('Concepts not exists');
-        }
-
         data.forEach((value: NotInvoiced) => {
             value.p_income = parseFloat(`${value.p_income}`)
         });
