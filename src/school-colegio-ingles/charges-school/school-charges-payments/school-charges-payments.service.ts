@@ -12,7 +12,6 @@ import { User } from '../../../system/users/entities/user.entity';
 import * as moment from 'moment';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { SimpleReportCollege } from './reports/simple.report';
-import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
@@ -27,6 +26,7 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
