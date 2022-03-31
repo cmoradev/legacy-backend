@@ -358,8 +358,16 @@ export class AcademyChargePaymentsController
 
   @Post('/not-invoiced')
   @UsePipes(ValidationPipe)
-  public async notInvoiced(@Body() query: NotInvoicedDto): Promise<NotInvoiced[]> {
-    return this.service.notInvoiced(query);
+  public async notInvoiced(@Body() query: NotInvoicedDto, @Res() resp): Promise<any> {
+    try {
+      const data = await this.service.getGlobalInvoiceFromSales(query);
+
+      resp.status(400);
+      resp.send(data);
+    } catch (e) {
+      resp.status(400);
+      resp.send(e);
+    }
   }
 
   @Post('/global-billing')

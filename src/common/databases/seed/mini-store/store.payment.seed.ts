@@ -23,7 +23,8 @@ export default class StorePaymentSeed implements Seeder {
             v.cycleId AS v_cycle,
             p.createdAt AS p_created_at,
             p.timbrado AS p_stamping,
-            p.systemPaymentStatusId AS p_state
+            p.systemPaymentStatusId AS p_state,
+            p.globalUuid AS p_global_uuid
         FROM tie_venta_pagos p
         
         LEFT JOIN tie_ventas v ON v.id = p.saleId

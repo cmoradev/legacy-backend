@@ -29,6 +29,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { XmlComprobante } from '@signati/core';
 import { A117 } from '../../../pdf/A117/desing/A117';
+import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -379,7 +380,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         try {
             return this.connection.query(`
                 UPDATE tie_venta_pagos p
-                SET timbrado = 1, globalUuid = '${uuid}'
+                SET timbrado   = 1,
+                    globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {
@@ -387,14 +389,55 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         }
     }
 
+    public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
+        const billedPayments: NotInvoiced[] = [];
+        const unbilledPayments: NotInvoiced[] = [];
+        let invoice: MiniStoreInvoice | null = null;
+
+        const data: NotInvoiced[] = await this.connection.query(`
+            SELECT *
+            FROM vw_tie_payments vw
+            WHERE vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+        `);
+
+        data.forEach((value: NotInvoiced) => {
+            value.p_income = parseFloat(`${value.p_income}`);
+
+            if ((value.f_status === null || value.f_status === '0') && value.p_stamping === '0') {
+                unbilledPayments.push(value)
+            } else {
+                billedPayments.push(value)
+            }
+        });
+
+        if (billedPayments.length) {
+            const [row] = billedPayments;
+
+            if (row.p_global_uuid) {
+                invoice = await this.invoiceRepository.findOne({
+                    where: {
+                        isGlobal: InvoiceGlobalEnum.IS_GLOBAL,
+                        uuid: row.p_global_uuid
+                    }
+                })
+            }
+        }
+
+        return {
+            billedPayments,
+            unbilledPayments,
+            invoice
+        };
+    }
+
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const data: NotInvoiced[] = await this.connection.query(`
-                SELECT *
-                FROM vw_tie_payments vw
-                WHERE (vw.f_status IS NULL OR vw.f_status = '0')
-                  AND vw.p_stamping = '0'
-                  AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
-            `);
+            SELECT *
+            FROM vw_tie_payments vw
+            WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+              AND vw.p_stamping = '0'
+              AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+        `);
 
         data.forEach((value: NotInvoiced) => {
             value.p_income = parseFloat(`${value.p_income}`)

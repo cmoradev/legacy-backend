@@ -23,7 +23,8 @@ export default class AcademiaPaymentSeed implements Seeder {
             v.ciclo AS v_cycle,
             p.createdAt AS p_created_at,
             p.stamping AS p_stamping,
-            p.paymentStatusId AS p_state_2
+            p.paymentStatusId AS p_state,
+            p.globalUuid AS p_global_uuid
         FROM ac_charge_payments p
         
         LEFT JOIN ac_cobros v ON v.id = p.academyChargeId

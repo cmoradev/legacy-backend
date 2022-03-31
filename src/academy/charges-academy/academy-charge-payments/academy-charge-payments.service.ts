@@ -273,6 +273,47 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             .getRawOne();
     }
 
+    public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
+        const billedPayments: NotInvoiced[] = [];
+        const unbilledPayments: NotInvoiced[] = [];
+        let invoice: AcademyChargeInvoice | null = null;
+
+        const data: NotInvoiced[] = await this.connection.query(`
+            SELECT *
+            FROM vw_aca_payments vw
+            WHERE vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+        `);
+
+        data.forEach((value: NotInvoiced) => {
+            value.p_income = parseFloat(`${value.p_income}`);
+
+            if ((value.f_status === null || value.f_status === '0') && value.p_stamping === '0') {
+                unbilledPayments.push(value)
+            } else {
+                billedPayments.push(value)
+            }
+        });
+
+        if (billedPayments.length) {
+            const [row] = billedPayments;
+
+            if (row.p_global_uuid) {
+                invoice = await this.invoiceRepository.findOne({
+                    where: {
+                        isGlobal: InvoiceGlobalEnum.IS_GLOBAL,
+                        uuid: row.p_global_uuid
+                    }
+                })
+            }
+        }
+
+        return {
+            billedPayments,
+            unbilledPayments,
+            invoice
+        };
+    }
+
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const data: NotInvoiced[] = await this.connection.query(`
                 SELECT *
