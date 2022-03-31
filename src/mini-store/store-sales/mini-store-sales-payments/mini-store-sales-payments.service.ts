@@ -18,7 +18,7 @@ import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
-import { NotInvoicedDto } from './dtos/not-invoiced.dto';
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';

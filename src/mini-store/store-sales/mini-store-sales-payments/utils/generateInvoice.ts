@@ -8,7 +8,7 @@ import { add } from 'exact-math';
 import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
 import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MonthEnum, PeriodicityEnum } from '../dtos/not-invoiced.dto';
+import { MonthEnum, PeriodicityEnum } from '../../../../common/dto/not-invoiced.dto';
 import { ivaFromFinalAmount } from '../../../../common/numbers';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];

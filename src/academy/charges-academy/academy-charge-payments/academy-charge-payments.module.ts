@@ -14,6 +14,7 @@ import { BranchOfficeSettingModule } from '../../../system/branch-office-setting
 import { AcademyChargeInvoiceModule } from '../academy-charge-invoice/academy-charge-invoice.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { ConfigModule } from '../../../common/config/config.module';
+import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { ConfigModule } from '../../../common/config/config.module';
                 User,
                 InvoiceMethodPayment,
                 AcademyCharge,
+                AcademyChargeInvoice
             ], ColegioDBNameConnection),
         BranchOfficeModule,
         BranchOfficeSettingModule,

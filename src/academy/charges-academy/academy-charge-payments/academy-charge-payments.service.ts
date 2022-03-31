@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
@@ -16,6 +16,18 @@ import Mail from 'nodemailer/lib/mailer';
 import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
+import { InvoiceStatus } from '../../../invoice/types/invoice-status';
+import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { XmlComprobante } from '@signati/core';
+import { readFileSync, writeFileSync } from 'fs';
+import { PDF, XmlToJson } from '@signati/pdf';
+import { A117 } from '../../../pdf/A117/desing/A117';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -24,6 +36,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
         @InjectRepository(AcademyCharge, ColegioDBNameConnection) readonly academyRepository: Repository<AcademyCharge>,
+        @InjectRepository(AcademyChargeInvoice, ColegioDBNameConnection) readonly invoiceRepository: Repository<AcademyChargeInvoice>,
+        @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
     ) {
         super(repo);
@@ -257,6 +271,112 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             .select('SUM(payments.quantity-payments.change)', 'sum')
             .where(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
+    }
 
+    public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
+        const data: NotInvoiced[] = await this.connection.query(`
+                SELECT *
+                FROM vw_aca_payments vw
+                WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+                  AND vw.p_stamping = '0'
+                  AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+            `);
+
+
+        if (!data.length) {
+            throw new NotFoundException('Concepts not exists');
+        }
+
+        data.forEach((value: NotInvoiced) => {
+            value.p_income = parseFloat(`${value.p_income}`)
+        });
+
+        return data
+    }
+
+    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPago> {
+        const ids = payments.map<number>((value) => value.p_id);
+
+        const data = await this.connection.query(`
+            SELECT vw.p_way, SUM(vw.p_ingreso) as p_total
+            FROM vw_aca_way_payments vw
+            WHERE vw.p_id IN (${ids.join(', ')})
+            GROUP BY vw.p_way;
+        `);
+
+        const way = data?.[0]?.p_way;
+
+        if (!way) {
+            throw new NotFoundException('Concepts not exists');
+        } else {
+            return way;
+        }
+    }
+
+    public async getGlobalInvoice(branchOffice: BranchOffice, branchOfficeConfig: BranchOfficeSetting): Promise<AcademyChargeInvoice> {
+        const finded = await this.invoiceRepository.findOne({
+            where: {
+                isGlobal: `${InvoiceGlobalEnum.IS_GLOBAL}`,
+                status: `${InvoiceStatus.Unbilled}`,
+                invoiceBranchOffice: {id: branchOffice.id},
+                invoiceBranchOfficeSet: {id: branchOfficeConfig.id},
+            }
+        });
+
+        if (finded?.id) {
+            return finded;
+        } else {
+            const payload = new AcademyChargeInvoice();
+            payload.folio = '';
+            payload.uuid = '';
+            payload.businessName = 'PUBLICO EN GENERAL';
+            payload.rfc = 'XAXX010101000';
+            payload.status = InvoiceStatus.Unbilled;
+            payload.isGlobal = InvoiceGlobalEnum.IS_GLOBAL;
+            payload.invoiceBranchOffice = {id: branchOffice.id} as BranchOffice;
+            payload.invoiceBranchOfficeSet = {id: branchOfficeConfig.id} as BranchOfficeSetting;
+            const invoice = await this.invoiceRepository.save(payload);
+
+            return this.invoiceRepository.findOne({
+                where: {id: invoice.id}
+            })
+        }
+    }
+
+    public async updateStampingPayments(ids: number[]): Promise<any> {
+        try {
+            return this.connection.query(`
+                UPDATE tie_venta_pagos p
+                SET timbrado = 1
+                WHERE p.id IN (${ids.join(',')});
+            `);
+        } catch (e) {
+            throw new NotFoundException('Error updating payments to invoiced');
+        }
+    }
+
+    public async saveXmlAndPdf(uuid: string, xml: string, address: string): Promise<XmlComprobante> {
+        try {
+            const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
+
+            const path = `${this.configService.getPath()}comprobantes/academias/${uuid}.xml`;
+
+            writeFileSync(path, xml);
+
+            const cfdi = await XmlToJson(path);
+
+            const desingpdf = new A117(path, {
+                lugarExpedicion: address,
+                logo: `data:image/png;base64, ${logo.toString('base64')}`,
+            });
+
+            const pdf = new PDF<A117>(desingpdf);
+
+            await pdf.save(`${this.configService.getPath()}comprobantes/academias/${uuid}`);
+
+            return cfdi['cfdi:Comprobante'] as XmlComprobante;
+        } catch (e) {
+            throw new NotFoundException('Could not save xml or pdf');
+        }
     }
 }

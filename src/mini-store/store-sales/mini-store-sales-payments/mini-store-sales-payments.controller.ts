@@ -17,13 +17,13 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { CFDI, FormaPago, XmlCdfi } from '@signati/core';
+import { FormaPago } from '@signati/core';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import { NotInvoicedDto } from './dtos/not-invoiced.dto';
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 

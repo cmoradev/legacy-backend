@@ -10,7 +10,7 @@ import {
   Query,
   Req,
   Res,
-  UseGuards,
+  UseGuards, UsePipes, ValidationPipe,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
@@ -32,7 +32,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+import { GenerateGlobalInvoice, GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, XmlCdfi } from '@signati/core';
@@ -40,6 +40,11 @@ import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Public } from '../../../common/docorators/public.decorator';
+import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { Environment, getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
+import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -70,6 +75,10 @@ import { Public } from '../../../common/docorators/public.decorator';
 @Controller()
 export class AcademyChargePaymentsController
   implements CrudController<AcademyChargePayments> {
+  private env: Environment = {
+    instancePath: this.configService.getPath(),
+    xslt: this.configService.getXsltPath()
+  };
   constructor(
     readonly service: AcademyChargePaymentsService,
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
@@ -347,5 +356,66 @@ export class AcademyChargePaymentsController
     }
   }
 
+  @Post('/global-billing')
+  @UsePipes(ValidationPipe)
+  public async globalBilling(@Body() query: NotInvoicedDto, @Res() response): Promise<any> {
+    try {
+      const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
 
+      const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.SíObjetoDeImpuesto);
+
+      const wayPayment = await this.service.getWayPayment(concepts);
+
+      const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+
+      const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
+        where: {id: query.branchOfficeId}
+      });
+
+      let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
+
+      const xml = await GenerateGlobalInvoice({
+        branchOfficeConfig,
+        wayPayment,
+        details,
+        env: this.env,
+        folio: invoice.folio,
+        infoGlobal: {
+          periodicity: query.periodicity,
+          month: query.month,
+          year: query.year,
+        },
+        percentageTax: '0.160000'
+      });
+
+      const stamping = await this.smartWeb.facturar(xml);
+
+      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id))
+
+      const uuid = stamping.data.uuid.toUpperCase();
+
+      const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
+
+      invoice.uuid = uuid;
+      invoice.status = 1;
+      invoice.total = cfdi._attributes.Total;
+
+      invoice = await this.academyChargeInvoiceService.updateInvoice(invoice);
+
+      await this.service.sendMail(branchOffice, uuid, branchOfficeConfig.email);
+
+      response.status(200);
+      response.send({
+        uuid,
+        invoice,
+        stamping,
+        concepts,
+        msg: 'Factura global timbrada',
+      });
+    } catch (e) {
+      console.warn(e);
+      response.status(400);
+      response.send(e);
+    }
+  }
 }
