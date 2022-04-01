@@ -465,7 +465,7 @@ export class SchoolChargesPaymentsController
     try {
       const data = await this.service.getGlobalInvoiceFromSales(query);
 
-      resp.status(400);
+      resp.status(200);
       resp.send(data);
     } catch (e) {
       resp.status(400);
