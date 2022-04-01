@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { Connection, Repository } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { QuerySchoolPaymentBilling } from '../../school-payments/interfaces/InvoiceSchoolPayment.interface';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
@@ -27,6 +27,7 @@ import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
+import { string } from '@hapi/joi';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -206,7 +207,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
         const billedPayments: NotInvoiced[] = [];
         const unbilledPayments: NotInvoiced[] = [];
-        let invoice: SchoolChargesInvoice | null = null;
+        let invoice: SchoolChargesInvoice[] | null = null;
 
         const data: NotInvoiced[] = await this.connection.query(`
             SELECT *
@@ -225,16 +226,13 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         });
 
         if (billedPayments.length) {
-            const [row] = billedPayments;
+            const uuids = billedPayments.map((value) => value.p_global_uuid).filter((value) => value);
 
-            if (row.p_global_uuid) {
-                invoice = await this.invoiceRepository.findOne({
-                    where: {
-                        isGlobal: InvoiceGlobalEnum.IS_GLOBAL,
-                        uuid: row.p_global_uuid
-                    }
-                })
-            }
+            invoice = await this.invoiceRepository.find({
+                where: {
+                    uuid: In(uuids)
+                }
+            });
         }
 
         return {

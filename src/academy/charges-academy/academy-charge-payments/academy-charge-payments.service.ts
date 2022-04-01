@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { Connection, Repository } from 'typeorm';
+import { Connection, Repository, In } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
@@ -28,6 +28,7 @@ import { XmlComprobante } from '@signati/core';
 import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { A117 } from '../../../pdf/A117/desing/A117';
+import { string } from '@hapi/joi';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -276,7 +277,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
         const billedPayments: NotInvoiced[] = [];
         const unbilledPayments: NotInvoiced[] = [];
-        let invoice: AcademyChargeInvoice | null = null;
+        let invoice: AcademyChargeInvoice[] | null = null;
 
         const data: NotInvoiced[] = await this.connection.query(`
             SELECT *
@@ -288,23 +289,20 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             value.p_income = parseFloat(`${value.p_income}`);
 
             if ((value.f_status === null || value.f_status === '0') && (value.p_stamping === '0' || value.p_stamping === 0)) {
-                unbilledPayments.push(value)
+                unbilledPayments.push(value);
             } else {
-                billedPayments.push(value)
+                billedPayments.push(value);
             }
         });
 
         if (billedPayments.length) {
-            const [row] = billedPayments;
+            const uuids = billedPayments.map((value) => value.p_global_uuid).filter((value) => value);
 
-            if (row.p_global_uuid) {
-                invoice = await this.invoiceRepository.findOne({
-                    where: {
-                        isGlobal: InvoiceGlobalEnum.IS_GLOBAL,
-                        uuid: row.p_global_uuid
-                    }
-                })
-            }
+            invoice = await this.invoiceRepository.find({
+                where: {
+                    uuid: In(uuids)
+                }
+            });
         }
 
         return {
