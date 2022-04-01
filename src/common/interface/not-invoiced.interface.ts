@@ -15,7 +15,7 @@ export interface NotInvoiced {
     v_cycle: string;
     p_created_at: string;
     f_created_at?: string;
-    p_stamping: string;
+    p_stamping: string | number;
     p_state: string;
     p_global_uuid?: string;
 }

@@ -403,7 +403,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         data.forEach((value: NotInvoiced) => {
             value.p_income = parseFloat(`${value.p_income}`);
 
-            if ((value.f_status === null || value.f_status === '0') && value.p_stamping === '0') {
+            if ((value.f_status === null || value.f_status === '0') && (value.p_stamping === '0' || value.p_stamping === 0)) {
                 unbilledPayments.push(value)
             } else {
                 billedPayments.push(value)
