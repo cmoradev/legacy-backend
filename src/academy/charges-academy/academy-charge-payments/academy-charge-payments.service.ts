@@ -383,7 +383,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         try {
             return this.connection.query(`
                 UPDATE ac_charge_payments p
-                SET timbrado = 1, globalUuid = '${uuid}'
+                SET stamping = 1, globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {

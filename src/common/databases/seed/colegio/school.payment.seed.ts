@@ -19,17 +19,17 @@ export default class SchoolPaymentSeed implements Seeder {
             CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
-            v.academyBranchOfficeSetId AS v_branch_office,
-            v.ciclo AS v_cycle,
+            v.schoolBranchOfficeSetId AS v_branch_office,
+            v.schoolCycleId AS v_cycle,
             p.createdAt AS p_created_at,
-            f.createdAt AS f_created_at,
+             f.createdAt AS f_created_at,
             p.stamping AS p_stamping,
             p.paymentStatusId AS p_state,
             p.globalUuid AS p_global_uuid
         FROM school_charge_payments p
         
-        LEFT JOIN ac_cobros v ON v.id = p.schoolChargeId
-        LEFT JOIN alumnos a ON a.id = v.id_alumno
+        LEFT JOIN school_charges v ON v.id = p.schoolChargeId
+        LEFT JOIN alumnos a ON a.id = v.schoolStudentId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
         
         ORDER BY v.id DESC;
