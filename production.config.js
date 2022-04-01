@@ -1,20 +1,6 @@
 module.exports = {
   apps: [
     {
-      name: '3000-colegio-api-core',
-      script: 'dist/main.js',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '420M',
-      env_dev: {
-        NODE_ENV: 'development',
-      },
-      env_production: {
-        NODE_ENV: 'production',
-      },
-    },
-    {
       name: '3300-herbart',
       script: 'dist/main.js',
       instances: 1,
