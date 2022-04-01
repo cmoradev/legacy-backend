@@ -14,6 +14,7 @@ export interface NotInvoiced {
     v_branch_office: string;
     v_cycle: string;
     p_created_at: string;
+    f_created_at?: string;
     p_stamping: string;
     p_state: string;
     p_global_uuid?: string;

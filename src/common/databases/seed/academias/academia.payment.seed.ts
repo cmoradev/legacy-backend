@@ -22,6 +22,7 @@ export default class AcademiaPaymentSeed implements Seeder {
             v.academyBranchOfficeSetId AS v_branch_office,
             v.ciclo AS v_cycle,
             p.createdAt AS p_created_at,
+            f.createdAt AS f_created_at,
             p.stamping AS p_stamping,
             p.paymentStatusId AS p_state,
             p.globalUuid AS p_global_uuid

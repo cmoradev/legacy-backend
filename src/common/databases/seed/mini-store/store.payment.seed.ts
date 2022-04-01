@@ -22,6 +22,7 @@ export default class StorePaymentSeed implements Seeder {
             v.storeBranchOfficeId AS v_branch_office,
             v.cycleId AS v_cycle,
             p.createdAt AS p_created_at,
+            f.createdAt AS f_created_at,
             p.timbrado AS p_stamping,
             p.systemPaymentStatusId AS p_state,
             p.globalUuid AS p_global_uuid
