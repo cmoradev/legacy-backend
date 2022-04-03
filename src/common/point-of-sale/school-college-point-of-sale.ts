@@ -1,6 +1,6 @@
 import { SchoolChargeDetails } from '../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
-import { divQuantity, mulQuantity, saleDetails, subQuantity, sumQuantity, totalAmountConcept, totalAmountConceptAfterExtraCharge } from './point-of-sale';
+import { divQuantity, getTotal, mulQuantity, saleDetails, subQuantity, sumQuantity, totalAmountConcept, totalAmountConceptAfterExtraCharge } from './point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { ivaFromFinalAmount } from '../numbers';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
@@ -27,13 +27,13 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     const surcharges = mulQuantity(surchargesTotal, base);
     const scholarships = mulQuantity(scholarshipsTotal, base);
 
-    const conceptPrice = detail.price;
+    const conceptPrice = getTotal(detail)
     resultad.discount = sumQuantity(discountTotal, resultad.discount);
     resultad.discount = sumQuantity(scholarships, resultad.discount);
     resultad.surcharges = sumQuantity(surcharges, resultad.surcharges);
 
-    const nativeCalculo = ivaFromFinalAmount(subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discountTotal, detail.quantity)), -2, 1);
-
+    const totalNative = subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discountTotal, detail.quantity));
+    const nativeCalculo = ivaFromFinalAmount(totalNative, -2, 1);
 
     const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
     const importe = mulQuantity(unitPrice, detail.quantity);
@@ -42,14 +42,18 @@ export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | Ac
     const concept = {
       id: detail.id,
       quantity: detail.quantity,
+      // objectoImp: detail.objetoImp,
+      unitPrice,
+      discountTotal,
+      importe,
+      surcharge: resultad.surcharges,
+      scholarships,
+
       claveProd: detail.codeConcept,
       unidad: 'E48',
       descrption: detail.concept ? detail.concept : detail.academyInscriptionConcept.description,
-      unitPrice,
-      discountTotal,
-      surcharge: resultad.surcharges,
-      scholarships,
-      importe,
+
+
     };
     const totalconcetp = sumQuantity(subQuantity(importe, discountTotal).toString(), mulQuantity(subQuantity(importe, discountTotal), 0));
     resultad.total = sumQuantity(resultad.total, totalconcetp);

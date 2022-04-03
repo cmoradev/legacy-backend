@@ -63,16 +63,20 @@ export const totalAmountConceptAfterExtraCharge = (detail: TypeDetails, typeExtr
 };
 
 export const totalAmountConcept = (detail: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails) => {
-    const { price, quantity, } = detail
+    const { quantity, } = detail
+    const conceptPrice = getTotal(detail)
+    return mulQuantity(conceptPrice, quantity);
+};
+export const getTotal = (detail: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails) => {
+    const { price } = detail
     let conceptPrice = +price;
     // @ts-ignore
     if (detail.isIva) {
         // @ts-ignore
         conceptPrice = +detail.priceWithIVA;
     }
-    return mulQuantity(conceptPrice, quantity);
-};
-
+    return conceptPrice
+}
 
 export const saleDetails = (details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]) => {
 
