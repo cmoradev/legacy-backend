@@ -1,10 +1,10 @@
 import { MiniStoreSale } from '../entities/mini-store-sale.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { add, mul, round, sub } from 'exact-math';
-import { totalAmountConceptAfterExCharge } from '../../../../common/point-of-sale/miniStore-point-of-sale';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { OperationCalculate } from '../../../mini-store-products/types/extra.types';
-import { roundQuantity } from '../../../../common/point-of-sale/point-of-sale';
+import { roundQuantity, totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
+import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 
 export function totalForProducts(sales: MiniStoreSale[]) {
   const products: MiniStoreSaleDetail[] = [];
@@ -24,7 +24,8 @@ export function totalForProducts(sales: MiniStoreSale[]) {
       r.push(helper[key]);
     }
     helper[key].quantity = add(helper[key].quantity, o.quantity);
-    helper[key].total = add(helper[key].total, totalAmountConceptAfterExCharge(o));
+    const descuento = totalAmountConceptAfterExtraCharge(o, SystemTypeExtraChargesEnum.Descuentos)
+    helper[key].total = add(helper[key].total, descuento);
 
     return r;
   }, []);
@@ -66,8 +67,9 @@ export function totalForCategory(sales: MiniStoreSale[]) {
     }
     const index = helper[key].unit.findIndex((unit) => unit.id === o.unitMeasurement);
     helper[key].unit[index].quantity = add(helper[key].unit[index].quantity, o.quantity);
-    helper[key].unit[index].total = add(helper[key].unit[index].total, totalAmountConceptAfterExCharge(o));
-    helper[key].total = add(helper[key].total, totalAmountConceptAfterExCharge(o));
+    const descuento = totalAmountConceptAfterExtraCharge(o, SystemTypeExtraChargesEnum.Descuentos)
+    helper[key].unit[index].total = add(helper[key].unit[index].total, descuento);
+    helper[key].total = add(helper[key].total, descuento);
 
     return r;
   }, []);
@@ -181,7 +183,7 @@ export function formatOperation(items: OperationCalculate[], cantidad: string | 
           }
         }
         if (item.leftOperation.length === 0) {
-       
+
           text += item.take ? '(' + cantidad + ')' : '(' + item.value + ')';
           if (item.type === 1) {
             text += '*' + '(' + cantidad + ')';

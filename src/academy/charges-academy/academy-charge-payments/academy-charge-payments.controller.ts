@@ -42,9 +42,10 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { Environment, getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
+import { Environment } from 'src/common/point-of-sale/types.pos';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -387,7 +388,7 @@ export class AcademyChargePaymentsController
       const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
 
       const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-        where: {id: query.branchOfficeId}
+        where: { id: query.branchOfficeId }
       });
 
       let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);

@@ -2,10 +2,10 @@ import * as Excel from 'exceljs';
 import { Borders } from 'exceljs';
 import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/school-academy-point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { SchoolCharge } from '../../school-charges/entities/school-charge.entity';
 import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
+import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
 
 export class SimpleReportCollege {
     public generate(data: {
@@ -26,19 +26,19 @@ export class SimpleReportCollege {
 
         const paymentsSheet = workbook.addWorksheet('Pagos', {
             properties:
-                {
-                    tabColor: {
-                        argb: '359c5b',
-                    },
+            {
+                tabColor: {
+                    argb: '359c5b',
                 },
+            },
         });
         const salesSheet = workbook.addWorksheet('Cobros', {
             properties:
-                {
-                    tabColor: {
-                        argb: '1C86CA',
-                    },
+            {
+                tabColor: {
+                    argb: '1C86CA',
                 },
+            },
         });
 
         this.fillPaymentsSheet(paymentsSheet, data);

@@ -1,5 +1,7 @@
 import { add, div, mul, round, sub } from 'exact-math';
+import { SystemTypeExtraChargesEnum } from 'src/system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
+import { TypeDetails } from './types.pos';
 
 export const mulQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
     return +round(mul(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
@@ -40,3 +42,25 @@ export function amountAfterExtraCharge(amount: number, discounts: Array<{
     const total = amount - (amount * equivalentRealDiscount) - discountByAmount;
     return total > 0 ? total : 0;
 }
+export const totalAmountConceptAfterExtraCharge = (detail: TypeDetails, typeExtraCharges: SystemTypeExtraChargesEnum) => {
+    const { price, quantity, } = detail
+    let conceptPrice = +price;
+    // @ts-ignore
+    if (detail.isIva) {
+        // @ts-ignore
+        conceptPrice = +detail.priceWithIVA;
+    }
+    const total = mulQuantity(conceptPrice, quantity);
+    const { extraCharges = [] } = detail;
+    // @ts-ignore
+    return amountAfterExtraCharge(total, extraCharges.map((value) => {
+        return value.typeExtraCharge === typeExtraCharges ?
+            {
+                quantity: value.quantity,
+                type: value.applicationType,
+            } : {
+                quantity: 0,
+                type: value.applicationType,
+            };
+    }));
+};

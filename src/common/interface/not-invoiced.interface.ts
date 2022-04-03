@@ -19,3 +19,9 @@ export interface NotInvoiced {
     p_state: string;
     p_global_uuid?: string;
 }
+
+export enum InvoiceModules {
+    ACADEMY = 1,
+    SCHOOL = 2,
+    STORE = 3,
+}

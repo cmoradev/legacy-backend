@@ -2,7 +2,6 @@ import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Im
 import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
 import { mulQuantity, subQuantity, sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
-import { CFDIWebtel, Environment, FacturaDetalles, InvoiceDetails } from '../../../../common/point-of-sale/miniStore-point-of-sale';
 import * as moment from 'moment-timezone';
 import { add } from 'exact-math';
 import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
@@ -10,6 +9,7 @@ import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MonthEnum, PeriodicityEnum } from '../../../../common/dto/not-invoiced.dto';
 import { ivaFromFinalAmount } from '../../../../common/numbers';
+import { CFDIWebtel, Environment, InvoiceDetails } from 'src/common/point-of-sale/types.pos';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -28,7 +28,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
         env,
         importeImpuesto = .16,
     } = payload;
-    const {instancePath, xslt} = env
+    const { instancePath, xslt } = env
     const key = instancePath + 'CSD/' + emisor.keyCSD;
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
 
@@ -142,7 +142,7 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
         student,
         importeImpuesto = .16,
     } = payload;
-    const {instancePath, xslt} = env
+    const { instancePath, xslt } = env
     const key = instancePath + 'CSD/' + emisor.keyCSD;
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
@@ -164,7 +164,7 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
         LugarExpedicion: emisor.zip, // ,
         Exportacion: ExportacionEnum.NoAplica
     };
-    const cfd = new CFDI(comprobante, {debug: true, xslt});
+    const cfd = new CFDI(comprobante, { debug: true, xslt });
 
     const isGeneric = genericRFC.includes(receptor.Rfc.replace(/\s/g, ''))
 
@@ -230,15 +230,15 @@ export type GlobalInvoiceParams = {
 }
 
 export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promise<any> => {
-    const {details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax} = params;
+    const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax } = params;
 
-    const {keyCSD, cerCSD, serieFacturacion} = branchOfficeConfig;
+    const { keyCSD, cerCSD, serieFacturacion } = branchOfficeConfig;
 
-    const {instancePath, xslt} = env;
+    const { instancePath, xslt } = env;
 
-    const {discount, taxes, total, subtotal, details: concepts} = details;
+    const { discount, taxes, total, subtotal, details: concepts } = details;
 
-    const {periodicity, month, year} = infoGlobal;
+    const { periodicity, month, year } = infoGlobal;
 
     const today = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
 
@@ -295,7 +295,7 @@ export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promis
 
 
     for (const payload of concepts) {
-        const {iva, amountWithOutIva} = ivaFromFinalAmount(payload.amount, -2, sumQuantity(percentageTax, 1));
+        const { iva, amountWithOutIva } = ivaFromFinalAmount(payload.amount, -2, sumQuantity(percentageTax, 1));
 
         const amount = parseFloat(`${amountWithOutIva}`).toFixed(2);
         const tax = parseFloat(`${iva}`).toFixed(2);

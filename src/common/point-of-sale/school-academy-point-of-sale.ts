@@ -1,33 +1,14 @@
 import { SchoolChargeDetails } from '../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { AcademyChargeDetails } from '../../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
-import { amountAfterExtraCharge, divQuantity, mulQuantity, subQuantity, sumQuantity } from './point-of-sale';
+import { divQuantity, mulQuantity, subQuantity, sumQuantity, totalAmountConceptAfterExtraCharge } from './point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { add, sub } from 'exact-math';
 import { ivaFromFinalAmount } from '../numbers';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
-import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
-import { FacturaDetalles, saleDetails, totalAmountConceptAfterExCharge } from './miniStore-point-of-sale';
-import { AcademyCharge } from '../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
+import { FacturaDetalles } from './types.pos';
 
-export const totalAmountConceptAfterExtraCharge = (concept: SchoolChargeDetails | AcademyChargeDetails, typeExtraCharges: SystemTypeExtraChargesEnum) => {
-  const conceptPrice = concept.price;
-  const total = mulQuantity(conceptPrice, concept.quantity);
 
-  // @ts-ignore
-  return amountAfterExtraCharge(total, concept.extraCharges.map((value) => {
-
-    return value.typeExtraCharge === typeExtraCharges ?
-      {
-        quantity: value.quantity,
-        type: value.applicationType,
-      } : {
-        quantity: 0,
-        type: value.applicationType,
-      };
-  }));
-};
 
 export const totalAmountConcept = (concept: SchoolChargeDetails | AcademyChargeDetails) => {
   const conceptPrice = +concept.price;
