@@ -75,7 +75,11 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         const { schoolChargePayment, schoolCharge } = invoice
         const { chargesDetails } = schoolCharge
         if (schoolChargePayment && schoolCharge && chargesDetails) {
-            const factor = ConceptsPriceByPaymentBilligAS(schoolChargePayment, chargesDetails);
+            const factor = ConceptsPriceByPaymentBilligAS({
+                payment: schoolChargePayment,
+                details: chargesDetails,
+                ivaDefault: 1
+            });
             const { detalles } = factor
             // @ts-ignore
             invoice.detalles = detalles

@@ -84,7 +84,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
-        const invoiceDetails = ConceptsPriceByPaymentBillig(result.payment, result.sale.miniStoreSaleDetails);
+        const invoiceDetails = ConceptsPriceByPaymentBillig({
+            payment: result.payment,
+            details: result.sale.miniStoreSaleDetails
+        });
 
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({

@@ -156,10 +156,10 @@ export class AcademyChargePaymentsController
   @Post('/billing')
   async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBilligAS(
-      result.payment,
-      result.charge.chargesDetails,
-    );
+    const invoiceDetails = ConceptsPriceByPaymentBilligAS({
+      payment: result.payment,
+      details: result.charge.chargesDetails,
+    });
     // res.send(invoiceDetails);
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,

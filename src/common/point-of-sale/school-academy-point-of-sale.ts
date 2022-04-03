@@ -6,7 +6,14 @@ import { ivaFromFinalAmount } from '../numbers';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { FacturaDetalles } from './types.pos';
-export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | SchoolChargePayment, details: AcademyChargeDetails[] | SchoolChargeDetails[]): FacturaDetalles => {
+import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+export const ConceptsPriceByPaymentBilligAS = (payload: {
+  payment: SchoolChargePayment | AcademyChargePayments | MiniStoreSalePayment,
+  details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[],
+  ivaDefault?: number
+}): FacturaDetalles => {
+  const { payment, details, ivaDefault = 1.16 } = payload;
   const detalles = saleDetails(details || []);
   const pago = payment.quantity - payment.change;
   const base = (pago / detalles.total) || 1;
@@ -19,9 +26,12 @@ export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | 
   };
   const generalizedConcepts: any[] = [];
   details.forEach((detail) => {
-    const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos));
-    const surchargesTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos));
-    const scholarshipsTotal = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas));
+    const totalDiscount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
+    const totalRecargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
+    const totalBecas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
+    const discount = (totalAmountConcept(detail) - totalDiscount);
+    const surchargesTotal = (totalAmountConcept(detail) - totalRecargos);
+    const scholarshipsTotal = (totalAmountConcept(detail) - totalBecas);
 
     const discountTotal = mulQuantity(discount, base);
     const surcharges = mulQuantity(surchargesTotal, base);
@@ -32,8 +42,9 @@ export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | 
     resultad.discount = sumQuantity(scholarships, resultad.discount);
     resultad.surcharges = sumQuantity(surcharges, resultad.surcharges);
 
-    const totalNative = subQuantity(sumQuantity(mulQuantity(conceptPrice, base), surcharges), divQuantity(discountTotal, detail.quantity))
-    const nativeCalculo = ivaFromFinalAmount(totalNative);
+    const totalMasRecargo = sumQuantity(mulQuantity(conceptPrice, base), surcharges)
+    const totalNative = subQuantity(totalMasRecargo, divQuantity(discountTotal, detail.quantity))
+    const nativeCalculo = ivaFromFinalAmount(totalNative, -2, ivaDefault);
 
     const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
     const importe = mulQuantity(unitPrice, detail.quantity);
@@ -54,7 +65,8 @@ export const ConceptsPriceByPaymentBilligAS = (payment: AcademyChargePayments | 
       descrption: detail.concept ? detail.concept : detail.academyInscriptionConcept.description,
 
     };
-    const totalconcetp = sumQuantity(subQuantity(importe, discountTotal).toString(), mulQuantity(subQuantity(importe, discountTotal), .16));
+    const importeMenosDescuento = subQuantity(importe, discountTotal);
+    const totalconcetp = sumQuantity(importeMenosDescuento, mulQuantity(importeMenosDescuento, .16));
     resultad.total = sumQuantity(resultad.total, totalconcetp);
     generalizedConcepts.push(concept);
   });

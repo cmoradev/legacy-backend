@@ -101,7 +101,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         const { miniStoreSalePayment, miniStoreSale } = invoice
         const { miniStoreSaleDetails } = miniStoreSale
         if (miniStoreSalePayment && miniStoreSale && miniStoreSaleDetails) {
-            const factor = ConceptsPriceByPaymentBillig(miniStoreSalePayment, miniStoreSaleDetails);
+            const factor = ConceptsPriceByPaymentBillig({
+                payment: miniStoreSalePayment,
+                details: miniStoreSaleDetails
+            });
             const { detalles } = factor
             // @ts-ignore
             invoice.detalles = detalles

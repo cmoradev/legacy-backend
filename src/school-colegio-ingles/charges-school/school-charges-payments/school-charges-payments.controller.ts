@@ -112,10 +112,11 @@ export class SchoolChargesPaymentsController
         },
       });
 
-      const invoiceDetails = ConceptsPriceByPaymentBilligAS(
-        result.payment,
-        result.charge.chargesDetails,
-      );
+      const invoiceDetails = ConceptsPriceByPaymentBilligAS({
+        payment: result.payment,
+        details: result.charge.chargesDetails,
+        ivaDefault: 1,
+      });
       const data = invoiceDetails;
       const detalles = invoiceDetails.detalles.map((d: NewReport) => {
         return {
@@ -201,10 +202,11 @@ export class SchoolChargesPaymentsController
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBilligAS(
-      result.payment,
-      result.charge.chargesDetails,
-    );
+    const invoiceDetails = ConceptsPriceByPaymentBilligAS({
+      payment: result.payment,
+      details: result.charge.chargesDetails,
+      ivaDefault: 1
+    });
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
