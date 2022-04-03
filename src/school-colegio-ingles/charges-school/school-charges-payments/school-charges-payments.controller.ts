@@ -114,7 +114,7 @@ export class SchoolChargesPaymentsController
       const invoiceDetails = ConceptsPriceByPaymentBillig({
         payment: result.payment,
         details: result.charge.chargesDetails,
-        type: InvoiceModules.ACADEMY,
+        type: InvoiceModules.SCHOOL,
         ivaDefault: 1,
         ivaByDetail: 0,
       });
@@ -206,7 +206,7 @@ export class SchoolChargesPaymentsController
     const invoiceDetails = ConceptsPriceByPaymentBillig({
       payment: result.payment,
       details: result.charge.chargesDetails,
-      type: InvoiceModules.ACADEMY,
+      type: InvoiceModules.SCHOOL,
       ivaDefault: 1,
       ivaByDetail: 0,
     });
