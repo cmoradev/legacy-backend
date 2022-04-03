@@ -4,7 +4,8 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { ConceptsPriceByPaymentBillig, getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { FactSw } from '../../../webService/FactSw';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { GenerateGlobalInvoice, GenerateInvoice } from './utils/generateInvoice';
@@ -26,7 +27,7 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
-import { Environment } from 'src/common/point-of-sale/types.pos';
+import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -86,7 +87,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         const result = await this.service.findSaleByPayment(query);
         const invoiceDetails = ConceptsPriceByPaymentBillig({
             payment: result.payment,
-            details: result.sale.miniStoreSaleDetails
+            details: result.sale.miniStoreSaleDetails,
+            type: InvoiceModules.STORE
         });
 
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);

@@ -30,6 +30,7 @@ export interface FacturaDetalles {
     total: number | string;
     subtotal: number | string;
     discount: number | string;
+    surcharges: number | string;
     taxes?: number | string;
     detalles: any[];
 }
@@ -48,4 +49,9 @@ export interface CFDIWebtel extends FacturaDetalles {
     env: Environment;
     informacionGlobal?: InformacionGlobal;
     importeImpuesto?: number;
+}
+export enum InvoiceModules {
+    ACADEMY = 1,
+    SCHOOL = 2,
+    STORE = 3,
 }

@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { FacturacionModerna } from 'invoice-modern';
 import * as moment from 'moment-timezone';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
-import { InvoiceModules } from '../common/interface/not-invoiced.interface';
 import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { AcademyChargeDetails } from '../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
@@ -10,6 +9,7 @@ import { AcademyChargePayments } from '../academy/charges-academy/academy-charge
 import { SchoolChargeDetails } from '../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { SchoolChargePayment } from '../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { Response } from 'express';
+import { InvoiceModules } from '../common/point-of-sale/types.pos';
 @Controller()
 export class InvoiceController {
   @Get('/')
