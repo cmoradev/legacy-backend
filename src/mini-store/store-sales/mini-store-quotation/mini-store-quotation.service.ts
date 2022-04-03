@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { Repository } from 'typeorm';
 import { MiniStoreQuotation } from './entities/mini-store-quotation.entity';
-import { saleDetails } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { saleDetails } from '../../../common/point-of-sale/point-of-sale';
 import * as moment from 'moment';
 
 @Injectable()

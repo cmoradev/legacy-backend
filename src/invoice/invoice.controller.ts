@@ -1,8 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { FacturacionModerna } from 'invoice-modern';
 import * as moment from 'moment-timezone';
 import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
-
+import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { MiniStoreSaleDetail } from '../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { AcademyChargeDetails } from '../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
+import { AcademyChargePayments } from '../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { SchoolChargeDetails } from '../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
+import { SchoolChargePayment } from '../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import { Response } from 'express';
+import { InvoiceModules } from '../common/point-of-sale/types.pos';
 @Controller()
 export class InvoiceController {
   @Get('/')
@@ -45,6 +52,37 @@ export class InvoiceController {
     } catch (e) {
       return e.message;
     }
+  }
+
+  @Post('/price-by-payment')
+  async priceByPayment(@Body() body: {
+    type: InvoiceModules,
+    payment: MiniStoreSalePayment | SchoolChargePayment | AcademyChargePayments,
+    details: MiniStoreSaleDetail[] | SchoolChargeDetails[] | AcademyChargeDetails[]
+  }, @Res() res: Response) {
+    const { type } = body
+    switch (type) {
+      case InvoiceModules.ACADEMY:
+        break;
+      case InvoiceModules.SCHOOL:
+        break;
+      case InvoiceModules.STORE:
+        // const factor = ConceptsPriceByPaymentBillig(miniStoreSalePayment, miniStoreSaleDetails);
+        // const { detalles } = factor
+        // // @ts-ignore
+        // invoice.detalles = detalles
+        // detalles.map((detalle) => {
+        //   const findIndex = miniStoreSaleDetails.findIndex((mssd) => mssd.id === detalle.id)
+        //   if (findIndex > -1) {
+        //     // @ts-ignore
+        //     miniStoreSaleDetails[findIndex].sat = detalle
+        //   }
+        // })
+        break;
+      default:
+        break;
+    }
+    res.send({ data: [] })
   }
 
   private generarLayout(fecha, rfcEmisor) {

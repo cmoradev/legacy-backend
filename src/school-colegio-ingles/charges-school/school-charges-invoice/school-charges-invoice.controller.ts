@@ -24,7 +24,8 @@ import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
-import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-college-point-of-sale';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 
 @Crud({
     model: {
@@ -75,7 +76,13 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         const { schoolChargePayment, schoolCharge } = invoice
         const { chargesDetails } = schoolCharge
         if (schoolChargePayment && schoolCharge && chargesDetails) {
-            const factor = ConceptsPriceByPaymentBilligAS(schoolChargePayment, chargesDetails);
+            const factor = ConceptsPriceByPaymentBillig({
+                payment: schoolChargePayment,
+                details: chargesDetails,
+                type: InvoiceModules.ACADEMY,
+                ivaDefault: 1,
+                ivaByDetail: 0,
+            });
             const { detalles } = factor
             // @ts-ignore
             invoice.detalles = detalles

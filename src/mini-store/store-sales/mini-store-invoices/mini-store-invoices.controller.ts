@@ -41,7 +41,8 @@ import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @Crud({
     model: {
@@ -101,7 +102,11 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         const { miniStoreSalePayment, miniStoreSale } = invoice
         const { miniStoreSaleDetails } = miniStoreSale
         if (miniStoreSalePayment && miniStoreSale && miniStoreSaleDetails) {
-            const factor = ConceptsPriceByPaymentBillig(miniStoreSalePayment, miniStoreSaleDetails);
+            const factor = ConceptsPriceByPaymentBillig({
+                payment: miniStoreSalePayment,
+                details: miniStoreSaleDetails,
+                type: InvoiceModules.STORE
+            });
             const { detalles } = factor
             // @ts-ignore
             invoice.detalles = detalles

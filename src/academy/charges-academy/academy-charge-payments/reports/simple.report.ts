@@ -5,7 +5,7 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { AcademyChargePayments } from '../entities/academy-charge-payments.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
-import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/school-academy-point-of-sale';
+import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
 import { SystemTypeExtraChargesEnum } from '../../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 
 export class SimpleReportAcademy {
@@ -31,19 +31,19 @@ export class SimpleReportAcademy {
 
         const paymentsSheet = workbook.addWorksheet('Pagos', {
             properties:
-                {
-                    tabColor: {
-                        argb: '359c5b',
-                    },
+            {
+                tabColor: {
+                    argb: '359c5b',
                 },
+            },
         });
         const salesSheet = workbook.addWorksheet('Cobros', {
             properties:
-                {
-                    tabColor: {
-                        argb: '1C86CA',
-                    },
+            {
+                tabColor: {
+                    argb: '1C86CA',
                 },
+            },
         });
 
         this.fillPaymentsSheet(paymentsSheet, image, data);

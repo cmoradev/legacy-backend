@@ -12,7 +12,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
 import { QuerySchoolPaymentBilling } from '../../school-payments/interfaces/InvoiceSchoolPayment.interface';
-import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-college-point-of-sale';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -44,12 +43,13 @@ import { NewReport } from '../../../common/types/recibo.interface';
 import * as moment from 'moment';
 import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
-import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { ConceptsPriceByPaymentBillig, roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { Environment, getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
+import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -111,10 +111,13 @@ export class SchoolChargesPaymentsController
         },
       });
 
-      const invoiceDetails = ConceptsPriceByPaymentBilligAS(
-        result.payment,
-        result.charge.chargesDetails,
-      );
+      const invoiceDetails = ConceptsPriceByPaymentBillig({
+        payment: result.payment,
+        details: result.charge.chargesDetails,
+        type: InvoiceModules.ACADEMY,
+        ivaDefault: 1,
+        ivaByDetail: 0,
+      });
       const data = invoiceDetails;
       const detalles = invoiceDetails.detalles.map((d: NewReport) => {
         return {
@@ -165,15 +168,15 @@ export class SchoolChargesPaymentsController
       });
 
       Receip.addCatidad({
-        SubTotal: invoiceDetails.subtotal,
-        Recargo: invoiceDetails.surcharges,
-        Descuento: invoiceDetails.discount,
+        SubTotal: invoiceDetails.subtotal.toString(),
+        Recargo: invoiceDetails.surcharges.toString(),
+        Descuento: invoiceDetails.discount.toString(),
         Impuesto: '0',
-        Total: invoiceDetails.total,
+        Total: invoiceDetails.total.toString(),
       });
       Receip.addDetalles(detalles);
 
-      Receip.addNumberToLetter(invoiceDetails.total);
+      Receip.addNumberToLetter(+invoiceDetails.total);
       Receip.addObervations(result.payment.observations);
       const forma = result.payment.methodsPayments.map((m) => {
         return {
@@ -200,10 +203,13 @@ export class SchoolChargesPaymentsController
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBilligAS(
-      result.payment,
-      result.charge.chargesDetails,
-    );
+    const invoiceDetails = ConceptsPriceByPaymentBillig({
+      payment: result.payment,
+      details: result.charge.chargesDetails,
+      type: InvoiceModules.ACADEMY,
+      ivaDefault: 1,
+      ivaByDetail: 0,
+    });
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
@@ -490,7 +496,7 @@ export class SchoolChargesPaymentsController
       const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
 
       const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-        where: {id: query.branchOfficeId}
+        where: { id: query.branchOfficeId }
       });
 
       let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);

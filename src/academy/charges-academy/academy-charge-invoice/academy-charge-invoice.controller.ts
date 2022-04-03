@@ -39,7 +39,8 @@ import { Between } from 'typeorm';
 import * as Moment from 'moment';
 import { ReportInvoice } from './reports/invoice.reports';
 import { ConfigService } from '../../../common/config/config.service';
-import { ConceptsPriceByPaymentBilligAS } from '../../../common/point-of-sale/school-academy-point-of-sale';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 
 @Crud({
     model: {
@@ -92,7 +93,11 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         const { academyChargePayment, academyCharge } = invoice
         const { chargesDetails } = academyCharge
         if (academyChargePayment && academyCharge && chargesDetails) {
-            const factor = ConceptsPriceByPaymentBilligAS(academyChargePayment, chargesDetails);
+            const factor = ConceptsPriceByPaymentBillig({
+                payment: academyChargePayment,
+                details: chargesDetails,
+                type: InvoiceModules.ACADEMY
+            });
             const { detalles } = factor
             // @ts-ignore
             invoice.detalles = detalles
