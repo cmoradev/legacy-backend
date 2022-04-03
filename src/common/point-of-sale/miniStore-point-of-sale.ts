@@ -6,26 +6,6 @@ import { ItemRecibo } from '../types/recibo.interface';
 import { NotInvoiced } from '../interface/not-invoiced.interface';
 import { FacturaDetalles, InvoiceDetails, Concept } from './types.pos';
 import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
-export const generalizeConceptsPriceByPayment = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): ItemRecibo[] => {
-    const saleAmount = saleDetails(details || []).total;
-    const base = ((payment.quantity - payment.change) / saleAmount) || 1;
-    const generalizedConcepts: ItemRecibo[] = [];
-    details.forEach((detail) => {
-        const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos));
-
-        const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
-
-        generalizedConcepts.push({
-            descrption: detail.productName,
-            discount: (discount * base).toFixed(2),
-            importe: (totalAmountConcept(detail) * base),
-            quantity: detail.quantity,
-            surcharge: '0.00',
-            unitPrice: conceptPrice * base,
-        });
-    });
-    return generalizedConcepts;
-};
 export const ConceptsPriceByPaymentBillig = (payment: MiniStoreSalePayment, details: MiniStoreSaleDetail[]): FacturaDetalles => {
     const pago = payment.quantity - payment.change;
     const detalles = saleDetails(details || []);

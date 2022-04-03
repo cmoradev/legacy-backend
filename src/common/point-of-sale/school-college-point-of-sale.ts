@@ -6,29 +6,6 @@ import { ivaFromFinalAmount } from '../numbers';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 //  ItemRecibo[]
-export const generalizeConceptsPriceByPaymentAcSc = (payment: SchoolChargePayment | AcademyChargePayments, details: SchoolChargeDetails[] | AcademyChargeDetails[]) => {
-  const saleAmount = saleDetails(details || []).total;
-  const base = ((payment.quantity - payment.change) / saleAmount) || 1;
-  const generalizedConcepts: any[] = []; // ItemRecibo[]
-  details.forEach((detail: SchoolChargeDetails | AcademyChargeDetails) => {
-    const discount = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos));
-    const surcharges = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos));
-    const scholarships = (totalAmountConcept(detail) - totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas));
-
-    // const conceptPrice = detail.isIva ? +detail.priceWithIVA : +detail.price;
-    const conceptPrice = detail.price;
-    generalizedConcepts.push({
-      id: detail.id,
-      descrption: detail.concept,
-      discount: ((discount + scholarships) * base).toFixed(2),
-      importe: (totalAmountConcept(detail) * base),
-      quantity: detail.quantity,
-      surcharge: surcharges,
-      unitPrice: mulQuantity(conceptPrice, base),
-    });
-  });
-  return generalizedConcepts;
-};
 export const ConceptsPriceByPaymentBilligAS = (payment: SchoolChargePayment | AcademyChargePayments, details: SchoolChargeDetails[] | AcademyChargeDetails[]): any => {
   const detalles = saleDetails(details || []);
   const pago = payment.quantity - payment.change;
