@@ -79,7 +79,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
             const factor = ConceptsPriceByPaymentBillig({
                 payment: schoolChargePayment,
                 details: chargesDetails,
-                type: InvoiceModules.ACADEMY,
+                type: InvoiceModules.SCHOOL,
                 ivaDefault: 1,
                 ivaByDetail: 0,
             });
