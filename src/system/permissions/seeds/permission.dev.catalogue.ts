@@ -481,29 +481,6 @@ const permissionDev: Permission[] = [
         ] as Action[],
     },
     {
-        'id': 20,
-        'version': 0,
-        'uuid': '',
-        'routeId': 40,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
         'id': 21,
         'version': 0,
         'uuid': '',
@@ -554,29 +531,6 @@ const permissionDev: Permission[] = [
         'version': 0,
         'uuid': '',
         'routeId': 43,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 24,
-        'version': 0,
-        'uuid': '',
-        'routeId': 44,
         'role': {
             'id': 6,
         },
@@ -734,102 +688,10 @@ const permissionDev: Permission[] = [
         ] as Action[],
     },
     {
-        'id': 31,
-        'version': 0,
-        'uuid': '',
-        'routeId': 51,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 32,
-        'version': 0,
-        'uuid': '',
-        'routeId': 52,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
         'id': 33,
         'version': 0,
         'uuid': '',
         'routeId': 53,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 34,
-        'version': 0,
-        'uuid': '',
-        'routeId': 54,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 35,
-        'version': 0,
-        'uuid': '',
-        'routeId': 55,
         'role': {
             'id': 6,
         },
@@ -1010,29 +872,6 @@ const permissionDev: Permission[] = [
         ] as Action[],
     },
     {
-        'id': 43,
-        'version': 0,
-        'uuid': '',
-        'routeId': 63,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
         'id': 44,
         'version': 0,
         'uuid': '',
@@ -1083,29 +922,6 @@ const permissionDev: Permission[] = [
         'version': 0,
         'uuid': '',
         'routeId': 66,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 47,
-        'version': 0,
-        'uuid': '',
-        'routeId': 67,
         'role': {
             'id': 6,
         },
@@ -1470,29 +1286,6 @@ const permissionDev: Permission[] = [
         ] as Action[],
     },
     {
-        'id': 63,
-        'version': 0,
-        'uuid': '',
-        'routeId': 83,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
         'id': 64,
         'version': 0,
         'uuid': '',
@@ -1539,125 +1332,10 @@ const permissionDev: Permission[] = [
         ] as Action[],
     },
     {
-        'id': 66,
-        'version': 0,
-        'uuid': '',
-        'routeId': 86,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
         'id': 67,
         'version': 0,
         'uuid': '',
         'routeId': 87,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 68,
-        'version': 0,
-        'uuid': '',
-        'routeId': 88,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 69,
-        'version': 0,
-        'uuid': '',
-        'routeId': 89,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 70,
-        'version': 0,
-        'uuid': '',
-        'routeId': 90,
-        'role': {
-            'id': 6,
-        },
-        'actions': [
-            {
-                'id': 1,
-            },
-            {
-                'id': 2,
-            },
-            {
-                'id': 3,
-            },
-            {
-                'id': 4,
-            },
-        ] as Action[],
-    },
-    {
-        'id': 71,
-        'version': 0,
-        'uuid': '',
-        'routeId': 91,
         'role': {
             'id': 6,
         },

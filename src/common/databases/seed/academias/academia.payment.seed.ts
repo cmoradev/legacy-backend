@@ -21,8 +21,9 @@ export default class AcademiaPaymentSeed implements Seeder {
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.academyBranchOfficeSetId AS v_branch_office,
             v.ciclo AS v_cycle,
+            v.id_estado_pago AS v_status,
             p.createdAt AS p_created_at,
-            f.createdAt AS f_created_at,
+             f.createdAt AS f_created_at,
             p.stamping AS p_stamping,
             p.paymentStatusId AS p_state,
             p.globalUuid AS p_global_uuid
