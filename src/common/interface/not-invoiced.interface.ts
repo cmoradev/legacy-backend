@@ -13,6 +13,7 @@ export interface NotInvoiced {
     a_fullname: string;
     v_branch_office: string;
     v_cycle: string;
+    v_status: string;
     p_created_at: string;
     f_created_at?: string;
     p_stamping: string | number;

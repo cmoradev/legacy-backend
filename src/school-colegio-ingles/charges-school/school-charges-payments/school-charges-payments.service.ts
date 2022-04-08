@@ -27,7 +27,6 @@ import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { string } from '@hapi/joi';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -212,7 +211,9 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         const data: NotInvoiced[] = await this.connection.query(`
             SELECT *
             FROM vw_sch_payments vw
-            WHERE vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
+            WHERE vw.v_status = '2'
+              AND vw.p_income > 0
+              AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
         `);
 
         data.forEach((value: NotInvoiced) => {
@@ -248,6 +249,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             FROM vw_sch_payments vw
             WHERE (vw.f_status IS NULL OR vw.f_status = '0')
               AND vw.p_stamping = '0'
+              AND vw.v_status = '2'
+              AND vw.p_income > 0
               AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
         `);
 

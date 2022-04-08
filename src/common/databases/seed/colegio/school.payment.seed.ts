@@ -21,6 +21,7 @@ export default class SchoolPaymentSeed implements Seeder {
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.schoolBranchOfficeSetId AS v_branch_office,
             v.schoolCycleId AS v_cycle,
+            v.status AS v_status,
             p.createdAt AS p_created_at,
              f.createdAt AS f_created_at,
             p.stamping AS p_stamping,

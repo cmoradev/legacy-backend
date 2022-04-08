@@ -21,6 +21,7 @@ export default class StorePaymentSeed implements Seeder {
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.storeBranchOfficeId AS v_branch_office,
             v.cycleId AS v_cycle,
+            v.id_estado_pago AS v_status,
             p.createdAt AS p_created_at,
             f.createdAt AS f_created_at,
             p.timbrado AS p_stamping,
