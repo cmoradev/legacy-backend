@@ -68,34 +68,34 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         return this;
     }
 
-    @Override('getOneBase')
-    async getOneAndDoStuff(
-        @ParsedRequest() req: CrudRequest,
-    ) {
-        const invoice = await this.base.getOneBase(req);
-        const { schoolChargePayment, schoolCharge } = invoice
-        const { chargesDetails } = schoolCharge
-        if (schoolChargePayment && schoolCharge && chargesDetails) {
-            const factor = ConceptsPriceByPaymentBillig({
-                payment: schoolChargePayment,
-                details: chargesDetails,
-                type: InvoiceModules.SCHOOL,
-                ivaDefault: 1,
-                ivaByDetail: 0,
-            });
-            const { detalles } = factor
-            // @ts-ignore
-            invoice.detalles = detalles
-            detalles.map((detalle) => {
-                const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
-                if (findIndex > -1) {
-                    // @ts-ignore
-                    chargesDetails[findIndex].sat = detalle
-                }
-            })
-        }
-        return invoice
-    }
+    // @Override('getOneBase')
+    // async getOneAndDoStuff(
+    //     @ParsedRequest() req: CrudRequest,
+    // ) {
+    //     const invoice = await this.base.getOneBase(req);
+    //     const { schoolChargePayment, schoolCharge } = invoice
+    //     const { chargesDetails } = schoolCharge
+    //     if (schoolChargePayment && schoolCharge && chargesDetails) {
+    //         const factor = ConceptsPriceByPaymentBillig({
+    //             payment: schoolChargePayment,
+    //             details: chargesDetails,
+    //             type: InvoiceModules.SCHOOL,
+    //             ivaDefault: 1,
+    //             ivaByDetail: 0,
+    //         });
+    //         const { detalles } = factor
+    //         // @ts-ignore
+    //         invoice.detalles = detalles
+    //         detalles.map((detalle) => {
+    //             const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
+    //             if (findIndex > -1) {
+    //                 // @ts-ignore
+    //                 chargesDetails[findIndex].sat = detalle
+    //             }
+    //         })
+    //     }
+    //     return invoice
+    // }
 
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
