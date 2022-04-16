@@ -9,6 +9,7 @@ import { ivaFromFinalAmount } from '../numbers';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import { ObjetoImpEnum } from '@signati/core';
 
 export const mulQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
     return +round(mul(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
@@ -121,26 +122,26 @@ export const getMoreDatails = (payload: {
     const { type, detail } = payload
     const data = {
         claveProd: "",
-        unidad: "",
+        ClaveUnidad: "",
         descrption: ""
     }
     switch (type) {
         case InvoiceModules.ACADEMY:
             const dAcademy = detail as AcademyChargeDetails
             data.claveProd = dAcademy.sat_code;
-            data.unidad = dAcademy.unitMeasurement;
+            data.ClaveUnidad = dAcademy.unitMeasurement;
             data.descrption = dAcademy.concept ? dAcademy.concept : dAcademy.academyInscriptionConcept.description;
             break;
         case InvoiceModules.SCHOOL:
             const dSchool = detail as SchoolChargeDetails
             data.claveProd = dSchool.codeConcept;
-            data.unidad = 'E48';
+            data.ClaveUnidad = 'E48';
             data.descrption = dSchool.concept ? dSchool.concept : dSchool.schoolPlanPayment.description;
             break;
         case InvoiceModules.STORE:
             const dStore = detail as MiniStoreSaleDetail
             data.claveProd = dStore.productCode;
-            data.unidad = dStore.unitMeasurement; // detail.miniStoreProduct.unity,
+            data.ClaveUnidad = dStore.unitMeasurement; // detail.miniStoreProduct.unity,
             data.descrption = dStore.productName ? dStore.productName : dStore.miniStoreProduct.name;
             break;
         default:
@@ -149,6 +150,19 @@ export const getMoreDatails = (payload: {
     return data
 }
 
+export const getTranslados = (options: {
+    total: number;
+    descuento: number;
+    importeImpuesto: number;
+}) => {
+    const { total, descuento, importeImpuesto } = options;
+    const base = subQuantity(total, descuento, -2).toString();
+    const traslado = {
+        Base: base,
+        Importe: mulQuantity(base, importeImpuesto, -2).toString()
+    }
+    return traslado;
+}
 export const ConceptsPriceByPaymentBillig = (payload: {
     payment: SchoolChargePayment | AcademyChargePayments | MiniStoreSalePayment;
     details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[];
@@ -172,6 +186,7 @@ export const ConceptsPriceByPaymentBillig = (payload: {
         const totalDiscount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
         const totalRecargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
         const totalBecas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
+
         const discount = (totalAmountConcept(detail) - totalDiscount);
         const surchargesTotal = (totalAmountConcept(detail) - totalRecargos);
         const scholarshipsTotal = (totalAmountConcept(detail) - totalBecas);
@@ -196,14 +211,22 @@ export const ConceptsPriceByPaymentBillig = (payload: {
         const concept = {
             id: detail.id,
             quantity: detail.quantity,
-            objectoImp: detail.objetoImp || "",
+            objectoImp: detail.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto,
             unitPrice,
             discountTotal,
             importe,
             surcharge: resultad.surcharges,
             scholarships,
+            impuestos: {},
+            NoIdentificacion: 1,
+            unidad: "", // descripcion de la clave de unidad
             ...getMoreDatails({ detail, type })
         };
+        if (ivaByDetail !== 0) {
+            concept.impuestos = {
+                trasladado: getTranslados({ total: importe, descuento: discountTotal, importeImpuesto: ivaByDetail })
+            }
+        }
         const importeMenosDescuento = subQuantity(importe, discountTotal);
         const totalconcetp = sumQuantity(importeMenosDescuento, mulQuantity(importeMenosDescuento, ivaByDetail));
         resultad.total = sumQuantity(resultad.total, totalconcetp);

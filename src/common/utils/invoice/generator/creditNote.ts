@@ -6,12 +6,13 @@ import { BranchOfficeSetting } from "src/system/branch-office-setting/entities/b
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
 import { AcademyChargeInvoice } from "src/academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
 import { Environment } from "src/common/point-of-sale/types.pos";
+import * as moment from 'moment-timezone';
 
 interface CreditNoteTelweb {
     env: Environment;
     settingsBranchOffice: BranchOfficeSetting;
     invoice: InvoiceSat;
-    concepts: ConceptWithTaxes[];
+    concepts: ConceptWithTaxes[] | any[];
     receiver: Partial<XmlReceptorAttribute>;
     relations: MiniStoreInvoice[] | AcademyChargeInvoice[] | SchoolChargesInvoice[];
 }
@@ -23,16 +24,17 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
     const keySAT = `${instancePath}CSD/` + settingsBranchOffice.keyCSD;
     let totalImpuestosTrasladados = 0;
     let totalImpuestosRetenidos = 0;
+    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
     const cfdiAttributes: Comprobante = {
         Serie: invoice.Serie,
         Folio: invoice.Folio,
-        Fecha: invoice.Fecha,
+        Fecha: fecha,
         Sello: '',
         FormaPago: invoice.FormaPago,
         NoCertificado: '',
         Certificado: '',
         SubTotal: invoice.SubTotal,
-        Descuento: invoice.Descuento,
+        Descuento: invoice.Descuento ? invoice.Descuento : '0',
         Moneda: invoice.Moneda,
         Total: invoice.Total,
         TipoDeComprobante: invoice.TipoDeComprobante,
@@ -59,25 +61,25 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
     await cfdi.receptor(receptor);
     concepts.map(async (concept) => {
         const concepto = new Concepts({
-            ClaveProdServ: concept.ClaveProdServ,
-            NoIdentificacion: concept.NoIdentificacion,
-            Cantidad: concept.Cantidad,
+            ClaveProdServ: concept.claveProd,
+            Descripcion: concept.descrption,
+            Descuento: concept.discountTotal,
+            Cantidad: concept.quantity,
+            Importe: concept.importe,
+            ObjetoImp: concept.objectoImp,
+            ValorUnitario: concept.unitPrice,
             ClaveUnidad: concept.ClaveUnidad,
-            Descripcion: concept.Descripcion,
-            Descuento: concept.Descuento,
-            Importe: concept.Importe,
-            Unidad: concept.Unidad,
-            ValorUnitario: concept.ValorUnitario,
-            ObjetoImp: ObjetoImpEnum.SíObjetoDeImpuesto
         });
-        if (typeof concept.impuestosTransladados !== 'undefined') {
-            totalImpuestosTrasladados += Number(concept.impuestosTransladados.Importe);
+        if (concept.impuestos && concept.impuestos.trasladado) {
+            const { trasladado } = concept.impuestos
+            console.log(trasladado)
+            totalImpuestosTrasladados += Number(trasladado.Importe);
             concepto.traslado({
-                Importe: concept.impuestosTransladados.Importe,
-                Impuesto: concept.impuestosTransladados.Impuesto,
-                TasaOCuota: concept.impuestosTransladados.TasaOCuota,
-                TipoFactor: concept.impuestosTransladados.TipoFactor,
-                Base: concept.impuestosTransladados.Base,
+                Importe: trasladado.Importe,
+                Impuesto: '002',
+                TipoFactor: 'Tasa',
+                TasaOCuota: '0.160000',
+                Base: trasladado.Base,
             });
         }
         if (typeof concept.impuestosRetenidos !== 'undefined') {
@@ -99,45 +101,45 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
         });
         await impuestosTransladados.traslados({
             Base: invoice.SubTotal,
-            Impuesto: invoice.Impuesto,
-            TasaOCuota: invoice.TasaOCuota,
-            TipoFactor: invoice.TipoFactor,
+            Impuesto: '002',
+            TipoFactor: 'Tasa',
+            TasaOCuota: '0.160000',
             Importe: totalImpuestosTrasladados.toString(),
         });
         await cfdi.impuesto(impuestosTransladados);
     }
-    if (totalImpuestosRetenidos > 0) {
-        const impuestosRetenidos = new Impuestos({
-            TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-        });
-        await impuestosRetenidos.retenciones({
-            Impuesto: invoice.Impuesto,
-            // TasaOCuota: invoice.TasaOCuota,
-            // TipoFactor: invoice.TipoFactor,
-            Importe: totalImpuestosRetenidos.toString(),
-        });
-        await cfdi.impuesto(impuestosRetenidos);
-    }
-    if (totalImpuestosRetenidos > 0 && totalImpuestosTrasladados > 0) {
-        const impuestosRetenidosTransladados = new Impuestos({
-            TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-            TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
-        });
-        impuestosRetenidosTransladados.traslados({
-            Base: invoice.SubTotal,
-            Impuesto: invoice.Impuesto,
-            TasaOCuota: invoice.TasaOCuota,
-            TipoFactor: invoice.TipoFactor,
-            Importe: totalImpuestosTrasladados.toString(),
-        });
-        impuestosRetenidosTransladados.retenciones({
-            Impuesto: invoice.Impuesto,
-            //TasaOCuota: invoice.TasaOCuota,
-            //TipoFactor: invoice.TipoFactor,
-            Importe: totalImpuestosRetenidos.toString(),
-        });
-        await cfdi.impuesto(impuestosRetenidosTransladados);
-    }
+    // if (totalImpuestosRetenidos > 0) {
+    //     const impuestosRetenidos = new Impuestos({
+    //         TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
+    //     });
+    //     await impuestosRetenidos.retenciones({
+    //         Impuesto: invoice.Impuesto,
+    //         // TasaOCuota: invoice.TasaOCuota,
+    //         // TipoFactor: invoice.TipoFactor,
+    //         Importe: totalImpuestosRetenidos.toString(),
+    //     });
+    //     await cfdi.impuesto(impuestosRetenidos);
+    // }
+    // if (totalImpuestosRetenidos > 0 && totalImpuestosTrasladados > 0) {
+    //     const impuestosRetenidosTransladados = new Impuestos({
+    //         TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
+    //         TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
+    //     });
+    //     impuestosRetenidosTransladados.traslados({
+    //         Base: invoice.SubTotal,
+    //         Impuesto: invoice.Impuesto,
+    //         TasaOCuota: invoice.TasaOCuota,
+    //         TipoFactor: invoice.TipoFactor,
+    //         Importe: totalImpuestosTrasladados.toString(),
+    //     });
+    //     impuestosRetenidosTransladados.retenciones({
+    //         Impuesto: invoice.Impuesto,
+    //         //TasaOCuota: invoice.TasaOCuota,
+    //         //TipoFactor: invoice.TipoFactor,
+    //         Importe: totalImpuestosRetenidos.toString(),
+    //     });
+    //     await cfdi.impuesto(impuestosRetenidosTransladados);
+    // }
     const relation = new Relacionado({ TipoRelacion: '01' })
     for (const document of relations) {
         await relation.addRelation(document.uuid);
