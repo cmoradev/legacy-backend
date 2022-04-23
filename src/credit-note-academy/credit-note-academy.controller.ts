@@ -71,6 +71,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
 
             const xmlCreditNote = await CreditNote({
                 concepts: request.concepts,
+                impuestos: {},
                 invoice: request.invoice,
                 receiver: request.receiver,
                 relations: request.invoicesRelations,

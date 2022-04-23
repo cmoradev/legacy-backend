@@ -10,6 +10,7 @@ import * as moment from 'moment-timezone';
 
 interface CreditNoteTelweb {
     env: Environment;
+    impuestos: any;
     settingsBranchOffice: BranchOfficeSetting;
     invoice: InvoiceSat;
     concepts: ConceptWithTaxes[] | any[];
@@ -17,12 +18,11 @@ interface CreditNoteTelweb {
     relations: MiniStoreInvoice[] | AcademyChargeInvoice[] | SchoolChargesInvoice[];
 }
 export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
-    const { env, settingsBranchOffice, invoice, receiver, relations = [], concepts = [] } = payload
+    const { env, settingsBranchOffice, invoice, receiver, relations = [], concepts = [], impuestos = {} } = payload
     const { instancePath, xslt } = env
 
     const cerSAT = `${instancePath}CSD/` + settingsBranchOffice.cerCSD;
     const keySAT = `${instancePath}CSD/` + settingsBranchOffice.keyCSD;
-    let totalImpuestosTrasladados = 0;
     let totalImpuestosRetenidos = 0;
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
     const cfdiAttributes: Comprobante = {
@@ -72,8 +72,7 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
         });
         if (concept.impuestos && concept.impuestos.trasladado) {
             const { trasladado } = concept.impuestos
-            console.log(trasladado)
-            totalImpuestosTrasladados += Number(trasladado.Importe);
+            console.log("trasladado", trasladado)
             concepto.traslado({
                 Importe: trasladado.Importe,
                 Impuesto: '002',
@@ -95,16 +94,16 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
         await cfdi.concepto(concepto);
     });
 
-    if (totalImpuestosTrasladados > 0) {
+    if (impuestos.translados.Base > 0) {
         const impuestosTransladados = new Impuestos({
-            TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
+            TotalImpuestosTrasladados: impuestos.translados.Importe
         });
         await impuestosTransladados.traslados({
-            Base: invoice.SubTotal,
+            Base: impuestos.translados.Base,
             Impuesto: '002',
             TipoFactor: 'Tasa',
             TasaOCuota: '0.160000',
-            Importe: totalImpuestosTrasladados.toString(),
+            Importe: impuestos.translados.Importe,
         });
         await cfdi.impuesto(impuestosTransladados);
     }
