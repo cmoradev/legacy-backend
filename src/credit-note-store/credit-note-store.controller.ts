@@ -82,12 +82,17 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 } as MiniStoreSalePayment,
                 type: 3,
             });
-
+            console.log("detalles", detalles)
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId);
             const xmlCreditNote = await CreditNote({
                 concepts: detalles.detalles,
-                invoice: request.invoice,
+                impuestos: detalles.impuestos,
+                invoice: {
+                    ...request.invoice,
+                    Total: detalles.total.toString(),
+                    SubTotal: detalles.subtotal.toString()
+                },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
                 settingsBranchOffice: branchOfficeSetting,

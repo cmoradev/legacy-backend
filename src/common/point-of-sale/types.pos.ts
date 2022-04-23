@@ -32,6 +32,7 @@ export interface FacturaDetalles {
     discount: number | string;
     surcharges: number | string;
     taxes?: number | string;
+    impuestos: any
     detalles: any[];
 }
 
