@@ -82,8 +82,12 @@ export const getTotal = (detail: MiniStoreSaleDetail | SchoolChargeDetails | Aca
     return conceptPrice
 }
 
-export const saleDetails = (details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]) => {
+export const saleDetails = (payload: {
+    details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]
+    ivaDefault?: number
+}) => {
 
+    const { details = [], ivaDefault = 1.16 } = payload
     // tslint:disable-next-line:one-variable-per-declaration
     let subtotal = 0, surcharges = 0, discounts = 0, scholarships = 0;
     details.forEach((concept: SchoolChargeDetails | AcademyChargeDetails | MiniStoreSaleDetail) => {
@@ -104,7 +108,7 @@ export const saleDetails = (details: SchoolChargeDetails[] | AcademyChargeDetail
         surcharges,
         subtotal,
     };
-    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount(subtotal, 0);
+    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount(subtotal, 0, ivaDefault);
     return {
         subtotal: amountWithOutIva,
         surcharges,
@@ -171,7 +175,10 @@ export const ConceptsPriceByPaymentBillig = (payload: {
     ivaByDetail?: number;
 }): FacturaDetalles => {
     const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16 } = payload;
-    const detalles = saleDetails(details || []);
+    const detalles = saleDetails({
+        details: details || [],
+        ivaDefault
+    });
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
     const resultad = {

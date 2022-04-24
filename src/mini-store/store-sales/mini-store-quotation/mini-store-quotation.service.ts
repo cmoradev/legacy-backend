@@ -93,7 +93,9 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
                 observation: quotation.quotation.observations,
                 idQuotation: quotation.quotation.id,
                 idSale: 0,
-                amount: saleDetails(quotation.quotation.miniStoreSaleDetails ?? []).total,
+                amount: saleDetails({
+                    details: quotation.quotation.miniStoreSaleDetails ?? []
+                }).total,
                 saleFolio: '',
                 finalizador: '',
                 total: '',
@@ -104,7 +106,9 @@ export class MiniStoreQuotationService extends TypeOrmCrudService<MiniStoreQuota
                 data.saleFolio = quotation.sale.folio;
                 data.idSale = quotation.sale.id;
                 data.finalizador = quotation.sale.cashier.name;
-                data.total = saleDetails(quotation.sale.miniStoreSaleDetails ?? []).total.toString();
+                data.total = saleDetails({
+                    details: quotation.sale.miniStoreSaleDetails ?? []
+                }).total.toString();
                 data.finishDate = quotation.sale.createdAt.toString();
             }
             restructura.push(data);
