@@ -266,7 +266,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
         const data = await this.connection.query(`
             SELECT vw.p_way, SUM(vw.p_ingreso) as p_total
-            FROM vw_tie_way_payments vw
+            FROM vw_sch_way_payments vw
             WHERE vw.p_id IN (${ids.join(', ')})
             GROUP BY vw.p_way;
         `);
