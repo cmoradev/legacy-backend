@@ -29,6 +29,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { string } from '@hapi/joi';
+import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -277,6 +278,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
         const billedPayments: NotInvoiced[] = [];
         const unbilledPayments: NotInvoiced[] = [];
+        let totalUnbilledPayments = 0;
+        let totalBilledPayments = 0;
         let invoice: AcademyChargeInvoice[] | null = null;
 
         const data: NotInvoiced[] = await this.connection.query(`
@@ -292,8 +295,13 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
 
             if ((value.f_status === null || value.f_status === '0') && (value.p_stamping === '0' || value.p_stamping === 0)) {
                 unbilledPayments.push(value);
+
+                totalUnbilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
+
             } else {
                 billedPayments.push(value);
+
+                totalBilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
             }
         });
 
@@ -310,6 +318,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         return {
             billedPayments,
             unbilledPayments,
+            totalUnbilledPayments,
+            totalBilledPayments,
             invoice
         };
     }
