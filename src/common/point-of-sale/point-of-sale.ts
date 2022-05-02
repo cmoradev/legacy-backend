@@ -180,6 +180,12 @@ export const ConceptsPriceByPaymentBillig = (payload: {
         discount: 0,
         surcharges: 0,
         detalles: [],
+        impuestos: {
+            translados: {
+                Base: 0,
+                Importe: 0,
+            }
+        }
     };
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
@@ -223,8 +229,11 @@ export const ConceptsPriceByPaymentBillig = (payload: {
             ...getMoreDatails({ detail, type })
         };
         if (ivaByDetail !== 0) {
+            const translados = getTranslados({ total: importe, descuento: discountTotal, importeImpuesto: ivaByDetail });
+            resultad.impuestos.translados.Base = sumQuantity(resultad.impuestos.translados.Base, translados.Base)
+            resultad.impuestos.translados.Importe = sumQuantity(resultad.impuestos.translados.Importe, translados.Importe)
             concept.impuestos = {
-                trasladado: getTranslados({ total: importe, descuento: discountTotal, importeImpuesto: ivaByDetail })
+                trasladado: translados
             }
         }
         const importeMenosDescuento = subQuantity(importe, discountTotal);
