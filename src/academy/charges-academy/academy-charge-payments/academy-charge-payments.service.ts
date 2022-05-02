@@ -301,7 +301,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             } else {
                 billedPayments.push(value);
 
-                totalBilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
+                totalBilledPayments = sumQuantity(totalBilledPayments, value.p_income);
             }
         });
 

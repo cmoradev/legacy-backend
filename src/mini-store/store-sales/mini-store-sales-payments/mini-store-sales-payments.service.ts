@@ -416,7 +416,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             } else {
                 billedPayments.push(value);
 
-                totalBilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
+                totalBilledPayments = sumQuantity(totalBilledPayments, value.p_income);
             }
         });
 
