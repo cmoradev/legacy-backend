@@ -50,6 +50,7 @@ import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 
 @UseGuards(JwtGuard)
 @Crud({
@@ -141,6 +142,108 @@ export class SchoolChargesPaymentsController
       });
       Receip.addFolio(result.charge.folio);
       Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      const regimen = RegimenFiscalList.find(
+        (f) => f.value === branchOfficeSett.regime,
+      );
+      Receip.addEmisor({
+        name: branchOfficeSett.businessName,
+        rfc: branchOfficeSett.rfc,
+        regimen:
+          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+        expedido: branchOfficeSett.address,
+      });
+      const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
+      Receip.addReceptor({
+        name,
+        curp: student.curp ? student.curp : '',
+        matricula: student.matricula,
+      });
+      const ven =
+        result.payment.cashierCharge.name +
+        ' ' +
+        result.payment.cashierCharge.lastnameFather +
+        ' ' +
+        result.payment.cashierCharge.lastnameMother;
+      Receip.addInformacion({
+        vendedor: ven,
+      });
+
+      Receip.addCatidad({
+        SubTotal: invoiceDetails.subtotal.toString(),
+        Recargo: invoiceDetails.surcharges.toString(),
+        Descuento: invoiceDetails.discount.toString(),
+        Impuesto: '0',
+        Total: invoiceDetails.total.toString(),
+      });
+      Receip.addDetalles(detalles);
+
+      Receip.addNumberToLetter(+invoiceDetails.total);
+      Receip.addObervations(result.payment.observations);
+      const forma = result.payment.methodsPayments.map((m) => {
+        return {
+          forma: m.invoiceMethodPayment.name,
+          cantidad: roundQuantity(m.quantity),
+          banco: m.Bank ? m.Bank.name : '',
+          cuenta: m.account,
+          fecha: m.date,
+        };
+      });
+      Receip.addFormaPago(forma);
+      // await pdf.save('/home/misael/Documents/proyectos/amir')
+      const download = Buffer.from(await Receip.getBase64(), 'base64');
+      res.send({
+        src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
+      });
+    } catch (e) {
+      res.send({
+        error: e,
+      });
+    }
+  }
+
+  @Post('/receipt-double')
+  async billingDoubleGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
+    try {
+      const student = query.student;
+      const result = await this.service.findSaleByPayment(query);
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: query.branchOfficeSettingId,
+        },
+      });
+
+      const invoiceDetails = ConceptsPriceByPaymentBillig({
+        payment: result.payment,
+        details: result.charge.chargesDetails,
+        type: InvoiceModules.SCHOOL,
+        ivaDefault: 1,
+        ivaByDetail: 0,
+      });
+      const data = invoiceDetails;
+      const detalles = invoiceDetails.detalles.map((d: NewReport) => {
+        return {
+          cantidad: d.quantity,
+          preciou: d.unitPrice,
+          descripcion: d.descrption,
+          recargo: d.surcharge,
+          descuento: d.discountTotal,
+          beca: d.scholarships,
+          importe: d.importe,
+        };
+      });
+      const logo = readFileSync(
+        `${this.configService.getPath()}logos/colegiologo.png`,
+      );
+      const Receip = new ReciboDouble();
+      Receip.addLogo({
+        width: 100,
+        height: 100,
+        image: `data:image/png;base64, ${logo.toString('base64')}`,
+      });
+      Receip.addFolio(result.charge.folio);
+      Receip.addFolio2(result.charge.folio);
+      Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      Receip.addDate2(moment(result.charge.createdAt).format('YYYY-MM-DD'));
       const regimen = RegimenFiscalList.find(
         (f) => f.value === branchOfficeSett.regime,
       );

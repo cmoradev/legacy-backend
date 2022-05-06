@@ -1,11 +1,11 @@
 import { Comprobante, CFDI, Receptor, Emisor, Concepts, Impuestos, Relacionado, XmlReceptorAttribute, ObjetoImpEnum } from "@signati/core";
-import { ConceptWithTaxes, InvoiceSat } from "src/credit-note-academy/credit-note-academy.service";
-import { MiniStoreInvoice } from "src/mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
-import { SchoolChargesInvoice } from "src/school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
-import { BranchOfficeSetting } from "src/system/branch-office-setting/entities/branch-office-setting.entity";
+import { ConceptWithTaxes, InvoiceSat } from "../../../../credit-note-academy/credit-note-academy.service";
+import { MiniStoreInvoice } from "../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
+import { SchoolChargesInvoice } from "../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
+import { BranchOfficeSetting } from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
-import { AcademyChargeInvoice } from "src/academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
-import { Environment } from "src/common/point-of-sale/types.pos";
+import { AcademyChargeInvoice } from "../../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
+import { Environment } from "../../../../common/point-of-sale/types.pos";
 import * as moment from 'moment-timezone';
 
 interface CreditNoteTelweb {
