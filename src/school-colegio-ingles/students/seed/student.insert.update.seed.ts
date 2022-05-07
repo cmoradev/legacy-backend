@@ -2,7 +2,7 @@ import { Factory, Seeder } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
 import { Student } from '../entities/student.entity';
 import { TypeStudent } from '../interface/studentsSchool.interface';
-import { StudentInscriptionStatus } from 'src/common/enums/PaymentStatus';
+import { StudentInscriptionStatus } from '../../../common/enums/PaymentStatus';
 
 export default class StudentInsertUpdateSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {

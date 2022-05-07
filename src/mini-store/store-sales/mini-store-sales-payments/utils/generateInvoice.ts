@@ -9,7 +9,7 @@ import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MonthEnum, PeriodicityEnum } from '../../../../common/dto/not-invoiced.dto';
 import { ivaFromFinalAmount } from '../../../../common/numbers';
-import { CFDIWebtel, Environment, InvoiceDetails } from 'src/common/point-of-sale/types.pos';
+import { CFDIWebtel, Environment, InvoiceDetails } from '../../../../common/point-of-sale/types.pos';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
