@@ -91,7 +91,8 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 invoice: {
                     ...request.invoice,
                     Total: detalles.total.toString(),
-                    SubTotal: detalles.subtotal.toString()
+                    SubTotal: detalles.subtotal.toString(),
+                    Descuento: detalles.discount.toString()
                 },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
