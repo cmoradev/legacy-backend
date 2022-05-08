@@ -82,7 +82,6 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 } as MiniStoreSalePayment,
                 type: 3,
             });
-            console.log("detalles", detalles)
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId);
             const xmlCreditNote = await CreditNote({
@@ -103,11 +102,9 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 }
             })
 
-            // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            // @cfdiv4
             const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
