@@ -10,6 +10,9 @@ import { AcademyChargePayments } from '../../academy/charges-academy/academy-cha
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { ObjetoImpEnum } from '@signati/core';
+import { MiniStoreDetailsExtraCharges } from 'src/mini-store/store-sales/mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
+import { AcademyChargeDetailsExtraCharge } from 'src/academy/charges-academy/academy-charge-details-extra-charge/entities/academy-charge-details-extra-charge.entity';
+import { SchoolChargesDetailsExtraCharges } from 'src/school-colegio-ingles/charges-school/school-charges-details-extra-charges/entities/school-charges-details-extra-charges.entity';
 
 export const mulQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
     return +round(mul(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
@@ -53,17 +56,22 @@ export function amountAfterExtraCharge(amount: number, discounts: Array<{
 export const totalAmountConceptAfterExtraCharge = (detail: TypeDetails, typeExtraCharges: SystemTypeExtraChargesEnum) => {
     const total = totalAmountConcept(detail)
     const { extraCharges = [] } = detail;
-    // @ts-ignore
-    return amountAfterExtraCharge(total, extraCharges.map((value) => {
-        return value.typeExtraCharge === typeExtraCharges ?
-            {
-                quantity: value.quantity,
-                type: value.applicationType,
-            } : {
-                quantity: 0,
-                type: value.applicationType,
-            };
-    }));
+    return getTotalAfterExtraCharge({
+        total,
+        extraCharges,
+        typeExtraCharges
+    })
+    // // @ts-ignore
+    // return amountAfterExtraCharge(total, extraCharges.map((value) => {
+    //     return value.typeExtraCharge === typeExtraCharges ?
+    //         {
+    //             quantity: value.quantity,
+    //             type: value.applicationType,
+    //         } : {
+    //             quantity: 0,
+    //             type: value.applicationType,
+    //         };
+    // }));
 };
 
 export const totalAmountConcept = (detail: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails) => {
@@ -82,26 +90,95 @@ export const getTotal = (detail: MiniStoreSaleDetail | SchoolChargeDetails | Aca
     return conceptPrice
 }
 
+export const getTotalAfterExtraCharge = (payload: {
+    total: number,
+    extraCharges: SchoolChargesDetailsExtraCharges[] | AcademyChargeDetailsExtraCharge[] | MiniStoreDetailsExtraCharges[],
+    typeExtraCharges: SystemTypeExtraChargesEnum
+}) => {
+    const { total, extraCharges = [], typeExtraCharges } = payload
+    // @ts-ignore
+    const cargos = extraCharges.filter((charge: SchoolChargeDetailsExtraCharge | AcademyChargeDetailsExtraCharge | SalesDetailsExtraCharges) => charge.typeExtraCharge === typeExtraCharges)
+        .map((value: SchoolChargesDetailsExtraCharges | AcademyChargeDetailsExtraCharge | MiniStoreDetailsExtraCharges) => ({
+            quantity: value.quantity,
+            type: value.applicationType
+        }))
+
+    return amountAfterExtraCharge(total, cargos);
+}
+
+const chainCharges = (payload: {
+    concept: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails
+}) => {
+    const { concept } = payload
+    let total = totalAmountConcept(concept);
+    let discounts = totalAmountConceptAfterExtraCharge(
+        concept,
+        SystemTypeExtraChargesEnum.Descuentos
+    );
+    const surchargesTemp = totalAmountConceptAfterExtraCharge(
+        concept,
+        SystemTypeExtraChargesEnum.Recargos
+    );
+    const scholarshipsTemp = totalAmountConceptAfterExtraCharge(
+        concept,
+        SystemTypeExtraChargesEnum.Becas
+    );
+
+    const scholarships = sub(total, scholarshipsTemp);
+    const surcharges = sub(total, surchargesTemp);
+    discounts = sub(total, discounts);
+    discounts = add(scholarships, discounts);
+    total = sub(add(total, surcharges), discounts);
+    return {
+        subtotal: total,
+        discount: discounts,
+        surcharge: surcharges,
+        scholarship: scholarships
+    }
+}
+const chargesOnCharges = (concept: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails) => {
+    const { extraCharges = [] } = concept
+    const total = totalAmountConcept(concept);
+
+    const scholarshipTemp = getTotalAfterExtraCharge({ total, extraCharges, typeExtraCharges: 3 })
+
+    const discountTemp = getTotalAfterExtraCharge({ total: scholarshipTemp, extraCharges, typeExtraCharges: 1 })
+
+    const surchargeTemp = getTotalAfterExtraCharge({ total: discountTemp, extraCharges, typeExtraCharges: 2 })
+
+    const scholarship = sub(total, scholarshipTemp);
+    const surcharge = sub(discountTemp, surchargeTemp);
+    const discount = sub(scholarshipTemp, discountTemp);
+
+    return {
+        scholarship,
+        discount,
+        surcharge,
+        subtotal: add(sub(sub(total, scholarship), discount), surcharge)
+    }
+    //  discounts = sub(subtotal, discounts); 
+    //  sub(add(subtotal, surcharges), discounts);
+}
 export const saleDetails = (payload: {
     details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]
-    ivaDefault?: number
+    ivaDefault?: number,
+    application?: number
 }) => {
 
-    const { details = [], ivaDefault = 1.16 } = payload
+    const { details = [], ivaDefault = 1.16, application = 1 } = payload
     // tslint:disable-next-line:one-variable-per-declaration
     let subtotal = 0, surcharges = 0, discounts = 0, scholarships = 0;
     details.forEach((concept: SchoolChargeDetails | AcademyChargeDetails | MiniStoreSaleDetail) => {
-        subtotal += totalAmountConcept(concept);
-        discounts += totalAmountConceptAfterExtraCharge(concept, SystemTypeExtraChargesEnum.Descuentos);
-        surcharges += totalAmountConceptAfterExtraCharge(concept, SystemTypeExtraChargesEnum.Recargos);
-        scholarships += totalAmountConceptAfterExtraCharge(concept, SystemTypeExtraChargesEnum.Becas);
-    });
+        const cargos = application === 1 ? chainCharges({
+            concept
+        }) : chargesOnCharges(concept)
 
-    discounts = sub(subtotal, discounts);
-    scholarships = sub(subtotal, scholarships);
-    discounts = add(scholarships, discounts);
-    surcharges = sub(subtotal, surcharges);
-    subtotal = sub(add(subtotal, surcharges), discounts);
+        subtotal += cargos.subtotal
+        discounts += cargos.discount
+        surcharges += cargos.surcharge
+        scholarships += cargos.scholarship
+
+    });
     const data = {
         discounts,
         scholarships,
@@ -201,7 +278,6 @@ export const ConceptsPriceByPaymentBillig = (payload: {
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
         const conceptPrice = getTotal(detail)
-
         const discount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
         const recargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
         const becas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
