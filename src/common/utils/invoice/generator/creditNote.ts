@@ -72,7 +72,6 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
         });
         if (concept.impuestos && concept.impuestos.trasladado) {
             const { trasladado } = concept.impuestos
-            console.log("trasladado", trasladado)
             concepto.traslado({
                 Importe: trasladado.Importe,
                 Impuesto: '002',

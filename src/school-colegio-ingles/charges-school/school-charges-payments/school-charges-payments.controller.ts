@@ -23,7 +23,7 @@ import {
   GenerateGlobalInvoice,
   GenerateInvoice,
   GenerateInvoiceIedu,
-} from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+} from '../../../common/utils/invoice/generator/generateInvoice';
 import { FormaPago, RegimenFiscalList, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';

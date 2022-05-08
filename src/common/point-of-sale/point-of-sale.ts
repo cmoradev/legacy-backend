@@ -127,7 +127,8 @@ export const getMoreDatails = (payload: {
     const data = {
         claveProd: "",
         ClaveUnidad: "",
-        descrption: ""
+        descrption: "",
+        Unidad: "",
     }
     switch (type) {
         case InvoiceModules.ACADEMY:
@@ -138,8 +139,10 @@ export const getMoreDatails = (payload: {
             break;
         case InvoiceModules.SCHOOL:
             const dSchool = detail as SchoolChargeDetails
+            const clave = dSchool.codeUnit && dSchool.codeUnit === "E1" ? 'E48' : dSchool.codeUnit;
             data.claveProd = dSchool.codeConcept;
-            data.ClaveUnidad = 'E48';
+            data.ClaveUnidad = clave || 'E48';
+            data.Unidad = dSchool.unidad || '';
             data.descrption = dSchool.concept ? dSchool.concept : dSchool.schoolPlanPayment.description;
             break;
         case InvoiceModules.STORE:
@@ -147,6 +150,7 @@ export const getMoreDatails = (payload: {
             data.claveProd = dStore.productCode;
             data.ClaveUnidad = dStore.unitMeasurement; // detail.miniStoreProduct.unity,
             data.descrption = dStore.productName ? dStore.productName : dStore.miniStoreProduct.name;
+            //  data.Unidad = dStore.unidad || '';
             break;
         default:
             break;
