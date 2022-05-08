@@ -1,15 +1,14 @@
 import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Impuestos, Receptor, XmlIeduAttribute } from '@signati/core';
 import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
-import { mulQuantity, subQuantity, sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
+import { mulQuantity, subQuantity, sumQuantity } from '../../../point-of-sale/point-of-sale';
 import * as moment from 'moment-timezone';
 import { add } from 'exact-math';
-import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
-import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
+import { sanitizeStringToXml } from '../../sanitizeStringToXml';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MonthEnum, PeriodicityEnum } from '../../../../common/dto/not-invoiced.dto';
-import { ivaFromFinalAmount } from '../../../../common/numbers';
-import { CFDIWebtel, Environment, InvoiceDetails } from '../../../../common/point-of-sale/types.pos';
+import { MonthEnum, PeriodicityEnum } from '../../../dto/not-invoiced.dto';
+import { ivaFromFinalAmount } from '../../../numbers';
+import { CFDIWebtel, Environment, InvoiceDetails } from '../../../point-of-sale/types.pos';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 

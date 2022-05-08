@@ -31,7 +31,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateGlobalInvoice, GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, XmlCdfi } from '@signati/core';
