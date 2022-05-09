@@ -1,6 +1,6 @@
 import { FormaPago, FormaPagoType, XmlReceptorAttribute } from "@signati/core";
-import { InformacionGlobal } from "src/mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
-import { BranchOfficeSetting } from "src/system/branch-office-setting/entities/branch-office-setting.entity";
+import { InformacionGlobal } from "../..//mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
+import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
 import { AcademyChargeDetails } from "../../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity";
 import { MiniStoreSaleDetail } from "../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity";
 import { SchoolChargeDetails } from "../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity";
@@ -32,6 +32,7 @@ export interface FacturaDetalles {
     discount: number | string;
     surcharges: number | string;
     taxes?: number | string;
+    impuestos: any
     detalles: any[];
 }
 

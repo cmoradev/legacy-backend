@@ -12,6 +12,8 @@ import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import { Response } from 'express';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
+import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
+import { SchoolChargePayment } from 'src/school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 @Crud({
     model: {
         type: CreditNoteSchool,
@@ -37,7 +39,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         readonly configService: ConfigService) {
     }
 
-    @Post('/generate-credit-note')
+    @Post('generate/credit-note')
     async generateCreditNote(
         @Body() request: {
             invoice: InvoiceSat,
@@ -47,7 +49,10 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
-        }): Promise<void> {
+        }
+    ): Promise<void> {
+
+
         if (!request) {
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
@@ -70,11 +75,27 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
+            const detalles = ConceptsPriceByPaymentBillig({
+                details: request.concepts as any[],
+                payment: {
+                    quantity: +request.invoice.Total,
+                    change: 0
+                } as SchoolChargePayment,
+                type: 2,
+                ivaDefault: 1,
+                ivaByDetail: 0,
+            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId)
             const xmlCreditNote = await CreditNote({
-                concepts: request.concepts,
-                invoice: request.invoice,
+                concepts: detalles.detalles,
+                impuestos: detalles.impuestos,
+                invoice: {
+                    ...request.invoice,
+                    Total: detalles.total.toString(),
+                    SubTotal: detalles.subtotal.toString(),
+                    Descuento: detalles.discount.toString()
+                },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
                 settingsBranchOffice: branchOfficeSetting,

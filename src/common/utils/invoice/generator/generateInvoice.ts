@@ -1,15 +1,14 @@
 import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Impuestos, Receptor, XmlIeduAttribute } from '@signati/core';
 import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
-import { mulQuantity, subQuantity, sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
+import { mulQuantity, subQuantity, sumQuantity } from '../../../point-of-sale/point-of-sale';
 import * as moment from 'moment-timezone';
 import { add } from 'exact-math';
-import { sanitizeStringToXml } from '../../../../common/utils/sanitizeStringToXml';
-import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
+import { sanitizeStringToXml } from '../../sanitizeStringToXml';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MonthEnum, PeriodicityEnum } from '../../../../common/dto/not-invoiced.dto';
-import { ivaFromFinalAmount } from '../../../../common/numbers';
-import { CFDIWebtel, Environment, InvoiceDetails } from 'src/common/point-of-sale/types.pos';
+import { MonthEnum, PeriodicityEnum } from '../../../dto/not-invoiced.dto';
+import { ivaFromFinalAmount } from '../../../numbers';
+import { CFDIWebtel, Environment, InvoiceDetails } from '../../../point-of-sale/types.pos';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -84,7 +83,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
             ClaveProdServ: detalle.claveProd,
             NoIdentificacion: detalle.NoIdentificacion,
             Cantidad: detalle.quantity,
-            ClaveUnidad: detalle?.unidad || 'E48',
+            ClaveUnidad: detalle?.ClaveUnidad || 'E48',
             Descripcion: sanitizeStringToXml(detalle.descrption),
             ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
             Importe: parseFloat(`${detalle.importe}`).toFixed(2),
@@ -193,8 +192,8 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
             ClaveProdServ: detalle.claveProd,
             NoIdentificacion: detalle.NoIdentificacion,
             Cantidad: detalle.quantity,
-            ClaveUnidad: detalle.unidad,
-            Unidad: 'Pieza',
+            ClaveUnidad: detalle.ClaveUnidad,
+            Unidad: detalle.Unidad,
             Descripcion: detalle.descrption,
             ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
             Importe: parseFloat(`${detalle.importe}`).toFixed(2),

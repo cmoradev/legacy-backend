@@ -10,6 +10,8 @@ import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
 import * as fs from 'fs';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
+import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
+import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 
 @Crud({
     model: {
@@ -36,7 +38,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
         readonly configService: ConfigService) {
     }
 
-    @Post('/generate-credit-note')
+    @Post('generate/credit-note')
     async generateCreditNote(
         @Body() request: {
             invoice: InvoiceSat,
@@ -46,7 +48,8 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
-        }): Promise<void> {
+        }
+    ): Promise<void> {
 
 
         if (!request) {
@@ -71,11 +74,25 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
+            const detalles = ConceptsPriceByPaymentBillig({
+                details: request.concepts as any[],
+                payment: {
+                    quantity: +request.invoice.Total,
+                    change: 0
+                } as MiniStoreSalePayment,
+                type: 3,
+            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId);
             const xmlCreditNote = await CreditNote({
-                concepts: request.concepts,
-                invoice: request.invoice,
+                concepts: detalles.detalles,
+                impuestos: detalles.impuestos,
+                invoice: {
+                    ...request.invoice,
+                    Total: detalles.total.toString(),
+                    SubTotal: detalles.subtotal.toString(),
+                    Descuento: detalles.discount.toString()
+                },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
                 settingsBranchOffice: branchOfficeSetting,
@@ -85,11 +102,9 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 }
             })
 
-            // @cfdiv4
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            // @cfdiv4
             const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
                 cfdi,
@@ -101,6 +116,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 workPath
             );
         } catch (err) {
+            console.log(err)
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

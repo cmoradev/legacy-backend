@@ -8,7 +8,7 @@ import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/poin
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
 import { FactSw } from '../../../webService/FactSw';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-import { GenerateGlobalInvoice, GenerateInvoice } from './utils/generateInvoice';
+import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { User } from '../../../system/users/entities/user.entity';
