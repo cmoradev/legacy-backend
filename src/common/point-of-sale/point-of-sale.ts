@@ -82,8 +82,12 @@ export const getTotal = (detail: MiniStoreSaleDetail | SchoolChargeDetails | Aca
     return conceptPrice
 }
 
-export const saleDetails = (details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]) => {
+export const saleDetails = (payload: {
+    details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[]
+    ivaDefault?: number
+}) => {
 
+    const { details = [], ivaDefault = 1.16 } = payload
     // tslint:disable-next-line:one-variable-per-declaration
     let subtotal = 0, surcharges = 0, discounts = 0, scholarships = 0;
     details.forEach((concept: SchoolChargeDetails | AcademyChargeDetails | MiniStoreSaleDetail) => {
@@ -104,7 +108,7 @@ export const saleDetails = (details: SchoolChargeDetails[] | AcademyChargeDetail
         surcharges,
         subtotal,
     };
-    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount(subtotal, 0);
+    const { finalAmount, iva, amountWithOutIva } = ivaFromFinalAmount(subtotal, 0, ivaDefault);
     return {
         subtotal: amountWithOutIva,
         surcharges,
@@ -123,7 +127,8 @@ export const getMoreDatails = (payload: {
     const data = {
         claveProd: "",
         ClaveUnidad: "",
-        descrption: ""
+        descrption: "",
+        Unidad: "",
     }
     switch (type) {
         case InvoiceModules.ACADEMY:
@@ -134,8 +139,10 @@ export const getMoreDatails = (payload: {
             break;
         case InvoiceModules.SCHOOL:
             const dSchool = detail as SchoolChargeDetails
+            const clave = dSchool.codeUnit && dSchool.codeUnit === "E1" ? 'E48' : dSchool.codeUnit;
             data.claveProd = dSchool.codeConcept;
-            data.ClaveUnidad = 'E48';
+            data.ClaveUnidad = clave || 'E48';
+            data.Unidad = dSchool.unidad || '';
             data.descrption = dSchool.concept ? dSchool.concept : dSchool.schoolPlanPayment.description;
             break;
         case InvoiceModules.STORE:
@@ -143,6 +150,7 @@ export const getMoreDatails = (payload: {
             data.claveProd = dStore.productCode;
             data.ClaveUnidad = dStore.unitMeasurement; // detail.miniStoreProduct.unity,
             data.descrption = dStore.productName ? dStore.productName : dStore.miniStoreProduct.name;
+            //  data.Unidad = dStore.unidad || '';
             break;
         default:
             break;
@@ -171,7 +179,10 @@ export const ConceptsPriceByPaymentBillig = (payload: {
     ivaByDetail?: number;
 }): FacturaDetalles => {
     const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16 } = payload;
-    const detalles = saleDetails(details || []);
+    const detalles = saleDetails({
+        details: details || [],
+        ivaDefault
+    });
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
     const resultad = {
@@ -189,54 +200,90 @@ export const ConceptsPriceByPaymentBillig = (payload: {
     };
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
-        const totalDiscount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
-        const totalRecargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
-        const totalBecas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
-
-        const discount = (totalAmountConcept(detail) - totalDiscount);
-        const surchargesTotal = (totalAmountConcept(detail) - totalRecargos);
-        const scholarshipsTotal = (totalAmountConcept(detail) - totalBecas);
-
-        const discountTotal = mulQuantity(discount, base);
-        const surcharges = mulQuantity(surchargesTotal, base);
-        const scholarships = mulQuantity(scholarshipsTotal, base);
-
         const conceptPrice = getTotal(detail)
-        resultad.discount = sumQuantity(discountTotal, resultad.discount);
-        resultad.discount = sumQuantity(scholarships, resultad.discount);
-        resultad.surcharges = sumQuantity(surcharges, resultad.surcharges);
 
-        const totalMasRecargo = sumQuantity(mulQuantity(conceptPrice, base), surcharges)
-        const totalNative = subQuantity(totalMasRecargo, divQuantity(discountTotal, detail.quantity));
+        const discount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
+        const recargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
+        const becas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
+
+        const detailTotal = totalAmountConcept(detail);
+        const discountTotal = subQuantity(detailTotal, discount);
+        const surchargesTotal = subQuantity(detailTotal, recargos);
+        const scholarshipsTotal = subQuantity(detailTotal, becas);
+
+        const totalBase = mulQuantity(conceptPrice, base);
+        const discountBase = mulQuantity(discountTotal, base);
+        const surchargesBase = mulQuantity(surchargesTotal, base);
+        const scholarshipsBase = mulQuantity(scholarshipsTotal, base);
+
+        const unitDiscount = divQuantity(discountBase, detail.quantity);
+        resultad.discount = sumQuantity(discountBase, resultad.discount);
+        resultad.discount = sumQuantity(scholarshipsBase, resultad.discount);
+        resultad.surcharges = sumQuantity(surchargesBase, resultad.surcharges);
+
+        const totalMasRecargo = sumQuantity(totalBase, surchargesBase)
+        const totalNative = subQuantity(totalMasRecargo, unitDiscount);
         const nativeCalculo = ivaFromFinalAmount(totalNative, -2, ivaDefault);
 
-        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, divQuantity(discountTotal, detail.quantity));
+        const unitPrice = sumQuantity(nativeCalculo.amountWithOutIva, unitDiscount);
         const importe = mulQuantity(unitPrice, detail.quantity);
 
         resultad.subtotal = sumQuantity(importe, resultad.subtotal);
         const concept = {
             id: detail.id,
             quantity: detail.quantity,
+            process: {
+                detalle: {
+                    detailTotal,
+                    totalNative,
+                    nativeCalculo,
+                    importe
+                },
+                concept: {
+                    conceptPrice,
+                    totalBase,
+                    totalMasRecargo,
+                    unitPrice,
+
+                },
+                discount: {
+                    discount,
+                    discountTotal,
+                    discountBase,
+                    unitDiscount
+                },
+                recargos: {
+                    recargos,
+                    surchargesTotal,
+                    surchargesBase
+                },
+                becas: {
+                    becas,
+                    scholarshipsTotal,
+                    scholarshipsBase
+                },
+            },
+            // @ts-ignore
             objectoImp: detail.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto,
             unitPrice,
-            discountTotal,
+            discountTotal: discountBase,
             importe,
             surcharge: resultad.surcharges,
-            scholarships,
+            scholarships: scholarshipsBase,
             impuestos: {},
             NoIdentificacion: 1,
             unidad: "", // descripcion de la clave de unidad
             ...getMoreDatails({ detail, type })
         };
         if (ivaByDetail !== 0) {
-            const translados = getTranslados({ total: importe, descuento: discountTotal, importeImpuesto: ivaByDetail });
+            const translados = getTranslados({ total: importe, descuento: discountBase, importeImpuesto: ivaByDetail });
             resultad.impuestos.translados.Base = sumQuantity(resultad.impuestos.translados.Base, translados.Base)
             resultad.impuestos.translados.Importe = sumQuantity(resultad.impuestos.translados.Importe, translados.Importe)
             concept.impuestos = {
                 trasladado: translados
             }
         }
-        const importeMenosDescuento = subQuantity(importe, discountTotal);
+        const importeMenosDescuento = subQuantity(importe, discountBase);
         const totalconcetp = sumQuantity(importeMenosDescuento, mulQuantity(importeMenosDescuento, ivaByDetail));
         resultad.total = sumQuantity(resultad.total, totalconcetp);
         generalizedConcepts.push(concept);

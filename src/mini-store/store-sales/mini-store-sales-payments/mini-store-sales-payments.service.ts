@@ -31,6 +31,7 @@ import { XmlComprobante } from '@signati/core';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { string } from '@hapi/joi';
+import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -393,6 +394,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
         const billedPayments: NotInvoiced[] = [];
         const unbilledPayments: NotInvoiced[] = [];
+        let totalUnbilledPayments = 0;
+        let totalBilledPayments = 0;
         let invoice: MiniStoreInvoice[] | null = null;
 
         const data: NotInvoiced[] = await this.connection.query(`
@@ -407,9 +410,13 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             value.p_income = parseFloat(`${value.p_income}`);
 
             if ((value.f_status === null || value.f_status === '0') && (value.p_stamping === '0' || value.p_stamping === 0)) {
-                unbilledPayments.push(value)
+                unbilledPayments.push(value);
+
+                totalUnbilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
             } else {
-                billedPayments.push(value)
+                billedPayments.push(value);
+
+                totalBilledPayments = sumQuantity(totalBilledPayments, value.p_income);
             }
         });
 
@@ -426,6 +433,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return {
             billedPayments,
             unbilledPayments,
+            totalUnbilledPayments,
+            totalBilledPayments,
             invoice
         };
     }

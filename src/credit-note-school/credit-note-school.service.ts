@@ -90,7 +90,7 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
 
     async getLastFolio() {
         return await this.repo.createQueryBuilder('creditNote')
-            .select('MAX(creditNote.id)', 'last')
+            .select('COALESCE(MAX(id), 0) + 1', 'last')
             .getRawOne();
     }
 
