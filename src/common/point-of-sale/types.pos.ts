@@ -56,3 +56,11 @@ export enum InvoiceModules {
     SCHOOL = 2,
     STORE = 3,
 }
+export interface Payment extends MoreProperties {
+    quantity: number;
+    change: number;
+}
+
+interface MoreProperties {
+    [key: string]: any
+}
