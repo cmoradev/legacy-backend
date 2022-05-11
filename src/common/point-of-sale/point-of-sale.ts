@@ -4,7 +4,7 @@ import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sal
 import { SchoolChargeDetails } from '../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
-import { FacturaDetalles, InvoiceModules, TypeDetails } from './types.pos';
+import { FacturaDetalles, InvoiceModules, Payment, TypeDetails } from './types.pos';
 import { ivaFromFinalAmount } from '../numbers';
 import { AcademyChargePayments } from '../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
@@ -110,51 +110,63 @@ const chainCharges = (payload: {
     concept: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails
 }) => {
     const { concept } = payload
-    let total = totalAmountConcept(concept);
-    let discounts = totalAmountConceptAfterExtraCharge(
-        concept,
-        SystemTypeExtraChargesEnum.Descuentos
-    );
-    const surchargesTemp = totalAmountConceptAfterExtraCharge(
-        concept,
-        SystemTypeExtraChargesEnum.Recargos
-    );
-    const scholarshipsTemp = totalAmountConceptAfterExtraCharge(
-        concept,
-        SystemTypeExtraChargesEnum.Becas
-    );
+    const discount = totalAmountConceptAfterExtraCharge(concept, 1);
+    const recargos = totalAmountConceptAfterExtraCharge(concept, 2);
+    const becas = totalAmountConceptAfterExtraCharge(concept, 3);
 
-    const scholarships = sub(total, scholarshipsTemp);
-    const surcharges = sub(total, surchargesTemp);
-    discounts = sub(total, discounts);
-    discounts = add(scholarships, discounts);
-    total = sub(add(total, surcharges), discounts);
+    const detailTotal = totalAmountConcept(concept);
+    const scholarshipsTotal = subQuantity(detailTotal, becas);
+    const surchargesTotal = subQuantity(detailTotal, recargos);
+    const discountTotal = subQuantity(detailTotal, discount);
+
+    const totalDiscounts = sumQuantity(scholarshipsTotal, discountTotal);
+    const totalMasRecargo = sumQuantity(surchargesTotal, detailTotal);
+    const totalDetail = subQuantity(totalMasRecargo, totalDiscounts);
     return {
-        subtotal: total,
-        discount: discounts,
-        surcharge: surcharges,
-        scholarship: scholarships
+        subtotal: totalDetail,
+        discount: totalDiscounts,
+        surcharge: surchargesTotal,
+        scholarship: scholarshipsTotal,
+        proccess: {
+            becas,
+            discount,
+            recargos,
+            detailTotal,
+            scholarshipsTotal,
+            surchargesTotal,
+            discountTotal
+        }
     }
 }
 const chargesOnCharges = (concept: MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails) => {
     const { extraCharges = [] } = concept
-    const total = totalAmountConcept(concept);
+    const detailTotal = totalAmountConcept(concept);
 
-    const scholarshipTemp = getTotalAfterExtraCharge({ total, extraCharges, typeExtraCharges: 3 })
+    const becas = getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 })
+    const discount = getTotalAfterExtraCharge({ total: becas, extraCharges, typeExtraCharges: 1 })
+    const recargos = getTotalAfterExtraCharge({ total: discount, extraCharges, typeExtraCharges: 2 })
 
-    const discountTemp = getTotalAfterExtraCharge({ total: scholarshipTemp, extraCharges, typeExtraCharges: 1 })
+    const scholarshipsTotal = subQuantity(detailTotal, becas);
+    const surchargesTotal = subQuantity(discount, recargos);
+    const discountTotal = subQuantity(becas, discount);
 
-    const surchargeTemp = getTotalAfterExtraCharge({ total: discountTemp, extraCharges, typeExtraCharges: 2 })
-
-    const scholarship = sub(total, scholarshipTemp);
-    const surcharge = sub(discountTemp, surchargeTemp);
-    const discount = sub(scholarshipTemp, discountTemp);
-
+    const totalMenosBeca = subQuantity(detailTotal, scholarshipsTotal)
+    const totalMenosDescuento = subQuantity(totalMenosBeca, discountTotal);
+    const totalMasRecargo = sumQuantity(totalMenosDescuento, surchargesTotal)
     return {
-        scholarship,
-        discount,
-        surcharge,
-        subtotal: add(sub(sub(total, scholarship), discount), surcharge)
+        subtotal: totalMasRecargo,
+        discount: discountTotal,
+        surcharge: surchargesTotal,
+        scholarship: scholarshipsTotal,
+        proccess: {
+            becas,
+            discount,
+            recargos,
+            detailTotal,
+            scholarshipsTotal,
+            surchargesTotal,
+            discountTotal
+        }
     }
     //  discounts = sub(subtotal, discounts); 
     //  sub(add(subtotal, surcharges), discounts);
@@ -249,16 +261,18 @@ export const getTranslados = (options: {
     return traslado;
 }
 export const ConceptsPriceByPaymentBillig = (payload: {
-    payment: SchoolChargePayment | AcademyChargePayments | MiniStoreSalePayment;
+    payment: Payment,
     details: SchoolChargeDetails[] | AcademyChargeDetails[] | MiniStoreSaleDetail[];
     type: InvoiceModules;
     ivaDefault?: number;
     ivaByDetail?: number;
+    application?: number
 }): FacturaDetalles => {
-    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16 } = payload;
+    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16, application = 1 } = payload;
     const detalles = saleDetails({
         details: details || [],
-        ivaDefault
+        ivaDefault,
+        application
     });
     const pago = payment.quantity - payment.change;
     const base = (pago / detalles.total) || 1;
@@ -278,14 +292,25 @@ export const ConceptsPriceByPaymentBillig = (payload: {
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
         const conceptPrice = getTotal(detail)
-        const discount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
-        const recargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
-        const becas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
+        // const discount = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Descuentos)
+        // const recargos = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Recargos)
+        // const becas = totalAmountConceptAfterExtraCharge(detail, SystemTypeExtraChargesEnum.Becas)
 
-        const detailTotal = totalAmountConcept(detail);
-        const discountTotal = subQuantity(detailTotal, discount);
-        const surchargesTotal = subQuantity(detailTotal, recargos);
-        const scholarshipsTotal = subQuantity(detailTotal, becas);
+        // const detailTotal = totalAmountConcept(detail);
+        // const discountTotal = subQuantity(detailTotal, discount);
+        // const surchargesTotal = subQuantity(detailTotal, recargos);
+        // const scholarshipsTotal = subQuantity(detailTotal, becas);
+        const proceso = application === 1 ? chainCharges({ concept: detail }) : chargesOnCharges(detail)
+        const { proccess } = proceso
+        const {
+            becas,
+            discount,
+            recargos,
+            detailTotal,
+            scholarshipsTotal,
+            surchargesTotal,
+            discountTotal,
+        } = proccess
 
         const totalBase = mulQuantity(conceptPrice, base);
         const discountBase = mulQuantity(discountTotal, base);
@@ -293,6 +318,7 @@ export const ConceptsPriceByPaymentBillig = (payload: {
         const scholarshipsBase = mulQuantity(scholarshipsTotal, base);
 
         const unitDiscount = divQuantity(discountBase, detail.quantity);
+
         resultad.discount = sumQuantity(discountBase, resultad.discount);
         resultad.discount = sumQuantity(scholarshipsBase, resultad.discount);
         resultad.surcharges = sumQuantity(surchargesBase, resultad.surcharges);

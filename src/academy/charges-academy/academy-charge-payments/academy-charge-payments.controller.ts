@@ -159,9 +159,9 @@ export class AcademyChargePaymentsController
     const invoiceDetails = ConceptsPriceByPaymentBillig({
       payment: result.payment,
       details: result.charge.chargesDetails,
-      type: InvoiceModules.ACADEMY
+      type: InvoiceModules.ACADEMY,
+      application: 2
     });
-    // res.send(invoiceDetails);
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
