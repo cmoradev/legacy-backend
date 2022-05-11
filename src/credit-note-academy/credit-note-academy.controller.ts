@@ -9,6 +9,9 @@ import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
 import { ConceptWithTaxes, CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
 import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
+import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
+import { AcademyChargeDetails } from '../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
+import { Payment } from '../common/point-of-sale/types.pos';
 
 @Crud({
     model: {
@@ -66,13 +69,26 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
+            const detalles = ConceptsPriceByPaymentBillig({
+                details: request.concepts as any[],
+                payment: {
+                    quantity: +request.invoice.Total,
+                    change: 0
+                } as Payment,
+                type: 3,
+            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId,)
 
             const xmlCreditNote = await CreditNote({
-                concepts: request.concepts,
-                impuestos: {},
-                invoice: request.invoice,
+                concepts: detalles.detalles,
+                impuestos: detalles.impuestos,
+                invoice: {
+                    ...request.invoice,
+                    Total: detalles.total.toString(),
+                    SubTotal: detalles.subtotal.toString(),
+                    Descuento: detalles.discount.toString()
+                },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
                 settingsBranchOffice: branchOfficeSetting,
