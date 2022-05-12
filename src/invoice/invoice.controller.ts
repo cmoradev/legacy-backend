@@ -29,6 +29,7 @@ export class InvoiceController {
           details,
           payment,
           type,
+          application: 2
         });
 
         break;
