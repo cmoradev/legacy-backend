@@ -43,6 +43,7 @@ import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @Crud({
     model: {
@@ -268,7 +269,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         status: string,
         data: string,
     }) {
-        console.log('Hola Mundo')
         try {
             const dataReport = await this.service.reportInvoice(query);
             response.status(200);
@@ -360,7 +360,8 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Post('/download-xml')
+    @Public()
+    @Get('/download-xml/:UUID')
     getXmlInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
@@ -371,7 +372,8 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Post('/download-pdf')
+    @Public()
+    @Get('/download-pdf/:UUID')
     getPdfInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
