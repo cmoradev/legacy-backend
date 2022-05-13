@@ -362,10 +362,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Public()
     @Get('/download-xml/:UUID')
-    getXmlInvoice(@Query() request, @Res() response) {
+    getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${request.UUID}.xml`;
+            const xml = `${workPath}/comprobantes/tienda/${UUID}.xml`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
@@ -374,10 +374,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Public()
     @Get('/download-pdf/:UUID')
-    getPdfInvoice(@Query() request, @Res() response) {
+    getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${request.UUID}.pdf`;
+            const xml = `${workPath}/comprobantes/tienda/${UUID}.pdf`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
