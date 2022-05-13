@@ -105,8 +105,8 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     async reportInvoice(query: {
         startDate: string,
         endDate: string,
-        billingAgent: number,
-        status: number,
+        billingAgent: string,
+        status: string,
         data: string,
     }): Promise<string | InvoiceReport[] | any> {
         const invoices = await this.repo.createQueryBuilder(

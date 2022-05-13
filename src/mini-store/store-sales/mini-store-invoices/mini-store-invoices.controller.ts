@@ -260,20 +260,21 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('report-invoice')
+    @Post('report-invoice')
     public async reportInvoice(@Res() response, @Query() query: {
         startDate: string,
         endDate: string,
-        billingAgent: number,
-        status: number,
+        billingAgent: string,
+        status: string,
         data: string,
     }) {
-
+        console.log('Hola Mundo')
         try {
             const dataReport = await this.service.reportInvoice(query);
             response.status(200);
             response.send(dataReport);
         } catch (e) {
+            console.log(e)
             response.status(404);
             response.send(e.message);
         }
@@ -359,7 +360,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('/download-xml')
+    @Post('/download-xml')
     getXmlInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
@@ -370,7 +371,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('/download-pdf')
+    @Post('/download-pdf')
     getPdfInvoice(@Query() request, @Res() response) {
         try {
             const workPath = this.configService.getPath();
