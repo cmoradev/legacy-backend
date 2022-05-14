@@ -55,10 +55,10 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
   ],
   controllers: [AppController],
   providers: [AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
   ],
 })
 export class AppModule {
