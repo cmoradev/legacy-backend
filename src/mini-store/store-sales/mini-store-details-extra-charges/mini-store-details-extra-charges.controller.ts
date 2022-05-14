@@ -4,7 +4,6 @@ import { MiniStoreDetailsExtraCharges } from './entities/mini-store-details-extr
 import { MiniStoreDetailsExtraChargesService } from './mini-store-details-extra-charges.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreDetailsExtraCharges,

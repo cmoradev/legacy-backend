@@ -3,7 +3,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Teacher } from './entities/teacher.entity';
 import { TeachersService } from './teachers.service';
-@UseGuards(JwtGuard)
+
 @Crud({
     model: {
         type: Teacher,

@@ -7,8 +7,6 @@ import { Response } from 'express';
 import { TransactionsReport } from './reports/transactions';
 import { transactionsList } from './reports/transactions.report';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: CashRegister,

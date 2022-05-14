@@ -5,7 +5,6 @@ import { SchoolChargesService } from './school-charges.service';
 import { Response } from 'express';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SchoolCharge,

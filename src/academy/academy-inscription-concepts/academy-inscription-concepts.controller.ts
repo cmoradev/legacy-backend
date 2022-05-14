@@ -4,7 +4,6 @@ import { AcademyInscriptionConcepts } from './entities/academy-inscription-conce
 import { AcademyInscriptionConceptsService } from './academy-inscription-concepts.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyInscriptionConcepts,
@@ -21,7 +20,7 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             acInsConConcepType: {},
             acInsConStatusPayment: {},
             acInscription: {},
-            academyChargeDetail:{},
+            academyChargeDetail: {},
             extraCharges: {},
         },
     },

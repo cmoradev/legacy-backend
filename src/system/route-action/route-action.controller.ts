@@ -3,8 +3,6 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { RouteAction } from './entities/route-action.entity';
 import { RouteActionService } from './route-action.service';
-
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: RouteAction,

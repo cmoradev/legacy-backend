@@ -10,7 +10,6 @@ import { Response } from 'express';
 import { ConceptStatusExcel } from './report/concept.status.excel';
 import { getNameStatusConcept } from './report/helpers';
 
-@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolPayment,
@@ -28,7 +27,7 @@ import { getNameStatusConcept } from './report/helpers';
 })
 @Controller()
 export class SchoolPaymentsController implements CrudController<SchoolPayment> {
-  constructor(readonly service: SchoolPaymentsService) {}
+  constructor(readonly service: SchoolPaymentsService) { }
 
   get base(): CrudController<SchoolPayment> {
     return this;

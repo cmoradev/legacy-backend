@@ -4,7 +4,6 @@ import { MiniStoreSaleMethodPayment } from './entities/mini-store-sale-method-pa
 import { MiniStoreSalesMethodsPaymentsService } from './mini-store-sales-methods-payments.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSaleMethodPayment,

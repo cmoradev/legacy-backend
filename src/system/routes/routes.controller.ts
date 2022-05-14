@@ -4,7 +4,6 @@ import { Route } from './entities/route.entity';
 import { RoutesService } from './routes.service';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Route,

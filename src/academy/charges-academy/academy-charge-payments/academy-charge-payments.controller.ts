@@ -47,7 +47,6 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
-@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: AcademyChargePayments,

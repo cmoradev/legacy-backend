@@ -3,7 +3,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargesMethodsPayments } from './entities/school-charges-methods-payments.entity';
 import { SchoolChargesMethodsPaymentsService } from './school-charges-methods-payments.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SchoolChargesMethodsPayments,

@@ -4,7 +4,6 @@ import { CashRegisterTransaction } from './entities/cash-register-transaction.en
 import { CashRegisterTransactionsService } from './cash-register-transactions.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: CashRegisterTransaction,
