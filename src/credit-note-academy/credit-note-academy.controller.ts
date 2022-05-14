@@ -36,7 +36,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     constructor(readonly service: CreditNoteAcademyService, readonly configService: ConfigService, readonly smartWebService: FactSw) {
     }
 
-    @Post('/generate-credit-note')
+    @Post('generate/credit-note')
     async generateCreditNote(
         @Body() request: {
             invoice: InvoiceSat,
