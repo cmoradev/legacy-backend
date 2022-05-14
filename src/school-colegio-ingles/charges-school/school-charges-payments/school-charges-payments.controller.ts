@@ -52,7 +52,6 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 
-@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolChargePayment,

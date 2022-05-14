@@ -3,7 +3,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { Subject } from './entities/subject.entity';
 import { SubjectsService } from './subjects.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
-@UseGuards(JwtGuard)
+
 @Crud({
     model: {
         type: Subject,

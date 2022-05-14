@@ -8,7 +8,6 @@ import { Response } from 'express';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: SalesReturns,

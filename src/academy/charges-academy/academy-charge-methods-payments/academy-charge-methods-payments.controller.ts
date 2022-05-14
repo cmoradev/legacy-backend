@@ -4,7 +4,6 @@ import { AcademyChargeMethodsPaymentsService } from './academy-charge-methods-pa
 import { AcademyChargeMethodsPayments } from './entities/academy-charge-methods-payments.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyChargeMethodsPayments,

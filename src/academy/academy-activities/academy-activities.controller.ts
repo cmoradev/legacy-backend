@@ -7,7 +7,6 @@ import { AcademyActivityReport } from './reports/academy-activity.report';
 import * as moment from 'moment';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyActivity,

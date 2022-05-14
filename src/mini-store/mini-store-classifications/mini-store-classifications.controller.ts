@@ -4,7 +4,6 @@ import { MiniStoreClassification } from './entities/mini-store-classification.en
 import { MiniStoreClassificationsService } from './mini-store-classifications.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreClassification,

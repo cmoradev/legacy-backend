@@ -29,7 +29,6 @@ import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSalePayment,

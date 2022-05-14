@@ -30,7 +30,7 @@ export class AuthController {
     readonly authAccessTokensService: AuthAccessTokensService,
     readonly settingsService: SettingsService,
     readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   @Public()
   @UseGuards(LocalAuthGuard)

@@ -5,7 +5,6 @@ import { FamiliesService } from './families.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Response } from 'express';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Family,

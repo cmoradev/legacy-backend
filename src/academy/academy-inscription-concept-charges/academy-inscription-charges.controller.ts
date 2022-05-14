@@ -4,7 +4,6 @@ import { AcademyInscriptionConceptCharges } from './entites/academy-inscription-
 import { IncriptionAcademyChargeDetailsExtraChargeService } from './inscription-academy-charge-details-extra-charge.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyInscriptionConceptCharges,

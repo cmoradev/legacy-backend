@@ -4,7 +4,6 @@ import { AcademyConcepts } from './entities/academy-concepts.entity';
 import { AcademyConceptsService } from './academy-concepts.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyConcepts,

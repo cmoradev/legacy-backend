@@ -4,7 +4,6 @@ import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { MiniStoreSalesDetailsService } from './mini-store-sales-details.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSaleDetail,

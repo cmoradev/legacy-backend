@@ -4,7 +4,6 @@ import { AcademyActivitiesGroup } from './entities/academy-activities-group.enti
 import { AcademyActivitiesGroupService } from './academy-activities-group.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyActivitiesGroup,

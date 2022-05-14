@@ -10,7 +10,6 @@ import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-qu
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreSale,

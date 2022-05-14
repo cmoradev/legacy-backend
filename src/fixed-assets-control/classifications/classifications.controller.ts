@@ -4,7 +4,6 @@ import { Classification } from './entities/classification.entity';
 import { ClassificationsService } from './classifications.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Classification,
