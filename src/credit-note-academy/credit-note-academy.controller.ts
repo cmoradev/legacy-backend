@@ -75,7 +75,8 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                     quantity: +request.invoice.Total,
                     change: 0
                 } as Payment,
-                type: 3,
+                type: 1,
+                application: 2
             });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId,)
@@ -112,6 +113,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 workPath
             );
         } catch (err) {
+            console.log(err)
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
