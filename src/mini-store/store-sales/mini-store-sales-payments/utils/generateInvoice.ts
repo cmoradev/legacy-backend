@@ -193,7 +193,7 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
             ClaveProdServ: detalle.claveProd,
             NoIdentificacion: detalle.NoIdentificacion,
             Cantidad: detalle.quantity,
-            ClaveUnidad: detalle.unidad,
+            ClaveUnidad: detalle.ClaveUnidad,
             Unidad: 'Pieza',
             Descripcion: detalle.descrption,
             ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
