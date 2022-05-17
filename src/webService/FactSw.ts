@@ -40,10 +40,10 @@ export class FactSw {
         token: this.token
       });
 
-      console.log(xml)
-
       stamp.StampV4(xml, (err, data) => {
+        console.info(xml)
         if (err) {
+          console.error(err)
           const errRes = {
             status: 'error',
             message: err.message,
