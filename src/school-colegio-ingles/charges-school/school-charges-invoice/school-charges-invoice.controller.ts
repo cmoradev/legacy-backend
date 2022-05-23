@@ -2,11 +2,6 @@ import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res
 import {
     Crud,
     CrudController,
-    Override,
-    CrudRequest,
-    ParsedRequest,
-    ParsedBody,
-    CreateManyDto,
 } from '@nestjsx/crud';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
@@ -19,13 +14,10 @@ import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesPaymentsService } from '../school-charges-payments/school-charges-payments.service';
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
-import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 
 @Crud({
     model: {
@@ -42,7 +34,7 @@ import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/poin
             'schoolCharge.chargesDetails.extraCharges': {
                 alias: 'details_chargesDetails_extraCharges'
             },
-            "schoolCharge.schoolStudent": { eager: false },
+            'schoolCharge.schoolStudent': {eager: false},
             'schoolCharge.chargesDetails.schoolPlanPayment': {
                 alias: 'concepts'
             },
@@ -68,43 +60,14 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         return this;
     }
 
-    // @Override('getOneBase')
-    // async getOneAndDoStuff(
-    //     @ParsedRequest() req: CrudRequest,
-    // ) {
-    //     const invoice = await this.base.getOneBase(req);
-    //     const { schoolChargePayment, schoolCharge } = invoice
-    //     const { chargesDetails } = schoolCharge
-    //     if (schoolChargePayment && schoolCharge && chargesDetails) {
-    //         const factor = ConceptsPriceByPaymentBillig({
-    //             payment: schoolChargePayment,
-    //             details: chargesDetails,
-    //             type: InvoiceModules.SCHOOL,
-    //             ivaDefault: 1,
-    //             ivaByDetail: 0,
-    //         });
-    //         const { detalles } = factor
-    //         // @ts-ignore
-    //         invoice.detalles = detalles
-    //         detalles.map((detalle) => {
-    //             const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
-    //             if (findIndex > -1) {
-    //                 // @ts-ignore
-    //                 chargesDetails[findIndex].sat = detalle
-    //             }
-    //         })
-    //     }
-    //     return invoice
-    // }
-
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            res.send({src: 'data:application/pdf;base64,' + pdf64.toString('base64')});
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.send({error: e}).status(400);
         }
     }
 
@@ -112,9 +75,9 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     public async xml(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.xml');
-            res.send({ src: pdf64.toString('base64') });
+            res.send({src: pdf64.toString('base64')});
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.send({error: e}).status(400);
         }
     }
 
@@ -223,13 +186,14 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     }) {
         try {
             const dataReport = await this.service.reportInvoices(query);
+
             switch (query.data) {
                 case 'excel':
                     const company = await this.branchOfficeSettingService.findCompany(query.branchOfficeSettingId);
                     const workbook = new ReportInvoice().generateReport(dataReport, query, company);
                     const dateName = new Date();
                     const fileName = dateName.toTimeString() + '.xlsx';
-                    const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+                    const result = await workbook.xlsx.writeBuffer({filename: fileName});
                     const buffer = Buffer.from(result);
                     const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
                     res.status(200);

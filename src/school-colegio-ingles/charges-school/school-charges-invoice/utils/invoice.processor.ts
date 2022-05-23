@@ -7,6 +7,7 @@ import { TypeStudent } from '../../../students/interface/studentsSchool.interfac
 export class InvoiceProcessorCollege {
   public structureInvoiceReport(invoices: SchoolChargesInvoice[]): InvoiceReport[] {
     const flatReport: InvoiceReport[] = [];
+
     for (const invoice of invoices) {
       let payDay;
       let paymentFolio = '';
@@ -17,29 +18,29 @@ export class InvoiceProcessorCollege {
 
       }
       payDay = formatDate(invoice.schoolChargePayment ? invoice.schoolChargePayment.createdAt : '');
-      paymentFolio = invoice.schoolChargePayment ? invoice.schoolChargePayment.folio : '';
+      paymentFolio = invoice.schoolChargePayment ? invoice.schoolChargePayment?.folio : '';
       paymentMethod = invoice.schoolChargePayment?.methodsPayments?.sort((a: SchoolChargesMethodsPayments, b: SchoolChargesMethodsPayments) => {
         if (a.quantity < b.quantity) {
           return 1;
         }
         return -1;
-      })[0]?.invoiceMethodPayment.name || '';
-      billingAgent = `${invoice.agentBilling.name} ${invoice.agentBilling.lastnameFather}  ${invoice.agentBilling.lastnameMother}`.toUpperCase();
+      })[0]?.invoiceMethodPayment?.name || '';
+      billingAgent = `${invoice.agentBilling?.name} ${invoice.agentBilling?.lastnameFather}  ${invoice?.agentBilling?.lastnameMother}`.toUpperCase();
       flatReport.push({
-        status: this.checkStatusInvoice(invoice.status),
-        billingDate: formatDate(invoice.createdAt),
+        status: this.checkStatusInvoice(invoice?.status),
+        billingDate: formatDate(invoice?.createdAt),
         payDay,
-        folioInvoice: invoice.folio,
+        folioInvoice: invoice?.folio,
         paymentFolio,
-        folioSale: invoice.schoolCharge.folio,
-        typePerson: invoice.schoolCharge.schoolStudent.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
-        studentName: invoice.schoolCharge.schoolStudent.searchName.trimRight().toUpperCase(),
+        folioSale: invoice.schoolCharge?.folio,
+        typePerson: invoice.schoolCharge?.schoolStudent?.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
+        studentName: invoice.schoolCharge?.schoolStudent.searchName.trimRight().toUpperCase(),
         billingAgent,
-        businessName: invoice.businessName,
-        rfc: invoice.rfc,
+        businessName: invoice?.businessName,
+        rfc: invoice?.rfc,
         paymentForm: paymentMethod,
-        total: invoice.total,
-        uuid: invoice.uuid,
+        total: invoice?.total,
+        uuid: invoice?.uuid,
         typeInvoice,
       });
     }

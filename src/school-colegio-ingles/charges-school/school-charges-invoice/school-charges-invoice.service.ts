@@ -142,6 +142,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     branchOfficeSettingId: number;
     onlyData: boolean
   }) {
+
     const invoices = this.repo.createQueryBuilder('invoices');
     invoices.leftJoinAndSelect('invoices.agentBilling', 'agentBilling');
     invoices.leftJoinAndSelect('invoices.agentCanceling', 'agentCanceling');
@@ -155,6 +156,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
         startDate: moment(query.startDate).startOf('day').toDate(),
         endDate: moment(query.endDate).endOf('day').toDate(),
       });
+
     if (query.status !== 0) {
       invoices.andWhere('invoices.status = :status', {
         status: query.status,
