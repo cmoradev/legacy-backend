@@ -225,7 +225,7 @@ export class SimpleReportCollege {
         payments.forEach(payment => {
             if (payment.schoolCharge) {
                 const { name, lastNameFather, lastNameMother } = payment.schoolCharge.schoolStudent;
-                const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+                const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
                 /*const nextRowToMerge = startRow + (payment.methodsPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
@@ -318,7 +318,7 @@ export class SimpleReportCollege {
         sales.forEach(sale => {
             const { schoolStudent } = sale;
             const { name, lastNameFather, lastNameMother } = schoolStudent;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
 
             /*const nextRowToMerge = startRow + (sale.chargesDetails.length) - 1;
             if (nextRowToMerge > startRow) {

@@ -61,7 +61,7 @@ export function convertPaymentsReport(payments: MiniStoreSalePayment[], cashiers
     payments.forEach(payment => {
         if (payment.miniStoreSale) {
             const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
             let studentType = '';
             switch (payment.miniStoreSale.student.typeStudent) {
                 case TypeStudent.externo:
@@ -196,7 +196,7 @@ export function convertPaymentsComissionReport(quantityCommissions: number, paym
     payments.forEach(payment => {
         if (payment.miniStoreSale) {
             const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
 
             payment.miniStoreSaleMethodPayments.forEach(paymentMethod => {
                 const paymentItem = [];

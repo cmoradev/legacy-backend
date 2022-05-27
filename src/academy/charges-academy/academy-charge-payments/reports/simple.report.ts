@@ -232,7 +232,7 @@ export class SimpleReportAcademy {
         payments.forEach(payment => {
             if (payment.academyCharge) {
                 const { name, lastNameFather, lastNameMother } = payment.academyCharge.schoolStudent;
-                const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+                const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
                 let studentType = '';
                 switch (payment.academyCharge.schoolStudent.typeStudent) {
                     case TypeStudent.externo:
@@ -349,7 +349,7 @@ export class SimpleReportAcademy {
         sales.forEach(sale => {
             const { schoolStudent } = sale;
             const { name, lastNameFather, lastNameMother } = schoolStudent;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
             let studentType = '';
             switch (schoolStudent.typeStudent) {
                 case TypeStudent.student:

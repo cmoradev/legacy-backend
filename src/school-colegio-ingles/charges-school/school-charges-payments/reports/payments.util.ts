@@ -60,7 +60,7 @@ export function convertPaymentsReportCollege(payments: SchoolChargePayment[], ca
   payments.forEach(payment => {
     if (payment.schoolCharge) {
       const { name, lastNameFather, lastNameMother } = payment.schoolCharge.schoolStudent;
-      const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+      const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
       let studentType = '';
       switch (payment.schoolCharge.schoolStudent.typeStudent) {
         case TypeStudent.externo:

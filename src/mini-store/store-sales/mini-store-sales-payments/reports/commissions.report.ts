@@ -282,7 +282,7 @@ export class CommissionsReport {
         payments.forEach(payment => {
             if (payment.miniStoreSale) {
                 const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
-                const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+                const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
 
                 const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
@@ -384,7 +384,7 @@ export class CommissionsReport {
         sales.forEach(sale => {
             const { student } = sale;
             const { name, lastNameFather, lastNameMother } = student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {

@@ -199,7 +199,7 @@ export class SimpleReport {
         payments.forEach(payment => {
             if (payment.miniStoreSale) {
                 const { name, lastNameFather, lastNameMother } = payment.miniStoreSale.student;
-                const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+                const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
                 const nextRowToMerge = startRow + (payment.miniStoreSaleMethodPayments.length) - 1;
                 if (nextRowToMerge > startRow) {
                     ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'M'].forEach(column => {
@@ -293,7 +293,7 @@ export class SimpleReport {
         sales.forEach(sale => {
             const { student } = sale;
             const { name, lastNameFather, lastNameMother } = student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
 
             const nextRowToMerge = startRow + (sale.miniStoreSaleDetails.length) - 1;
             if (nextRowToMerge > startRow) {
@@ -402,7 +402,7 @@ export class SimpleReport {
         salesReturns.forEach(saleReturn => {
             const salesSheetItem = [];
             const { lastNameFather, name, lastNameMother, typeStudent, matricula } = saleReturn.sale.student;
-            const fullName = `${name.trim() || ''} ${lastNameFather.trim() || ''} ${lastNameMother.trim() || ''}`;
+            const fullName = `${(name !== undefined && name !== null) ? name.trim() : ''} ${(lastNameFather !== undefined && lastNameFather !== null) ? lastNameFather.trim() : ''} ${(lastNameMother !== undefined && lastNameMother !== null) ? lastNameMother.trim() : ''}`;
             salesSheetItem.push(saleReturn.createdAt);
             salesSheetItem.push(saleReturn.agent.name || '');
             salesSheetItem.push(saleReturn.folio || '');
