@@ -47,7 +47,7 @@ import { ConceptsPriceByPaymentBillig, roundQuantity } from '../../../common/poi
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';

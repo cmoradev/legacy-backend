@@ -5,7 +5,7 @@ import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.servi
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
