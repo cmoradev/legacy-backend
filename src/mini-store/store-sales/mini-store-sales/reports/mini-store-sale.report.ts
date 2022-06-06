@@ -24,7 +24,14 @@ export function totalForProducts(sales: MiniStoreSale[]) {
       r.push(helper[key]);
     }
     helper[key].quantity = add(helper[key].quantity, o.quantity);
-    const descuento = totalAmountConceptAfterExtraCharge(o, SystemTypeExtraChargesEnum.Descuentos)
+    const descuento = totalAmountConceptAfterExtraCharge({
+      id: o.id,
+      extraCharges: o.extraCharges || [],
+      price: o.price,
+      quantity: o.quantity,
+      priceWithIVA: o.priceWithIVA,
+      isIva: o.isIva
+    }, SystemTypeExtraChargesEnum.Descuentos)
     helper[key].total = add(helper[key].total, descuento);
 
     return r;
@@ -67,7 +74,14 @@ export function totalForCategory(sales: MiniStoreSale[]) {
     }
     const index = helper[key].unit.findIndex((unit) => unit.id === o.unitMeasurement);
     helper[key].unit[index].quantity = add(helper[key].unit[index].quantity, o.quantity);
-    const descuento = totalAmountConceptAfterExtraCharge(o, SystemTypeExtraChargesEnum.Descuentos)
+    const descuento = totalAmountConceptAfterExtraCharge({
+      id: o.id,
+      extraCharges: o.extraCharges || [],
+      price: o.price,
+      quantity: o.quantity,
+      priceWithIVA: o.priceWithIVA,
+      isIva: o.isIva
+    }, SystemTypeExtraChargesEnum.Descuentos)
     helper[key].unit[index].total = add(helper[key].unit[index].total, descuento);
     helper[key].total = add(helper[key].total, descuento);
 

@@ -4,7 +4,6 @@ import { MiniStoreQuotation } from './entities/mini-store-quotation.entity';
 import { MiniStoreQuotationService } from './mini-store-quotation.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStoreQuotation,

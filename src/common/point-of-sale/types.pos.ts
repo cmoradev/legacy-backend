@@ -1,12 +1,9 @@
 import { FormaPago, FormaPagoType, XmlReceptorAttribute } from "@signati/core";
-import { InformacionGlobal } from "../..//mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
+import { InformacionGlobal } from "../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
 import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
-import { AcademyChargeDetails } from "../../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity";
-import { MiniStoreSaleDetail } from "../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity";
-import { SchoolChargeDetails } from "../../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity";
+import { SystemTypeExtraChargesEnum } from "src/system/system-type-extra-charges/entities/system-type-extra-charges.entity";
+import { TypeChargeApplicationEnum } from "src/system/system-extra-charges/enums/system-extra-charges.enum";
 
-export type MinStoreExtra = { isIva: false; priceWithIVA: number }
-export type TypeDetails = MiniStoreSaleDetail | SchoolChargeDetails | AcademyChargeDetails
 export interface Concept {
     keyProdServ: string;
     noIdentity: string;
@@ -55,4 +52,24 @@ export enum InvoiceModules {
     ACADEMY = 1,
     SCHOOL = 2,
     STORE = 3,
+}
+export interface Payment extends MoreProperties {
+    quantity: number;
+    change: number;
+}
+
+interface MoreProperties {
+    [key: string]: any
+}
+
+export interface ExtraCharges {
+    typeExtraCharge: SystemTypeExtraChargesEnum,
+    quantity: number,
+    applicationType: TypeChargeApplicationEnum
+}
+export interface Detalles extends MoreProperties {
+    id: number;
+    quantity: number;
+    price: number | string;
+    extraCharges: ExtraCharges[]
 }

@@ -5,7 +5,6 @@ import { PermissionsService } from './permissions.service';
 import { PermissionDto } from './DTO/permission.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Permission,

@@ -27,6 +27,7 @@ import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
+import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -206,6 +207,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     public async getGlobalInvoiceFromSales(query: NotInvoicedDto): Promise<any> {
         const billedPayments: NotInvoiced[] = [];
         const unbilledPayments: NotInvoiced[] = [];
+        let totalUnbilledPayments = 0;
+        let totalBilledPayments = 0;
         let invoice: SchoolChargesInvoice[] | null = null;
 
         const data: NotInvoiced[] = await this.connection.query(`
@@ -220,9 +223,13 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             value.p_income = parseFloat(`${value.p_income}`);
 
             if ((value.f_status === null || value.f_status === '0') && (value.p_stamping === '0' || value.p_stamping === 0)) {
-                unbilledPayments.push(value)
+                unbilledPayments.push(value);
+
+                totalUnbilledPayments = sumQuantity(totalUnbilledPayments, value.p_income);
             } else {
-                billedPayments.push(value)
+                billedPayments.push(value);
+
+                totalBilledPayments = sumQuantity(totalBilledPayments, value.p_income);
             }
         });
 
@@ -239,6 +246,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         return {
             billedPayments,
             unbilledPayments,
+            totalBilledPayments,
+            totalUnbilledPayments,
             invoice
         };
     }

@@ -8,7 +8,7 @@ import { mulQuantity } from '../../common/point-of-sale/point-of-sale';
 import { MiniStoreProduct } from '../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseProvider } from '../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
 
-@UseGuards(JwtGuard)
+
 @Crud({
     model: {
         type: MiniStoreProductsProviders,

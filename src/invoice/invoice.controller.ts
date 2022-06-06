@@ -9,7 +9,7 @@ import { AcademyChargePayments } from '../academy/charges-academy/academy-charge
 import { SchoolChargeDetails } from '../school-colegio-ingles/charges-school/school-charges-details/entities/school-charge-details.entity';
 import { SchoolChargePayment } from '../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { Response } from 'express';
-import { InvoiceModules } from '../common/point-of-sale/types.pos';
+import { Detalles, InvoiceModules } from '../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
 @Controller()
 export class InvoiceController {
@@ -25,16 +25,17 @@ export class InvoiceController {
     let factor;
     switch (type) {
       case InvoiceModules.ACADEMY:
-        factor = ConceptsPriceByPaymentBillig({
-          details,
+        factor = ConceptsPriceByPaymentBillig<AcademyChargeDetails>({
+          details: details as AcademyChargeDetails[],
           payment,
           type,
+          application: 2
         });
 
         break;
       case InvoiceModules.SCHOOL:
-        factor = ConceptsPriceByPaymentBillig({
-          details,
+        factor = ConceptsPriceByPaymentBillig<SchoolChargeDetails>({
+          details: details as SchoolChargeDetails[],
           payment,
           type,
           ivaDefault: 1,
@@ -42,8 +43,8 @@ export class InvoiceController {
         });
         break;
       case InvoiceModules.STORE:
-        factor = ConceptsPriceByPaymentBillig({
-          details,
+        factor = ConceptsPriceByPaymentBillig<MiniStoreSaleDetail>({
+          details: details as MiniStoreSaleDetail[],
           payment,
           type,
         });

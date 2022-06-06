@@ -6,7 +6,6 @@ import { Response } from 'express';
 import { alumnos } from './catalogue/students.catalogue';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Student,

@@ -12,6 +12,8 @@ import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import { Response } from 'express';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
+import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
+import { SchoolChargePayment } from 'src/school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 @Crud({
     model: {
         type: CreditNoteSchool,
@@ -37,106 +39,63 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         readonly configService: ConfigService) {
     }
 
-    @Get('generate/credit-note')
+    @Post('generate/credit-note')
     async generateCreditNote(
-        // @Body() request: {
-        //     invoice: InvoiceSat,
-        //     receiver: Partial<XmlReceptorAttribute>,
-        //     concepts: ConceptWithTaxes[],
-        //     invoicesRelations: SchoolChargesInvoice[],
-        //     branchOfficeId: string | number,
-        //     branchOfficeModuleId: string | number,
-        //     userCreatorId: string | number
-        // }
+        @Body() request: {
+            invoice: InvoiceSat,
+            receiver: Partial<XmlReceptorAttribute>,
+            concepts: ConceptWithTaxes[],
+            invoicesRelations: SchoolChargesInvoice[],
+            branchOfficeId: string | number,
+            branchOfficeModuleId: string | number,
+            userCreatorId: string | number
+        }
     ): Promise<void> {
 
-        const request = {
-            "invoice": {
-                "Serie": "",
-                "Folio": "1",
-                "Fecha": "2022-04-16T12:14:29",
-                "FormaPago": "",
-                "LugarExpedicion": "",
-                "MetodoPago": "",
-                "Moneda": "MXN",
-                "TipoDeComprobante": "E",
-                "condicionesDePago": "",
-                "SubTotal": "448.28",
-                "Total": 520
-            },
-            "receiver": {
-                "businessName": "CALEB ISAAC MORA DIAZ",
-                "rfc": "MODC980924HK1",
-                "keyRegimen": "",
-                "regimenFiscalReceptor": "",
-                "domicilioFiscalReceptor": "77712",
-                "Rfc": "MODC980924HK1",
-                "Nombre": "CALEB ISAAC MORA DIAZ",
-                "UsoCFDI": "",
-                "DomicilioFiscalReceptor": "77712",
-                "RegimenFiscalReceptor": ""
-            },
-            "branchOfficeId": 1,
-            "branchOfficeModuleId": 3,
-            "invoicesRelations": [
 
-            ],
-            "concepts": [
-                {
-                    "id": 244,
-                    "createdAt": "2022-04-01 11:58:55",
-                    "updatedAt": "2022-04-01 11:58:55",
-                    "deletedAt": null,
-                    "version": 1,
-                    "uuid": "ed0b95d3-8d82-40cf-a0d6-9070bbabb4d0",
-                    "productCode": "01010101",
-                    "productName": "ROTULA DE SUSPENSION INFERIOR DER. NISSAN. D21 4X4",
-                    "quantity": "1.000000",
-                    "unitMeasurement": "H87",
-                    "objetoImp": "02",
-                    "priceWithIVA": "520.00",
-                    "price": 448.28,
-                    "isIva": 1,
-                    "extraCharges": [
-
-                    ]
-                }
-            ],
-            "userCreatorId": 1,
-            "informacionGlobal": {
-                "Periodicidad": "",
-                "Meses": "",
-                "Año": ""
-            }
-        } as any
-        // if (!request) {
-        //     throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-        // }
-        // if (!request.invoice) {
-        //     throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
-        // }
-        // if (!request.receiver) {
-        //     throw new HttpException('Receiver data is required', HttpStatus.BAD_REQUEST);
-        // }
-        // if (typeof request.concepts === 'undefined' || request.concepts.length === 0) {
-        //     throw new HttpException('Must send al least one concept', HttpStatus.BAD_REQUEST);
-        // }
-        // if (!request.branchOfficeId) {
-        //     throw new HttpException('branchOfficeId data is required', HttpStatus.BAD_REQUEST);
-        // }
-        // if (!request.branchOfficeModuleId) {
-        //     throw new HttpException('branchOfficeModuleId data is required', HttpStatus.BAD_REQUEST);
-        // }
-        // if (!request.userCreatorId) {
-        //     throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
-        // }
+        if (!request) {
+            throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.invoice) {
+            throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.receiver) {
+            throw new HttpException('Receiver data is required', HttpStatus.BAD_REQUEST);
+        }
+        if (typeof request.concepts === 'undefined' || request.concepts.length === 0) {
+            throw new HttpException('Must send al least one concept', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.branchOfficeId) {
+            throw new HttpException('branchOfficeId data is required', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.branchOfficeModuleId) {
+            throw new HttpException('branchOfficeModuleId data is required', HttpStatus.BAD_REQUEST);
+        }
+        if (!request.userCreatorId) {
+            throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
+        }
         try {
+            const detalles = ConceptsPriceByPaymentBillig({
+                details: request.concepts as any[],
+                payment: {
+                    quantity: +request.invoice.Total,
+                    change: 0
+                } as SchoolChargePayment,
+                type: 2,
+                ivaDefault: 1,
+                ivaByDetail: 0,
+            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId)
             const xmlCreditNote = await CreditNote({
-                concepts: request.concepts,
-                impuestos: {},
-                invoice: request.invoice,
+                concepts: detalles.detalles,
+                impuestos: detalles.impuestos,
+                invoice: {
+                    ...request.invoice,
+                    Total: detalles.total.toString(),
+                    SubTotal: detalles.subtotal.toString(),
+                    Descuento: detalles.discount.toString()
+                },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
                 settingsBranchOffice: branchOfficeSetting,

@@ -6,11 +6,10 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { Response } from 'express';
 import { QuoationsReport } from './reports/quoations.report';
 
-// @UseGuards(JwtGuard)
 @Controller('reports')
 export class MiniStoreQuotationReporteController {
     constructor(
-      readonly service: MiniStoreQuotationService,
+        readonly service: MiniStoreQuotationService,
     ) {
     }
 

@@ -4,7 +4,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStorePriceList,

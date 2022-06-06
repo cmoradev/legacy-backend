@@ -10,7 +10,6 @@ import { Response } from 'express';
 import { ConceptStatusExcel } from './report/concept.status.excel';
 import { getNameStatusConcept } from './report/helpers';
 
-@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: SchoolPayment,
@@ -28,7 +27,7 @@ import { getNameStatusConcept } from './report/helpers';
 })
 @Controller()
 export class SchoolPaymentsController implements CrudController<SchoolPayment> {
-  constructor(readonly service: SchoolPaymentsService) {}
+  constructor(readonly service: SchoolPaymentsService) { }
 
   get base(): CrudController<SchoolPayment> {
     return this;
@@ -96,9 +95,9 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
           parseInt(`${options.conceptStatus}`),
         )}s-${new Date().toTimeString()}`,
       };
-      return res.send({ data, report });
+      return res.send({ report, data });
     } else {
-      return res.send({ data, report: false });
+      return res.send({ report: false, data });
     }
   }
 }

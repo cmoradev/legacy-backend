@@ -31,7 +31,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateGlobalInvoice, GenerateInvoice } from '../../../mini-store/store-sales/mini-store-sales-payments/utils/generateInvoice';
+import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, XmlCdfi } from '@signati/core';
@@ -41,13 +41,12 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/miniStore-point-of-sale';
+import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
-@UseGuards(JwtGuard)
 @Crud({
   model: {
     type: AcademyChargePayments,
@@ -159,9 +158,9 @@ export class AcademyChargePaymentsController
     const invoiceDetails = ConceptsPriceByPaymentBillig({
       payment: result.payment,
       details: result.charge.chargesDetails,
-      type: InvoiceModules.ACADEMY
+      type: InvoiceModules.ACADEMY,
+      application: 2
     });
-    // res.send(invoiceDetails);
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );

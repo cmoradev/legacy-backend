@@ -4,7 +4,6 @@ import { StudyPlan } from './entities/study-plan.entity';
 import { StudyPlansService } from './study-plans.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: StudyPlan,
