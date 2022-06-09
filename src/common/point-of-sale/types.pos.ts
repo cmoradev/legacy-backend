@@ -3,6 +3,7 @@ import { InformacionGlobal } from "../../mini-store/store-sales/mini-store-sales
 import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
 import { SystemTypeExtraChargesEnum } from "src/system/system-type-extra-charges/entities/system-type-extra-charges.entity";
 import { TypeChargeApplicationEnum } from "src/system/system-extra-charges/enums/system-extra-charges.enum";
+import Decimal from "decimal.js";
 
 export interface Concept {
     keyProdServ: string;
@@ -72,4 +73,37 @@ export interface Detalles extends MoreProperties {
     quantity: number;
     price: number | string;
     extraCharges: ExtraCharges[]
+}
+export interface Charge {
+    subtotal: any;
+    discount: any;
+    surcharge: any;
+    scholarship: any;
+    proccess: {
+        becas: any;
+        discount: any;
+        recargos: any;
+        detailTotal: any;
+        scholarshipsTotal: any;
+        surchargesTotal: any;
+        discountTotal: any;
+    }
+}
+
+export interface ChargesDetails{
+    amountDiscount: Decimal;
+    price: {
+        priceUnit: Decimal;
+        amount: Decimal;
+    },
+    data: {
+        becas: Decimal;
+        discount: Decimal;
+        recargos: Decimal;
+    }
+    quantity: Decimal;
+    base: Decimal;
+    iva: Decimal;
+    subtotal: Decimal;
+    total: Decimal;
 }

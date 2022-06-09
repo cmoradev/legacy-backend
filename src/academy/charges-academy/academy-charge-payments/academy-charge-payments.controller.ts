@@ -42,10 +42,11 @@ import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
+
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 
 @Crud({
   model: {
@@ -155,12 +156,12 @@ export class AcademyChargePaymentsController
   @Post('/billing')
   async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBillig({
+    const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
       payment: result.payment,
       details: result.charge.chargesDetails,
       type: InvoiceModules.ACADEMY,
-      application: 2
     });
+    
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
