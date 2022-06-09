@@ -28,6 +28,7 @@ import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 
 @Crud({
     model: {
@@ -84,7 +85,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
-        const invoiceDetails = ConceptsPriceByPaymentBillig({
+        const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
             type: InvoiceModules.STORE

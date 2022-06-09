@@ -1,10 +1,11 @@
 import Decimal from 'decimal.js';
 import { ivaFromFinalAmount } from '../numbers';
-import { divQuantity, getTotalAfterExtraCharge, getTranslados, mulQuantity, subQuantity, sumQuantity, totalAmountConcept, totalAmountConceptAfterExtraCharge } from '../point-of-sale/point-of-sale';
-import { Charge, ChargesDetails, Detalles, FacturaDetalles, InvoiceModules, Payment } from '../point-of-sale/types.pos';
+import { getTotalAfterExtraCharge, subQuantity, totalAmountConcept } from '../point-of-sale/point-of-sale';
+import { ChargesDetails, Detalles, FacturaDetalles, InvoiceModules, Payment } from '../point-of-sale/types.pos';
 import { getMoreDatails } from '../point-of-sale/utils';
+import { ObjetoImpEnum } from '@signati/core';
 
-Decimal.set({ precision: 6 }) 
+Decimal.set({ precision: 6 })
 
 export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payload: {
     payment: Payment,
@@ -28,21 +29,21 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
             }
         }
     };
-    let totalBase = 0;
+    let totalBase = new Decimal(0);
     details.forEach((concept) => {
-        const cargos = getCharges({ concept, type, iva: ivaDefault})
-        totalBase = parseFloat(Decimal.add(cargos.total, totalBase).toFixed(2));
+        const cargos = getCharges({ concept, type, iva: ivaDefault })
+        totalBase = Decimal.add(cargos.total, totalBase);
     });
 
-    const base = (pago / totalBase) || 1;
-    
+    const base = (pago / totalBase.toNumber()) || 1;
+
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
-        const cargos = getCharges({ concept: detail, type, iva: ivaDefault});
-        resultad.discount = Decimal.mul(Decimal.add(cargos.amountDiscount, resultad.discount),base).toNumber();
-        resultad.surcharges = Decimal.mul(Decimal.add(cargos.data.recargos, resultad.surcharges),base).toNumber();
-        resultad.subtotal = Decimal.mul(Decimal.add(cargos.subtotal, resultad.subtotal),base).toNumber();
-        const nativeCalculo = ivaFromFinalAmount(Decimal.mul(cargos.total,base).toNumber(), -2, ivaDefault);
+        const cargos = getCharges({ concept: detail, type, iva: ivaDefault });
+        resultad.discount = Decimal.mul(Decimal.add(cargos.amountDiscount, resultad.discount), base).toNumber();
+        resultad.surcharges = Decimal.mul(Decimal.add(cargos.data.recargos, resultad.surcharges), base).toNumber();
+        resultad.subtotal = Decimal.mul(Decimal.add(cargos.subtotal, resultad.subtotal), base).toNumber();
+        const nativeCalculo = ivaFromFinalAmount(Decimal.mul(cargos.total, base).toNumber(), -2, ivaDefault);
         const concept = {
             id: detail.id,
             quantity: detail.quantity,
@@ -92,16 +93,25 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
         //
         if (ivaByDetail !== 0) {
 
-            resultad.impuestos.translados.Base = Decimal.add(Decimal.mul(cargos.base,base), resultad.impuestos.translados.Base).toNumber();
-            resultad.impuestos.translados.Importe = Decimal.add(Decimal.mul(cargos.iva,base), resultad.impuestos.translados.Importe).toNumber();
+            resultad.impuestos.translados.Base = Decimal.add(Decimal.mul(cargos.base, base), resultad.impuestos.translados.Base).toNumber();
+            resultad.impuestos.translados.Importe = Decimal.add(Decimal.mul(cargos.iva, base), resultad.impuestos.translados.Importe).toNumber();
             concept.impuestos = {
                 trasladado: {
-                    Base: Decimal.mul(cargos.base,base).toNumber(),
-                    Importe: Decimal.mul(cargos.iva,base).toNumber()
+                    Base: Decimal.mul(cargos.base, base).toNumber(),
+                    Importe: Decimal.mul(cargos.iva, base).toNumber()
+                }
+            }
+        } else {
+            resultad.impuestos.translados.Base = 0;
+            resultad.impuestos.translados.Importe = 0;
+            concept.impuestos = {
+                trasladado: {
+                    Base: 0,
+                    Importe: 0
                 }
             }
         }
-        resultad.total = Decimal.add(Decimal.mul(cargos.total,base), resultad.total).toNumber();
+        resultad.total = Decimal.add(Decimal.mul(cargos.total, base), resultad.total).toNumber();
         generalizedConcepts.push(concept);
         //
     });
@@ -140,21 +150,25 @@ const getCharges = <D extends Detalles>(payload: {
         },
 
     };
-    const detailTotal =  totalAmountConcept(concept);
+    const detailTotal = totalAmountConcept(concept);
     const price = concept.price
+    let becas = value;
+    let discount = value;
+    let recargos = value;
+    let priceWithoutIva = value;
     switch (type) {
         case 1:
             //ACADEMIA DESCUENTO SOBRE DESCUENTO
-            let becas = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 }));
-            let discount = new Decimal(getTotalAfterExtraCharge({ total: becas.toNumber(), extraCharges, typeExtraCharges: 1 }));
-            let recargos = new Decimal(getTotalAfterExtraCharge({ total: discount.toNumber(), extraCharges, typeExtraCharges: 2 }));
+            becas = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 }));
+            discount = new Decimal(getTotalAfterExtraCharge({ total: becas.toNumber(), extraCharges, typeExtraCharges: 1 }));
+            recargos = new Decimal(getTotalAfterExtraCharge({ total: discount.toNumber(), extraCharges, typeExtraCharges: 2 }));
             obj.data = {
                 becas: Decimal.sub(price, becas),
                 recargos: Decimal.sub(discount, recargos),
                 discount: Decimal.sub(price, discount)
             }
             obj.amountDiscount = Decimal.div(Decimal.mul(concept.quantity, obj.data.discount), iva);
-            let priceWithoutIva = Decimal.div(
+            priceWithoutIva = Decimal.div(
                 //precio con iva + recargos / iva
                 Decimal.mul(
                     Decimal.add(
@@ -164,31 +178,41 @@ const getCharges = <D extends Detalles>(payload: {
                     concept.quantity),
                 iva
             );
-            obj.price.priceUnit = Decimal.div(
-                //precio sin iva
-                priceWithoutIva,
-                //cantidad
-                concept.quantity
-            );
-            obj.price.amount = Decimal.mul(obj.price.priceUnit, concept.quantity);
-            obj.base = Decimal.sub(priceWithoutIva, obj.amountDiscount);
-            obj.iva = Decimal.mul(obj.base, Decimal.sub(iva, 1));
-            obj.subtotal = priceWithoutIva;
-            obj.total = Decimal.add(obj.base, obj.iva);
-
             break;
         default:
             // TIENDA Y COLEGIO DESCUENTOS NORMALES
-            // obj.proccess.discount = totalAmountConceptAfterExtraCharge(concept, 1);
-            // obj.proccess.recargos = totalAmountConceptAfterExtraCharge(concept, 2);
-            // obj.proccess.becas = totalAmountConceptAfterExtraCharge(concept, 3);
-            // obj.proccess.discountTotal = Decimal.sub(detailTotal, obj.proccess.discount);
-            // obj.proccess.scholarshipsTotal, obj.scholarship = Decimal.sub(detailTotal, obj.proccess.becas);
-            // obj.proccess.surchargesTotal, obj.surcharge = Decimal.sub(detailTotal, obj.proccess.recargos);
-            // obj.discount = Decimal.sum(obj.scholarship, obj.proccess.discountTotal);
-            // obj.subtotal = Decimal.sub(Decimal.sum(obj.surcharge,detailTotal),obj.discount);
+            becas = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 }));
+            discount = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 1 }));
+            recargos = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 2 }));
+            obj.data = {
+                becas: Decimal.sub(detailTotal, becas),
+                recargos: Decimal.sub(detailTotal, recargos),
+                discount: Decimal.sub(detailTotal, discount)
+            }
+            obj.amountDiscount = Decimal.div(Decimal.mul(concept.quantity, Decimal.add(obj.data.discount, obj.data.becas)), iva);
+            priceWithoutIva = Decimal.div(
+                //precio con iva + recargos / iva
+                Decimal.mul(
+                    Decimal.add(
+                        detailTotal,
+                        obj.data.recargos
+                    ),
+                    concept.quantity),
+                iva
+            );
             break;
     }
+    obj.price.priceUnit = Decimal.div(
+        //precio sin iva
+        priceWithoutIva,
+        //cantidad
+        concept.quantity
+    );
+    obj.price.amount = Decimal.mul(obj.price.priceUnit, concept.quantity);
+    obj.base = Decimal.sub(priceWithoutIva, obj.amountDiscount);
+    obj.iva = Decimal.mul(obj.base, Decimal.sub(iva, 1));
+    obj.subtotal = priceWithoutIva;
+    obj.total = Decimal.add(obj.base, obj.iva);
     return obj;
 }
 
