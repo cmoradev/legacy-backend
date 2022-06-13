@@ -135,6 +135,7 @@ export class SchoolChargesPaymentsController
         `${this.configService.getPath()}logos/colegiologo.png`,
       );
       const Receip = new Recibo();
+      Receip.setType(InvoiceModules.SCHOOL)
       Receip.addLogo({
         width: 100,
         height: 100,
@@ -157,6 +158,7 @@ export class SchoolChargesPaymentsController
         name,
         curp: student.curp ? student.curp : '',
         matricula: student.matricula,
+        type: InvoiceModules.SCHOOL
       });
       const ven =
         result.payment.cashierCharge.name +

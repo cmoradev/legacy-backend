@@ -50,32 +50,32 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
             process: {
                 detalle: {
                     detailTotal: detail.price,
-                    totalNative: parseFloat(cargos.total.toFixed(2)),
+                    totalNative: cargos.total.toDecimalPlaces(2),
                     nativeCalculo,
-                    importe: parseFloat(cargos.price.amount.toFixed(2))
+                    importe: cargos.price.amount.toDecimalPlaces(2)
                 },
                 concept: {
                     conceptPrice: detail.price,
                     totalBase: detail.price,
-                    totalMasRecargo: parseFloat(Decimal.add(detail.price, cargos.data.recargos).toFixed(2)),
-                    unitPrice: parseFloat(cargos.price.priceUnit.toFixed(2)),
+                    totalMasRecargo: Decimal.add(detail.price, cargos.data.recargos).toDecimalPlaces(2),
+                    unitPrice: cargos.price.priceUnit.toDecimalPlaces(2),
 
                 },
                 discount: {
-                    discount: parseFloat(cargos.amountDiscount.toFixed(2)),
-                    discountTotal: parseFloat(cargos.amountDiscount.toFixed(2)),
-                    discountBase: parseFloat(cargos.amountDiscount.toFixed(2)),
-                    unitDiscount: parseFloat(cargos.amountDiscount.toFixed(2)),
+                    discount: cargos.data.discount.toDecimalPlaces(2),
+                    discountTotal: cargos.data.discount.toDecimalPlaces(2),
+                    discountBase: cargos.data.discount.toDecimalPlaces(2),
+                    unitDiscount: cargos.data.discount.toDecimalPlaces(2),
                 },
                 recargos: {
-                    recargos: parseFloat(cargos.data.recargos.toFixed(2)),
-                    surchargesTotal: parseFloat(cargos.data.recargos.toFixed(2)),
-                    surchargesBase: parseFloat(cargos.data.recargos.toFixed(2)),
+                    recargos: cargos.data.recargos.toDecimalPlaces(2),
+                    surchargesTotal: cargos.data.recargos.toDecimalPlaces(2),
+                    surchargesBase: cargos.data.recargos.toDecimalPlaces(2),
                 },
                 becas: {
-                    becas: parseFloat(cargos.data.becas.toFixed(2)),
-                    scholarshipsTotal: parseFloat(cargos.data.becas.toFixed(2)),
-                    scholarshipsBase: parseFloat(cargos.data.becas.toFixed(2)),
+                    becas: cargos.data.becas.toDecimalPlaces(2),
+                    scholarshipsTotal: cargos.data.becas.toDecimalPlaces(2),
+                    scholarshipsBase: cargos.data.becas.toDecimalPlaces(2),
                 },
             },
             // @ts-ignore
