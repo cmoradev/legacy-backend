@@ -200,6 +200,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
                 'chargesDetails',
                 'chargesDetails.academyInscriptionConcept',
                 'chargesDetails.extraCharges',
+                'schoolStudent'
             ],
         });
 
@@ -209,6 +210,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             },
             relations: [
                 'methodsPayments',
+                'methodsPayments.invoiceMethodPayment',
+                'cashierCharge'
             ],
         });
 
