@@ -71,20 +71,6 @@ module.exports = {
       },
     },
     {
-      name: '5104-erp-pachamama',
-      script: 'dist/main.js',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '420M',
-      env_dev: {
-        NODE_ENV: 'development',
-      },
-      env_production: {
-        NODE_ENV: 'pachamama',
-      },
-    },
-    {
       name: '5105-erp-refaccionaria',
       script: 'dist/main.js',
       instances: 1,
@@ -99,7 +85,7 @@ module.exports = {
       },
     },
     {
-      name: '5106-erp-pachamama2',
+      name: '5106-erp-ci-pdc-cafe',
       script: 'dist/main.js',
       instances: 1,
       autorestart: true,
@@ -109,8 +95,8 @@ module.exports = {
         NODE_ENV: 'development',
       },
       env_production: {
-        NODE_ENV: 'pachamama2',
+        NODE_ENV: 'cipdccafe',
       },
-    },
+    }
   ],
 };

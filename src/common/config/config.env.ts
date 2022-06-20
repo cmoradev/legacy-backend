@@ -6,7 +6,6 @@ export const connections = [
   'cipdc',
   'citul',
   'naturale',
-  'pachamama',
-  'pachamama2',
+  'cipdccafe',
   'refaccionaria',
 ];
