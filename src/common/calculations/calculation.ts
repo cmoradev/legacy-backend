@@ -13,8 +13,9 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     type: InvoiceModules;
     ivaDefault?: number;
     ivaByDetail?: number;
+    baseDefault?: number;
 }): FacturaDetalles => {
-    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16 } = payload;
+    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0 } = payload;
     const pago = payment.quantity - payment.change;
     const resultad = {
         total: 0,
@@ -35,7 +36,13 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
         totalBase = Decimal.add(cargos.total, totalBase);
     });
 
-    const base = (pago / totalBase.toNumber()) || 1;
+    let base = 0;;
+
+    if(baseDefault == 1){
+        base = baseDefault
+    }else{
+        base = (pago / totalBase.toNumber()) || 1;
+    }
 
     const generalizedConcepts: any[] = [];
     details.forEach((detail) => {
@@ -151,7 +158,7 @@ const getCharges = <D extends Detalles>(payload: {
 
     };
     const detailTotal = totalAmountConcept(concept);
-    const price = concept.price
+    const price = concept.priceWithIVA;
     let becas = value;
     let discount = value;
     let recargos = value;
@@ -172,7 +179,7 @@ const getCharges = <D extends Detalles>(payload: {
                 //precio con iva + recargos / iva
                 Decimal.mul(
                     Decimal.add(
-                        price,
+                        detailTotal,
                         obj.data.recargos
                     ),
                     concept.quantity),
@@ -189,12 +196,12 @@ const getCharges = <D extends Detalles>(payload: {
                 recargos: Decimal.sub(detailTotal, recargos),
                 discount: Decimal.sub(detailTotal, discount)
             }
-            obj.amountDiscount = Decimal.div(Decimal.mul(concept.quantity, Decimal.add(obj.data.discount, obj.data.becas)), iva);
+            obj.amountDiscount = Decimal.div(Decimal.add(obj.data.discount, obj.data.becas), iva);
             priceWithoutIva = Decimal.div(
                 //precio con iva + recargos / iva
                 Decimal.mul(
                     Decimal.add(
-                        detailTotal,
+                        price,
                         obj.data.recargos
                     ),
                     concept.quantity),
