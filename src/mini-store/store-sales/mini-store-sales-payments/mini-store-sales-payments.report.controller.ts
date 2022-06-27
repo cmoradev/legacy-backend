@@ -10,7 +10,6 @@ import { UsersService } from '../../../system/users/users.service';
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { Public } from '../../../common/docorators/public.decorator';
 
-// @UseGuards(JwtGuard)
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
     constructor(

@@ -4,7 +4,6 @@ import { Response } from 'express';
 import { MyIngresDto } from './dto/myIngres.dto';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Controller()
 export class MiniStoreDashBoardController {
     constructor(

@@ -4,7 +4,6 @@ import { AcademyInscription } from './entities/academy-inscription.entity';
 import { AcademyInscriptionService } from './academy-inscription.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyInscription,

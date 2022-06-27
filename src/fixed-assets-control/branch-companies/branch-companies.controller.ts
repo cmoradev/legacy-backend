@@ -5,7 +5,6 @@ import { BranchCompany } from './entities/branch-company.entity';
 import { BranchCompaniesService } from './branch-companies.service';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: BranchCompany,

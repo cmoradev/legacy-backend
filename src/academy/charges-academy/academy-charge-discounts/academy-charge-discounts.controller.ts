@@ -4,7 +4,6 @@ import { AcademyChargeDiscounts } from './entities/academy-charge-discounts.enti
 import { AcademyChargeDiscountsService } from './academy-charge-discounts.service';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: AcademyChargeDiscounts,

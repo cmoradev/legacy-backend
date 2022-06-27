@@ -43,6 +43,7 @@ import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { Public } from '../../../common/docorators/public.decorator';
 
 @Crud({
     model: {
@@ -260,20 +261,20 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('report-invoice')
+    @Post('report-invoice')
     public async reportInvoice(@Res() response, @Query() query: {
         startDate: string,
         endDate: string,
-        billingAgent: number,
-        status: number,
+        billingAgent: string,
+        status: string,
         data: string,
     }) {
-
         try {
             const dataReport = await this.service.reportInvoice(query);
             response.status(200);
             response.send(dataReport);
         } catch (e) {
+            console.log(e)
             response.status(404);
             response.send(e.message);
         }
@@ -359,22 +360,24 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Get('/download-xml')
-    getXmlInvoice(@Query() request, @Res() response) {
+    @Public()
+    @Get('/download-xml/:UUID')
+    getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${request.UUID}.xml`;
+            const xml = `${workPath}/comprobantes/tienda/${UUID}.xml`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    @Get('/download-pdf')
-    getPdfInvoice(@Query() request, @Res() response) {
+    @Public()
+    @Get('/download-pdf/:UUID')
+    getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${request.UUID}.pdf`;
+            const xml = `${workPath}/comprobantes/tienda/${UUID}.pdf`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)

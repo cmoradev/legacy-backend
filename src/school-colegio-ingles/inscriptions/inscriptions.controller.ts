@@ -18,7 +18,6 @@ import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
 import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: Inscription,

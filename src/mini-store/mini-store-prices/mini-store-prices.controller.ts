@@ -4,7 +4,6 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { MiniStorePrices } from './entities/mini-store-prices.entity';
 import { MiniStorePricesService } from './mini-store-prices.service';
 
-@UseGuards(JwtGuard)
 @Crud({
     model: {
         type: MiniStorePrices,
@@ -23,7 +22,7 @@ export class MiniStorePricesController implements CrudController<MiniStorePrices
 
     constructor(
         readonly service: MiniStorePricesService
-    ) {}
+    ) { }
 
     get base(): CrudController<MiniStorePrices> {
         return this;
