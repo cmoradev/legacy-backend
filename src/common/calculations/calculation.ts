@@ -158,7 +158,12 @@ const getCharges = <D extends Detalles>(payload: {
 
     };
     const detailTotal = totalAmountConcept(concept);
-    const price = concept.priceWithIVA;
+    let price = 0;
+    if(type == InvoiceModules.STORE){
+        price = concept.priceWithIVA;
+    }else{
+        price = typeof concept.price ==  'string' ? parseFloat(`${concept.price}`) : concept.price;
+    }
     let becas = value;
     let discount = value;
     let recargos = value;
