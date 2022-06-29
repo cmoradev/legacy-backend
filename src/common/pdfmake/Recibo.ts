@@ -1,12 +1,23 @@
-import {TDocumentDefinitions} from 'pdfmake/interfaces';
-import {createPdf, TCreatedPdf} from 'pdfmake/build/pdfmake';
-import {vfs} from 'pdfmake/build/pdfmake';
-import {pdfMake} from 'pdfmake/build/vfs_fonts';
+import { Size, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { createPdf, TCreatedPdf } from 'pdfmake/build/pdfmake';
+import { vfs } from 'pdfmake/build/pdfmake';
+import { pdfMake } from 'pdfmake/build/vfs_fonts';
 import { NumeroALetras } from '../../pdf/A117/desing/utils/NumbersToLetter';
+import { InvoiceModules } from '../point-of-sale/types.pos';
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 6 })
 // @ts-ignore
 vfs = pdfMake.vfs;
 
 export class Recibo {
+
+    public type: InvoiceModules = InvoiceModules.STORE;
+
+    public setType(type: InvoiceModules): void{
+        this.type = type;
+    }
+
     private docDefinition: TDocumentDefinitions | any = {
         pageSize: 'A4',
         pageMargins: [20, 25, 20, 25],
@@ -40,7 +51,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '\n'}
+                                    { text: '\n' }
                                 ]
                             },
                             {
@@ -52,7 +63,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '\n'}
+                                    { text: '\n' }
                                 ]
                             },
                             {
@@ -64,7 +75,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '\n'}
+                                    { text: '\n' }
                                 ]
                             }
                         ],
@@ -76,7 +87,7 @@ export class Recibo {
                         {
                             alignment: 'center',
                             margin: [55, 0, 0, 0],
-                            text: 'FACTURA',
+                            text: 'RECIBO DE PAGO',
                             style: {
                                 fontSize: 9,
                                 bold: true,
@@ -174,7 +185,7 @@ export class Recibo {
                                     color: '#a76d09',
                                 }
                             },
-                            {text: ''},
+                            { text: '' },
                             {
                                 text: 'NOMBRE: ',
                                 style: {
@@ -182,15 +193,15 @@ export class Recibo {
                                     color: '#a76d09',
                                 }
                             },
-                            {text: ''},
+                            { text: '' },
                             {
-                                text: 'CURP: ',
+                                text: ' ',
                                 style: {
                                     bold: true,
                                     color: '#a76d09',
                                 }
                             },
-                            {text: ''}
+                            { text: '' }
                         ],
                         style: {
                             fontSize: 10,
@@ -216,7 +227,7 @@ export class Recibo {
                                     color: '#a76d09',
                                 }
                             },
-                            {text: ''},
+                            { text: '' },
                             {
                                 text: 'COMPROBANTE: ',
                                 style: {
@@ -243,54 +254,8 @@ export class Recibo {
                     fontSize: 9
                 },
                 table: {
-                    widths: [45, 50, 200, 50, 55, 50, 40],
-                    body: [
-                        [
-                            {
-                                text: 'CANTIDAD',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'P.UNITARIO',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'CONCEPTO/DESCRIPCIÓN',
-                                alignment: 'center',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'RECARGO',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'DESCUENTO',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'BECA',
-                                style: {
-                                    bold: true
-                                }
-                            },
-                            {
-                                text: 'IMPORTE',
-                                style: {
-                                    bold: true
-                                }
-                            }
-                        ],
-                    ],
+                    widths: [],
+                    body: [],
                 },
                 layout: {
                     fillColor: (rowIndex: number, node: any, columnIndex: any) => {
@@ -433,6 +398,26 @@ export class Recibo {
                     }
                 }
             },
+            {
+                columns: [
+                    {
+                        bold: true,
+                        margin: [0, 20, 0, 10],
+                        text: [
+                            {
+                                text: 'ESTE COMPROBRANTE NO ES VALIDO PARA EFECTOS FISCALES\n',
+                            },
+                        ],
+                        style: {
+                            fontSize: 10,
+                        }
+                    },
+                    {
+                        width: 200,
+                        text: ''
+                    },
+                ]
+            },
         ]
     }
 
@@ -503,23 +488,38 @@ export class Recibo {
         this.docDefinition.content[0].columns[2].text[3].text[1].text = emisor.expedido + '\n';
     }
 
-    public addReceptor(receptor: { matricula: string, name: string, curp: string }) {
-        this.docDefinition.content[1].columns[0].text[2] = {text: receptor.matricula + '\n'}
-        this.docDefinition.content[1].columns[0].text[4] = {text: receptor.name + '\n'}
-        this.docDefinition.content[1].columns[0].text[6] = {text: receptor.curp + '\n'}
+    public addReceptor(receptor: { matricula: string, name: string, curp: string, type: InvoiceModules }) {
+        this.docDefinition.content[1].columns[0].text[2] = { text: receptor.matricula + '\n' }
+        this.docDefinition.content[1].columns[0].text[4] = { text: receptor.name + '\n' }
+        if (receptor.type == InvoiceModules.SCHOOL) {
+            this.docDefinition.content[1].columns[0].text[5] = {
+                text: 'CURP: ', style: {
+                    bold: true,
+                    color: '#a76d09',
+                }
+            }
+        } else if (receptor.type == InvoiceModules.STORE || receptor.type == InvoiceModules.ACADEMY) {
+            this.docDefinition.content[1].columns[0].text[5] = {
+                text: 'RFC: ', style: {
+                    bold: true,
+                    color: '#a76d09',
+                }
+            }
+        }
+        this.docDefinition.content[1].columns[0].text[6] = { text: receptor.curp + '\n' }
     }
 
     public addInformacion(info: { vendedor: string }) {
-        this.docDefinition.content[1].columns[2].text[2] = {text: info.vendedor + '\n'}
+        this.docDefinition.content[1].columns[2].text[2] = { text: info.vendedor + '\n' }
     }
 
 
     public addCatidad(comprobante: { SubTotal: string, Recargo: string, Descuento: string, Impuesto: string, Total: string }) {
-        this.docDefinition.content[3].table.body[0][1].text[1] = {text: '$' + comprobante.SubTotal + '\n'}
-        this.docDefinition.content[3].table.body[0][1].text[3] = {text: '$' + comprobante.Recargo + '\n'}
-        this.docDefinition.content[3].table.body[0][1].text[5] = {text: '$' + comprobante.Descuento + '\n'}
-        this.docDefinition.content[3].table.body[0][1].text[7] = {text: '$' + comprobante.Impuesto + '\n'}
-        this.docDefinition.content[3].table.body[0][1].text[9] = {text: '$' + comprobante.Total + '\n'}
+        this.docDefinition.content[3].table.body[0][1].text[1] = { text: '$' + comprobante.SubTotal + '\n' }
+        this.docDefinition.content[3].table.body[0][1].text[3] = { text: '$' + comprobante.Recargo + '\n' }
+        this.docDefinition.content[3].table.body[0][1].text[5] = { text: '$' + comprobante.Descuento + '\n' }
+        this.docDefinition.content[3].table.body[0][1].text[7] = { text: '$' + comprobante.Impuesto + '\n' }
+        this.docDefinition.content[3].table.body[0][1].text[9] = { text: '$' + comprobante.Total + '\n' }
     }
 
     public addNumberToLetter(total: number) {
@@ -539,30 +539,157 @@ export class Recibo {
     }
 
     public addDetalles(detalles: any[]) {
-        for (const con of detalles) {
-            this.docDefinition.content[2].table.body.push([
-                {
-                    text: con.cantidad
-                },
-                {
-                    text: con.preciou
-                },
-                {
-                    text: con.descripcion
-                },
-                {
-                    text: con.recargo
-                },
-                {
-                    text: con.descuento
-                },
-                {
-                    text: con.beca
-                },
-                {
-                    text: con.importe
-                }
-            ])
+
+        if (this.type == InvoiceModules.ACADEMY || this.type == InvoiceModules.SCHOOL) {
+            this.docDefinition.content[2].table.widths.push(45);
+            this.docDefinition.content[2].table.widths.push(50);
+            this.docDefinition.content[2].table.widths.push(200);
+            this.docDefinition.content[2].table.widths.push(50);
+            this.docDefinition.content[2].table.widths.push(55);
+            this.docDefinition.content[2].table.widths.push(50);
+            this.docDefinition.content[2].table.widths.push(40);
+            this.docDefinition.content[2].table.body.push(
+                [
+                    {
+                        text: 'CANTIDAD',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'P.UNITARIO',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'CONCEPTO/DESCRIPCIÓN',
+                       alignment: 'center',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'RECARGO',
+                       style: {
+                           bold: true
+                        }
+                   },
+                    {
+                       text: 'DESCUENTO',
+                       style: {
+                           bold: true
+                        }
+                    },
+                    {
+                        text: 'BECA',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'IMPORTE',
+                        style: {
+                            bold: true
+                        }
+                    }
+               ]
+            )
+            for (const con of detalles) {
+                this.docDefinition.content[2].table.body.push([
+                    {
+                        text: con.cantidad
+                    },
+                    {
+                        text: '$' + con.preciou
+                    },
+                    {
+                        text: con.descripcion
+                    },
+                    {
+                        text: '$' + con.recargo
+                    },
+                    {
+                        text: '$' + con.descuento
+                    },
+                    {
+                        text: '$' + con.beca
+                    },
+                    {
+                        text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                    }
+                ])
+            }
+        } else {
+            this.docDefinition.content[2].table.widths.push(45);
+            this.docDefinition.content[2].table.widths.push(50);
+            this.docDefinition.content[2].table.widths.push(250);
+            this.docDefinition.content[2].table.widths.push(50);
+            this.docDefinition.content[2].table.widths.push(55);
+            this.docDefinition.content[2].table.widths.push(40);
+            this.docDefinition.content[2].table.body.push(
+                [
+                    {
+                        text: 'CANTIDAD',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'P.UNITARIO',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'CONCEPTO/DESCRIPCIÓN',
+                       alignment: 'center',
+                       style: {
+                           bold: true
+                       }
+                   },
+                   {
+                       text: 'RECARGO',
+                       style: {
+                           bold: true
+                        }
+                   },
+                    {
+                       text: 'DESCUENTO',
+                       style: {
+                           bold: true
+                        }
+                    },
+                    {
+                        text: 'IMPORTE',
+                        style: {
+                            bold: true
+                        }
+                    }
+               ]
+            )
+            for (const con of detalles) {
+                this.docDefinition.content[2].table.body.push([
+                    {
+                        text: con.cantidad
+                    },
+                    {
+                        text: '$' + con.preciou
+                    },
+                    {
+                        text: con.descripcion
+                    },
+                    {
+                        text: '$' + con.recargo
+                    },
+                    {
+                        text: '$' + con.descuento
+                    },
+                    {
+                        text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                    }
+                ])
+            }
         }
     }
 

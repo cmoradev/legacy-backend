@@ -6,6 +6,7 @@ const Logo_1 = require("../utils/Logo");
 const XmlToJson_1 = require("../utils/XmlToJson");
 const NumbersToLetter_1 = require("../utils/NumbersToLetter");
 const QRCode = require("qrcode");
+const Decimal = require('decimal.js');
 const generic_1 = require("../../src/signati/generic");
 const pdfmake_1 = require("pdfmake/build/pdfmake");
 const vfs_fonts_1 = require("pdfmake/build/vfs_fonts");
@@ -709,7 +710,7 @@ class A117 extends generic_1.Generic {
                     text: '$' + con.Descuento
                 },
                 {
-                    text: '$' + con.Importe
+                    text: '$' + Decimal.sub(new Decimal(con.Importe),new Decimal(con.Descuento)).toString()
                 }
             ]);
         }
