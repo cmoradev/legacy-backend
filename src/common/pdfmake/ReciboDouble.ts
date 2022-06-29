@@ -1041,22 +1041,22 @@ export class ReciboDouble {
                     text: con.cantidad
                 },
                 {
-                    text: con.preciou
+                    text: '$' + con.preciou
                 },
                 {
                     text: con.descripcion
                 },
                 {
-                    text: con.recargo
+                    text: '$' + con.recargo
                 },
                 {
-                    text: con.descuento
+                    text: '$' + con.descuento
                 },
                 {
                     text: con.beca
                 },
                 {
-                    text: Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                    text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
                 }
             ])
             this.docDefinition.content[7].table.body.push([
@@ -1064,22 +1064,22 @@ export class ReciboDouble {
                     text: con.cantidad
                 },
                 {
-                    text: con.preciou
+                    text: '$' + con.preciou
                 },
                 {
                     text: con.descripcion
                 },
                 {
-                    text: con.recargo
+                    text: '$' + con.recargo
                 },
                 {
-                    text: con.descuento
+                    text: '$' + con.descuento
                 },
                 {
-                    text: con.beca
+                    text: '$' + con.beca
                 },
                 {
-                    text: Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                    text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
                 }
             ])
         }
