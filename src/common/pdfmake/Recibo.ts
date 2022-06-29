@@ -4,6 +4,9 @@ import { vfs } from 'pdfmake/build/pdfmake';
 import { pdfMake } from 'pdfmake/build/vfs_fonts';
 import { NumeroALetras } from '../../pdf/A117/desing/utils/NumbersToLetter';
 import { InvoiceModules } from '../point-of-sale/types.pos';
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 6 })
 // @ts-ignore
 vfs = pdfMake.vfs;
 
@@ -683,7 +686,7 @@ export class Recibo {
                         text: con.descuento
                     },
                     {
-                        text: con.importe
+                        text: Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
                     }
                 ])
             }
