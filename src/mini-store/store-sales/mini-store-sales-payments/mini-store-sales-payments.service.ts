@@ -288,6 +288,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 'miniStoreSaleDetails',
                 'miniStoreSaleDetails.miniStoreProduct',
                 'miniStoreSaleDetails.extraCharges',
+                'student'
             ],
         });
 
@@ -297,6 +298,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             },
             relations: [
                 'miniStoreSaleMethodPayments',
+                'miniStoreSaleMethodPayments.invoiceMethod',
+                'agent'
             ],
         });
 

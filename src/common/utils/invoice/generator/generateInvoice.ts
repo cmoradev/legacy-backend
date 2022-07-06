@@ -9,6 +9,9 @@ import { BranchOfficeSetting } from '../../../../system/branch-office-setting/en
 import { MonthEnum, PeriodicityEnum } from '../../../dto/not-invoiced.dto';
 import { ivaFromFinalAmount } from '../../../numbers';
 import { CFDIWebtel, Environment, InvoiceDetails } from '../../../point-of-sale/types.pos';
+import Decimal from 'decimal.js';
+
+Decimal.set({ precision: 6 })
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -32,6 +35,17 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
 
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+
+    let subtotalCom = new Decimal(0);
+    let discountCom = new Decimal(0);
+    let totalBaseCon = new Decimal(0);
+    let totalTranslado = new Decimal(0);
+    for (const detalle of detalles) {
+        subtotalCom = Decimal.add(new Decimal(detalle.importe).toDecimalPlaces(2), subtotalCom);
+        discountCom = Decimal.add(new Decimal(detalle.discountTotal).toDecimalPlaces(2), discountCom);
+        totalTranslado = Decimal.add(new Decimal(detalle.impuestos.trasladado.Importe).toDecimalPlaces(2), totalTranslado);
+        totalBaseCon = Decimal.add(new Decimal(detalle.impuestos.trasladado.Base).toDecimalPlaces(2), totalBaseCon);
+    }
     const comprobante: Comprobante = {
         Serie: serie,
         Folio: folio,
@@ -41,9 +55,9 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
         NoCertificado: '',
         Certificado: '',
         // condicionesDePago: 'Contado',
-        SubTotal: parseFloat(`${subtotal}`).toFixed(2),
-        Descuento: parseFloat(`${discount}`).toFixed(2),
-        Total: parseFloat(`${total}`).toFixed(2),
+        SubTotal: `${subtotalCom.toDecimalPlaces(2)}`,
+        Descuento: `${discountCom.toDecimalPlaces(2)}`,
+        Total: `${Decimal.add(Decimal.sub(subtotalCom.toDecimalPlaces(2), discountCom.toDecimalPlaces(2)), totalTranslado.toDecimalPlaces(2)).toNumber()}`,
         Moneda: 'MXN',
         TipoDeComprobante: 'I',
         MetodoPago: 'PUE',
@@ -76,7 +90,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     });
 
     await cfd.receptor(recep);
-    let totalTranslado = '0.00';
+
 
     for (const detalle of detalles) {
         const concepto = new Concepts({
@@ -85,37 +99,34 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
             Cantidad: detalle.quantity,
             ClaveUnidad: detalle?.ClaveUnidad || 'E48',
             Descripcion: sanitizeStringToXml(detalle.descrption),
-            ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
-            Importe: parseFloat(`${detalle.importe}`).toFixed(2),
-            Descuento: parseFloat(
-                `${add(detalle.discountTotal, detalle?.scholarships || 0)}`,
-            ).toFixed(2),
+            ValorUnitario: `${new Decimal(detalle.unitPrice).toDecimalPlaces(2)}`,
+            Importe: `${new Decimal(detalle.importe).toDecimalPlaces(2)}`,
+            Descuento: `${new Decimal(detalle.discountTotal).toDecimalPlaces(2)}`,
             ObjetoImp: detalle?.objectoImp || ObjetoImpEnum.SíObjetoDeImpuesto
         } as XmlConceptoAttributes);
         if (importeImpuesto !== 0 && detalle.objectoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
             concepto.traslado({
-                Base: subQuantity(detalle.importe, detalle.discountTotal, -2).toString(),
+                Base: `${new Decimal(detalle.impuestos.trasladado.Base).toDecimalPlaces(2)}`,
                 Impuesto: '002',
                 TipoFactor: 'Tasa',
                 TasaOCuota: '0.160000',
-                Importe: mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2).toString(),
+                Importe: `${new Decimal(detalle.impuestos.trasladado.Importe).toDecimalPlaces(2)}`,
             });
         }
-        totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal, -2), importeImpuesto, -2), totalTranslado).toString();
         await cfd.concepto(concepto);
     }
 
     const impuesto: Impuestos = new Impuestos({
-        TotalImpuestosTrasladados: totalTranslado,
+        TotalImpuestosTrasladados: `${totalTranslado.toDecimalPlaces(2)}`,
     });
 
     if (importeImpuesto !== 0) {
         impuesto.traslados({
-            Base: parseFloat(`${subQuantity(subtotal, discount)}`).toFixed(2),
+            Base: `${totalBaseCon.toDecimalPlaces(2)}`,
             Impuesto: '002',
             TipoFactor: 'Tasa',
             TasaOCuota: '0.160000',
-            Importe: totalTranslado,
+            Importe: `${totalTranslado.toDecimalPlaces(2)}`,
         });
         await cfd.impuesto(impuesto);
     }
@@ -145,6 +156,17 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
     const key = instancePath + 'CSD/' + emisor.keyCSD;
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
     const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+
+    let subtotalCom = new Decimal(0);
+    let discountCom = new Decimal(0);
+    let totalBaseCon = new Decimal(0);
+    let totalTranslado = new Decimal(0);
+    for (const detalle of detalles) {
+        subtotalCom = Decimal.add(new Decimal(detalle.importe).toDecimalPlaces(2), subtotalCom);
+        discountCom = Decimal.add(new Decimal(detalle.discountTotal).toDecimalPlaces(2), discountCom);
+        totalTranslado = Decimal.add(new Decimal(detalle.impuestos.trasladado.Importe).toDecimalPlaces(2), totalTranslado);
+        totalBaseCon = Decimal.add(new Decimal(detalle.impuestos.trasladado.Base).toDecimalPlaces(2), totalBaseCon);
+    }
     const comprobante: Comprobante = {
         Serie: serie,
         Folio: folio,
@@ -154,9 +176,9 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
         NoCertificado: '',
         Certificado: '',
         // condicionesDePago: 'Contado',
-        SubTotal: parseFloat(`${subtotal}`).toFixed(2),
-        Descuento: parseFloat(`${discount}`).toFixed(2),
-        Total: parseFloat(`${total}`).toFixed(2),
+        SubTotal: `${subtotalCom.toDecimalPlaces(2)}`,
+        Descuento: `${discountCom.toDecimalPlaces(2)}`,
+        Total: `${Decimal.add(Decimal.sub(subtotalCom.toDecimalPlaces(2), discountCom.toDecimalPlaces(2)), totalTranslado.toDecimalPlaces(2)).toNumber()}`,
         Moneda: 'MXN',
         TipoDeComprobante: 'I',
         MetodoPago: 'PUE',
@@ -186,7 +208,6 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
     });
 
     await cfd.receptor(recep);
-    let totalTranslado = '0.00';
     for (const detalle of detalles) {
         const concepto = new Concepts({
             ClaveProdServ: detalle.claveProd,
@@ -195,19 +216,27 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
             ClaveUnidad: detalle.ClaveUnidad,
             Unidad: detalle.Unidad,
             Descripcion: detalle.descrption,
-            ValorUnitario: parseFloat(`${detalle.unitPrice}`).toFixed(2),
-            Importe: parseFloat(`${detalle.importe}`).toFixed(2),
-            Descuento: parseFloat(
-                `${add(detalle.discountTotal, detalle.scholarships)}`,
-            ).toFixed(2),
+            ValorUnitario: `${new Decimal(detalle.unitPrice).toDecimalPlaces(2)}`,
+            Importe: `${new Decimal(detalle.importe).toDecimalPlaces(2)}`,
+            Descuento: `${new Decimal(detalle.discountTotal).toDecimalPlaces(2)}`,
             ObjetoImp: ObjetoImpEnum.NoobjetoDeimpuesto
         });
-        totalTranslado = sumQuantity(mulQuantity(subQuantity(detalle.importe, detalle.discountTotal), 0), totalTranslado).toString();
         const ieduObject: XmlIeduAttribute = student;
         const iedu = new Iedu(ieduObject);
         await concepto.complemento(iedu);
         await cfd.concepto(concepto);
     }
+    const impuesto: Impuestos = new Impuestos({
+        TotalImpuestosTrasladados: '0',
+    });
+
+    impuesto.traslados({
+        Base: '1.00',
+        Impuesto: '002',
+        TipoFactor: 'Exento',
+    });
+    await cfd.impuesto(impuesto);
+
     await cfd.certificar(cer);
     await cfd.sellar(key, emisor.password);
     const xml = await cfd.getXmlCdfi();

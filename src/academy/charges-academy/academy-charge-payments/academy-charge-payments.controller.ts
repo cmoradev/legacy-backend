@@ -34,7 +34,7 @@ import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity'
 import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { FormaPago, XmlCdfi } from '@signati/core';
+import { FormaPago, RegimenFiscalList, XmlCdfi } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
@@ -42,10 +42,16 @@ import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
+
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
+import Decimal from 'decimal.js';
+import * as moment from 'moment';
+import { Recibo } from '../../../common/pdfmake/Recibo';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+Decimal.set({ precision: 6 })
 
 @Crud({
   model: {
@@ -155,12 +161,12 @@ export class AcademyChargePaymentsController
   @Post('/billing')
   async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBillig({
+    const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
       payment: result.payment,
       details: result.charge.chargesDetails,
       type: InvoiceModules.ACADEMY,
-      application: 2
     });
+
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
@@ -354,6 +360,128 @@ export class AcademyChargePaymentsController
       console.warn(e);
       res.status(400);
       res.send(e);
+    }
+  }
+
+  @Post('/receipt')
+  async billingGet(@Body() query: QueryBillingAcademy, @Res() res: Response) {
+    try {
+      const result = await this.service.findSaleByPayment(query);
+      const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
+        payment: result.payment,
+        details: result.charge.chargesDetails,
+        type: InvoiceModules.ACADEMY,
+      });
+
+      const currentOffice = await this.branchOffice.findBranch(
+        query.branchOfficeId,
+      );
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: query.branchOfficeSettingId,
+        },
+      });
+      const invoiceFind = await this.academyChargeInvoiceService.findInvoiceByPayment(
+        {
+          paymentId: query.chargePaymentId,
+          status: StatusInvoce.invoiced,
+        },
+      );
+
+      let subtotalCom = new Decimal(0);
+      let discountCom = new Decimal(0);
+      let recargosCom = new Decimal(0);
+      let totalBaseCon = new Decimal(0);
+      let totalTranslado = new Decimal(0);
+
+      const detalles = invoiceDetails.detalles.map((d: any) => {
+        subtotalCom = Decimal.add(new Decimal(d.importe).toDecimalPlaces(2), subtotalCom);
+        recargosCom = Decimal.add(recargosCom, d.process.recargos.recargos)
+        discountCom = Decimal.add(new Decimal(d.discountTotal).toDecimalPlaces(2), discountCom);
+        totalTranslado = Decimal.add(new Decimal(d.impuestos.trasladado.Importe).toDecimalPlaces(2), totalTranslado);
+        totalBaseCon = Decimal.add(new Decimal(d.impuestos.trasladado.Base).toDecimalPlaces(2), totalBaseCon);
+        return {
+          cantidad: d.quantity,
+          preciou: `${new Decimal(d.unitPrice).toDecimalPlaces(2)}`,
+          descripcion: d.descrption,
+          recargo: `${d.process.recargos.recargos}`,
+          descuento: `${new Decimal(d.discountTotal).toDecimalPlaces(2)}`,
+          beca: `${d.process.becas.becas}`,
+          importe: `${new Decimal(d.importe).toDecimalPlaces(2)}`,
+        };
+      });
+
+      const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
+      const Receip = new Recibo();
+      Receip.setType(InvoiceModules.ACADEMY);
+      Receip.addLogo({
+        width: 100,
+        height: 100,
+        image: `data:image/png;base64, ${logo.toString('base64')}`,
+      });
+      Receip.addFolio(result.payment.folio);
+      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+      const regimen = RegimenFiscalList.find(
+        (f) => f.value === branchOfficeSett.regime,
+      );
+      Receip.addEmisor({
+        name: branchOfficeSett.businessName,
+        rfc: branchOfficeSett.rfc,
+        regimen:
+          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+        expedido: branchOfficeSett.address,
+      });
+      let name = '';
+      if (result.payment.stamping == 0) {
+        name = `${result.charge.schoolStudent.name} ${result.charge.schoolStudent.lastNameFather} ${result.charge.schoolStudent.lastNameMother} `;
+      } else {
+        name = invoiceFind.businessName
+      }
+      Receip.addReceptor({
+        name,
+        curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
+        matricula: result.charge.schoolStudent.matricula,
+        type: InvoiceModules.ACADEMY
+      });
+      const ven =
+        result.payment.cashierCharge.name +
+        ' ' +
+        result.payment.cashierCharge.lastnameFather +
+        ' ' +
+        result.payment.cashierCharge.lastnameMother;
+      Receip.addInformacion({
+        vendedor: ven,
+      });
+
+      Receip.addCatidad({
+        SubTotal: `${subtotalCom.toDecimalPlaces(2)}`,
+        Recargo: `${recargosCom.toDecimalPlaces(2)}`,
+        Descuento: `${discountCom.toDecimalPlaces(2)}`,
+        Impuesto: `${totalTranslado.toDecimalPlaces(2)}`,
+        Total: `${Decimal.add(Decimal.sub(subtotalCom.toDecimalPlaces(2), discountCom.toDecimalPlaces(2)), totalTranslado.toDecimalPlaces(2)).toNumber()}`,
+      });
+      Receip.addDetalles(detalles);
+
+      Receip.addNumberToLetter(+invoiceDetails.total);
+      Receip.addObervations(result.payment.observations);
+      const forma = result.payment.methodsPayments.map((m) => {
+        return {
+          forma: m.invoiceMethodPayment.name,
+          cantidad: roundQuantity(m.quantity),
+          banco: m.Bank ? m.Bank.name : '',
+          cuenta: m.account,
+          fecha: m.date,
+        };
+      });
+      Receip.addFormaPago(forma);
+      res.send({
+        src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
+      });
+    } 
+      catch (e) {
+        res.send({
+            error: e,
+        });
     }
   }
 

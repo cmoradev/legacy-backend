@@ -51,6 +51,7 @@ import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
+import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 
 @Crud({
   model: {
@@ -134,6 +135,7 @@ export class SchoolChargesPaymentsController
         `${this.configService.getPath()}logos/colegiologo.png`,
       );
       const Receip = new Recibo();
+      Receip.setType(InvoiceModules.SCHOOL)
       Receip.addLogo({
         width: 100,
         height: 100,
@@ -156,6 +158,7 @@ export class SchoolChargesPaymentsController
         name,
         curp: student.curp ? student.curp : '',
         matricula: student.matricula,
+        type: InvoiceModules.SCHOOL
       });
       const ven =
         result.payment.cashierCharge.name +
@@ -305,13 +308,14 @@ export class SchoolChargesPaymentsController
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
     const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBillig({
+    const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
       payment: result.payment,
       details: result.charge.chargesDetails,
       type: InvoiceModules.SCHOOL,
       ivaDefault: 1,
       ivaByDetail: 0,
     });
+
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
