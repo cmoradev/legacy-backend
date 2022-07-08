@@ -1,11 +1,11 @@
-import Decimal from 'decimal.js';
-import { ivaFromFinalAmount } from '../numbers';
-import { getTotalAfterExtraCharge, subQuantity, totalAmountConcept } from '../point-of-sale/point-of-sale';
-import { ChargesDetails, Detalles, FacturaDetalles, InvoiceModules, Payment } from '../point-of-sale/types.pos';
+import { ChargesDetails, Detalles, ExtraCharges, FacturaDetalles, InvoiceModules, Payment, TotalsDetails } from '../point-of-sale/types.pos';
 import { getMoreDatails } from '../point-of-sale/utils';
-import { ObjetoImpEnum } from '@signati/core';
-
-Decimal.set({ precision: 6 })
+import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core';
+import { calculateInvoicePrices, Concept, ChargeTypeEnum, Charge, ChargeApplicationEnum, FountTypeEnum, TaxPercentageEnum, ConceptAmountDetailsResult, Decimal } from '@munyaal/calculations'
+import { ConceptReceipt, ConceptSchoolAndAcademy, DataInvoice, dataInvoiceInit, initChargesDetails } from './TypesCalculation';
+import { sanitizeStringToXml } from '../utils/sanitizeStringToXml';
+import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 
 export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payload: {
     payment: Payment,
@@ -13,218 +13,152 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     type: InvoiceModules;
     ivaDefault?: number;
     ivaByDetail?: number;
+    typeConcept: 'Recepit' | 'Invoice'
     baseDefault?: number;
-}): FacturaDetalles => {
-    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0 } = payload;
-    const pago = payment.quantity - payment.change;
-    const resultad = {
-        total: 0,
-        subtotal: 0,
-        discount: 0,
-        surcharges: 0,
-        detalles: [],
-        impuestos: {
-            translados: {
-                Base: 0,
-                Importe: 0,
+}): DataInvoice => {
+    const { payment, details, type, typeConcept, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0 } = payload;
+    
+    //INICIALIZACION DEL OBJ RETORNO
+    let obj: DataInvoice = dataInvoiceInit;
+    
+    let cptArray: any[] = []
+
+    let surchargesTotal: Decimal [] = [];
+
+    const totals = TotalWithCalculation({ details, type, payment });
+    totals.detailsWithPaymentApplied.concepts.forEach((concept: Concept ) => {
+        // SE OBTIENE LOS CALCULOS
+        let cpt = {} as any;
+        const conceptDetails = details.find((d)=>d.id, concept.id);
+        const moreDetails = getMoreDatails({ detail: conceptDetails, type });
+        let scholarships: Decimal[] = [];
+        let discounts: Decimal[] = [];
+        let surcharges: Decimal[] = [];
+
+        concept.charges.forEach((c)=>{
+            if(c.id == SystemTypeExtraChargesEnum.Becas){
+                scholarships.push(c.chargeAmount)
+            }else if (c.id == SystemTypeExtraChargesEnum.Descuentos){
+                discounts.push(c.chargeAmount)
+            }else if (c.id == SystemTypeExtraChargesEnum.Recargos){
+                surcharges.push(c.chargeAmount)
+                surchargesTotal.push(concept.chargeWithIVA)
             }
-        }
-    };
-    let totalBase = new Decimal(0);
-    details.forEach((concept) => {
-        const cargos = getCharges({ concept, type, iva: ivaDefault })
-        totalBase = Decimal.add(cargos.total, totalBase);
-    });
-
-    let base = 0;;
-
-    if(baseDefault == 1){
-        base = baseDefault
-    }else{
-        base = (pago / totalBase.toNumber()) || 1;
-    }
-
-    const generalizedConcepts: any[] = [];
-    details.forEach((detail) => {
-        const cargos = getCharges({ concept: detail, type, iva: ivaDefault });
-        resultad.discount = Decimal.mul(Decimal.add(cargos.amountDiscount, resultad.discount), base).toNumber();
-        resultad.surcharges = Decimal.mul(Decimal.add(cargos.data.recargos, resultad.surcharges), base).toNumber();
-        resultad.subtotal = Decimal.mul(Decimal.add(cargos.subtotal, resultad.subtotal), base).toNumber();
-        const nativeCalculo = ivaFromFinalAmount(Decimal.mul(cargos.total, base).toNumber(), -2, ivaDefault);
-        const concept = {
-            id: detail.id,
-            quantity: detail.quantity,
-            process: {
-                detalle: {
-                    detailTotal: detail.price,
-                    totalNative: cargos.total.toDecimalPlaces(2),
-                    nativeCalculo,
-                    importe: cargos.price.amount.toDecimalPlaces(2)
-                },
-                concept: {
-                    conceptPrice: detail.price,
-                    totalBase: detail.price,
-                    totalMasRecargo: Decimal.add(detail.price, cargos.data.recargos).toDecimalPlaces(2),
-                    unitPrice: cargos.price.priceUnit.toDecimalPlaces(2),
-
-                },
-                discount: {
-                    discount: cargos.data.discount.toDecimalPlaces(2),
-                    discountTotal: cargos.data.discount.toDecimalPlaces(2),
-                    discountBase: cargos.data.discount.toDecimalPlaces(2),
-                    unitDiscount: cargos.data.discount.toDecimalPlaces(2),
-                },
-                recargos: {
-                    recargos: cargos.data.recargos.toDecimalPlaces(2),
-                    surchargesTotal: cargos.data.recargos.toDecimalPlaces(2),
-                    surchargesBase: cargos.data.recargos.toDecimalPlaces(2),
-                },
-                becas: {
-                    becas: cargos.data.becas.toDecimalPlaces(2),
-                    scholarshipsTotal: cargos.data.becas.toDecimalPlaces(2),
-                    scholarshipsBase: cargos.data.becas.toDecimalPlaces(2),
-                },
-            },
-            // @ts-ignore
-            objectoImp: detail.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto,
-            unitPrice: Decimal.mul(cargos.price.priceUnit, base).toNumber(),
-            discountTotal: Decimal.mul(cargos.amountDiscount, base).toNumber(),
-            importe: Decimal.mul(cargos.price.amount, base).toNumber(),
-            surcharge: Decimal.mul(resultad.surcharges, base).toNumber(),
-            scholarships: Decimal.mul(cargos.data.becas, base).toNumber(),
-            impuestos: {},
-            NoIdentificacion: 1,
-            unidad: "", // descripcion de la clave de unidad
-            ...getMoreDatails({ detail, type })
-        };
-        //
-        if (ivaByDetail !== 0) {
-
-            resultad.impuestos.translados.Base = Decimal.add(Decimal.mul(cargos.base, base), resultad.impuestos.translados.Base).toNumber();
-            resultad.impuestos.translados.Importe = Decimal.add(Decimal.mul(cargos.iva, base), resultad.impuestos.translados.Importe).toNumber();
-            concept.impuestos = {
-                trasladado: {
-                    Base: Decimal.mul(cargos.base, base).toNumber(),
-                    Importe: Decimal.mul(cargos.iva, base).toNumber()
-                }
+        });
+        
+        if (typeConcept == "Recepit") {
+            cpt = {
+                cantidad: concept.quantity.toFixed(6),
+                descripcion: moreDetails.descrption,
+                descuento: discounts.length > 0 ? Decimal.sum(...discounts).toFixed(3) : '0.000',
+                importe: concept.fiscalPrices.amount.toFixed(3),
+                preciou: concept.fiscalPrices.unitPrice?.toFixed(3),
+                recargo: surcharges.length > 0 ? Decimal.sum(...surcharges).toFixed(3) : '0.000',
+            } as ConceptReceipt;
+            if (type != InvoiceModules.STORE) {
+                cpt = { ...cpt, beca: scholarships.length > 0 ? Decimal.sum(...scholarships).toFixed(3) : '0.00', } as ConceptSchoolAndAcademy
             }
         } else {
-            resultad.impuestos.translados.Base = 0;
-            resultad.impuestos.translados.Importe = 0;
-            concept.impuestos = {
-                trasladado: {
-                    Base: 0,
-                    Importe: 0
-                }
+            cpt = {
+                concept: {
+                    ClaveProdServ: moreDetails.claveProd,
+                    NoIdentificacion: `1`,
+                    Cantidad: concept.quantity.toFixed(6),
+                    ClaveUnidad: moreDetails?.ClaveUnidad || 'E48',
+                    Descripcion: sanitizeStringToXml(moreDetails.descrption),
+                    ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(3),
+                    Importe: concept.fiscalPrices.amount.toFixed(3),
+                    Descuento: concept.fiscalPrices.discount.toFixed(3),
+                    ObjetoImp: conceptDetails.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto
+                },
+                base: '',
+                import: ''
+            };
+            if (ivaByDetail !== 0 && conceptDetails.objetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
+                cpt.base = concept.fiscalPrices.baseTax .toFixed(3);
+                cpt.import = concept.fiscalPrices.tax.toFixed(3);
             }
         }
-        resultad.total = Decimal.add(Decimal.mul(cargos.total, base), resultad.total).toNumber();
-        generalizedConcepts.push(concept);
-        //
+        cptArray.push(cpt)
     });
-    resultad.detalles = generalizedConcepts;
-    if (type === InvoiceModules.SCHOOL) {
-        resultad.total = subQuantity(resultad.subtotal, resultad.discount);
-    }
 
-    return resultad;
+    if (typeConcept == "Recepit") {
+        if (type == InvoiceModules.STORE) {
+            obj.concepts.conceptsMiniStore = cptArray
+        } else {
+            obj.concepts.conceptsSchoolAndAcademy = cptArray
+        }
+    } else {
+        obj.concepts.conceptsInvoice = cptArray;
+    }
+    obj.taxes = {
+        base: totals.detailsWithPaymentApplied.baseTax.toFixed(2),
+        amount: totals.detailsWithPaymentApplied.tax.toFixed(2),
+    }
+    obj.totals.fiscal.SubTotal = totals.detailsWithPaymentApplied.amount.toFixed(2)
+    obj.totals.fiscal.Descuento = totals.detailsWithPaymentApplied.discount.toFixed(2),
+    obj.totals.fiscal.Total = totals.detailsWithPaymentApplied.total.toFixed(2),
+    obj.totals.receipt = {
+        SubTotal: obj.totals.fiscal.SubTotal,
+        Descuento: obj.totals.fiscal.Descuento,
+        Total: obj.totals.fiscal.Total,
+        Recargo: surchargesTotal.length > 0 ? Decimal.sum(...surchargesTotal).toFixed(3) : '0.000',
+        Impuesto: obj.taxes.amount,
+    }
+    return obj
+
 }
 
-const getCharges = <D extends Detalles>(payload: {
-    concept: D,
+const TotalWithCalculation = <T extends Detalles>(payload: {
+    details: T[],
     type: InvoiceModules,
-    iva: number
-}) => {
-    // DESCUENTO SOBRE DESCUENTO MODULO ACADEMIAS
-    const { concept, type, iva } = payload
-    const { extraCharges = [] } = concept
-    const value = new Decimal(0);
-    let obj: ChargesDetails = {
-        base: value,
-        subtotal: value,
-        quantity: new Decimal(concept.quantity),
-        total: value,
-        iva: value,
-        data: {
-            becas: value,
-            discount: value,
-            recargos: value
-        },
-        amountDiscount: value,
-        price: {
-            amount: value,
-            priceUnit: value
-        },
-
-    };
-    const detailTotal = totalAmountConcept(concept);
-    let price = 0;
-    if(type == InvoiceModules.STORE){
-        price = concept.priceWithIVA;
-    }else{
-        price = typeof concept.price ==  'string' ? parseFloat(`${concept.price}`) : concept.price;
-    }
-    let becas = value;
-    let discount = value;
-    let recargos = value;
-    let priceWithoutIva = value;
-    switch (type) {
-        case 1:
-            //ACADEMIA DESCUENTO SOBRE DESCUENTO
-            becas = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 }));
-            discount = new Decimal(getTotalAfterExtraCharge({ total: becas.toNumber(), extraCharges, typeExtraCharges: 1 }));
-            recargos = new Decimal(getTotalAfterExtraCharge({ total: discount.toNumber(), extraCharges, typeExtraCharges: 2 }));
-            obj.data = {
-                becas: Decimal.sub(price, becas),
-                recargos: Decimal.sub(discount, recargos),
-                discount: Decimal.sub(price, discount)
+    payment: Payment
+}): {
+    detailsWithPaymentApplied: ConceptAmountDetailsResult;
+    detailsWithoutPaymentApplied: ConceptAmountDetailsResult;
+} => {
+    const { details, type, payment } = payload;
+    const concepts: Concept[] = details.map((d) => {
+        const charges: Charge[] = d.extraCharges.map((e: ExtraCharges) => {
+            let order = 1;
+            if(type == InvoiceModules.ACADEMY && e.typeExtraCharge == SystemTypeExtraChargesEnum.Becas){
+                order = 1;
+            }else if(type == InvoiceModules.ACADEMY && e.typeExtraCharge == SystemTypeExtraChargesEnum.Descuentos){
+                order = 2;
+            }else if(type == InvoiceModules.ACADEMY && e.typeExtraCharge == SystemTypeExtraChargesEnum.Recargos){
+                order = 3;
             }
-            obj.amountDiscount = Decimal.div(Decimal.mul(concept.quantity, obj.data.discount), iva);
-            priceWithoutIva = Decimal.div(
-                //precio con iva + recargos / iva
-                Decimal.mul(
-                    Decimal.add(
-                        detailTotal,
-                        obj.data.recargos
-                    ),
-                    concept.quantity),
-                iva
-            );
-            break;
-        default:
-            // TIENDA Y COLEGIO DESCUENTOS NORMALES
-            becas = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 3 }));
-            discount = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 1 }));
-            recargos = new Decimal(getTotalAfterExtraCharge({ total: detailTotal, extraCharges, typeExtraCharges: 2 }));
-            obj.data = {
-                becas: Decimal.sub(detailTotal, becas),
-                recargos: Decimal.sub(detailTotal, recargos),
-                discount: Decimal.sub(detailTotal, discount)
-            }
-            obj.amountDiscount = Decimal.div(Decimal.add(obj.data.discount, obj.data.becas), iva);
-            priceWithoutIva = Decimal.div(
-                //precio con iva + recargos / iva
-                Decimal.mul(
-                    Decimal.add(
-                        price,
-                        obj.data.recargos
-                    ),
-                    concept.quantity),
-                iva
-            );
-            break;
-    }
-    obj.price.priceUnit = Decimal.div(
-        //precio sin iva
-        priceWithoutIva,
-        //cantidad
-        concept.quantity
-    );
-    obj.price.amount = Decimal.mul(obj.price.priceUnit, concept.quantity);
-    obj.base = Decimal.sub(priceWithoutIva, obj.amountDiscount);
-    obj.iva = Decimal.mul(obj.base, Decimal.sub(iva, 1));
-    obj.subtotal = priceWithoutIva;
-    obj.total = Decimal.add(obj.base, obj.iva);
-    return obj;
+            return {
+                id: e.typeExtraCharge,
+                amount: e.quantity,
+                order,
+                type: e.typeExtraCharge != SystemTypeExtraChargesEnum.Recargos ? ChargeTypeEnum.DISCOUNTS : ChargeTypeEnum.SURCHARGES,
+                application: e.applicationType == TypeChargeApplicationEnum.percentage ? ChargeApplicationEnum.PERCENTAGE : ChargeApplicationEnum.QUANTITY
+            } as Charge
+        })
+        return {
+            id: d.id,
+            quantity: d.quantity,
+            basePrice: getPrice(d, type),
+            name: getMoreDatails({ detail: d, type }).descrption,
+            charges,
+        } as Concept
+    });   
+    return calculateInvoicePrices({
+        payment: {
+            amount: payment.quantity,
+            change: payment.change
+        },
+        concepts,
+        fountType: type == InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
+        ivaPercentage: type == InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
+    })
 }
 
+const getPrice = <T extends Detalles>(detail: T, type: InvoiceModules): number => {
+    if (type == InvoiceModules.STORE) {
+        return detail.priceWithIVA;
+    } else {
+        return typeof detail.price == 'string' ? parseFloat(`${detail.price}`) : detail.price;
+    }
+}

@@ -95,6 +95,7 @@ export class SchoolChargesPaymentsController
 
   @Post('/receipt')
   async billingGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
+    let error: any[] = []
     try {
       // query.chargeId = 335;
       // query.chargePaymentId = 344;
@@ -112,25 +113,15 @@ export class SchoolChargesPaymentsController
         },
       });
 
-      const invoiceDetails = ConceptsPriceByPaymentBillig({
+      const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
         payment: result.payment,
         details: result.charge.chargesDetails,
         type: InvoiceModules.SCHOOL,
         ivaDefault: 1,
         ivaByDetail: 0,
+        typeConcept: 'Recepit'
       });
-      const data = invoiceDetails;
-      const detalles = invoiceDetails.detalles.map((d: NewReport) => {
-        return {
-          cantidad: d.quantity,
-          preciou: d.unitPrice,
-          descripcion: d.descrption,
-          recargo: d.surcharge,
-          descuento: d.discountTotal,
-          beca: d.scholarships,
-          importe: d.importe,
-        };
-      });
+      
       const logo = readFileSync(
         `${this.configService.getPath()}logos/colegiologo.png`,
       );
@@ -140,26 +131,30 @@ export class SchoolChargesPaymentsController
         width: 100,
         height: 100,
         image: `data:image/png;base64, ${logo.toString('base64')}`,
-      });
-      Receip.addFolio(result.charge.folio);
-      Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      }) == false ? error.push(`error al agregar el logo`): null;
+      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`): null;
+      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`): null;
       const regimen = RegimenFiscalList.find(
         (f) => f.value === branchOfficeSett.regime,
       );
-      Receip.addEmisor({
-        name: branchOfficeSett.businessName,
-        rfc: branchOfficeSett.rfc,
-        regimen:
-          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
-        expedido: branchOfficeSett.address,
-      });
+      if (regimen == undefined){
+        error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
+      }else{
+        Receip.addEmisor({
+          name: branchOfficeSett.businessName,
+          rfc: branchOfficeSett.rfc,
+          regimen:
+            branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+          expedido: branchOfficeSett.address,
+        }) == false ? error.push(`error al agregar los datos del emisor`): null;
+      }
       const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
       Receip.addReceptor({
         name,
         curp: student.curp ? student.curp : '',
         matricula: student.matricula,
         type: InvoiceModules.SCHOOL
-      });
+      }) == false ? error.push(`error al agregar los datos del receptor`): null;
       const ven =
         result.payment.cashierCharge.name +
         ' ' +
@@ -168,18 +163,14 @@ export class SchoolChargesPaymentsController
         result.payment.cashierCharge.lastnameMother;
       Receip.addInformacion({
         vendedor: ven,
-      });
+      }) == false ? error.push(`error al agregar los datos del vendedor`): null;
 
       Receip.addCatidad({
-        SubTotal: invoiceDetails.subtotal.toString(),
-        Recargo: invoiceDetails.surcharges.toString(),
-        Descuento: invoiceDetails.discount.toString(),
-        Impuesto: '0',
-        Total: invoiceDetails.total.toString(),
+        ...invoiceDetails.totals.receipt
       });
-      Receip.addDetalles(detalles);
+      Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
 
-      Receip.addNumberToLetter(+invoiceDetails.total);
+      Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
       Receip.addObervations(result.payment.observations);
       const forma = result.payment.methodsPayments.map((m) => {
         return {
@@ -198,7 +189,7 @@ export class SchoolChargesPaymentsController
       });
     } catch (e) {
       res.send({
-        error: e,
+        error: error,
       });
     }
   }
@@ -214,24 +205,13 @@ export class SchoolChargesPaymentsController
         },
       });
 
-      const invoiceDetails = ConceptsPriceByPaymentBillig({
+      const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
         payment: result.payment,
         details: result.charge.chargesDetails,
         type: InvoiceModules.SCHOOL,
         ivaDefault: 1,
         ivaByDetail: 0,
-      });
-      const data = invoiceDetails;
-      const detalles = invoiceDetails.detalles.map((d: NewReport) => {
-        return {
-          cantidad: d.quantity,
-          preciou: d.unitPrice,
-          descripcion: d.descrption,
-          recargo: d.surcharge,
-          descuento: d.discountTotal,
-          beca: d.scholarships,
-          importe: d.importe,
-        };
+        typeConcept: 'Recepit'
       });
       const logo = readFileSync(
         `${this.configService.getPath()}logos/colegiologo.png`,
@@ -273,15 +253,11 @@ export class SchoolChargesPaymentsController
       });
 
       Receip.addCatidad({
-        SubTotal: invoiceDetails.subtotal.toString(),
-        Recargo: invoiceDetails.surcharges.toString(),
-        Descuento: invoiceDetails.discount.toString(),
-        Impuesto: '0',
-        Total: invoiceDetails.total.toString(),
+        ...invoiceDetails.totals.receipt
       });
-      Receip.addDetalles(detalles);
+      Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
 
-      Receip.addNumberToLetter(+invoiceDetails.total);
+      Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
       Receip.addObervations(result.payment.observations);
       const forma = result.payment.methodsPayments.map((m) => {
         return {
@@ -314,6 +290,7 @@ export class SchoolChargesPaymentsController
       type: InvoiceModules.SCHOOL,
       ivaDefault: 1,
       ivaByDetail: 0,
+      typeConcept: 'Invoice'
     });
 
     const currentOffice = await this.branchOffice.findBranch(
