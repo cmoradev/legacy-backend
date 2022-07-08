@@ -4,9 +4,7 @@ import { vfs } from 'pdfmake/build/pdfmake';
 import { pdfMake } from 'pdfmake/build/vfs_fonts';
 import { NumeroALetras } from '../../pdf/A117/desing/utils/NumbersToLetter';
 import { InvoiceModules } from '../point-of-sale/types.pos';
-import Decimal from 'decimal.js';
 
-Decimal.set({ precision: 6 })
 // @ts-ignore
 vfs = pdfMake.vfs;
 
@@ -427,8 +425,7 @@ export class Recibo {
     }
 
 
-    public addLogo(logo: any) {
-
+    public addLogo(logo: any): boolean {
         if (logo) {
             if (typeof logo === 'object') {
                 this.docDefinition.content[0].columns[0] = {
@@ -453,9 +450,15 @@ export class Recibo {
                 alignment: 'left'
             }
         }
+        if(typeof this.docDefinition.content[0].columns[0].image == 'string'){
+             return true
+        }else{
+            return false;
+        }
     }
 
-    public addFolio(folio: string) {
+    public addFolio(folio: string): boolean {
+        const lengthbody = this.docDefinition.content[0].columns[3][1].table.body.length;
         const data = [{
             text: folio,
             style: {
@@ -466,9 +469,15 @@ export class Recibo {
             }
         }]
         this.docDefinition.content[0].columns[3][1].table.body.push(data)
+        if(this.docDefinition.content[0].columns[3][1].table.body.length > lengthbody){
+            return true
+        } else {
+            return false
+        }
     }
 
-    public addDate(date: string) {
+    public addDate(date: string): boolean {
+        const lengthbody = this.docDefinition.content[0].columns[3][2].table.body.length;
         const data = [{
             text: date,
             style: {
@@ -478,17 +487,30 @@ export class Recibo {
                 margin: [0, 0, 0, 0],
             }
         }]
-        this.docDefinition.content[0].columns[3][2].table.body.push(data)
+        this.docDefinition.content[0].columns[3][2].table.body.push(data);
+        if(this.docDefinition.content[0].columns[3][2].table.body.length > lengthbody){
+            return true
+        } else {
+            return false
+        }
     }
 
-    public addEmisor(emisor: { name: string, rfc: string, regimen: string, expedido: string }) {
+    public addEmisor(emisor: { name: string, rfc: string, regimen: string, expedido: string }): boolean {
         this.docDefinition.content[0].columns[2].text[0].text = emisor.name.toUpperCase() + '\n'
         this.docDefinition.content[0].columns[2].text[1].text[1].text = emisor.rfc + '\n'
         this.docDefinition.content[0].columns[2].text[2].text[1].text = emisor.regimen + '\n'
         this.docDefinition.content[0].columns[2].text[3].text[1].text = emisor.expedido + '\n';
+        if(this.docDefinition.content[0].columns[2].text[0].text.length > 1 
+            && this.docDefinition.content[0].columns[2].text[1].text[1].text.length >  1
+            && this.docDefinition.content[0].columns[2].text[2].text[1].text.length >  1
+            && this.docDefinition.content[0].columns[2].text[3].text[1].text.length >  1){
+            return true
+        }else{
+            return false
+        }
     }
 
-    public addReceptor(receptor: { matricula: string, name: string, curp: string, type: InvoiceModules }) {
+    public addReceptor(receptor: { matricula: string, name: string, curp: string, type: InvoiceModules }): boolean {
         this.docDefinition.content[1].columns[0].text[2] = { text: receptor.matricula + '\n' }
         this.docDefinition.content[1].columns[0].text[4] = { text: receptor.name + '\n' }
         if (receptor.type == InvoiceModules.SCHOOL) {
@@ -507,10 +529,23 @@ export class Recibo {
             }
         }
         this.docDefinition.content[1].columns[0].text[6] = { text: receptor.curp + '\n' }
+        if(this.docDefinition.content[1].columns[0].text[2].text.length > 1 
+            && this.docDefinition.content[1].columns[0].text[4].text.length >  1
+            && this.docDefinition.content[1].columns[0].text[5].text.length >  1
+            && this.docDefinition.content[1].columns[0].text[6].text.length >  1){
+            return true
+        }else{
+            return false
+        }
     }
 
     public addInformacion(info: { vendedor: string }) {
         this.docDefinition.content[1].columns[2].text[2] = { text: info.vendedor + '\n' }
+        if(this.docDefinition.content[1].columns[2].text[2].text.length > 1 ){
+            return true
+        }else{
+            return false
+        }
     }
 
 
@@ -616,7 +651,7 @@ export class Recibo {
                         text: '$' + con.beca
                     },
                     {
-                        text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                        text: '$' + con.importe
                     }
                 ])
             }
@@ -686,7 +721,7 @@ export class Recibo {
                         text: '$' + con.descuento
                     },
                     {
-                        text: '$' + Decimal.sub(new Decimal(con.importe), new Decimal(con.descuento)).toString()
+                        text: '$' + con.importe
                     }
                 ])
             }
