@@ -3,7 +3,7 @@ import { InformacionGlobal } from "../../mini-store/store-sales/mini-store-sales
 import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
 import { SystemTypeExtraChargesEnum } from "src/system/system-type-extra-charges/entities/system-type-extra-charges.entity";
 import { TypeChargeApplicationEnum } from "src/system/system-extra-charges/enums/system-extra-charges.enum";
-import Decimal from "decimal.js";
+import { DataInvoice } from "../calculations/TypesCalculation";
 
 export interface Concept {
     keyProdServ: string;
@@ -24,6 +24,12 @@ export interface InvoiceDetails {
     taxes: number;
     details: Concept[];
 }
+
+export interface TotalsDetails extends Partial<InvoiceDetails> {
+    surcharges: number;
+    detailsReceipt: any[]
+}
+
 export interface FacturaDetalles {
     total: number | string;
     subtotal: number | string;
@@ -39,7 +45,7 @@ export interface Environment {
     xslt: string
 }
 
-export interface CFDIWebtel extends FacturaDetalles {
+export interface CFDIWebtel extends DataInvoice {
     serie: string;
     folio: string;
     codigoFormaPago: FormaPago | FormaPagoType;
@@ -91,19 +97,19 @@ export interface Charge {
 }
 
 export interface ChargesDetails{
-    amountDiscount: Decimal;
+    amountDiscount: any;
     price: {
-        priceUnit: Decimal;
-        amount: Decimal;
+        priceUnit: any;
+        amount: any;
     },
     data: {
-        becas: Decimal;
-        discount: Decimal;
-        recargos: Decimal;
+        becas: any;
+        discount: any;
+        recargos: any;
     }
-    quantity: Decimal;
-    base: Decimal;
-    iva: Decimal;
-    subtotal: Decimal;
-    total: Decimal;
+    quantity: any;
+    base: any;
+    iva: any;
+    subtotal: any;
+    total: any;
 }

@@ -47,11 +47,9 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
-import Decimal from 'decimal.js';
 import * as moment from 'moment';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
-Decimal.set({ precision: 6 })
 
 @Crud({
   model: {
@@ -165,6 +163,7 @@ export class AcademyChargePaymentsController
       payment: result.payment,
       details: result.charge.chargesDetails,
       type: InvoiceModules.ACADEMY,
+      typeConcept: 'Invoice'
     });
 
     const currentOffice = await this.branchOffice.findBranch(
@@ -365,12 +364,14 @@ export class AcademyChargePaymentsController
 
   @Post('/receipt')
   async billingGet(@Body() query: QueryBillingAcademy, @Res() res: Response) {
+    let error: any[] = []
     try {
       const result = await this.service.findSaleByPayment(query);
       const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
         payment: result.payment,
         details: result.charge.chargesDetails,
         type: InvoiceModules.ACADEMY,
+        typeConcept: 'Recepit'
       });
 
       const currentOffice = await this.branchOffice.findBranch(
@@ -388,29 +389,6 @@ export class AcademyChargePaymentsController
         },
       );
 
-      let subtotalCom = new Decimal(0);
-      let discountCom = new Decimal(0);
-      let recargosCom = new Decimal(0);
-      let totalBaseCon = new Decimal(0);
-      let totalTranslado = new Decimal(0);
-
-      const detalles = invoiceDetails.detalles.map((d: any) => {
-        subtotalCom = Decimal.add(new Decimal(d.importe).toDecimalPlaces(2), subtotalCom);
-        recargosCom = Decimal.add(recargosCom, d.process.recargos.recargos)
-        discountCom = Decimal.add(new Decimal(d.discountTotal).toDecimalPlaces(2), discountCom);
-        totalTranslado = Decimal.add(new Decimal(d.impuestos.trasladado.Importe).toDecimalPlaces(2), totalTranslado);
-        totalBaseCon = Decimal.add(new Decimal(d.impuestos.trasladado.Base).toDecimalPlaces(2), totalBaseCon);
-        return {
-          cantidad: d.quantity,
-          preciou: `${new Decimal(d.unitPrice).toDecimalPlaces(2)}`,
-          descripcion: d.descrption,
-          recargo: `${d.process.recargos.recargos}`,
-          descuento: `${new Decimal(d.discountTotal).toDecimalPlaces(2)}`,
-          beca: `${d.process.becas.becas}`,
-          importe: `${new Decimal(d.importe).toDecimalPlaces(2)}`,
-        };
-      });
-
       const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
       const Receip = new Recibo();
       Receip.setType(InvoiceModules.ACADEMY);
@@ -418,19 +396,23 @@ export class AcademyChargePaymentsController
         width: 100,
         height: 100,
         image: `data:image/png;base64, ${logo.toString('base64')}`,
-      });
-      Receip.addFolio(result.payment.folio);
-      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+      }) == false ? error.push(`error al agregar el logo`): null;
+      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`): null;
+      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`): null;
       const regimen = RegimenFiscalList.find(
         (f) => f.value === branchOfficeSett.regime,
       );
-      Receip.addEmisor({
-        name: branchOfficeSett.businessName,
-        rfc: branchOfficeSett.rfc,
-        regimen:
-          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
-        expedido: branchOfficeSett.address,
-      });
+      if (regimen == undefined){
+        error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
+      }else{
+        Receip.addEmisor({
+          name: branchOfficeSett.businessName,
+          rfc: branchOfficeSett.rfc,
+          regimen:
+            branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+          expedido: branchOfficeSett.address,
+        }) == false ? error.push(`error al agregar los datos del emisor`): null;
+      }
       let name = '';
       if (result.payment.stamping == 0) {
         name = `${result.charge.schoolStudent.name} ${result.charge.schoolStudent.lastNameFather} ${result.charge.schoolStudent.lastNameMother} `;
@@ -442,7 +424,7 @@ export class AcademyChargePaymentsController
         curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
         matricula: result.charge.schoolStudent.matricula,
         type: InvoiceModules.ACADEMY
-      });
+      }) == false ? error.push(`error al agregar los datos del receptor`): null;
       const ven =
         result.payment.cashierCharge.name +
         ' ' +
@@ -451,18 +433,14 @@ export class AcademyChargePaymentsController
         result.payment.cashierCharge.lastnameMother;
       Receip.addInformacion({
         vendedor: ven,
-      });
+      }) == false ? error.push(`error al agregar los datos del vendedor`): null;
 
       Receip.addCatidad({
-        SubTotal: `${subtotalCom.toDecimalPlaces(2)}`,
-        Recargo: `${recargosCom.toDecimalPlaces(2)}`,
-        Descuento: `${discountCom.toDecimalPlaces(2)}`,
-        Impuesto: `${totalTranslado.toDecimalPlaces(2)}`,
-        Total: `${Decimal.add(Decimal.sub(subtotalCom.toDecimalPlaces(2), discountCom.toDecimalPlaces(2)), totalTranslado.toDecimalPlaces(2)).toNumber()}`,
+        ...invoiceDetails.totals.receipt
       });
-      Receip.addDetalles(detalles);
+      Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
 
-      Receip.addNumberToLetter(+invoiceDetails.total);
+      Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
       Receip.addObervations(result.payment.observations);
       const forma = result.payment.methodsPayments.map((m) => {
         return {
@@ -480,7 +458,7 @@ export class AcademyChargePaymentsController
     } 
       catch (e) {
         res.send({
-            error: e,
+            error: error,
         });
     }
   }

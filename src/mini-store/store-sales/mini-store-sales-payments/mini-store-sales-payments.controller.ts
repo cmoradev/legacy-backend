@@ -30,9 +30,7 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { Recibo } from '../../../common/pdfmake/Recibo';
-import Decimal from 'decimal.js';
 import * as moment from 'moment';
-Decimal.set({ precision: 6 })
 
 @Crud({
     model: {
@@ -92,7 +90,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
-            type: InvoiceModules.STORE
+            type: InvoiceModules.STORE,
+            typeConcept: 'Invoice'
         });
 
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
@@ -263,46 +262,27 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     @Post('/receipt')
     async billingGet(@Body() query: any, @Res() res) {
+        let error: any[] = []
         try {
             const result = await this.service.findSaleByPayment(query);
             const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
                 payment: result.payment,
                 details: result.sale.miniStoreSaleDetails,
-                type: InvoiceModules.STORE
+                type: InvoiceModules.STORE,
+                typeConcept: 'Recepit'
             });
             const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
             const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
                 paymentId: query.salePaymentId,
                 status: StatusInvoce.invoiced,
             });
-            
+
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
                     id: query.branchOfficeSettingId,
                 },
             });
-            let subtotalCom = new Decimal(0);
-            let discountCom = new Decimal(0);
-            let recargosCom = new Decimal(0);
-            let totalBaseCon = new Decimal(0);
-            let totalTranslado = new Decimal(0);
 
-            const detalles = invoiceDetails.detalles.map((d: any) => {
-                subtotalCom = Decimal.add(new Decimal(d.importe).toDecimalPlaces(2), subtotalCom);
-                recargosCom = Decimal.add(recargosCom, d.process.recargos.recargos)
-                discountCom = Decimal.add(new Decimal(d.discountTotal).toDecimalPlaces(2), discountCom);
-                totalTranslado = Decimal.add(new Decimal(d.impuestos.trasladado.Importe).toDecimalPlaces(2), totalTranslado);
-                totalBaseCon = Decimal.add(new Decimal(d.impuestos.trasladado.Base).toDecimalPlaces(2), totalBaseCon);
-                return {
-                    cantidad: d.quantity,
-                    preciou: `${new Decimal(d.unitPrice).toDecimalPlaces(2)}`,
-                    descripcion: d.descrption,
-                    recargo: `${d.process.recargos.recargos}`,
-                    descuento: `${new Decimal(d.discountTotal).toDecimalPlaces(2)}`,
-                    beca: `${d.process.becas.becas}`,
-                    importe: `${new Decimal(d.importe).toDecimalPlaces(2)}`,
-                };
-            });
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             const Receip = new Recibo();
             Receip.setType(InvoiceModules.STORE);
@@ -310,31 +290,35 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 width: 100,
                 height: 100,
                 image: `data:image/png;base64, ${logo.toString('base64')}`,
-            });
-            Receip.addFolio(result.payment.folio);
-            Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+            }) == false ? error.push(`error al agregar el logo`) : null;
+            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
+            Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
             const regimen = RegimenFiscalList.find(
                 (f) => f.value === branchOfficeSett.regime,
             );
-            Receip.addEmisor({
-                name: branchOfficeSett.businessName,
-                rfc: branchOfficeSett.rfc,
-                regimen:
-                    branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
-                expedido: branchOfficeSett.address,
-            });
-             let name = '';
-             if (result.payment.stamping == 0) {
-                 name = `${result.sale.student.name} ${result.sale.student.lastNameFather} ${result.sale.student.lastNameMother} `;
-             } else {
-                 name = invoiceFind.businessName
+            if (regimen == undefined) {
+                error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
+            } else {
+                Receip.addEmisor({
+                    name: branchOfficeSett.businessName,
+                    rfc: branchOfficeSett.rfc,
+                    regimen:
+                        branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                    expedido: branchOfficeSett.address,
+                }) == false ? error.push(`error al agregar los datos del emisor`) : null;
+            }
+            let name = '';
+            if (result.payment.stamping == 0) {
+                name = `${result.sale.student.name} ${result.sale.student.lastNameFather} ${result.sale.student.lastNameMother} `;
+            } else {
+                name = invoiceFind.businessName
             }
             Receip.addReceptor({
                 name,
                 curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
                 matricula: result.sale.student.matricula,
                 type: InvoiceModules.STORE
-            });
+            }) == false ? error.push(`error al agregar los datos del receptor`) : null;
             const ven =
                 result.payment.agent.name +
                 ' ' +
@@ -343,27 +327,23 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 result.payment.agent.lastnameMother;
             Receip.addInformacion({
                 vendedor: ven,
-            });
+            }) == false ? error.push(`error al agregar los datos del vendedor`) : null;
 
             Receip.addCatidad({
-                SubTotal: `${subtotalCom.toDecimalPlaces(2)}`,
-                Recargo: `${recargosCom.toDecimalPlaces(2)}`,
-                Descuento: `${discountCom.toDecimalPlaces(2)}`,
-                Impuesto: `${totalTranslado.toDecimalPlaces(2)}`,
-                Total: `${Decimal.add(Decimal.sub(subtotalCom.toDecimalPlaces(2), discountCom.toDecimalPlaces(2)), totalTranslado.toDecimalPlaces(2)).toNumber()}`,
+                ...invoiceDetails.totals.receipt
             });
-            Receip.addDetalles(detalles);
+            Receip.addDetalles(invoiceDetails.concepts.conceptsMiniStore);
 
-            Receip.addNumberToLetter(+invoiceDetails.total);
+            Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
             Receip.addObervations(result.payment.observations);
-             const forma = result.payment.miniStoreSaleMethodPayments.map((m) => {
-                 return {
-                     forma: m.invoiceMethod.name,
-                     cantidad: roundQuantity(m.quantity),
-                     banco: m.Bank ? m.Bank.name : '',
-                     cuenta: m.account,
-                     fecha: m.date,
-                 };
+            const forma = result.payment.miniStoreSaleMethodPayments.map((m) => {
+                return {
+                    forma: m.invoiceMethod.name,
+                    cantidad: roundQuantity(m.quantity),
+                    banco: m.Bank ? m.Bank.name : '',
+                    cuenta: m.account,
+                    fecha: m.date,
+                };
             });
             Receip.addFormaPago(forma);
             res.send({
@@ -371,7 +351,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             });
         } catch (e) {
             res.send({
-                error: e,
+                error: error,
             });
         }
     }
