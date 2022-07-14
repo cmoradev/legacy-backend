@@ -290,6 +290,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             FROM vw_aca_payments vw
             WHERE vw.v_status = '2'
               AND vw.p_income > 0
+              AND vw.p_state != '4'
               AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
         `);
 
