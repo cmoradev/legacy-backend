@@ -29,7 +29,7 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     totals.detailsWithPaymentApplied.concepts.forEach((concept: Concept ) => {
         // SE OBTIENE LOS CALCULOS
         let cpt = {} as any;
-        const conceptDetails = details.find((d)=>d.id, concept.id);
+        const conceptDetails = details.find((d)=>d.id == concept.id);
         const moreDetails = getMoreDatails({ detail: conceptDetails, type });
         let scholarships: Decimal[] = [];
         let discounts: Decimal[] = [];
