@@ -259,6 +259,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             WHERE (vw.f_status IS NULL OR vw.f_status = '0')
               AND vw.p_stamping = '0'
               AND vw.v_status = '2'
+              AND vw.p_state != '4'
               AND vw.p_income > 0
               AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
         `);
