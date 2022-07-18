@@ -121,7 +121,7 @@ export class SchoolChargesPaymentsController
         ivaByDetail: 0,
         typeConcept: 'Recepit'
       });
-      
+
       const logo = readFileSync(
         `${this.configService.getPath()}logos/colegiologo.png`,
       );
@@ -284,6 +284,7 @@ export class SchoolChargesPaymentsController
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
     const result = await this.service.findSaleByPayment(query);
+
     const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
       payment: result.payment,
       details: result.charge.chargesDetails,
@@ -296,17 +297,20 @@ export class SchoolChargesPaymentsController
     const currentOffice = await this.branchOffice.findBranch(
       query.branchOfficeId,
     );
+
     const branchOfficeSett = await this.branchOfficeSettingService.findOne({
       where: {
         id: query.branchOfficeSettingId,
       },
     });
+
     const invoiceFinded = await this.schoolChargeInvoiceService.findInvoiceByPayment(
       {
         paymentId: query.chargePaymentId,
         status: StatusInvoce.noBilling,
       },
     );
+
     const invoiceResponse = {
       stamping: false,
       msg: '',
