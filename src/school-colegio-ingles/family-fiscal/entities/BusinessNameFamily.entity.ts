@@ -1,13 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Family } from '../../families/entities/family.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('familia_infofiscal')
 export class BusinessNameFamily extends Base{
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 200,
@@ -15,7 +12,6 @@ export class BusinessNameFamily extends Base{
     })
     familyName: string | null;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 200,
@@ -23,7 +19,6 @@ export class BusinessNameFamily extends Base{
     })
     businessName: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -31,7 +26,6 @@ export class BusinessNameFamily extends Base{
     })
     rfc: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 5,
@@ -39,14 +33,12 @@ export class BusinessNameFamily extends Base{
     })
     domicilioFiscalReceptor: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         name: 'regimenFiscalReceptor',
     })
     regimenFiscalReceptor: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -54,14 +46,12 @@ export class BusinessNameFamily extends Base{
     })
     email: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         name: 'keyRegimen',
     })
     keyRegimen: string;
 
-    @Field(type => Family)
     @ManyToOne(() => Family, (family) => family.businessName)
     @JoinColumn({
         name: 'id_familia',

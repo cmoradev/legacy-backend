@@ -1,18 +1,12 @@
 import {
   Column,
-  Entity, OneToMany,
-  PrimaryGeneratedColumn,
-  RelationId,
+  Entity
 } from 'typeorm';
-import { MiniStoreProduct } from '../../../mini-store/mini-store-products/entities/mini-store-product.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('facturacion_claves')
 export class InvoiceKeys extends Base {
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 200,
@@ -20,7 +14,6 @@ export class InvoiceKeys extends Base {
   })
   name: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 80,
@@ -28,7 +21,6 @@ export class InvoiceKeys extends Base {
   })
   key: string;
 
-  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',
@@ -36,7 +28,6 @@ export class InvoiceKeys extends Base {
   })
   idUnidad: number;
 
-  @Field(type => Int)
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',

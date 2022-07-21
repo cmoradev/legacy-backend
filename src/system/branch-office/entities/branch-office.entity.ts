@@ -24,13 +24,9 @@ import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-inv
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-
-@ObjectType('planteles')
 @Entity('planteles')
 export class BranchOffice extends Base {
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 45,
@@ -38,14 +34,12 @@ export class BranchOffice extends Base {
     })
     name: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_ubicacion',
     })
     idLocation: number;
 
-    @Field(type => Int)
     @Column({
         type: 'int',
         nullable: false,
@@ -54,7 +48,6 @@ export class BranchOffice extends Base {
     })
     FolioOrder: number;
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,
@@ -63,7 +56,6 @@ export class BranchOffice extends Base {
     })
     PrefixOrder: string;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -73,7 +65,6 @@ export class BranchOffice extends Base {
     })
     BranchType: BranchType;
 
-    @Field({ nullable: true })
     @Column({
         type: 'varchar',
         nullable: true,
@@ -82,7 +73,6 @@ export class BranchOffice extends Base {
     })
     Email: string;
 
-    @Field({ nullable: true })
     @Column({
         type: 'varchar',
         nullable: true,
@@ -91,7 +81,6 @@ export class BranchOffice extends Base {
     })
     UserEmail: string;
 
-    @Field({ nullable: true })
     @Column({
         type: 'varchar',
         nullable: true,
@@ -100,90 +89,69 @@ export class BranchOffice extends Base {
     })
     EmailPass: string;
 
-    @Field(type => Level)
     @OneToMany(() => Level, (level) => level.campus)
     levels: Level[];
 
-    @Field(type => [Student])
     @OneToMany(() => Student, (student) => student.studentCampus)
     students: Student[];
 
-    @Field(type => [BranchOfficeSetting])
     @OneToMany(() => BranchOfficeSetting, (invoice) => invoice.invoiceCampus)
     branchoffice: BranchOfficeSetting[];
 
-    @Field(type => [Inscription])
     @OneToMany(() => Inscription, (inscription) => inscription.inscripCampus)
     campusInscriptions: Inscription[];
 
-    @Field(type => [AcademyConcepts])
     @OneToMany(() => AcademyConcepts, (academyConcepts) => academyConcepts.academyConceptsCampus)
     campusAcademyConcepts: AcademyConcepts[];
 
-    @Field(type => [AcademyActivitiesGroup])
     @OneToMany(() => AcademyActivitiesGroup, (academygroup) => academygroup.academyGroupCampus)
     campusAcademyGroups: AcademyActivitiesGroup[];
 
-    @Field(type => [SystemExtraCharges])
     @OneToMany(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargesCampus)
     campusExtraCharges: SystemExtraCharges[];
 
-    @Field(type => [Family])
     @OneToMany(() => Family, (family) => family.campus)
     families: Family[];
 
-    @Field(type => [User])
     @OneToMany(() => User, (user) => user.campus)
     users: User[];
 
-    @Field(type => [AcademyInscription])
     @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.inscriptionCampus)
     campusAcIns: AcademyInscription[];
 
-    @Field(type => [MiniStoreSale])
     @OneToMany(() => MiniStoreSale, (academyCharge) => academyCharge.storeBranchOffice)
     branchOfficeStore: MiniStoreSale[];
 
-    @Field(type => [MiniStoreSalePayment])
     @OneToMany(() => MiniStoreSalePayment, (academyCharge) => academyCharge.storePaymentOffice)
     branchOfficeStorePayment: MiniStoreSalePayment[];
 
-    @Field(type => [MiniStoreInvoice])
     @OneToMany(() => MiniStoreInvoice, (academyCharge) => academyCharge.invoiceBranchOffice)
     branchOfficeStoreInvoice: MiniStoreInvoice[];
 
-    @Field(type => [MiniStoreProduct])
     @OneToMany(() => MiniStoreProduct, (miniStoreProduct) => miniStoreProduct.branchOffice)
     MiniStoreProduct: MiniStoreProduct[];
 
-    @Field(type => [SchoolCharge])
     @OneToMany(() => SchoolCharge, (schoolCharge) => schoolCharge.schoolCampus)
     campusSchoolCharge: SchoolCharge[];
 
-    @Field(type => [SchoolChargePayment])
     @OneToMany(() => SchoolChargePayment, (school) => school.schoolPaymentOffice)
     branchOfficeSchoolPayment: SchoolChargePayment[];
 
-    @Field(type => [AcademyCharge])
     @OneToMany(() => AcademyCharge, (academyCharge) => academyCharge.chargeCampus)
     campusAcademyCharge: AcademyCharge[];
 
     @OneToMany(() => AcademyChargePayments, (school) => school.academyPaymentOffice)
     branchOfficeAcademyPayment: AcademyChargePayments[];
 
-    @Field(type => [AcademyChargeInvoice])
     @OneToMany(() => AcademyChargeInvoice, (academyCharge) => academyCharge.invoiceBranchOffice)
     branchOfficeAcademyInvoice: AcademyChargeInvoice[];
 
-    @Field(type => [MiniStoreClassification])
     @OneToMany(() => MiniStoreClassification, (clafification) => clafification.branchOffice)
     MiniStoreClassification: MiniStoreClassification[];
 
-    @Field(type => [MiniStorePriceList])
     @OneToMany(() => MiniStorePriceList, (list) => list.branchOfficeList)
     BranchOfficeList: MiniStorePriceList[];
 
-    @Field(type => [MiniStoreWarehouseOrder])
     @OneToMany(() => MiniStoreWarehouseOrder, (miniStoreWarehouseOrder) => miniStoreWarehouseOrder.branchOfficeMiniStoreWherehouse)
     BranchOfficeWherehouseOrder: MiniStoreWarehouseOrder[];
 }

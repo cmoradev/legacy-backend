@@ -8,16 +8,12 @@ import { CashRegisterTransaction } from '../../../cash-register-transactions/ent
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('tie_venta_pagos')
 export class MiniStoreSalePayment extends Base {
-    @Field()
     @Column('varchar', {nullable: true})
     globalUuid: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 45,
@@ -26,7 +22,6 @@ export class MiniStoreSalePayment extends Base {
     })
     folio: string;
 
-    @Field(type => Int, { nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -36,7 +31,6 @@ export class MiniStoreSalePayment extends Base {
     })
     change: number | null;
 
-    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -49,7 +43,6 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Deprecated
      */
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -60,7 +53,6 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Deprecated
      */
-    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -70,7 +62,6 @@ export class MiniStoreSalePayment extends Base {
     })
     idStatusPayment: PaymentStatus;
 
-    @Field(type => Int, { nullable: true })
     @Column('int', {
         nullable: true,
         default: () => '\'0\'',
@@ -78,7 +69,6 @@ export class MiniStoreSalePayment extends Base {
     })
     idAgentCancellation: number | null;
 
-    @Field({ nullable: true })
     @Column({
         type: 'timestamp',
         nullable: true,
@@ -86,14 +76,12 @@ export class MiniStoreSalePayment extends Base {
     })
     dateCancellation: Date | null;
 
-    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'motivos_cancelacion',
     })
     reasonCancellation: string | null;
 
-    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'observaciones',
@@ -103,7 +91,6 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Timbrado
      */
-    @Field(type => Int, { nullable: false })
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -112,7 +99,6 @@ export class MiniStoreSalePayment extends Base {
     })
     stamping: number;
 
-    @Field(type => Boolean, { nullable: false })
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -121,18 +107,15 @@ export class MiniStoreSalePayment extends Base {
     })
     isIVA: boolean;
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStorePayment)
     storePaymentOffice: BranchOffice;
 
-    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettStorePayment)
     storePaymentOfficeSet: BranchOfficeSetting;
 
     /**
      * Relación de un pago con una venta
      */
-    @Field(type => MiniStoreSale)
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreSalePayments)
     @JoinColumn({
         name: 'saleId',
@@ -140,7 +123,6 @@ export class MiniStoreSalePayment extends Base {
     })
     miniStoreSale: MiniStoreSale;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -153,7 +135,6 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Relación de un pago con sus metodos de pago
      */
-    @Field(type => [MiniStoreSaleMethodPayment])
     @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.miniStoreSalePayment,
       {
           cascade: ['insert', 'update'],
@@ -163,11 +144,9 @@ export class MiniStoreSalePayment extends Base {
     /**
      * Relación Bidireccional del pago de una venta con la Facturas
      */
-    @Field(type => [MiniStoreInvoice])
     @OneToMany(() => MiniStoreInvoice, (miniStoreInvoice) => miniStoreInvoice.miniStoreSalePayment)
     miniStoreInvoices: MiniStoreInvoice[];
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreBillingPayments)
     @JoinColumn({
         name: 'cashierBillingId',
@@ -175,7 +154,6 @@ export class MiniStoreSalePayment extends Base {
     })
     agentBilling: User;
 
-    @Field(type => User)
     @ManyToOne(type => User, user => user.salePayments)
     @JoinColumn({
         name: 'recaudadorId',
@@ -183,7 +161,6 @@ export class MiniStoreSalePayment extends Base {
     })
     agent: User;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreCancelingPayments)
     @JoinColumn({
         name: 'paymentCancellerId',
@@ -191,7 +168,6 @@ export class MiniStoreSalePayment extends Base {
     })
     agentCanceling: User;
 
-    @Field(type => [CashRegisterTransaction])
     @OneToMany(type => CashRegisterTransaction, (cashRegisterTransaction) => cashRegisterTransaction.payment, {
         cascade: ['insert', 'update'],
     })

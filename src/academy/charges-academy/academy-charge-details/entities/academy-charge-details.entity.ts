@@ -3,38 +3,31 @@ import { AcademyChargeDetailsExtraCharge } from '../../academy-charge-details-ex
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
 import { AcademyInscriptionConcepts } from '../../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('ac_cobro_detalle')
 export class AcademyChargeDetails extends Base {
-    @Field({nullable: false})
+
     @Column('varchar', {nullable: false, default: () => '\'E48\''})
     unitMeasurement: string;
 
-    @Field({nullable: false})
     @Column('varchar', {nullable: false, length: 2, default: () => '\'02\''})
     objetoImp: string;
 
-    @Field()
     @Column('varchar', {nullable: false, length: 25, name: 'sat_code', default: () => '\'14111514\''})
     sat_code: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         name: 'concepto',
     })
     concept: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'cantidad',
     })
     quantity: number;
 
-    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -44,7 +37,6 @@ export class AcademyChargeDetails extends Base {
     })
     price: number;
 
-    @Field(type => AcademyCharge)
     @ManyToOne(() => AcademyCharge, (schoolCharge) => schoolCharge.chargesDetails)
     @JoinColumn({
         name: 'id_ac_cobro',
@@ -52,17 +44,14 @@ export class AcademyChargeDetails extends Base {
     })
     academyCharge: AcademyCharge;
 
-    @Field(type => [AcademyChargeDetailsExtraCharge])
     @OneToMany(() => AcademyChargeDetailsExtraCharge, (extraCharges) => extraCharges.chargeDetail, {
         cascade: ['insert'],
     })
     extraCharges: AcademyChargeDetailsExtraCharge[];
 
-    @Field(type => AcademyInscriptionConcepts)
     @ManyToOne(type => AcademyInscriptionConcepts, schoolPayment => schoolPayment.academyChargeDetail)
     academyInscriptionConcept: AcademyInscriptionConcepts;
 
-    @Field(type => Int)
     // falta relacion con el concepto de cobro de academia
     @Column('int', {
         nullable: false,

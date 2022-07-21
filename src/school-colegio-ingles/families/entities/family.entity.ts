@@ -3,13 +3,10 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { Student } from '../../students/entities/student.entity';
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('familias')
 export class Family  extends Base {
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 70,
@@ -17,7 +14,6 @@ export class Family  extends Base {
     })
     name: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 50,
@@ -25,7 +21,6 @@ export class Family  extends Base {
     })
     lastNameFather: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 50,
@@ -33,29 +28,24 @@ export class Family  extends Base {
     })
     lastNameMother: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'activo',
     })
     isActive: number;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_plantel',
     })
     idCampus: number;
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (campus) => campus.families)
     campus: BranchOffice;
 
-    @Field(type => [Student])
     @OneToMany(() => Student, (student) => student.family)
     students: Student[];
 
-    @Field(type => [BusinessNameFamily])
     @OneToMany(() => BusinessNameFamily, (student) => student.family, {
         cascade: ['insert', 'update'],
     })

@@ -1,13 +1,10 @@
 import { Column, Entity } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('familias_integrantes_tutores')
 export class FamiliasIntegrantesTutores extends Base {
 
 
-  @Field(type => Int)
   @Column('int', {
     nullable: false,
     name: 'idfamilia',
@@ -15,7 +12,6 @@ export class FamiliasIntegrantesTutores extends Base {
   idfamilia: number;
 
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -24,7 +20,6 @@ export class FamiliasIntegrantesTutores extends Base {
   nombre: string;
 
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -32,7 +27,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   apellidoPa: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -41,14 +35,12 @@ export class FamiliasIntegrantesTutores extends Base {
   apellidoMa: string;
 
 
-  @Field()
   @Column('date', {
     nullable: false,
     name: 'fech_nac',
   })
   fechNac: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 30,
@@ -56,7 +48,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   curp: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -65,7 +56,6 @@ export class FamiliasIntegrantesTutores extends Base {
   estadoCivil: string;
 
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -74,7 +64,6 @@ export class FamiliasIntegrantesTutores extends Base {
   ocupacion: string;
 
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -82,7 +71,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   empresa: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -90,7 +78,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   cargo: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 15,
@@ -98,7 +85,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   celular: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 15,
@@ -106,7 +92,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   celularRef: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 15,
@@ -114,7 +99,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   telefonoOficina: string;
 
-  @Field(type => Int)
   @Column('varchar', {
     nullable: false,
     length: 70,
@@ -122,7 +106,6 @@ export class FamiliasIntegrantesTutores extends Base {
   })
   correo: string;
 
-  @Field(type => Int)
   @Column('varchar', {
     nullable: false,
     length: 200,

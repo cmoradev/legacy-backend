@@ -1,21 +1,16 @@
-import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Route } from '../../../../system/routes/entities/route.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('mini_store_quotation')
 export class MiniStoreQuotation extends Base {
 
-  @Field(type => MiniStoreSale)
   @OneToOne(type => MiniStoreSale, sale => sale.sale, {
     cascade: ['insert', 'update'],
   })
   @JoinColumn()
   sale: MiniStoreSale;
 
-  @Field(type => MiniStoreSale)
   @OneToOne(type => MiniStoreSale, sale => sale.quotation, {
     cascade: ['insert', 'update'],
   })

@@ -1,12 +1,9 @@
 import { Column, Entity } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('impuestos')
 export class Impuestos extends Base {
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 150,
@@ -14,7 +11,6 @@ export class Impuestos extends Base {
   })
   nombre: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 100,
@@ -22,7 +18,6 @@ export class Impuestos extends Base {
   })
   codigo: string;
 
-  @Field(type => Int)
   @Column('int', {
     nullable: false,
     name: 'porcentaje',

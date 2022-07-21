@@ -1,13 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('ac_cobro_det_descuentos')
 export class AcademyChargeDiscounts extends Base {
 
-
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 200,
@@ -15,21 +11,18 @@ export class AcademyChargeDiscounts extends Base {
   })
   nombre: string;
 
-  @Field()
   @Column('int', {
     nullable: false,
     name: 'porcentaje',
   })
   porcentaje: number;
 
-  @Field()
   @Column('int', {
     nullable: false,
     name: 'id_ac_descuento',
   })
   idAcDescuento: number;
 
-  @Field()
   @Column('int', {
     nullable: false,
     default: () => '\'0\'',
@@ -37,7 +30,6 @@ export class AcademyChargeDiscounts extends Base {
   })
   idAcConcepto: number;
 
-  @Field()
   @Column('int', {
     nullable: false,
     name: 'id_cobro_detalle',

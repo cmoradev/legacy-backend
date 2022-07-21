@@ -1,12 +1,9 @@
 import { Column, Entity } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity({ name: 'folios' })
 export class Folio extends Base {
 
-    @Field(type => Int)
     @Column({
         type: 'int',
         nullable: false,
@@ -14,7 +11,6 @@ export class Folio extends Base {
     })
     salesFolio: number;
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,
@@ -22,7 +18,6 @@ export class Folio extends Base {
     })
     salesPrefix: string;
 
-    @Field(type => Int)
     @Column({
         type: 'int',
         nullable: false,
@@ -30,7 +25,6 @@ export class Folio extends Base {
     })
     paymentsFolio: number;
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,
@@ -38,7 +32,6 @@ export class Folio extends Base {
     })
     paymentsPrefix: string;
 
-    @Field(type => Int)
     @Column({
         type: 'int',
         nullable: false,
@@ -46,7 +39,6 @@ export class Folio extends Base {
     })
     quotationsFolio: number;
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,
@@ -54,7 +46,6 @@ export class Folio extends Base {
     })
     quotationsPrefix: string;
 
-    @Field(type => Int)
     @Column({
         type: 'int',
         nullable: false,
@@ -62,7 +53,6 @@ export class Folio extends Base {
     })
     invoicesFolio: number;
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,

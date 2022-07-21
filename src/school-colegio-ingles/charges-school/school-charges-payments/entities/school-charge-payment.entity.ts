@@ -7,16 +7,12 @@ import { SchoolChargesInvoice } from '../../school-charges-invoice/entities/scho
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('school_charge_payments')
 export class SchoolChargePayment extends Base {
-    @Field()
     @Column('varchar', {nullable: true})
     globalUuid: string;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 45,
@@ -25,7 +21,6 @@ export class SchoolChargePayment extends Base {
     })
     folio: string;
 
-    @Field(type => Int, {nullable: true})
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -34,7 +29,6 @@ export class SchoolChargePayment extends Base {
     })
     change: number | null;
 
-    @Field(type => Int, {nullable: true})
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -43,20 +37,17 @@ export class SchoolChargePayment extends Base {
     })
     quantity: number;
 
-    @Field({nullable: true})
     @Column({
         type: 'timestamp',
         nullable: true,
     })
     dateCancellation: Date | null;
 
-    @Field({nullable: true})
     @Column('text', {
         nullable: true,
     })
     reasonCancellation: string | null;
 
-    @Field({nullable: true})
     @Column('text', {
         nullable: true,
     })
@@ -65,7 +56,6 @@ export class SchoolChargePayment extends Base {
     /**
      * Timbrado
      */
-    @Field(type => Int, {nullable: false})
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -73,7 +63,6 @@ export class SchoolChargePayment extends Base {
     })
     stamping: number;
 
-    @Field(type => Int, {nullable: false})
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -81,19 +70,15 @@ export class SchoolChargePayment extends Base {
     })
     isIVA: boolean;
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeSchoolPayment)
     schoolPaymentOffice: BranchOffice;
 
-    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettSchoolPayment)
     schoolPaymentOfficeSet: BranchOfficeSetting;
 
-    @Field(type => SchoolCharge)
     @ManyToOne(() => SchoolCharge, (schoolCharge) => schoolCharge.chargesPayments)
     schoolCharge: SchoolCharge;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         enum: PaymentStatus,
@@ -106,23 +91,19 @@ export class SchoolChargePayment extends Base {
     /**
      * Relación de un pago con sus metodos de pago
      */
-    @Field(type => [SchoolChargesMethodsPayments])
     @OneToMany(() => SchoolChargesMethodsPayments, (chargesMethodsPayments) => chargesMethodsPayments.schoolChargePayment, {
         cascade: ['insert'],
     })
     methodsPayments: SchoolChargesMethodsPayments[];
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.schoolChargesPayments)
     cashierCharge: User;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.chargesPaymentsCancellation)
     cashierChargeCancellation: User;
     /*
      * Relación Bidireccional del pago de una venta con la Facturas
     */
-    @Field(type => [SchoolChargesInvoice])
     @OneToMany(() => SchoolChargesInvoice, (schoolChargesInvoice) => schoolChargesInvoice.schoolChargePayment, {
         cascade: ['insert'],
     })

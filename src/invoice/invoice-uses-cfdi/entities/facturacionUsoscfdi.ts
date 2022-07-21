@@ -1,11 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID } from '@nestjs/graphql';
-
 
 @Entity('facturacion_usoscfdi')
 export class FacturacionUsoscfdi {
 
-    @Field(type => ID)
     @PrimaryGeneratedColumn({
         type: 'int',
         name: 'id',
@@ -13,7 +10,6 @@ export class FacturacionUsoscfdi {
     id: number;
 
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 10,
@@ -22,7 +18,6 @@ export class FacturacionUsoscfdi {
     codigo: string;
 
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         name: 'nombre',
@@ -30,7 +25,6 @@ export class FacturacionUsoscfdi {
     nombre: string;
 
 
-    @Field()
     @Column('timestamp', {
         nullable: false,
         default: () => 'CURRENT_TIMESTAMP',
@@ -38,7 +32,6 @@ export class FacturacionUsoscfdi {
     })
     createdAt: Date;
 
-    @Field()
     @Column('timestamp', {
         nullable: true,
         default: () => 'CURRENT_TIMESTAMP',

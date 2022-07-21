@@ -3,13 +3,10 @@ import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini
 import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('facturacion_formas_pago')
 export class InvoiceMethodPayment extends Base {
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 200,
@@ -17,7 +14,6 @@ export class InvoiceMethodPayment extends Base {
     })
     name: string;
 
-    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -26,7 +22,6 @@ export class InvoiceMethodPayment extends Base {
     })
     showReport: number;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 3,
@@ -34,7 +29,6 @@ export class InvoiceMethodPayment extends Base {
     })
     code: string;
 
-    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -43,23 +37,18 @@ export class InvoiceMethodPayment extends Base {
     })
     isActive: number;
 
-    @Field(type => [MiniStoreSaleMethodPayment])
     @OneToMany(() => MiniStoreSaleMethodPayment, (miniStoreSaleMethodPayment) => miniStoreSaleMethodPayment.invoiceMethodPayment)
     miniStoreSaleMethodPayments: MiniStoreSaleMethodPayment[];
 
-    @Field(type => [MiniStoreSaleMethodPayment])
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     salesPaymentMethods: MiniStoreSaleMethodPayment[];
 
-    @Field(type => [MiniStoreSaleMethodPayment])
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     schoolChargePaymentMethods: MiniStoreSaleMethodPayment[];
 
-    @Field(type => [SalesReturns])
     @OneToMany(type => SalesReturns, salesReturns => salesReturns.paymentMethod)
     salesReturns: SalesReturns[];
 
-    @Field(type => [BranchOfficeSetting])
     @OneToMany(type => BranchOfficeSetting, bOS => bOS.quickSaleMethod)
     methodPayBranchOffSet: BranchOfficeSetting[];
 }

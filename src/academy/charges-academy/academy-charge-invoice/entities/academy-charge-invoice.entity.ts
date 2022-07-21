@@ -7,14 +7,11 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
 import { CreditNoteAcademy } from '../../../../credit-note-academy/entities/credit-note-academy.entity';
 import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
 
-@ObjectType()
 @Entity('ac_facturas')
 export class AcademyChargeInvoice extends Base {
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -23,14 +20,12 @@ export class AcademyChargeInvoice extends Base {
     })
     isGlobal: InvoiceGlobalEnum;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         name: 'folio',
     })
     folio: string | null;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -38,7 +33,6 @@ export class AcademyChargeInvoice extends Base {
     })
     uuid: string;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 300,
@@ -46,7 +40,6 @@ export class AcademyChargeInvoice extends Base {
     })
     businessName: string | null;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 20,
@@ -54,7 +47,6 @@ export class AcademyChargeInvoice extends Base {
     })
     rfc: string | null;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 200,
@@ -62,7 +54,6 @@ export class AcademyChargeInvoice extends Base {
     })
     total: string | null;
 
-    @Field({ nullable: true })
     @Column({
         type: 'timestamp',
         nullable: true,
@@ -70,14 +61,12 @@ export class AcademyChargeInvoice extends Base {
     })
     cancellationDate: Date | null;
 
-    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'motivo_cancelacion',
     })
     reasonCancellation: string | null;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -86,7 +75,6 @@ export class AcademyChargeInvoice extends Base {
     })
     invoiceType: InvoiceType;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -96,21 +84,18 @@ export class AcademyChargeInvoice extends Base {
     })
     status: InvoiceStatus;
 
-    @Field()
     @Column({
         nullable: true,
         name: 'motivo',
     })
     motivo: string | null;
 
-    @Field()
     @Column({
         nullable: true,
         name: 'folioSustitucion',
     })
     folioSustitucion: string | null;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)
     @JoinColumn({
         name: 'id_agente_facturador',
@@ -118,7 +103,6 @@ export class AcademyChargeInvoice extends Base {
     })
     agentBilling: User;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.schoolChargesCancelingInvoices)
     @JoinColumn({
         name: 'id_agente_cancelador',
@@ -126,11 +110,9 @@ export class AcademyChargeInvoice extends Base {
     })
     agentCanceling: User;
 
-    @Field(type => AcademyChargePayments)
     @ManyToOne(() => AcademyChargePayments, (schoolChargePayment) => schoolChargePayment.academyChargesInvoice)
     academyChargePayment: AcademyChargePayments;
 
-    @Field(type => AcademyCharge)
     @ManyToOne(() => AcademyCharge, (academyCharge) => academyCharge.chargesInvoice)
     @JoinColumn({
         name: 'id_ac_cobro',
@@ -138,7 +120,6 @@ export class AcademyChargeInvoice extends Base {
     })
     academyCharge: AcademyCharge;
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeAcademyInvoice)
     @JoinColumn({
         name: 'invoiceBranchOfficeId',
@@ -146,7 +127,6 @@ export class AcademyChargeInvoice extends Base {
     })
     invoiceBranchOffice: BranchOffice;
 
-    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 

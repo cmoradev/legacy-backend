@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, VersionColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { SalesReturnsProducts } from './sales-returns-products.entity';
 import { User } from '../../../../system/users/entities/user.entity';
@@ -8,13 +8,10 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { MultNumber } from '@signati/sdk-node/lib/util';
 import { add } from 'exact-math';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
-@Entity({ name: 'sale_returns' })
+@Entity({name: 'sale_returns'})
 export class SalesReturns extends Base {
 
-    @Field()
     @Column({
         type: 'varchar',
         nullable: false,
@@ -22,14 +19,12 @@ export class SalesReturns extends Base {
     })
     folio: string;
 
-    @Field({ nullable: true })
     @Column({
         type: 'text',
         nullable: true,
     })
     comments: string;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -38,7 +33,6 @@ export class SalesReturns extends Base {
     })
     invoiceStatus: InvoicementStatusEnum;
 
-    @Field()
     @Column({
         type: 'decimal',
         nullable: false,
@@ -48,27 +42,22 @@ export class SalesReturns extends Base {
     })
     amount: string;
 
-    @Field(type => InvoiceMethodPayment)
     @ManyToOne(type => InvoiceMethodPayment, method => method.salesReturns)
     paymentMethod: InvoiceMethodPayment;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.salesReturns, {
         nullable: false,
     })
     agent: User;
 
-    @Field(type => MiniStoreSale)
     @ManyToOne(type => MiniStoreSale, sale => sale.returnedProducts, {
         nullable: false,
     })
     sale: MiniStoreSale;
 
-    @Field(type => [MiniStoreInvoice])
     @OneToMany(type => MiniStoreInvoice, invoice => invoice.saleReturn)
     invoices: MiniStoreInvoice[];
 
-    @Field(type => [SalesReturnsProducts])
     @OneToMany(type => SalesReturnsProducts, salesReturnsProducts => salesReturnsProducts.saleReturn, {
         nullable: false,
         cascade: ['insert', 'update'],
@@ -82,7 +71,7 @@ export class SalesReturns extends Base {
         }, 0).toFixed(6) || '0.000000';
 
         this.details = this.details.map<SalesReturnsProducts>(salesReturnProduct => {
-            const { quantity, saleDetail } = salesReturnProduct;
+            const {quantity, saleDetail} = salesReturnProduct;
             salesReturnProduct.amount = MultNumber(quantity, saleDetail.priceWithIVA) || '0.000000';
             return {
                 ...salesReturnProduct,

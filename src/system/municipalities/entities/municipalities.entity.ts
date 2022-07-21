@@ -1,25 +1,21 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('municipio')
 @Index('estado_id', ['stateId'])
 export class Municipalities {
 
-  @Field(type => ID)
   @PrimaryGeneratedColumn({
     type: 'int',
     name: 'id_municipio',
   })
   id: number;
-  @Field(type => Int)
+
   @Column('int', {
     nullable: false,
     name: 'estado_id',
   })
   stateId: number;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 3,
@@ -27,7 +23,6 @@ export class Municipalities {
   })
   key: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 50,
@@ -35,7 +30,6 @@ export class Municipalities {
   })
   name: string;
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 4,
@@ -43,7 +37,6 @@ export class Municipalities {
   })
   abbreviations: string;
 
-  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 2,

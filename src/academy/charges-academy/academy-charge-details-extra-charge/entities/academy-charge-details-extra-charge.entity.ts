@@ -7,25 +7,20 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { AcademyChargeDetails } from '../../academy-charge-details/entities/academy-charge-details.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('ac_charges_details_extra_charges')
 export class AcademyChargeDetailsExtraCharge extends Base {
 
-    @Field()
     @Column('varchar', {
         nullable: false,
     })
     name: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
     })
     quantity: number;
 
-    @Field({ nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -33,7 +28,6 @@ export class AcademyChargeDetailsExtraCharge extends Base {
     })
     applicationType: TypeChargeApplicationEnum;
 
-    @Field({ nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -41,7 +35,6 @@ export class AcademyChargeDetailsExtraCharge extends Base {
     })
     operationType: OperationApplicationEnum;
 
-    @Field({ nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -49,13 +42,11 @@ export class AcademyChargeDetailsExtraCharge extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
-    @Field(type => AcademyChargeDetails)
     @ManyToOne(() => AcademyChargeDetails, (academy) => academy.extraCharges)
     chargeDetail: AcademyChargeDetails;
 
     // todo
     // FALTA PONER EL ID CORRECTO DEL NOMBRE DE LA COLUMNA
-    @Field(type => SystemExtraCharges)
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeAcademiaDetails)
     systemExtraCharges: SystemExtraCharges;
 }

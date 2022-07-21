@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
@@ -8,14 +8,11 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CreditNoteStore } from '../../../../credit-note-store/entities/credit-note-store.entity';
 import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
 
-@ObjectType()
 @Entity('tie_facturas')
 export class MiniStoreInvoice extends Base {
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -24,14 +21,12 @@ export class MiniStoreInvoice extends Base {
     })
     isGlobal: InvoiceGlobalEnum;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         name: 'folio',
     })
     folio: string | null;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -39,7 +34,6 @@ export class MiniStoreInvoice extends Base {
     })
     uuid: string;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 300,
@@ -47,7 +41,6 @@ export class MiniStoreInvoice extends Base {
     })
     businessName: string | null;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 20,
@@ -55,7 +48,6 @@ export class MiniStoreInvoice extends Base {
     })
     rfc: string | null;
 
-    @Field(typev => Int, { nullable: true })
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',
@@ -65,7 +57,6 @@ export class MiniStoreInvoice extends Base {
     })
     total: number | null;
 
-    @Field(typev => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -73,7 +64,6 @@ export class MiniStoreInvoice extends Base {
     })
     idBillingAgent: number;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -81,7 +71,6 @@ export class MiniStoreInvoice extends Base {
     })
     idCancelingAgent: number;
 
-    @Field()
     @Column({
         type: 'timestamp',
         nullable: true,
@@ -89,17 +78,13 @@ export class MiniStoreInvoice extends Base {
     })
     cancellationDate: Date | null;
 
-    @Field({ nullable: true })
     @Column('text', {
         nullable: true,
         name: 'motivo_cancelacion',
     })
     reasonCancellation: string | null;
 
-    /**
-     * Deprecated
-     */
-    @Field(type => Int)
+
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -107,10 +92,7 @@ export class MiniStoreInvoice extends Base {
     })
     idSale: number;
 
-    /**
-     * Current Relation
-     */
-    @Field(type => Int)
+
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -118,7 +100,6 @@ export class MiniStoreInvoice extends Base {
     })
     idPayment: number;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -127,7 +108,6 @@ export class MiniStoreInvoice extends Base {
     })
     invoiceType: InvoiceType;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: false,
@@ -137,14 +117,12 @@ export class MiniStoreInvoice extends Base {
     })
     status: InvoiceStatus;
 
-    @Field()
     @Column({
         nullable: true,
         name: 'motivo',
     })
     motivo: string | null;
 
-    @Field()
     @Column({
         nullable: true,
         name: 'folioSustitucion',
@@ -155,7 +133,6 @@ export class MiniStoreInvoice extends Base {
      * Relación que corresponde al la factura al pago de una venta
      */
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branch) => branch.branchOfficeStoreInvoice)
     @JoinColumn({
         name: 'invoiceBranchOfficeId',
@@ -163,27 +140,21 @@ export class MiniStoreInvoice extends Base {
     })
     invoiceBranchOffice: BranchOffice;
 
-    @Field(type => BranchOfficeSetting)
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettStoreInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
-    @Field(type => MiniStoreSalePayment)
     @ManyToOne(() => MiniStoreSalePayment, (miniStoreSalePayment) => miniStoreSalePayment.miniStoreInvoices)
     miniStoreSalePayment: MiniStoreSalePayment;
 
-    @Field(type => MiniStoreSale)
     @ManyToOne(() => MiniStoreSale, (miniStoreSale) => miniStoreSale.miniStoreInvoices)
     miniStoreSale: MiniStoreSale;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreBillingInvoices)
     agentBilling: User;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
 
-    @Field(type => SalesReturns)
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
     saleReturn: SalesReturns;
 

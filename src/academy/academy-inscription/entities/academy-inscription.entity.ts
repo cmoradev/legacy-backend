@@ -11,13 +11,10 @@ import { Base } from '../../../common/orm/entities/base.entity';
 import { Group } from '../../../school-colegio-ingles/groups/entities/group.entity';
 import { Grade } from '../../../school-colegio-ingles/grades/entities/grade.entity';
 import { Level } from '../../../school-colegio-ingles/levels/entities/level.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
 @Entity('ac_inscripciones_alumnos')
 export class AcademyInscription extends Base {
 
-  @Field()
   @Column('varchar', {
     nullable: false,
     length: 200,
@@ -25,7 +22,6 @@ export class AcademyInscription extends Base {
   })
   keyInscription: string;
 
-  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 250,
@@ -33,7 +29,6 @@ export class AcademyInscription extends Base {
   })
   description: string | null;
 
-  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 230,
@@ -41,7 +36,6 @@ export class AcademyInscription extends Base {
   })
   days: string | null;
 
-  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     length: 230,
@@ -49,21 +43,18 @@ export class AcademyInscription extends Base {
   })
   timetable: string | null;
 
-  @Field({ nullable: true })
   @Column('date', {
     nullable: true,
     name: 'fecha_inicio',
   })
   startDate: string | null;
 
-  @Field({ nullable: true })
   @Column('date', {
     nullable: true,
     name: 'fecha_fin',
   })
   startEnd: string | null;
 
-  @Field({ nullable: true })
   @Column({
     type: 'timestamp',
     nullable: true,
@@ -71,14 +62,12 @@ export class AcademyInscription extends Base {
   })
   downDate: Date | null;
 
-  @Field({ nullable: true })
   @Column('varchar', {
     nullable: true,
     name: 'motivo_baja',
   })
   downMotive: string | null;
 
-  @Field(type => Int)
   @Column('tinyint', {
     nullable: false,
     width: 1,
@@ -87,7 +76,6 @@ export class AcademyInscription extends Base {
   })
   isIncluded: boolean;
 
-  @Field(type => Int)
   @Column('tinyint', {
     nullable: false,
     width: 1,
@@ -96,7 +84,6 @@ export class AcademyInscription extends Base {
   })
   isActive: boolean;
 
-  @Field()
   @Column({
     type: 'simple-enum',
     enum: InscriptionStatus,
@@ -106,7 +93,6 @@ export class AcademyInscription extends Base {
   })
   inscriptionStatus: InscriptionStatus;
 
-  @Field(type => AcademyActivity)
   @ManyToOne(type => AcademyActivity, activity => activity.academyActInscription)
   @JoinColumn({
     name: 'id_academia',
@@ -114,7 +100,6 @@ export class AcademyInscription extends Base {
   })
   activity: AcademyActivity;
 
-  @Field(type => Student)
   @ManyToOne(() => Student, (student) => student.studentAcInscriptions)
   @JoinColumn({
     name: 'id_alumno',
@@ -122,7 +107,6 @@ export class AcademyInscription extends Base {
   })
   student: Student;
 
-  @Field(type => Level)
   @ManyToOne(() => Level, (level) => level.levelAcademyInscription)
   @JoinColumn({
     name: 'id_nivel',
@@ -130,7 +114,6 @@ export class AcademyInscription extends Base {
   })
   schoolLevel: Level;
 
-  @Field(type => Grade)
   @ManyToOne(() => Grade, (grade) => grade.gradeAcademyInscription)
   @JoinColumn({
     name: 'id_grado',
@@ -138,7 +121,6 @@ export class AcademyInscription extends Base {
   })
   schoolGrade: Grade;
 
-  @Field(type => Group)
   @ManyToOne(() => Group, (group) => group.groupAcademyInscription)
   @JoinColumn({
     name: 'id_grupo',
@@ -146,7 +128,6 @@ export class AcademyInscription extends Base {
   })
   schoolGroup: Group;
 
-  @Field(type => BranchOffice)
   @ManyToOne(() => BranchOffice, (campus) => campus.campusAcIns)
   @JoinColumn({
     name: 'id_plantel',
@@ -154,7 +135,6 @@ export class AcademyInscription extends Base {
   })
   inscriptionCampus: BranchOffice;
 
-  @Field(type => Cycle)
   @ManyToOne(() => Cycle, (cycle) => cycle.cycleAcIns)
   @JoinColumn({
     name: 'id_ciclo',
@@ -162,7 +142,6 @@ export class AcademyInscription extends Base {
   })
   cycle: Cycle;
 
-  @Field(type => AcademyActivitiesGroup)
   @ManyToOne(() => AcademyActivitiesGroup, (group) => group.acGroupAcInsc)
   @JoinColumn({
     name: 'id_ac_grupo',
@@ -170,7 +149,6 @@ export class AcademyInscription extends Base {
   })
   academyGroup: AcademyActivitiesGroup;
 
-  @Field(type => User)
   @ManyToOne(() => User, (user) => user.userAcInsHigh)
   @JoinColumn({
     name: 'id_agente',
@@ -178,7 +156,6 @@ export class AcademyInscription extends Base {
   })
   enrollmentAgent: User;
 
-  @Field(type => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.userAcInsDown)
   @JoinColumn({
     name: 'id_agente_baja',
@@ -186,9 +163,6 @@ export class AcademyInscription extends Base {
   })
   unEnrollerAgent: User | null;
 
-  @Field(type => [AcademyInscriptionConcepts])
   @OneToMany(() => AcademyInscriptionConcepts, (AcInscripConcepts) => AcInscripConcepts.acInscription)
   concepts: AcademyInscriptionConcepts[];
-
-
 }

@@ -8,25 +8,19 @@ import {
     TypeChargeApplicationEnum,
 } from '../../../../system/system-extra-charges/enums/system-extra-charges.enum';
 
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-
-@ObjectType()
 @Entity('mini_store_details_extra_charges')
 export class MiniStoreDetailsExtraCharges extends Base {
 
-    @Field()
     @Column('varchar', {
         nullable: false,
     })
     name: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
     })
     quantity: number;
 
-    @Field({ nullable: true })
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -34,7 +28,6 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     applicationType: TypeChargeApplicationEnum;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -42,7 +35,6 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     operationType: OperationApplicationEnum;
 
-    @Field()
     @Column({
         type: 'simple-enum',
         nullable: true,
@@ -50,11 +42,9 @@ export class MiniStoreDetailsExtraCharges extends Base {
     })
     typeExtraCharge: SystemTypeExtraChargesEnum;
 
-    @Field(type => MiniStoreSaleDetail)
     @ManyToOne(() => MiniStoreSaleDetail, (miniStoreSaleDetail) => miniStoreSaleDetail.extraCharges)
     miniSaleChargeDetails: MiniStoreSaleDetail;
 
-    @Field(type => SystemExtraCharges)
     @ManyToOne(() => SystemExtraCharges, (systemExtraCharges) => systemExtraCharges.extraChargeMiniStore)
     systemExtraCharges: SystemExtraCharges;
 }

@@ -1,20 +1,14 @@
 import { Column, Entity } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-
-@ObjectType()
 @Entity('ac_cobro_forma_pago')
 export class AcademyChargeWayOfPaying extends Base {
-
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_forma_pago',
     })
     idFormaPago: number;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 10,
@@ -22,14 +16,12 @@ export class AcademyChargeWayOfPaying extends Base {
     })
     codigoFormaPago: string;
 
-    @Field({ nullable: true})
     @Column('varchar', {
         nullable: true,
         name: 'nombre_forma_pago',
     })
     nombreFormaPago: string | null;
 
-    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -39,7 +31,6 @@ export class AcademyChargeWayOfPaying extends Base {
     })
     cantidad: number;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -47,7 +38,6 @@ export class AcademyChargeWayOfPaying extends Base {
     })
     idBanco: number;
 
-    @Field()
     @Column('varchar', {
         nullable: true,
         length: 200,
@@ -55,14 +45,12 @@ export class AcademyChargeWayOfPaying extends Base {
     })
     banco: string | null;
 
-    @Field()
     @Column('date', {
         nullable: true,
         name: 'fecha',
     })
     fecha: string | null;
 
-    @Field()
     @Column('varchar', {
         nullable: false,
         length: 90,
@@ -70,7 +58,6 @@ export class AcademyChargeWayOfPaying extends Base {
     })
     cuenta: string;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         name: 'id_ac_cobro',

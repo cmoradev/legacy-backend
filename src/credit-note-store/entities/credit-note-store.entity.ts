@@ -1,4 +1,3 @@
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from "@nestjs/graphql";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { DateTimeZoneTransformer } from "../../common/orm/entities/transformers/date-time-zone.transformer";
 import { InvoiceStatus } from "../../invoice/types/invoice-status";
@@ -50,13 +49,13 @@ export class CreditNoteStore {
         name: 'razon_social',
     })
     businessName: string | null;
-    
+
     @Column('varchar', {
         nullable: true,
         length: 20,
     })
     rfc: string | null;
-    
+
     @Column('decimal', {
         nullable: true,
         default: () => '0.000000',

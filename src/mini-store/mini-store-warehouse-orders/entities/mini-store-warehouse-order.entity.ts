@@ -4,14 +4,10 @@ import { MiniStoreWarehouseProvider } from '../../mini-store-warehouse-providers
 import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { CashRegisterTransactionType } from '../../cash-register-transactions/enums/cash-register-transaction-type.enum';
 
-@ObjectType()
 @Entity('tie_almacen_pedidos')
 export class MiniStoreWarehouseOrder extends Base {
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 30,
@@ -19,7 +15,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     folio: string | null;
 
-    @Field()
     @Column( {
       type: 'timestamp',
         nullable: false,
@@ -28,7 +23,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     orderDate: Date;
 
-    @Field()
     @Column( {
       type: 'timestamp',
       nullable: false,
@@ -37,7 +31,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     expectedDate: Date;
 
-    @Field(type => Int)
     @Column('tinyint', {
         nullable: false,
         width: 1,
@@ -45,7 +38,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     status: number;
 
-    @Field(type => Int)
     @Column('decimal', {
         nullable: false,
         default: () => '0.000000',
@@ -55,7 +47,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     requestNet: number;
 
-    @Field({ nullable: true })
     @Column('varchar', {
         nullable: true,
         length: 45,
@@ -63,7 +54,6 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     receivedNet: string | null;
 
-    @Field(type => Int)
     @Column('int', {
         nullable: false,
         default: () => '\'0\'',
@@ -71,26 +61,21 @@ export class MiniStoreWarehouseOrder extends Base {
     })
     isIVA: number;
 
-    @Field(type => [MiniStoreWarehouseOrderProduct])
     @OneToMany(() => MiniStoreWarehouseOrderProduct, (OrderProduct) => OrderProduct.miniStoreWarehouseOrder,
         {
             cascade: ['insert', 'update'],
         })
     miniStoreWareHouseOrdersProducts: MiniStoreWarehouseOrderProduct[];
 
-    @Field(type => MiniStoreWarehouseProvider)
     @ManyToOne(() => MiniStoreWarehouseProvider, (miniStoreWarehouseProvider) => miniStoreWarehouseProvider.miniStoreWarehouseOrders)
     miniStoreWarehouseProvider: MiniStoreWarehouseProvider;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreCreatorWareHouseOrder)
     agentCreator: User;
 
-    @Field(type => User)
     @ManyToOne(() => User, (user) => user.miniStoreEditorWareHouseOrder)
     agentEditor: User;
 
-    @Field(type => BranchOffice)
     @ManyToOne(() => BranchOffice, (branchOffice) => branchOffice.id,
         {
             cascade: ['insert', 'update'],
