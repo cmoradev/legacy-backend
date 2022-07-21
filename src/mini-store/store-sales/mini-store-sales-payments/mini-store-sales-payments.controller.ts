@@ -403,7 +403,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     month: query.month,
                     year: query.year,
                 },
-                percentageTax: '0.160000'
+                percentageTax: '0.16'
             });
 
             const stamping = await this.smartWeb.facturar(xml);

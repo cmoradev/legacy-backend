@@ -80,12 +80,12 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     for (const cts of concepts.conceptsInvoice) {
         const concepto = new Concepts({...cts.concept});
         if (importeImpuesto !== 0 && cts.concept.ObjetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
-            
+
                 concepto.traslado({
                 Base: cts.base,
                 Impuesto: '002',
                 TipoFactor: 'Tasa',
-                TasaOCuota: '0.160000',
+                TasaOCuota: '0.16',
                 Importe: cts.import,
             });
         }
@@ -101,7 +101,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
             Base: taxes.base,
             Impuesto: '002',
             TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
+            TasaOCuota: '0.16',
             Importe: taxes.amount,
         });
         await cfd.impuesto(impuesto);
@@ -299,7 +299,7 @@ export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promis
                 Base: amount,
                 Impuesto: '002',
                 TipoFactor: 'Tasa',
-                TasaOCuota: '0.160000',
+                TasaOCuota: '0.16',
                 Importe: tax,
             });
         }
@@ -316,7 +316,7 @@ export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promis
             Base: subtotal.toFixed(2),
             Impuesto: '002',
             TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
+            TasaOCuota: '0.16',
             Importe: taxes.toFixed(2),
         });
         await cfd.impuesto(impuesto);

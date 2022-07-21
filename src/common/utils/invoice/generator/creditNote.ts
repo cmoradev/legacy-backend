@@ -76,7 +76,7 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
                 Importe: trasladado.Importe,
                 Impuesto: '002',
                 TipoFactor: 'Tasa',
-                TasaOCuota: '0.160000',
+                TasaOCuota: '0.16',
                 Base: trasladado.Base,
             });
         }
@@ -101,7 +101,7 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
             Base: impuestos.translados.Base,
             Impuesto: '002',
             TipoFactor: 'Tasa',
-            TasaOCuota: '0.160000',
+            TasaOCuota: '0.16',
             Importe: impuestos.translados.Importe,
         });
         await cfdi.impuesto(impuestosTransladados);

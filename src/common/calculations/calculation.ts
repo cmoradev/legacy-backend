@@ -67,17 +67,17 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
                     Cantidad: concept.quantity.toFixed(6),
                     ClaveUnidad: moreDetails?.ClaveUnidad || 'E48',
                     Descripcion: sanitizeStringToXml(moreDetails.descrption),
-                    ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(2),
-                    Importe: concept.fiscalPrices.amount.toFixed(2),
-                    Descuento: concept.fiscalPrices.discount.toFixed(2),
+                    ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(6),
+                    Importe: concept.fiscalPrices.amount.toFixed(6),
+                    Descuento: concept.fiscalPrices.discount.toFixed(6),
                     ObjetoImp: conceptDetails.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto
                 },
                 base: '',
                 import: ''
             };
             if (ivaByDetail !== 0 && conceptDetails.objetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
-                cpt.base = concept.fiscalPrices.baseTax.toFixed(2);
-                cpt.import = concept.fiscalPrices.tax.toFixed(2);
+                cpt.base = concept.fiscalPrices.baseTax.toFixed(6);
+                cpt.import = concept.fiscalPrices.tax.toFixed(6);
             }
         }
         cptArray.push(cpt)
@@ -93,19 +93,19 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
         obj.concepts.conceptsInvoice = cptArray;
     }
     obj.taxes = {
-        base: totals.detailsWithPaymentApplied.baseTax.toFixed(2),
-        amount: totals.detailsWithPaymentApplied.tax.toFixed(2),
+        base: totals.detailsWithPaymentApplied.baseTax.toFixed(6),
+        amount: totals.detailsWithPaymentApplied.tax.toFixed(6),
     }
     obj.totals.fiscal.SubTotal = totals.detailsWithPaymentApplied.amount.toFixed(2)
-    obj.totals.fiscal.Descuento = totals.detailsWithPaymentApplied.discount.toFixed(2),
-        obj.totals.fiscal.Total = totals.detailsWithPaymentApplied.total.toFixed(2),
-        obj.totals.receipt = {
-            SubTotal: obj.totals.fiscal.SubTotal,
-            Descuento: obj.totals.fiscal.Descuento,
-            Total: obj.totals.fiscal.Total,
-            Recargo: surchargesTotal.length > 0 ? Decimal.sum(...surchargesTotal).toFixed(2) : '0.000',
-            Impuesto: obj.taxes.amount,
-        }
+    obj.totals.fiscal.Descuento = totals.detailsWithPaymentApplied.discount.toFixed(2)
+    obj.totals.fiscal.Total = totals.detailsWithPaymentApplied.total.toFixed(2)
+    obj.totals.receipt = {
+        SubTotal: obj.totals.fiscal.SubTotal,
+        Descuento: obj.totals.fiscal.Descuento,
+        Total: obj.totals.fiscal.Total,
+        Recargo: surchargesTotal.length > 0 ? Decimal.sum(...surchargesTotal).toFixed(2) : '0.000',
+        Impuesto: obj.taxes.amount,
+    }
     return obj
 
 }

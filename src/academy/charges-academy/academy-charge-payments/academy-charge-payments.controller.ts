@@ -455,7 +455,7 @@ export class AcademyChargePaymentsController
       res.send({
         src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
       });
-    } 
+    }
       catch (e) {
         res.send({
             error: error,
@@ -510,7 +510,7 @@ export class AcademyChargePaymentsController
           month: query.month,
           year: query.year,
         },
-        percentageTax: '0.160000'
+        percentageTax: '0.16'
       });
 
       const stamping = await this.smartWeb.facturar(xml);
