@@ -31,6 +31,7 @@ import { Environment, InvoiceModules } from '../../../common/point-of-sale/types
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import * as moment from 'moment';
+import { buildDataInvoice } from 'src/common/calculations/buildDataInvoice';
 
 @Crud({
     model: {
@@ -87,6 +88,13 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
+
+        const fiscal = buildDataInvoice({
+            payment: result.payment,
+            details: result.sale.miniStoreSaleDetails,
+            type: InvoiceModules.STORE,
+        });
+
         const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
