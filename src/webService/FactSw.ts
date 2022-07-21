@@ -42,6 +42,9 @@ export class FactSw {
 
       stamp.StampV4(xml, (err, data) => {
         if (err) {
+
+          console.info(xml)
+
           const errRes = {
             status: 'error',
             message: err.message,

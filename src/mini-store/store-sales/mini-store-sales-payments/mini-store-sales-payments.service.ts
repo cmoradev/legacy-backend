@@ -98,6 +98,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 salesReturnsQB.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
+
         return salesReturnsQB.getMany();
     }
 
@@ -135,7 +136,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async fetchFilteredSales(query: QuerySimpleReport): Promise<MiniStoreSale[]> {
-        const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale');
+        const salesQueryBuilder = this.salesRepository.createQueryBuilder('sale').withDeleted();
         salesQueryBuilder.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
         salesQueryBuilder.leftJoinAndSelect('sale.cashier', 'agent');
         salesQueryBuilder.leftJoinAndSelect('sale.student', 'student');
@@ -164,6 +165,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 salesQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
+
+        salesQueryBuilder.andWhere('sale.deletedAt IS NULL')
+
         return await salesQueryBuilder.getMany();
     }
 
