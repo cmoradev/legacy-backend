@@ -67,17 +67,17 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
                     Cantidad: concept.quantity.toFixed(6),
                     ClaveUnidad: moreDetails?.ClaveUnidad || 'E48',
                     Descripcion: sanitizeStringToXml(moreDetails.descrption),
-                    ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(2),
-                    Importe: concept.fiscalPrices.amount.toFixed(2),
-                    Descuento: concept.fiscalPrices.discount.toFixed(2),
+                    ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(6),
+                    Importe: concept.fiscalPrices.amount.toFixed(6),
+                    Descuento: concept.fiscalPrices.discount.toFixed(6),
                     ObjetoImp: conceptDetails.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto
                 },
                 base: '',
                 import: ''
             };
             if (ivaByDetail !== 0 && conceptDetails.objetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
-                cpt.base = concept.fiscalPrices.baseTax.toFixed(2);
-                cpt.import = concept.fiscalPrices.tax.toFixed(2);
+                cpt.base = concept.fiscalPrices.baseTax.toFixed(6);
+                cpt.import = concept.fiscalPrices.tax.toFixed(6);
             }
         }
         cptArray.push(cpt)

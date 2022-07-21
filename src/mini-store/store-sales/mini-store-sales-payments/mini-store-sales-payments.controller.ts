@@ -89,12 +89,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
     async billing(@Body() query: QueryBilling, @Res() response) {
         const result = await this.service.findSaleByPayment(query);
 
-        const fiscal = buildDataInvoice({
-            payment: result.payment,
-            details: result.sale.miniStoreSaleDetails,
-            type: InvoiceModules.STORE,
-        });
-
         const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
@@ -103,6 +97,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         });
 
         const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
+
         const branchOfficeSett = await this.branchOfficeSettingService.findOne({
             where: {
                 id: query.branchOfficeSettingId,
