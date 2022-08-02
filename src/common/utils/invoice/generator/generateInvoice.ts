@@ -109,6 +109,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     await cfd.certificar(cer);
     await cfd.sellar(key, emisor.password);
     const xml = await cfd.getXmlCdfi();
+    console.log(xml)
     return xml;
 }
 

@@ -257,7 +257,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             }
 
         } catch (e) {
-            console.warn(e);
+            console.log(e);
             response.status(400);
             response.send(e);
         }
@@ -434,7 +434,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 msg: 'Factura global timbrada',
             });
         } catch (e) {
-            console.warn(e);
+            console.log(e);
             response.status(400);
             response.send(e);
         }

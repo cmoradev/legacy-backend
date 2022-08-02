@@ -356,7 +356,7 @@ export class AcademyChargePaymentsController
         }
       }
     } catch (e) {
-      console.warn(e);
+      console.log(e);
       res.status(400);
       res.send(e);
     }
@@ -538,7 +538,7 @@ export class AcademyChargePaymentsController
         msg: 'Factura global timbrada',
       });
     } catch (e) {
-      console.warn(e);
+      console.log(e);
       response.status(400);
       response.send(e);
     }

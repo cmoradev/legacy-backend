@@ -506,7 +506,7 @@ export class SchoolChargesPaymentsController
         }
       }
     } catch (e) {
-      console.warn(e);
+      console.log(e);
       response.status(400);
       response.send(e);
     }
@@ -627,7 +627,7 @@ export class SchoolChargesPaymentsController
         msg: 'Factura global timbrada',
       });
     } catch (e) {
-      console.warn(e);
+      console.log(e);
       response.status(400);
       response.send(e);
     }

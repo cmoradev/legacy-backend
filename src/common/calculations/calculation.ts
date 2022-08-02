@@ -98,7 +98,13 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     }
     obj.totals.fiscal.SubTotal = totals.detailsWithPaymentApplied.amount.toFixed(2)
     obj.totals.fiscal.Descuento = totals.detailsWithPaymentApplied.discount.toFixed(2)
-    obj.totals.fiscal.Total = totals.detailsWithPaymentApplied.total.toFixed(2)
+    obj.totals.fiscal.Total = Decimal.sum(
+                                Decimal.sub(
+                                    totals.detailsWithPaymentApplied.amount.toFixed(2),
+                                    totals.detailsWithPaymentApplied.discount.toFixed(2)
+                                ),
+                                totals.detailsWithPaymentApplied.tax.toFixed(2)
+                                ).toFixed(2)
     obj.totals.receipt = {
         SubTotal: obj.totals.fiscal.SubTotal,
         Descuento: obj.totals.fiscal.Descuento,
