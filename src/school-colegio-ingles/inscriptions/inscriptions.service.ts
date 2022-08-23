@@ -31,8 +31,8 @@ import { PaymentPlansService } from '../payment-plans/payment-plans.service';
 import { StudyPlansService } from '../study-plans/study-plans.service';
 import { StudyPlanVariantsService } from '../study-plan-variants/study-plan-variants.service';
 import { PaymentPlanConceptsService } from '../payment-plan-concepts/payment-plan-concepts.service';
-import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { PaymentPlanConcept } from '../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
 
@@ -100,7 +100,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -125,10 +125,10 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
                 startDate: moment(options.month).startOf('month').toDate(),
                 endDate: moment(options.month).startOf('month').toDate(),
             });
-        if (options.cycleId !== 0 && options.cycleId !== '0' && typeof options.cycleId !== 'undefined') inscripcion.andWhere('inscripCycle.id = :cycleId', { cycleId: options.cycleId });
-        if (options.branchOfficeId !== 0 && options.branchOfficeId !== '0' && typeof options.branchOfficeId !== 'undefined') inscripcion.andWhere('branchOffice.id = :branchOfficeId', { branchOfficeId: options.branchOfficeId });
-        if (options.levelId !== 0 && options.levelId !== '0' && typeof options.levelId !== 'undefined') inscripcion.andWhere('inscripLevel.id = :levelId', { levelId: options.levelId });
-        if (options.gradeId !== 0 && options.gradeId !== '0' && typeof options.gradeId !== 'undefined') inscripcion.andWhere('inscripGrade.id = :gradeId', { gradeId: options.gradeId });
+        if (options.cycleId !== 0 && options.cycleId !== '0' && typeof options.cycleId !== 'undefined') inscripcion.andWhere('inscripCycle.id = :cycleId', {cycleId: options.cycleId});
+        if (options.branchOfficeId !== 0 && options.branchOfficeId !== '0' && typeof options.branchOfficeId !== 'undefined') inscripcion.andWhere('branchOffice.id = :branchOfficeId', {branchOfficeId: options.branchOfficeId});
+        if (options.levelId !== 0 && options.levelId !== '0' && typeof options.levelId !== 'undefined') inscripcion.andWhere('inscripLevel.id = :levelId', {levelId: options.levelId});
+        if (options.gradeId !== 0 && options.gradeId !== '0' && typeof options.gradeId !== 'undefined') inscripcion.andWhere('inscripGrade.id = :gradeId', {gradeId: options.gradeId});
 
 
         return await inscripcion.getMany();
@@ -136,7 +136,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
     public async reportAttendance(query: Attendance) {
         const result: ListQuery = {
-            name: (await this.levelService.findOne({ where: { id: query.levelId } })).name,
+            name: (await this.levelService.findOne({where: {id: query.levelId}})).name,
             branchOffice: {} as BranchOffice,
             cycle: {} as Cycle,
             classroom: [],
@@ -151,7 +151,8 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             .where('inscription.idStatus != :status', {
                 status: 0,
             })
-            .andWhere('inscripStudent.statusStudent = \'1\'');
+            .andWhere('inscripStudent.statusStudent = \'1\'')
+            .andWhere('inscription.idStatus != \'0\'');
         // @ts-ignore
         if (query.classRoomId === 0 || query.classRoomId === '0') {
             const classRooms = await this.classroomService.getClassRoomByLevel(query.levelId, query.gradeId, query.cycleId);
@@ -219,6 +220,9 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             };
 
             const data = await inscripcion.getMany();
+
+            console.log(JSON.stringify(data, null, 3))
+
             let i = 1;
             for (const studen of data) {
                 room.name = studen.inscripClassroom.name;
@@ -293,7 +297,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             return await this.repo
                 .createQueryBuilder('student')
                 .andWhere('student.idStatus = :status',
-                    { status: type },
+                    {status: type},
                 )
                 .getCount();
         };
@@ -323,7 +327,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         const relationsResult: IRelationsInscriptions = {} as IRelationsInscriptions;
         for (const relation of filteredRelations) {
             const repository = await getRepository(relation, ColegioDBNameConnection);
-            let relationData = await repository.find({ cache: true });
+            let relationData = await repository.find({cache: true});
             relationData = JSON.parse(JSON.stringify(relationData));
             relationsResult[relation] = relationData;
         }
@@ -367,73 +371,73 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         const inscriptions: Inscription[] = [];
         let inscription: Inscription = {} as Inscription;
         for (const item of dataTable) {
-            inscription = { schoolPayments: [] as unknown as SchoolPayment } as unknown as Inscription;
+            inscription = {schoolPayments: [] as unknown as SchoolPayment} as unknown as Inscription;
             if (typeof item.Estudiante === 'number') {
-                const student = await this.studentService.findOne(item.Estudiante, { relations: ['studentCampus'] });
+                const student = await this.studentService.findOne(item.Estudiante, {relations: ['studentCampus']});
                 if (typeof student === 'undefined') {
-                    exceptions.push({ error: 'Estudiante no existe', value: item.Estudiante });
+                    exceptions.push({error: 'Estudiante no existe', value: item.Estudiante});
                 }
                 if (typeof student !== 'undefined') {
                     if (student.studentCampus.id !== preData.branchOfficeSchool.id) {
-                        exceptions.push({ error: `Estudiante no existe en el plantel`, value: item.Estudiante });
+                        exceptions.push({error: `Estudiante no existe en el plantel`, value: item.Estudiante});
                     } else {
-                        inscription.inscripStudent = { id: student.id } as Student;
+                        inscription.inscripStudent = {id: student.id} as Student;
                     }
                 }
             } else {
                 const student = await this.studentService.findStudentByFullName(item.Estudiante);
-                if (typeof student !== 'undefined') inscription.inscripStudent = { id: student.id } as Student;
+                if (typeof student !== 'undefined') inscription.inscripStudent = {id: student.id} as Student;
             }
             if (typeof item.Grado === 'number' && typeof item.Grupo === 'number') {
-                const grade = await this.gradesService.findOne(item.Grado, { relations: ['groups'] });
+                const grade = await this.gradesService.findOne(item.Grado, {relations: ['groups']});
                 const group = await this.groupsService.findOne(item.Grupo);
                 if (typeof grade === 'undefined') {
-                    exceptions.push({ error: 'Grado no existe', value: item.Grado });
+                    exceptions.push({error: 'Grado no existe', value: item.Grado});
                     break;
                 } else {
-                    inscription.inscripGrade = { id: grade.id } as Grade;
+                    inscription.inscripGrade = {id: grade.id} as Grade;
                 }
                 if (typeof group === 'undefined') {
-                    exceptions.push({ error: 'Grupo no existe', value: item.Grupo });
+                    exceptions.push({error: 'Grupo no existe', value: item.Grupo});
                     break;
                 } else {
-                    inscription.inscripGroup = { id: group.id } as Group;
+                    inscription.inscripGroup = {id: group.id} as Group;
                 }
             }
             if (typeof item['Plan de pago'] === 'number') {
                 const paymentPlan = await this.paymentPlansService.findOne(item['Plan de pago']);
                 if (typeof paymentPlan === 'undefined') {
-                    exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
+                    exceptions.push({error: 'No existe plan de pago', value: item['Plan de pago']});
                     break;
                 } else {
-                    inscription.paymentPlan = { id: paymentPlan.id } as PaymentPlan;
+                    inscription.paymentPlan = {id: paymentPlan.id} as PaymentPlan;
                 }
             }
             if (typeof item['Plan de pago'] === 'string') {
-                const paymentPlan = await this.paymentPlansService.findOne({ name: Like(`%${item['Plan de pago']}%`) });
+                const paymentPlan = await this.paymentPlansService.findOne({name: Like(`%${item['Plan de pago']}%`)});
                 if (typeof paymentPlan === 'undefined') {
-                    exceptions.push({ error: 'No existe plan de pago', value: item['Plan de pago'] });
+                    exceptions.push({error: 'No existe plan de pago', value: item['Plan de pago']});
                     break;
                 } else {
-                    inscription.paymentPlan = { id: paymentPlan.id } as PaymentPlan;
+                    inscription.paymentPlan = {id: paymentPlan.id} as PaymentPlan;
                 }
             }
             if (typeof item['Plan de estudio'] === 'number') {
                 const studyPlan = await this.studyPlansService.findOne(item['Plan de estudio']);
                 if (typeof studyPlan === 'undefined') {
-                    exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
+                    exceptions.push({error: 'Plan de estudio no existe', value: item['Plan de estudio']});
                     break;
                 } else {
-                    inscription.inscripStudyPlan = { id: studyPlan.id } as StudyPlan;
+                    inscription.inscripStudyPlan = {id: studyPlan.id} as StudyPlan;
                 }
             }
             if (typeof item['Plan de estudio'] === 'string') {
-                const studyPlan = await this.studyPlansService.findOne({ name: Like(item['Plan de estudio']) });
+                const studyPlan = await this.studyPlansService.findOne({name: Like(item['Plan de estudio'])});
                 if (typeof studyPlan === 'undefined') {
-                    exceptions.push({ error: 'Plan de estudio no existe', value: item['Plan de estudio'] });
+                    exceptions.push({error: 'Plan de estudio no existe', value: item['Plan de estudio']});
                     break;
                 } else {
-                    inscription.inscripStudyPlan = { id: studyPlan.id } as StudyPlan;
+                    inscription.inscripStudyPlan = {id: studyPlan.id} as StudyPlan;
                 }
             }
             if (typeof item['Variante de plan de estudio'] === 'number') {
@@ -444,36 +448,36 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
                         value: item['Variante de plan de estudio'],
                     });
                 } else {
-                    inscription.inscripStudyPlanVariant = { id: studyPlanVariant.id } as StudyPlanVariant;
+                    inscription.inscripStudyPlanVariant = {id: studyPlanVariant.id} as StudyPlanVariant;
                 }
             }
             if (typeof item['Variante de plan de estudio'] === 'string') {
-                const studyPlanVariant = await this.studyPlanVariantService.findOne({ name: Like(item['Variante de plan de estudio']) });
+                const studyPlanVariant = await this.studyPlanVariantService.findOne({name: Like(item['Variante de plan de estudio'])});
                 if (typeof studyPlanVariant === 'undefined') {
                     exceptions.push({
                         error: 'Variante deplan de estudio no existe',
                         value: item['Variante de plan de estudio'],
                     });
                 } else {
-                    inscription.inscripStudyPlanVariant = { id: studyPlanVariant.id } as StudyPlanVariant;
+                    inscription.inscripStudyPlanVariant = {id: studyPlanVariant.id} as StudyPlanVariant;
                 }
             }
             if (typeof item.Salon === 'number') {
                 const classroom = await this.classroomService.findOne(item.Salon);
                 if (typeof classroom === 'undefined') {
-                    exceptions.push({ error: 'Salon no existe', value: item.Salon });
+                    exceptions.push({error: 'Salon no existe', value: item.Salon});
                     break;
                 } else {
-                    inscription.inscripClassroom = { id: classroom.id } as Classroom;
+                    inscription.inscripClassroom = {id: classroom.id} as Classroom;
                 }
             }
             if (typeof item.Salon === 'string') {
-                const classroom = await this.classroomService.findOne({ name: Like(item.Salon) });
+                const classroom = await this.classroomService.findOne({name: Like(item.Salon)});
                 if (typeof classroom === 'undefined') {
-                    exceptions.push({ error: 'Salon no existe', value: item.Salon });
+                    exceptions.push({error: 'Salon no existe', value: item.Salon});
                     break;
                 } else {
-                    inscription.inscripClassroom = { id: classroom.id } as Classroom;
+                    inscription.inscripClassroom = {id: classroom.id} as Classroom;
                 }
             }
             if (item.Estado !== null && typeof item.Estado === 'number') {
@@ -482,8 +486,8 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             if (item.Mensualidades !== null && typeof item.Mensualidades !== 'undefined' && typeof item['Plan de pago'] === 'number') {
                 const concept = await this.paymentPlansConceptsService.paymentPlanConceptRepository.createQueryBuilder('concept')
                     .innerJoinAndSelect('concept.paymentPlan', 'paymentPlan')
-                    .where('paymentPlan.id = :id', { id: item['Plan de pago'] })
-                    .andWhere('concept.name = :name', { name: item.Mensualidades })
+                    .where('paymentPlan.id = :id', {id: item['Plan de pago']})
+                    .andWhere('concept.name = :name', {name: item.Mensualidades})
                     .getOne();
                 if (typeof concept === 'undefined') {
                     exceptions.push({
@@ -516,8 +520,8 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             if (item.Inscripciones !== null && typeof item.Inscripciones !== 'undefined' && typeof item['Plan de pago'] === 'number') {
                 const concept = await this.paymentPlansConceptsService.paymentPlanConceptRepository.createQueryBuilder('concept')
                     .innerJoinAndSelect('concept.paymentPlan', 'paymentPlan')
-                    .where('paymentPlan.id = :id', { id: item['Plan de pago'] })
-                    .andWhere('concept.name = :name', { name: item.Inscripciones })
+                    .where('paymentPlan.id = :id', {id: item['Plan de pago']})
+                    .andWhere('concept.name = :name', {name: item.Inscripciones})
                     .getOne();
                 if (typeof concept === 'undefined') {
                     exceptions.push({
@@ -557,7 +561,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
             } as Level;
             inscriptions.push(inscription);
         }
-        return { exceptions, inscriptions };
+        return {exceptions, inscriptions};
 
     }
 }
