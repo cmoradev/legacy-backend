@@ -1,6 +1,6 @@
-import { Borders, Workbook } from 'exceljs';
-import { QueryResultMoths } from '../types/academyActvities.interface';
 import * as Excel from 'exceljs';
+import { Borders } from 'exceljs';
+import { QueryResultMoths } from '../types/academyActvities.interface';
 import { getDaysArray } from '../../../common/date';
 
 export class AcademyActivityReport {
@@ -15,7 +15,10 @@ export class AcademyActivityReport {
         ];
         for (const data of resultData) {
             data.academyActivityGroups.forEach(group => {
-                const groupSheet = workbook.addWorksheet(group.name, {
+
+                const sheetName = `${group.name.split('/').join(' ')}`;
+
+                const groupSheet = workbook.addWorksheet(sheetName, {
                     properties:
                         {
                             tabColor: {
@@ -29,48 +32,48 @@ export class AcademyActivityReport {
                 const dateOfIssueCell = groupSheet.getCell('C5');
 
                 const borders = {
-                    right: { style: 'thin' },
-                    top: { style: 'thin' },
-                    bottom: { style: 'thin' },
-                    left: { style: 'thin' },
+                    right: {style: 'thin'},
+                    top: {style: 'thin'},
+                    bottom: {style: 'thin'},
+                    left: {style: 'thin'},
                 };
 
                 bussinessNameCell.value = 'QUINTANA ROO, S.C ';
                 reportTypeCell.value = 'Listado de alumnos por Acacademias ';
-                dateRangeCell.value = 'Academia ' + data.name;
-                dateOfIssueCell.value = 'Grupo ' + group.name;
+                dateRangeCell.value = `Academia ${data.name}`;
+                dateOfIssueCell.value = `Grupo ${group.name}`;
 
                 ['C2', 'C3', 'C4', 'C5'].map(key => {
-                    groupSheet.getCell(key).style = { alignment: { horizontal: 'center' } };
+                    groupSheet.getCell(key).style = {alignment: {horizontal: 'center'}};
                     if (key === 'C2') {
                         groupSheet.getCell(key).border = {
-                            top: { style: 'thin' },
-                            left: { style: 'thin' },
-                            right: { style: 'thin' },
+                            top: {style: 'thin'},
+                            left: {style: 'thin'},
+                            right: {style: 'thin'},
                         };
                     } else {
                         groupSheet.getCell(key).border = {
-                            right: { style: 'thin' },
-                            top: { style: 'thin' },
-                            bottom: { style: 'thin' },
-                            left: { style: 'thin' },
+                            right: {style: 'thin'},
+                            top: {style: 'thin'},
+                            bottom: {style: 'thin'},
+                            left: {style: 'thin'},
                         };
                     }
                 });
                 dateOfIssueCell.border = {
-                    left: { style: 'thin' },
-                    right: { style: 'thin' },
-                    bottom: { style: 'thin' },
+                    left: {style: 'thin'},
+                    right: {style: 'thin'},
+                    bottom: {style: 'thin'},
                 };
 
                 const rows = [['', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '']];
                 let lengthDays = 0;
                 for (const day of days) {
-                    if (day.day !== 'Domingo' && day.day !== 'Sabado') {
+                    if (day?.day !== 'Domingo' && day?.day !== 'Sabado') {
                         rows[0].push(day.day.charAt(0));
                         rows[1].push(day.dayNum);
                         lengthDays++;
-                    } else if (day.day === 'Domingo') {
+                    } else if (day?.day === 'Domingo') {
                         rows[0].push('');
                         rows[1].push('');
                         lengthDays++;
@@ -109,26 +112,26 @@ export class AcademyActivityReport {
                     for (let j = 13; j < verticalEnd; j++) {
                         const key = letter + '' + j;
                         groupSheet.getCell(key).border = {
-                            right: { style: 'thin' },
-                            top: { style: 'thin' },
-                            bottom: { style: 'thin' },
-                            left: { style: 'thin' },
+                            right: {style: 'thin'},
+                            top: {style: 'thin'},
+                            bottom: {style: 'thin'},
+                            left: {style: 'thin'},
                         };
 
                         if (i >= 0 && i <= 7 && j === 15) {
                             groupSheet.getCell(key).style = {
                                 border: borders as Partial<Borders>,
-                                alignment: { horizontal: 'center' },
+                                alignment: {horizontal: 'center'},
                                 font: {
                                     name: 'Calibri',
-                                    color: { argb: 'FFFFFF' },
+                                    color: {argb: 'FFFFFF'},
                                     size: 14,
                                 },
                                 fill: {
                                     type: 'pattern',
                                     pattern: 'solid',
-                                    fgColor: { argb: '1E88E5' },
-                                    bgColor: { argb: '1E88E5' },
+                                    fgColor: {argb: '1E88E5'},
+                                    bgColor: {argb: '1E88E5'},
                                 },
                             };
                         }
@@ -136,17 +139,17 @@ export class AcademyActivityReport {
                         if (i >= 8 && i <= horizontal && j === 13) {
                             groupSheet.getCell(key).style = {
                                 border: borders as Partial<Borders>,
-                                alignment: { horizontal: 'center' },
+                                alignment: {horizontal: 'center'},
                                 font: {
                                     name: 'Calibri',
-                                    color: { argb: 'FFFFFF' },
+                                    color: {argb: 'FFFFFF'},
                                     size: 14,
                                 },
                                 fill: {
                                     type: 'pattern',
                                     pattern: 'solid',
-                                    fgColor: { argb: '1E88E5' },
-                                    bgColor: { argb: '1E88E5' },
+                                    fgColor: {argb: '1E88E5'},
+                                    bgColor: {argb: '1E88E5'},
                                 },
                             };
                         }
@@ -164,19 +167,19 @@ export class AcademyActivityReport {
                     },
                     font: {
                         name: 'Calibri',
-                        color: { argb: 'FFFFFF' },
+                        color: {argb: 'FFFFFF'},
                         size: 8,
                     },
                     fill: {
                         type: 'pattern',
                         pattern: 'solid',
-                        fgColor: { argb: '1E88E5' },
-                        bgColor: { argb: '1E88E5' },
+                        fgColor: {argb: '1E88E5'},
+                        bgColor: {argb: '1E88E5'},
                     },
                 };
             });
         }
-
+        console.log('Hola mundo')
         const result = await workbook.xlsx.writeBuffer({
                 filename: (+new Date()).toString() + '.xlsx',
             },
