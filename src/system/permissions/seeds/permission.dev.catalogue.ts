@@ -1423,5 +1423,31 @@ const permissionDev: Permission[] = [
             },
         ] as Action[],
     },
+    {
+        'id': 75,
+        'version': 0,
+        'uuid': '',
+        'routeId': 57,
+        'role': {
+            'id': 7,
+        },
+        'actions': [
+            {
+                'id': 1,
+            },
+            {
+                'id': 2,
+            },
+            {
+                'id': 3,
+            },
+            {
+                'id': 4,
+            },
+            {
+                'id': 7,
+            }
+        ] as Action[],
+    },
 ] as unknown as Permission[];
 export default permissionDev;

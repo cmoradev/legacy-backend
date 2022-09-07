@@ -320,5 +320,10 @@ const routesActions: Partial<RouteAction>[] = [
     { id: 315, route: { id: 93 }, action: { id: ActionsEnum.DELETE } },
     { id: 316, route: { id: 94 }, action: { id: ActionsEnum.DELETE } },
     { id: 317, route: { id: 95 }, action: { id: ActionsEnum.DELETE } },
+    { id: 318, route : {id: 57}, action: {id: ActionsEnum.CREATE}},
+    { id: 319, route : {id: 57}, action: {id: ActionsEnum.UPDATE}},
+    { id: 320, route : {id: 57}, action: {id: ActionsEnum.DELETE}},
+    { id: 321, route : {id: 57}, action: {id: ActionsEnum.READ}},
+    { id: 322, route : {id: 57}, action: {id: ActionsEnum.CLIENTES}},
 ] as RouteAction;
 export default routesActions;

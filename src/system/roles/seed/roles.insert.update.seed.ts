@@ -46,6 +46,13 @@ export default class RolesInsertUpdateSeed implements Seeder {
                 'uuid': '',
                 'isActive': true,
                 'name': 'Desarrollador'
+            },
+            {
+                'id': 7,
+                'version': 0,
+                'uuid': '',
+                'isActive': true,
+                'name': 'Tutores'
             }
 
         ];
