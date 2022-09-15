@@ -1,0 +1,1595 @@
+[
+  {
+    "name": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 4",
+    "description": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 17,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 2",
+    "description": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 6",
+    "description": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 26,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 12",
+    "description": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 12",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 1",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 1",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 2",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 4",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 16,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 6",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 21,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 8",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 8",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 10",
+    "description": "SHORT BLANCO DEPORTIVO PREESCOLAR TALLA 10",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 2",
+    "description": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 33,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 4",
+    "description": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 19,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 6",
+    "description": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 10",
+    "description": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 10",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 4,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-8",
+    "description": "CAMISA PREESCOLAR BLANCA T-8",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-6",
+    "description": "CAMISA PREESCOLAR BLANCA T-6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 22,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-4",
+    "description": "CAMISA PREESCOLAR BLANCA T-4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-2",
+    "description": "CAMISA PREESCOLAR BLANCA T-2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-10",
+    "description": "CAMISA PREESCOLAR BLANCA T-10",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-12",
+    "description": "CAMISA PREESCOLAR BLANCA T-12",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "CAMISA PREESCOLAR BLANCA T-14",
+    "description": "CAMISA PREESCOLAR BLANCA T-14",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 2",
+    "description": "JUMPER PREESCOLAR TALLA 2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 16,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 4",
+    "description": "JUMPER PREESCOLAR TALLA 4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 27,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 6",
+    "description": "JUMPER PREESCOLAR TALLA 6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 13,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 8",
+    "description": "JUMPER PREESCOLAR TALLA 8",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 10",
+    "description": "JUMPER PREESCOLAR TALLA 10",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "JUMPER PREESCOLAR TALLA 12",
+    "description": "JUMPER PREESCOLAR TALLA 12",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 2",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 2",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 26,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 4",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 4",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 21,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 6",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 6",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 27,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 8",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 8",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 10",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 10",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 4,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 14",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 14",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA CUELLO BLANCO TALLA 4",
+    "description": "POLO PRIMARIA CUELLO BLANCO TALLA 4",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 16,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA  CUELLO BLANCO TALLA 6",
+    "description": "POLO PRIMARIA  CUELLO BLANCO TALLA 6",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 26,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA CUELLO BLANCO TALLA 8",
+    "description": "POLO PRIMARIA CUELLO BLANCO TALLA 8",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA  CUELLO BLANCO TALLA 10",
+    "description": "POLO PRIMARIA  CUELLO BLANCO TALLA 10",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 36,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA  CUELLO BLANCO TALLA 12",
+    "description": "POLO PRIMARIA  CUELLO BLANCO TALLA 12",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 41,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA  CUELLO BLANCO TALLA 14",
+    "description": "POLO PRIMARIA  CUELLO BLANCO TALLA 14",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 34,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA  CUELLO BLANCO TALLA 16",
+    "description": "POLO PRIMARIA  CUELLO BLANCO TALLA 16",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 31,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO PRIMARIA CUELLO BLANCO TALLA 28",
+    "description": "POLO PRIMARIA CUELLO BLANCO TALLA 28",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 4",
+    "description": "FALDA AZUL PRIMARIA TALLA 4",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 6",
+    "description": "FALDA AZUL PRIMARIA TALLA 6",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 8",
+    "description": "FALDA AZUL PRIMARIA TALLA 8",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 10",
+    "description": "FALDA AZUL PRIMARIA TALLA 10",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 13,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 12",
+    "description": "FALDA AZUL PRIMARIA TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 9,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 14",
+    "description": "FALDA AZUL PRIMARIA TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 10,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 16",
+    "description": "FALDA AZUL PRIMARIA TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 28",
+    "description": "FALDA AZUL PRIMARIA TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL PRIMARIA TALLA 30",
+    "description": "FALDA AZUL PRIMARIA TALLA 30",
+    "price": 351,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA  AZUL PRIMARIA TALLA 6",
+    "description": "BERMUDA  AZUL PRIMARIA TALLA 6",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 13,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 8",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 8",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 19,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 10",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 10",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 24,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 12",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 17,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 14",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 16",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 28",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL PRIMARIA TALLA 30",
+    "description": "BERMUDA AZUL PRIMARIA TALLA 30",
+    "price": 351,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-6",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-6",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-40",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-40",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-4",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-4",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-38",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-38",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-32",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-32",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-30",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-30",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-28",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-28",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-2",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-2",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-16",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-16",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-14",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-14",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 23,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-12",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-12",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 18,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-10",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-10",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-8",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-8",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-6",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-6",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-4",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-4",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-34",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-34",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-32",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-32",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 10,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-30",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-30",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-16",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-16",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 12,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-15",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-15",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 14,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-14",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-14",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-12",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-12",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-10",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-10",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 27,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DEPORTIVO PRIMARIA AZUL T-8",
+    "description": "SHORT DEPORTIVO PRIMARIA AZUL T-8",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-6",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-6",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 18,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-4",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-4",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-34",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-34",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-32",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-32",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-30",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-30",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-28",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-28",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-2",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-2",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-16",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-16",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-15",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-15",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-14",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-14",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 21,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-12",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-12",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 25,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-10",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-10",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO  ANTERIOR NIÑO TALLA 12",
+    "description": "SHORT  DEPORTIVO  ANTERIOR NIÑO TALLA 12",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 14",
+    "description": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 14",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 16",
+    "description": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 16",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 28",
+    "description": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 28",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 9,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 30",
+    "description": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 30",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 2,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 32",
+    "description": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 32",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 14,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 34",
+    "description": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 34",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 36",
+    "description": "SHORT   DEPORTIVO  ANTERIOR NIÑO TALLA 36",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 38",
+    "description": "SHORT   DEPORTIVO ANTERIOR NIÑO TALLA 38",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA 28",
+    "description": "POLO SECUNDARIA CABALLERO TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA 16",
+    "description": "POLO SECUNDARIA CABALLERO TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA 14",
+    "description": "POLO SECUNDARIA CABALLERO TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA 12",
+    "description": "POLO SECUNDARIA CABALLERO TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA GRANDE",
+    "description": "POLO SECUNDARIA CABALLERO TALLA GRANDE",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA CABALLERO TALLA EXTRA GRANDE",
+    "description": "POLO SECUNDARIA CABALLERO TALLA EXTRA GRANDE",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA TALLA XCH",
+    "description": "POLO SECUNDARIA DAMA TALLA XCH",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA CHICA",
+    "description": "POLO SECUNDARIA DAMA CHICA",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA  DAMA MEDIANA",
+    "description": "POLO SECUNDARIA  DAMA MEDIANA",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA GRANDE",
+    "description": "POLO SECUNDARIA DAMA GRANDE",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 12",
+    "description": "FALDA AZUL SECUNDARIA TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 10,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 14",
+    "description": "FALDA AZUL SECUNDARIA TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 19,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 16",
+    "description": "FALDA AZUL SECUNDARIA TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 28",
+    "description": "FALDA AZUL SECUNDARIA TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 12,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 30",
+    "description": "FALDA AZUL SECUNDARIA TALLA 30",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 14,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 32",
+    "description": "FALDA AZUL SECUNDARIA TALLA 32",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 10,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 34",
+    "description": "FALDA AZUL SECUNDARIA TALLA 34",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA AZUL SECUNDARIA TALLA 40",
+    "description": "FALDA AZUL SECUNDARIA TALLA 40",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 12",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 14",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 15,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 16",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 14,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 28",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 18,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 30",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 30",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 11,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 32",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 32",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 34",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 34",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA AZUL SECUNDARIA TALLA 36",
+    "description": "BERMUDA AZUL SECUNDARIA TALLA 36",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 12",
+    "description": "SHORT DAMA ANTERIOR TALLA 12",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 7,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 30",
+    "description": "SHORT DAMA ANTERIOR TALLA 30",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 32",
+    "description": "SHORT DAMA ANTERIOR TALLA 32",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 6,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 34",
+    "description": "SHORT DAMA ANTERIOR TALLA 34",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 4,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 36",
+    "description": "SHORT DAMA ANTERIOR TALLA 36",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 4,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 38",
+    "description": "SHORT DAMA ANTERIOR TALLA 38",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT DAMA ANTERIOR TALLA 40",
+    "description": "SHORT DAMA ANTERIOR TALLA 40",
+    "price": 200,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 5,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "POLLO CUELLO AZUL DETALLES TALLA 12",
+    "description": "POLLO CUELLO AZUL DETALLES TALLA 12",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 12,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLLO CUELLO AZUL DETALLES TALLA 14",
+    "description": "POLLO CUELLO AZUL DETALLES TALLA 14",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 3,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLLO CUELLO LINEAS  DETALLES TALLA 12",
+    "description": "POLLO CUELLO LINEAS  DETALLES TALLA 12",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLLO CUELLO LINEAS  DETALLES TALLA 8",
+    "description": "POLLO CUELLO LINEAS  DETALLES TALLA 8",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA DETALLES DEFECTO TALLA 28",
+    "description": "BERMUDA DETALLES DEFECTO TALLA 28",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA DETALLES DEFECTO TALLA 38",
+    "description": "BERMUDA DETALLES DEFECTO TALLA 38",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA DETALLES DEFECTO TALLA 40",
+    "description": "BERMUDA DETALLES DEFECTO TALLA 40",
+    "price": 100,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "FALDA DETALLES DEFECTO TALLA 16",
+    "description": "FALDA DETALLES DEFECTO TALLA 16",
+    "price": 101,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 1,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "LIBRO LECTOESCRITURA K2",
+    "description": "LIBRO LECTOESCRITURA K2",
+    "price": 135,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 9,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRO LECTOESCRITURA K1",
+    "description": "LIBRO LECTOESCRITURA K1",
+    "price": 135,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 8,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRETA DE TAREAS SECUNDARIA",
+    "description": "LIBRETA DE TAREAS SECUNDARIA",
+    "price": 399,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 20,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRETA DE TAREAS DE PRIMARIA BASICA",
+    "description": "LIBRETA DE TAREAS DE PRIMARIA BASICA",
+    "price": 150,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 41,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRETA DE TAREAS DE PRIMARIA SUPERIOR",
+    "description": "LIBRETA DE TAREAS DE PRIMARIA SUPERIOR",
+    "price": 150,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 50,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO ITALIANO ROSADO PREESCOLAR",
+    "description": "FORRO ITALIANO ROSADO PREESCOLAR",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 28,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO ITALIANO ROJO PREESCOLAR",
+    "description": "FORRO ITALIANO ROJO PREESCOLAR",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 98,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO COLLEGE ROJO PRIMARIA",
+    "description": "FORRO COLLEGE ROJO PRIMARIA",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 294,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO COLLEGE AZUL PRIMARIA",
+    "description": "FORRO COLLEGE AZUL PRIMARIA",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 298,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO COLLAGE VERDE  PRIMARIA",
+    "description": "FORRO COLLAGE VERDE  PRIMARIA",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 50,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 8",
+    "description": "FALDA SHORT DEPORTIVO BLANCO PREESCOLAR TALLA 8",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 8",
+    "description": "BLUSA PREESCOLAR BLANCA NIÑA TALLA 8",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA PREESCOLAR MIL RAYAS TALLA 12",
+    "description": "BERMUDA PREESCOLAR MIL RAYAS TALLA 12",
+    "price": 320,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "BERMUDA  AZUL PRIMARIA TALLA 4",
+    "description": "BERMUDA  AZUL PRIMARIA TALLA 4",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-36",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-36",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "PLAYERA DEPORTIVA NUEVO MODELO T-34",
+    "description": "PLAYERA DEPORTIVA NUEVO MODELO T-34",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-38",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-38",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "FALDA DEPORTIVA PRIMARIA AZUL T-28",
+    "description": "FALDA DEPORTIVA PRIMARIA AZUL T-28",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-38",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-38",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "SHORT  DEPORTIVO PRIMARIA AZUL T-36",
+    "description": "SHORT  DEPORTIVO PRIMARIA AZUL T-36",
+    "price": 325,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Deportiva"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA TALLA 12",
+    "description": "POLO SECUNDARIA DAMA TALLA 12",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA TALLA 14",
+    "description": "POLO SECUNDARIA DAMA TALLA 14",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA TALLA 16",
+    "description": "POLO SECUNDARIA DAMA TALLA 16",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "POLO SECUNDARIA DAMA TALLA 28",
+    "description": "POLO SECUNDARIA DAMA TALLA 28",
+    "price": 350,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Ropa Escolar"
+  },
+  {
+    "name": "MICA DE BOLETIN DE HABITOS PREESCOLAR",
+    "description": "MICA DE BOLETIN DE HABITOS PREESCOLAR",
+    "price": 40,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "MICA DE BOLETAS PREESCOLAR",
+    "description": "MICA DE BOLETAS PREESCOLAR",
+    "price": 40,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "MICA BOLETIN DE HABITOS PRIMARIA",
+    "description": "MICA BOLETIN DE HABITOS PRIMARIA",
+    "price": 40,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRO LECTOESCRITURA K3",
+    "description": "LIBRO LECTOESCRITURA K3",
+    "price": 135,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "LIBRETA TAREAS PREESCOLAR",
+    "description": "LIBRETA TAREAS PREESCOLAR",
+    "price": 150,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO ITALIANO AZUL PREESCOLAR",
+    "description": "FORRO ITALIANO AZUL PREESCOLAR",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "FORRO COLLEGE AMARILLO PRIMARIA",
+    "description": "FORRO COLLEGE AMARILLO PRIMARIA",
+    "price": 45,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Útiles Escolares"
+  },
+  {
+    "name": "EXTRAORDINARIO CUI",
+    "description": "EXTRAORDINARIO CUI",
+    "price": 300,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Exámenes"
+  },
+  {
+    "name": "EXAMEN ADMISION COLEGIO",
+    "description": "EXAMEN ADMISION COLEGIO",
+    "price": 250,
+    "maxStock": 200,
+    "minStock": 1,
+    "stock": 0,
+    "classification": "Exámenes"
+  }
+]
