@@ -1,11 +1,12 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { Student } from '../../students/entities/student.entity';
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { User } from 'src/system/users/entities/user.entity';
 
 @Entity('familias')
-export class Family  extends Base {
+export class Family extends Base {
 
     @Column('varchar', {
         nullable: false,
@@ -50,4 +51,7 @@ export class Family  extends Base {
         cascade: ['insert', 'update'],
     })
     businessName: BusinessNameFamily[];
+
+    @OneToMany(() => User, (user) => user.family)
+    users: User[];
 }

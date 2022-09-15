@@ -12,7 +12,7 @@ export class Recibo {
 
     public type: InvoiceModules = InvoiceModules.STORE;
 
-    public setType(type: InvoiceModules): void{
+    public setType(type: InvoiceModules): void {
         this.type = type;
     }
 
@@ -85,7 +85,7 @@ export class Recibo {
                         {
                             alignment: 'center',
                             margin: [55, 0, 0, 0],
-                            text: 'RECIBO DE PAGO',
+                            text: '',
                             style: {
                                 fontSize: 9,
                                 bold: true,
@@ -306,7 +306,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '\n'},
+                                    { text: '\n' },
                                     {
                                         text: 'RECARGO: ',
                                         style: {
@@ -314,7 +314,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '$\n'},
+                                    { text: '$\n' },
                                     {
                                         text: 'DESCUENTO: ',
                                         style: {
@@ -322,7 +322,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '$\n'},
+                                    { text: '$\n' },
                                     {
                                         text: 'IMPUESTOS: ',
                                         style: {
@@ -330,7 +330,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '$\n'},
+                                    { text: '$\n' },
                                     {
                                         text: 'TOTAL: ',
                                         style: {
@@ -338,7 +338,7 @@ export class Recibo {
                                             color: '#a76d09',
                                         }
                                     },
-                                    {text: '$'}
+                                    { text: '$' }
                                 ],
                                 style: {
                                     fontSize: 9
@@ -397,24 +397,6 @@ export class Recibo {
                 }
             },
             {
-                columns: [
-                    {
-                        bold: true,
-                        margin: [0, 20, 0, 10],
-                        text: [
-                            {
-                                text: 'ESTE COMPROBRANTE NO ES VALIDO PARA EFECTOS FISCALES\n',
-                            },
-                        ],
-                        style: {
-                            fontSize: 10,
-                        }
-                    },
-                    {
-                        width: 200,
-                        text: ''
-                    },
-                ]
             },
         ]
     }
@@ -422,6 +404,44 @@ export class Recibo {
     public async getDocument(): Promise<TCreatedPdf> {
 
         return createPdf(this.docDefinition);
+    }
+
+    public addLabel() {
+        this.docDefinition.content[0].columns[3][0] = {
+            alignment: 'center',
+            margin: [55, 0, 0, 0],
+            text: 'RECIBO DE PAGO',
+            style: { fontSize: 9, bold: true }
+        }
+        this.docDefinition.content[5] = {
+            columns: [
+                {
+                    bold: true,
+                    margin: [0, 20, 0, 10],
+                    text: [
+                        {
+                            text: 'ESTE COMPROBRANTE NO ES VALIDO PARA EFECTOS FISCALES\n',
+                        },
+                    ],
+                    style: {
+                        fontSize: 10,
+                    }
+                },
+                {
+                    width: 200,
+                    text: ''
+                },
+            ]
+        }
+    }
+
+    public addLabelQuote() {
+        this.docDefinition.content[0].columns[3][0] = {
+            alignment: 'center',
+            margin: [55, 0, 0, 0],
+            text: 'COTIZACIÓN',
+            style: { fontSize: 9, bold: true }
+        }
     }
 
 
@@ -450,9 +470,9 @@ export class Recibo {
                 alignment: 'left'
             }
         }
-        if(typeof this.docDefinition.content[0].columns[0].image == 'string'){
-             return true
-        }else{
+        if (typeof this.docDefinition.content[0].columns[0].image == 'string') {
+            return true
+        } else {
             return false;
         }
     }
@@ -469,7 +489,7 @@ export class Recibo {
             }
         }]
         this.docDefinition.content[0].columns[3][1].table.body.push(data)
-        if(this.docDefinition.content[0].columns[3][1].table.body.length > lengthbody){
+        if (this.docDefinition.content[0].columns[3][1].table.body.length > lengthbody) {
             return true
         } else {
             return false
@@ -488,7 +508,7 @@ export class Recibo {
             }
         }]
         this.docDefinition.content[0].columns[3][2].table.body.push(data);
-        if(this.docDefinition.content[0].columns[3][2].table.body.length > lengthbody){
+        if (this.docDefinition.content[0].columns[3][2].table.body.length > lengthbody) {
             return true
         } else {
             return false
@@ -500,12 +520,12 @@ export class Recibo {
         this.docDefinition.content[0].columns[2].text[1].text[1].text = emisor.rfc + '\n'
         this.docDefinition.content[0].columns[2].text[2].text[1].text = emisor.regimen + '\n'
         this.docDefinition.content[0].columns[2].text[3].text[1].text = emisor.expedido + '\n';
-        if(this.docDefinition.content[0].columns[2].text[0].text.length > 1 
-            && this.docDefinition.content[0].columns[2].text[1].text[1].text.length >  1
-            && this.docDefinition.content[0].columns[2].text[2].text[1].text.length >  1
-            && this.docDefinition.content[0].columns[2].text[3].text[1].text.length >  1){
+        if (this.docDefinition.content[0].columns[2].text[0].text.length > 1
+            && this.docDefinition.content[0].columns[2].text[1].text[1].text.length > 1
+            && this.docDefinition.content[0].columns[2].text[2].text[1].text.length > 1
+            && this.docDefinition.content[0].columns[2].text[3].text[1].text.length > 1) {
             return true
-        }else{
+        } else {
             return false
         }
     }
@@ -529,21 +549,21 @@ export class Recibo {
             }
         }
         this.docDefinition.content[1].columns[0].text[6] = { text: receptor.curp + '\n' }
-        if(this.docDefinition.content[1].columns[0].text[2].text.length > 1 
-            && this.docDefinition.content[1].columns[0].text[4].text.length >  1
-            && this.docDefinition.content[1].columns[0].text[5].text.length >  1
-            && this.docDefinition.content[1].columns[0].text[6].text.length >  1){
+        if (this.docDefinition.content[1].columns[0].text[2].text.length > 1
+            && this.docDefinition.content[1].columns[0].text[4].text.length > 1
+            && this.docDefinition.content[1].columns[0].text[5].text.length > 1
+            && this.docDefinition.content[1].columns[0].text[6].text.length > 1) {
             return true
-        }else{
+        } else {
             return false
         }
     }
 
     public addInformacion(info: { vendedor: string }) {
         this.docDefinition.content[1].columns[2].text[2] = { text: info.vendedor + '\n' }
-        if(this.docDefinition.content[1].columns[2].text[2].text.length > 1 ){
+        if (this.docDefinition.content[1].columns[2].text[2].text.length > 1) {
             return true
-        }else{
+        } else {
             return false
         }
     }
@@ -587,33 +607,33 @@ export class Recibo {
                 [
                     {
                         text: 'CANTIDAD',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'P.UNITARIO',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'CONCEPTO/DESCRIPCIÓN',
-                       alignment: 'center',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'RECARGO',
-                       style: {
-                           bold: true
+                        style: {
+                            bold: true
                         }
-                   },
+                    },
                     {
-                       text: 'DESCUENTO',
-                       style: {
-                           bold: true
+                        text: 'P.UNITARIO',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'CONCEPTO/DESCRIPCIÓN',
+                        alignment: 'center',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'RECARGO',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'DESCUENTO',
+                        style: {
+                            bold: true
                         }
                     },
                     {
@@ -628,7 +648,7 @@ export class Recibo {
                             bold: true
                         }
                     }
-               ]
+                ]
             )
             for (const con of detalles) {
                 this.docDefinition.content[2].table.body.push([
@@ -666,33 +686,33 @@ export class Recibo {
                 [
                     {
                         text: 'CANTIDAD',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'P.UNITARIO',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'CONCEPTO/DESCRIPCIÓN',
-                       alignment: 'center',
-                       style: {
-                           bold: true
-                       }
-                   },
-                   {
-                       text: 'RECARGO',
-                       style: {
-                           bold: true
+                        style: {
+                            bold: true
                         }
-                   },
+                    },
                     {
-                       text: 'DESCUENTO',
-                       style: {
-                           bold: true
+                        text: 'P.UNITARIO',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'CONCEPTO/DESCRIPCIÓN',
+                        alignment: 'center',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'RECARGO',
+                        style: {
+                            bold: true
+                        }
+                    },
+                    {
+                        text: 'DESCUENTO',
+                        style: {
+                            bold: true
                         }
                     },
                     {
@@ -701,7 +721,7 @@ export class Recibo {
                             bold: true
                         }
                     }
-               ]
+                ]
             )
             for (const con of detalles) {
                 this.docDefinition.content[2].table.body.push([

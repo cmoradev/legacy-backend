@@ -113,6 +113,7 @@ export class AuthService {
       .createQueryBuilder('users')
       .leftJoinAndSelect('users.role', 'role')
       .leftJoinAndSelect('users.campus', 'campus')
+      .leftJoinAndSelect('users.family', 'family')
       .leftJoinAndSelect('users.department', 'department')
       .leftJoinAndSelect('role.permissions', 'permissions')
       .leftJoinAndSelect('permissions.route', 'route')
@@ -126,6 +127,7 @@ export class AuthService {
         'users.password',
         'users.isActive',
         'users.img',
+        'family.id',
         'campus.id',
         'campus.name',
         'department.id',

@@ -32,6 +32,8 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { string } from '@hapi/joi';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
+import { Decimal } from '@munyaal/calculations';
+import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -284,29 +286,52 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment, highestPayment: MiniStoreSaleMethodPayment }> {
-        const sale = await this.salesRepository.findOne({
-            where: {
-                id: query.saleId,
-            },
-            relations: [
-                'miniStoreSaleDetails',
-                'miniStoreSaleDetails.miniStoreProduct',
-                'miniStoreSaleDetails.extraCharges',
-                'student'
-            ],
-        });
-
-        const payment = await this.repo.findOne({
-            where: {
-                id: query.salePaymentId,
-            },
-            relations: [
-                'miniStoreSaleMethodPayments',
-                'miniStoreSaleMethodPayments.invoiceMethod',
-                'agent'
-            ],
-        });
-
+        let sale = {} as MiniStoreSale;
+        if(query.saleId != 0){
+            sale = await this.salesRepository.findOne({
+                where: {
+                    id: query.saleId,
+                },
+                relations: [
+                    'miniStoreSaleDetails',
+                    'miniStoreSaleDetails.miniStoreProduct',
+                    'miniStoreSaleDetails.extraCharges',
+                    'student',
+                    'cashier'
+                ],
+            });
+        }
+        let payment = {} as MiniStoreSalePayment;
+        if(query.salePaymentId != 0){
+            payment = await this.repo.findOne({
+                where: {
+                    id: query.salePaymentId,
+                },
+                relations: [
+                    'miniStoreSaleMethodPayments',
+                    'miniStoreSaleMethodPayments.invoiceMethod',
+                    'agent'
+                ],
+            });    
+        }else{
+            let quantitySum = 0;
+            sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {                
+                let price = d.priceWithIVA
+                quantitySum = Decimal.add(quantitySum, Decimal.mul(price,d.quantity)).toNumber();
+            });
+            payment.quantity = quantitySum;
+            payment.change = 0;
+            payment.folio = sale.folio ? sale.folio : 'N/A';
+            payment.createdAt = sale.createdAt ? sale.createdAt : new Date();
+            payment.stamping = 0;
+            payment.agent = {
+                name : sale.cashier ? sale.cashier.name : '',
+                lastnameFather: sale.cashier ? sale.cashier.lastnameFather : '',
+                lastnameMother: sale.cashier ? sale.cashier.lastnameMother : ''} as User;
+            payment.observations = sale.observations ? sale.observations : '';
+            payment.miniStoreSaleMethodPayments = [];
+        }
+        
         return {
             sale,
             payment,
@@ -315,11 +340,14 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     getHighestPayment(formadepago: MiniStoreSaleMethodPayment[]) {
-        const methodpaymenst = formadepago.sort((a, b) => {
-            return a.quantity - b.quantity;
-        });
-
-        return methodpaymenst[0];
+        if(formadepago.length >= 1){
+            const methodpaymenst = formadepago.sort((a, b) => {
+                return a.quantity - b.quantity;
+            });
+            return methodpaymenst[0];
+        }else{
+            return {} as MiniStoreSaleMethodPayment;
+        }
     }
 
     async updatePayment(data: MiniStoreSalePayment) {

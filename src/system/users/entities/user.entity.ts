@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreSalePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
@@ -21,6 +21,7 @@ import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/e
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+import { Family } from 'src/school-colegio-ingles/families/entities/family.entity';
 
 @Entity('usuarios')
 export class User extends Base {
@@ -214,4 +215,9 @@ export class User extends Base {
 
     @OneToMany(() => AcademyChargeInvoice, (academyChargeInvoice) => academyChargeInvoice.agentCanceling)
     academyChargesCancelingInvoices: AcademyChargeInvoice[];
+
+    @ManyToOne(() => Family, (family) => family.students, {
+        cascade: ['insert', 'update'],
+    })
+    family: Family; 
 }

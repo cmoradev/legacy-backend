@@ -42,6 +42,7 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
             salesReturns: {},
             salePayments: {},
             sales: {},
+            family:{}
         },
     },
 })

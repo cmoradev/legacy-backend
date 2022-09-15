@@ -71,6 +71,7 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
             quotation: {},
             'quotation.quotation': {},
             sale: {},
+            'sale.cashier': {},
         },
 
     },

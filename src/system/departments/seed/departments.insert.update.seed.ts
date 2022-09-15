@@ -68,6 +68,13 @@ export default class DepartmentsInsertUpdateSeed implements Seeder {
                 'name': 'Recursos humanos – RRHH',
                 'description': null,
             },
+            {
+                'id': 10,
+                'version': 0,
+                'uuid': '',
+                'name': 'Tutores',
+                'description': null,
+            },
 
         ];
         await connection

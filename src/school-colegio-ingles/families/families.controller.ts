@@ -19,6 +19,7 @@ import { Response } from 'express';
             students: {},
             campus: {},
             businessName: {},
+            users: {}
         },
     },
 })

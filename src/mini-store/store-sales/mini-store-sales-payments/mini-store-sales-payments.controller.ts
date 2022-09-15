@@ -31,7 +31,7 @@ import { Environment, InvoiceModules } from '../../../common/point-of-sale/types
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import * as moment from 'moment';
-import { buildDataInvoice } from 'src/common/calculations/buildDataInvoice';
+import { PaymentStatus } from 'src/common/enums/PaymentStatus';
 
 @Crud({
     model: {
@@ -272,13 +272,16 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 payment: result.payment,
                 details: result.sale.miniStoreSaleDetails,
                 type: InvoiceModules.STORE,
-                typeConcept: 'Recepit'
+                typeConcept: 'Recepit',
             });
-            const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
-            const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
-                paymentId: query.salePaymentId,
-                status: StatusInvoce.invoiced,
-            });
+
+            let invoiceFind = {} as MiniStoreInvoice;
+            if(query.salePaymentId != 0){
+                invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
+                    paymentId: query.salePaymentId,
+                    status: StatusInvoce.invoiced,
+                });
+            }
 
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
@@ -289,12 +292,18 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             const Receip = new Recibo();
             Receip.setType(InvoiceModules.STORE);
+            
+            if(result.sale.statusSale != PaymentStatus.quotation){
+                Receip.addLabel();
+            }else{
+                Receip.addLabelQuote();
+            }
             Receip.addLogo({
                 width: 100,
                 height: 100,
                 image: `data:image/png;base64, ${logo.toString('base64')}`,
             }) == false ? error.push(`error al agregar el logo`) : null;
-            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
+            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null; 
             Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
             const regimen = RegimenFiscalList.find(
                 (f) => f.value === branchOfficeSett.regime,
@@ -331,12 +340,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             Receip.addInformacion({
                 vendedor: ven,
             }) == false ? error.push(`error al agregar los datos del vendedor`) : null;
-
             Receip.addCatidad({
                 ...invoiceDetails.totals.receipt
             });
             Receip.addDetalles(invoiceDetails.concepts.conceptsMiniStore);
-
             Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
             Receip.addObervations(result.payment.observations);
             const forma = result.payment.miniStoreSaleMethodPayments.map((m) => {
