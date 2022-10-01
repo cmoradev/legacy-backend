@@ -9,8 +9,8 @@ import { JobPositionsService } from './job-positions.service';
     },
     query: {
         join: {
-            department: {},
-            'department.locations': {},
+            department: {eager: false},
+            'department.locations': {eager: false},
         },
     },
 })
