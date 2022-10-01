@@ -9,9 +9,9 @@ import { EmployeesService } from './employees.service';
     },
     query: {
         join: {
-            branchCompanies: {},
-            jobPositions: {},
-            assignments: {},
+            branchCompanies: {eager: false},
+            jobPositions: {eager: false},
+            assignments: {eager: false},
         },
     },
 })
