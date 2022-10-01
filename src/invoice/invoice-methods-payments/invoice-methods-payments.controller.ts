@@ -14,7 +14,7 @@ import { InvoiceMethodsPaymentsService } from './invoice-methods-payments.servic
             },
         },
         join: {
-            miniStoreSaleMethodPayments: {},
+            miniStoreSaleMethodPayments: {eager: false},
         },
     },
 })
