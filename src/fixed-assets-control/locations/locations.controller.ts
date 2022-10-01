@@ -9,7 +9,7 @@ import { LocationsService } from './locations.service';
     },
     query: {
         join: {
-            department: {},
+            department: {eager: false},
         },
     },
 })
