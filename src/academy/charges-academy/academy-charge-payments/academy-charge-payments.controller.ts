@@ -10,7 +10,8 @@ import {
   Query,
   Req,
   Res,
-  UseGuards, UsePipes, ValidationPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
@@ -18,7 +19,6 @@ import { AcademyChargePayments } from './entities/academy-charge-payments.entity
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { convertPaymentsReportAc } from './reports/payments.util';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -34,7 +34,7 @@ import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity'
 import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import * as fs from 'fs';
 import { readFileSync } from 'fs';
-import { FormaPago, RegimenFiscalList, XmlCdfi } from '@signati/core';
+import { FormaPago, RegimenFiscalList } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
@@ -44,7 +44,6 @@ import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
-import { MiniStoreInvoicesService } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import * as moment from 'moment';
@@ -61,18 +60,18 @@ import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
         $eq: null,
       },
     },
-    limit: 200,
+    limit: 10,
     join: {
-      academyCharge: {},
-      'academyCharge.chargesDetails': {},
-      'academyCharge.schoolStudent': {},
-      'academyCharge.chargesDetails.extraCharges': {},
-      academyPaymentOffice: {},
-      academyPaymentOfficeSet: {},
-      methodsPayments: {},
-      cashierCharge: {},
-      cashierChargeCancellation: {},
-      academyChargesInvoice: {},
+      academyCharge: {eager: false},
+      'academyCharge.chargesDetails': {eager: false},
+      'academyCharge.schoolStudent': {eager: false},
+      'academyCharge.chargesDetails.extraCharges': {eager: false},
+      academyPaymentOffice: {eager: false},
+      academyPaymentOfficeSet: {eager: false},
+      methodsPayments: {eager: false},
+      cashierCharge: {eager: false},
+      cashierChargeCancellation: {eager: false},
+      academyChargesInvoice: {eager: false},
     },
   },
 })
