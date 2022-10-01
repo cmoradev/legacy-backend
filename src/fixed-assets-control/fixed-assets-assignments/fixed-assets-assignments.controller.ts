@@ -9,9 +9,9 @@ import { FixedAssetsAssignmentsService } from './fixed-assets-assignments.servic
     },
     query: {
         join: {
-            employee: {},
-            fixedAsset: {},
-            responsiveLetter: {},
+            employee: {eager: false},
+            fixedAsset: {eager: false},
+            responsiveLetter: {eager: false},
         },
     },
 })
