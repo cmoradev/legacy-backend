@@ -1,9 +1,7 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-
 import { BranchCompany } from './entities/branch-company.entity';
 import { BranchCompaniesService } from './branch-companies.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -13,9 +11,10 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         join: {
             matrixCompany: {
                 exclude: ['createdAt', 'updatedAt'],
+                eager: false
             },
-            employees: {},
-            fixedAssets: {},
+            employees: {eager: false},
+            fixedAssets: {eager: false},
         },
     },
 })
