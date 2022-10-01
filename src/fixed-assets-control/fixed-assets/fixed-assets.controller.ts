@@ -9,9 +9,9 @@ import { FixedAssetsService } from './fixed-assets.service';
     },
     query: {
         join: {
-            classification: {},
-            location: {},
-            branchCompany: {},
+            classification: {eager: false},
+            location: {eager: false},
+            branchCompany: {eager: false},
         },
     },
 })
