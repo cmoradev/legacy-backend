@@ -9,7 +9,7 @@ import { MatrixCompaniesService } from './matrix-companies.service';
     },
     query: {
         join: {
-            branches: {},
+            branches: {eager: false},
         },
     },
 })
