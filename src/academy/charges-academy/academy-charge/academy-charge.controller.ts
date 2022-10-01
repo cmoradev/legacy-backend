@@ -1,8 +1,7 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyCharge } from './entities/academy-charge.entity';
 import { AcademyChargeService } from './academy-charge.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -14,32 +13,34 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            chargeCampus: {},
-            academyBranchOfficeSet: {},
-            chargeCycle: {},
-            cashier: {},
-            cashierCancellation: {},
-            schoolStudent: {},
-            chargesDetails: {},
-            'chargesDetails.academyInscriptionConcept': {},
-            'chargesDetails.extraCharges': {},
-            chargesPayments: {},
-            'chargesPayments.academyChargesInvoice': {},
+            chargeCampus: {eager: false},
+            academyBranchOfficeSet: {eager: false},
+            chargeCycle: {eager: false},
+            cashier: {eager: false},
+            cashierCancellation: {eager: false},
+            schoolStudent: {eager: false},
+            chargesDetails: {eager: false},
+            'chargesDetails.academyInscriptionConcept': {eager: false},
+            'chargesDetails.extraCharges': {eager: false},
+            chargesPayments: {eager: false},
+            'chargesPayments.academyChargesInvoice': {eager: false},
             'chargesPayments.methodsPayments': {
                 alias: 'chargesPayments_methodsPayments',
+                eager: false
             },
             'chargesPayments.methodsPayments.Bank': {
                 alias: 'chargesPayments_methodsPayments_Bank',
+                eager: false
             },
-            'chargesPayments.methodsPayments.invoiceMethodPayment': {},
-            'chargesPayments.cashierCharge': {},
-            'chargesPayments.cashierChargeCancellation': {},
-            'chargesPayments.schoolChargesInvoice': {},
-            chargesInvoice: {},
-            'chargesInvoice.agentBilling': {},
-            'chargesInvoice.agentCanceling': {},
+            'chargesPayments.methodsPayments.invoiceMethodPayment': {eager: false},
+            'chargesPayments.cashierCharge': {eager: false},
+            'chargesPayments.cashierChargeCancellation': {eager: false},
+            'chargesPayments.schoolChargesInvoice': {eager: false},
+            chargesInvoice: {eager: false},
+            'chargesInvoice.agentBilling': {eager: false},
+            'chargesInvoice.agentCanceling': {eager: false},
         },
     },
 })
