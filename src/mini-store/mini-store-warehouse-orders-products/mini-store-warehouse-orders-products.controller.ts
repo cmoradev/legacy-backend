@@ -1,8 +1,7 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrdersProductsService } from './mini-store-warehouse-orders-products.service';
 import { MiniStoreWarehouseOrderProduct } from './entities/mini-store-warehouse-order-product.entity';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -15,11 +14,11 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
             },
         },
         join: {
-            miniStoreProduct: {},
-            'miniStoreProduct.storeInvoiceKey': {},
-            'miniStoreProduct.storePriceList': {},
-            'miniStoreProduct.storeClassification': {},
-            miniStoreWarehouseOrder: {},
+            miniStoreProduct: {eager: false},
+            'miniStoreProduct.storeInvoiceKey': {eager: false},
+            'miniStoreProduct.storePriceList': {eager: false},
+            'miniStoreProduct.storeClassification': {eager: false},
+            miniStoreWarehouseOrder: {eager: false},
         },
     },
 })
