@@ -14,9 +14,9 @@ import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
             },
         },
         join: {
-            paymentPlan: {},
-            grades: {},
-            schoolPayment: {},
+            paymentPlan: {eager: false},
+            grades: {eager: false},
+            schoolPayment: {eager: false},
         },
     },
 })
