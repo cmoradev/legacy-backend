@@ -1,13 +1,11 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreProductsProviders } from './entities/mini-store-products-providers.entity';
 import { MiniStoreProductsProvidersService } from './mini-store-products-providers.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { MiniStoreProductsService } from '../mini-store-products/mini-store-products.service';
 import { mulQuantity } from '../../common/point-of-sale/point-of-sale';
 import { MiniStoreProduct } from '../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreWarehouseProvider } from '../mini-store-warehouse-providers/entities/mini-store-warehouse-provider.entity';
-
 
 @Crud({
     model: {
