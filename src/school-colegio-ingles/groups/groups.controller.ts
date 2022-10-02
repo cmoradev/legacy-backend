@@ -16,16 +16,19 @@ import { GroupsService } from './groups.service';
         join: {
             groupGrade: {
                 alias: 'groupGrade',
+                eager: false
             },
             'groupGrade.level': {
                 alias: 'groupGrade_level',
+                eager: false
             },
             'groupGrade.level.campus': {
                 alias: 'campus',
+                eager: false
             },
-            groupCycle: {},
-            groupInscriptions: {},
-            groupClassrooms: {},
+            groupCycle: {eager: false},
+            groupInscriptions: {eager: false},
+            groupClassrooms: {eager: false},
         },
     },
 })
