@@ -9,7 +9,7 @@ import { FamilyFiscalService } from './family-fiscal.service';
     },
     query: {
         join: {
-            family: {},
+            family: {eager: false},
         },
     },
 })
