@@ -10,8 +10,7 @@ import {
     Put,
     Query,
     Req,
-    Res,
-    UseGuards
+    Res
 } from '@nestjs/common';
 import { Response } from 'express';
 import {
@@ -19,9 +18,7 @@ import {
     CrudController,
     Override,
     CrudRequest,
-    ParsedRequest,
-    ParsedBody,
-    CreateManyDto,
+    ParsedRequest
 } from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
@@ -36,7 +33,6 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { User } from '../../../system/users/entities/user.entity';
 import { PDF } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
@@ -58,11 +54,13 @@ import { Public } from '../../../common/docorators/public.decorator';
         join: {
             miniStoreSalePayment: { eager: false },
             miniStoreSale: { eager: false },
-            "miniStoreSale.miniStoreSaleDetails": {
-                alias: 'miniStoreSale_miniStoreSaleDetails'
+            'miniStoreSale.miniStoreSaleDetails': {
+                alias: 'miniStoreSale_miniStoreSaleDetails',
+                eager: false
             },
-            "miniStoreSale.miniStoreSaleDetails.extraCharges": {
-                alias: 'miniStoreSale_miniStoreSaleDetails_extraCharges'
+            'miniStoreSale.miniStoreSaleDetails.extraCharges': {
+                alias: 'miniStoreSale_miniStoreSaleDetails_extraCharges',
+                eager: false
             },
             'miniStoreSale.student': { eager: false },
             agentBilling: { eager: false },
