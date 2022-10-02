@@ -9,10 +9,10 @@ import { IncidentsService } from './incidents.service';
     },
     query: {
         join: {
-            incidentClassification: {},
-            student: {},
-            classroom: {},
-            teacher: {},
+            incidentClassification: {eager: false},
+            student: {eager: false},
+            classroom: {eager: false},
+            teacher: {eager: false},
         },
     },
 })
