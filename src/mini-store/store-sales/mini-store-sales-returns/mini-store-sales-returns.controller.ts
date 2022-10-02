@@ -1,12 +1,9 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SalesReturns } from './entities/sales-returns.entity';
 import { MiniStoreSalesReturnsService } from './mini-store-sales-returns.service';
-import { InvoiceSaleReturnDto } from './dto/invoice-sale-return.dto';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { Response } from 'express';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -19,13 +16,13 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
             },
         },
         join: {
-            sale: {},
-            details: {},
-            agent: {},
-            invoices: {},
-            paymentMethod: {},
-            'details.saleDetail': {},
-            'details.saleDetail.miniStoreProduct': {},
+            sale: {eager: false},
+            details: {eager: false},
+            agent: {eager: false},
+            invoices: {eager: false},
+            paymentMethod: {eager: false},
+            'details.saleDetail': {eager: false},
+            'details.saleDetail.miniStoreProduct': {eager: false},
         },
     },
 })
