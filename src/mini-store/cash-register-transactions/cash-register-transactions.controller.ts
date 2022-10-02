@@ -14,7 +14,7 @@ import { CashRegisterTransactionsService } from './cash-register-transactions.se
             },
         },
         join: {
-            agent: { exclude: ['password'] },
+            agent: { eager: false, exclude: ['password'] },
             cashRegister: {eager: false},
             payment: {eager: false},
             'payment.miniStoreSaleMethodPayments': {
