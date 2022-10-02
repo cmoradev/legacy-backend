@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
@@ -16,7 +16,6 @@ import { reportInscriptionList } from './reports/inscription-group.report';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -28,28 +27,28 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
-        maxLimit: 200,
+        maxLimit: 10,
         join: {
             inscripStudent: {
-                eager: true,
+                eager: false,
             },
-            inscripCampus: {},
-            inscripGrade: {},
-            inscripGroup: {},
-            inscripLevel: {},
-            inscripCycle: {},
-            inscripAgentCreator: {},
-            inscripAgentEditor: {},
-            inscripClassroom: {},
-            paymentPlan: {},
-            inscripAssignmentsInscription: {},
-            inscripStudyPlanVariant: {},
-            inscripStudyPlan: {},
-            schoolPayments: { alias: 'schoolPayments' },
-            'schoolPayments.paymentPlanConcept': { alias: 'paymentPlanConcepts' },
-            'schoolPayments.schoolChargeDetail': { alias: 'schoolChargesDetails' },
-            'schoolPayments.schoolChargeDetail.extraCharges': { alias: 'extraCharges' },
-            'schoolPayments.extraCharges': {},
+            inscripCampus: {eager: false},
+            inscripGrade: {eager: false},
+            inscripGroup: {eager: false},
+            inscripLevel: {eager: false},
+            inscripCycle: {eager: false},
+            inscripAgentCreator: {eager: false},
+            inscripAgentEditor: {eager: false},
+            inscripClassroom: {eager: false},
+            paymentPlan: {eager: false},
+            inscripAssignmentsInscription: {eager: false},
+            inscripStudyPlanVariant: {eager: false},
+            inscripStudyPlan: {eager: false},
+            schoolPayments: { alias: 'schoolPayments', eager: false },
+            'schoolPayments.paymentPlanConcept': { alias: 'paymentPlanConcepts', eager: false },
+            'schoolPayments.schoolChargeDetail': { alias: 'schoolChargesDetails', eager: false },
+            'schoolPayments.schoolChargeDetail.extraCharges': { alias: 'extraCharges', eager: false },
+            'schoolPayments.extraCharges': {eager: false},
         },
     },
 })
