@@ -10,13 +10,13 @@ import { AssignmentsService } from './assignments.service';
     },
     query: {
         join: {
-            cycle: {},
-            studyPlanVariant: {},
-            studyPlan: {},
-            teacher: {},
-            classroom: {},
-            assignmentSubject: {},
-            'assignmentSubject.subject': {},
+            cycle: {eager: false},
+            studyPlanVariant: {eager: false},
+            studyPlan: {eager: false},
+            teacher: {eager: false},
+            classroom: {eager: false},
+            assignmentSubject: {eager: false},
+            'assignmentSubject.subject': {eager: false},
         },
     },
 })
