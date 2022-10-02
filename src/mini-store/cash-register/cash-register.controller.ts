@@ -17,7 +17,7 @@ import { transactionsList } from './reports/transactions.report';
             },
         },
         join: {
-            agent: { exclude: ['password'] },
+            agent: { eager:false, exclude: ['password'] },
             transactions: {eager: false},
             'transactions.agent': {
                 alias: 'transactions_agent',
