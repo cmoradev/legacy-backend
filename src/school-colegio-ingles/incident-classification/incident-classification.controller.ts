@@ -9,7 +9,7 @@ import { IncidentClassification } from './entities/incident-classification.entit
     },
     query: {
         join: {
-            incidents: {},
+            incidents: {eager: false},
         },
     },
 })
