@@ -1,8 +1,7 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSaleDetail } from './entities/mini-store-sale-detail.entity';
 import { MiniStoreSalesDetailsService } from './mini-store-sales-details.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -15,10 +14,10 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
             },
         },
         join: {
-            miniStoreSale: {},
-            miniStoreProduct: {},
-            miniStoreClassification: {},
-            extraCharges: {},
+            miniStoreSale: {eager: false},
+            miniStoreProduct: {eager: false},
+            miniStoreClassification: {eager: false},
+            extraCharges: {eager: false},
         },
     },
 })
