@@ -1,8 +1,7 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegisterTransaction } from './entities/cash-register-transaction.entity';
 import { CashRegisterTransactionsService } from './cash-register-transactions.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -16,10 +15,11 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
         },
         join: {
             agent: { exclude: ['password'] },
-            cashRegister: {},
-            payment: {},
+            cashRegister: {eager: false},
+            payment: {eager: false},
             'payment.miniStoreSaleMethodPayments': {
                 alias: 'paymentMiniStoreSaleMethodPayments',
+                eager: false
             },
         },
     },
