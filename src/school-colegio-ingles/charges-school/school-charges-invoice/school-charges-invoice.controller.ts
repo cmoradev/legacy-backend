@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res } from '@nestjs/common';
 import {
     Crud,
     CrudController,
@@ -24,22 +24,25 @@ import { Public } from '../../../common/docorators/public.decorator';
         type: SchoolChargesInvoice,
     },
     query: {
-        limit: 200,
+        limit: 10,
         join: {
-            schoolChargePayment: {},
-            schoolCharge: {},
+            schoolChargePayment: {eager: false},
+            schoolCharge: {eager: false},
             'schoolCharge.chargesDetails': {
-                alias: 'details_chargesDetails'
+                alias: 'details_chargesDetails',
+                eager: false
             },
             'schoolCharge.chargesDetails.extraCharges': {
-                alias: 'details_chargesDetails_extraCharges'
+                alias: 'details_chargesDetails_extraCharges',
+                eager: false
             },
             'schoolCharge.schoolStudent': {eager: false},
             'schoolCharge.chargesDetails.schoolPlanPayment': {
-                alias: 'concepts'
+                alias: 'concepts',
+                eager: false
             },
-            agentBilling: {},
-            agentCanceling: {},
+            agentBilling: {eager: false},
+            agentCanceling: {eager: false},
         },
     },
 })
