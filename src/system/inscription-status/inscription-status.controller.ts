@@ -8,7 +8,7 @@ import { InscriptionStatusService } from './inscription-status.service';
     type: InscriptionStatus,
   },
   query: {
-    limit: 200,
+    limit: 10,
     join: {},
   },
 })
