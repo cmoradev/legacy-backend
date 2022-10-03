@@ -9,8 +9,8 @@ import { BranchOfficeSettingService } from './branch-office-setting.service';
     },
     query: {
         join: {
-            invoiceCampus: {},
-            quickSaleMethod: {},
+            invoiceCampus: {eager: false},
+            quickSaleMethod: {eager: false},
         },
     },
 })
