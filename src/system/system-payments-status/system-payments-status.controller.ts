@@ -9,8 +9,8 @@ import { SystemPaymentsStatusService } from './system-payments-status.service';
     },
     query: {
         join: {
-            miniStoreSalePayments: { },
-            miniStoreSalePayment: { },
+            miniStoreSalePayments: {eager: false},
+            miniStoreSalePayment: {eager: false},
         },
     },
 })
