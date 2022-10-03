@@ -5,6 +5,7 @@ export enum PaymentStatus {
     Cancelled = 4, // Cancelado
     Abonar = 5, // Abonado
     quotation = 6, // Cotizacion
+    trusted = 7 // Fiado
 }
 
 export enum InscriptionStatus {

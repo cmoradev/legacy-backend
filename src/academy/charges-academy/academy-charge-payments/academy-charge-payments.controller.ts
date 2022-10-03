@@ -392,6 +392,7 @@ export class AcademyChargePaymentsController
       const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
       const Receip = new Recibo();
       Receip.setType(InvoiceModules.ACADEMY);
+      Receip.addLabel();
       Receip.addLogo({
         width: 100,
         height: 100,

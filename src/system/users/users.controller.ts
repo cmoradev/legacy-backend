@@ -9,6 +9,7 @@ import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.e
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { compareSync } from "bcrypt";
 
 @Crud({
     model: {
@@ -161,12 +162,18 @@ export class UsersController implements CrudController<User> {
     @Post('update-password')
     async updatePassword(@Body() userBody: UpdatePasswordDto, @Req() req, @Res() res: Response) {
         try {
-            const { id } = userBody;
+            const { id, passwordOld, isAdmin } = userBody;
             const user: User | undefined = await this.service.findOne({ id });
-            if (user) {
-                const result = await this.service.save(await this.service.changePassword(userBody));
-                res.send({ msg: 'password change' });
-            } else {
+            const access = await compareSync(passwordOld, user.password.replace('$2y$', '$2a$'))
+            if(user){
+                if (access || isAdmin) {
+                    const result = await this.service.save(await this.service.changePassword(userBody));
+                    res.send({ msg: 'password change' });
+                }else{
+                    res.status(401);
+                    res.send({ msg: 'la contraseña anterior es incorrecta' });
+                }
+            }else {
                 res.status(401);
                 res.send({ msg: 'user no exist' });
             }
