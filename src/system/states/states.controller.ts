@@ -9,8 +9,8 @@ import { StatesService } from './states.service';
   },
   query: {
     join: {
-      country: {},
-      cities: {},
+      country: {eager: false},
+      cities: {eager: false},
     },
   },
 })
