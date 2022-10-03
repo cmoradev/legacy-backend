@@ -9,10 +9,10 @@ import { SystemExtraChargesService } from './system-extra-charges.service';
   },
   query: {
     join: {
-      extraChargesAppForms: {},
-      extraChargesType: {},
-      extraChargesCampus: {},
-      extraChargesCycle: {},
+      extraChargesAppForms: {eager: false},
+      extraChargesType: {eager: false},
+      extraChargesCampus: {eager: false},
+      extraChargesCycle: {eager: false},
     },
   },
 })
