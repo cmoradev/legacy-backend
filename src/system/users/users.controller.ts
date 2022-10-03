@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Teacher } from '../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
-import { JwtGuard } from '../auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -22,27 +21,27 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
         },
         exclude: ['password', 'rememberToken'],
         join: {
-            teacher: {}, // Teacher;
-            role: {},
-            department: {},
-            campus: {},
-            miniStoreBillingInvoices: {},
-            miniStoreCancelingInvoices: {},
-            miniStoreBillingSales: {},
-            miniStoreCancelingSales: {},
-            miniStoreBillingPayments: {},
-            miniStoreCancelingPayments: {},
-            miniStoreCreatorWareHouseOrder: {}, // MiniStoreWarehouseOrder[];
-            miniStoreEditorWareHouseOrder: {}, // MiniStoreWarehouseOrder[];
-            userCchoolCreatorInscription: {},
-            userCchoolEditorInscription: {},
-            classroomPermissions: {},
-            userAcInsHigh: {},
-            userAcInsDown: {},
-            salesReturns: {},
-            salePayments: {},
-            sales: {},
-            family:{}
+            teacher: {eager: false}, // Teacher;
+            role: {eager: false},
+            department: {eager: false},
+            campus: {eager: false},
+            miniStoreBillingInvoices: {eager: false},
+            miniStoreCancelingInvoices: {eager: false},
+            miniStoreBillingSales: {eager: false},
+            miniStoreCancelingSales: {eager: false},
+            miniStoreBillingPayments: {eager: false},
+            miniStoreCancelingPayments: {eager: false},
+            miniStoreCreatorWareHouseOrder: {eager: false}, // MiniStoreWarehouseOrder[];
+            miniStoreEditorWareHouseOrder: {eager: false}, // MiniStoreWarehouseOrder[];
+            userCchoolCreatorInscription: {eager: false},
+            userCchoolEditorInscription: {eager: false},
+            classroomPermissions: {eager: false},
+            userAcInsHigh: {eager: false},
+            userAcInsDown: {eager: false},
+            salesReturns: {eager: false},
+            salePayments: {eager: false},
+            sales: {eager: false},
+            family:{eager: false}
         },
     },
 })
