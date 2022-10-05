@@ -14,6 +14,8 @@ import { PaymentStatus } from "./../../../common/enums/PaymentStatus";
         return 'Abonado';
       case PaymentStatus.quotation:
         return 'Cotizacion';
+      case PaymentStatus.trusted:
+        return 'Fiado';
       default:
         return 'NA';
     }

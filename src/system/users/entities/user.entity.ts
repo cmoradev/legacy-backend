@@ -21,7 +21,7 @@ import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/e
 import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { Family } from 'src/school-colegio-ingles/families/entities/family.entity';
+import { Family } from '../../../school-colegio-ingles/families/entities/family.entity';
 
 @Entity('usuarios')
 export class User extends Base {

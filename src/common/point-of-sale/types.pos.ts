@@ -1,8 +1,8 @@
 import { FormaPago, FormaPagoType, XmlReceptorAttribute } from "@signati/core";
 import { InformacionGlobal } from "../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
 import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
-import { SystemTypeExtraChargesEnum } from "src/system/system-type-extra-charges/entities/system-type-extra-charges.entity";
-import { TypeChargeApplicationEnum } from "src/system/system-extra-charges/enums/system-extra-charges.enum";
+import { SystemTypeExtraChargesEnum } from "../../system/system-type-extra-charges/entities/system-type-extra-charges.entity";
+import { TypeChargeApplicationEnum } from "../../system/system-extra-charges/enums/system-extra-charges.enum";
 import { DataInvoice } from "../calculations/TypesCalculation";
 
 export interface Concept {

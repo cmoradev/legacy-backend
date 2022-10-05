@@ -9,6 +9,9 @@ import { QuerySimpleReport } from '../mini-store-sales-payments/interface/Invoic
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
+import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
+import { getNameReportSaleToday } from './reports/helpers';
+import { SaleTodayExcel } from './reports/sale.today.excel';
 
 @Crud({
     model: {
@@ -161,5 +164,38 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
             } as QuerySimpleReport));
         }
         res.send(result);
+    }
+
+    @Get('report-sale-today')
+    private async reportSaleToday(
+      @Res() res,
+      @Query() options: IQueryReportSaleToday,
+    ) {
+      const result = await this.service.reportSaleToday(options);
+      const data = result.map((d: any)=>{
+        let idsPagos = [];
+        let idsDetalles = [];
+
+        d.idsPagos != null ? idsPagos = d.idsPagos.split(",") : null;
+        d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(",") : null;
+        return {...d,id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string)=>{return parseInt(`${p}`)}),idsDetalles: idsDetalles.map((p: string)=>{return parseInt(`${p}`)})} as IReportSaleTodayRow
+      });
+      
+      if (options?.isExported) {
+        const conceptStatusExcel = new SaleTodayExcel(options, data);
+        const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+          filename: `${getNameReportSaleToday(options).excel}.xlsx`,
+        });
+        const report = {
+          src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+            buffer,
+          ).toString('base64')}`,
+          type: 'excel',
+          name: `${getNameReportSaleToday(options).excel}`,
+        };
+        return res.send({ report, data });
+      } else {
+        return res.send({ report: false, data });
+      }
     }
 }

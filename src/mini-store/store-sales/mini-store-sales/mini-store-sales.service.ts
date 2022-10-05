@@ -1,14 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import * as moment from 'moment';
+import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
     constructor(
+        @InjectConnection(ColegioDBNameConnection)
+    private connection: Connection,
         @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSale>,
     ) {
         super(repo);
@@ -89,4 +92,31 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
         return await sales.getMany();
 
     }
+
+    public async reportSaleToday({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+      }: IQueryReportSaleToday): Promise<IReportSaleTodayRow[]> {
+        let queryString = `SELECT * FROM vw_tie_sale_today where createdAt BETWEEN '${startDate}' AND '${endDate}'`;
+        
+        if(status){
+            queryString = `${queryString} AND id_estado_pago = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND cycleId = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND branchOfficeId = ${branchOfficeId}`;
+        }
+        try {
+          return this.connection.query(queryString);
+        } catch (e) {
+          throw new NotFoundException(
+            `Error in query or conection [${queryString}]`,
+          );
+        }
+      }
 }
