@@ -1,13 +1,14 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { DateTimeZoneTransformer } from "../../common/orm/entities/transformers/date-time-zone.transformer";
-import { InvoiceStatus } from "../../invoice/types/invoice-status";
-import { MiniStoreInvoice } from "../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
-import { InvoiceType } from "../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum";
-import { BranchOffice } from "../../system/branch-office/entities/branch-office.entity";
-import { User } from "../../system/users/entities/user.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { DateTimeZoneTransformer } from '../../common/orm/entities/transformers/date-time-zone.transformer';
+import { InvoiceStatus } from '../../invoice/types/invoice-status';
+import { MiniStoreInvoice } from '../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
+import { InvoiceType } from '../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
+import { User } from '../../system/users/entities/user.entity';
+import {Base} from '../../common/orm/entities/base.entity';
 
 @Entity()
-export class CreditNoteStore {
+export class CreditNoteStore extends Base {
 
     @PrimaryGeneratedColumn({
         type: 'int',
