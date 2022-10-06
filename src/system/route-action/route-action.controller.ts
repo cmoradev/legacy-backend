@@ -8,6 +8,7 @@ import { RouteActionService } from './route-action.service';
         type: RouteAction,
     },
     query: {
+        limit: 10,
         join: {
             actions: {eager: false},
         },

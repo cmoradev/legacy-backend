@@ -7,6 +7,10 @@ import { FoliosService } from './folios.service';
     model: {
         type: Folio,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class FoliosController implements CrudController<Folio> {

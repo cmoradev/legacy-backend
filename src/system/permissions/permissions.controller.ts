@@ -9,6 +9,7 @@ import { PermissionDto } from './DTO/permission.dto';
         type: Permission,
     },
     query: {
+        limit: 10,
         join: {
             role: {eager: false},
             route: {eager: false},

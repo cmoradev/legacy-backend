@@ -20,6 +20,7 @@ import { UpdatePasswordDto } from './dto/UpdatePassword.dto';
             },
         },
         exclude: ['password', 'rememberToken'],
+        limit: 10,
         join: {
             teacher: {eager: false}, // Teacher;
             role: {eager: false},

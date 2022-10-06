@@ -7,6 +7,10 @@ import { Shift } from './entities/shift.entity';
   model: {
     type: Shift,
   },
+  query: {
+    limit: 10,
+    join: {},
+  },
 })
 @Controller()
 export class ShiftController implements CrudController<Shift> {

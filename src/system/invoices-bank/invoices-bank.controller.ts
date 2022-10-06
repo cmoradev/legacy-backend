@@ -8,6 +8,8 @@ import { InvoicesBankService } from './invoices-bank.service';
     type: InvoicesBank,
   },
   query: {
+    limit: 10,
+    join: {},
   },
 })
 @Controller()

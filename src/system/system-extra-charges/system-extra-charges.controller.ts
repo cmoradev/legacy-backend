@@ -8,6 +8,7 @@ import { SystemExtraChargesService } from './system-extra-charges.service';
     type: SystemExtraCharges,
   },
   query: {
+    limit: 10,
     join: {
       extraChargesAppForms: {eager: false},
       extraChargesType: {eager: false},

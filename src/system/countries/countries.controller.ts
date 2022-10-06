@@ -15,6 +15,7 @@ import { CountriesService } from './countries.service';
     },
   },
   query: {
+    limit: 10,
     join: {
       states: {eager: false},
     },

@@ -8,6 +8,7 @@ import { SystemPaymentsStatusService } from './system-payments-status.service';
         type: SystemPaymentStatus,
     },
     query: {
+        limit: 10,
         join: {
             miniStoreSalePayments: {eager: false},
             miniStoreSalePayment: {eager: false},

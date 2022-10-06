@@ -8,6 +8,7 @@ import { RoutesService } from './routes.service';
         type: Route,
     },
     query: {
+        limit: 10,
         join: {
             routeActions: {eager: false},
             'routeActions.route': {eager: false},

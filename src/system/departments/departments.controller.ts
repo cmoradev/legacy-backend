@@ -7,6 +7,10 @@ import { DepartmentsService } from './departments.service';
     model: {
         type: Department,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class DepartmentsController implements CrudController<Department> {
