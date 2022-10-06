@@ -1,34 +1,18 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyChargeInvoice } from '../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { DateTimeZoneTransformer } from '../../common/orm/entities/transformers/date-time-zone.transformer';
 import { InvoiceStatus } from '../../invoice/types/invoice-status';
 import { InvoiceType } from '../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
 import { User } from '../../system/users/entities/user.entity';
+import {Base} from '../../common/orm/entities/base.entity';
 
 @Entity()
-export class CreditNoteAcademy {
+export class CreditNoteAcademy extends Base {
 
     @PrimaryGeneratedColumn({
         type: 'int',
     })
     id: number;
-
-    @CreateDateColumn({
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    createdAt: Date;
-
-    @UpdateDateColumn({
-        type: 'timestamp',
-        transformer: new DateTimeZoneTransformer(),
-    })
-    updatedAt: Date;
-
-    @DeleteDateColumn({type: 'timestamp'})
-    deletedAt: Date;
-
 
     @Column('varchar', {
         nullable: true,
