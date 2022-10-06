@@ -8,6 +8,7 @@ import { LocationsService } from './locations.service';
         type: Location,
     },
     query: {
+        limit: 10,
         join: {
             department: {eager: false},
         },

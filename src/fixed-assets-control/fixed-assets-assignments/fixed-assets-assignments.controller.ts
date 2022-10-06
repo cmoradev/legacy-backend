@@ -8,6 +8,7 @@ import { FixedAssetsAssignmentsService } from './fixed-assets-assignments.servic
         type: FixedAssetAssignment,
     },
     query: {
+        limit: 10,
         join: {
             employee: {eager: false},
             fixedAsset: {eager: false},

@@ -8,6 +8,7 @@ import { ResponsiveLettersService } from './responsive-letters.service';
         type: ResponsiveLettersController,
     },
     query: {
+        limit: 10,
         join: {
             fixedAssetAssignments: {eager: false},
             'fixedAssetAssignments.fixedAsset': {eager: false},

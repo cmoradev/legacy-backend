@@ -7,6 +7,10 @@ import { ClassificationsService } from './classifications.service';
     model: {
         type: Classification,
     },
+    query: {
+        limit: 10,
+        join: {}
+    }
 })
 @Controller()
 export class ClassificationsController implements CrudController<Classification> {

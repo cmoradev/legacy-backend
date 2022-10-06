@@ -8,6 +8,7 @@ import { BranchCompaniesService } from './branch-companies.service';
         type: BranchCompany,
     },
     query: {
+        limit: 10,
         join: {
             matrixCompany: {
                 exclude: ['createdAt', 'updatedAt'],
