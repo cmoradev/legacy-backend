@@ -11,6 +11,7 @@ import { SchoolCharge } from '../../charges-school/school-charges/entities/schoo
 import { AcademyCharge } from '../../../academy/charges-academy/academy-charge/entities/academy-charge.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { StudentInscriptionStatus } from '../../../common/enums/PaymentStatus';
+import { Transaction } from '../../../system/transaction/entities/transaction.entity';
 
 @Entity('alumnos')
 export class Student extends Base {
@@ -124,6 +125,12 @@ export class Student extends Base {
     })
     profilePicture: string | null;
 
+    @Column('int', {
+        nullable: true,
+        default: 0
+    })
+    saldo: number;
+
     @ManyToOne(() => BranchOffice, (campus) => campus.students)
     studentCampus: BranchOffice;
 
@@ -160,4 +167,7 @@ export class Student extends Base {
         name:'statusStudentInscription'
     })
     statusStudent: StudentInscriptionStatus;
+
+    @OneToMany(() => Transaction, (transaction) => transaction.student)
+    transactions: Transaction[];
 }
