@@ -4,7 +4,6 @@ import { CountriesModule } from './countries/countries.module';
 import { StatesModule } from './states/states.module';
 import { CitiesModule } from './cities/cities.module';
 import { MunicipalitiesModule } from './municipalities/municipalities.module';
-import { SystemDashBoardModule } from './system-dash-board/system-dash-board.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PermissionsModule } from '../system/permissions/permissions.module';
@@ -44,7 +43,6 @@ import { RouteActionModule } from './route-action/route-action.module';
         CitiesModule,
         MunicipalitiesModule,
         SystemConceptsTypeModule,
-        SystemDashBoardModule,
         AuthModule,
         UsersModule,
         TaxModule,

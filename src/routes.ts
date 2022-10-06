@@ -62,7 +62,6 @@ import { AcademyModalitiesModule } from './academy/academy-modalities/academy-mo
 import { AcademyActivitiesModule } from './academy/academy-activities/academy-activities.module';
 import { AcademyConceptsModule } from './academy/academy-concepts/academy-concepts.module';
 import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/mini-store-dash-board.module';
-import { SystemDashBoardModule } from './system/system-dash-board/system-dash-board.module';
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
 import { UsersModule } from './system/users/users.module';
 import { InvoiceMethodsPaymentsModule } from './invoice/invoice-methods-payments/invoice-methods-payments.module';
@@ -131,7 +130,6 @@ export const routes: Routes = [
         path: '/system',
         module: SystemModule,
         children: [
-            { path: '/dashboard', module: SystemDashBoardModule },
             { path: '/users', module: UsersModule },
             { path: '/routes', module: RoutesModule },
             { path: '/route-action', module: RouteActionModule },
@@ -178,7 +176,6 @@ export const routes: Routes = [
             { path: '/school-payments/charges', module: SchoolPaymentsChargesModule },
             { path: '/payment-plans', module: PaymentPlansModule },
             { path: '/payment-plan-concepts', module: PaymentPlanConceptsModule },
-            { path: '/dashboard', module: SystemDashBoardModule },
             { path: '/subjects', module: SubjectsModule },
             { path: '/study-plans', module: StudyPlansModule },
             { path: '/study-plan-variants', module: StudyPlanVariantsModule },

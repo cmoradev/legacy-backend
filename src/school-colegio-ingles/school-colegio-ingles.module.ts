@@ -21,7 +21,6 @@ import { ClassroomPermissionModule } from './classroom-permission/classroom-perm
 import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
 import { CheckInModule } from './check-in/check-in.module';
-import { SchoolDashBoardModule } from './school-dash-board/school-dash-board.module';
 import { FamilyFiscalModule } from './family-fiscal/family-fiscal.module';
 import { FamilyMembersModule } from './family-members/family-members.module';
 import { PaymentPlansModule } from './payment-plans/payment-plans.module';
@@ -47,7 +46,7 @@ import { SchoolPaymentsChargesModule } from './school-payments-charges/school-pa
     ClassroomsModule,
     AssignmentIncriptionModule, ClassroomPermissionModule,
     IncidentsModule, IncidentClassificationModule,
-    CheckInModule, SchoolDashBoardModule, FamilyFiscalModule,
+    CheckInModule, FamilyFiscalModule,
     FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
     SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, SchoolPaymentsChargesModule,
   ],
