@@ -13,6 +13,7 @@ import { AcademyModalitiesService } from './academy-modalities.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             students: {eager: false},
         },
