@@ -8,9 +8,10 @@ import { CitiesService } from './cities.service';
     type: Cities,
   },
   query: {
+    limit: 10,
     join: {
-      state: {},
-      'state.country': {},
+      state: {eager: false},
+      'state.country': {eager: false},
     },
   },
 })

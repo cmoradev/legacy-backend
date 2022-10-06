@@ -13,6 +13,8 @@ import { InvoiceKeysService } from './invoice-keys.service';
                 $eq: null,
             },
         },
+        limit: 10,
+        join: {}
     },
 })
 @Controller()

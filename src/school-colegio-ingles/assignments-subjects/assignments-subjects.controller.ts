@@ -8,13 +8,14 @@ import { AssignmentsSubjectsService } from './assignments-subjects.service';
         type: AssignmentSubject,
     },
     query: {
+        limit: 10,
         join: {
-            studyPlanVariant: { eager: true, allow: ['name', 'code'] },
+            studyPlanVariant: { eager: false, allow: ['name', 'code'] },
             subject: {
-                eager: true, allow: ['name', 'shortName', 'code'],
+                eager: false, allow: ['name', 'shortName', 'code'],
             },
-            grade: { eager: true },
-            assignment: {},
+            grade: { eager: false },
+            assignment: {eager: false},
         },
     },
 })

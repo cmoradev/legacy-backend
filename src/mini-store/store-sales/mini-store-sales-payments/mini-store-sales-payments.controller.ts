@@ -1,13 +1,12 @@
-import { Body, Controller, Delete, NotFoundException, Param, ParseIntPipe, Post, Put, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, NotFoundException, Param, ParseIntPipe, Post, Put, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { ConceptsPriceByPaymentBillig, roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
@@ -43,13 +42,13 @@ import { PaymentStatus } from '../../../common/enums/PaymentStatus';
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            agent: {},
-            miniStoreSaleMethodPayments: {},
-            'miniStoreSaleMethodPayments.invoiceMethodPayment': {},
-            miniStoreInvoices: {},
-            miniStoreSale: {},
+            agent: {eager: false},
+            miniStoreSaleMethodPayments: {eager: false},
+            'miniStoreSaleMethodPayments.invoiceMethodPayment': {eager: false},
+            miniStoreInvoices: {eager: false},
+            miniStoreSale: {eager: false},
         },
     },
 })

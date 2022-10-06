@@ -8,8 +8,9 @@ import { FamilyFiscalService } from './family-fiscal.service';
         type: BusinessNameFamily,
     },
     query: {
+        limit: 10,
         join: {
-            family: {},
+            family: {eager: false},
         },
     },
 })

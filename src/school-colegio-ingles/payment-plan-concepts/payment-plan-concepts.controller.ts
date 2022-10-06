@@ -13,10 +13,11 @@ import { PaymentPlanConceptsService } from './payment-plan-concepts.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            paymentPlan: {},
-            grades: {},
-            schoolPayment: {},
+            paymentPlan: {eager: false},
+            grades: {eager: false},
+            schoolPayment: {eager: false},
         },
     },
 })

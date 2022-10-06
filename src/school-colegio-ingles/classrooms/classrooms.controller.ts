@@ -13,25 +13,28 @@ import { ClassroomsService } from './classrooms.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            grade: {},
+            grade: {eager: false},
              'grade.level': {
-                alias: 'grade_level'
+                alias: 'grade_level',
+                 eager: false
             },
             'grade.level.campus': {
-                alias: 'grade_level_campus'
+                alias: 'grade_level_campus',
+                eager: false
             },
-            cycle: {},
-            studyPlan: {},
-            studyPlanVariant: {},
-            group: {},
-            level: {},
-            'level.campus': {},
-            assignments: {},
-            inscriptions: {},
-            'inscriptions.student': {},
-            'inscriptions.student.family': {},
-            'inscriptions.student.incidents': {},
+            cycle: {eager: false},
+            studyPlan: {eager: false},
+            studyPlanVariant: {eager: false},
+            group: {eager: false},
+            level: {eager: false},
+            'level.campus': {eager: false},
+            assignments: {eager: false},
+            inscriptions: {eager: false},
+            'inscriptions.student': {eager: false},
+            'inscriptions.student.family': {eager: false},
+            'inscriptions.student.incidents': {eager: false},
         },
     },
 })

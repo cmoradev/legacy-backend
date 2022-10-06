@@ -1,18 +1,17 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargesDetailsExtraCharges } from './entities/school-charges-details-extra-charges.entity';
 import { SchoolChargesDetailsExtraChargesService } from './school-charges-details-extra-charges.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
         type: SchoolChargesDetailsExtraCharges,
     },
     query: {
-        limit: 200,
+        limit: 10,
         join: {
-            schoolChargeDetails: {},
-            systemExtraCharges: {},
+            schoolChargeDetails: {eager: false},
+            systemExtraCharges: {eager: false},
         },
     },
 })

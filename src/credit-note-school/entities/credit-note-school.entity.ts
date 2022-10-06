@@ -5,9 +5,10 @@ import { InvoiceType } from '../../mini-store/store-sales/mini-store-invoices/en
 import { SchoolChargesInvoice } from '../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
 import { User } from '../../system/users/entities/user.entity';
+import {Base} from '../../common/orm/entities/base.entity';
 
 @Entity()
-export class CreditNoteSchool {
+export class CreditNoteSchool extends Base {
 
     @PrimaryGeneratedColumn({
         type: 'int',

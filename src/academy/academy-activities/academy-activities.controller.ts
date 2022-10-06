@@ -1,11 +1,10 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { AcademyActivity } from './entities/academy-activity.entity';
-import { AcademyActivitiesService } from './academy-activities.service';
-import { QueryMensualidades } from './types/academyActvities.interface';
-import { AcademyActivityReport } from './reports/academy-activity.report';
+import {Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res} from '@nestjs/common';
+import {Crud, CrudController} from '@nestjsx/crud';
+import {AcademyActivity} from './entities/academy-activity.entity';
+import {AcademyActivitiesService} from './academy-activities.service';
+import {QueryMensualidades} from './types/academyActvities.interface';
+import {AcademyActivityReport} from './reports/academy-activity.report';
 import * as moment from 'moment';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -17,14 +16,15 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            academyActivityConcepts: {},
-            academyActivityGroups: {},
+            academyActivityConcepts: {eager: false},
+            academyActivityGroups: {eager: false},
             'academyActivityGroups.academyGroupCycle': {
                 alias: 'academyGroupCycle',
+                eager: false
             },
-            academyActInscription: {},
+            academyActInscription: {eager: false},
         },
     },
 })
@@ -57,7 +57,7 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
         const data = await this.service.monthsPayments(query);
         if (query.file) {
             const report = new AcademyActivityReport();
-            const file = await report.monthlyPayments(data, { year, month });
+            const file = await report.monthlyPayments(data, {year, month});
             response.send({
                 src: file,
                 type: 'excel',

@@ -1,9 +1,8 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolCharge } from './entities/school-charge.entity';
 import { SchoolChargesService } from './school-charges.service';
 import { Response } from 'express';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -15,32 +14,32 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            schoolCampus: {},
-            schoolCycle: {},
-            cashier: {},
-            cashierCancellation: {},
-            schoolStudent: {},
-            chargesDetails: { alias: 'chargeDetail' },
-            'chargesDetails.extraCharges': {},
-            'chargesDetails.schoolPlanPayment': {},
-            'chargesDetails.extraCharges.systemExtraCharges': {},
-            chargesPayments: {},
-            'chargesPayments.methodsPayments': { alias: 'chargesPayments_methodsPayments' },
-            'chargesPayments.methodsPayments.Bank': { alias: 'chargesPayments_methodsPayments_Bank' },
-            'chargesPayments.methodsPayments.invoiceMethodPayment': {},
-            'chargesPayments.cashierCharge': {},
-            'chargesPayments.cashierChargeCancellation': {},
-            'chargesPayments.schoolChargesInvoice': {},
-            chargesInvoice: {},
-            'chargesInvoice.agentBilling': {},
-            'chargesInvoice.agentCanceling': {},
-            studyPlans: {},
-            'studyPlans.level': {},
-            PaymentPlan: {},
-            'PaymentPlan.studyPlan': {},
-            'PaymentPlan.level': {},
+            schoolCampus: {eager: false},
+            schoolCycle: {eager: false},
+            cashier: {eager: false},
+            cashierCancellation: {eager: false},
+            schoolStudent: {eager: false},
+            chargesDetails: { alias: 'chargeDetail', eager: false },
+            'chargesDetails.extraCharges': {eager: false},
+            'chargesDetails.schoolPlanPayment': {eager: false},
+            'chargesDetails.extraCharges.systemExtraCharges': {eager: false},
+            chargesPayments: {eager: false},
+            'chargesPayments.methodsPayments': { alias: 'chargesPayments_methodsPayments', eager: false },
+            'chargesPayments.methodsPayments.Bank': { alias: 'chargesPayments_methodsPayments_Bank', eager: false },
+            'chargesPayments.methodsPayments.invoiceMethodPayment': {eager: false},
+            'chargesPayments.cashierCharge': {eager: false},
+            'chargesPayments.cashierChargeCancellation': {eager: false},
+            'chargesPayments.schoolChargesInvoice': {eager: false},
+            chargesInvoice: {eager: false},
+            'chargesInvoice.agentBilling': {eager: false},
+            'chargesInvoice.agentCanceling': {eager: false},
+            studyPlans: {eager: false},
+            'studyPlans.level': {eager: false},
+            PaymentPlan: {eager: false},
+            'PaymentPlan.studyPlan': {eager: false},
+            'PaymentPlan.level': {eager: false},
         },
     },
 })

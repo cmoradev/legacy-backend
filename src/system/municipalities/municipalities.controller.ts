@@ -7,7 +7,10 @@ import { MunicipalitiesService } from './municipalities.service';
   model: {
     type: Municipalities,
   },
-  query: {},
+  query: {
+    limit: 10,
+    join: {},
+  },
 })
 @Controller()
 export class MunicipalitiesController implements CrudController<Municipalities> {

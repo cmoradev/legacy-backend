@@ -23,6 +23,7 @@ import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales
                 $eq: null
             },
         },
+        limit: 10,
         join: {
             invoiceBranchOffice: {},
             agentBilling: {},

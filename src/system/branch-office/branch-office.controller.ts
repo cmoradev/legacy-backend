@@ -8,9 +8,10 @@ import { BranchOfficeService } from './branch-office.service';
         type: BranchOffice,
     },
     query: {
+        limit: 10,
         join: {
-            branchoffice: {},
-            'branchoffice.quickSaleMethod': {},
+            branchoffice: {eager: false},
+            'branchoffice.quickSaleMethod': {eager: false},
         },
     },
 })

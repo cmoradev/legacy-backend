@@ -13,19 +13,23 @@ import { GroupsService } from './groups.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             groupGrade: {
                 alias: 'groupGrade',
+                eager: false
             },
             'groupGrade.level': {
                 alias: 'groupGrade_level',
+                eager: false
             },
             'groupGrade.level.campus': {
                 alias: 'campus',
+                eager: false
             },
-            groupCycle: {},
-            groupInscriptions: {},
-            groupClassrooms: {},
+            groupCycle: {eager: false},
+            groupInscriptions: {eager: false},
+            groupClassrooms: {eager: false},
         },
     },
 })

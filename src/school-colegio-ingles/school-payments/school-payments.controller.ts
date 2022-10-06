@@ -1,11 +1,10 @@
-import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { SchoolPaymentsService } from './school-payments.service';
 import { IQueryReport, IQueryReportConcept } from './interfaces/IQueryReport';
 import { ReportProcessor } from './report/report.processor';
 import { SchoolPaymentsReport } from './report/schoolPayments.report';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Response } from 'express';
 import { ConceptStatusExcel } from './report/concept.status.excel';
 import { getNameStatusConcept } from './report/helpers';
@@ -15,13 +14,14 @@ import { getNameStatusConcept } from './report/helpers';
     type: SchoolPayment,
   },
   query: {
+    limit: 10,
     join: {
-      schoolChargeDetail: {},
-      'schoolChargeDetail.extraCharges': {},
-      inscription: {},
-      extraCharges: { alias: 'schoolExtraCharges' },
-      paymentPlanConcept: {},
-      'paymentPlanConcept.paymentPlan': {},
+      schoolChargeDetail: {eager: false},
+      'schoolChargeDetail.extraCharges': {eager: false},
+      inscription: {eager: false},
+      extraCharges: { alias: 'schoolExtraCharges', eager: false },
+      paymentPlanConcept: {eager: false},
+      'paymentPlanConcept.paymentPlan': {eager: false},
     },
   },
 })

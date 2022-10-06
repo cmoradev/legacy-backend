@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
@@ -23,58 +23,70 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            cashier: {},
-            student: {},
-            storeBranchOffice: {},
-            storeBranchOfficeSet: {},
-            miniStoreSalePayments: {},
+            cashier: {eager: false},
+            student: {eager: false},
+            storeBranchOffice: {eager: false},
+            storeBranchOfficeSet: {eager: false},
+            miniStoreSalePayments: {eager: false},
             'miniStoreSalePayments.miniStoreInvoices': {
                 alias: 'miniStoreSalePayments_miniStoreInvoices',
+                eager: false
             },
             'miniStoreSalePayments.agent': {
                 alias: 'miniStoreSalePayments_agent',
+                eager: false
             },
             'miniStoreSalePayments.miniStoreSaleMethodPayments': {
-
                 alias: 'miniStoreSalePayments_miniStoreSaleMethodPayments',
+                eager: false
             },
             'miniStoreSalePayments.miniStoreSaleMethodPayments.Bank': {
                 alias: 'miniStoreSaleMethodPayments_Bank',
+                eager: false
             },
             'miniStoreSalePayments.miniStoreSaleMethodPayments.invoiceMethodPayment': {
                 alias: 'miniStoreSaleMethodPayments_invoiceMethodPayment',
+                eager: false
             },
-            miniStoreSaleDetails: {},
+            miniStoreSaleDetails: {eager: false},
             'miniStoreSaleDetails.miniStoreClassification': {
                 alias: 'miniStoreSaleDetails_miniStoreClassification',
+                eager: false
             },
             'miniStoreSaleDetails.miniStoreProduct': {
                 alias: 'miniStoreSaleDetails_miniStoreProduct',
+                eager: false
             },
             'miniStoreSaleDetails.extraCharges': {
                 alias: 'miniStoreSaleDetails_extraCharges',
+                eager: false
             },
-            miniStoreInvoices: {},
-            returnedProducts: {},
+            miniStoreInvoices: {eager: false},
+            returnedProducts: {eager: false},
             'returnedProducts.agent': {
                 alias: 'returnedProducts_agent',
+                eager: false
             },
             'returnedProducts.invoices': {
                 alias: 'returnedProducts_invoices',
+                eager: false
             },
             'returnedProducts.details': {
                 alias: 'returnedProducts_details',
+                eager: false
             },
             'returnedProducts.details.saleDetail': {
                 alias: 'details_saleDetail',
+                eager: false
             },
-            agentBilling: {},
-            agentCanceling: {},
-            quotation: {},
-            'quotation.quotation': {},
-            sale: {},
-            'sale.cashier': {},
+            agentBilling: {eager: false},
+            agentCanceling: {eager: false},
+            quotation: {eager: false},
+            'quotation.quotation': {eager: false},
+            sale: {eager: false},
+            'sale.cashier': {eager: false},
         },
 
     },

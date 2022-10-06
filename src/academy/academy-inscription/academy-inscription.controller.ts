@@ -1,8 +1,7 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyInscription } from './entities/academy-inscription.entity';
 import { AcademyInscriptionService } from './academy-inscription.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -14,22 +13,22 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            activity: {},
-            student: {},
-            inscriptionCampus: {},
-            academyGroup: {},
-            enrollmentAgent: {},
-            unEnrollerAgent: {},
-            inscriptionStatus: {},
-            cycle: {},
-            concepts: {},
-            'concepts.acInsConActivity': {},
-            'concepts.acInsConConcepType': {},
-            'concepts.acInsConStatusPayment': {},
-            'concepts.academyChargeDetail': {},
-            'concepts.extraCharges': {},
+            activity: {eager: false},
+            student: {eager: false},
+            inscriptionCampus: {eager: false},
+            academyGroup: {eager: false},
+            enrollmentAgent: {eager: false},
+            unEnrollerAgent: {eager: false},
+            inscriptionStatus: {eager: false},
+            cycle: {eager: false},
+            concepts: {eager: false},
+            'concepts.acInsConActivity': {eager: false},
+            'concepts.acInsConConcepType': {eager: false},
+            'concepts.acInsConStatusPayment': {eager: false},
+            'concepts.academyChargeDetail': {eager: false},
+            'concepts.extraCharges': {eager: false},
         },
     },
 })

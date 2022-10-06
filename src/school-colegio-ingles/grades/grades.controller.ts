@@ -13,14 +13,15 @@ import { GradesService } from './grades.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            'level': {},
-            'level.campus': {},
-            paymentPlans: {},
-            gradeInscriptions: {},
-            'gradeInscriptions.inscripCampus': {},
-            'gradeInscriptions.inscripCycle': {},
-            'gradeInscriptions.inscripClassroom':{}
+            'level': {eager: false},
+            'level.campus': {eager: false},
+            paymentPlans: {eager: false},
+            gradeInscriptions: {eager: false},
+            'gradeInscriptions.inscripCampus': {eager: false},
+            'gradeInscriptions.inscripCycle': {eager: false},
+            'gradeInscriptions.inscripClassroom':{eager: false}
             
         },
     },

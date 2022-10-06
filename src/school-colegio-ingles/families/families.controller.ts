@@ -2,7 +2,6 @@ import { Controller, Delete, Param, ParseIntPipe, Put, Get, Req, Res, } from '@n
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Family } from './entities/family.entity';
 import { FamiliesService } from './families.service';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Response } from 'express';
 
 @Crud({
@@ -15,11 +14,12 @@ import { Response } from 'express';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            students: {},
-            campus: {},
-            businessName: {},
-            users: {}
+            students: {eager: false},
+            campus: {eager: false},
+            businessName: {eager: false},
+            users: {eager: false}
         },
     },
 })

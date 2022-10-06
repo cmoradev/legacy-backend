@@ -13,7 +13,8 @@ import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import { Response } from 'express';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
-import { SchoolChargePayment } from 'src/school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+import {SchoolChargePayment} from '../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
+
 @Crud({
     model: {
         type: CreditNoteSchool,
@@ -24,6 +25,7 @@ import { SchoolChargePayment } from 'src/school-colegio-ingles/charges-school/sc
                 $eq: null
             },
         },
+        limit: 10,
         join: {
             invoiceBranchOffice: {},
             agentBilling: {},

@@ -8,9 +8,11 @@ import { ClassroomPermissionService } from './classroom-permission.service';
         type: ClassroomPermission,
     },
     query: {
+        limit: 10,
         join: {
-            classroom: {},
+            classroom: {eager: false},
             user: {
+                eager: false,
                 exclude: ['password', 'rememberToken'],
             },
         },

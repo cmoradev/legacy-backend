@@ -11,6 +11,10 @@ import { Public } from './../../common/docorators/public.decorator';
     model: {
         type: Company,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class SettingsController implements CrudController<Company> {

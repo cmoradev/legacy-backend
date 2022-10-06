@@ -1,8 +1,7 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSaleMethodPayment } from './entities/mini-store-sale-method-payment.entity';
 import { MiniStoreSalesMethodsPaymentsService } from './mini-store-sales-methods-payments.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -14,9 +13,10 @@ import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            invoiceMethodPayment: {},
-            miniStoreSalePayment: {},
+            invoiceMethodPayment: {eager: false},
+            miniStoreSalePayment: {eager: false},
         },
     },
 })

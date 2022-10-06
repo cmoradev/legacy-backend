@@ -8,6 +8,7 @@ import { SystemConceptsTypeService } from './system-concepts-type.service';
     type: SystemConceptsType,
   },
   query: {
+    limit: 10,
     join: {},
   },
 })

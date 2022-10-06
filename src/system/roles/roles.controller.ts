@@ -7,6 +7,10 @@ import { RolesService } from './roles.service';
     model: {
         type: Role,
     },
+    query: {
+        limit: 10,
+        join: {},
+    }
 })
 @Controller()
 export class RolesController implements CrudController<Role> {

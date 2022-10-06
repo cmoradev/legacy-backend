@@ -7,6 +7,10 @@ import { ActionsService } from './actions.service';
     model: {
         type: Action,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class ActionsController implements CrudController<Action> {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
@@ -14,7 +14,6 @@ import { TableCell } from 'pdfmake/interfaces';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
 import { pdfMailDto } from './dto/pdfMail.dto';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
     model: {
@@ -26,11 +25,12 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            miniStoreWareHouseOrdersProducts: {},
-            'miniStoreWareHouseOrdersProducts.miniStoreProduct': {},
-            miniStoreWarehouseProvider: {},
-            branchOfficeMiniStoreWherehouse: {},
+            miniStoreWareHouseOrdersProducts: {eager: false},
+            'miniStoreWareHouseOrdersProducts.miniStoreProduct': {eager: false},
+            miniStoreWarehouseProvider: {eager: false},
+            branchOfficeMiniStoreWherehouse: {eager: false},
         },
     },
 })

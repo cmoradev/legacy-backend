@@ -8,11 +8,12 @@ import { IncidentsService } from './incidents.service';
         type: Incident,
     },
     query: {
+        limit: 10,
         join: {
-            incidentClassification: {},
-            student: {},
-            classroom: {},
-            teacher: {},
+            incidentClassification: {eager: false},
+            student: {eager: false},
+            classroom: {eager: false},
+            teacher: {eager: false},
         },
     },
 })

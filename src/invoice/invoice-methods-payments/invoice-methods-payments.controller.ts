@@ -13,8 +13,9 @@ import { InvoiceMethodsPaymentsService } from './invoice-methods-payments.servic
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            miniStoreSaleMethodPayments: {},
+            miniStoreSaleMethodPayments: {eager: false},
         },
     },
 })

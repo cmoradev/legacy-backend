@@ -6,7 +6,8 @@ import {
   Query,
   Req,
   Res,
-  UseGuards, UsePipes, ValidationPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
@@ -21,10 +22,9 @@ import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import {
   GenerateGlobalInvoice,
-  GenerateInvoice,
   GenerateInvoiceIedu,
 } from '../../../common/utils/invoice/generator/generateInvoice';
-import { FormaPago, RegimenFiscalList, XmlCdfi } from '@signati/core';
+import { FormaPago, RegimenFiscalList } from '@signati/core';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';
 import { FactSw, StampV4 } from '../../../webService/FactSw';
@@ -35,15 +35,12 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { convertPaymentsReportCollege } from './reports/payments.util';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
-import { NewReport } from '../../../common/types/recibo.interface';
 import * as moment from 'moment';
-import { Student } from '../../students/entities/student.entity';
 import { StudentsService } from '../../students/students.service';
-import { ConceptsPriceByPaymentBillig, roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
@@ -58,15 +55,15 @@ import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calcula
     type: SchoolChargePayment,
   },
   query: {
-    limit: 200,
+    limit: 10,
     join: {
-      schoolCharge: {},
-      'schoolCharge.schoolStudent': { alias: 'schoolStudent' },
-      paymentStatus: {},
-      methodsPayments: {},
-      cashierCharge: {},
-      cashierChargeCancellation: {},
-      schoolChargesInvoice: {},
+      schoolCharge: {eager: false},
+      'schoolCharge.schoolStudent': { alias: 'schoolStudent', eager: false },
+      paymentStatus: {eager: false},
+      methodsPayments: {eager: false},
+      cashierCharge: {eager: false},
+      cashierChargeCancellation: {eager: false},
+      schoolChargesInvoice: {eager: false},
     },
   },
 })

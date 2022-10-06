@@ -1,18 +1,18 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Route } from './entities/route.entity';
 import { RoutesService } from './routes.service';
-import { JwtGuard } from '../auth/guards/jwt.guard';
 
 @Crud({
     model: {
         type: Route,
     },
     query: {
+        limit: 10,
         join: {
-            routeActions: {},
-            'routeActions.route': {},
-            'routeActions.action': {},
+            routeActions: {eager: false},
+            'routeActions.route': {eager: false},
+            'routeActions.action': {eager: false},
         },
     },
 })

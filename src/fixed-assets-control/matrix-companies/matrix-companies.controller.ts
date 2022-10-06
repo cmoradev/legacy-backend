@@ -8,8 +8,9 @@ import { MatrixCompaniesService } from './matrix-companies.service';
         type: MatrixCompany,
     },
     query: {
+        limit: 10,
         join: {
-            branches: {},
+            branches: {eager: false},
         },
     },
 })

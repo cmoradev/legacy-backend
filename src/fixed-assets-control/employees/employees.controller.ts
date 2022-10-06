@@ -8,10 +8,11 @@ import { EmployeesService } from './employees.service';
         type: Employee,
     },
     query: {
+        limit: 10,
         join: {
-            branchCompanies: {},
-            jobPositions: {},
-            assignments: {},
+            branchCompanies: {eager: false},
+            jobPositions: {eager: false},
+            assignments: {eager: false},
         },
     },
 })

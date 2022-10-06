@@ -9,21 +9,17 @@ import {
     Put,
     Query,
     Req,
-    Res,
-    UseGuards
+    Res
 } from '@nestjs/common';
 import {
     Crud,
     CrudController,
     Override,
     CrudRequest,
-    ParsedRequest,
-    ParsedBody,
-    CreateManyDto,
+    ParsedRequest
 } from '@nestjsx/crud';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { Response } from 'express';
 import { readFileSync, writeFileSync } from 'fs';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -52,19 +48,21 @@ import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/poin
                 $eq: null,
             },
         },
-        limit: 200,
+        limit: 10,
         join: {
-            academyChargePayment: {},
-            academyCharge: {},
+            academyChargePayment: {eager: false},
+            academyCharge: {eager: false},
             'academyCharge.chargesDetails': {
-                alias: "academyCharge_chargesDetails"
+                alias: 'academyCharge_chargesDetails',
+                eager: false,
             },
             'academyCharge.chargesDetails.extraCharges': {
-                alias: "academyCharge_chargesDetails_extraCharges"
+                alias: 'academyCharge_chargesDetails_extraCharges',
+                eager: false,
             },
-            "academyCharge.schoolStudent": { eager: false },
-            agentBilling: {},
-            agentCanceling: {}
+            'academyCharge.schoolStudent': { eager: false },
+            agentBilling: {eager: false},
+            agentCanceling: {eager: false}
         },
     },
 })

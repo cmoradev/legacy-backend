@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { CashRegister } from './entities/cash-register.entity';
 import { CashRegisterService } from './cash-register.service';
@@ -6,7 +6,6 @@ import { ReportsCashQuery } from './types/reports.type';
 import { Response } from 'express';
 import { TransactionsReport } from './reports/transactions';
 import { transactionsList } from './reports/transactions.report';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 @Crud({
     model: {
         type: CashRegister,
@@ -17,19 +16,23 @@ import { JwtGuard } from '../../system/auth/guards/jwt.guard';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
-            agent: { exclude: ['password'] },
-            transactions: {},
+            agent: { eager:false, exclude: ['password'] },
+            transactions: {eager: false},
             'transactions.agent': {
                 alias: 'transactions_agent',
+                eager: false
             },
             'transactions.payment': {
                 alias: 'transactions_payment',
+                eager: false
             },
             'transactions.payment.miniStoreSaleMethodPayments': {
                 alias: 'paymentMiniStoreSaleMethodPayments',
+                eager: false
             },
-            movements: {},
+            movements: {eager: false},
         },
     },
 })

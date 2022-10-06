@@ -8,10 +8,11 @@ import { FixedAssetsService } from './fixed-assets.service';
         type: FixedAsset,
     },
     query: {
+        limit: 10,
         join: {
-            classification: {},
-            location: {},
-            branchCompany: {},
+            classification: {eager: false},
+            location: {eager: false},
+            branchCompany: {eager: false},
         },
     },
 })

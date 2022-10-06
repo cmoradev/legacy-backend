@@ -8,8 +8,9 @@ import { IncidentClassification } from './entities/incident-classification.entit
         type: IncidentClassification,
     },
     query: {
+        limit: 10,
         join: {
-            incidents: {},
+            incidents: {eager: false},
         },
     },
 })

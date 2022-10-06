@@ -1,16 +1,14 @@
-import { Controller, UseGuards } from '@nestjs/common';
-import { Crud, CrudController, CrudOptions } from '@nestjsx/crud';
+import { Controller } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPaymentCharge } from './entities/school-payment-charge.entity';
 import { SchoolPaymentsChargesService } from './school-payments-charges.service';
-import { AcademyInscriptionConceptCharges } from '../../academy/academy-inscription-concept-charges/entites/academy-inscription-concept-charges.entity';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Crud({
   model: {
     type: SchoolPaymentCharge,
   },
   query: {
-    limit: 200,
+    limit: 10,
     join: {},
   },
 })

@@ -22,15 +22,16 @@ import { Department } from '../../system/departments/entities/department.entity'
 import { InjectRepository } from '@nestjs/typeorm';
 import { AcademicService } from '../../integrations/academic/academic.service';
 import {List} from 'immutable';
-import { AcademicStudent } from '../../integrations/academic/interfaces/academic-student.interface';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
+
 @Crud({
     model: {
         type: CheckIn,
     },
     query: {
+        limit: 10,
         join: {
-            department: {},
+            department: {eager: false},
         },
     },
 })

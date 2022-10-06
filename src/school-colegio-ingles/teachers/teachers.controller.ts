@@ -1,6 +1,5 @@
 import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 import { Teacher } from './entities/teacher.entity';
 import { TeachersService } from './teachers.service';
 
@@ -9,9 +8,11 @@ import { TeachersService } from './teachers.service';
         type: Teacher,
     },
     query: {
+        limit: 10,
         join: {
-            incidents: {},
+            incidents: {eager: false},
             user: {
+                eager: false,
                 exclude: ['password', 'rememberToken'],
             },
         },
