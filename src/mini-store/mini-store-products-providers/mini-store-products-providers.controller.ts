@@ -17,6 +17,7 @@ import { MiniStoreWarehouseProvider } from '../mini-store-warehouse-providers/en
                 $eq: null,
             },
         },
+        limit: 10,
         join: {},
     },
 })

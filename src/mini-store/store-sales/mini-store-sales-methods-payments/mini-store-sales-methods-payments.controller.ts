@@ -13,6 +13,7 @@ import { MiniStoreSalesMethodsPaymentsService } from './mini-store-sales-methods
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             invoiceMethodPayment: {eager: false},
             miniStoreSalePayment: {eager: false},

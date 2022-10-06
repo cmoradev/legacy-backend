@@ -13,6 +13,7 @@ import { MiniStoreDetailsExtraChargesService } from './mini-store-details-extra-
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             miniSaleChargeDetails: {eager: false},
             systemExtraCharges: {eager: false},

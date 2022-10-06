@@ -13,6 +13,7 @@ import { MiniStoreProductsService } from './mini-store-products.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             storeClassification: {eager: false},
             storePriceList: {eager: false},

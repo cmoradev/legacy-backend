@@ -13,6 +13,7 @@ import { MiniStoreWarehouseProvidersService } from './mini-store-warehouse-provi
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             miniStoreWarehouseOrders: {eager: false},
         },

@@ -51,6 +51,7 @@ import { Public } from '../../../common/docorators/public.decorator';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             miniStoreSalePayment: { eager: false },
             miniStoreSale: { eager: false },

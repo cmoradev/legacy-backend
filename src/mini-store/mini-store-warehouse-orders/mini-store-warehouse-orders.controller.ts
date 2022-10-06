@@ -25,6 +25,7 @@ import { pdfMailDto } from './dto/pdfMail.dto';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             miniStoreWareHouseOrdersProducts: {eager: false},
             'miniStoreWareHouseOrdersProducts.miniStoreProduct': {eager: false},

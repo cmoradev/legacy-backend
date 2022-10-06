@@ -13,6 +13,7 @@ import { MiniStoreWarehouseOrderProduct } from './entities/mini-store-warehouse-
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             miniStoreProduct: {eager: false},
             'miniStoreProduct.storeInvoiceKey': {eager: false},

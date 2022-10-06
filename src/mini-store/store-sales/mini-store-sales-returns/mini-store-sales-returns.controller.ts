@@ -15,6 +15,7 @@ import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invo
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             sale: {eager: false},
             details: {eager: false},

@@ -30,7 +30,7 @@ import { Environment, InvoiceModules } from '../../../common/point-of-sale/types
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import * as moment from 'moment';
-import { PaymentStatus } from 'src/common/enums/PaymentStatus';
+import {PaymentStatus} from '../../../common/enums/PaymentStatus';
 
 @Crud({
     model: {

@@ -13,6 +13,7 @@ import { MiniStorePriceList } from './entities/mini-store-price-list.entity';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             storeProducts: {eager: false},
             branchOfficeList: {eager: false},

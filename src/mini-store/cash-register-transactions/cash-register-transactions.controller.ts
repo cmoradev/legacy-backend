@@ -13,6 +13,7 @@ import { CashRegisterTransactionsService } from './cash-register-transactions.se
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             agent: { eager: false, exclude: ['password'] },
             cashRegister: {eager: false},

@@ -13,6 +13,7 @@ import { MiniStoreTransactionService } from './mini-store-transaction.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             transactionUser: {eager: false},
         },

@@ -13,6 +13,7 @@ import { MiniStorePricesService } from './mini-store-prices.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {},
     },
 })

@@ -16,6 +16,7 @@ import { transactionsList } from './reports/transactions.report';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             agent: { eager:false, exclude: ['password'] },
             transactions: {eager: false},

@@ -13,6 +13,7 @@ import { MiniStoreClassificationsService } from './mini-store-classifications.se
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             storeProducts: {eager: false},
             miniStoreSaleDetails: {eager: false},

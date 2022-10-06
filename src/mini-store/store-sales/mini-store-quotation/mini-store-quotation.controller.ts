@@ -13,6 +13,7 @@ import { MiniStoreQuotationService } from './mini-store-quotation.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             sale: {eager: false},
             quotation: {eager: false},

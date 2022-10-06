@@ -19,6 +19,7 @@ import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             cashier: {eager: false},
             student: {eager: false},
