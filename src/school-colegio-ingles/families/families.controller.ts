@@ -14,6 +14,7 @@ import { Response } from 'express';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             students: {eager: false},
             campus: {eager: false},

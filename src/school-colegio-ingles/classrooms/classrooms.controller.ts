@@ -13,6 +13,7 @@ import { ClassroomsService } from './classrooms.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             grade: {eager: false},
              'grade.level': {

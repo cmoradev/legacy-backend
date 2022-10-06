@@ -14,6 +14,7 @@ import { getNameStatusConcept } from './report/helpers';
     type: SchoolPayment,
   },
   query: {
+    limit: 10,
     join: {
       schoolChargeDetail: {eager: false},
       'schoolChargeDetail.extraCharges': {eager: false},

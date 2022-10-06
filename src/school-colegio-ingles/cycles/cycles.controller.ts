@@ -13,6 +13,8 @@ import { CyclesService } from './cycles.service';
                 $eq: null,
             },
         },
+        limit: 10,
+        join: {},
     },
 })
 @Controller()

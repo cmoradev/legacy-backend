@@ -3,7 +3,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { Student } from '../../students/entities/student.entity';
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { User } from 'src/system/users/entities/user.entity';
+import {User} from '../../../system/users/entities/user.entity';
 
 @Entity('familias')
 export class Family extends Base {

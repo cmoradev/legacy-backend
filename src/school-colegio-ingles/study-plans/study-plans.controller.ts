@@ -13,6 +13,7 @@ import { StudyPlansService } from './study-plans.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             modality: {eager: false},
             group: {eager: false},

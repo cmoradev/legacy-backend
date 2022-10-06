@@ -5,6 +5,10 @@ import { ModalitiesService } from './modalities.service';
 
 @Crud({
     model: { type: Modality },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class ModalitiesController implements CrudController<Modality> {

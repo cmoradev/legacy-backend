@@ -29,6 +29,7 @@ import { ColegioDBNameConnection } from '../../common/databases/colegiodb.servic
         type: CheckIn,
     },
     query: {
+        limit: 10,
         join: {
             department: {eager: false},
         },

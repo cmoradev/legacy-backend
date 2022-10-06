@@ -9,6 +9,7 @@ import { AssignmentsService } from './assignments.service';
         type: Assignment,
     },
     query: {
+        limit: 10,
         join: {
             cycle: {eager: false},
             studyPlanVariant: {eager: false},

@@ -13,6 +13,7 @@ import { PaymentPlansService } from './payment-plans.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             studyPlan: {eager: false},
             'studyPlan.level': {eager: false},

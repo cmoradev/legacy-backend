@@ -13,6 +13,7 @@ import { StudyPlanVariantsService } from './study-plan-variants.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             studyPlan: {eager: false},
             assignmentSubjects: {eager: false},

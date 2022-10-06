@@ -7,6 +7,10 @@ import { AssignmentIncriptionService } from './assignment-incription.service';
     model: {
         type: AssignmentInscription,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class AssignmentIncriptionController implements CrudController <AssignmentInscription> {

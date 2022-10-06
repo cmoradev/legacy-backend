@@ -8,6 +8,7 @@ import { TeachersService } from './teachers.service';
         type: Teacher,
     },
     query: {
+        limit: 10,
         join: {
             incidents: {eager: false},
             user: {

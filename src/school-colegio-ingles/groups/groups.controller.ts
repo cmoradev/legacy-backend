@@ -13,6 +13,7 @@ import { GroupsService } from './groups.service';
                 $eq: null,
             },
         },
+        limit: 10,
         join: {
             groupGrade: {
                 alias: 'groupGrade',

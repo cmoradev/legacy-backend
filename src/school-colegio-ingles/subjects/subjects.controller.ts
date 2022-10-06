@@ -7,6 +7,10 @@ import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
     model: {
         type: Subject,
     },
+    query: {
+        limit: 10,
+        join: {},
+    },
 })
 @Controller()
 export class SubjectsController implements CrudController<Subject> {
