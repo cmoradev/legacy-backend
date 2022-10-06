@@ -23,6 +23,7 @@ import { Payment } from '../common/point-of-sale/types.pos';
                 $eq: null
             },
         },
+        limit: 10,
         join: {
             invoiceBranchOffice: {},
             agentBilling: {},
