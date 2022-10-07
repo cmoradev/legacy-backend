@@ -12,6 +12,7 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MiniStoreQuotation } from '../../mini-store-quotation/entities/mini-store-quotation.entity';
+import { Transaction } from '../../../../system/transaction/entities/transaction.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
@@ -233,4 +234,7 @@ export class MiniStoreSale extends Base {
     name: 'codigo_forma_pago',
   })
   codeWayToPay: string | null;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.sale)
+    transactions: Transaction[];
 }

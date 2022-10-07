@@ -1,5 +1,6 @@
-import { TypeTransaction } from 'src/common/enums/TypeTransaction.enum';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { TypeTransaction } from '../../../common/enums/TypeTransaction.enum';
+import { MiniStoreSale } from '../../../mini-store/store-sales/mini-store-sales/entities/mini-store-sale.entity';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Student } from '../../../school-colegio-ingles/students/entities/student.entity';
 
@@ -32,4 +33,9 @@ export class Transaction extends Base {
         cascade: ['insert', 'update'], nullable: false
     })
     student: Student;
+
+    @ManyToOne(() => MiniStoreSale, (sale) => sale.transactions, {
+        cascade: ['insert', 'update'], nullable: false
+    })
+    sale: MiniStoreSale;
 }

@@ -21,6 +21,7 @@ import { routes } from './routes';
 import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegio-ingles.module';
 import { JwtGuard } from './system/auth/guards/jwt.guard';
 import { SystemModule } from './system/system.module';
+import { TransactionModule } from './system/transaction/transactions.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
 
 // @ts-ignore left join only
@@ -51,6 +52,7 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
     CreditNoteAcademyModule,
     CreditNoteSchoolModule,
     CreditNoteStoreModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService,

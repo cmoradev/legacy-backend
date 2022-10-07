@@ -110,6 +110,7 @@ import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { RouteActionModule } from './system/route-action/route-action.module';
 import { MiniStoreQuotationModule } from './mini-store/store-sales/mini-store-quotation/mini-store-quotation.module';
 import { SchoolPaymentsChargesModule } from './school-colegio-ingles/school-payments-charges/school-payments-charges.module';
+import { TransactionModule } from './system/transaction/transactions.module';
 
 export const routes: Routes = [
     {
@@ -154,6 +155,7 @@ export const routes: Routes = [
             { path: '/settings', module: SettingsModule },
             { path: '/folios', module: FoliosModule },
             { path: '/xls', module: XlsImporterModule },
+            { path: '/transaction', module: TransactionModule }
         ],
     },
     {
