@@ -3,7 +3,7 @@ import { formatDate } from './../../../../common/date';
 import * as moment from 'moment';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from '../types/IReport';
 import { getNameReportSaleToday } from './helpers';
-import { PaymentStatus } from 'src/common/enums/PaymentStatus';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
 

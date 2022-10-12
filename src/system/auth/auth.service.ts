@@ -200,7 +200,7 @@ export class AuthService {
             Ha solicitado recuperar su contraseña.
             Si fue usted haga click en el enlace que se encuentra debajo. De lo contrario, ignore este correo.
         </p>
-        <a href='${clientUrl}/#/reset-password/${token}'>Recuperar contraseña</a>
+        <a href='${clientUrl}/reset-password/${token}'>Recuperar contraseña</a>
       </div>
       `,
     };
