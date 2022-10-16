@@ -26,23 +26,23 @@ export class AcademyInscriptionService extends TypeOrmCrudService<AcademyInscrip
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
         return await this.repo.restore(id);
     }
 
-    async inscripciones(query: { month: any; groupId?: number; status?: InscriptionStatus, ciclyId?: number; branchOfficeId?: number }): Promise<AcademyInscription[]> {
-        const insccripciones = this.repo.createQueryBuilder('inscripcion')
-            .leftJoinAndSelect('inscripcion.academyGroup', 'academyGroup')
-            .leftJoinAndSelect('inscripcion.student', 'student')
-            .leftJoinAndSelect('inscripcion.inscriptionCampus', 'inscriptionCampus')
-            .leftJoinAndSelect('inscripcion.cycle', 'cycle')
-            .leftJoinAndSelect('inscripcion.schoolLevel', 'schoolLevel')
-            .leftJoinAndSelect('inscripcion.schoolGrade', 'schoolGrade')
-            .leftJoinAndSelect('inscripcion.schoolGroup', 'schoolGroup')
-            .leftJoinAndSelect('inscripcion.concepts', 'concepts',
+    async inscripciones(query: { month: any; groupId?: number[]; status?: InscriptionStatus[], ciclyId?: number; branchOfficeId?: number }): Promise<AcademyInscription[]> {
+        const insccripciones = this.repo.createQueryBuilder('i')
+            .leftJoinAndSelect('i.academyGroup', 'academyGroup')
+            .leftJoinAndSelect('i.student', 'student')
+            .leftJoinAndSelect('i.inscriptionCampus', 'inscriptionCampus')
+            .leftJoinAndSelect('i.cycle', 'cycle')
+            .leftJoinAndSelect('i.schoolLevel', 'schoolLevel')
+            .leftJoinAndSelect('i.schoolGrade', 'schoolGrade')
+            .leftJoinAndSelect('i.schoolGroup', 'schoolGroup')
+            .leftJoinAndSelect('i.concepts', 'concepts',
                 'concepts.payDate BETWEEN :startDate AND :endDate AND concepts.id_concepto_cobro = :idT OR concepts.id_concepto_cobro = :idR', {
                     startDate: moment(query.month).startOf('month').toDate(),
                     endDate: moment(query.month).endOf('month').toDate(),
@@ -52,16 +52,17 @@ export class AcademyInscriptionService extends TypeOrmCrudService<AcademyInscrip
             .leftJoinAndSelect((qb) => {
                     return qb.from(AcademyInscriptionConcepts, 'conceptsQuery');
                 },
-                'conceptsQuery', 'conceptsQuery.acInscriptionId = inscripcion.id');
+                'conceptsQuery', 'conceptsQuery.acInscriptionId = i.id');
+
         if (query.status) {
-            insccripciones.where('inscripcion.inscriptionStatus = :status', {
+            insccripciones.where('i.inscriptionStatus IN (:...status)', {
                 status: query.status,
             });
         }
-        if (query.groupId) {
 
-            insccripciones.andWhere('academyGroup.id = :academyGroupId', {
-                academyGroupId: query.groupId,
+        if (query.groupId) {
+            insccripciones.andWhere('academyGroup.id IN (:...groupsId)', {
+                groupsId: query.groupId,
             });
         }
 

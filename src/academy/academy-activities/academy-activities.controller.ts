@@ -1,9 +1,11 @@
-import {Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res} from '@nestjs/common';
-import {Crud, CrudController} from '@nestjsx/crud';
-import {AcademyActivity} from './entities/academy-activity.entity';
-import {AcademyActivitiesService} from './academy-activities.service';
-import {QueryMensualidades} from './types/academyActvities.interface';
-import {AcademyActivityReport} from './reports/academy-activity.report';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, Req, Res } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { AcademyActivity } from './entities/academy-activity.entity';
+import { AcademyActivitiesService } from './academy-activities.service';
+import { QueryMensualidades } from './types/academyActvities.interface';
+import { AcademyActivityReport } from './reports/academy-activity.report';
+import { Request, Response } from 'express'
+import { VwAcaGroupType } from './types/vw.aca.group.type';
 import * as moment from 'moment';
 
 @Crud({
@@ -49,22 +51,27 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
         return await this.service.softRestoreOne(id);
     }
 
-    @Get('/monthly-payments')
-    async simpleReport(@Req() request, @Res() response, @Query() query: QueryMensualidades) {
-        const year = moment(query.month).year();
-        const month = moment(query.month).month() + 1;
+    @Post('/monthly-payments')
+    async simpleReport(@Req() req: Request, @Res() res: Response, @Body() query: QueryMensualidades) {
+        const data: VwAcaGroupType[] = await this.service.monthsPayments(query);
 
-        const data = await this.service.monthsPayments(query);
         if (query.file) {
-            const report = new AcademyActivityReport();
-            const file = await report.monthlyPayments(data, {year, month});
-            response.send({
-                src: file,
+            const excelReport = new AcademyActivityReport();
+
+            const year = moment(query.month).year();
+            const month = moment(query.month).month() + 1;
+
+            const src = await excelReport.monthlyPayments(data, {year, month});
+
+            const report = {
+                src,
                 type: 'excel',
-                name: 'monthly-payments',
-            });
+                name: `monthly-payments-${moment().format('YYYY-MM-DD')}`,
+            };
+
+            return res.send({report, data});
         } else {
-            response.send(data);
+            return res.send({report: false, data});
         }
     }
 }
