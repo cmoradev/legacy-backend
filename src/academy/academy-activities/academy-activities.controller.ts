@@ -53,25 +53,29 @@ export class AcademyActivitiesController implements CrudController<AcademyActivi
 
     @Post('/monthly-payments')
     async simpleReport(@Req() req: Request, @Res() res: Response, @Body() query: QueryMensualidades) {
-        const data: VwAcaGroupType[] = await this.service.monthsPayments(query);
+        try {
+            const data: VwAcaGroupType[] = await this.service.monthsPayments(query);
 
-        if (query.file) {
-            const excelReport = new AcademyActivityReport();
+            if (query.file) {
+                const excelReport = new AcademyActivityReport();
 
-            const year = moment(query.month).year();
-            const month = moment(query.month).month() + 1;
+                const year = moment(query.month).year();
+                const month = moment(query.month).month() + 1;
 
-            const src = await excelReport.monthlyPayments(data, {year, month});
+                const src = await excelReport.monthlyPayments(data, {year, month});
 
-            const report = {
-                src,
-                type: 'excel',
-                name: `monthly-payments-${moment().format('YYYY-MM-DD')}`,
-            };
+                const report = {
+                    src,
+                    type: 'excel',
+                    name: `monthly-payments-${moment().format('YYYY-MM-DD')}`,
+                };
 
-            return res.send({report, data});
-        } else {
-            return res.send({report: false, data});
+                return res.send({report, data});
+            } else {
+                return res.send({report: false, data});
+            }
+        } catch (e) {
+            return res.status(e?.status || 400).send(e?.response || e);
         }
     }
 }
