@@ -2,11 +2,20 @@ import { AcademyActivitiesGroup } from '../../academy-activities-group/entities/
 import { Cycle } from '../../../school-colegio-ingles/cycles/entities/cycle.entity';
 
 export interface QueryMensualidades {
-    activityId: number | string;
-    ActivityGroupId: number | string;
-    month: string | Date;
-    cycleId: number | string;
-    branchOfficeId: number | string;
+    activityId: number;
+    ActivityGroupId: number;
+    month: string;
+    cycleId: number;
+    branchOfficeId: number;
+    file?: boolean;
+}
+
+export interface QueryMensualidades {
+    activityId: number;
+    ActivityGroupId: number;
+    month: string;
+    cycleId: number;
+    branchOfficeId: number;
     file?: boolean;
 }
 
