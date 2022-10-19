@@ -1,4 +1,4 @@
-import { IsOptional, IsNumber,IsNotEmpty, IsArray } from "class-validator";
+import { IsOptional, IsNumber,IsNotEmpty, IsArray, IsString } from "class-validator";
 
 export class IQueryRoutesFatherDto {
 
@@ -9,6 +9,10 @@ export class IQueryRoutesFatherDto {
     @IsOptional()
     @IsNumber()
     offset: number;
+
+    @IsOptional()
+    @IsString()
+    text: string;
 }
 
 export class IQueryRoutesChildDto extends IQueryRoutesFatherDto{
