@@ -16,6 +16,9 @@ export default class SchoolPaymentSeed implements Seeder {
             f.rfc AS f_rfc,
             f.invoiceType AS f_type,
             f.status AS f_status,
+            p.quantity AS p_quantity,
+            p.change AS p_change,
+            v.observations AS v_observations,
             CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
@@ -23,16 +26,22 @@ export default class SchoolPaymentSeed implements Seeder {
             v.schoolCycleId AS v_cycle,
             v.status AS v_status,
             p.createdAt AS p_created_at,
-             f.createdAt AS f_created_at,
+            f.createdAt AS f_created_at,
             p.stamping AS p_stamping,
             p.paymentStatusId AS p_state,
-            p.globalUuid AS p_global_uuid
+            (select p_way_name from vw_sch_way_payments where p_id = p.id) AS f_metodo_pago,
+            (select p_way from vw_sch_way_payments where p_id = p.id) AS f_metodo_pago_codigo,
+            p.globalUuid AS p_global_uuid,
+            (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS u_fullname_cashier,
+            (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation
         FROM school_charge_payments p
-        
+
         LEFT JOIN school_charges v ON v.id = p.schoolChargeId
         LEFT JOIN alumnos a ON a.id = v.schoolStudentId
+        LEFT JOIN usuarios u ON u.id = v.cashierId
+        LEFT JOIN usuarios us ON us.id = v.cashierCancellationId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
-        
+
         ORDER BY v.id DESC;
         `);
 
