@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Route } from './entities/route.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getTreeRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
+import { IQueryRoutesFatherDto, IQueryRoutesChildDto } from './dto/query-routes.dto';
+import { Decimal } from '@munyaal/calculations'
 
 @Injectable()
 export class RoutesService extends TypeOrmCrudService<Route> {
@@ -15,5 +17,78 @@ export class RoutesService extends TypeOrmCrudService<Route> {
 
     public getRoots() {
         return this.repo.manager.getTreeRepository(Route).findTrees();
+    }
+
+    public async getFathers({
+        limit,
+        offset
+    }: IQueryRoutesFatherDto) {
+        const result = this.repo.createQueryBuilder('route')
+            .select([
+                "id",
+                "name",
+                "level",
+                "icon",
+                "url",
+                "isActive",
+                "mpath",
+                "fatherID",
+            ])
+            .addSelect(subQuery => {
+                return subQuery
+                    .select('GROUP_CONCAT(id)')
+                    .from(Route, "routef")
+                    .where('routef.fatherID = route.id');
+            }, 'childs')
+            .where("route.fatherID is null")
+            .limit(limit)
+            .offset(offset)
+            .orderBy('route.level', 'ASC');
+        const total = await result.getCount();
+        return {
+            data: await result.getRawMany(),
+            count: +limit,
+            total,
+            page: offset == 0 ? 1 : Math.round(Decimal.div(total, +limit).toNumber()),
+            pageCount: Math.ceil(total / +limit)
+        }
+    }
+
+    public async getChilds({
+        ids,
+        limit,
+        offset
+    }: IQueryRoutesChildDto) {
+
+        const result = this.repo.createQueryBuilder('route')
+            .select([
+                "id",
+                "name",
+                "level",
+                "icon",
+                "url",
+                "isActive",
+                "mpath",
+                "fatherID",
+            ])
+            .addSelect(subQuery => {
+                return subQuery
+                    .select('GROUP_CONCAT(id)')
+                    .from(Route, "routef")
+                    .where('routef.fatherID = route.id');
+            }, 'childs')
+            .where('route.id IN (:...array)', { array: ids.map((i: number) => { return parseInt(`${i}`) }) })
+            .limit(limit)
+            .offset(offset)
+            .orderBy('route.level', 'ASC');
+
+        const total = await result.getCount();
+        return {
+            data: await result.getRawMany(),
+            count: +limit,
+            total,
+            page: offset == 0 ? 1 : Math.round(Decimal.div(total, +limit).toNumber()),
+            pageCount: Math.ceil(total / +limit)
+        }
     }
 }

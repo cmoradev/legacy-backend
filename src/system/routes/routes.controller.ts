@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
+import { IQueryRoutesChildDto, IQueryRoutesFatherDto } from './dto/query-routes.dto';
 import { Route } from './entities/route.entity';
 import { RoutesService } from './routes.service';
 
@@ -30,5 +31,19 @@ export class RoutesController implements CrudController<Route> {
     @Get('roots')
     async getRoots() {
         return await this.service.getRoots();
+    }
+
+    @Get('fathers')
+    async getFathers(
+        @Query() options: IQueryRoutesFatherDto
+    ){
+        return await this.service.getFathers(options);
+    }
+
+    @Get('childs')
+    async getChilds(
+        @Query() options: IQueryRoutesChildDto,
+    ){
+        return await this.service.getChilds(options);
     }
 }
