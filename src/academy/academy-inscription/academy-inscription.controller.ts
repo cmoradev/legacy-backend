@@ -30,6 +30,7 @@ import { AcademyInscriptionService } from './academy-inscription.service';
             'concepts.acInsConStatusPayment': {eager: false},
             'concepts.academyChargeDetail': {eager: false},
             'concepts.extraCharges': {eager: false},
+            'concepts.academyChargeDetail.extraCharges': {eager: false},
         },
     },
 })
