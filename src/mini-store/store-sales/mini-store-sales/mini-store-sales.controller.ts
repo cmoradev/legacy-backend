@@ -8,7 +8,6 @@ import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
-import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
 import { getNameReport } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';

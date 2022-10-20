@@ -1,4 +1,4 @@
-import { PaymentStatus } from "../../../../common/enums/PaymentStatus";
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 export interface IQueryReportSaleToday {
   status?: PaymentStatus;
@@ -25,9 +25,9 @@ export interface IReportSaleTodayRow {
   cycleId: number;
   ciclo: string;
   cantidadPagos: number;
-  idsPagos: Array<number>;
+  idsPagos: number[];
   TotalPagos: number;
   TotalDetalles: number;
-  idsDetalles: Array<number>;
+  idsDetalles: number[];
   TotalAdeudo: string;
 }
