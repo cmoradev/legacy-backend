@@ -16,6 +16,7 @@ import { reportInscriptionList } from './reports/inscription-group.report';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
+import { QueryReportInscriptions } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
 
 @Crud({
     model: {
@@ -155,5 +156,10 @@ export class InscriptionsController implements CrudController<Inscription> {
     @Get('dashboard')
     public async dashboard() {
         return this.service.getInscriptions();
+    }
+
+    @Get('attendance_list') 
+    public async attendance_list(@Res() res, @Query() opciones: QueryReportInscriptions) {
+        return await this.service.reportInscriptions(opciones);
     }
 }
