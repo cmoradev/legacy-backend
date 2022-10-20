@@ -19,7 +19,7 @@ export default class SchoolPaymentSeed implements Seeder {
             p.quantity AS p_quantity,
             p.change AS p_change,
             v.observations AS v_observations,
-            CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
+            CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income, 
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.schoolBranchOfficeSetId AS v_branch_office,
@@ -33,7 +33,9 @@ export default class SchoolPaymentSeed implements Seeder {
             (select p_way from vw_sch_way_payments where p_id = p.id) AS f_metodo_pago_codigo,
             p.globalUuid AS p_global_uuid,
             (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS u_fullname_cashier,
-            (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation
+            (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation,
+            u.id AS cashier_id,
+            us.id AS cancelation_id
         FROM school_charge_payments p
 
         LEFT JOIN school_charges v ON v.id = p.schoolChargeId
@@ -44,6 +46,5 @@ export default class SchoolPaymentSeed implements Seeder {
 
         ORDER BY v.id DESC;
         `);
-
     }
 }

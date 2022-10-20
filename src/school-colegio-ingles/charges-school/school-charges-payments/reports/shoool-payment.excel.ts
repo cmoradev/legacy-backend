@@ -1,0 +1,150 @@
+import {TableColumnProperties, Workbook, Worksheet} from 'exceljs';
+import {formatDate} from '../../../../common/date';
+import * as moment from 'moment';
+import {PaymentStatus} from '../../../../common/enums/PaymentStatus';
+import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
+import {IQueryReportSchoolPayment} from '../types/IReport';
+import {getNameReportSaleToday} from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+
+const esMx = require('moment/locale/es-mx');
+
+export class SchoolPaymentExcel {
+    private rows: NotInvoiced[] = [];
+    private params: IQueryReportSchoolPayment;
+    private workbook: Workbook;
+
+    constructor(params: IQueryReportSchoolPayment, data: NotInvoiced[] = []) {
+        this.rows = data;
+        this.params = params;
+
+        this.workbook = new Workbook();
+
+        this.config();
+        this.generate(
+            this.addWorksheet(
+                `${getNameReportSaleToday(this.params).excel}`,
+            ),
+        );
+    }
+
+    private config(): void {
+        this.workbook.creator = 'Munyaal';
+        this.workbook.created = new Date();
+
+        this.workbook.views = [
+            {
+                x: 0,
+                y: 0,
+                width: 10000,
+                height: 20000,
+                firstSheet: 0,
+                activeTab: 1,
+                visibility: 'visible',
+            },
+        ];
+    }
+
+    private addWorksheet(name: string) {
+        return this.workbook.addWorksheet(name, {
+            properties: { tabColor: { argb: '1226AA' } },
+        });
+    }
+
+    private generate(worksheet: Worksheet): Worksheet {
+        let columns: TableColumnProperties[] = []
+
+            columns = [
+                { name: 'Matricula', filterButton: true },
+                { name: 'Nombre', filterButton: false },
+                { name: 'Fecha de creación', filterButton: true },
+                { name: 'Folio de venta', filterButton: false },
+                { name: 'Folio de pago', filterButton: false },
+                { name: 'Folio de factura', filterButton: false },
+                { name: 'Ciclo de venta', filterButton: false },
+                { name: 'Metodo de pago', filterButton: true },
+                {
+                    name: 'Total del pago',
+                    filterButton: false,
+                    totalsRowLabel: 'Total',
+                    totalsRowFunction: 'sum',
+                },
+                { name: 'Realizado por', filterButton: false },
+                { name: 'Cancelado por', filterButton: false },
+            ];
+
+        worksheet.mergeCells(`B2:K2`);
+        const title = worksheet.getCell('B2');
+        title.value = `Reporte de ${getNameReportSaleToday(this.params).title}`
+        title.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        title.font = {
+            bold: true,
+            size: 16,
+        };
+        worksheet.mergeCells(`B3:K3`);
+        const description = worksheet.getCell('B3');
+        moment?.updateLocale('es', esMx);
+        description.value = `Reporte emitido en ${moment().locale('es').format(
+            'MMMM Do YYYY, h:mm:ss a',
+        )}`;
+        description.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        description.font = {
+            bold: true,
+            size: 12,
+        };
+        const rows = [];
+        this.rows.forEach((value: NotInvoiced) => {
+            const columns = [];
+            columns.push(value.a_key);
+            columns.push(value.a_fullname);
+            columns.push(formatDate(value.p_created_at));
+            columns.push(value.v_folio);
+            columns.push(value.p_folio);
+            columns.push(value.f_folio);
+            columns.push(value.v_cycle);
+            columns.push(value.f_metodo_pago);
+            columns.push(parseFloat(`${value.p_income}`));
+            columns.push(value.u_fullname_cashier);
+            columns.push(value.us_fullname_cancelation);
+            rows.push(columns);
+        });
+        worksheet.addTable({
+            displayName: 'Reporte',
+            name: 'Reporte',
+            ref: 'B5',
+            totalsRow: true,
+            headerRow: true,
+            style: {
+                theme: 'TableStyleLight9',
+                showRowStripes: true,
+                showColumnStripes: true,
+            },
+            columns,
+            rows,
+        });
+
+        worksheet.columns.forEach((column) => {
+            column.width = 10;
+
+            if (column.letter === 'K') {
+                column.numFmt = '$#,##0.00';
+            }
+            if (column.letter === 'C' || column.letter === 'J') {
+                column.width = 45;
+            }
+
+            if (column.letter === 'K') {
+                column.width = 15;
+            }
+        });
+
+        return worksheet;
+    }
+
+    public getWorkBook(): Workbook {
+        return this.workbook;
+    }
+}
