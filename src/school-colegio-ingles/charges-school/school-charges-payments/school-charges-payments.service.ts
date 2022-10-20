@@ -28,6 +28,7 @@ import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
+import {IQueryReportSchoolPayment} from './types/IReport';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -160,6 +161,44 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             }
         });
         return cashiers;
+    }
+
+    public async reportSchoolPayment({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+        usersIds,
+                                 }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if(status){
+            queryString = `${queryString} AND p_state = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        if(usersIds && usersIds.length > 0){
+            const user = usersIds.map((u) => {return parseInt(`${u}`)})
+            if(status && status == 4){
+                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
     }
 
     public async simpleReport(payments: SchoolChargePayment[], sales: SchoolCharge[], query: any, options?: { base64: boolean }): Promise<string | any> {

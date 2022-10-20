@@ -49,6 +49,9 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
+import {IQueryReportSchoolPayment} from './types/IReport';
+import {SchoolPaymentExcel} from './reports/shoool-payment.excel';
+import {getNameReportSaleToday} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 
 @Crud({
   model: {
@@ -92,7 +95,7 @@ export class SchoolChargesPaymentsController
 
   @Post('/receipt')
   async billingGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
-    let error: any[] = []
+    const error: any[] = []
     try {
       // query.chargeId = 335;
       // query.chargePaymentId = 344;
@@ -186,7 +189,7 @@ export class SchoolChargesPaymentsController
       });
     } catch (e) {
       res.send({
-        error: error,
+        error,
       });
     }
   }
@@ -506,6 +509,32 @@ export class SchoolChargesPaymentsController
       console.log(e);
       response.status(400);
       response.send(e);
+    }
+  }
+
+  @Public()
+  @Get('/report-school-payment')
+  private async reportSchoolPayment(
+      @Res() res: Response,
+      @Query() options: IQueryReportSchoolPayment,
+  ){
+    const result = await this.service.reportSchoolPayment(options);
+
+    if(options?.isExported) {
+      const conceptStatusExcel = new SchoolPaymentExcel(options, result);
+      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+        filename: `${getNameReportSaleToday(options).excel}.xlsx`,
+      });
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+            buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: `${getNameReportSaleToday(options).excel}`,
+      };
+      return res.send({ report, result });
+    } else {
+      return res.send({ report: false, result });
     }
   }
 

@@ -1,5 +1,5 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
-import { formatDate } from './../../../../common/date';
+import { formatDate } from '../../../../common/date';
 import * as moment from 'moment';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from '../types/IReport';
 import { getNameReportSaleToday } from './helpers';
@@ -49,6 +49,7 @@ export class SaleTodayExcel {
     });
   }
 
+  // * Modificar los names.
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = []
     if(this.params.status && this.params.status == PaymentStatus.trusted){
@@ -56,15 +57,15 @@ export class SaleTodayExcel {
         { name: 'Matricula', filterButton: true },
         { name: 'Nombre', filterButton: false },
         { name: 'Fecha de creación', filterButton: true },
-        { name: "Folio de venta",filterButton: false },      
+        { name: 'Folio de venta',filterButton: false },      
         {
           name: 'Total de venta',
           filterButton: false,
           totalsRowLabel: 'Total',
           totalsRowFunction: 'sum',
         },
-        { name: "Sucursal", filterButton: true },
-        { name: "Ciclo", filterButton: true },
+        { name: 'Sucursal', filterButton: true },
+        { name: 'Ciclo', filterButton: true },
       ];
     }
     worksheet.mergeCells(`B2:K2`);
@@ -91,6 +92,7 @@ export class SaleTodayExcel {
       size: 12,
     };
     const rows = [];
+    // * quitar if en el nuevo.
     if(this.params.status && this.params.status == PaymentStatus.trusted){
       this.rows.forEach((value: IReportSaleTodayRow) => {
         const columns = [];
