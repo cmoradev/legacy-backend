@@ -21,7 +21,8 @@ export class RoutesService extends TypeOrmCrudService<Route> {
 
     public async getFathers({
         limit,
-        offset
+        offset,
+        text
     }: IQueryRoutesFatherDto) {
         const result = this.repo.createQueryBuilder('route')
             .select([
@@ -44,6 +45,9 @@ export class RoutesService extends TypeOrmCrudService<Route> {
             .limit(limit)
             .offset(offset)
             .orderBy('route.level', 'ASC');
+        if (text && text != '') {
+            result.andWhere("route.name like :name", { name: `%${text}%` });
+        }
         const total = await result.getCount();
         return {
             data: await result.getRawMany(),
@@ -57,7 +61,8 @@ export class RoutesService extends TypeOrmCrudService<Route> {
     public async getChilds({
         ids,
         limit,
-        offset
+        offset,
+        text
     }: IQueryRoutesChildDto) {
 
         const result = this.repo.createQueryBuilder('route')
@@ -81,7 +86,9 @@ export class RoutesService extends TypeOrmCrudService<Route> {
             .limit(limit)
             .offset(offset)
             .orderBy('route.level', 'ASC');
-
+        if (text && text != '') {
+            result.andWhere("route.name like :name", { name: `%${text}%` });
+        }
         const total = await result.getCount();
         return {
             data: await result.getRawMany(),
