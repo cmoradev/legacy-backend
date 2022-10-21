@@ -10,7 +10,7 @@ import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-qu
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { JwtGuard } from '../../../system/auth/guards/jwt.guard';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
-import { getNameReportSaleToday } from './reports/helpers';
+import { getNameReport } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
 
 @Crud({
@@ -196,14 +196,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
       if (options?.isExported) {
         const conceptStatusExcel = new SaleTodayExcel(options, data);
         const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-          filename: `${getNameReportSaleToday(options).excel}.xlsx`,
+          filename: `${getNameReport('Ventas',options).excel}.xlsx`,
         });
         const report = {
           src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
           ).toString('base64')}`,
           type: 'excel',
-          name: `${getNameReportSaleToday(options).excel}`,
+          name: `${getNameReport('Ventas', options).excel}`,
         };
         return res.send({ report, data });
       } else {

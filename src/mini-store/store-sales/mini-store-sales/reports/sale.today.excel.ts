@@ -2,7 +2,7 @@ import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import { formatDate } from './../../../../common/date';
 import * as moment from 'moment';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from '../types/IReport';
-import { getNameReportSaleToday } from './helpers';
+import { getNameReport } from './helpers';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
@@ -21,7 +21,7 @@ export class SaleTodayExcel {
     this.config();
     this.generate(
       this.addWorksheet(
-        `${getNameReportSaleToday(this.params).excel}`,
+        `${getNameReport('Ventas',this.params).excel}`,
       ),
     );
   }
@@ -69,7 +69,7 @@ export class SaleTodayExcel {
     }
     worksheet.mergeCells(`B2:K2`);
     const title = worksheet.getCell('B2');
-    title.value = `Reporte de ${getNameReportSaleToday(this.params).title}`
+    title.value = `Reporte de ${getNameReport('Ventas',this.params).title}`
     title.style = {
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
