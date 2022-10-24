@@ -16,7 +16,8 @@ import { reportInscriptionList } from './reports/inscription-group.report';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
-import { QueryReportInscriptions } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
+import { QueryReportInscriptions, ReportInscriptionsRow } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
+import { array, number, string } from '@hapi/joi';
 
 @Crud({
     model: {
@@ -158,8 +159,32 @@ export class InscriptionsController implements CrudController<Inscription> {
         return this.service.getInscriptions();
     }
 
-    @Get('attendance_list') 
+    @Get('attendance_list')
     public async attendance_list(@Res() res, @Query() opciones: QueryReportInscriptions) {
-        return await this.service.reportInscriptions(opciones);
+        const dataInscription = await this.service.reportInscriptions(opciones);
+        
+        const arrayGroup: {
+            idGroup: number,
+            inscriptions: ReportInscriptionsRow[]
+        }[] = [];
+        
+        dataInscription.forEach((i) => {
+            const index = arrayGroup.findIndex((f) => i.groupId == f.idGroup);
+
+            console.log({
+                item: i,
+                index: index
+            })
+
+            if (index > -1) {
+                arrayGroup[index].inscriptions.push(i);
+            } else {
+                arrayGroup.push({ inscriptions: [i], idGroup: i.groupId })
+
+            }
+        });
+        res.send({
+            data: arrayGroup
+        })
     }
 }
