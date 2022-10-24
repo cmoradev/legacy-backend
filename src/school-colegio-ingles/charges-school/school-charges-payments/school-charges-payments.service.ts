@@ -201,6 +201,37 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         }
     }
 
+    public async reportSchoolPaymentInvoice({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+                                            }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+
+        if(status){
+            queryString = `${queryString} AND f_status = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
     public async simpleReport(payments: SchoolChargePayment[], sales: SchoolCharge[], query: any, options?: { base64: boolean }): Promise<string | any> {
         const cashiersAndSales = await this.userRepository.find({
             relations: ['schoolChargesPayments', 'department', 'role'],

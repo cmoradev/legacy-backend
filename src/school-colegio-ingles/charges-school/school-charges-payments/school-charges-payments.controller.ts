@@ -51,7 +51,8 @@ import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import {IQueryReportSchoolPayment} from './types/IReport';
 import {SchoolPaymentExcel} from './reports/shoool-payment.excel';
-import {getNameReportSaleToday} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import {SchoolPaymentInvoiceExcel} from './reports/school-payment-invoice.excel';
 
 @Crud({
   model: {
@@ -523,14 +524,40 @@ export class SchoolChargesPaymentsController
     if(options?.isExported) {
       const conceptStatusExcel = new SchoolPaymentExcel(options, result);
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReportSaleToday(options).excel}.xlsx`,
+        filename: `${getNameReport('Pagos', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReportSaleToday(options).excel}`,
+        name: `${getNameReport('Pagos', options).excel}`,
+      };
+      return res.send({ report, result });
+    } else {
+      return res.send({ report: false, result });
+    }
+  }
+
+  @Public()
+  @Get('/report-school-payment-invoice')
+  private async reportSchoolPaymentInvoice(
+      @Res() res: Response,
+      @Query() options: IQueryReportSchoolPayment,
+  ){
+    const result = await this.service.reportSchoolPaymentInvoice(options);
+
+    if(options?.isExported) {
+      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, result);
+      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+        filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
+      });
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+            buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: `${getNameReport('Pagos_Facturados', options).excel}`,
       };
       return res.send({ report, result });
     } else {
