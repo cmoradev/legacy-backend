@@ -1,3 +1,4 @@
+import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 export interface IQueryReportSaleToday {
@@ -48,4 +49,8 @@ export interface IReportInformativeRow {
   ids_ventas_pagos: number;
   folios_ventas_pagos: string;
   subtotal: number;
+}
+
+export interface IQueryReportInformative extends IQueryReportSaleToday {
+  type: TypeInformativeReport
 }

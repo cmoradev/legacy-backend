@@ -8,10 +8,12 @@ import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
-import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
+import { IQueryReportInformative, IQueryReportSaleToday, IReportInformativeRow, IReportSaleTodayRow } from './types/IReport';
 import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
-import {InformativeExcel} from './reports/informative.excel';
+import { InformativeExcel } from './reports/informative.excel';
+import { Decimal } from '@munyaal/calculations';
+import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
 
 @Crud({
     model: {
@@ -25,11 +27,11 @@ import {InformativeExcel} from './reports/informative.excel';
         },
         limit: 10,
         join: {
-            cashier: {eager: false},
-            student: {eager: false},
-            storeBranchOffice: {eager: false},
-            storeBranchOfficeSet: {eager: false},
-            miniStoreSalePayments: {eager: false},
+            cashier: { eager: false },
+            student: { eager: false },
+            storeBranchOffice: { eager: false },
+            storeBranchOfficeSet: { eager: false },
+            miniStoreSalePayments: { eager: false },
             'miniStoreSalePayments.miniStoreInvoices': {
                 alias: 'miniStoreSalePayments_miniStoreInvoices',
                 eager: false
@@ -50,7 +52,7 @@ import {InformativeExcel} from './reports/informative.excel';
                 alias: 'miniStoreSaleMethodPayments_invoiceMethodPayment',
                 eager: false
             },
-            miniStoreSaleDetails: {eager: false},
+            miniStoreSaleDetails: { eager: false },
             'miniStoreSaleDetails.miniStoreClassification': {
                 alias: 'miniStoreSaleDetails_miniStoreClassification',
                 eager: false
@@ -63,8 +65,8 @@ import {InformativeExcel} from './reports/informative.excel';
                 alias: 'miniStoreSaleDetails_extraCharges',
                 eager: false
             },
-            miniStoreInvoices: {eager: false},
-            returnedProducts: {eager: false},
+            miniStoreInvoices: { eager: false },
+            returnedProducts: { eager: false },
             'returnedProducts.agent': {
                 alias: 'returnedProducts_agent',
                 eager: false
@@ -81,12 +83,12 @@ import {InformativeExcel} from './reports/informative.excel';
                 alias: 'details_saleDetail',
                 eager: false
             },
-            agentBilling: {eager: false},
-            agentCanceling: {eager: false},
-            quotation: {eager: false},
-            'quotation.quotation': {eager: false},
-            sale: {eager: false},
-            'sale.cashier': {eager: false},
+            agentBilling: { eager: false },
+            agentCanceling: { eager: false },
+            quotation: { eager: false },
+            'quotation.quotation': { eager: false },
+            sale: { eager: false },
+            'sale.cashier': { eager: false },
         },
 
     },
@@ -180,46 +182,72 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
 
     @Get('report-sale-today')
     private async reportSaleToday(
-      @Res() res,
-      @Query() options: IQueryReportSaleToday,
+        @Res() res,
+        @Query() options: IQueryReportSaleToday,
     ) {
-      const result = await this.service.reportSaleToday(options);
-      const data = result.map((d: any)=>{
-        let idsPagos = [];
-        let idsDetalles = [];
+        const result = await this.service.reportSaleToday(options);
+        const data = result.map((d: any) => {
+            let idsPagos = [];
+            let idsDetalles = [];
 
-        d.idsPagos != null ? idsPagos = d.idsPagos.split(',') : null;
-        d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(',') : null;
-        return {...d,id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string)=>{return parseInt(`${p}`)}),idsDetalles: idsDetalles.map((p: string)=>{return parseInt(`${p}`)})} as IReportSaleTodayRow
-      });
-      
-      if (options?.isExported) {
-        const conceptStatusExcel = new SaleTodayExcel(options, data);
-        const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-          filename: `${getNameReport('Ventas',options).excel}.xlsx`,
+            d.idsPagos != null ? idsPagos = d.idsPagos.split(',') : null;
+            d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(',') : null;
+            return { ...d, id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string) => { return parseInt(`${p}`) }), idsDetalles: idsDetalles.map((p: string) => { return parseInt(`${p}`) }) } as IReportSaleTodayRow
         });
-        const report = {
-          src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-            buffer,
-          ).toString('base64')}`,
-          type: 'excel',
-          name: `${getNameReport('Ventas', options).excel}`,
-        };
-        return res.send({ report, data });
-      } else {
-        return res.send({ report: false, data });
-      }
+
+        if (options?.isExported) {
+            const conceptStatusExcel = new SaleTodayExcel(options, data);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameReport('Ventas', options).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameReport('Ventas', options).excel}`,
+            };
+            return res.send({ report, data });
+        } else {
+            return res.send({ report: false, data });
+        }
     }
 
     @Get('report-informative')
     private async reportInformative(
         @Res() res,
-        @Query() options: IQueryReportSaleToday,
-    ){
+        @Query() options: IQueryReportInformative,
+    ) {
         const result = await this.service.reportInformative(options);
-
-        if(options?.isExported) {
-            const conceptStatusExcel = new InformativeExcel(options, result);
+        const data: IReportInformativeRow[] = [];
+        result.forEach((r: IReportInformativeRow) => {
+            switch (parseInt(`${options.type}`)) {
+                case TypeInformativeReport.PRODUCTS:
+                    const index = data.findIndex((d: IReportInformativeRow) => d.p_id_product == r.p_id_product);
+                    if (index > -1) {
+                        data[index].vd_quantity = Decimal.sum(data[index].vd_quantity, r.vd_quantity).toNumber();
+                        data[index].subtotal = Decimal.mul(data[index].vd_quantity, r.vd_price).toNumber();
+                        if (r.v_folio_venta != null) data[index].v_folio_venta = `${data[index].v_folio_venta}, ${r.v_folio_venta}`;
+                        if (r.folios_ventas_pagos != null) data[index].folios_ventas_pagos = `${data[index].folios_ventas_pagos}, ${r.folios_ventas_pagos}`;
+                    } else {
+                        data.push(r);
+                    }
+                    break;
+                case TypeInformativeReport.CATEGORIES:
+                    const indexCategory = data.findIndex((d: IReportInformativeRow) => d.c_id == r.c_id);
+                    if (indexCategory > -1) {
+                        data[indexCategory].vd_quantity = Decimal.sum(data[indexCategory].vd_quantity, r.vd_quantity).toNumber();
+                        data[indexCategory].subtotal = Decimal.mul(data[indexCategory].vd_quantity, r.vd_price).toNumber();
+                    } else {
+                        data.push(r);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+        if (options?.isExported) {
+            const conceptStatusExcel = new InformativeExcel(options, data);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
@@ -230,9 +258,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 type: 'excel',
                 name: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}`,
             };
-            return res.send({ report, result });
+            return res.send({ report, data });
         } else {
-            return res.send({ report: false, result });
+            return res.send({ report: false, data });
         }
     }
 }
