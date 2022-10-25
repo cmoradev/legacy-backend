@@ -21,9 +21,11 @@ export interface NotInvoiced {
     f_created_at?: string;
     p_stamping: string | number;
     p_state: string;
-    f_metodo_pago: number;
-    f_metodo_pago_codigo: number;
+    f_metodo_pago: string;
+    f_metodo_pago_codigo: string;
     p_global_uuid?: string;
     u_fullname_cashier: string;
     us_fullname_cancelation: string;
+    cashier_id: number;
+    cancelation_id: number;
 }

@@ -9,11 +9,16 @@ export const getNameReport = (label: string, data: IQueryReportSaleToday): {exce
     nameE += `_${getNameStatusConcept(parseInt(`${data.status}`))}`
     name += ` ${getNameStatusConcept(parseInt(`${data.status}`))}`
   }
-  const x  = Moment(data.startDate);
-  nameE+=`_${x.date()}${x.month()+1}${x.year()}`
-  name+=` ${Moment(data.startDate).format('L')}`
-  const y  = Moment(data.endDate);
-  nameE+=`_${y.date()}${y.month()+1}${y.year()}`
-  name+=` - ${Moment(data.endDate).format('L')}`
+  nameE+=`${getRangeDates(data.startDate, data.endDate).excel}`
+  name+=` ${getRangeDates(data.startDate, data.endDate).title}`
   return {excel: nameE, title: name};
+}
+
+export const getRangeDates = (startDate: string, endDate: string): {excel: string, title: string} =>{
+  const x  = Moment(startDate);
+  const y  = Moment(endDate);
+  return {
+    excel: `_${x.date()}${x.month()+1}${x.year()}_${y.date()}${y.month()+1}${y.year()}`,
+    title: ` ${Moment(startDate).format('L')} - ${Moment(endDate).format('L')}`
+  }
 }

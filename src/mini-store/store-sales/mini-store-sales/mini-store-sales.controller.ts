@@ -9,7 +9,7 @@ import { QuerySimpleReport } from '../mini-store-sales-payments/interface/Invoic
 import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
 import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
-import { getNameReport } from './reports/helpers';
+import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
 import {InformativeExcel} from './reports/informative.excel';
 
@@ -221,14 +221,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         if(options?.isExported) {
             const conceptStatusExcel = new InformativeExcel(options, result);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport('Información_producto', options).excel}.xlsx`,
+                filename: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport('Información_producto', options).excel}`,
+                name: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}`,
             };
             return res.send({ report, result });
         } else {

@@ -1,7 +1,7 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import * as moment from 'moment';
 import {IQueryReportSaleToday, IReportInformativeRow} from '../types/IReport';
-import { getNameReport } from './helpers';
+import { getRangeDates } from './helpers';
 import {formatDate} from '../../../../common/date';
 
 const esMx = require('moment/locale/es-mx');
@@ -20,7 +20,7 @@ export class InformativeExcel {
         this.config();
         this.generate(
             this.addWorksheet(
-                `${getNameReport('Información_producto',this.params).excel}`,
+                `Informativo_de_productos${getRangeDates(this.params.startDate, this.params.endDate).excel}`,
             ),
         );
     }
@@ -68,7 +68,7 @@ export class InformativeExcel {
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Reporte de ${getNameReport('Información_producto',this.params).title}`
+        title.value = `Reporte informativo de productos${getRangeDates(this.params.startDate, this.params.endDate).title}`
         title.style = {
             alignment: { horizontal: 'center', vertical: 'middle' },
         };
