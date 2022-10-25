@@ -5,7 +5,7 @@ import { Connection, Repository } from 'typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import * as moment from 'moment';
-import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
+import {IQueryReportSaleToday, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
@@ -118,5 +118,28 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
             `Error in query or conection [${queryString}]`,
           );
         }
+      }
+
+      public async reportInformative({
+          startDate,
+          endDate,
+          cycleId,
+          branchOfficeId,
+      }: IQueryReportSaleToday): Promise<IReportInformativeRow[]> {
+          let queryString = `SELECT * FROM vw_tie_informative where v_createdAt BETWEEN '${startDate}' AND '${endDate}'`;
+
+          if(cycleId){
+              queryString = `${queryString} AND v_cycleId = ${cycleId}`;
+          }
+          if(branchOfficeId){
+              queryString = `${queryString} AND v_storeBranchOfficeId = ${branchOfficeId}`;
+          }
+          try {
+              return this.connection.query(queryString);
+          } catch (e) {
+              throw new NotFoundException(
+                  `Error in query or conection [${queryString}]`,
+              );
+          }
       }
 }

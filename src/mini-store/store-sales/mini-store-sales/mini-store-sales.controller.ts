@@ -11,6 +11,7 @@ import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-
 import { IQueryReportSaleToday, IReportSaleTodayRow } from './types/IReport';
 import { getNameReport } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
+import {InformativeExcel} from './reports/informative.excel';
 
 @Crud({
     model: {
@@ -187,8 +188,8 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         let idsPagos = [];
         let idsDetalles = [];
 
-        d.idsPagos != null ? idsPagos = d.idsPagos.split(",") : null;
-        d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(",") : null;
+        d.idsPagos != null ? idsPagos = d.idsPagos.split(',') : null;
+        d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(',') : null;
         return {...d,id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string)=>{return parseInt(`${p}`)}),idsDetalles: idsDetalles.map((p: string)=>{return parseInt(`${p}`)})} as IReportSaleTodayRow
       });
       
@@ -208,5 +209,30 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
       } else {
         return res.send({ report: false, data });
       }
+    }
+
+    @Get('report-informative')
+    private async reportInformative(
+        @Res() res,
+        @Query() options: IQueryReportSaleToday,
+    ){
+        const result = await this.service.reportInformative(options);
+
+        if(options?.isExported) {
+            const conceptStatusExcel = new InformativeExcel(options, result);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameReport('Información_producto', options).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameReport('Información_producto', options).excel}`,
+            };
+            return res.send({ report, result });
+        } else {
+            return res.send({ report: false, result });
+        }
     }
 }
