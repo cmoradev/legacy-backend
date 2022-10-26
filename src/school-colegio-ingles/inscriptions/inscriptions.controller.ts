@@ -16,8 +16,8 @@ import { reportInscriptionList } from './reports/inscription-group.report';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
-import { QueryReportInscriptions, ReportInscriptionsRow } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
-import { array, number, string } from '@hapi/joi';
+import { QueryReportInscriptions } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
+import { InscriptionAttendanceListReport } from './reports/inscription-attendance-list.report';
 
 @Crud({
     model: {
@@ -159,32 +159,27 @@ export class InscriptionsController implements CrudController<Inscription> {
         return this.service.getInscriptions();
     }
 
-    @Get('attendance_list')
-    public async attendance_list(@Res() res, @Query() opciones: QueryReportInscriptions) {
-        const dataInscription = await this.service.reportInscriptions(opciones);
+    @Get('attendance_list') 
+    public async attendance_list(@Res() res, @Query() options: QueryReportInscriptions) {
+        const result = await this.service.reportInscriptions(options);
         
-        const arrayGroup: {
-            idGroup: number,
-            inscriptions: ReportInscriptionsRow[]
-        }[] = [];
+        if (options?.isExported) {
+            const conceptStatusExcel = new InscriptionAttendanceListReport(result);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+            filename: `genericn.xlsx`,
+            });
+            const report = {
+            src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                buffer,
+            ).toString('base64')}`,
+            type: 'excel',
+            name: `generic`,
+            };
+            return res.send({ report, result });
+        } else {
+            return res.send({ report: false, result });
+        }
         
-        dataInscription.forEach((i) => {
-            const index = arrayGroup.findIndex((f) => i.groupId == f.idGroup);
-
-            console.log({
-                item: i,
-                index: index
-            })
-
-            if (index > -1) {
-                arrayGroup[index].inscriptions.push(i);
-            } else {
-                arrayGroup.push({ inscriptions: [i], idGroup: i.groupId })
-
-            }
-        });
-        res.send({
-            data: arrayGroup
-        })
+    
     }
 }
