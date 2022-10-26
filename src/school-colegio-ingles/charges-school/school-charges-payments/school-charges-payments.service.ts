@@ -181,7 +181,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
@@ -218,7 +218,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;

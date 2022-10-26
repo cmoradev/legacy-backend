@@ -9,6 +9,8 @@ export default class SchoolPaymentSeed implements Seeder {
         SELECT
             p.id AS p_id,
             f.id AS f_id,
+            bf.id AS bf_id_branch_office,
+            bf.plantel AS bf_name_branch_office,
             v.folio AS v_folio,
             p.folio AS p_folio,
             f.folio AS f_folio,
@@ -19,7 +21,7 @@ export default class SchoolPaymentSeed implements Seeder {
             p.quantity AS p_quantity,
             p.change AS p_change,
             v.observations AS v_observations,
-            CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income, 
+            CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.schoolBranchOfficeSetId AS v_branch_office,
@@ -43,6 +45,7 @@ export default class SchoolPaymentSeed implements Seeder {
         LEFT JOIN usuarios u ON u.id = v.cashierId
         LEFT JOIN usuarios us ON us.id = v.cashierCancellationId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
+        LEFT JOIN planteles bf on bf.id = p.schoolPaymentOfficeId
 
         ORDER BY v.id DESC;
         `);
