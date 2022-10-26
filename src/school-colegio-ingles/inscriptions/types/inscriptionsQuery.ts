@@ -3,7 +3,9 @@ import { PaymentStatus } from "../../../common/enums/PaymentStatus";
 export interface QueryReportInscriptions {
     levelId?: number,
     gradeId?: number,
-    groupId?: number
+    groupId?: number,
+    isExported?: boolean
+
 }
 
 export interface ReportInscriptionsRow {

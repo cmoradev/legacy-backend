@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
 import { QueryReportInscriptions } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
+import { InscriptionAttendanceListReport } from './reports/inscription-attendance-list.report';
 
 @Crud({
     model: {
@@ -159,7 +160,26 @@ export class InscriptionsController implements CrudController<Inscription> {
     }
 
     @Get('attendance_list') 
-    public async attendance_list(@Res() res, @Query() opciones: QueryReportInscriptions) {
-        return await this.service.reportInscriptions(opciones);
+    public async attendance_list(@Res() res, @Query() options: QueryReportInscriptions) {
+        const result = await this.service.reportInscriptions(options);
+        
+        if (options?.isExported) {
+            const conceptStatusExcel = new InscriptionAttendanceListReport(result);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+            filename: `genericn.xlsx`,
+            });
+            const report = {
+            src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                buffer,
+            ).toString('base64')}`,
+            type: 'excel',
+            name: `generic`,
+            };
+            return res.send({ report, result });
+        } else {
+            return res.send({ report: false, result });
+        }
+        
+    
     }
 }

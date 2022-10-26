@@ -576,13 +576,13 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         let queryString = `SELECT * FROM vw_col_inscriptions where inscriptionStatus = '2'`
 
         if (levelId) {
-            queryString = `${queryString} AND levelId = ${levelId}`;
+            queryString = `${queryString} AND levelId = ${parseInt(`${levelId}`)}`;
         }
         if (gradeId) { 
-            queryString = `${queryString} AND gradeId = ${gradeId}`;
+            queryString = `${queryString} AND gradeId = ${parseInt(`${gradeId}`)}`;
         }
         if (groupId) {
-            queryString = `${queryString} AND groupId = ${groupId}`;
+            queryString = `${queryString} AND groupId = ${parseInt(`${groupId}`)}`;
         }
         try {
             return this.connection.query(queryString);
