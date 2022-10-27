@@ -13,7 +13,7 @@ import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
-import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
+import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
 
 @Crud({
     model: {

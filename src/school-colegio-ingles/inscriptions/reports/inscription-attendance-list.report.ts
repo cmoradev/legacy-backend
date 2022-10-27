@@ -1,24 +1,36 @@
-import { TableColumnProperties, Workbook, Worksheet,  } from 'exceljs';
+import { TableColumnProperties, Workbook, Worksheet, } from 'exceljs';
 import * as moment from 'moment';
-import { ReportInscriptionsRow } from '../types/inscriptionsQuery';
+import { QueryReportInscriptions, ReportInscriptionsRow } from '../types/inscriptionsQuery';
+import { getNameList } from './helpers';
 
 const esMx = require('moment/locale/es-mx');
 
 export class InscriptionAttendanceListReport {
-    private rows: ReportInscriptionsRow[] = [];
+    private rows: {
+        idGroup: number,
+        nameGroup: string,
+        inscriptions: ReportInscriptionsRow[]
+    }[];
     private workbook: Workbook;
+    private params: QueryReportInscriptions;
 
-    constructor( data: ReportInscriptionsRow[] = []) {
+    constructor(data: { idGroup: number, nameGroup: string, inscriptions: ReportInscriptionsRow[] }[] = [], params: QueryReportInscriptions) {
         this.rows = data;
+        this.params = params;
 
         this.workbook = new Workbook();
 
         this.config();
-        this.generate(
-            this.addWorksheet(
-                `generic_name`,
-            ),
-        );
+
+        data.forEach((itemGroup, index) => {
+            const sheetName = `${itemGroup.nameGroup}`;
+            this.generate(
+                index,
+                this.addWorksheet(
+                    `${sheetName}`,
+                )
+            );
+        });
     }
 
     private config(): void {
@@ -44,21 +56,21 @@ export class InscriptionAttendanceListReport {
         });
     }
 
-    private generate(worksheet: Worksheet): Worksheet{
+    private generate(index: number, worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
-            columns = [
-                { name: 'Matrícula', filterButton: true },
-                { name: 'Nombre', filterButton: false },
-                { name: 'Lu', filterButton: false },
-                { name: 'Ma', filterButton: false },
-                { name: 'Mi', filterButton: false },
-                { name: 'Ju', filterButton: false },
-                { name: 'Vi', filterButton: false },
-            ];
+        columns = [
+            { name: 'Matrícula', filterButton: true },
+            { name: 'Nombre', filterButton: false },
+            { name: 'Lu', filterButton: false },
+            { name: 'Ma', filterButton: false },
+            { name: 'Mi', filterButton: false },
+            { name: 'Ju', filterButton: false },
+            { name: 'Vi', filterButton: false },
+        ];
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Generic_name_report`
+        title.value = `${getNameList('Lista de asistencia', this.params, this.rows[index].inscriptions).title}`
         title.style = {
             alignment: { horizontal: 'center', vertical: 'middle' },
         };
@@ -69,7 +81,7 @@ export class InscriptionAttendanceListReport {
         worksheet.mergeCells(`B3:K3`);
         const description = worksheet.getCell('B3');
         moment?.updateLocale('es', esMx);
-        description.value = `Report issued on ${moment().locale('es').format(
+        description.value = `Generado el ${moment().locale('es').format(
             'MMMM Do YYYY, h:mm:ss a',
         )}`;
         description.style = {
@@ -81,7 +93,7 @@ export class InscriptionAttendanceListReport {
         };
         const rows = [];
 
-        this.rows.forEach((value: ReportInscriptionsRow) => {
+        this.rows[index].inscriptions.forEach((value: ReportInscriptionsRow) => {
             const columns = [];
             columns.push(value.studentRegistration)
             columns.push(value.studentName)
@@ -91,7 +103,6 @@ export class InscriptionAttendanceListReport {
             displayName: 'Report',
             name: 'Report',
             ref: 'B5',
-            totalsRow: true,
             headerRow: true,
             style: {
                 theme: 'TableStyleLight9',

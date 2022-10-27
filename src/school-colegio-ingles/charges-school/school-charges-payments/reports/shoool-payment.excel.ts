@@ -1,20 +1,50 @@
-import {TableColumnProperties, Workbook, Worksheet} from 'exceljs';
-import {formatDate} from '../../../../common/date';
+import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
+import { formatDate } from '../../../../common/date';
 import * as moment from 'moment';
-import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
-import {IQueryReportSchoolPayment} from '../types/IReport';
-import {getNameReport} from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
+import { IQueryReportSchoolPayment } from '../types/IReport';
+import { getNameReport } from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
+import { User } from '../../../../system/users/entities/user.entity';
+import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 const esMx = require('moment/locale/es-mx');
 
 export class SchoolPaymentExcel {
     private rows: NotInvoiced[] = [];
+    private dataConverter: {
+        matriz: any[][];
+        data: {
+            payments: SchoolChargePayment[],
+            cashiers: User[],
+            methodsPayments: InvoiceMethodPayment[]
+        }
+    }
     private params: IQueryReportSchoolPayment;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportSchoolPayment, data: NotInvoiced[] = []) {
+    constructor(
+        params: IQueryReportSchoolPayment,
+        data: NotInvoiced[] = [],
+        dataConverter: {
+            matriz: any[][];
+            data: {
+                payments: SchoolChargePayment[],
+                cashiers: User[],
+                methodsPayments: InvoiceMethodPayment[]
+            };
+        } = {
+                matriz: [],
+                data: {
+                    payments: [],
+                    cashiers: [],
+                    methodsPayments: []
+                }
+            }
+    ) {
         this.rows = data;
         this.params = params;
+        this.dataConverter = dataConverter;
 
         this.workbook = new Workbook();
 
@@ -52,24 +82,24 @@ export class SchoolPaymentExcel {
     private generate(worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
 
-            columns = [
-                { name: 'Matricula', filterButton: true },
-                { name: 'Nombre', filterButton: false },
-                { name: 'Fecha de creación', filterButton: true },
-                { name: 'Folio de venta', filterButton: false },
-                { name: 'Folio de pago', filterButton: false },
-                { name: 'Folio de factura', filterButton: false },
-                { name: 'Ciclo de venta', filterButton: false },
-                { name: 'Metodo de pago', filterButton: true },
-                {
-                    name: 'Total del pago',
-                    filterButton: false,
-                    totalsRowLabel: 'Total',
-                    totalsRowFunction: 'sum',
-                },
-                { name: 'Realizado por', filterButton: false },
-                { name: 'Cancelado por', filterButton: false },
-            ];
+        columns = [
+            { name: 'Matricula', filterButton: true },
+            { name: 'Nombre', filterButton: false },
+            { name: 'Fecha de creación', filterButton: true },
+            { name: 'Folio de venta', filterButton: false },
+            { name: 'Folio de pago', filterButton: false },
+            { name: 'Folio de factura', filterButton: false },
+            { name: 'Ciclo de venta', filterButton: false },
+            { name: 'Metodo de pago', filterButton: true },
+            {
+                name: 'Total del pago',
+                filterButton: false,
+                totalsRowLabel: 'Total',
+                totalsRowFunction: 'sum',
+            },
+            { name: 'Realizado por', filterButton: false },
+            { name: 'Cancelado por', filterButton: false },
+        ];
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');

@@ -3,6 +3,7 @@ import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-paymen
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { add } from 'exact-math';
 import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
+import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -101,4 +102,80 @@ export function convertPaymentsReportCollege(payments: SchoolChargePayment[], ca
   data.matriz = resumeDataTable;
   data.payments = paymentsDetails;
   return data;
+}
+
+export const getDataMatrizPaymentSchool = (data: NotInvoiced[]) => {
+  const dataMatriz: {
+    payments: SchoolChargePayment[],
+    cashiers: User[],
+    methodsPayments: InvoiceMethodPayment[]
+  } = {
+    payments: [],
+    cashiers: [],
+    methodsPayments: []
+  }
+
+  data.forEach((d) => {
+    const iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id}`));
+    const imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.f_metodo_pago_codigo));
+    if (iCashier == -1) dataMatriz.cashiers.push({ id: parseInt(`${d.cashier_id}`) ,name: d.u_fullname_cashier } as User);
+    if (imethodsPayments == -1) dataMatriz.methodsPayments.push({ id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment);
+
+    dataMatriz.payments.push({
+      cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id },
+      change: parseFloat(`${d.p_change}`),
+      methodsPayments: [{
+        quantity: parseFloat(`${d.p_quantity}`),
+        invoiceMethodPayment: {
+          id: parseInt(d.f_metodo_pago_codigo),
+          name: d.f_metodo_pago
+        }
+      }]
+    } as SchoolChargePayment)
+  })
+
+  return dataMatriz;
+}
+
+export const getMatrizPaymentSchool = (payments: SchoolChargePayment[], cashiers: User[], methodsPayments: InvoiceMethodPayment[]) => {
+  const headers: any[] = ['Tipo', ...cashiers.map((value: User) => value && value.name), 'Total'];
+  const resume: ResumeType[] = [];
+  methodsPayments.forEach(paymentMethod => {
+    const paymentsByMethod = payments.filter(payment => payment.methodsPayments
+      .some(method => method.invoiceMethodPayment.id === paymentMethod.id));
+    paymentsByMethod.forEach(payment => {
+      payment.methodsPayments.filter(method => method.invoiceMethodPayment.id === paymentMethod.id)
+        .forEach(filteredMethod => {
+          const total = filteredMethod.quantity - (payment.change || 0);
+          resume.push({
+            paymentMethod,
+            cashier: payment.cashierCharge,
+            quantity: filteredMethod.quantity,
+            change: payment.change || 0,
+            total,
+          });
+        });
+    });
+  });
+  const resumeDataTable = [headers];
+  for (const paymentMethod of methodsPayments) {
+    const resumeDataTableItem: any[] = [paymentMethod.name];
+    for (const cashier of cashiers) {
+      const filteredResume = resume.filter(value => value.paymentMethod.id === paymentMethod.id && value.cashier.id === cashier.id);
+      resumeDataTableItem.push(filteredResume.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue.total;
+      }, 0));
+    }
+    resumeDataTableItem.push(resumeDataTableItem.reduce((previousValue, currentValue) => {
+      let amount = 0;
+      if (!isNaN(+currentValue)) {
+        amount = +currentValue;
+      }
+      return previousValue + amount;
+    }, 0));
+
+    resumeDataTable.push(resumeDataTableItem);
+  }
+
+  return resumeDataTable;
 }

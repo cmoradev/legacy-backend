@@ -1,4 +1,4 @@
-import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
+import { TypeInformativeReport } from '../../../../common/enums/typeInformativeReport.enum';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 export interface IQueryReportSaleToday {

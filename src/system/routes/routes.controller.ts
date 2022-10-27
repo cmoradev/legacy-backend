@@ -11,9 +11,9 @@ import { RoutesService } from './routes.service';
     query: {
         limit: 10,
         join: {
-            routeActions: {eager: false},
-            'routeActions.route': {eager: false},
-            'routeActions.action': {eager: false},
+            routeActions: { eager: false },
+            'routeActions.route': { eager: false },
+            'routeActions.action': { eager: false },
         },
     },
 })
@@ -36,14 +36,28 @@ export class RoutesController implements CrudController<Route> {
     @Get('fathers')
     async getFathers(
         @Query() options: IQueryRoutesFatherDto
-    ){
-        return await this.service.getFathers(options);
+    ) {
+        const result = await this.service.getFathers(options)
+        const data = result.data.map((d: any) => {
+            let childs = [];
+
+            d.childs != null ? childs = d.childs.split(",") : null;
+            return { ...d, childs: childs.map((p: string) => { return parseInt(`${p}`) }) }
+        });
+        return { ...result, data };
     }
 
     @Get('childs')
     async getChilds(
         @Query() options: IQueryRoutesChildDto,
-    ){
-        return await this.service.getChilds(options);
+    ) {
+        const result = await this.service.getChilds(options)
+        const data = result.data.map((d: any) => {
+            let childs = [];
+
+            d.childs != null ? childs = d.childs.split(",") : null;
+            return { ...d ,childs: childs.map((p: string) => { return parseInt(`${p}`) }) }
+        });
+        return { ...result, data };
     }
 }
