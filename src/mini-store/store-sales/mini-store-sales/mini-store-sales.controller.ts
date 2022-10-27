@@ -13,7 +13,7 @@ import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
-import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
+import {TypeInformativeReport} from '../../../common/enums/typeInformativeReport.enum';
 
 @Crud({
     model: {
@@ -242,7 +242,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                         data.push(r);
                     }
                     break;
-                default:
+                case TypeInformativeReport.CASHIERS:
+                    const indexCashier = data.findIndex((d: IReportInformativeRow) => d.u_id_agent == r.u_id_agent);
+                    if (indexCashier > -1) {
+                        data[indexCashier].vd_quantity = Decimal.sum(data[indexCashier].vd_quantity, r.vd_quantity).toNumber();
+                        data[indexCashier].subtotal = Decimal.mul(data[indexCashier].vd_quantity, r.vd_price).toNumber();
+                    } else {
+                        data.push(r);
+                    }
                     break;
             }
         });

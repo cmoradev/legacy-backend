@@ -1,17 +1,18 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import * as moment from 'moment';
-import {IQueryReportSaleToday, IReportInformativeRow} from '../types/IReport';
+import {IQueryReportInformative, IReportInformativeRow} from '../types/IReport';
 import { getRangeDates } from './helpers';
 import {formatDate} from '../../../../common/date';
+import {TypeInformativeReport} from '../../../../common/enums/typeInformativeReport.enum';
 
 const esMx = require('moment/locale/es-mx');
 
 export class InformativeExcel {
     private rows: IReportInformativeRow[] = [];
-    private params: IQueryReportSaleToday;
+    private params: IQueryReportInformative;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportSaleToday, data: IReportInformativeRow[] = []) {
+    constructor(params: IQueryReportInformative, data: IReportInformativeRow[] = []) {
         this.rows = data;
         this.params = params;
 
@@ -51,20 +52,47 @@ export class InformativeExcel {
     private generate(worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
 
-        columns = [
-            { name: 'Fecha de creación', filterButton: true },
-            { name: 'Folio de venta', filterButton: false },
-            { name: 'Nombre del producto', filterButton: false },
-            { name: 'Clasificación', filterButton: false },
-            { name: 'Realizado por', filterButton: false },
-            { name: 'Folio de pago venta', filterButton: false },
-            {
-                name: 'Subtotal',
-                filterButton: false,
-                totalsRowLabel: 'Total',
-                totalsRowFunction: 'sum',
-            },
-        ];
+        switch (this.params.type) {
+            case TypeInformativeReport.PRODUCTS:
+                columns = [
+                    { name: 'Nombre del producto', filterButton: false },
+                    { name: 'Cantidad', filterButton: true },
+                    { name: 'Precio', filterButton: true },
+                    {
+                        name: 'Subtotal',
+                        filterButton: false,
+                        totalsRowLabel: 'Total',
+                        totalsRowFunction: 'sum',
+                    },
+                    { name: 'Folio de ventas', filterButton: false },
+                    { name: 'Folio de pagos', filterButton: false },
+                ];
+                break;
+            case TypeInformativeReport.CATEGORIES:
+                columns = [
+                    { name: 'Categoria', filterButton: false },
+                    { name: 'Cantidad de productos', filterButton: true },
+                    {
+                        name: 'Subtotal',
+                        filterButton: false,
+                        totalsRowLabel: 'Total',
+                        totalsRowFunction: 'sum',
+                    },
+                ];
+                break;
+            case TypeInformativeReport.CASHIERS:
+                columns = [
+                    { name: 'Realizado por', filterButton: false },
+                    { name: 'Productos vendidos', filterButton: true },
+                    {
+                        name: 'Subtotal',
+                        filterButton: false,
+                        totalsRowLabel: 'Total',
+                        totalsRowFunction: 'sum',
+                    },
+                ];
+                break;
+        }
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
@@ -93,13 +121,26 @@ export class InformativeExcel {
 
         this.rows.forEach((value: IReportInformativeRow) => {
             const columns = [];
-            columns.push(formatDate(value.v_createdAt));
-            columns.push(value.v_folio_venta);
-            columns.push(value.p_name_product);
-            columns.push(value.c_name_classification);
-            columns.push(value.u_fullname_agent);
-            columns.push(value.folios_ventas_pagos);
-            columns.push(parseFloat(`${value.subtotal}`));
+            switch (this.params.type) {
+                case TypeInformativeReport.PRODUCTS:
+                    columns.push(value.p_name_product);
+                    columns.push(value.vd_quantity);
+                    columns.push(value.vd_price);
+                    columns.push(value.subtotal);
+                    columns.push(value.v_folio_venta);
+                    columns.push(value.folios_ventas_pagos);
+                    break;
+                case TypeInformativeReport.CATEGORIES:
+                    columns.push(value.c_name_classification);
+                    columns.push(value.vd_quantity);
+                    columns.push(value.subtotal);
+                    break;
+                case TypeInformativeReport.CASHIERS:
+                    columns.push(value.u_fullname_agent);
+                    columns.push(value.vd_quantity);
+                    columns.push(value.subtotal);
+                    break;
+            }
             rows.push(columns);
         });
 
