@@ -242,7 +242,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                         data.push(r);
                     }
                     break;
-                default:
+                case TypeInformativeReport.CASHIERS:
+                    const indexCashier = data.findIndex((d: IReportInformativeRow) => d.u_id_agent == r.u_id_agent);
+                    if (indexCashier > -1) {
+                        data[indexCashier].vd_quantity = Decimal.sum(data[indexCashier].vd_quantity, r.vd_quantity).toNumber();
+                        data[indexCashier].subtotal = Decimal.mul(data[indexCashier].vd_quantity, r.vd_price).toNumber();
+                    } else {
+                        data.push(r);
+                    }
                     break;
             }
         });
