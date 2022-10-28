@@ -551,6 +551,13 @@ export class SchoolChargesPaymentsController
       @Query() options: IQueryReportSchoolPayment,
   ){
     const result = await this.service.reportSchoolPaymentInvoice(options);
+    const dataMatriz = getDataMatrizPaymentSchool(result);
+    const matriz = getMatrizPaymentSchool(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments);
+    const obj = {
+      data: result,
+      dataConverter: dataMatriz,
+      matriz: matriz
+    };
 
     if(options?.isExported) {
       const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, result);
@@ -564,9 +571,9 @@ export class SchoolChargesPaymentsController
         type: 'excel',
         name: `${getNameReport('Pagos_Facturados', options).excel}`,
       };
-      return res.send({ report, result });
+      return res.send({ report, result: obj });
     } else {
-      return res.send({ report: false, result });
+      return res.send({ report: false, result: obj });
     }
   }
 
