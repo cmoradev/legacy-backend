@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository, IsNull, In } from 'typeorm';
+import { Connection, Repository, In } from 'typeorm';
 import { SimpleReport } from './reports/simple.report';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
@@ -29,11 +29,10 @@ import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { XmlComprobante } from '@signati/core';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
-import { string } from '@hapi/joi';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import {IQueryReportStorePayment, IReportStorePaymentRow} from './types/IReports';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -316,7 +315,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         }else{
             let quantitySum = 0;
             sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {                
-                let price = d.priceWithIVA
+                const price = d.priceWithIVA
                 quantitySum = Decimal.add(quantitySum, Decimal.mul(price,d.quantity)).toNumber();
             });
             payment.quantity = quantitySum;
@@ -540,6 +539,75 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             return this.invoiceRepository.findOne({
                 where: {id: invoice.id}
             })
+        }
+    }
+
+    public async reportStorePayment({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+        usersIds,
+                                    }: IQueryReportStorePayment): Promise<IReportStorePaymentRow[]> {
+        let queryString = `SELECT * FROM vw_tie_payments where tvp_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if(status){
+            queryString = `${queryString} AND tvp_state = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        if(usersIds && usersIds.length > 0){
+            const user = usersIds.map((u) => {return parseInt(`${u}`)})
+            if(status && status == 4){
+                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND agent_id in (${user.join(',')})`;}
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
+    public async reportStorePaymentInvoice({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+                                           }: IQueryReportStorePayment): Promise<IReportStorePaymentRow[]> {
+        let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+
+        if(status){
+            queryString = `${queryString} AND f_status = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
         }
     }
 }
