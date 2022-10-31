@@ -163,10 +163,11 @@ export class InscriptionsController implements CrudController<Inscription> {
     @Get('attendance_list')
     public async attendance_list(@Res() res, @Query() options: QueryReportInscriptions) {
         const dataInscription = await this.service.reportInscriptions(options);
-
         const arrayGroup: {
             idGroup: number,
             nameGroup: string,
+            idGrade: number,
+            nameGrade: string,
             inscriptions: ReportInscriptionsRow[]
         }[] = [];
 
@@ -175,7 +176,7 @@ export class InscriptionsController implements CrudController<Inscription> {
             if (index > -1) {
                 arrayGroup[index].inscriptions.push(i);
             } else {
-                arrayGroup.push({ inscriptions: [i], idGroup: i.groupId, nameGroup: i.groupName })
+                arrayGroup.push({ inscriptions: [i], idGroup: i.groupId, nameGroup: i.groupName, idGrade: i.gradeId, nameGrade: i.gradeName })
             }
         });
         if (options?.isExported) {
@@ -190,9 +191,9 @@ export class InscriptionsController implements CrudController<Inscription> {
                 type: 'excel',
                 name: `${getNameList('attendance_list', options, arrayGroup[0].inscriptions).excel}`,
             };
-            return res.send({ report, result: arrayGroup });
+            return res.send({ report, data: arrayGroup });
         } else {
-            return res.send({ report: false, result: arrayGroup });
+            return res.send({ report: false, data: arrayGroup });
         }
 
 

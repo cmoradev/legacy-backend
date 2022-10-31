@@ -6,15 +6,24 @@ import { getNameList } from './helpers';
 const esMx = require('moment/locale/es-mx');
 
 export class InscriptionAttendanceListReport {
+    
     private rows: {
         idGroup: number,
         nameGroup: string,
+        idGrade: number,
+        nameGrade: string,
         inscriptions: ReportInscriptionsRow[]
     }[];
     private workbook: Workbook;
     private params: QueryReportInscriptions;
 
-    constructor(data: { idGroup: number, nameGroup: string, inscriptions: ReportInscriptionsRow[] }[] = [], params: QueryReportInscriptions) {
+    constructor(data: {
+        idGroup: number,
+        nameGroup: string,
+        idGrade: number,
+        nameGrade: string,
+        inscriptions: ReportInscriptionsRow[]
+    }[] = [], params: QueryReportInscriptions) {
         this.rows = data;
         this.params = params;
 
@@ -23,12 +32,13 @@ export class InscriptionAttendanceListReport {
         this.config();
 
         data.forEach((itemGroup, index) => {
-            const sheetName = `${itemGroup.nameGroup}`;
+            const sheetName = `${itemGroup.nameGrade} - ${itemGroup.nameGroup}`;
+            const objSheet = this.addWorksheet(
+                `${sheetName}`
+            )
             this.generate(
                 index,
-                this.addWorksheet(
-                    `${sheetName}`,
-                )
+                objSheet
             );
         });
     }
@@ -59,13 +69,8 @@ export class InscriptionAttendanceListReport {
     private generate(index: number, worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
         columns = [
-            { name: 'Matrícula', filterButton: true },
+            { name: 'Matrícula', filterButton: false },
             { name: 'Nombre', filterButton: false },
-            { name: 'Lu', filterButton: false },
-            { name: 'Ma', filterButton: false },
-            { name: 'Mi', filterButton: false },
-            { name: 'Ju', filterButton: false },
-            { name: 'Vi', filterButton: false },
         ];
 
         worksheet.mergeCells(`B2:K2`);
@@ -116,15 +121,8 @@ export class InscriptionAttendanceListReport {
         worksheet.columns.forEach((column) => {
             column.width = 10;
 
-            if (column.letter === 'K') {
-                column.numFmt = '$#,##0.00';
-            }
-            if (column.letter === 'C' || column.letter === 'J') {
+            if (column.letter === 'C') {
                 column.width = 45;
-            }
-
-            if (column.letter === 'K') {
-                column.width = 15;
             }
         });
 

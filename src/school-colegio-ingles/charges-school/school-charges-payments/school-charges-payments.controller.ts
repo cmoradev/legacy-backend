@@ -539,9 +539,9 @@ export class SchoolChargesPaymentsController
         type: 'excel',
         name: `${getNameReport('Pagos', options).excel}`,
       };
-      return res.send({ report, result: obj });
+      return res.send({ report, data: obj });
     } else {
-      return res.send({ report: false, result: obj });
+      return res.send({ report: false, data: obj });
     }
   }
 
@@ -571,9 +571,9 @@ export class SchoolChargesPaymentsController
         type: 'excel',
         name: `${getNameReport('Pagos_Facturados', options).excel}`,
       };
-      return res.send({ report, result: obj });
+      return res.send({ report, data: obj });
     } else {
-      return res.send({ report: false, result: obj });
+      return res.send({ report: false, data: obj });
     }
   }
 

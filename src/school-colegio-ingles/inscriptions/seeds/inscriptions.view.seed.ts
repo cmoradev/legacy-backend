@@ -12,7 +12,7 @@ export default class InscriptionsViewSeeds implements Seeder {
             ins.id_status AS inscriptionStatus,
             al.id AS studentId,
             al.matricula AS studentRegistration,
-            CONCAT(al.nombre, '', al.ap_paterno, '', al.ap_materno) AS studentName,
+            CONCAT(al.nombre, ' ', al.ap_paterno, ' ', al.ap_materno) AS studentName,
     		nv.id AS levelId,
     		nv.nivel AS levelName,
     		gd.id AS gradeId,
@@ -25,7 +25,7 @@ export default class InscriptionsViewSeeds implements Seeder {
             pl.id AS campusId,
             pl.plantel AS campusName,
             ac.id AS agentCreatorId,
-            CONCAT(ac.nombre, '', ac.ap_paterno, '', ac.ap_paterno) AS AgentCreatorName
+            CONCAT(ac.nombre, ' ', ac.ap_paterno, ' ', ac.ap_paterno) AS AgentCreatorName
 		FROM inscripciones ins
 		LEFT JOIN alumnos al ON al.id = ins.inscripStudentId
 		LEFT JOIN niveles nv ON nv.id = ins.inscripLevelId

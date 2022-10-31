@@ -578,11 +578,11 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         if (levelId) {
             queryString = `${queryString} AND levelId = ${parseInt(`${levelId}`)}`;
         }
-        if (gradeId) { 
-            queryString = `${queryString} AND gradeId = ${parseInt(`${gradeId}`)}`;
+        if (gradeId !== undefined && gradeId.length > 0) { 
+            queryString = `${queryString} AND gradeId IN (${gradeId.join(',')})`;
         }
-        if (groupId) {
-            queryString = `${queryString} AND groupId = ${parseInt(`${groupId}`)}`;
+        if (groupId !== undefined && groupId.length > 0) {
+            queryString = `${queryString} AND groupId IN (${groupId.join(',')})`;
         }
         try {
             return this.connection.query(queryString);

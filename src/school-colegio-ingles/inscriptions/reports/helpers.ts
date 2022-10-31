@@ -11,10 +11,5 @@ export const getNameList = (
         nameE += `_${level}` // 'attendance_list' + 'primaria'
         name += ` ${level}`
     }
-    if (params.gradeId) {
-        const grade = result.find((r) => r.gradeId == params.gradeId).gradeName;
-        nameE += `_${grade}` // 'attendance_list' + '1er grado'
-        name += `- ${grade}`
-    }
     return { excel: nameE, title: name };
 }
