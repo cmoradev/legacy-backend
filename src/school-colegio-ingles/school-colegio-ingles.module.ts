@@ -22,7 +22,6 @@ import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
 import { CheckInModule } from './check-in/check-in.module';
 import { FamilyFiscalModule } from './family-fiscal/family-fiscal.module';
-import { FamilyMembersModule } from './family-members/family-members.module';
 import { PaymentPlansModule } from './payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './payment-plan-concepts/payment-plan-concepts.module';
 import { ChargesSchoolModule } from './charges-school/charges-school.module';
@@ -47,7 +46,7 @@ import { SchoolPaymentsChargesModule } from './school-payments-charges/school-pa
     AssignmentIncriptionModule, ClassroomPermissionModule,
     IncidentsModule, IncidentClassificationModule,
     CheckInModule, FamilyFiscalModule,
-    FamilyMembersModule, PaymentPlansModule, PaymentPlanConceptsModule,
+    PaymentPlansModule, PaymentPlanConceptsModule,
     SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, SchoolPaymentsChargesModule,
   ],
 })

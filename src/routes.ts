@@ -52,10 +52,6 @@ import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module'
 import { InvoiceModule } from './invoice/invoice.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
 import { LocationsModule } from './fixed-assets-control/locations/locations.module';
-import { CountriesModule } from './system/countries/countries.module';
-import { StatesModule } from './system/states/states.module';
-import { CitiesModule } from './system/cities/cities.module';
-import { MunicipalitiesModule } from './system/municipalities/municipalities.module';
 import { SystemModule } from './system/system.module';
 import { AcademyModule } from './academy/academy.module';
 import { AcademyModalitiesModule } from './academy/academy-modalities/academy-modalities.module';
@@ -134,10 +130,6 @@ export const routes: Routes = [
             { path: '/departments', module: DepartmentsModule },
             { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
             { path: '/invoices-bank', module: InvoicesBankModule },
-            { path: '/countries', module: CountriesModule },
-            { path: '/states', module: StatesModule },
-            { path: '/cities', module: CitiesModule },
-            { path: '/municipalities', module: MunicipalitiesModule },
             { path: '/payments-status', module: SystemPaymentsStatusModule },
             { path: '/inscription-status', module: InscriptionStatusModule },
             { path: '/concepts-type', module: SystemConceptsTypeModule },

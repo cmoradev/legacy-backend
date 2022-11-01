@@ -58,7 +58,6 @@ import { Classroom } from '../../school-colegio-ingles/classrooms/entities/class
 import { Cycle } from '../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { Family } from '../../school-colegio-ingles/families/entities/family.entity';
 import { BusinessNameFamily } from '../../school-colegio-ingles/family-fiscal/entities/BusinessNameFamily.entity';
-import { FamiliasIntegrantesTutores } from '../../school-colegio-ingles/family-members/entities/familiasIntegrantesTutores';
 import { Grade } from '../../school-colegio-ingles/grades/entities/grade.entity';
 import { Group } from '../../school-colegio-ingles/groups/entities/group.entity';
 import { IncidentClassification } from '../../school-colegio-ingles/incident-classification/entities/incident-classification.entity';
@@ -75,7 +74,6 @@ import { Modality } from '../../school-colegio-ingles/modalities/entities/modali
 import { Level } from '../../school-colegio-ingles/levels/entities/level.entity';
 import { Subject } from '../../school-colegio-ingles/subjects/entities/subject.entity';
 import { Shift } from '../../system/shift/entities/shift.entity';
-import { Municipalities } from '../../system/municipalities/entities/municipalities.entity';
 import { Company } from '../../system/settings/entities/company.entity';
 import { BranchOffice } from '../../system/branch-office/entities/branch-office.entity';
 import { Folio } from '../../system/folios/entities/folio.entity';
@@ -83,21 +81,16 @@ import { InvoicesBank } from '../../system/invoices-bank/entities/invoices-bank.
 import { RouteAction } from '../../system/route-action/entities/route-action.entity';
 import { BranchOfficeSetting } from '../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Role } from '../../system/roles/entities/role.entity';
-import { States } from '../../system/states/entities/states.entity';
 import { Department } from '../../system/departments/entities/department.entity';
 import { SystemTypeExtraCharges } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
-import { PaymentStatusEntity } from '../../system/payment-status/entities/payment-status.entity';
 import { SystemConceptsType } from '../../system/system-concepts-type/entities/system-concepts-type.entity';
 import { SystemPaymentStatus } from '../../system/system-payments-status/entities/system-payment-status.entity';
 import { Permission } from '../../system/permissions/entities/permission.entity';
-import { Country } from '../../system/countries/entities/country.entity';
 import { AuthAccessTokensEntity } from '../../system/auth-access-tokens/entities/auth-access-tokens.entity';
-import { Cities } from '../../system/cities/entities/cities.entity';
 import { Route } from '../../system/routes/entities/route.entity';
 import { SystemExtraCharges } from '../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { Action } from '../../system/actions/entities/action.entity';
 import { InscriptionStatus } from '../../system/inscription-status/entities/inscription-status.entity';
-import { Impuestos } from '../../system/tax/entities/impuestos';
 
 const entities = [
   AcademyActivity,
@@ -156,7 +149,6 @@ const entities = [
   Cycle,
   Family,
   BusinessNameFamily,
-  FamiliasIntegrantesTutores,
   Grade,
   Group,
   IncidentClassification,
@@ -178,26 +170,20 @@ const entities = [
   AuthAccessTokensEntity,
   BranchOffice,
   BranchOfficeSetting,
-  Cities,
-  Country,
   Department,
   Folio,
   InscriptionStatus,
   InvoicesBank,
-  Municipalities,
-  PaymentStatusEntity,
   Permission,
   Role,
   RouteAction,
   Route,
   Company,
   Shift,
-  States,
   SystemConceptsType,
   SystemExtraCharges,
   SystemPaymentStatus,
   SystemTypeExtraCharges,
-  Impuestos,
   User,
 ];
 export default entities;
