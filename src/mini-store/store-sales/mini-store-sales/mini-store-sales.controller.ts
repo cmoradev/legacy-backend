@@ -6,8 +6,6 @@ import { totalForCashier, totalForCategory, totalForProducts } from './reports/m
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { MiniStoreQuotationService } from '../mini-store-quotation/mini-store-quotation.service';
-import { MiniStoreQuotation } from '../mini-store-quotation/entities/mini-store-quotation.entity';
 import { IQueryReportInformative, IQueryReportSaleToday, IReportInformativeRow, IReportSaleTodayRow } from './types/IReport';
 import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
@@ -98,7 +96,6 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     constructor(
         readonly service: MiniStoreSalesService,
         readonly paymentService: MiniStoreSalesPaymentsService,
-        readonly miniStoreQuotationService: MiniStoreQuotationService,
     ) {
     }
 
@@ -114,37 +111,6 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     @Put('soft-restore/:id')
     public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
         return await this.service.softRestoreOne(id);
-    }
-
-    @Override()
-    async createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: MiniStoreSale) {
-        let isCompleteCo = false;
-        let pivote = {} as MiniStoreQuotation;
-        if (dto.statusSale === 2 && dto.quotation) {
-            if (dto.quotation.quotation) {
-                pivote = Object.assign(dto.quotation);
-                delete dto.quotation;
-                isCompleteCo = true;
-            }
-        }
-        const miniStoreSale = await this.base.createOneBase(req, dto);
-
-        if (isCompleteCo) {
-            const quotation = {} as MiniStoreQuotation;
-            const qu = await this.miniStoreQuotationService.findQuotation(pivote.quotation.id);
-            if (qu) {
-                quotation.id = qu.id;
-                quotation.sale = {
-                    id: miniStoreSale.id,
-                } as MiniStoreSale;
-                quotation.quotation = {
-                    id: pivote.quotation.id,
-                    isComplete: 1,
-                } as MiniStoreSale;
-                await this.miniStoreQuotationService.updateQuotation(quotation);
-            }
-        }
-        return miniStoreSale;
     }
 
     @Get('/sale-report')
