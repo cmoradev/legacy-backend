@@ -26,10 +26,7 @@ import { FixedAssetAssignment } from '../../fixed-assets-control/fixed-assets-as
 import { JobPosition } from '../../fixed-assets-control/job-positions/entities/job-position.entity';
 import { MatrixCompany } from '../../fixed-assets-control/matrix-companies/entities/matrix-company.entity';
 import { ResponsiveLetter } from '../../fixed-assets-control/responsive-letters/entities/responsive-letter.entity';
-import { InvoiceKeys } from '../../invoice/invoice-keys/entities/invoice-keys.entity';
 import { InvoiceMethodPayment } from '../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { FacturacionMetodosPago } from '../../invoice/invoice-modality-payment/entities/facturacionMetodosPago';
-import { FacturacionRegimenes } from '../../invoice/invoice-regime/entities/facturacionRegimenes';
 import { CashRegister } from '../../mini-store/cash-register/entities/cash-register.entity';
 import { CashRegisterTransaction } from '../../mini-store/cash-register-transactions/entities/cash-register-transaction.entity';
 import { MiniStoreClassification } from '../../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
@@ -129,10 +126,7 @@ const entities = [
   JobPosition,
   MatrixCompany,
   ResponsiveLetter,
-  InvoiceKeys,
   InvoiceMethodPayment,
-  FacturacionMetodosPago,
-  FacturacionRegimenes,
   CashRegister,
   CashRegisterTransaction,
   MiniStoreClassification,

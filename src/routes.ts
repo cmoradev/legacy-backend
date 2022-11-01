@@ -65,7 +65,6 @@ import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/min
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
 import { UsersModule } from './system/users/users.module';
 import { InvoiceMethodsPaymentsModule } from './invoice/invoice-methods-payments/invoice-methods-payments.module';
-import { InvoiceKeysModule } from './invoice/invoice-keys/invoice-keys.module';
 import { SystemConceptsTypeModule } from './system/system-concepts-type/system-concepts-type.module';
 import { AcademyActivitiesGroupModule } from './academy/academy-activities-group/academy-activities-group.module';
 import { ShiftModule } from './system/shift/shift.module';
@@ -117,10 +116,6 @@ export const routes: Routes = [
         path: '/invoice',
         module: InvoiceModule,
         children: [
-            {
-                path: '/keys',
-                module: InvoiceKeysModule,
-            },
             {
                 path: '/companies',
                 module: BranchOfficeSettingModule,
