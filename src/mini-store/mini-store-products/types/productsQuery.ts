@@ -1,7 +1,7 @@
 
 export interface QueryReportProducts {
-    listId?: number,
-    classificationId?: number,
+    listId?: number[],
+    classificationId?: number[],
     isExported?: boolean
 }
 

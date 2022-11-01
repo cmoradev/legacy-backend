@@ -42,13 +42,16 @@ import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import * as moment from 'moment';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import {IQueryReportAcademiaPayment} from './types/IReports';
+import {AcademiaPaymentExcel} from './reports/academia-payment.excel';
+import {AcademiaPaymentInvoiceExcel} from './reports/academia-payment-invoice.excel';
+import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 
 @Crud({
   model: {
@@ -363,7 +366,7 @@ export class AcademyChargePaymentsController
 
   @Post('/receipt')
   async billingGet(@Body() query: QueryBillingAcademy, @Res() res: Response) {
-    let error: any[] = []
+    const error: any[] = []
     try {
       const result = await this.service.findSaleByPayment(query);
       const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
@@ -458,7 +461,7 @@ export class AcademyChargePaymentsController
     }
       catch (e) {
         res.send({
-            error: error,
+            error,
         });
     }
   }
@@ -541,6 +544,58 @@ export class AcademyChargePaymentsController
       console.log(e);
       response.status(400);
       response.send(e);
+    }
+  }
+
+  @Public()
+  @Get('/report-academia-payment')
+  private async reportAcademiaPayment(
+      @Res() res: Response,
+      @Query() options: IQueryReportAcademiaPayment,
+  ){
+    const result = await this.service.reportAcademiaPayment(options);
+
+    if (options?.isExported) {
+      const conceptStatusExcel = new AcademiaPaymentExcel(options, result);
+      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+        filename: `${getNameReport('Pagos', options).excel}.xlsx`,
+      });
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+            buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: `${getNameReport('Pagos', options).excel}`,
+      };
+      return res.send({ report, result });
+    } else {
+      return res.send({ report: false, result });
+    }
+  }
+
+  @Public()
+  @Get('/report-academia-payment-invoice')
+  private async reportAcademiaPaymentInvoice(
+      @Res() res: Response,
+      @Query() options: IQueryReportAcademiaPayment,
+  ){
+    const result = await this.service.reportAcademiaPaymentInvoice(options);
+
+    if (options?.isExported) {
+      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, result);
+      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+        filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
+      });
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+            buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: `${getNameReport('Pagos_Facturados', options).excel}`,
+      };
+      return res.send({ report, result });
+    } else {
+      return res.send({ report: false, result });
     }
   }
 }

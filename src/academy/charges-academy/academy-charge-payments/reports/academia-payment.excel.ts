@@ -1,18 +1,18 @@
 import {TableColumnProperties, Workbook, Worksheet} from 'exceljs';
 import {formatDate} from '../../../../common/date';
 import * as moment from 'moment';
-import {IQueryReportStorePayment} from '../types/IReports';
-import {getNameReport} from '../../mini-store-sales/reports/helpers';
 import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
+import {IQueryReportAcademiaPayment} from '../types/IReports';
+import {getNameReport} from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 
 const esMx = require('moment/locale/es-mx');
 
-export class StorePaymentExcel {
+export class AcademiaPaymentExcel {
     private rows: NotInvoiced[] = [];
-    private params: IQueryReportStorePayment;
+    private params: IQueryReportAcademiaPayment;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportStorePayment, data: NotInvoiced[] = []) {
+    constructor(params: IQueryReportAcademiaPayment, data: NotInvoiced[] = []) {
         this.rows = data;
         this.params = params;
 
@@ -21,7 +21,7 @@ export class StorePaymentExcel {
         this.config();
         this.generate(
             this.addWorksheet(
-                `${getNameReport('Ingresos', this.params).excel}`,
+                `${getNameReport('Pagos', this.params).excel}`,
             ),
         );
     }
@@ -73,7 +73,7 @@ export class StorePaymentExcel {
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Reporte de ${getNameReport('Ingresos', this.params).title}`
+        title.value = `Reporte de ${getNameReport('Pagos', this.params).title}`
         title.style = {
             alignment: { horizontal: 'center', vertical: 'middle' },
         };

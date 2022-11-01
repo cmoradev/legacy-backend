@@ -1,17 +1,18 @@
 import {TableColumnProperties, Workbook, Worksheet} from 'exceljs';
 import {formatDate} from '../../../../common/date';
 import * as moment from 'moment';
-import {IQueryReportStorePayment, IReportStorePaymentRow} from '../types/IReports';
+import {IQueryReportStorePayment} from '../types/IReports';
 import {getNameReport} from '../../mini-store-sales/reports/helpers';
+import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
 
 const esMx = require('moment/locale/es-mx');
 
 export class StorePaymentInvoiceExcel {
-    private rows: IReportStorePaymentRow[] = [];
+    private rows: NotInvoiced[] = [];
     private params: IQueryReportStorePayment;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportStorePayment, data: IReportStorePaymentRow[] = []) {
+    constructor(params: IQueryReportStorePayment, data: NotInvoiced[] = []) {
         this.rows = data;
         this.params = params;
 
@@ -95,18 +96,18 @@ export class StorePaymentInvoiceExcel {
             size: 12,
         };
         const rows = [];
-        this.rows.forEach((value: IReportStorePaymentRow) => {
+        this.rows.forEach((value: NotInvoiced) => {
             const columns = [];
             columns.push(value.v_folio);
-            columns.push(value.tvp_folio);
+            columns.push(value.p_folio);
             columns.push(value.a_key);
             columns.push(value.a_fullname);
-            columns.push(formatDate(value.tvp_created_at));
+            columns.push(formatDate(value.p_created_at));
             columns.push(value.f_folio);
             columns.push(value.f_rfc);
             columns.push(formatDate(value.f_created_at));
             columns.push(value.f_uuid);
-            columns.push(value.tvp_global_uuid);
+            columns.push(value.p_global_uuid);
             columns.push(value.f_metodo_pago);
             columns.push(parseFloat(`${value.p_income}`));
             rows.push(columns);
