@@ -260,26 +260,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
     }
 
-    @Post('report-invoice')
-    public async reportInvoice(@Res() response, @Query() query: {
-        startDate: string,
-        endDate: string,
-        billingAgent: string,
-        status: string,
-        data: string,
-    }) {
-        try {
-            const dataReport = await this.service.reportInvoice(query);
-            response.status(200);
-            response.send(dataReport);
-        } catch (e) {
-            console.log(e)
-            response.status(404);
-            response.send(e.message);
-        }
-
-    }
-
     @Post('/cancelar')
     public async cancelInvoice(@Body() cancelInvoice: CancelInvoiceMinistoreDto, @Res() res: Response) {
         try {

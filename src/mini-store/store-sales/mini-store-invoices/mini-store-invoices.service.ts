@@ -102,50 +102,6 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         return await invoice.getOne();
     }
 
-    async reportInvoice(query: {
-        startDate: string,
-        endDate: string,
-        billingAgent: string,
-        status: string,
-        data: string,
-    }): Promise<string | InvoiceReport[] | any> {
-        const invoices = await this.repo.createQueryBuilder(
-            'invoice'
-        )
-            .leftJoinAndSelect('invoice.agentBilling', 'agentBilling')
-            .leftJoinAndSelect('invoice.agentCanceling', 'agentCanceling')
-            .leftJoinAndSelect('invoice.miniStoreSalePayment', 'miniStoreSalePayment')
-            .leftJoinAndSelect('miniStoreSalePayment.miniStoreSaleMethodPayments', 'miniStoreSaleMethodPayments')
-            .leftJoinAndSelect('miniStoreSaleMethodPayments.invoiceMethod', 'invoiceMethod')
-            .leftJoinAndSelect('invoice.miniStoreSale', 'miniStoreSale')
-            .leftJoinAndSelect('miniStoreSale.student', 'student')
-            .leftJoinAndSelect('invoice.saleReturn', 'saleReturn')
-            .leftJoinAndSelect('saleReturn.agent', 'agent')
-            .leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod')
-            .where('invoice.createdAt Between :startDate and :endDate', {startDate: query.startDate, endDate: query.endDate})
-            .getMany()
-
-        const report = new InvoiceProcessor().structureInvoiceReport(invoices);
-        switch (query.data) {
-            case 'data':
-                return report;
-            case 'file':
-                // TODO convertir dinamico
-                const company = await this.serviceInvoiceCompany.findCompany(3);
-                const workbook = new ReportInvoice().generateReport(report, query, company);
-                const dateName = new Date();
-                const fileName = dateName.toTimeString() + '.xlsx';
-                const result = await workbook.xlsx.writeBuffer({filename: fileName});
-                // await workbook.xlsx.writeFile('./xls-imports/' + fileName);
-                const buffer = Buffer.from(result);
-                const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
-                return {
-                    src: b64Encoding + buffer.toString('base64'),
-                };
-                break;
-        }
-    }
-
     async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
         const transporter = nodemailer.createTransport({
             service: 'gmail',

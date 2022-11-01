@@ -5,7 +5,6 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
-import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { sumQuantity } from '../../../../common/point-of-sale/point-of-sale';
 
 export class CommissionsReport {

@@ -25,47 +25,6 @@ export class MiniStoreSalesPaymentsReportController {
     ) {
     }
 
-    @Public()
-    @Get('/simple-report')
-    async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
-        try {
-            const payments = await this.service.fetchFilteredPayments(query);
-            const sales = await this.service.fetchFilteredSales(query);
-            const salesReturns = await this.service.fetchFilteredReturns(query);
-            const cashiers = await this.user.get_user_with_store_sales();
-            const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
-            const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
-            const result = {
-                payments: {
-                    matriz,
-                    payments: [],
-                },
-                sales: [],
-                returns: [],
-            };
-            if (query.onlyFile) {
-                const workbook = await this.service.downloadReport(
-                    payments,
-                    sales,
-                    salesReturns,
-                    cashiers,
-                    paymentMethods,
-                    matriz);
-                res.status(200);
-                res.setHeader('Content-Type', 'text/xlsx');
-                res.setHeader('Content-Disposition', `attachment; filename=Ingresos-${query.startDate} A ${query.endDate}.xlsx`);
-                workbook.xlsx.write(res).then(() => {
-                    res.end();
-                }).catch((error) => Promise.reject(error));
-            } else {
-                result.payments = convertPaymentsReport(payments, cashiers, paymentMethods);
-                res.send(result);
-            }
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
     @Get('/commissions')
     async commissions(@Req() request, @Res() response: Response, @Query() query: QuerySimpleReport) {
         const payments = await this.service.fetchFilteredPayments(query);

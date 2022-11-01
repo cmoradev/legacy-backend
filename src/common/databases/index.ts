@@ -42,8 +42,6 @@ import { MiniStoreSale } from '../../mini-store/store-sales/mini-store-sales/ent
 import { MiniStoreSaleDetail } from '../../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { MiniStoreSaleMethodPayment } from '../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { MiniStoreSalePayment } from '../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { SalesReturns } from '../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
-import { SalesReturnsProducts } from '../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns-products.entity';
 import { MiniStoreTransaction } from '../../mini-store/store-sales/mini-store-transaction/entities/mini-store-transaction.entity';
 import { AssignmentInscription } from '../../school-colegio-ingles/assignment-incription/entities/assignment-inscription.entity';
 import { Assignment } from '../../school-colegio-ingles/assignments/entities/assignment.entity';
@@ -142,8 +140,6 @@ const entities = [
   MiniStoreSaleDetail,
   MiniStoreSaleMethodPayment,
   MiniStoreSalePayment,
-  SalesReturns,
-  SalesReturnsProducts,
   MiniStoreTransaction,
   AssignmentInscription,
   Assignment,

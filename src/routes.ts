@@ -79,7 +79,6 @@ import { AcademyChargeInvoiceModule } from './academy/charges-academy/academy-ch
 import { AcademyChargeSurchargesModule } from './academy/charges-academy/academy-charge-surcharges/academy-charge-surcharges.module';
 import { AcademyChargeWayOfPayingModule } from './academy/charges-academy/academy-charge-way-of-paying/academy-charge-way-of-paying.module';
 import { AcademyChargeModule } from './academy/charges-academy/academy-charge/academy-charge.module';
-import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { BranchOfficeSettingModule } from './system/branch-office-setting/branch-office-setting.module';
 import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
@@ -226,7 +225,6 @@ export const routes: Routes = [
 
                 ],
             },
-            { path: '/sales-returns', module: MiniStoreSalesReturnsModule },
         ],
     },
     {
