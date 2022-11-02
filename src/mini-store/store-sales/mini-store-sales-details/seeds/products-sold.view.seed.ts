@@ -9,8 +9,9 @@ export default class ProductsSoldViewSeeds implements Seeder {
         CREATE VIEW vw_tie_products_sold AS
         SELECT
             vd.id AS salesDetailsId,
-            vd.createdAt AS start_date,
-            vd.cantidad AS product_unity,
+            vd.createdAt AS vd_start_date,
+            vd.unitMeasurement AS vd_measurement_unit,
+            vd.cantidad AS vd_quantity,
             p.id AS productsId,
             p.nombre AS product_name,
             p.precio AS product_price,

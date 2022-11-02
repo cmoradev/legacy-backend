@@ -5,8 +5,9 @@ export interface QueryReportProductsSold {
 
 export interface ReportProductsSoldRow {
   salesDetailsId: number,
-  start_date: Date,
-  product_unity: number,
+  vd_start_date: Date,
+  vd_measurement_unit: string,
+  vd_quantity: number,
   productsId: number,
   product_name: string,
   product_price: number,
