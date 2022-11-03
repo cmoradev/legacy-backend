@@ -1,15 +1,15 @@
 import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
+import { TypeStudent } from '../../../students/interface/studentsSchool.interface';
 import { add } from 'exact-math';
 import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
 import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
-import { MiniStoreSalePayment } from 'src/mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { InvoiceModules } from 'src/common/point-of-sale/types.pos';
+import { MiniStoreSalePayment } from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import { InvoiceModules } from '../../../../common/point-of-sale/types.pos';
 import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
-import { MiniStoreSaleMethodPayment } from 'src/mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
-import { AcademyChargePayments } from 'src/academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
-import { AcademyChargeMethodsPayments } from 'src/academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
+import { MiniStoreSaleMethodPayment } from '../../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import { AcademyChargePayments } from '../../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import { AcademyChargeMethodsPayments } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;

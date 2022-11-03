@@ -34,13 +34,13 @@ export class SchoolPaymentExcel {
                 methodsPayments: InvoiceMethodPayment[]
             };
         } = {
-                matriz: [],
-                data: {
-                    payments: [],
-                    cashiers: [],
-                    methodsPayments: []
-                }
+            matriz: [],
+            data: {
+                payments: [],
+                cashiers: [],
+                methodsPayments: []
             }
+        }
     ) {
         this.rows = data;
         this.params = params;
@@ -52,6 +52,11 @@ export class SchoolPaymentExcel {
         this.generate(
             this.addWorksheet(
                 `${getNameReport('Pagos', this.params).excel}`,
+            ),
+        );
+        this.generateMatriz(
+            this.addWorksheet(
+                `${getNameReport('Matriz de pagos facturados', this.params).excel}`,
             ),
         );
     }
@@ -158,16 +163,59 @@ export class SchoolPaymentExcel {
         worksheet.columns.forEach((column) => {
             column.width = 10;
 
-            if (column.letter === 'K') {
-                column.numFmt = '$#,##0.00';
-            }
-            if (column.letter === 'C' || column.letter === 'J') {
+            if (column.letter === 'C' || column.letter === 'K') {
                 column.width = 45;
             }
+        });
 
-            if (column.letter === 'K') {
-                column.width = 15;
-            }
+        return worksheet;
+    }
+
+    private generateMatriz(worksheet: Worksheet): Worksheet{
+
+        worksheet.mergeCells(`B2:K2`);
+        const title = worksheet.getCell('B2');
+        title.value = `${getNameReport('Matriz de pagos', this.params).title}`
+        title.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        title.font = {
+            bold: true,
+            size: 16,
+        };
+        worksheet.mergeCells(`B3:K3`);
+        const description = worksheet.getCell('B3');
+        moment?.updateLocale('es', esMx);
+        description.value = `Reporte emitido en ${moment().locale('es').format(
+            'MMMM Do YYYY, h:mm:ss a',
+        )}`;
+        description.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        description.font = {
+            bold: true,
+            size: 12,
+        };
+
+        let columns: TableColumnProperties[] = this.dataConverter.matriz[0].map((item) => {
+            return{name: item, filterButton: false}
+        });
+        const dataMatriz = this.dataConverter.matriz.slice(1,this.dataConverter.matriz.length);
+        const rows = [...dataMatriz.map((item) => item)];
+
+        worksheet.addTable({
+            displayName: 'Matriz',
+            name: 'Matriz',
+            ref: 'B5',
+            totalsRow: false,
+            headerRow: true,
+            style: {
+                theme: 'TableStyleLight9',
+                showRowStripes: true,
+                showColumnStripes: true,
+            },
+            columns,
+            rows,
         });
 
         return worksheet;

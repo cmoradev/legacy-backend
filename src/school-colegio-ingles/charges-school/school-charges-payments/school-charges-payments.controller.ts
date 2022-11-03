@@ -563,7 +563,10 @@ export class SchoolChargesPaymentsController
     };
 
     if(options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, result);
+      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, result, {
+        data: {...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
+        matriz
+      });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
       });
