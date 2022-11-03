@@ -481,13 +481,13 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
-            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+            queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
         if(usersIds && usersIds.length > 0){
             const user = usersIds.map((u) => {return parseInt(`${u}`)})
             if(status && status == 4){
-                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+                queryString = `${queryString} AND cancelation_id_venta in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND cashier_id_venta in (${user.join(',')})`;}
         }
         try {
             return this.connection.query(queryString);

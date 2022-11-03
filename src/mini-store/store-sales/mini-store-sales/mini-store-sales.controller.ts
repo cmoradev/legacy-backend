@@ -6,12 +6,18 @@ import { totalForCashier, totalForCategory, totalForProducts } from './reports/m
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { IQueryReportInformative, IQueryReportSaleToday, IReportInformativeRow, IReportSaleTodayRow } from './types/IReport';
+import {
+    IQueryReportInformative,
+    IqueryReportSaleTodayOp,
+    IReportInformativeRow,
+    IReportSaleTodayRow
+} from './types/IReport';
 import { getNameReport, getRangeDates } from './reports/helpers';
 import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
+import {reportSaleTodayByClient} from "./utils/utils";
 
 @Crud({
     model: {
@@ -149,17 +155,23 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     @Get('report-sale-today')
     private async reportSaleToday(
         @Res() res,
-        @Query() options: IQueryReportSaleToday,
+        @Query() options: IqueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSaleToday(options);
-        const data = result.map((d: any) => {
+        let data: IReportSaleTodayRow[] = [];
+        let dataByClient: IReportSaleTodayRow[] = [];
+        data = result.map((d: any) => {
             let idsPagos = [];
             let idsDetalles = [];
 
-            d.idsPagos != null ? idsPagos = d.idsPagos.split(',') : null;
-            d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(',') : null;
+            d.idsPagos != null ? idsPagos = d.idsPagos.split(',') : [];
+            d.idsDetalles != null ? idsDetalles = d.idsDetalles.split(',') : [];
             return { ...d, id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string) => { return parseInt(`${p}`) }), idsDetalles: idsDetalles.map((p: string) => { return parseInt(`${p}`) }) } as IReportSaleTodayRow
         });
+
+        if(options.byClient){
+            dataByClient = reportSaleTodayByClient(data);
+        }
 
         if (options?.isExported) {
             const conceptStatusExcel = new SaleTodayExcel(options, data);
@@ -173,9 +185,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 type: 'excel',
                 name: `${getNameReport('Ventas', options).excel}`,
             };
-            return res.send({ report, data });
+            return res.send({ report, data: options.byClient ? dataByClient : data });
         } else {
-            return res.send({ report: false, data });
+            return res.send({ report: false, data: options.byClient ? dataByClient : data });
         }
     }
 

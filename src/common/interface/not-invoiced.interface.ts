@@ -23,9 +23,15 @@ export interface NotInvoiced {
     p_state: string;
     f_metodo_pago: string;
     f_metodo_pago_codigo: string;
+    p_metodo_pago: string;
+    p_metodo_pago_codigo: string;
     p_global_uuid?: string;
     u_fullname_cashier: string;
     us_fullname_cancelation: string;
     cashier_id: number;
     cancelation_id: number;
+    vu_fullname_cashier: string,
+    vuc_fullname_cancelation: string,
+    cashier_id_venta: number,
+    cancelation_id_venta: number
 }
