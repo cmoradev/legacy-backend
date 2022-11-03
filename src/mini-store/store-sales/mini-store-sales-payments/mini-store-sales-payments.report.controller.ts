@@ -9,10 +9,13 @@ import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { Public } from '../../../common/docorators/public.decorator';
-import {IQueryReportStorePayment} from './types/IReports';
-import {StorePaymentExcel} from './reports/store-payment.excel';
-import {getNameReport} from '../mini-store-sales/reports/helpers';
-import {StorePaymentInvoiceExcel} from './reports/store-payment-invoice.excel';
+import { IQueryReportStorePayment } from './types/IReports';
+import { StorePaymentExcel } from './reports/store-payment.excel';
+import { getNameReport } from '../mini-store-sales/reports/helpers';
+import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel';
+import { getDataMatrizPayments, getMatrizPayments } from 'src/school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { InvoiceModules } from 'src/common/point-of-sale/types.pos';
+import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
@@ -61,8 +64,15 @@ export class MiniStoreSalesPaymentsReportController {
     private async reportStorePayment(
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
-    ){
+    ) {
         const result = await this.service.reportStorePayment(options);
+        const dataMatriz = getDataMatrizPayments(result, InvoiceModules.STORE, false);
+        const matriz = getMatrizPayments(dataMatriz.payments as MiniStoreSalePayment[], dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.STORE);
+        const obj = {
+            data: result,
+            dataConverter: dataMatriz,
+            matriz: matriz
+        };
 
         if (options?.isExported) {
             const conceptStatusExcel = new StorePaymentExcel(options, result);
@@ -76,9 +86,9 @@ export class MiniStoreSalesPaymentsReportController {
                 type: 'excel',
                 name: `${getNameReport('Ingresos', options).excel}`,
             };
-            return res.send({ report, result });
+            return res.send({ report, data: obj });
         } else {
-            return res.send({report: false, result});
+            return res.send({ report: false, data: obj });
         }
     }
 
@@ -87,7 +97,7 @@ export class MiniStoreSalesPaymentsReportController {
     private async reportStorePaymentInvoice(
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
-    ){
+    ) {
         const result = await this.service.reportStorePaymentInvoice(options);
 
         if (options?.isExported) {
@@ -104,7 +114,7 @@ export class MiniStoreSalesPaymentsReportController {
             };
             return res.send({ report, result });
         } else {
-            return res.send({report: false, result});
+            return res.send({ report: false, result });
         }
     }
 }

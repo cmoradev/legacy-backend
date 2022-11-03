@@ -53,6 +53,7 @@ export class SaleTodayExcel {
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = []
     if(this.params.status && this.params.status == PaymentStatus.trusted){
+      // separar por ventas / cliente
       columns = [
         { name: 'Matricula', filterButton: true },
         { name: 'Nombre', filterButton: false },

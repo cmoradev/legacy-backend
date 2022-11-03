@@ -159,6 +159,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     ) {
         const result = await this.service.reportSaleToday(options);
         let data: IReportSaleTodayRow[] = [];
+        let dataByClient: IReportSaleTodayRow[] = [];
         data = result.map((d: any) => {
             let idsPagos = [];
             let idsDetalles = [];
@@ -169,7 +170,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         });
 
         if(options.byClient){
-            data = reportSaleTodayByClient(data);
+            dataByClient = reportSaleTodayByClient(data);
         }
 
         if (options?.isExported) {
@@ -184,9 +185,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 type: 'excel',
                 name: `${getNameReport('Ventas', options).excel}`,
             };
-            return res.send({ report, data });
+            return res.send({ report, data: options.byClient ? dataByClient : data });
         } else {
-            return res.send({ report: false, data });
+            return res.send({ report: false, data: options.byClient ? dataByClient : data });
         }
     }
 

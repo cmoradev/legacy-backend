@@ -34,7 +34,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { convertPaymentsReportCollege, getDataMatrizPaymentSchool, getMatrizPaymentSchool } from './reports/payments.util';
+import { convertPaymentsReportCollege, getDataMatrizPayments, getMatrizPayments } from './reports/payments.util';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
@@ -520,15 +520,18 @@ export class SchoolChargesPaymentsController
       @Query() options: IQueryReportSchoolPayment,
   ){
     const result = await this.service.reportSchoolPayment(options);
-    const dataMatriz = getDataMatrizPaymentSchool(result);
-    const matriz = getMatrizPaymentSchool(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
     const obj = {
       data: result,
       dataConverter: dataMatriz,
       matriz: matriz
     };
     if(options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentExcel(options, result, {data: dataMatriz, matriz});
+      const conceptStatusExcel = new SchoolPaymentExcel(options, result, {
+        data: {...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
+        matriz
+      });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `${getNameReport('Pagos', options).excel}.xlsx`,
       });
@@ -551,8 +554,8 @@ export class SchoolChargesPaymentsController
       @Query() options: IQueryReportSchoolPayment,
   ){
     const result = await this.service.reportSchoolPaymentInvoice(options);
-    const dataMatriz = getDataMatrizPaymentSchool(result);
-    const matriz = getMatrizPaymentSchool(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, true);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
     const obj = {
       data: result,
       dataConverter: dataMatriz,
