@@ -8,7 +8,7 @@ import { SaleReport } from './types/SaleReport';
 import { QuerySimpleReport } from '../mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import {
     IQueryReportInformative,
-    IqueryReportSaleTodayOp,
+    IQueryReportSaleTodayOp,
     IReportInformativeRow,
     IReportSaleTodayRow
 } from './types/IReport';
@@ -155,7 +155,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
     @Get('report-sale-today')
     private async reportSaleToday(
         @Res() res,
-        @Query() options: IqueryReportSaleTodayOp,
+        @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSaleToday(options);
         let data: IReportSaleTodayRow[] = [];
@@ -174,16 +174,16 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new SaleTodayExcel(options, data);
+            const conceptStatusExcel = new SaleTodayExcel(options, options.byClient ? dataByClient : data);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport('Ventas', options).excel}.xlsx`,
+                filename: `${getNameReport(options.byClient ? 'Ventas por cliente' :  'Ventas', options).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport('Ventas', options).excel}`,
+                name: `${getNameReport(options.byClient ? 'Ventas por cliente' :  'Ventas', options).excel}`,
             };
             return res.send({ report, data: options.byClient ? dataByClient : data });
         } else {

@@ -5,7 +5,7 @@ import { Connection, Repository } from 'typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import * as moment from 'moment';
-import {IQueryReportSaleToday, IqueryReportSaleTodayOp, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
+import {IQueryReportSaleToday, IQueryReportSaleTodayOp, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
@@ -99,7 +99,7 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
         endDate,
         cycleId,
         branchOfficeId,
-      }: IqueryReportSaleTodayOp): Promise<IReportSaleTodayRow[]> {
+      }: IQueryReportSaleTodayOp): Promise<IReportSaleTodayRow[]> {
         let queryString = `SELECT * FROM vw_tie_sale_today where createdAt BETWEEN '${startDate}' AND '${endDate}'`;
         
         if(status){

@@ -558,8 +558,8 @@ export class AcademyChargePaymentsController
       @Query() options: IQueryReportAcademiaPayment,
   ){
     const result = await this.service.reportAcademiaPayment(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
-    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.ACADEMY, false);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.ACADEMY);
     const obj = {
       data: result,
       dataConverter: dataMatriz,
@@ -594,8 +594,8 @@ export class AcademyChargePaymentsController
       @Query() options: IQueryReportAcademiaPayment,
   ){
     const result = await this.service.reportAcademiaPaymentInvoice(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
-    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.ACADEMY, false);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.ACADEMY);
     const obj = {
       data: result,
       dataConverter: dataMatriz,

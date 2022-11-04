@@ -33,5 +33,7 @@ export interface NotInvoiced {
     vu_fullname_cashier: string,
     vuc_fullname_cancelation: string,
     cashier_id_venta: number,
-    cancelation_id_venta: number
+    cancelation_id_venta: number;
+    bf_branch_office: number;
+    bf_branch_office_name: string;
 }

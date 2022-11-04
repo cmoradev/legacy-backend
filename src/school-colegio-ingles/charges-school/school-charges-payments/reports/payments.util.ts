@@ -1,15 +1,27 @@
-import { User } from '../../../../system/users/entities/user.entity';
-import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { TypeStudent } from '../../../students/interface/studentsSchool.interface';
-import { add } from 'exact-math';
-import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
-import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
-import { MiniStoreSalePayment } from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import { InvoiceModules } from '../../../../common/point-of-sale/types.pos';
-import { SchoolChargesMethodsPayments } from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
-import { MiniStoreSaleMethodPayment } from '../../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
-import { AcademyChargePayments } from '../../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
-import { AcademyChargeMethodsPayments } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
+import {User} from '../../../../system/users/entities/user.entity';
+import {
+  InvoiceMethodPayment
+} from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
+import {TypeStudent} from '../../../students/interface/studentsSchool.interface';
+import {add} from 'exact-math';
+import {SchoolChargePayment} from '../entities/school-charge-payment.entity';
+import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
+import {
+  MiniStoreSalePayment
+} from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
+import {InvoiceModules} from '../../../../common/point-of-sale/types.pos';
+import {
+  SchoolChargesMethodsPayments
+} from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import {
+  MiniStoreSaleMethodPayment
+} from '../../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import {
+  AcademyChargePayments
+} from '../../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
+import {
+  AcademyChargeMethodsPayments
+} from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -123,18 +135,19 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
 
   const paymentsArray = [];
   data.forEach((d) => {
+    console.log(JSON.stringify(d, null,3))
     let iCashier = -1;
     let imethodsPayments = -1;
     if (isInvoice || type == InvoiceModules.SCHOOL) {
       iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.f_metodo_pago_codigo));
+      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt( d.f_metodo_pago_codigo));
     } else {
-      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id_venta}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.p_metodo_pago_codigo));
+      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${ type == InvoiceModules.ACADEMY ? d.cashier_id :d.cashier_id_venta}`));
+      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt( d.p_metodo_pago_codigo));
     }
     if (iCashier == -1){
       dataMatriz.cashiers.push(
-        isInvoice || type == InvoiceModules.SCHOOL
+        isInvoice || type == InvoiceModules.SCHOOL || type == InvoiceModules.ACADEMY
           ? { id: parseInt(`${d.cashier_id}`), name: d.u_fullname_cashier } as User
           : { id: parseInt(`${d.cashier_id_venta}`), name: d.vu_fullname_cashier } as User);
     } 
@@ -142,7 +155,7 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
       dataMatriz.methodsPayments.push(
         isInvoice || type == InvoiceModules.SCHOOL
         ? { id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment 
-        : { id: parseInt(d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);}
+        : { id: parseInt (d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);}
 
     switch (type) {
       case InvoiceModules.SCHOOL:
@@ -173,7 +186,7 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
         break;
       case InvoiceModules.ACADEMY:
         paymentsArray.push({
-          cashierCharge: isInvoice ? { name: d.u_fullname_cashier, id: d.cashier_id } as User : { name: d.vu_fullname_cashier, id: d.cashier_id_venta } as User,
+          cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id } as User,
           change: parseFloat(`${d.p_change}`),
           methodsPayments: [{
             quantity: parseFloat(`${d.p_quantity}`),

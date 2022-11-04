@@ -450,7 +450,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;

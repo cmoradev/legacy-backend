@@ -1,7 +1,7 @@
 import { TypeInformativeReport } from '../../../../common/enums/typeInformativeReport.enum';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
-export interface IqueryReportSaleTodayOp extends IQueryReportSaleToday{
+export interface IQueryReportSaleTodayOp extends IQueryReportSaleToday{
   byClient?: boolean;
 }
 
