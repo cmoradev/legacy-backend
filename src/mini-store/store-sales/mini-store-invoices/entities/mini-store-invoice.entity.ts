@@ -3,7 +3,6 @@ import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/m
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
 import { InvoiceType } from '../enums/invoice-type.enum';
-import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
@@ -154,9 +153,6 @@ export class MiniStoreInvoice extends Base {
 
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
-
-    @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
-    saleReturn: SalesReturns;
 
     @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, { nullable: true })
     creditNoteStore: CreditNoteStore;

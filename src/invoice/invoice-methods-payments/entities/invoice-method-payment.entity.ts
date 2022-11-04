@@ -1,6 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
-import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 
@@ -45,9 +44,6 @@ export class InvoiceMethodPayment extends Base {
 
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     schoolChargePaymentMethods: MiniStoreSaleMethodPayment[];
-
-    @OneToMany(type => SalesReturns, salesReturns => salesReturns.paymentMethod)
-    salesReturns: SalesReturns[];
 
     @OneToMany(type => BranchOfficeSetting, bOS => bOS.quickSaleMethod)
     methodPayBranchOffSet: BranchOfficeSetting[];

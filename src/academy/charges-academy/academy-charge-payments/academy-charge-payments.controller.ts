@@ -52,6 +52,10 @@ import {IQueryReportAcademiaPayment} from './types/IReports';
 import {AcademiaPaymentExcel} from './reports/academia-payment.excel';
 import {AcademiaPaymentInvoiceExcel} from './reports/academia-payment-invoice.excel';
 import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import {
+  getDataMatrizPayments,
+  getMatrizPayments
+} from "../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util";
 
 @Crud({
   model: {
@@ -554,9 +558,19 @@ export class AcademyChargePaymentsController
       @Query() options: IQueryReportAcademiaPayment,
   ){
     const result = await this.service.reportAcademiaPayment(options);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
+    const obj = {
+      data: result,
+      dataConverter: dataMatriz,
+      matriz: matriz
+    };
 
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentExcel(options, result);
+      const conceptStatusExcel = new AcademiaPaymentExcel(options, result, {
+        data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
+        matriz
+      });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `${getNameReport('Pagos', options).excel}.xlsx`,
       });
@@ -567,9 +581,9 @@ export class AcademyChargePaymentsController
         type: 'excel',
         name: `${getNameReport('Pagos', options).excel}`,
       };
-      return res.send({ report, result });
+      return res.send({ report, data: obj });
     } else {
-      return res.send({ report: false, result });
+      return res.send({ report: false, data: obj });
     }
   }
 
@@ -580,9 +594,19 @@ export class AcademyChargePaymentsController
       @Query() options: IQueryReportAcademiaPayment,
   ){
     const result = await this.service.reportAcademiaPaymentInvoice(options);
+    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
+    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
+    const obj = {
+      data: result,
+      dataConverter: dataMatriz,
+      matriz: matriz
+    };
 
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, result);
+      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, result, {
+        data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
+        matriz
+      });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
       });
@@ -593,9 +617,9 @@ export class AcademyChargePaymentsController
         type: 'excel',
         name: `${getNameReport('Pagos_Facturados', options).excel}`,
       };
-      return res.send({ report, result });
+      return res.send({ report, data: obj });
     } else {
-      return res.send({ report: false, result });
+      return res.send({ report: false, data: obj });
     }
   }
 }

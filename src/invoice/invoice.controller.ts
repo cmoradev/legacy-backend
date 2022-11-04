@@ -54,9 +54,4 @@ export class InvoiceController {
     }
     res.send({ ...factor })
   }
-
-  @Post('/egresos')
-  async egresos() {
-
-  }
 }

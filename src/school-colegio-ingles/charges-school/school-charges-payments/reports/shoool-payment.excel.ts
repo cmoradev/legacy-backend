@@ -1,20 +1,50 @@
-import {TableColumnProperties, Workbook, Worksheet} from 'exceljs';
-import {formatDate} from '../../../../common/date';
+import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
+import { formatDate } from '../../../../common/date';
 import * as moment from 'moment';
-import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
-import {IQueryReportSchoolPayment} from '../types/IReport';
-import {getNameReport} from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
+import { IQueryReportSchoolPayment } from '../types/IReport';
+import { getNameReport } from '../../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
+import { User } from '../../../../system/users/entities/user.entity';
+import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 const esMx = require('moment/locale/es-mx');
 
 export class SchoolPaymentExcel {
     private rows: NotInvoiced[] = [];
+    private dataConverter: {
+        matriz: any[][];
+        data: {
+            payments: SchoolChargePayment[],
+            cashiers: User[],
+            methodsPayments: InvoiceMethodPayment[]
+        }
+    }
     private params: IQueryReportSchoolPayment;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportSchoolPayment, data: NotInvoiced[] = []) {
+    constructor(
+        params: IQueryReportSchoolPayment,
+        data: NotInvoiced[] = [],
+        dataConverter: {
+            matriz: any[][];
+            data: {
+                payments: SchoolChargePayment[],
+                cashiers: User[],
+                methodsPayments: InvoiceMethodPayment[]
+            };
+        } = {
+            matriz: [],
+            data: {
+                payments: [],
+                cashiers: [],
+                methodsPayments: []
+            }
+        }
+    ) {
         this.rows = data;
         this.params = params;
+        this.dataConverter = dataConverter;
 
         this.workbook = new Workbook();
 
@@ -22,6 +52,11 @@ export class SchoolPaymentExcel {
         this.generate(
             this.addWorksheet(
                 `${getNameReport('Pagos', this.params).excel}`,
+            ),
+        );
+        this.generateMatriz(
+            this.addWorksheet(
+                `${getNameReport('Matriz_de_pagos', this.params).excel}`,
             ),
         );
     }
@@ -52,24 +87,24 @@ export class SchoolPaymentExcel {
     private generate(worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
 
-            columns = [
-                { name: 'Matricula', filterButton: true },
-                { name: 'Nombre', filterButton: false },
-                { name: 'Fecha de creación', filterButton: true },
-                { name: 'Folio de venta', filterButton: false },
-                { name: 'Folio de pago', filterButton: false },
-                { name: 'Folio de factura', filterButton: false },
-                { name: 'Ciclo de venta', filterButton: false },
-                { name: 'Metodo de pago', filterButton: true },
-                {
-                    name: 'Total del pago',
-                    filterButton: false,
-                    totalsRowLabel: 'Total',
-                    totalsRowFunction: 'sum',
-                },
-                { name: 'Realizado por', filterButton: false },
-                { name: 'Cancelado por', filterButton: false },
-            ];
+        columns = [
+            { name: 'Matricula', filterButton: true },
+            { name: 'Nombre', filterButton: false },
+            { name: 'Fecha de creación', filterButton: true },
+            { name: 'Folio de venta', filterButton: false },
+            { name: 'Folio de pago', filterButton: false },
+            { name: 'Folio de factura', filterButton: false },
+            { name: 'Ciclo de venta', filterButton: false },
+            { name: 'Metodo de pago', filterButton: true },
+            {
+                name: 'Total del pago',
+                filterButton: false,
+                totalsRowLabel: 'Total',
+                totalsRowFunction: 'sum',
+            },
+            { name: 'Realizado por', filterButton: false },
+            { name: 'Cancelado por', filterButton: false },
+        ];
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
@@ -128,16 +163,59 @@ export class SchoolPaymentExcel {
         worksheet.columns.forEach((column) => {
             column.width = 10;
 
-            if (column.letter === 'K') {
-                column.numFmt = '$#,##0.00';
-            }
-            if (column.letter === 'C' || column.letter === 'J') {
+            if (column.letter === 'C' || column.letter === 'K') {
                 column.width = 45;
             }
+        });
 
-            if (column.letter === 'K') {
-                column.width = 15;
-            }
+        return worksheet;
+    }
+
+    private generateMatriz(worksheet: Worksheet): Worksheet{
+
+        worksheet.mergeCells(`B2:K2`);
+        const title = worksheet.getCell('B2');
+        title.value = `${getNameReport('Matriz de pagos', this.params).title}`
+        title.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        title.font = {
+            bold: true,
+            size: 16,
+        };
+        worksheet.mergeCells(`B3:K3`);
+        const description = worksheet.getCell('B3');
+        moment?.updateLocale('es', esMx);
+        description.value = `Reporte emitido en ${moment().locale('es').format(
+            'MMMM Do YYYY, h:mm:ss a',
+        )}`;
+        description.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        description.font = {
+            bold: true,
+            size: 12,
+        };
+
+        let columns: TableColumnProperties[] = this.dataConverter.matriz[0].map((item) => {
+            return{name: item, filterButton: false}
+        });
+        const dataMatriz = this.dataConverter.matriz.slice(1,this.dataConverter.matriz.length);
+        const rows = [...dataMatriz.map((item) => item)];
+
+        worksheet.addTable({
+            displayName: 'Matriz',
+            name: 'Matriz',
+            ref: 'B5',
+            totalsRow: false,
+            headerRow: true,
+            style: {
+                theme: 'TableStyleLight9',
+                showRowStripes: true,
+                showColumnStripes: true,
+            },
+            columns,
+            rows,
         });
 
         return worksheet;

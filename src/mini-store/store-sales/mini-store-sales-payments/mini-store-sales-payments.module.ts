@@ -3,7 +3,6 @@ import { MiniStoreSalesPaymentsController } from './mini-store-sales-payments.co
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
-import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -26,7 +25,6 @@ import { ConfigModule } from '../../../common/config/config.module';
             InvoiceMethodPayment,
             MiniStoreSale,
             MiniStoreInvoice,
-            SalesReturns,
         ], ColegioDBNameConnection),
         forwardRef(() => MiniStoreInvoicesModule),
         BranchOfficeModule,

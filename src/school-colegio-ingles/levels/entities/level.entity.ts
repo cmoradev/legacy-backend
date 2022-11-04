@@ -7,7 +7,6 @@ import { Classroom } from '../../classrooms/entities/classroom.entity';
 import { PaymentPlan } from '../../payment-plans/entities/payment-plan.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
-import { AutRvoe } from './autrvoe.entity';
 
 @Entity('niveles')
 export class Level extends Base {
@@ -49,6 +48,4 @@ export class Level extends Base {
   @OneToMany(() => AcademyInscription, (acInscription) => acInscription.schoolLevel)
   levelAcademyInscription: AcademyInscription[];
 
-  @OneToMany(() => AutRvoe, autRvoe => autRvoe.level)
-  autRvoe: AutRvoe[];
 }

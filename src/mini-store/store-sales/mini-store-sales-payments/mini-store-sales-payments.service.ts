@@ -3,9 +3,8 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository, In } from 'typeorm';
-import { SimpleReport } from './reports/simple.report';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+//import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
@@ -38,7 +37,6 @@ import { IQueryReportStorePayment } from './types/IReports';
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
     constructor(
         @InjectRepository(MiniStoreSalePayment, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSalePayment>,
-        @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
         @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
         @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly salesRepository: Repository<MiniStoreSale>,
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
@@ -72,35 +70,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
 
-    }
-
-    async fetchFilteredReturns(query: QuerySimpleReport) {
-        const salesReturnsQB = this.salesReturnsRepository.createQueryBuilder('saleReturn');
-        salesReturnsQB.leftJoinAndSelect('saleReturn.agent', 'agent');
-        salesReturnsQB.leftJoinAndSelect('saleReturn.sale', 'sale');
-        salesReturnsQB.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
-        salesReturnsQB.leftJoinAndSelect('saleReturn.details', 'details');
-        salesReturnsQB.leftJoinAndSelect('details.saleDetail', 'saleDetail');
-        salesReturnsQB.leftJoinAndSelect('saleDetail.miniStoreProduct', 'product');
-        salesReturnsQB.leftJoinAndSelect('sale.student', 'student');
-        salesReturnsQB.leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod');
-        if (query) {
-
-            salesReturnsQB.where('storeBranchOffice.id= :officeId', {
-                officeId: query.branchOfficeId,
-            });
-
-            salesReturnsQB.andWhere('saleReturn.createdAt BETWEEN :startDate AND :endDate',
-                {
-                    startDate: moment(query.startDate).startOf('day').toDate(),
-                    endDate: moment(query.endDate).endOf('day').toDate(),
-                });
-            if (query.cashier) {
-                salesReturnsQB.andWhere('agent.id = :agentID', {agentID: query.cashier});
-            }
-        }
-
-        return salesReturnsQB.getMany();
     }
 
     async fetchFilteredPayments(query: QuerySimpleReport): Promise<MiniStoreSalePayment[]> {
@@ -182,57 +151,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 return cashier;
             }
         });
-    }
-
-    async downloadReport(payments: MiniStoreSalePayment[],
-                         sales: MiniStoreSale[],
-                         salesReturns: SalesReturns[],
-                         cashiers: User[],
-                         paymentMethods: InvoiceMethodPayment[],
-                         matriz: CellRow[][]) {
-        return new SimpleReport().generate({
-            payments,
-            cashiers,
-            paymentMethods,
-            salesReturns,
-            sales,
-        }, matriz);
-    }
-
-    async simpleReport(payments: MiniStoreSalePayment[],
-                       sales: MiniStoreSale[],
-                       salesReturns: SalesReturns[],
-                       cashiers: User[],
-                       paymentMethods: InvoiceMethodPayment[],
-                       matriz: CellRow[][],
-                       options?: { base64: boolean }): Promise<string | any> {
-
-
-        const workbook = new SimpleReport().generate({
-            payments,
-            cashiers,
-            paymentMethods,
-            salesReturns,
-            sales,
-        }, matriz);
-        try {
-            const fileName = (+new Date()).toString() + '.xlsx';
-            if (options && options.base64) {
-                const result = await workbook.xlsx.writeBuffer({
-                        filename: (+new Date()).toString() + '.xlsx',
-                    },
-                );
-                const buffer = Buffer.from(result);
-                const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
-                return b64Encoding + buffer.toString('base64');
-
-            } else {
-                await workbook.xlsx.writeFile('./xls-imports/' + fileName);
-                return fileName;
-            }
-        } catch (e) {
-            return e;
-        }
     }
 
     async reportCommission(
@@ -563,13 +481,13 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
-            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+            queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
         if(usersIds && usersIds.length > 0){
             const user = usersIds.map((u) => {return parseInt(`${u}`)})
             if(status && status == 4){
-                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+                queryString = `${queryString} AND cancelation_id_venta in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND cashier_id_venta in (${user.join(',')})`;}
         }
         try {
             return this.connection.query(queryString);

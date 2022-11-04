@@ -1,5 +1,9 @@
-import { TypeInformativeReport } from 'src/common/enums/typeInformativeReport.enum';
+import { TypeInformativeReport } from '../../../../common/enums/typeInformativeReport.enum';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
+
+export interface IqueryReportSaleTodayOp extends IQueryReportSaleToday{
+  byClient?: boolean;
+}
 
 export interface IQueryReportSaleToday {
   status?: PaymentStatus;
@@ -31,6 +35,7 @@ export interface IReportSaleTodayRow {
   TotalDetalles: number;
   idsDetalles: number[];
   TotalAdeudo: string;
+  countSale?: number
 }
 
 export interface IReportInformativeRow {

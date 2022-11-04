@@ -70,17 +70,16 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
                 'chargesDetails.extraCharges',
             ],
         });
-        const payment = await this.repo.findOne({
-            where: {
-                id: query.chargePaymentId,
-            },
-            relations: [
-                'methodsPayments',
-                'methodsPayments.Bank', // se agregaron para crear el recibo en el server
-                'methodsPayments.invoiceMethodPayment', // se agregaron para crear el recibo en el server
-                'cashierCharge', // se agregaron para crear el recibo en el server
-            ],
-        });
+
+        const payment = await this.repo.createQueryBuilder('payment')
+            .withDeleted()
+            .leftJoinAndSelect('payment.methodsPayments', 'methodsPayments')
+            .leftJoinAndSelect('methodsPayments.Bank', 'Bank')
+            .leftJoinAndSelect('methodsPayments.invoiceMethodPayment', 'invoiceMethodPayment')
+            .innerJoinAndSelect('payment.cashierCharge', 'cashierCharge')
+            .andWhere('payment.id = :idp', {idp: query.chargePaymentId})
+            .getOne();
+
         const highestPayment = this.getHighestPayment(payment.methodsPayments);
         return {
             charge,
