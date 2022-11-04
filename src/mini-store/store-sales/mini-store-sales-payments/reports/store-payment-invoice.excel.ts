@@ -4,17 +4,49 @@ import * as moment from 'moment';
 import {IQueryReportStorePayment} from '../types/IReports';
 import {getNameReport} from '../../mini-store-sales/reports/helpers';
 import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
+import {MiniStoreSalePayment} from '../entities/mini-store-sale-payment.entity';
+import {User} from '../../../../system/users/entities/user.entity';
+import {
+    InvoiceMethodPayment
+} from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 
 const esMx = require('moment/locale/es-mx');
 
 export class StorePaymentInvoiceExcel {
     private rows: NotInvoiced[] = [];
+    private dataConverter: {
+        matriz: any[][];
+        data: {
+            payments: MiniStoreSalePayment[],
+            cashiers: User[],
+            methodsPayments: InvoiceMethodPayment[]
+        }
+    }
     private params: IQueryReportStorePayment;
     private workbook: Workbook;
 
-    constructor(params: IQueryReportStorePayment, data: NotInvoiced[] = []) {
+    constructor(
+        params: IQueryReportStorePayment,
+        data: NotInvoiced[] = [],
+        dataConverter: {
+            matriz: any[][];
+            data: {
+                payments: MiniStoreSalePayment[],
+                cashiers: User[],
+                methodsPayments: InvoiceMethodPayment[]
+            };
+        } = {
+            matriz: [],
+            data: {
+                payments: [],
+                cashiers: [],
+                methodsPayments: []
+            }
+        }
+    ) {
         this.rows = data;
         this.params = params;
+        this.dataConverter = dataConverter;
 
         this.workbook = new Workbook();
 
@@ -22,6 +54,11 @@ export class StorePaymentInvoiceExcel {
         this.generate(
             this.addWorksheet(
                 `${getNameReport('Ingresos_facturados', this.params).excel}`,
+            ),
+        );
+        this.generateMatriz(
+            this.addWorksheet(
+                `${getNameReport('Matriz_de_ingresos_facturados', this.params).excel}`,
             ),
         );
     }
@@ -140,6 +177,56 @@ export class StorePaymentInvoiceExcel {
             if (column.letter === 'K') {
                 column.width = 15;
             }
+        });
+
+        return worksheet;
+    }
+
+    private generateMatriz(worksheet: Worksheet): Worksheet{
+
+        worksheet.mergeCells(`B2:K2`);
+        const title = worksheet.getCell('B2');
+        title.value = `${getNameReport('Matriz de ingresos facturados', this.params).title}`
+        title.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        title.font = {
+            bold: true,
+            size: 16,
+        };
+        worksheet.mergeCells(`B3:K3`);
+        const description = worksheet.getCell('B3');
+        moment?.updateLocale('es', esMx);
+        description.value = `Reporte emitido en ${moment().locale('es').format(
+            'MMMM Do YYYY, h:mm:ss a',
+        )}`;
+        description.style = {
+            alignment: { horizontal: 'center', vertical: 'middle' },
+        };
+        description.font = {
+            bold: true,
+            size: 12,
+        };
+
+        let columns: TableColumnProperties[] = this.dataConverter.matriz[0].map((item) => {
+            return{name: item, filterButton: false}
+        });
+        const dataMatriz = this.dataConverter.matriz.slice(1,this.dataConverter.matriz.length);
+        const rows = [...dataMatriz.map((item) => item)];
+
+        worksheet.addTable({
+            displayName: 'Matriz',
+            name: 'Matriz',
+            ref: 'B5',
+            totalsRow: false,
+            headerRow: true,
+            style: {
+                theme: 'TableStyleLight9',
+                showRowStripes: true,
+                showColumnStripes: true,
+            },
+            columns,
+            rows,
         });
 
         return worksheet;

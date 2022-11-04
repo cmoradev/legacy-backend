@@ -1,20 +1,19 @@
 import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { convertPaymentsComissionReport, convertPaymentsReport } from './reports/payments.util';
+import { convertPaymentsComissionReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
-import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
 import { StorePaymentExcel } from './reports/store-payment.excel';
 import { getNameReport } from '../mini-store-sales/reports/helpers';
 import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel';
-import { getDataMatrizPayments, getMatrizPayments } from 'src/school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
-import { InvoiceModules } from 'src/common/point-of-sale/types.pos';
+import { getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 
 @Controller('report')
@@ -75,7 +74,10 @@ export class MiniStoreSalesPaymentsReportController {
         };
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentExcel(options, result);
+            const conceptStatusExcel = new StorePaymentExcel(options, result, {
+                data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
+                matriz
+            });
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport('Ingresos', options).excel}.xlsx`,
             });
@@ -99,9 +101,19 @@ export class MiniStoreSalesPaymentsReportController {
         @Query() options: IQueryReportStorePayment,
     ) {
         const result = await this.service.reportStorePaymentInvoice(options);
+        const dataMatriz = getDataMatrizPayments(result, InvoiceModules.STORE, false);
+        const matriz = getMatrizPayments(dataMatriz.payments as MiniStoreSalePayment[], dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.STORE);
+        const obj = {
+            data: result,
+            dataConverter: dataMatriz,
+            matriz: matriz
+        };
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentInvoiceExcel(options, result);
+            const conceptStatusExcel = new StorePaymentInvoiceExcel(options, result, {
+                data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
+                matriz
+            });
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport('Ingresos_facturados', options).excel}.xlsx`,
             });
@@ -112,9 +124,9 @@ export class MiniStoreSalesPaymentsReportController {
                 type: 'excel',
                 name: `${getNameReport('Ingresos_facturados', options).excel}`,
             };
-            return res.send({ report, result });
+            return res.send({ report, data: obj });
         } else {
-            return res.send({ report: false, result });
+            return res.send({ report: false, data: obj });
         }
     }
 }

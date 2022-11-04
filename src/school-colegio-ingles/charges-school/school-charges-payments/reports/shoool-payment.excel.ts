@@ -56,7 +56,7 @@ export class SchoolPaymentExcel {
         );
         this.generateMatriz(
             this.addWorksheet(
-                `${getNameReport('Matriz de pagos facturados', this.params).excel}`,
+                `${getNameReport('Matriz_de_pagos', this.params).excel}`,
             ),
         );
     }
