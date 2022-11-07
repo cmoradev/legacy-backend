@@ -130,7 +130,7 @@ export class MiniStoreSalesDetailsController
     if (options?.isExported) {
       const conceptStatusExcel = new StoreProductsSoldReport(data);
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `products.xlsx`,
+        filename: `products_sold.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
