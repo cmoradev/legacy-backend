@@ -1,20 +1,27 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import * as moment from 'moment';
-import { ReportProductsSoldRow } from '../types/productsSoldQuery';
+import { TypeInformativeReport } from '../../../../common/enums/typeInformativeReport.enum';
+import { getRangeDates } from '../../mini-store-sales/reports/helpers';
+import { QueryReportProductsSold, ReportProductsSoldRow } from '../types/productsSoldQuery';
 
 const esMx = require('moment/locale/es-mx');
 
 export class StoreProductsSoldReport {
   private rows: ReportProductsSoldRow[] = [];
+  private params: QueryReportProductsSold;
   private workbook: Workbook;
 
-  constructor(data: ReportProductsSoldRow[] = []) {
+  constructor(params: QueryReportProductsSold, data: ReportProductsSoldRow[] = []) {
     this.rows = data;
-
+    this.params = params;
     this.workbook = new Workbook();
 
     this.config();
-    this.generate(this.addWorksheet(`productos_vendidos`));
+    this.generate(
+      this.addWorksheet(
+        `productos_vendidos`,
+      ),
+    );
   }
 
   private config(): void {
@@ -42,14 +49,27 @@ export class StoreProductsSoldReport {
 
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = [];
-    columns = [
-      { name: 'Producto', filterButton: false },
-      { name: 'Clasificación', filterButton: false },
-      { name: 'Unidad' },
-      { name: 'Vendidos' },
-      { name: 'Total' },
-    ];
-
+    if (this.params.type == TypeInformativeReport.PRODUCTS) {
+      columns = [
+        { name: 'Producto', filterButton: false },
+        { name: 'Clasificación', filterButton: false },
+        { name: 'Unidad', filterButton: false },
+        { name: 'Cantidad Vendidos', filterButton: false },
+        { name: 'Total', filterButton: false },
+      ];
+    } else if (this.params.type == TypeInformativeReport.CATEGORIES) {
+      columns = [
+        { name: 'Categorías', filterButton: false },
+        { name: 'Cantidad Vendidos', filterButton: false },
+        { name: 'Total', filterButton: false },
+      ];
+    } else if (this.params.type == TypeInformativeReport.CASHIERS) {
+      columns = [
+        { name: 'Vendedores', filterButton: false },
+        { name: 'Cantidad Vendidos', filterButton: false },
+        { name: 'Total', filterButton: false },
+      ];
+    }
     worksheet.mergeCells(`B2:K2`);
     const title = worksheet.getCell('B2');
     title.value = `Productos vendidos`;
@@ -77,11 +97,21 @@ export class StoreProductsSoldReport {
 
     this.rows.forEach((value: ReportProductsSoldRow) => {
       const columns = [];
-      columns.push(value.product_name);
-      columns.push(value.classifications_name);
-      columns.push(value.vd_measurement_unit);
-      columns.push(value.vd_quantity);
-      columns.push(value.product_price);
+      if (this.params.type == TypeInformativeReport.PRODUCTS) {
+        columns.push(value.product_name);
+        columns.push(value.classifications_name);
+        columns.push(value.vd_measurement_unit);
+        columns.push(value.vd_quantity);
+        columns.push(value.product_price);
+      } else if (this.params.type == TypeInformativeReport.CATEGORIES) {
+        columns.push(value.classifications_name);
+        columns.push(value.vd_quantity);
+        columns.push(value.product_price);
+      } else if (this.params.type == TypeInformativeReport.CASHIERS){
+        columns.push(value.cashier_fullname);
+        columns.push(value.vd_quantity);
+        columns.push(value.product_price);
+      }
       rows.push(columns);
     });
     worksheet.addTable({

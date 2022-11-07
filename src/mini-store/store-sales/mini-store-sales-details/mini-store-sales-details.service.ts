@@ -93,14 +93,18 @@ export class MiniStoreSalesDetailsService extends TypeOrmCrudService<
     endDate,
     cycleId,
     branchOfficeId,
+    cashier_id,
   }: QueryReportProductsSold): Promise<ReportProductsSoldRow[]> {
-    let queryString = `SELECT * FROM vw_tie_products_sold WHERE vd_createdAt BETWEEN '${startDate}' AND '${endDate}' `;
+    let queryString = `SELECT * FROM vw_tie_products_sold WHERE vd_createdAt BETWEEN '${startDate}' AND '${endDate}' AND sellStatus = 2`;
 
-    if ( cycleId) {
+    if (cycleId) {
       queryString = `${queryString} AND ciclo_id = ${cycleId}`;
     }
     if (branchOfficeId) {
       queryString = `${queryString} AND planteles_id = ${branchOfficeId}`;
+    }
+    if (cashier_id !== undefined && cashier_id.length > 0) {
+      queryString = `${queryString} AND cashier_id IN (${cashier_id.join(',')})`;
     }
     try {
       return this.connection.query(queryString);
