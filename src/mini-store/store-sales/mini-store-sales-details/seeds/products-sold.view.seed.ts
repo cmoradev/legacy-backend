@@ -9,7 +9,7 @@ export default class ProductsSoldViewSeeds implements Seeder {
         CREATE VIEW vw_tie_products_sold AS
         SELECT
             vd.id AS salesDetailsId,
-            vd.createdAt AS vd_start_date,
+            vd.createdAt AS vd_createdAt,
             vd.unitMeasurement AS vd_measurement_unit,
             vd.cantidad AS vd_quantity,
             p.id AS productsId,
@@ -17,11 +17,18 @@ export default class ProductsSoldViewSeeds implements Seeder {
             p.precio AS product_price,
             p.precio_con_iva AS product_price_IVA,
             p.iva AS product_IVA,
+            pl.id AS planteles_id,
+            pl.plantel AS planteles_name,
+            ci.id AS ciclo_id,
+            ci.ciclo AS ciclo_name,
             c.id AS classificationsId,
             c.nombre AS classifications_name
         FROM tie_venta_detalle vd
         LEFT JOIN tie_productos p ON p.id = vd.miniStoreProductId
         LEFT JOIN tie_clasificaciones c ON c.id = vd.miniStoreClassificationId
+        LEFT JOIN tie_ventas v ON v.id = vd.miniStoreSaleId
+        LEFT JOIN ciclos ci ON ci.id = v.cycleId
+        LEFT JOIN planteles pl ON pl.id = v.storeBranchOfficeId
         ORDER BY vd.id DESC`);
   }
 }
