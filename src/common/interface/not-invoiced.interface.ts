@@ -8,7 +8,7 @@ export interface NotInvoiced {
     f_rfc?: string;
     f_type?: string;
     f_status?: string;
-    p_quantity: number;
+    p_quantity: number[];
     p_change: number;
     v_observations: string;
     p_income: number;
@@ -36,4 +36,5 @@ export interface NotInvoiced {
     cancelation_id_venta: number;
     bf_branch_office: number;
     bf_branch_office_name: string;
+    count?: number;
 }

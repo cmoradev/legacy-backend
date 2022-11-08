@@ -135,7 +135,6 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
 
   const paymentsArray = [];
   data.forEach((d) => {
-    console.log(JSON.stringify(d, null,3))
     let iCashier = -1;
     let imethodsPayments = -1;
     if (isInvoice || type == InvoiceModules.SCHOOL) {

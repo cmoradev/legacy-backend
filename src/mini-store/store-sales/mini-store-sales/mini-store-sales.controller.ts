@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res } from '@nestjs/common';
-import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
 import { MiniStoreSalesService } from './mini-store-sales.service';
 import { totalForCashier, totalForCategory, totalForProducts } from './reports/mini-store-sale.report';
@@ -17,7 +17,7 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
-import {reportSaleTodayByClient} from "./utils/utils";
+import {reportSaleTodayByClient} from './utils/utils';
 
 @Crud({
     model: {

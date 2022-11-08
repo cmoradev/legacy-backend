@@ -1,4 +1,4 @@
-import {IReportSaleTodayRow} from "../types/IReport";
+import {IReportSaleTodayRow} from '../types/IReport';
 import {Decimal} from '@munyaal/calculations';
 
 export const reportSaleTodayByClient = (
