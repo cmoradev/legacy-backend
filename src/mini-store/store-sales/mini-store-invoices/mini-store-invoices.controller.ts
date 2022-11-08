@@ -363,4 +363,24 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         }
 
     }
+    // eliminar al cambiar los reporte del front
+    @Post('report-invoice')
+    public async reportInvoice(@Res() response, @Query() query: {
+        startDate: string,
+        endDate: string,
+        billingAgent: string,
+        status: string,
+        data: string,
+    }) {
+        try {
+            const dataReport = await this.service.reportInvoice(query);
+            response.status(200);
+            response.send(dataReport);
+        } catch (e) {
+            console.log(e)
+            response.status(404);
+            response.send(e.message);
+        }
+
+    }
 }

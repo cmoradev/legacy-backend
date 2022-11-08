@@ -22,6 +22,9 @@ import { AcademyChargePayments } from '../../../academy/charges-academy/academy-
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Family } from '../../../school-colegio-ingles/families/entities/family.entity';
 
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
+
 @Entity('usuarios')
 export class User extends Base {
     @Column('varchar', {
@@ -216,4 +219,7 @@ export class User extends Base {
         cascade: ['insert', 'update'],
     })
     family: Family;
+
+    @OneToMany(type => SalesReturns, saleReturns => saleReturns.agent)
+    salesReturns: SalesReturns[];
 }

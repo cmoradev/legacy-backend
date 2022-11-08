@@ -1,4 +1,4 @@
-import  { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -11,6 +11,8 @@ import { BranchOffice } from '../../../../system/branch-office/entities/branch-o
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Transaction } from '../../../../system/transaction/entities/transaction.entity';
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
@@ -217,5 +219,11 @@ export class MiniStoreSale extends Base {
   codeWayToPay: string | null;
 
   @OneToMany(() => Transaction, (transaction) => transaction.sale)
-    transactions: Transaction[];
+  transactions: Transaction[];
+
+  @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale,
+    {
+      cascade: ['insert'],
+    })
+  returnedProducts: SalesReturns[];
 }

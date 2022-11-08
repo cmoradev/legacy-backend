@@ -15,6 +15,9 @@ import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel'
 import { getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
+// eliminar al cambiar los reporte del front
+import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
+import { convertPaymentsReport } from './reports/payments.util';
 
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
@@ -127,6 +130,48 @@ export class MiniStoreSalesPaymentsReportController {
             return res.send({ report, data: obj });
         } else {
             return res.send({ report: false, data: obj });
+        }
+    }
+
+    // eliminar al cambiar los reporte del front
+    @Public()
+    @Get('/simple-report')
+    async simpleReport(@Req() req, @Res() res: Response, @Query() query: QuerySimpleReport) {
+        try {
+            const payments = await this.service.fetchFilteredPayments(query);
+            const sales = await this.service.fetchFilteredSales(query);
+            const salesReturns = await this.service.fetchFilteredReturns(query);
+            const cashiers = await this.user.get_user_with_store_sales();
+            const paymentMethods = await this.invoiceMethodsPaymentsService.get_payment_methods_active();
+            const matriz = GenerateMatrizByPayment(payments, paymentMethods, cashiers);
+            const result = {
+                payments: {
+                    matriz,
+                    payments: [],
+                },
+                sales: [],
+                returns: [],
+            };
+            if (query.onlyFile) {
+                const workbook = await this.service.downloadReport(
+                    payments,
+                    sales,
+                    salesReturns,
+                    cashiers,
+                    paymentMethods,
+                    matriz);
+                res.status(200);
+                res.setHeader('Content-Type', 'text/xlsx');
+                res.setHeader('Content-Disposition', `attachment; filename=Ingresos-${query.startDate} A ${query.endDate}.xlsx`);
+                workbook.xlsx.write(res).then(() => {
+                    res.end();
+                }).catch((error) => Promise.reject(error));
+            } else {
+                result.payments = convertPaymentsReport(payments, cashiers, paymentMethods);
+                res.send(result);
+            }
+        } catch (error) {
+            console.error(error.message);
         }
     }
 }

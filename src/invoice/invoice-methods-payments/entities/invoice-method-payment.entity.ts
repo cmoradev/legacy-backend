@@ -3,6 +3,9 @@ import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
+
 @Entity('facturacion_formas_pago')
 export class InvoiceMethodPayment extends Base {
 
@@ -44,6 +47,9 @@ export class InvoiceMethodPayment extends Base {
 
     @OneToMany(type => MiniStoreSaleMethodPayment, salePaymentMethod => salePaymentMethod.invoiceMethodPayment)
     schoolChargePaymentMethods: MiniStoreSaleMethodPayment[];
+
+    @OneToMany(type => SalesReturns, salesReturns => salesReturns.paymentMethod)
+    salesReturns: SalesReturns[];
 
     @OneToMany(type => BranchOfficeSetting, bOS => bOS.quickSaleMethod)
     methodPayBranchOffSet: BranchOfficeSetting[];

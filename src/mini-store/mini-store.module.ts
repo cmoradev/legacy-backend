@@ -16,7 +16,8 @@ import { MiniStoreProductsProvidersModule } from './mini-store-products-provider
 import { CashRegisterModule } from './cash-register/cash-register.module';
 import { CashRegisterTransactionsModule } from './cash-register-transactions/cash-register-transactions.module';
 import { MiniStorePrices } from './mini-store-prices/entities/mini-store-prices.entity';
-
+// eliminar al cambiar los reporte del front
+import { MiniStoreSalesReturnsModule } from './store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 @Module({
     imports: [
         MiniStoreProductsModule,
@@ -35,7 +36,8 @@ import { MiniStorePrices } from './mini-store-prices/entities/mini-store-prices.
         MiniStoreProductsProvidersModule,
         CashRegisterModule,
         CashRegisterTransactionsModule,
-        MiniStorePrices
+        MiniStorePrices,
+        MiniStoreSalesReturnsModule,
     ],
 })
 export class MiniStoreModule {
