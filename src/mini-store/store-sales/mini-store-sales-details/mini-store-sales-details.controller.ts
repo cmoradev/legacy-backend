@@ -111,24 +111,37 @@ export class MiniStoreSalesDetailsController
               data[indexCategories].vd_quantity,
               r.vd_quantity,
             ).toNumber();
-            //data[indexCategories].product_price;
-            const pricev = Decimal.mul(r.vd_quantity, price).toNumber();
+            const priceCategories = Decimal.mul(r.vd_quantity, price).toNumber();
             data[indexCategories].product_price = Decimal.sum(
               data[indexCategories].product_price,
-              pricev,
+              priceCategories,
             ).toNumber();
-            
           } else {
             data.push({...r,product_price: Decimal.mul(r.vd_quantity, price).toNumber(),});
           }
           break;
         case TypeInformativeReport.CASHIERS:
-
+          const indexCashiers = data.findIndex(
+            (d: ReportProductsSoldRow) => d.cashier_id == r.cashier_id,
+          );
+          if (indexCashiers > -1) {
+            data[indexCashiers].vd_quantity = Decimal.sum(
+              data[indexCashiers].vd_quantity,
+              r.vd_quantity,
+            ).toNumber();
+            const priceCashier = Decimal.mul(r.vd_quantity, price).toNumber();
+            data[indexCashiers].product_price = Decimal.sum(
+              data[indexCashiers].product_price,
+              priceCashier,
+            ).toNumber();
+            } else {
+            data.push({...r,product_price: Decimal.mul(r.vd_quantity, price).toNumber(),});
+          }
           break;
       }
     });
     if (options?.isExported) {
-      const conceptStatusExcel = new StoreProductsSoldReport(data);
+      const conceptStatusExcel = new StoreProductsSoldReport(options, data);
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `products_sold.xlsx`,
       });
