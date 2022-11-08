@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Classroom } from './entities/classroom.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,5 +35,13 @@ export class ClassroomsService extends TypeOrmCrudService<Classroom> {
 
     async getClassroomWithGroup() {
         return await this.repo.createQueryBuilder('classroom').innerJoinAndSelect('classroom.grade', 'grade').getMany();
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists');
+        }
+        return await this.repo.softDelete(id);
     }
 }

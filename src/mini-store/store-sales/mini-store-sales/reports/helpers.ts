@@ -1,6 +1,6 @@
-import { IQueryReportSaleToday } from '../types/IReport';
 import * as Moment from 'moment';
 import { getNameStatusConcept } from '../../../../school-colegio-ingles/school-payments/report/helpers';
+import { IQueryReportSaleToday } from '../types/IReport';
 
 export const getNameReport = (label: string, data: IQueryReportSaleToday): {excel: string, title: string} =>{
   let nameE = ''+label;

@@ -6,7 +6,7 @@ export const getNameList = (
     result: ReportInscriptionsRow[]): { excel: string, title: string } => {
     let nameE = '' + label; // 'attendance_list'
     let name = '' + label;
-    if (params.levelId) {
+    if (params.levelId && result.length) {
         const level = result.find((r) => r.levelId == params.levelId).levelName;
         nameE += `_${level}` // 'attendance_list' + 'primaria'
         name += ` ${level}`
