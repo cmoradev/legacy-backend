@@ -55,7 +55,8 @@ import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/re
 import {
   getDataMatrizPayments,
   getMatrizPayments
-} from "../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util";
+} from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import {reportAcademiaPaymentByClient} from './utils/utils';
 
 @Crud({
   model: {
@@ -563,27 +564,39 @@ export class AcademyChargePaymentsController
     const obj = {
       data: result,
       dataConverter: dataMatriz,
-      matriz: matriz
+      matriz
     };
+    let data: NotInvoiced[] = [];
+    let dataByClient: NotInvoiced[] = [];
+    data = result.map((d: any) => {
+      let p_quantity = [];
+
+      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+    });
+
+    if(options.byClient){
+      dataByClient = reportAcademiaPaymentByClient(data);
+    }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentExcel(options, result, {
+      const conceptStatusExcel = new AcademiaPaymentExcel(options, options.byClient ? dataByClient : data, {
         data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
         matriz
       });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport('Pagos', options).excel}.xlsx`,
+        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport('Pagos', options).excel}`,
+        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
       };
-      return res.send({ report, data: obj });
+      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
     } else {
-      return res.send({ report: false, data: obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
     }
   }
 
@@ -599,27 +612,40 @@ export class AcademyChargePaymentsController
     const obj = {
       data: result,
       dataConverter: dataMatriz,
-      matriz: matriz
+      matriz
     };
 
+    let data: NotInvoiced[] = [];
+    let dataByClient: NotInvoiced[] = [];
+    data = result.map((d: any) => {
+      let p_quantity = [];
+
+      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+    });
+
+    if(options.byClient){
+      dataByClient = reportAcademiaPaymentByClient(data);
+    }
+
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, result, {
+      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, options.byClient ? dataByClient : data, {
         data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
         matriz
       });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
+        filename: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport('Pagos_Facturados', options).excel}`,
+        name: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}`,
       };
-      return res.send({ report, data: obj });
+      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
     } else {
-      return res.send({ report: false, data: obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
     }
   }
 }
