@@ -131,6 +131,7 @@ export class InformativeExcel {
                 columns.push(value.vd_quantity);
                 columns.push(value.subtotal);
             }
+            rows.push(columns);
         });
 
             worksheet.addTable({
@@ -151,15 +152,8 @@ export class InformativeExcel {
             worksheet.columns.forEach((column) => {
                 column.width = 10;
 
-                if (column.letter === 'K') {
-                    column.numFmt = '$#,##0.00';
-                }
-                if (column.letter === 'C' || column.letter === 'J') {
+                if (column.letter === 'C' || column.letter === 'K') {
                     column.width = 45;
-                }
-
-                if (column.letter === 'K') {
-                    column.width = 15;
                 }
             });
 
