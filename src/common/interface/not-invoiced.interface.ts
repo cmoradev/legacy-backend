@@ -13,6 +13,7 @@ export interface NotInvoiced {
     v_observations: string;
     p_income: number;
     a_id: number;
+    a_tipo: string;
     a_key: string;
     a_fullname: string;
     v_branch_office: string;
