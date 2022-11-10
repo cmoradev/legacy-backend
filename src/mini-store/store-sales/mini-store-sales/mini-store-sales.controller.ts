@@ -237,14 +237,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         if (options?.isExported) {
             const conceptStatusExcel = new InformativeExcel(options, data, dataFolios.sort((a,b) => a.p_id_product - b.p_id_product));
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
+                filename: `Informativo${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}`,
+                name: `Informativo${getRangeDates(options.startDate, options.endDate).excel}`,
             };
             return res.send({ report, data });
         } else {

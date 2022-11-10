@@ -101,7 +101,7 @@ export class InformativeExcel {
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Reporte informativo de productos${getRangeDates(this.params.startDate, this.params.endDate).title}`
+        title.value = `Reporte informativo${getRangeDates(this.params.startDate, this.params.endDate).title}`
         title.style = {
             alignment: { horizontal: 'center', vertical: 'middle' },
         };
