@@ -9,7 +9,6 @@ import {User} from '../../../../system/users/entities/user.entity';
 import {
     InvoiceMethodPayment
 } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
 
@@ -88,42 +87,40 @@ export class AcademiaPaymentExcel {
     }
 
     private generate(worksheet: Worksheet): Worksheet {
-        let columns: TableColumnProperties[] = []
-        if(this.params.status && this.params.status == PaymentStatus.trusted){
-            if(this.params.byClient){
-                columns = [
-                    { name: 'Matricula', filterButton: true },
-                    { name: 'Nombre', filterButton: false },
-                    { name: 'Numero de ventas', filterButton: false },
-                    {
-                        name: 'Total del pago',
-                        filterButton: false,
-                        totalsRowLabel: 'Total',
-                        totalsRowFunction: 'sum',
-                    },
-                    { name: 'Realizado por', filterButton: false },
-                    { name: 'Cancelado por', filterButton: false },
-                ];
-            } else {
-                columns = [
-                    {name: 'Matricula', filterButton: true},
-                    {name: 'Nombre', filterButton: false},
-                    {name: 'Fecha de creación', filterButton: true},
-                    {name: 'Folio de venta', filterButton: false},
-                    {name: 'Folio de pago', filterButton: false},
-                    {name: 'Folio de factura', filterButton: false},
-                    {name: 'Ciclo de venta', filterButton: false},
-                    {name: 'Metodo de pago', filterButton: true},
-                    {
-                        name: 'Total del pago',
-                        filterButton: false,
-                        totalsRowLabel: 'Total',
-                        totalsRowFunction: 'sum',
-                    },
-                    {name: 'Realizado por', filterButton: false},
-                    {name: 'Cancelado por', filterButton: false},
-                ];
-            }
+        let columns: TableColumnProperties[] = [];
+        if(this.params.byClient) {
+            columns = [
+                { name: 'Matricula', filterButton: true },
+                { name: 'Nombre', filterButton: false },
+                { name: 'Numero de ventas', filterButton: false },
+                {
+                    name: 'Total del pago',
+                    filterButton: false,
+                    totalsRowLabel: 'Total',
+                    totalsRowFunction: 'sum',
+                },
+                { name: 'Realizado por', filterButton: false },
+                { name: 'Cancelado por', filterButton: false },
+            ];
+        } else {
+            columns = [
+                {name: 'Matricula', filterButton: true},
+                {name: 'Nombre', filterButton: false},
+                {name: 'Fecha de creación', filterButton: true},
+                {name: 'Folio de venta', filterButton: false},
+                {name: 'Folio de pago', filterButton: false},
+                {name: 'Folio de factura', filterButton: false},
+                {name: 'Ciclo de venta', filterButton: false},
+                {name: 'Metodo de pago', filterButton: true},
+                {
+                    name: 'Total del pago',
+                    filterButton: false,
+                    totalsRowLabel: 'Total',
+                    totalsRowFunction: 'sum',
+                },
+                {name: 'Realizado por', filterButton: false},
+                {name: 'Cancelado por', filterButton: false},
+            ];
         }
 
         worksheet.mergeCells(`B2:K2`);
@@ -151,35 +148,32 @@ export class AcademiaPaymentExcel {
         };
         const rows = [];
         if(this.params.byClient){
-            if(this.params.status && this.params.status == PaymentStatus.trusted){
-                this.rows.forEach((value: NotInvoiced) => {
-                    const columns = [];
-                    columns.push(value.a_key);
-                    columns.push(value.a_fullname);
-                    columns.push(value.count);
-                    columns.push(parseFloat(`${value.p_income}`));
-                    columns.push(value.u_fullname_cashier);
-                    columns.push(value.us_fullname_cancelation);
-                });
-            }
+            this.rows.forEach((value: NotInvoiced) => {
+                const columns = [];
+                columns.push(value.a_key);
+                columns.push(value.a_fullname);
+                columns.push(value.count);
+                columns.push(parseFloat(`${value.p_income}`));
+                columns.push(value.u_fullname_cashier);
+                columns.push(value.us_fullname_cancelation);
+                rows.push(columns);
+            });
         } else {
-            if(this.params.status && this.params.status == PaymentStatus.trusted) {
-                this.rows.forEach((value: NotInvoiced) => {
-                    const columns = [];
-                    columns.push(value.a_key);
-                    columns.push(value.a_fullname);
-                    columns.push(formatDate(value.p_created_at));
-                    columns.push(value.v_folio);
-                    columns.push(value.p_folio);
-                    columns.push(value.f_folio);
-                    columns.push(value.v_cycle);
-                    columns.push(value.f_metodo_pago);
-                    columns.push(parseFloat(`${value.p_income}`));
-                    columns.push(value.u_fullname_cashier);
-                    columns.push(value.us_fullname_cancelation);
-                    rows.push(columns);
-                });
-            }
+            this.rows.forEach((value: NotInvoiced) => {
+                const columns = [];
+                columns.push(value.a_key);
+                columns.push(value.a_fullname);
+                columns.push(formatDate(value.p_created_at));
+                columns.push(value.v_folio);
+                columns.push(value.p_folio);
+                columns.push(value.f_folio);
+                columns.push(value.v_cycle);
+                columns.push(value.f_metodo_pago);
+                columns.push(parseFloat(`${value.p_income}`));
+                columns.push(value.u_fullname_cashier);
+                columns.push(value.us_fullname_cancelation);
+                rows.push(columns);
+            });
         }
 
         worksheet.addTable({
