@@ -6,7 +6,7 @@ export const reportStorePaymentByClient = (
 ) => {
     const dataClient: NotInvoiced[] = [];
     data.forEach((d: any) => {
-        const index = dataClient.findIndex((dd) => d.a_key == dd.a_key);
+        const index = dataClient.findIndex((dd) => d.a_id == dd.a_id);
         if (index > -1) {
             dataClient[index].p_quantity.push(...d.p_quantity);
             dataClient[index].p_income = Decimal.sum(dataClient[index].p_income, d.p_income).toNumber();

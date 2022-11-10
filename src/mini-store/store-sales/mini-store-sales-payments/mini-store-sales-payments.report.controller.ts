@@ -15,8 +15,8 @@ import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel'
 import { getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
-import {NotInvoiced} from "../../../common/interface/not-invoiced.interface";
-import {reportStorePaymentByClient} from "./utils/utils";
+import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
+import {reportStorePaymentByClient} from './utils/utils';
 
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
@@ -72,7 +72,7 @@ export class MiniStoreSalesPaymentsReportController {
         const obj = {
             data: result,
             dataConverter: dataMatriz,
-            matriz: matriz
+            matriz
         };
         let data: NotInvoiced[] = [];
         let dataByClient: NotInvoiced[] = [];
@@ -120,7 +120,7 @@ export class MiniStoreSalesPaymentsReportController {
         const obj = {
             data: result,
             dataConverter: dataMatriz,
-            matriz: matriz
+            matriz
         };
         let data: NotInvoiced[] = [];
         let dataByClient: NotInvoiced[] = [];

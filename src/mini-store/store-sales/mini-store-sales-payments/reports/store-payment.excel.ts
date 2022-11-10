@@ -9,7 +9,6 @@ import {User} from '../../../../system/users/entities/user.entity';
 import {
     InvoiceMethodPayment
 } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import {PaymentStatus} from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
 
@@ -89,7 +88,7 @@ export class StorePaymentExcel {
 
     private generate(worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = []
-        if(this.params.status && this.params.status == PaymentStatus.trusted) {
+        if(this.params.status) {
             if (this.params.byClient) {
                 columns = [
                     { name: 'Matricula', filterButton: true },
@@ -151,7 +150,7 @@ export class StorePaymentExcel {
         };
         const rows = [];
         if (this.params.byClient) {
-            if(this.params.status && this.params.status == PaymentStatus.trusted) {
+            if(this.params.status) {
                 this.rows.forEach((value: NotInvoiced) => {
                     const columns = [];
                     columns.push(value.a_key);
@@ -160,10 +159,11 @@ export class StorePaymentExcel {
                     columns.push(parseFloat(`${value.p_income}`));
                     columns.push(value.u_fullname_cashier);
                     columns.push(value.us_fullname_cancelation);
+                    rows.push(columns);
                 });
             }
         } else {
-            if(this.params.status && this.params.status == PaymentStatus.trusted){
+            if(this.params.status){
                 this.rows.forEach((value: NotInvoiced) => {
                     const columns = [];
                     columns.push(value.a_key);
