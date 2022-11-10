@@ -197,6 +197,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportInformative,
     ) {
         const result = await this.service.reportInformative(options);
+        const dataFolios: IReportInformativeRow[] = [];
         const data: IReportInformativeRow[] = [];
         result.forEach((r: IReportInformativeRow) => {
             switch (parseInt(`${options.type}`)) {
@@ -205,10 +206,11 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                     if (index > -1) {
                         data[index].vd_quantity = Decimal.sum(data[index].vd_quantity, r.vd_quantity).toNumber();
                         data[index].subtotal = Decimal.mul(data[index].vd_quantity, r.vd_price).toNumber();
-                        if (r.v_folio_venta != null) data[index].v_folio_venta = `${data[index].v_folio_venta}, ${r.v_folio_venta}`;
-                        if (r.folios_ventas_pagos != null) data[index].folios_ventas_pagos = `${data[index].folios_ventas_pagos}, ${r.folios_ventas_pagos}`;
                     } else {
                         data.push(r);
+                    }
+                    if (r.v_folio_venta != null && r.folios_ventas_pagos != null) {
+                        dataFolios.push(r);
                     }
                     break;
                 case TypeInformativeReport.CATEGORIES:
@@ -231,8 +233,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                     break;
             }
         });
+
         if (options?.isExported) {
-            const conceptStatusExcel = new InformativeExcel(options, data);
+            const conceptStatusExcel = new InformativeExcel(options, data, dataFolios.sort((a,b) => a.p_id_product - b.p_id_product));
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `Informativo_de_productos${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
