@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import {Controller, Delete, Param, ParseIntPipe, Put} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargeDetails } from './entities/school-charge-details.entity';
 import { SchoolChargesDetailsService } from './school-charges-details.service';
@@ -25,5 +25,15 @@ export class SchoolChargesDetailsController implements CrudController<SchoolChar
 
     get base(): CrudController<SchoolChargeDetails> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 }
