@@ -49,10 +49,11 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
-import {IQueryReportSchoolPayment} from './types/IReport';
-import {SchoolPaymentExcel} from './reports/shoool-payment.excel';
-import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
-import {SchoolPaymentInvoiceExcel} from './reports/school-payment-invoice.excel';
+import { IQueryReportSchoolPayment } from './types/IReport';
+import { SchoolPaymentExcel } from './reports/shoool-payment.excel';
+import { getNameReport } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { SchoolPaymentInvoiceExcel } from './reports/school-payment-invoice.excel';
+import { reportSchoolPaymentByClient } from './utils/utils';
 
 @Crud({
   model: {
@@ -525,26 +526,39 @@ export class SchoolChargesPaymentsController
     const obj = {
       data: result,
       dataConverter: dataMatriz,
-      matriz: matriz
+      matriz
     };
+    let data: NotInvoiced[] = [];
+    let dataByClient: NotInvoiced[] = [];
+    data = result.map((d: any) => {
+      let p_quantity = [];
+
+      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+    });
+
+    if(options.byClient){
+      dataByClient = reportSchoolPaymentByClient(data);
+    }
+
     if(options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentExcel(options, result, {
+      const conceptStatusExcel = new SchoolPaymentExcel(options,options.byClient ? dataByClient : data,{
         data: {...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
         matriz
       });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport('Pagos', options).excel}.xlsx`,
+        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' :  'Pagos', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport('Pagos', options).excel}`,
+        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' :  'Pagos', options).excel}`,
       };
-      return res.send({ report, data: obj });
+      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
     } else {
-      return res.send({ report: false, data: obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
     }
   }
 
@@ -559,27 +573,39 @@ export class SchoolChargesPaymentsController
     const obj = {
       data: result,
       dataConverter: dataMatriz,
-      matriz: matriz
+      matriz
     };
+    let data: NotInvoiced[] = [];
+    let dataByClient: NotInvoiced[] = [];
+    data = result.map((d: any) => {
+      let p_quantity = [];
+
+      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+    });
+
+    if(options.byClient){
+      dataByClient = reportSchoolPaymentByClient(data);
+    }
 
     if(options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, result, {
+      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options,options.byClient ? dataByClient : data, {
         data: {...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
         matriz
       });
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport('Pagos_Facturados', options).excel}.xlsx`,
+        filename: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport('Pagos_Facturados', options).excel}`,
+        name: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}`,
       };
-      return res.send({ report, data: obj });
+      return res.send({ report,data: options.byClient ? dataByClient : data, obj });
     } else {
-      return res.send({ report: false, data: obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
     }
   }
 

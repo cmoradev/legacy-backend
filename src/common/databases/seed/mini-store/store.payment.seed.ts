@@ -20,6 +20,8 @@ export default class StorePaymentSeed implements Seeder {
             p.cambio AS p_change,
             v.observaciones AS v_observaciones,
             CAST((p.cantidad - p.cambio) AS DECIMAL(12,6)) AS p_income,
+            a.id AS a_id,
+            a.id_modalidad AS a_tipo,
             a.matricula AS a_key,
             (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
             v.cycleId AS v_cycle,

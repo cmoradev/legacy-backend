@@ -15,6 +15,8 @@ import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel'
 import { getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
+import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
+import {reportStorePaymentByClient} from './utils/utils';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
@@ -73,27 +75,39 @@ export class MiniStoreSalesPaymentsReportController {
         const obj = {
             data: result,
             dataConverter: dataMatriz,
-            matriz: matriz
+            matriz
         };
+        let data: NotInvoiced[] = [];
+        let dataByClient: NotInvoiced[] = [];
+        data = result.map((d: any) => {
+            let p_quantity = [];
+
+            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        });
+
+        if(options.byClient){
+            dataByClient = reportStorePaymentByClient(data);
+        }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentExcel(options, result, {
+            const conceptStatusExcel = new StorePaymentExcel(options, options.byClient ? dataByClient : data, {
                 data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
                 matriz
             });
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport('Ingresos', options).excel}.xlsx`,
+                filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport('Ingresos', options).excel}`,
+                name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
             };
-            return res.send({ report, data: obj });
+            return res.send({ report, data: options.byClient ? dataByClient : data, obj });
         } else {
-            return res.send({ report: false, data: obj });
+            return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
         }
     }
 
@@ -109,27 +123,39 @@ export class MiniStoreSalesPaymentsReportController {
         const obj = {
             data: result,
             dataConverter: dataMatriz,
-            matriz: matriz
+            matriz
         };
+        let data: NotInvoiced[] = [];
+        let dataByClient: NotInvoiced[] = [];
+        data = result.map((d: any) => {
+            let p_quantity = [];
+
+            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        });
+
+        if(options.byClient){
+            dataByClient = reportStorePaymentByClient(data);
+        }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentInvoiceExcel(options, result, {
+            const conceptStatusExcel = new StorePaymentInvoiceExcel(options, options.byClient ? dataByClient : data, {
                 data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
                 matriz
             });
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport('Ingresos_facturados', options).excel}.xlsx`,
+                filename: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport('Ingresos_facturados', options).excel}`,
+                name: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}`,
             };
-            return res.send({ report, data: obj });
+            return res.send({ report, data: options.byClient ? dataByClient : data, obj });
         } else {
-            return res.send({ report: false, data: obj });
+            return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
         }
     }
 

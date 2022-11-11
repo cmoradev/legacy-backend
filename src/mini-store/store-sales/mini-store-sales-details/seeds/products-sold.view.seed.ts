@@ -22,13 +22,17 @@ export default class ProductsSoldViewSeeds implements Seeder {
             ci.id AS ciclo_id,
             ci.ciclo AS ciclo_name,
             c.id AS classificationsId,
-            c.nombre AS classifications_name
+            c.nombre AS classifications_name,
+            u.id AS cashier_id,
+            (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS cashier_fullname,
+            v.id_estado_pago AS sellStatus
         FROM tie_venta_detalle vd
         LEFT JOIN tie_productos p ON p.id = vd.miniStoreProductId
         LEFT JOIN tie_clasificaciones c ON c.id = vd.miniStoreClassificationId
         LEFT JOIN tie_ventas v ON v.id = vd.miniStoreSaleId
         LEFT JOIN ciclos ci ON ci.id = v.cycleId
         LEFT JOIN planteles pl ON pl.id = v.storeBranchOfficeId
+        LEFT JOIN usuarios u on u.id = v.id_agente
         ORDER BY vd.id DESC`);
   }
 }
