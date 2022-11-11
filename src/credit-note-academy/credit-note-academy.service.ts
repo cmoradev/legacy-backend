@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Impuestos, MetodoPago, MetodoPagoType, Receptor, Relacionado, TipoComprobante, TypeComprobante, XmlCdfi, XmlReceptorAttribute } from '@signati/core';
+import { FormaPago, FormaPagoType, MetodoPago, MetodoPagoType, TipoComprobante, TypeComprobante, XmlCdfi } from '@signati/core';
 import { PDF } from '@signati/pdf';
 import { readFileSync } from 'fs';
 import { Repository } from 'typeorm';
@@ -70,6 +70,22 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
         @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({id}, {withDeleted: true});
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.restore(id);
     }
 
     async saveCreditNote(

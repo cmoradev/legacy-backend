@@ -1,4 +1,16 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post, Put,
+    Query,
+    Res
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -10,7 +22,6 @@ import { FactSw } from '../webService/FactSw';
 import { ConceptWithTaxes, CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
 import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
 import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
-import { AcademyChargeDetails } from '../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';
 import { Payment } from '../common/point-of-sale/types.pos';
 
 @Crud({
@@ -35,6 +46,16 @@ import { Payment } from '../common/point-of-sale/types.pos';
 @Controller('credit-note-academy')
 export class CreditNoteAcademyController implements CrudController<CreditNoteAcademy> {
     constructor(readonly service: CreditNoteAcademyService, readonly configService: ConfigService, readonly smartWebService: FactSw) {
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Post('generate/credit-note')
