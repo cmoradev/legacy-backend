@@ -8,6 +8,11 @@ import { SchoolChargesDetailsService } from './school-charges-details.service';
         type: SchoolChargeDetails,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 10,
         join: {
             schoolCharge: {eager: false},
