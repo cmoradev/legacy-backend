@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import {Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { SchoolPaymentsService } from './school-payments.service';
@@ -14,6 +14,11 @@ import { getNameStatusConcept } from './report/helpers';
     type: SchoolPayment,
   },
   query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
+    },
     limit: 100,
     join: {
       schoolChargeDetail: {eager: false},
@@ -31,6 +36,16 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
 
   get base(): CrudController<SchoolPayment> {
     return this;
+  }
+
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
+
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
   }
 
   @Get('/add/payments')

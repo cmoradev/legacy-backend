@@ -1,4 +1,17 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post, Put,
+    Query,
+    Req,
+    Res
+} from '@nestjs/common';
 import {
     Crud,
     CrudController,
@@ -25,6 +38,11 @@ import { NotInvoiced } from 'src/common/interface/not-invoiced.interface';
         type: SchoolChargesInvoice,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 10,
         join: {
             schoolChargePayment: { eager: false },
@@ -62,6 +80,16 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
 
     get base(): CrudController<SchoolChargesInvoice> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get(':id/pdf')

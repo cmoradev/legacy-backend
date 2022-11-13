@@ -1,17 +1,34 @@
-import { Controller, Get, Param, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post, Put,
+    Query,
+    Req,
+    Res,
+    UploadedFile,
+    UseInterceptors
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
-import { Public } from './../../common/docorators/public.decorator';
+import { Public } from '../../common/docorators/public.decorator';
 
 @Crud({
     model: {
         type: Company,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 10,
         join: {},
     },
@@ -19,6 +36,16 @@ import { Public } from './../../common/docorators/public.decorator';
 @Controller()
 export class SettingsController implements CrudController<Company> {
     constructor(public service: SettingsService) {
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Post('upload-logo')

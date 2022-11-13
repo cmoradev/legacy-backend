@@ -1,8 +1,8 @@
 import {
   Body,
-  Controller,
-  Get, NotFoundException,
-  Post,
+  Controller, Delete,
+  Get, NotFoundException, Param, ParseIntPipe,
+  Post, Put,
   Query,
   Req,
   Res,
@@ -60,6 +60,11 @@ import { reportSchoolPaymentByClient } from './utils/utils';
     type: SchoolChargePayment,
   },
   query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
+    },
     limit: 10,
     join: {
       schoolCharge: {eager: false},
@@ -93,6 +98,16 @@ export class SchoolChargesPaymentsController
 
   get base(): CrudController<SchoolChargePayment> {
     return this;
+  }
+
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
+
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
   }
 
   @Post('/receipt')

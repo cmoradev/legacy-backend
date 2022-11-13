@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import {Controller, Delete, Param, ParseIntPipe, Put} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SystemConceptsType } from './entities/system-concepts-type.entity';
 import { SystemConceptsTypeService } from './system-concepts-type.service';
@@ -8,6 +8,11 @@ import { SystemConceptsTypeService } from './system-concepts-type.service';
     type: SystemConceptsType,
   },
   query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
+    },
     limit: 10,
     join: {},
   },
@@ -17,5 +22,15 @@ export class SystemConceptsTypeController implements CrudController<SystemConcep
   constructor(readonly service: SystemConceptsTypeService) { }
   get base(): CrudController<SystemConceptsType> {
     return this;
+  }
+
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
+
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
   }
 }

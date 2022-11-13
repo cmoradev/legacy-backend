@@ -1,22 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import {
-    CFDI,
-    Comprobante,
-    Concepts,
-    Emisor,
-    Impuestos,
-    Receptor,
-    Relacionado,
-    XmlCdfi,
-    XmlReceptorAttribute
-} from '@signati/core';
+import { XmlCdfi } from '@signati/core';
 import { PDF } from '@signati/pdf';
 import { readFileSync } from 'fs';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
-import { ConceptWithTaxes, InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
 import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { A117 } from '../pdf/A117/desing/A117';
@@ -28,6 +17,7 @@ import { StampV4 } from '../webService/FactSw';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+
 @Injectable()
 export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool> {
     constructor(
@@ -36,6 +26,22 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         @InjectRepository(BranchOffice, ColegioDBNameConnection) readonly branchOfficeRepository: Repository<BranchOffice>,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({id}, {withDeleted: true});
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.restore(id);
     }
 
     async saveCreditNote(
