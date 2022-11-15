@@ -573,7 +573,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         gradeId,
         groupId,
     }: QueryReportInscriptions): Promise<ReportInscriptionsRow[]> {
-        let queryString = `SELECT * FROM vw_col_inscriptions where inscriptionStatus = '2'`
+        let queryString = `SELECT * FROM vw_col_inscriptions where inscriptionStatus != '0' AND studentId is not null`
 
         if (levelId) {
             queryString = `${queryString} AND levelId = ${parseInt(`${levelId}`)}`;

@@ -30,6 +30,8 @@ export interface NotInvoiced {
     p_global_uuid?: string;
     u_fullname_cashier: string;
     us_fullname_cancelation: string;
+    uf_fullname_cashier: string;
+    usf_fullname_cancelation: string;
     cashier_id: number;
     cancelation_id: number;
     vu_fullname_cashier: string,

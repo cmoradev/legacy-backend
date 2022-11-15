@@ -33,13 +33,17 @@ export default class SchoolPaymentSeed implements Seeder {
             f.createdAt AS f_created_at,
             p.stamping AS p_stamping,
             p.paymentStatusId AS p_state,
-            (select p_way_name from vw_sch_way_payments where p_id = p.id) AS f_metodo_pago,
-            (select p_way from vw_sch_way_payments where p_id = p.id) AS f_metodo_pago_codigo,
+            (select p_way_name from vw_sch_way_payments where p_id = p.id LIMIT 1) AS f_metodo_pago,
+            (select p_way from vw_sch_way_payments where p_id = p.id LIMIT 1) AS f_metodo_pago_codigo,
             p.globalUuid AS p_global_uuid,
             (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS u_fullname_cashier,
             (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation,
             u.id AS cashier_id,
-            us.id AS cancelation_id
+            us.id AS cancelation_id,
+            (CONCAT(uf.nombre, ' ', uf.ap_paterno, ' ', uf.ap_materno)) AS uf_fullname_cashier,
+            (CONCAT(usf.nombre, ' ', usf.ap_paterno, ' ', usf.ap_materno)) AS usf_fullname_cancelation,
+            uf.id AS f_cashier_id,
+            usf.id AS f_cancelation_id
         FROM school_charge_payments p
 
         LEFT JOIN school_charges v ON v.id = p.schoolChargeId
@@ -47,6 +51,8 @@ export default class SchoolPaymentSeed implements Seeder {
         LEFT JOIN usuarios u ON u.id = v.cashierId
         LEFT JOIN usuarios us ON us.id = v.cashierCancellationId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
+        LEFT JOIN usuarios uf ON uf.id = f.id_agente_facturador 
+        LEFT JOIN usuarios usf ON usf.id = f.id_agente_cancelador
         LEFT JOIN planteles bf on bf.id = p.schoolPaymentOfficeId
 
         ORDER BY v.id DESC;
