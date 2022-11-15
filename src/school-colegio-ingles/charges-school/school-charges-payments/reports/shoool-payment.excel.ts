@@ -72,7 +72,7 @@ export class SchoolPaymentExcel {
                 width: 10000,
                 height: 20000,
                 firstSheet: 0,
-                activeTab: 1,
+                activeTab: 0,
                 visibility: 'visible',
             },
         ];

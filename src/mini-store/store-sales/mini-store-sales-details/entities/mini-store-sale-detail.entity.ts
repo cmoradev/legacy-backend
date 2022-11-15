@@ -4,6 +4,8 @@ import { MiniStoreProduct } from '../../../mini-store-products/entities/mini-sto
 import { MiniStoreClassification } from '../../../mini-store-classifications/entities/mini-store-classification.entity';
 import { MiniStoreDetailsExtraCharges } from '../../mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+// eliminar al cambiar los reporte del front
+import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
 
 @Entity('tie_venta_detalle')
 export class MiniStoreSaleDetail extends Base {
@@ -71,5 +73,8 @@ export class MiniStoreSaleDetail extends Base {
           cascade: ['insert'],
       })
     extraCharges: MiniStoreDetailsExtraCharges[];
+
+    @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
+    returnedProducts: SalesReturnsProducts;
 
 }

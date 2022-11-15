@@ -92,6 +92,9 @@ import { SystemExtraCharges } from '../../system/system-extra-charges/entities/s
 import { Action } from '../../system/actions/entities/action.entity';
 import { InscriptionStatus } from '../../system/inscription-status/entities/inscription-status.entity';
 
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
+import { SalesReturnsProducts } from '../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns-products.entity';
 const entities = [
   AcademyActivity,
   AcademyActivitiesGroup,
@@ -185,5 +188,7 @@ const entities = [
   SystemPaymentStatus,
   SystemTypeExtraCharges,
   User,
+  SalesReturns,
+  SalesReturnsProducts,
 ];
 export default entities;

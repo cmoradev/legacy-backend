@@ -4,7 +4,7 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository, In } from 'typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-//import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
@@ -28,10 +28,11 @@ import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { XmlComprobante } from '@signati/core';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
+import { sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { IQueryReportStorePayment } from './types/IReports';
+import { SimpleReport } from './reports/simple.report';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -43,6 +44,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         @InjectRepository(MiniStoreInvoice, ColegioDBNameConnection) readonly invoiceRepository: Repository<MiniStoreInvoice>,
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
+        // eliminar al cambiar los reporte del front
+        @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
     ) {
         super(repo);
     }
@@ -56,7 +59,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({id}, {withDeleted: true});
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -66,7 +69,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {
         return await this.repo.createQueryBuilder('payments')
             .select('SUM(payments.quantity)', 'sum')
-            .where('payments.cashierBillingId = :id', {id})
+            .where('payments.cashierBillingId = :id', { id })
             .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
 
@@ -96,10 +99,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.invoiceStatus) {
-                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', {invoiceStatus: query.invoiceStatus});
+                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
             }
             if (query.cashier) {
-                paymentsQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
+                paymentsQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
         }
         return await paymentsQueryBuilder.getMany();
@@ -122,8 +125,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
             if (query.invoiceStatus) {
                 salesQueryBuilder.andWhere('payments.stamping= :invoiceStatus', {
-                        invoiceStatus: query.invoiceStatus,
-                    },
+                    invoiceStatus: query.invoiceStatus,
+                },
                 );
             }
             salesQueryBuilder.andWhere('payments.createdAt BETWEEN :startDate AND :endDate',
@@ -132,7 +135,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
+                salesQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
             }
         }
 
@@ -187,8 +190,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
                 const result = await workbook.xlsx.writeBuffer({
-                        filename: (+new Date()).toString() + '.xlsx',
-                    },
+                    filename: (+new Date()).toString() + '.xlsx',
+                },
                 );
                 const buffer = Buffer.from(result);
                 const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
@@ -204,7 +207,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
     async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment, highestPayment: MiniStoreSaleMethodPayment }> {
         let sale = {} as MiniStoreSale;
-        if(query.saleId != 0){
+        if (query.saleId != 0) {
             sale = await this.salesRepository.findOne({
                 where: {
                     id: query.saleId,
@@ -219,7 +222,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
         }
         let payment = {} as MiniStoreSalePayment;
-        if(query.salePaymentId != 0){
+        if (query.salePaymentId != 0) {
             payment = await this.repo.findOne({
                 where: {
                     id: query.salePaymentId,
@@ -229,12 +232,12 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     'miniStoreSaleMethodPayments.invoiceMethod',
                     'agent'
                 ],
-            });    
-        }else{
+            });
+        } else {
             let quantitySum = 0;
-            sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {                
+            sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {
                 const price = d.priceWithIVA
-                quantitySum = Decimal.add(quantitySum, Decimal.mul(price,d.quantity)).toNumber();
+                quantitySum = Decimal.add(quantitySum, Decimal.mul(price, d.quantity)).toNumber();
             });
             payment.quantity = quantitySum;
             payment.change = 0;
@@ -242,13 +245,14 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             payment.createdAt = sale.createdAt ? sale.createdAt : new Date();
             payment.stamping = 0;
             payment.agent = {
-                name : sale.cashier ? sale.cashier.name : '',
+                name: sale.cashier ? sale.cashier.name : '',
                 lastnameFather: sale.cashier ? sale.cashier.lastnameFather : '',
-                lastnameMother: sale.cashier ? sale.cashier.lastnameMother : ''} as User;
+                lastnameMother: sale.cashier ? sale.cashier.lastnameMother : ''
+            } as User;
             payment.observations = sale.observations ? sale.observations : '';
             payment.miniStoreSaleMethodPayments = [];
         }
-        
+
         return {
             sale,
             payment,
@@ -257,19 +261,19 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     getHighestPayment(formadepago: MiniStoreSaleMethodPayment[]) {
-        if(formadepago.length >= 1){
+        if (formadepago.length >= 1) {
             const methodpaymenst = formadepago.sort((a, b) => {
                 return a.quantity - b.quantity;
             });
             return methodpaymenst[0];
-        }else{
+        } else {
             return {} as MiniStoreSaleMethodPayment;
         }
     }
 
     async updatePayment(data: MiniStoreSalePayment) {
-        let payment = await this.repo.findOne({id: data.id});
-        payment = {...data};
+        let payment = await this.repo.findOne({ id: data.id });
+        payment = { ...data };
         return await this.repo.save(payment);
     }
 
@@ -435,8 +439,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             where: {
                 isGlobal: `${InvoiceGlobalEnum.IS_GLOBAL}`,
                 status: `${InvoiceStatus.Unbilled}`,
-                invoiceBranchOffice: {id: branchOffice.id},
-                invoiceBranchOfficeSet: {id: branchOfficeConfig.id},
+                invoiceBranchOffice: { id: branchOffice.id },
+                invoiceBranchOfficeSet: { id: branchOfficeConfig.id },
             }
         });
 
@@ -450,12 +454,12 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             payload.rfc = 'XAXX010101000';
             payload.status = InvoiceStatus.Unbilled;
             payload.isGlobal = InvoiceGlobalEnum.IS_GLOBAL;
-            payload.invoiceBranchOffice = {id: branchOffice.id} as BranchOffice;
-            payload.invoiceBranchOfficeSet = {id: branchOfficeConfig.id} as BranchOfficeSetting;
+            payload.invoiceBranchOffice = { id: branchOffice.id } as BranchOffice;
+            payload.invoiceBranchOfficeSet = { id: branchOfficeConfig.id } as BranchOfficeSetting;
             const invoice = await this.invoiceRepository.save(payload);
 
             return this.invoiceRepository.findOne({
-                where: {id: invoice.id}
+                where: { id: invoice.id }
             })
         }
     }
@@ -468,26 +472,26 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         branchOfficeId,
         codigoPago,
         usersIds,
-                                    }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
+    }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
         let queryString = `SELECT * FROM vw_tie_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND p_state = ${status}`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
-        if(usersIds && usersIds.length > 0){
-            const user = usersIds.map((u) => {return parseInt(`${u}`)})
-            if(status && status == 4){
+        if (usersIds && usersIds.length > 0) {
+            const user = usersIds.map((u) => { return parseInt(`${u}`) })
+            if (status && status == 4) {
                 queryString = `${queryString} AND cancelation_id_venta in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND cashier_id_venta in (${user.join(',')})`;}
+            } else { queryString = `${queryString} AND cashier_id_venta in (${user.join(',')})`; }
         }
         try {
             return this.connection.query(queryString);
@@ -505,19 +509,19 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         cycleId,
         branchOfficeId,
         codigoPago,
-                                           }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
+    }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
         let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND f_status = ${status}`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
         }
         try {
@@ -526,6 +530,87 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             throw new NotFoundException(
                 `Error in query or conection [${queryString}]`,
             );
+        }
+    }
+
+    // eliminar al cambiar los reporte del front
+    async fetchFilteredReturns(query: QuerySimpleReport) {
+        const salesReturnsQB = this.salesReturnsRepository.createQueryBuilder('saleReturn');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.agent', 'agent');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.sale', 'sale');
+        salesReturnsQB.leftJoinAndSelect('sale.storeBranchOffice', 'storeBranchOffice');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.details', 'details');
+        salesReturnsQB.leftJoinAndSelect('details.saleDetail', 'saleDetail');
+        salesReturnsQB.leftJoinAndSelect('saleDetail.miniStoreProduct', 'product');
+        salesReturnsQB.leftJoinAndSelect('sale.student', 'student');
+        salesReturnsQB.leftJoinAndSelect('saleReturn.paymentMethod', 'paymentMethod');
+        if (query) {
+
+            salesReturnsQB.where('storeBranchOffice.id= :officeId', {
+                officeId: query.branchOfficeId,
+            });
+
+            salesReturnsQB.andWhere('saleReturn.createdAt BETWEEN :startDate AND :endDate',
+                {
+                    startDate: moment(query.startDate).startOf('day').toDate(),
+                    endDate: moment(query.endDate).endOf('day').toDate(),
+                });
+            if (query.cashier) {
+                salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.cashier });
+            }
+        }
+
+        return salesReturnsQB.getMany();
+    }
+
+    async downloadReport(payments: MiniStoreSalePayment[],
+        sales: MiniStoreSale[],
+        salesReturns: SalesReturns[],
+        cashiers: User[],
+        paymentMethods: InvoiceMethodPayment[],
+        matriz: CellRow[][]) {
+        return new SimpleReport().generate({
+            payments,
+            cashiers,
+            paymentMethods,
+            salesReturns,
+            sales,
+        }, matriz);
+    }
+
+    async simpleReport(payments: MiniStoreSalePayment[],
+        sales: MiniStoreSale[],
+        salesReturns: SalesReturns[],
+        cashiers: User[],
+        paymentMethods: InvoiceMethodPayment[],
+        matriz: CellRow[][],
+        options?: { base64: boolean }): Promise<string | any> {
+
+
+        const workbook = new SimpleReport().generate({
+            payments,
+            cashiers,
+            paymentMethods,
+            salesReturns,
+            sales,
+        }, matriz);
+        try {
+            const fileName = (+new Date()).toString() + '.xlsx';
+            if (options && options.base64) {
+                const result = await workbook.xlsx.writeBuffer({
+                    filename: (+new Date()).toString() + '.xlsx',
+                },
+                );
+                const buffer = Buffer.from(result);
+                const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+                return b64Encoding + buffer.toString('base64');
+
+            } else {
+                await workbook.xlsx.writeFile('./xls-imports/' + fileName);
+                return fileName;
+            }
+        } catch (e) {
+            return e;
         }
     }
 }

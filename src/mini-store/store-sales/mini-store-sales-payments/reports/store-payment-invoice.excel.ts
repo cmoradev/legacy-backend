@@ -9,7 +9,6 @@ import {User} from '../../../../system/users/entities/user.entity';
 import {
     InvoiceMethodPayment
 } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import {PaymentStatus} from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
 
@@ -75,7 +74,7 @@ export class StorePaymentInvoiceExcel {
                 width: 10000,
                 height: 20000,
                 firstSheet: 0,
-                activeTab: 1,
+                activeTab: 0,
                 visibility: 'visible',
             },
         ];
@@ -239,7 +238,7 @@ export class StorePaymentInvoiceExcel {
             size: 12,
         };
 
-        let columns: TableColumnProperties[] = this.dataConverter.matriz[0].map((item) => {
+        const columns: TableColumnProperties[] = this.dataConverter.matriz[0].map((item) => {
             return{name: item, filterButton: false}
         });
         const dataMatriz = this.dataConverter.matriz.slice(1,this.dataConverter.matriz.length);

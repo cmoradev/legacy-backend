@@ -16,7 +16,8 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { MiniStoreSalesPaymentsReportController } from './mini-store-sales-payments.report.controller';
 import { UsersModule } from '../../../system/users/users.module';
 import { ConfigModule } from '../../../common/config/config.module';
-
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 @Module({
     imports: [
         TypeOrmModule.forFeature([
@@ -25,6 +26,7 @@ import { ConfigModule } from '../../../common/config/config.module';
             InvoiceMethodPayment,
             MiniStoreSale,
             MiniStoreInvoice,
+            SalesReturns,
         ], ColegioDBNameConnection),
         forwardRef(() => MiniStoreInvoicesModule),
         BranchOfficeModule,

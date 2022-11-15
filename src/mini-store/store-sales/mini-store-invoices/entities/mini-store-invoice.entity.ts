@@ -9,6 +9,8 @@ import { InvoiceStatus } from '../../../../invoice/types/invoice-status';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { CreditNoteStore } from '../../../../credit-note-store/entities/credit-note-store.entity';
 import { InvoiceGlobalEnum } from '../../../../common/enums/InvoiceGlobal.enum';
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('tie_facturas')
 export class MiniStoreInvoice extends Base {
@@ -153,6 +155,9 @@ export class MiniStoreInvoice extends Base {
 
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
+
+    @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
+    saleReturn: SalesReturns;
 
     @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, { nullable: true })
     creditNoteStore: CreditNoteStore;
