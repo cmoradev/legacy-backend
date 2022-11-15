@@ -481,13 +481,13 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         let queryString = `SELECT * FROM vw_aca_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
 
         if(status){
-            queryString = `${queryString} AND f_status = ${status}`;
+            queryString = `${queryString} AND f_status = '${status}'`;
         }
         if(cycleId){
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;

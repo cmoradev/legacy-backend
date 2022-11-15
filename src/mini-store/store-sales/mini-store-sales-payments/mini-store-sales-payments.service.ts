@@ -515,7 +515,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
 
         if (status) {
-            queryString = `${queryString} AND f_status = ${status}`;
+            queryString = `${queryString} AND f_status = '${status}'`;
         }
         if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;

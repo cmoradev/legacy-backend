@@ -15,8 +15,8 @@ import { BranchOfficeService } from './branch-office.service';
         },
         limit: 10,
         join: {
-            branchoffice: {eager: false},
-            'branchoffice.quickSaleMethod': {eager: false},
+            branchoffice: {eager: false, alias: 'brachofficeinvoice'},
+            'brachofficeinvoice.quickSaleMethod': {eager: false},
         },
     },
 })

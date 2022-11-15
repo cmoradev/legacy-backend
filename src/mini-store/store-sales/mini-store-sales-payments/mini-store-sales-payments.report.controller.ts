@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, Body, Post } from '@nestjs/common';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { convertPaymentsComissionReport } from './reports/payments.util';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
@@ -17,6 +17,8 @@ import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
 import {reportStorePaymentByClient} from './utils/utils';
+import * as AdmZip from 'adm-zip';
+import { ConfigService } from '../../../common/config/config.service';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
@@ -29,6 +31,7 @@ export class MiniStoreSalesPaymentsReportController {
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
         readonly user: UsersService,
+        private readonly configService: ConfigService,
     ) {
     }
 
@@ -156,6 +159,30 @@ export class MiniStoreSalesPaymentsReportController {
             return res.send({ report, data: options.byClient ? dataByClient : data, obj });
         } else {
             return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+        }
+    }
+
+    @Post('zip-invoices')
+    async zipInvoices(@Res() res: Response, @Body() params: {
+        array: NotInvoiced[]
+    }
+    ) {
+        try {
+            const zip = new AdmZip();
+            params.array.forEach((i: NotInvoiced) => {
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+            });
+
+            const downloadName = `${Date.now()}.zip`;
+            const data = zip.toBuffer();
+            res.set('Content-Type', 'application/octet-stream');
+            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
+            res.set('Content-Length', data.length.toString());
+            res.send(data);
+        } catch (e) {
+            res.status(500);
+            res.send(e.message);
         }
     }
 
