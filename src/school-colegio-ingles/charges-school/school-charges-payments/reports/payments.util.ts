@@ -22,6 +22,7 @@ import {
 import {
   AcademyChargeMethodsPayments
 } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
+import { Decimal } from '@munyaal/calculations';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -209,6 +210,7 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
 export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSalePayment[] | AcademyChargePayments[], cashiers: User[], methodsPayments: InvoiceMethodPayment[], type: InvoiceModules) => {
   const headers: any[] = ['Tipo', ...cashiers.map((value: User) => value && value.name), 'Total'];
   const resume: ResumeType[] = [];
+  methodsPayments.push({code: '00', name: 'Totales'} as InvoiceMethodPayment)
   methodsPayments.forEach(paymentMethod => {
     let paymentsByMethod = [];
 
@@ -279,6 +281,19 @@ export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSal
 
     resumeDataTable.push(resumeDataTableItem);
   }
+
+  const totales = []
+    for (let x = 1; x < resumeDataTable[0].length; x++) {
+        let suma = 0;
+        for (let y = 1; y < resumeDataTable.length; y++) {
+            suma += resumeDataTable[y][x];
+        }
+        totales.push(suma)
+    }
+  totales.forEach((t,i)=>{
+    resumeDataTable[resumeDataTable.length-1][i+1] = t;
+  })
+
 
   return resumeDataTable;
 }

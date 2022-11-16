@@ -17,7 +17,7 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
-import {reportSaleTodayByClient} from './utils/utils';
+import { reportSaleTodayByClient } from './utils/utils';
 
 @Crud({
     model: {
@@ -169,21 +169,21 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
             return { ...d, id_estado_pago: parseInt(`${d.id_estado_pago}`), idsPagos: idsPagos.map((p: string) => { return parseInt(`${p}`) }), idsDetalles: idsDetalles.map((p: string) => { return parseInt(`${p}`) }) } as IReportSaleTodayRow
         });
 
-        if(options.byClient){
+        if (options.byClient) {
             dataByClient = reportSaleTodayByClient(data);
         }
 
         if (options?.isExported) {
             const conceptStatusExcel = new SaleTodayExcel(options, options.byClient ? dataByClient : data);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ventas por cliente' :  'Ventas', options).excel}.xlsx`,
+                filename: `${getNameReport(options.byClient ? 'Ventas por cliente' : 'Ventas', options).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ventas por cliente' :  'Ventas', options).excel}`,
+                name: `${getNameReport(options.byClient ? 'Ventas por cliente' : 'Ventas', options).excel}`,
             };
             return res.send({ report, data: options.byClient ? dataByClient : data });
         } else {
@@ -217,25 +217,34 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                     const indexCategory = data.findIndex((d: IReportInformativeRow) => d.c_id == r.c_id);
                     if (indexCategory > -1) {
                         data[indexCategory].vd_quantity = Decimal.sum(data[indexCategory].vd_quantity, r.vd_quantity).toNumber();
-                        data[indexCategory].subtotal = Decimal.mul(data[indexCategory].vd_quantity, r.vd_price).toNumber();
+                        const priceCategories = Decimal.mul(r.vd_quantity, r.vd_price).toNumber();
+                        data[indexCategory].subtotal = Decimal.sum(
+                            data[indexCategory].subtotal,
+                            priceCategories,
+                        ).toNumber();
+
                     } else {
-                        data.push(r);
+                        data.push({ ...r, subtotal: Decimal.mul(r.vd_quantity, r.vd_price).toNumber(), });
                     }
                     break;
                 case TypeInformativeReport.CASHIERS:
                     const indexCashier = data.findIndex((d: IReportInformativeRow) => d.u_id_agent == r.u_id_agent);
                     if (indexCashier > -1) {
                         data[indexCashier].vd_quantity = Decimal.sum(data[indexCashier].vd_quantity, r.vd_quantity).toNumber();
-                        data[indexCashier].subtotal = Decimal.mul(data[indexCashier].vd_quantity, r.vd_price).toNumber();
+                        const priceCashier = Decimal.mul(r.vd_quantity, r.vd_price).toNumber();
+                        data[indexCashier].subtotal = Decimal.sum(
+                            data[indexCashier].subtotal,
+                            priceCashier,
+                        ).toNumber();
                     } else {
-                        data.push(r);
+                        data.push({ ...r, subtotal: Decimal.mul(r.vd_quantity, r.vd_price).toNumber(), });
                     }
                     break;
             }
         });
 
         if (options?.isExported) {
-            const conceptStatusExcel = new InformativeExcel(options, data, dataFolios.sort((a,b) => a.p_id_product - b.p_id_product));
+            const conceptStatusExcel = new InformativeExcel(options, data, dataFolios.sort((a, b) => a.p_id_product - b.p_id_product));
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `Informativo${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });

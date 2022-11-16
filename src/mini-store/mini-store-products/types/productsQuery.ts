@@ -1,8 +1,11 @@
+import { TypeListProductReport } from "../../../common/enums/typeListProductReport.enum";
 
 export interface QueryReportProducts {
     listId?: number[],
     classificationId?: number[],
     isExported?: boolean
+    branchOfficeId?: number;
+    type?: TypeListProductReport
 }
 
 export interface ReportProductsRow {   

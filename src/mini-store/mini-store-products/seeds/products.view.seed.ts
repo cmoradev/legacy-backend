@@ -15,6 +15,7 @@ export default class ProductsViewSeeds implements Seeder {
             p.stock AS storage_quantity,
             p.minstock AS minimum_storage,
             p.maxstock AS maximum_storage,
+            p.branchOfficeId AS branchOffice_id,
             c.id AS classificationsId,
             c.nombre AS classification_name,
             lp.id AS listId,

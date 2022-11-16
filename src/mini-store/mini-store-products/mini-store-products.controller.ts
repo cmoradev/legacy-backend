@@ -106,9 +106,9 @@ export class MiniStoreProductsController
         type: 'excel',
         name: `products`,
       };
-      return res.send({ report, result });
+      return res.send({ report, data: result });
     } else {
-      return res.send({ report: false, result });
+      return res.send({ report: false, data: result });
     }
   }
 }

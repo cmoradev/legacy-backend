@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { formatOperation } from '../store-sales/mini-store-sales/reports/mini-store-sale.report';
 import { roundQuantity } from '../../common/point-of-sale/point-of-sale';
 import { QueryReportProducts, ReportProductsRow } from './types/productsQuery';
+import { TypeListProductReport } from '../../common/enums/typeListProductReport.enum';
 
 @Injectable()
 export class MiniStoreProductsService extends TypeOrmCrudService<
@@ -54,7 +55,6 @@ export class MiniStoreProductsService extends TypeOrmCrudService<
         'products.id as id',
         'products.name as name',
         'products.isFavorite as isFavorite',
-        'products.calculation as calculation',
         'products.unity as unity',
         'products.unitMeasurement as unitMeasurement',
         'products.picture as picture',
@@ -81,7 +81,6 @@ export class MiniStoreProductsService extends TypeOrmCrudService<
         'products.id as id',
         'products.name as name',
         'products.isFavorite as isFavorite',
-        'products.calculation as calculation',
         'products.unity as unity',
         'products.unitMeasurement as unitMeasurement',
         'products.picture as picture',
@@ -101,10 +100,6 @@ export class MiniStoreProductsService extends TypeOrmCrudService<
       .getRawMany();
     for (const result of data) {
       result.quantity = roundQuantity(result.quantity);
-      result.formula = formatOperation(
-        JSON.parse(result.calculation),
-        result.quantity,
-      );
     }
     pagina.data = data;
     return pagina;
@@ -223,20 +218,31 @@ export class MiniStoreProductsService extends TypeOrmCrudService<
   public async reportProducts({
     listId,
     classificationId,
+    branchOfficeId,
+    type
   }: QueryReportProducts): Promise<ReportProductsRow[]> {
-    let queryString = `SELECT * FROM vw_tie_products`;
+    let queryString = `SELECT * FROM vw_tie_products where branchOffice_id = ${branchOfficeId}`;
+    if (type == TypeListProductReport.OK) {
+      queryString = `${queryString} AND storage_quantity >= minimum_storage and storage_quantity <= maximum_storage`;
+    }
+    if (type == TypeListProductReport.MIN) {
+      queryString = `${queryString} AND storage_quantity <= minimum_storage`;
+    }
+    if (type == TypeListProductReport.MAX) {
+      queryString = `${queryString} AND storage_quantity >= maximum_storage`;
+    }
     const listValid = listId !== undefined && listId.length > 0;
     const classificationValid =
       classificationId !== undefined && classificationId.length > 0;
     if (listValid && classificationId) {
-      queryString = `${queryString} WHERE listId IN (${listId.join(', ')})`;
+      queryString = `${queryString} AND listId IN (${listId.join(', ')})`;
       queryString = `${queryString} AND classificationsId IN (${classificationId.join(
         ', ',
       )})`;
     } else if (listValid && !classificationValid) {
-      queryString = `${queryString} WHERE listId IN  (${listId.join(', ')})`;
+      queryString = `${queryString} AND listId IN  (${listId.join(', ')})`;
     } else if (!listValid && classificationValid) {
-      queryString = `${queryString} WHERE classificationsId IN (${classificationId.join(
+      queryString = `${queryString} AND classificationsId IN (${classificationId.join(
         ', ',
       )})`;
     }
