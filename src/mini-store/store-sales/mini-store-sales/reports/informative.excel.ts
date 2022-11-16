@@ -129,18 +129,18 @@ export class InformativeExcel {
             if (this.params.type == TypeInformativeReport.PRODUCTS) {
                 columns.push(value.c_name_classification);
                 columns.push(value.p_name_product);
-                columns.push(value.vd_quantity);
-                columns.push(value.vd_price);
+                columns.push(parseInt(`${value.vd_quantity}`));
+                columns.push(parseInt(`${value.vd_price}`));
                 columns.push(value.subtotal);
                 rows.push(columns);
             } else if (this.params.type == TypeInformativeReport.CATEGORIES) {
                 columns.push(value.c_name_classification);
-                columns.push(value.vd_quantity);
+                columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(value.subtotal);
                 rows.push(columns);
             } else if (this.params.type == TypeInformativeReport.CASHIERS) {
                 columns.push(value.u_fullname_agent);
-                columns.push(value.vd_quantity);
+                columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(value.subtotal);
                 rows.push(columns);
             }
