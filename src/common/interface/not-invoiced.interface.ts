@@ -41,4 +41,13 @@ export interface NotInvoiced {
     bf_branch_office: number;
     bf_branch_office_name: string;
     count?: number;
+    vd_id: number;
+    vd_created_at: string;
+    vd_product_name: string;
+    vd_quantity: number[];
+    vd_price: number;
+    vd_price_IVA: number[];
+    totalIVA: number;
+    total: number;
+    vd_is_IVA: string;
 }

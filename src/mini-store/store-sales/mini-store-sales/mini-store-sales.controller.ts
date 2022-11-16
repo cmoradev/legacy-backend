@@ -17,7 +17,12 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
-import { reportSaleTodayByClient } from './utils/utils';
+import {reportSaleTodayByClient} from './utils/utils';
+import {reportStoreSaleByClient} from './utils/utilSale';
+import {SaleExcel} from './reports/sale.excel';
+import {Public} from '../../../common/docorators/public.decorator';
+import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
+import {SaleReturnExcel} from './reports/sale-return.excel';
 
 @Crud({
     model: {
@@ -258,6 +263,84 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
             return res.send({ report, data });
         } else {
             return res.send({ report: false, data });
+        }
+    }
+
+    @Get('report-sales')
+    private async reportSales(
+        @Res() res,
+        @Query() options: IQueryReportSaleTodayOp,
+    ) {
+        const result = await this.service.reportSales(options);
+        let data: NotInvoiced[] = [];
+        let dataByClient: NotInvoiced[] = [];
+        data = result.map((d: any) => {
+            let vd_quantity = [];
+            let vd_price_IVA = [];
+
+            d.vd_quantity != null ? vd_quantity = d.vd_quantity.split(',') : [];
+            d.vd_price_IVA != null ? vd_price_IVA = d.vd_price_IVA.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), vd_quantity: vd_quantity.map((p: string) => { return parseInt(`${p}`) }), vd_price_IVA: vd_price_IVA.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        });
+
+        if(options.byClient){
+            dataByClient = reportStoreSaleByClient(data);
+        }
+
+        if (options?.isExported) {
+            const conceptStatusExcel = new SaleExcel (options, options.byClient ? dataByClient : data);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}`,
+            };
+            return res.send({ report, data: options.byClient ? dataByClient : data });
+        } else {
+            return res.send({ report: false, data: options.byClient ? dataByClient : data });
+        }
+    }
+
+    @Get('report-sales-returns')
+    private async reportSalesReturns(
+        @Res() res,
+        @Query() options: IQueryReportSaleTodayOp,
+    ) {
+        const result = await this.service.reportSalesReturns(options);
+        let data: NotInvoiced[] = [];
+        let dataByClient: NotInvoiced[] = [];
+        data = result.map((d: any) => {
+            let vd_quantity = [];
+            let vd_price_IVA = [];
+
+            d.vd_quantity != null ? vd_quantity = d.vd_quantity.split(',') : [];
+            d.vd_price_IVA != null ? vd_price_IVA = d.vd_price_IVA.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), vd_quantity: vd_quantity.map((p: string) => { return parseInt(`${p}`) }), vd_price_IVA: vd_price_IVA.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        });
+
+        if(options.byClient){
+            dataByClient = reportStoreSaleByClient(data);
+        }
+
+        if (options?.isExported) {
+            const conceptStatusExcel = new SaleReturnExcel (options, options.byClient ? dataByClient : data);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}`,
+            };
+            return res.send({ report, data: options.byClient ? dataByClient : data });
+        } else {
+            return res.send({ report: false, data: options.byClient ? dataByClient : data });
         }
     }
 }

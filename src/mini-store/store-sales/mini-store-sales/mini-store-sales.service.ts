@@ -5,7 +5,8 @@ import { Connection, Repository } from 'typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import * as moment from 'moment';
-import {IQueryReportSaleToday, IQueryReportSaleTodayOp, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
+import { IQueryReportSaleToday, IQueryReportSaleTodayOp, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
+import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
@@ -132,6 +133,52 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
           }
           if(branchOfficeId){
               queryString = `${queryString} AND v_storeBranchOfficeId = ${branchOfficeId}`;
+          }
+          try {
+              return this.connection.query(queryString);
+          } catch (e) {
+              throw new NotFoundException(
+                  `Error in query or conection [${queryString}]`,
+              );
+          }
+      }
+
+      public async reportSales({
+          startDate,
+          endDate,
+          cycleId,
+          branchOfficeId,
+                               }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
+          let queryString = `SELECT * FROM vw_tie_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+          if(cycleId){
+              queryString = `${queryString} AND v_cycle = ${cycleId}`;
+          }
+          if(branchOfficeId){
+              queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+          }
+          try {
+              return this.connection.query(queryString);
+          } catch (e) {
+              throw new NotFoundException(
+                  `Error in query or conection [${queryString}]`,
+              );
+          }
+      }
+
+      public async reportSalesReturns({
+          startDate,
+          endDate,
+          cycleId,
+          branchOfficeId,
+                                 }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
+          let queryString = `SELECT * FROM vw_tie_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 4`;
+
+          if(cycleId){
+              queryString = `${queryString} AND v_cycle = ${cycleId}`;
+          }
+          if(branchOfficeId){
+              queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
           }
           try {
               return this.connection.query(queryString);

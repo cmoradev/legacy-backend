@@ -4,7 +4,7 @@ import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity'
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository, In } from 'typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-//import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
@@ -32,8 +32,6 @@ import { sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { IQueryReportStorePayment } from './types/IReports';
-// eliminar al cambiar los reporte del front
-import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { SimpleReport } from './reports/simple.report';
 
 @Injectable()
