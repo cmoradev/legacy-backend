@@ -1,5 +1,6 @@
 export interface NotInvoiced {
     p_id: number;
+    v_id: number;
     f_id: number;
     v_folio: string;
     p_folio: string;
@@ -50,4 +51,10 @@ export interface NotInvoiced {
     totalIVA: number;
     total: number;
     vd_is_IVA: string;
+    scd_created_at: string;
+    v_id_branch_office: number;
+    scd_concept: string;
+    scd_quantity: number[];
+    scd_price: number[];
+    scd_total: number;
 }

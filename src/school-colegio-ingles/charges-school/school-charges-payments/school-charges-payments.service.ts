@@ -29,6 +29,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
 import {IQueryReportSchoolPayment} from './types/IReport';
+import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -237,6 +238,29 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
+    public async reportSalesSchool({
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+                                   }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_sales where scd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if (cycleId) {
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if (branchOfficeId) {
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         try {
             return this.connection.query(queryString);

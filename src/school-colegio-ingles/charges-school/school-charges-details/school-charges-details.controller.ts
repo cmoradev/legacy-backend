@@ -15,9 +15,9 @@ import { SchoolChargesDetailsService } from './school-charges-details.service';
         },
         limit: 10,
         join: {
-            schoolCharge: {eager: false},
-            extraCharges: {eager: false},
-            schoolPayment: {eager: false},
+            schoolCharge: { eager: false },
+            extraCharges: { eager: false },
+            schoolPayment: { eager: false },
         },
     },
 })

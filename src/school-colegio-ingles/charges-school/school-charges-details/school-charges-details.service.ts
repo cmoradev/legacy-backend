@@ -22,7 +22,7 @@ export class SchoolChargesDetailsService extends TypeOrmCrudService<SchoolCharge
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({id}, {withDeleted: true});
+        const object = await this.repo.findOne({ id }, { withDeleted: true });
         if (!object) {
             throw new NotFoundException('This entity does not exists')
         }
