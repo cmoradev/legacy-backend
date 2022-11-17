@@ -17,12 +17,14 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
-import {reportSaleTodayByClient} from './utils/utils';
-import {reportStoreSaleByClient} from './utils/utilSale';
-import {SaleExcel} from './reports/sale.excel';
-import {Public} from '../../../common/docorators/public.decorator';
-import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
-import {SaleReturnExcel} from './reports/sale-return.excel';
+import { reportSaleTodayByClient } from './utils/utils';
+import { reportStoreSaleByClient } from './utils/utilSale';
+import { SaleExcel } from './reports/sale.excel';
+import { Public } from '../../../common/docorators/public.decorator';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { SaleReturnExcel } from './reports/sale-return.excel';
+import { Detalles, ExtraCharges} from '../../../common/point-of-sale/types.pos';
+import { totalAmountConceptAfterExtraCharge } from 'src/common/point-of-sale/point-of-sale';
 
 @Crud({
     model: {
@@ -275,20 +277,53 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         let data: NotInvoiced[] = [];
         let dataByClient: NotInvoiced[] = [];
         data = result.map((d: any) => {
-            let vd_quantity = [];
-            let vd_price_IVA = [];
+            let types_charges = [];
+            let aplications_charges = [];
+            let quantyties_charges = [];
 
-            d.vd_quantity != null ? vd_quantity = d.vd_quantity.split(',') : [];
-            d.vd_price_IVA != null ? vd_price_IVA = d.vd_price_IVA.split(',') : [];
-            return {...d, v_status: parseInt(`${d.v_status}`), vd_quantity: vd_quantity.map((p: string) => { return parseInt(`${p}`) }), vd_price_IVA: vd_price_IVA.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+            d.types_charges != null ? types_charges = d.types_charges.split(',') : [];
+            d.aplications_charges != null ? aplications_charges = d.aplications_charges.split(',') : [];
+            d.quantyties_charges != null ? quantyties_charges = d.quantyties_charges.split(',') : [];
+            const extraCharges: ExtraCharges[] = [];
+            for (let index = 0; index < types_charges.length; index++) {
+                extraCharges.push({
+                    applicationType: parseInt(aplications_charges[index]),
+                    quantity: parseInt(quantyties_charges[index]),
+                    typeExtraCharge: parseInt(types_charges[index])
+                })
+            }
+            const details: Detalles[] = [{
+                extraCharges,
+                id: d.vd_id,
+                price: parseInt(d.vd_price_IVA),
+                priceWithIVA: parseInt(d.vd_price_IVA),
+                quantity: parseInt(d.vd_quantity),
+                isIva: parseInt(d.vd_is_IVA),
+            }];
+            const totalIVA = totalAmountConceptAfterExtraCharge(details[0],1);
+            const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
+            return {
+                ...d,
+                totalIVA,
+                total,
+                v_status: parseInt(`${d.v_status}`),
+                types_charges: types_charges.map((p: string) => { return parseInt(`${p}`) }),
+                aplications_charges: aplications_charges.map((p: string) => { return parseInt(`${p}`) }),
+                quantyties_charges: quantyties_charges.map((p: string) => { return parseInt(`${p}`) }),
+                charges: {
+                    discounts: Decimal.sub(total, totalIVA).toNumber(),
+                    scholarships: 0,
+                    surcharges: 0
+                }
+            } as NotInvoiced
         });
 
-        if(options.byClient){
+        if (options.byClient) {
             dataByClient = reportStoreSaleByClient(data);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new SaleExcel (options, options.byClient ? dataByClient : data);
+            const conceptStatusExcel = new SaleExcel(options, options.byClient ? dataByClient : data);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}.xlsx`,
             });
@@ -311,23 +346,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSalesReturns(options);
-        let data: NotInvoiced[] = [];
         let dataByClient: NotInvoiced[] = [];
-        data = result.map((d: any) => {
-            let vd_quantity = [];
-            let vd_price_IVA = [];
 
-            d.vd_quantity != null ? vd_quantity = d.vd_quantity.split(',') : [];
-            d.vd_price_IVA != null ? vd_price_IVA = d.vd_price_IVA.split(',') : [];
-            return {...d, v_status: parseInt(`${d.v_status}`), vd_quantity: vd_quantity.map((p: string) => { return parseInt(`${p}`) }), vd_price_IVA: vd_price_IVA.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-        });
-
-        if(options.byClient){
-            dataByClient = reportStoreSaleByClient(data);
+        if (options.byClient) {
+            dataByClient = reportStoreSaleByClient(result);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new SaleReturnExcel (options, options.byClient ? dataByClient : data);
+            const conceptStatusExcel = new SaleReturnExcel(options, options.byClient ? dataByClient : result);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}.xlsx`,
             });
@@ -338,9 +364,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 type: 'excel',
                 name: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : data });
+            return res.send({ report, data: options.byClient ? dataByClient : result });
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : data });
+            return res.send({ report: false, data: options.byClient ? dataByClient : result });
         }
     }
 }

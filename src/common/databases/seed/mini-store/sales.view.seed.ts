@@ -29,7 +29,10 @@ export default class SalesViewSeed implements Seeder {
             vu.id AS cashier_id_venta,
             (CONCAT(vuc.nombre, ' ', vuc.ap_paterno, ' ', vuc.ap_materno)) AS vuc_fullname_cancelation,
             vuc.id AS cancelation_id_venta,
-            v.observaciones AS v_observations
+            v.observaciones AS v_observations,
+            (SELECT GROUP_CONCAT(typeExtraCharge) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as types_charges,
+            (SELECT GROUP_CONCAT(quantity) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as quantyties_charges,
+            (SELECT GROUP_CONCAT(applicationType) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as aplications_charges
 
         FROM tie_venta_detalle vd
 

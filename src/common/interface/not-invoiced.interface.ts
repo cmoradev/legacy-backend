@@ -44,10 +44,18 @@ export interface NotInvoiced {
     vd_id: number;
     vd_created_at: string;
     vd_product_name: string;
-    vd_quantity: number[];
+    vd_quantity: number;
     vd_price: number;
-    vd_price_IVA: number[];
+    vd_price_IVA: number;
     totalIVA: number;
     total: number;
     vd_is_IVA: string;
+    types_charges: number[],
+    quantyties_charges: number[],
+    aplications_charges: number[],
+    charges?: {
+        scholarships: number;
+        discounts: number;
+        surcharges: number;
+    }
 }
