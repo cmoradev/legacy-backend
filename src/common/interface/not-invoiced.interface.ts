@@ -51,12 +51,6 @@ export interface NotInvoiced {
     totalIVA: number;
     total: number;
     vd_is_IVA: string;
-    scd_created_at: string;
-    v_id_branch_office: number;
-    scd_concept: string;
-    scd_quantity: number[];
-    scd_price: number[];
-    scd_total: number;
     types_charges: number[],
     quantyties_charges: number[],
     aplications_charges: number[],

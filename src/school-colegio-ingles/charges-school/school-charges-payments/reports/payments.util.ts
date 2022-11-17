@@ -1,15 +1,15 @@
-import {User} from '../../../../system/users/entities/user.entity';
+import { User } from '../../../../system/users/entities/user.entity';
 import {
   InvoiceMethodPayment
 } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import {TypeStudent} from '../../../students/interface/studentsSchool.interface';
-import {add} from 'exact-math';
-import {SchoolChargePayment} from '../entities/school-charge-payment.entity';
-import {NotInvoiced} from '../../../../common/interface/not-invoiced.interface';
+import { TypeStudent } from '../../../students/interface/studentsSchool.interface';
+import { add } from 'exact-math';
+import { SchoolChargePayment } from '../entities/school-charge-payment.entity';
+import { NotInvoiced } from '../../../../common/interface/not-invoiced.interface';
 import {
   MiniStoreSalePayment
 } from '../../../../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
-import {InvoiceModules} from '../../../../common/point-of-sale/types.pos';
+import { InvoiceModules } from '../../../../common/point-of-sale/types.pos';
 import {
   SchoolChargesMethodsPayments
 } from '../../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
@@ -23,6 +23,8 @@ import {
   AcademyChargeMethodsPayments
 } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { Decimal } from '@munyaal/calculations';
+import { Detalles, ExtraCharges } from '../../../../common/point-of-sale/types.pos';
+import { totalAmountConceptAfterExtraCharge } from 'src/common/point-of-sale/point-of-sale';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -140,22 +142,23 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
     let imethodsPayments = -1;
     if (isInvoice || type == InvoiceModules.SCHOOL) {
       iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt( d.f_metodo_pago_codigo));
+      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.f_metodo_pago_codigo));
     } else {
-      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${ type == InvoiceModules.ACADEMY ? d.cashier_id :d.cashier_id_venta}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt( d.p_metodo_pago_codigo));
+      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${type == InvoiceModules.ACADEMY ? d.cashier_id : d.cashier_id_venta}`));
+      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.p_metodo_pago_codigo));
     }
-    if (iCashier == -1){
+    if (iCashier == -1) {
       dataMatriz.cashiers.push(
         isInvoice || type == InvoiceModules.SCHOOL || type == InvoiceModules.ACADEMY
           ? { id: parseInt(`${d.cashier_id}`), name: d.u_fullname_cashier } as User
           : { id: parseInt(`${d.cashier_id_venta}`), name: d.vu_fullname_cashier } as User);
-    } 
-    if (imethodsPayments == -1){
+    }
+    if (imethodsPayments == -1) {
       dataMatriz.methodsPayments.push(
         isInvoice || type == InvoiceModules.SCHOOL
-        ? { id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment 
-        : { id: parseInt (d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);}
+          ? { id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment
+          : { id: parseInt(d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);
+    }
 
     switch (type) {
       case InvoiceModules.SCHOOL:
@@ -210,7 +213,7 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
 export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSalePayment[] | AcademyChargePayments[], cashiers: User[], methodsPayments: InvoiceMethodPayment[], type: InvoiceModules) => {
   const headers: any[] = ['Tipo', ...cashiers.map((value: User) => value && value.name), 'Total'];
   const resume: ResumeType[] = [];
-  methodsPayments.push({code: '00', name: 'Totales'} as InvoiceMethodPayment)
+  methodsPayments.push({ code: '00', name: 'Totales' } as InvoiceMethodPayment)
   methodsPayments.forEach(paymentMethod => {
     let paymentsByMethod = [];
 
@@ -283,17 +286,76 @@ export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSal
   }
 
   const totales = []
-    for (let x = 1; x < resumeDataTable[0].length; x++) {
-        let suma = 0;
-        for (let y = 1; y < resumeDataTable.length; y++) {
-            suma += resumeDataTable[y][x];
-        }
-        totales.push(suma)
+  for (let x = 1; x < resumeDataTable[0].length; x++) {
+    let suma = 0;
+    for (let y = 1; y < resumeDataTable.length; y++) {
+      suma += resumeDataTable[y][x];
     }
-  totales.forEach((t,i)=>{
-    resumeDataTable[resumeDataTable.length-1][i+1] = t;
+    totales.push(suma)
+  }
+  totales.forEach((t, i) => {
+    resumeDataTable[resumeDataTable.length - 1][i + 1] = t;
   })
 
 
   return resumeDataTable;
+}
+
+export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
+  return data.map((d: any) => {
+    let types_charges = [];
+    let aplications_charges = [];
+    let quantyties_charges = [];
+
+    d.types_charges != null ? types_charges = d.types_charges.split(',') : [];
+    d.aplications_charges != null ? aplications_charges = d.aplications_charges.split(',') : [];
+    d.quantyties_charges != null ? quantyties_charges = d.quantyties_charges.split(',') : [];
+    const extraCharges: ExtraCharges[] = [];
+    for (let index = 0; index < types_charges.length; index++) {
+      extraCharges.push({
+        applicationType: parseInt(aplications_charges[index]),
+        quantity: parseInt(quantyties_charges[index]),
+        typeExtraCharge: parseInt(types_charges[index])
+      })
+    }
+    const details: Detalles[] = [{
+      extraCharges,
+      id: d.vd_id,
+      price: parseInt(d.vd_price_IVA),
+      priceWithIVA: parseInt(d.vd_price_IVA),
+      quantity: parseInt(d.vd_quantity),
+      isIva: parseInt(d.vd_is_IVA),
+    }];
+    let totalIVA = 0;
+    const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
+    const discounts = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 1)).toNumber();
+    const scholarships = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 3)).toNumber();
+    const surcharges = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 2)).toNumber();
+    switch (type) {
+      case InvoiceModules.SCHOOL:
+        totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
+        break;
+      case InvoiceModules.STORE:
+        totalIVA = totalAmountConceptAfterExtraCharge(details[0], 1);
+        break;
+      case InvoiceModules.ACADEMY:
+        //totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
+      default:
+        break;
+    }
+    return {
+      ...d,
+      totalIVA,
+      total,
+      v_status: parseInt(`${d.v_status}`),
+      types_charges: types_charges.map((p: string) => { return parseInt(`${p}`) }),
+      aplications_charges: aplications_charges.map((p: string) => { return parseInt(`${p}`) }),
+      quantyties_charges: quantyties_charges.map((p: string) => { return parseInt(`${p}`) }),
+      charges: {
+        discounts,
+        scholarships,
+        surcharges
+      }
+    } as NotInvoiced
+  })
 }

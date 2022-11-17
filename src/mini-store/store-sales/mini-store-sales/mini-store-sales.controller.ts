@@ -22,8 +22,8 @@ import { reportStoreSaleByClient } from './utils/utilSale';
 import { SaleExcel } from './reports/sale.excel';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { SaleReturnExcel } from './reports/sale-return.excel';
-import { Detalles, ExtraCharges } from '../../../common/point-of-sale/types.pos';
-import { totalAmountConceptAfterExtraCharge } from '../../../common/point-of-sale/point-of-sale';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { getDataCharges } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 
 @Crud({
     model: {
@@ -273,49 +273,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSales(options);
-        let data: NotInvoiced[] = [];
+        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE)
         let dataByClient: NotInvoiced[] = [];
-        data = result.map((d: any) => {
-            let types_charges = [];
-            let aplications_charges = [];
-            let quantyties_charges = [];
-
-            d.types_charges != null ? types_charges = d.types_charges.split(',') : [];
-            d.aplications_charges != null ? aplications_charges = d.aplications_charges.split(',') : [];
-            d.quantyties_charges != null ? quantyties_charges = d.quantyties_charges.split(',') : [];
-            const extraCharges: ExtraCharges[] = [];
-            for (let index = 0; index < types_charges.length; index++) {
-                extraCharges.push({
-                    applicationType: parseInt(aplications_charges[ index ]),
-                    quantity: parseInt(quantyties_charges[ index ]),
-                    typeExtraCharge: parseInt(types_charges[ index ])
-                })
-            }
-            const details: Detalles[] = [ {
-                extraCharges,
-                id: d.vd_id,
-                price: parseInt(d.vd_price_IVA),
-                priceWithIVA: parseInt(d.vd_price_IVA),
-                quantity: parseInt(d.vd_quantity),
-                isIva: parseInt(d.vd_is_IVA),
-            } ];
-            const totalIVA = totalAmountConceptAfterExtraCharge(details[ 0 ], 1);
-            const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
-            return {
-                ...d,
-                totalIVA,
-                total,
-                v_status: parseInt(`${d.v_status}`),
-                types_charges: types_charges.map((p: string) => { return parseInt(`${p}`) }),
-                aplications_charges: aplications_charges.map((p: string) => { return parseInt(`${p}`) }),
-                quantyties_charges: quantyties_charges.map((p: string) => { return parseInt(`${p}`) }),
-                charges: {
-                    discounts: Decimal.sub(total, totalIVA).toNumber(),
-                    scholarships: 0,
-                    surcharges: 0
-                }
-            } as NotInvoiced
-        });
+        
 
         if (options.byClient) {
             dataByClient = reportStoreSaleByClient(data);

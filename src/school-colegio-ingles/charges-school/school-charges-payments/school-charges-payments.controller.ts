@@ -34,7 +34,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { convertPaymentsReportCollege, getDataMatrizPayments, getMatrizPayments } from './reports/payments.util';
+import { convertPaymentsReportCollege, getDataMatrizPayments, getMatrizPayments, getDataCharges } from './reports/payments.util';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
@@ -633,9 +633,8 @@ export class SchoolChargesPaymentsController
     @Query() options: IQueryReportSaleTodayOp,
   ) {
     const result = await this.service.reportSalesSchool(options);
-    let data: NotInvoiced[] = [];
+    let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.SCHOOL)
     let dataByClient: NotInvoiced[] = [];
-    data = result;
 
     if (options.byClient) {
       dataByClient = reportSchoolSaleByClient(data);

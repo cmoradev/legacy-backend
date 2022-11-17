@@ -117,7 +117,7 @@ export class SchoolSaleExcel {
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
                 columns.push(value.count);
-                columns.push(parseFloat(`${value.scd_total}`));
+                columns.push(parseFloat(`${value.total}`));
                 columns.push(value.vu_fullname_cashier);
                 rows.push(columns);
             });
@@ -126,13 +126,13 @@ export class SchoolSaleExcel {
                 const columns = [];
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
-                columns.push(formatDate(value.scd_created_at));
+                columns.push(formatDate(value.vd_created_at));
                 columns.push(value.v_folio);
                 columns.push(value.vu_fullname_cashier);
-                columns.push(value.scd_quantity)
-                columns.push(value.scd_concept);
-                columns.push(value.scd_price)
-                columns.push(parseFloat(`${value.scd_total}`));
+                columns.push(value.vd_quantity)
+                columns.push(value.vd_product_name);
+                columns.push(value.vd_price)
+                columns.push(parseFloat(`${value.total}`));
                 columns.push(value.v_observations);
                 rows.push(columns);
             });

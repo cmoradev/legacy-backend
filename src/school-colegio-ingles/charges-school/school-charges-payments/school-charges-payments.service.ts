@@ -254,13 +254,13 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         cycleId,
         branchOfficeId,
                                    }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_sch_sales where scd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+        let queryString = `SELECT * FROM vw_sch_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
         if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if (branchOfficeId) {
-            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_id_branch_office = ${branchOfficeId}`;
         }
         try {
             return this.connection.query(queryString);
