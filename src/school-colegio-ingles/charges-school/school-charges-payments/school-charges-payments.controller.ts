@@ -635,14 +635,7 @@ export class SchoolChargesPaymentsController
     const result = await this.service.reportSalesSchool(options);
     let data: NotInvoiced[] = [];
     let dataByClient: NotInvoiced[] = [];
-    data = result.map((d: any) => {
-      let scd_quantity = [];
-      let scd_price = [];
-
-      d.scd_quantity != null ? scd_quantity = d.scd_quantity.split(',') : [];
-      d.scd_price != null ? scd_price = d.scd_price.split(',') : [];
-      return { ...d, v_status: parseInt(`${d.v_status}`), scd_quantity: scd_quantity.map((p: string) => { return parseInt(`${p}`) }), scd_price: scd_price.map((p: string) => { return parseInt(`${p}`) }) } as NotInvoiced
-    });
+    data = result;
 
     if (options.byClient) {
       dataByClient = reportSchoolSaleByClient(data);
