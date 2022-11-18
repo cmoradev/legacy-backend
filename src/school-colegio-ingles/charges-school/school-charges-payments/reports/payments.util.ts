@@ -24,7 +24,7 @@ import {
 } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { Decimal } from '@munyaal/calculations';
 import { Detalles, ExtraCharges } from '../../../../common/point-of-sale/types.pos';
-import { totalAmountConceptAfterExtraCharge } from 'src/common/point-of-sale/point-of-sale';
+import { totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
