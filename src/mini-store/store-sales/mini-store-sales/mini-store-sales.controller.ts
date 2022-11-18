@@ -305,14 +305,15 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSalesReturns(options);
+        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE)
         let dataByClient: NotInvoiced[] = [];
 
         if (options.byClient) {
-            dataByClient = reportStoreSaleByClient(result);
+            dataByClient = reportStoreSaleByClient(data);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new SaleReturnExcel(options, options.byClient ? dataByClient : result);
+            const conceptStatusExcel = new SaleReturnExcel(options, options.byClient ? dataByClient : data);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}.xlsx`,
             });
@@ -323,9 +324,9 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 type: 'excel',
                 name: `${getNameReport(options.byClient ? 'Devoluciones_por_cliente' : 'Devoluciones', options).excel}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : result });
+            return res.send({ report, data: options.byClient ? dataByClient : data });
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : result });
+            return res.send({ report: false, data: options.byClient ? dataByClient : data });
         }
     }
 }
