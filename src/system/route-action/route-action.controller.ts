@@ -13,7 +13,6 @@ import { RouteActionService } from './route-action.service';
                 $eq: null,
             },
         },
-        limit: 10,
         join: {
             actions: {eager: false},
         },

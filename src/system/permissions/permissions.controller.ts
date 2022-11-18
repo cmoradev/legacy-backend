@@ -14,7 +14,6 @@ import { PermissionDto } from './DTO/permission.dto';
                 $eq: null,
             },
         },
-        limit: 10,
         join: {
             role: {eager: false},
             route: {eager: false},

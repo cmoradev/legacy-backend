@@ -14,7 +14,6 @@ import { RoutesService } from './routes.service';
                 $eq: null,
             },
         },
-        limit: 10,
         join: {
             routeActions: { eager: false },
             'routeActions.route': { eager: false },
