@@ -331,6 +331,7 @@ export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
     if (type == InvoiceModules.ACADEMY) {
       objAcademy = chargesOnCharges(detail);
     }
+    console.log(objAcademy)
     let totalIVA = type == InvoiceModules.ACADEMY ? objAcademy.subtotal : 0;
     const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
     const discounts = type == InvoiceModules.ACADEMY ? objAcademy.discount : Decimal.sub(total, totalAmountConceptAfterExtraCharge(detail, 1)).toNumber();
