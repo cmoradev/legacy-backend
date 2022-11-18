@@ -24,7 +24,7 @@ import {
 } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { Decimal } from '@munyaal/calculations';
 import { Detalles, ExtraCharges } from '../../../../common/point-of-sale/types.pos';
-import { totalAmountConceptAfterExtraCharge } from 'src/common/point-of-sale/point-of-sale';
+import { chargesOnCharges, totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -318,30 +318,33 @@ export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
         typeExtraCharge: parseInt(types_charges[index])
       })
     }
-    const details: Detalles[] = [{
+    const detail: Detalles = {
       extraCharges,
       id: d.vd_id,
       price: parseInt(d.vd_price_IVA),
       priceWithIVA: parseInt(d.vd_price_IVA),
       quantity: parseInt(d.vd_quantity),
       isIva: parseInt(d.vd_is_IVA),
-    }];
-    let totalIVA = 0;
+    };
+
+    let objAcademy = undefined;
+    if (type == InvoiceModules.ACADEMY) {
+      objAcademy = chargesOnCharges(detail);
+    }
+    let totalIVA = type == InvoiceModules.ACADEMY ? objAcademy.subtotal : 0;
     const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
-    const discounts = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 1)).toNumber();
-    const scholarships = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 3)).toNumber();
-    const surcharges = Decimal.sub(total, totalAmountConceptAfterExtraCharge(details[0], 2)).toNumber();
-    switch (type) {
-      case InvoiceModules.SCHOOL:
-        totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
-        break;
-      case InvoiceModules.STORE:
-        totalIVA = totalAmountConceptAfterExtraCharge(details[0], 1);
-        break;
-      case InvoiceModules.ACADEMY:
-        //totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
-      default:
-        break;
+    const discounts = type == InvoiceModules.ACADEMY ? objAcademy.discount : Decimal.sub(total, totalAmountConceptAfterExtraCharge(detail, 1)).toNumber();
+    const scholarships = type == InvoiceModules.ACADEMY ? objAcademy.scholarship : Decimal.sub(total, totalAmountConceptAfterExtraCharge(detail, 3)).toNumber();
+    const surcharges = type == InvoiceModules.ACADEMY ? objAcademy.surcharge : Decimal.sub(total, totalAmountConceptAfterExtraCharge(detail, 2)).toNumber();
+    if (type != InvoiceModules.ACADEMY) {
+      switch (type) {
+        case InvoiceModules.SCHOOL:
+          totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
+          break;
+        case InvoiceModules.STORE:
+          totalIVA = totalAmountConceptAfterExtraCharge(detail, 1);
+          break;
+      }
     }
     return {
       ...d,
