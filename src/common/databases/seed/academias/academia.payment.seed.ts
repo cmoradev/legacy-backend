@@ -18,7 +18,7 @@ export default class AcademiaPaymentSeed implements Seeder {
         f.status AS f_status,
         p.quantity AS p_quantity,
         p.change AS p_change,
-        v.observaciones AS v_observaciones,
+        v.observaciones AS v_observations,
         CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
         a.id_modalidad AS a_tipo,
         a.id AS a_id,

@@ -105,14 +105,14 @@ export class StorePaymentInvoiceExcel {
             ];
         } else {
             columns = [
+                { name: 'Fecha de pago', filterButton: true },
+                { name: 'Fecha de facturación', filterButton: true },
                 { name: 'Folio de venta', filterButton: false },
                 { name: 'Folio de pago', filterButton: false },
-                { name: 'Clave', filterButton: true },
+                { name: 'Matricula', filterButton: true },
                 { name: 'Nombre', filterButton: false },
-                { name: 'Fecha de pago', filterButton: true },
                 { name: 'Folio de factura', filterButton: false },
                 { name: 'RFC', filterButton: false },
-                { name: 'Fecha de facturación', filterButton: true },
                 { name: 'Identificador único de factura', filterButton: false },
                 { name: 'Identificador global de pago', filterButton: false },
                 { name: 'Metodo de pago', filterButton: true },
@@ -122,6 +122,7 @@ export class StorePaymentInvoiceExcel {
                     totalsRowLabel: 'Total',
                     totalsRowFunction: 'sum',
                 },
+                {name: 'Observaciones', filterButton: false},
             ];
         }
 
@@ -163,18 +164,19 @@ export class StorePaymentInvoiceExcel {
         } else {
             this.rows.forEach((value: NotInvoiced) => {
                 const columns = [];
+                columns.push(formatDate(value.p_created_at));
+                columns.push(formatDate(value.f_created_at));
                 columns.push(value.v_folio);
                 columns.push(value.p_folio);
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
-                columns.push(formatDate(value.p_created_at));
                 columns.push(value.f_folio);
                 columns.push(value.f_rfc);
-                columns.push(formatDate(value.f_created_at));
                 columns.push(value.f_uuid);
                 columns.push(value.p_global_uuid);
                 columns.push(value.f_metodo_pago);
                 columns.push(parseFloat(`${value.p_income}`));
+                columns.push(value.v_observations);
                 rows.push(columns);
             });
         }

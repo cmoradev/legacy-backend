@@ -18,7 +18,7 @@ export default class StorePaymentSeed implements Seeder {
             f.status AS f_status,
             p.cantidad AS p_quantity,
             p.cambio AS p_change,
-            v.observaciones AS v_observaciones,
+            v.observaciones AS v_observations,
             CAST((p.cantidad - p.cambio) AS DECIMAL(12,6)) AS p_income,
             a.id AS a_id,
             a.id_modalidad AS a_tipo,

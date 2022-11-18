@@ -69,9 +69,9 @@ export class SchoolSaleExcel {
             ];
         } else {
             columns = [
+                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Matricula', filterButton: true },
                 { name: 'Cliente', filterButton: false },
-                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Folio de venta', filterButton: false },
                 { name: 'Vendedor', filterButton: false },
                 { name: 'Cantidad', filterButton: false },
@@ -83,6 +83,9 @@ export class SchoolSaleExcel {
                     totalsRowLabel: 'Total',
                     totalsRowFunction: 'sum',
                 },
+                { name: 'descuentos', filterButton: false },
+                { name: 'becas', filterButton: false },
+                { name: 'recargos', filterButton: false },
                 { name: 'Observaciones', filterButton: false },
             ];
         }
@@ -117,22 +120,25 @@ export class SchoolSaleExcel {
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
                 columns.push(value.count);
-                columns.push(parseFloat(`${value.total}`));
+                columns.push(parseFloat(`${value.totalIVA}`));
                 columns.push(value.vu_fullname_cashier);
                 rows.push(columns);
             });
         } else {
             this.rows.forEach((value: NotInvoiced) => {
                 const columns = [];
+                columns.push(formatDate(value.vd_created_at));
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
-                columns.push(formatDate(value.vd_created_at));
                 columns.push(value.v_folio);
                 columns.push(value.vu_fullname_cashier);
-                columns.push(value.vd_quantity)
+                columns.push(parseInt(`${value.vd_quantity}`))
                 columns.push(value.vd_product_name);
-                columns.push(value.vd_price)
-                columns.push(parseFloat(`${value.total}`));
+                columns.push(parseInt(`${value.vd_price}`))
+                columns.push(parseFloat(`${value.totalIVA}`));
+                columns.push(value.charges.discounts);
+                columns.push(value.charges.scholarships);
+                columns.push(value.charges.surcharges);
                 columns.push(value.v_observations);
                 rows.push(columns);
             });
@@ -142,7 +148,7 @@ export class SchoolSaleExcel {
             displayName: 'Reporte',
             name: 'Reporte',
             ref: 'B5',
-            totalsRow: false,
+            totalsRow: true,
             headerRow: true,
             style: {
                 theme: 'TableStyleLight9',

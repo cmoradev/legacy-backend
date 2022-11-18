@@ -31,7 +31,7 @@ import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
-import { NotInvoiced } from 'src/common/interface/not-invoiced.interface';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 
 @Crud({
     model: {

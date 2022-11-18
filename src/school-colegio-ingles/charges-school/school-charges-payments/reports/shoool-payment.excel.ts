@@ -102,13 +102,12 @@ export class SchoolPaymentExcel {
             ];
         } else {
             columns = [
+                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Matricula', filterButton: true },
                 { name: 'Nombre', filterButton: false },
-                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Folio de venta', filterButton: false },
                 { name: 'Folio de pago', filterButton: false },
                 { name: 'Folio de factura', filterButton: false },
-                { name: 'Ciclo de venta', filterButton: false },
                 { name: 'Metodo de pago', filterButton: true },
                 {
                     name: 'Total del pago',
@@ -118,6 +117,7 @@ export class SchoolPaymentExcel {
                 },
                 { name: 'Realizado por', filterButton: false },
                 { name: 'Cancelado por', filterButton: false },
+                { name: 'Observaciones', filterButton: false },
             ];
         }
 
@@ -159,17 +159,17 @@ export class SchoolPaymentExcel {
         } else {
             this.rows.forEach((value: NotInvoiced) => {
                 const columns = [];
+                columns.push(formatDate(value.p_created_at));
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
-                columns.push(formatDate(value.p_created_at));
                 columns.push(value.v_folio);
                 columns.push(value.p_folio);
                 columns.push(value.f_folio);
-                columns.push(value.v_cycle);
                 columns.push(value.f_metodo_pago);
                 columns.push(parseFloat(`${value.p_income}`));
                 columns.push(value.u_fullname_cashier);
                 columns.push(value.us_fullname_cancelation);
+                columns.push(value.v_observations);
                 rows.push(columns);
             });
         }

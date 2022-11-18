@@ -30,11 +30,14 @@ export class InformativeExcel {
                 `Informativo_de_productos${getRangeDates(this.params.startDate, this.params.endDate).excel}`,
             ),
         );
-        this.generateFolio(
-          this.addWorksheet(
-              `Folios_de_productos${getRangeDates(this.params.startDate, this.params.endDate).excel}`,
-          ),
-        );
+
+        if (this.params.type == TypeInformativeReport.PRODUCTS) {
+            this.generateFolio(
+                this.addWorksheet(
+                    `Folios_de_productos${getRangeDates(this.params.startDate, this.params.endDate).excel}`,
+                ),
+            );
+        }
     }
 
     private config(): void {
@@ -131,56 +134,53 @@ export class InformativeExcel {
                 columns.push(value.p_name_product);
                 columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(parseInt(`${value.vd_price}`));
-                columns.push(value.subtotal);
+                columns.push(parseInt(`${value.subtotal}`));
                 rows.push(columns);
             } else if (this.params.type == TypeInformativeReport.CATEGORIES) {
                 columns.push(value.c_name_classification);
                 columns.push(parseInt(`${value.vd_quantity}`));
-                columns.push(value.subtotal);
+                columns.push(parseInt(`${value.subtotal}`));
                 rows.push(columns);
             } else if (this.params.type == TypeInformativeReport.CASHIERS) {
                 columns.push(value.u_fullname_agent);
                 columns.push(parseInt(`${value.vd_quantity}`));
-                columns.push(value.subtotal);
+                columns.push(parseInt(`${value.subtotal}`));
                 rows.push(columns);
             }
         });
 
-            worksheet.addTable({
-                displayName: 'Reporte',
-                name: 'Reporte',
-                ref: 'B5',
-                totalsRow: false,
-                headerRow: true,
-                style: {
-                    theme: 'TableStyleLight9',
-                    showRowStripes: true,
-                    showColumnStripes: true,
-                },
-                columns,
-                rows,
-            });
+        worksheet.addTable({
+            displayName: 'Reporte',
+            name: 'Reporte',
+            ref: 'B5',
+            totalsRow: true,
+            headerRow: true,
+            style: {
+                theme: 'TableStyleLight9',
+                showRowStripes: true,
+                showColumnStripes: true,
+            },
+            columns,
+            rows,
+        });
 
-            worksheet.columns.forEach((column) => {
-                column.width = 10;
+        worksheet.columns.forEach((column) => {
+            column.width = 10;
+            if (column.letter === 'C' || column.letter === 'K') {
+                column.width = 45;
+            }
+        });
 
-                if (column.letter === 'C' || column.letter === 'K') {
-                    column.width = 45;
-                }
-            });
-
-            return worksheet;
+        return worksheet;
     }
 
     private generateFolio(worksheet: Worksheet): Worksheet {
         let columns: TableColumnProperties[] = [];
-        if (this.params.type == TypeInformativeReport.PRODUCTS) {
-            columns = [
-                { name: 'Nombre del producto', filterButton: false },
-                { name: 'Folio de venta', filterButton: false },
-                { name: 'Folio de pago', filterButton: false },
-            ];
-        }
+        columns = [
+            { name: 'Nombre del producto', filterButton: false },
+            { name: 'Folio de venta', filterButton: false },
+            { name: 'Folio de pago', filterButton: false },
+        ];
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
@@ -208,13 +208,11 @@ export class InformativeExcel {
 
         const rows = [];
         this.rowsFolios.forEach((value: IReportInformativeRow) => {
-            if (this.params.type == TypeInformativeReport.PRODUCTS) {
-                const columns = [];
-                columns.push(value.p_name_product);
-                columns.push(value.v_folio_venta);
-                columns.push(value.folios_ventas_pagos);
-                rows.push(columns);
-            }
+            const columns = [];
+            columns.push(value.p_name_product);
+            columns.push(value.v_folio_venta);
+            columns.push(value.folios_ventas_pagos);
+            rows.push(columns);
         });
 
         worksheet.addTable({

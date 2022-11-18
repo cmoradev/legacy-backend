@@ -69,11 +69,10 @@ export class SaleReturnExcel {
             ];
         } else {
             columns = [
+                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Matricula', filterButton: true },
                 { name: 'Cliente', filterButton: false },
-                { name: 'Fecha de creación', filterButton: true },
                 { name: 'Folio de venta', filterButton: false },
-                { name: 'Ciclo de venta', filterButton: false },
                 { name: 'Vendedor', filterButton: false },
                 { name: 'Cantidad', filterButton: false },
                 { name: 'Productos', filterButton: false },
@@ -118,23 +117,22 @@ export class SaleReturnExcel {
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
                 columns.push(value.count);
-                columns.push(parseFloat(`${value.totalIVA}`));
+                columns.push(parseFloat(`${value.total}`));
                 columns.push(value.vuc_fullname_cancelation);
                 rows.push(columns);
             });
         } else {
             this.rows.forEach((value: NotInvoiced) => {
                 const columns = [];
+                columns.push(formatDate(value.vd_created_at));
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
-                columns.push(formatDate(value.vd_created_at));
                 columns.push(value.v_folio);
-                columns.push(value.v_cycle);
                 columns.push(value.vu_fullname_cashier);
-                columns.push(value.vd_quantity);
+                columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(value.vd_product_name);
-                columns.push(value.vd_price_IVA);
-                columns.push(parseFloat(`${value.totalIVA}`));
+                columns.push(parseInt(`${value.vd_price_IVA}`));
+                columns.push(parseFloat(`${value.total}`));
                 columns.push(value.v_observations);
                 rows.push(columns);
             });
