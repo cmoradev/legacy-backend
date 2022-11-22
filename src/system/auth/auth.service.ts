@@ -115,9 +115,6 @@ export class AuthService {
       .leftJoinAndSelect('users.campus', 'campus')
       .leftJoinAndSelect('users.family', 'family')
       .leftJoinAndSelect('users.department', 'department')
-      .leftJoinAndSelect('role.permissions', 'permissions')
-      .leftJoinAndSelect('permissions.route', 'route')
-      .leftJoinAndSelect('permissions.actions', 'actions')
       .select([
         'users.id',
         'users.name',
@@ -136,14 +133,6 @@ export class AuthService {
         'role.id',
         'role.isActive',
         'role.name',
-        'permissions.id',
-        'route.id',
-        'route.isActive',
-        'route.name',
-        'route.fatherID',
-        'route.level',
-        'route.url',
-        'actions.id',
       ])
       .where('users.email = :email', { email })
       .getOne();

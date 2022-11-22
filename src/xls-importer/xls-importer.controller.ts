@@ -7,8 +7,6 @@ import { diskStorage } from 'multer';
 import * as xlsx from 'xlsx';
 import { WorkBook } from 'xlsx';
 import { DataConverter } from '../common/office/excel-tools/data-converter';
-import { InvoiceKeys } from '../invoice/invoice-keys/entities/invoice-keys.entity';
-import { InvoiceKeysService } from '../invoice/invoice-keys/invoice-keys.service';
 import { MiniStoreClassification } from '../mini-store/mini-store-classifications/entities/mini-store-classification.entity';
 import { MiniStoreClassificationsService } from '../mini-store/mini-store-classifications/mini-store-classifications.service';
 import { MiniStorePriceList } from '../mini-store/mini-store-prices-lists/entities/mini-store-price-list.entity';
@@ -74,7 +72,6 @@ export class XlsImporterController {
         readonly miniStoreProductsService: MiniStoreProductsService,
         readonly miniStorePricesListsService: MiniStorePricesListsService,
         readonly miniStoreClassificationsService: MiniStoreClassificationsService,
-        readonly invoiceKeysService: InvoiceKeysService,
         readonly branchOfficeService: BranchOfficeService,
         readonly studentsService: StudentsService,
         readonly familyService: FamiliesService,

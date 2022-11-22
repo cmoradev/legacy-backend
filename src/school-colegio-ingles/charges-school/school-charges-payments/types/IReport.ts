@@ -1,6 +1,6 @@
-import {IQueryReportSaleToday} from '../../../../mini-store/store-sales/mini-store-sales/types/IReport';
+import { IQueryReportSaleTodayOp } from '../../../../mini-store/store-sales/mini-store-sales/types/IReport';
 
-export interface IQueryReportSchoolPayment extends IQueryReportSaleToday{
-    codigoPago?: number;
+export interface IQueryReportSchoolPayment extends IQueryReportSaleTodayOp {
+    codigoPago?: string;
     usersIds?: number[];
 }

@@ -10,13 +10,14 @@ export default class AcademiaWayPaymentSeed implements Seeder {
             p.id AS p_id,
             p.folio AS p_folio,
             (p.quantity - p.change) AS p_ingreso,
-            fp.codePaymentMethod AS p_way
+            fp.codePaymentMethod AS p_way,
+            ff.nombre as p_way_name
         FROM ac_charge_payments p
         
         INNER JOIN ac_charges_methods_payments fp ON fp.academyChargePaymentId = p.id
+        LEFT JOIN facturacion_formas_pago ff on ff.id = fp.invoiceMethodPaymentId
         
         ORDER BY p.id DESC;
         `);
-
     }
 }

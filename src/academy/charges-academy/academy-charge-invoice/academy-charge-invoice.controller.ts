@@ -37,6 +37,9 @@ import { ReportInvoice } from './reports/invoice.reports';
 import { ConfigService } from '../../../common/config/config.service';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
+import { Public } from '../../../common/docorators/public.decorator';
+import * as AdmZip from 'adm-zip';
+import { NotInvoiced } from 'src/common/interface/not-invoiced.interface';
 
 @Crud({
     model: {
@@ -396,6 +399,42 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Public()
+    @Get('/download-xml/:UUID')
+    getXmlInvoiceUUID(@Param('UUID') UUID: string, @Res() response) {
+        try {
+            const workPath = this.configService.getPath();
+            const xml = `${workPath}/comprobantes/academias/${UUID}.xml`;
+            response.download(xml);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Post('zip-invoices')
+    async zipInvoices(@Res() res: Response, @Body() params: {
+        array: NotInvoiced[]
+    }
+    ) {
+        try {
+            const zip = new AdmZip();
+            params.array.forEach((i: NotInvoiced) => {
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+            });
+
+            const downloadName = `${Date.now()}.zip`;
+            const data = zip.toBuffer();
+            res.set('Content-Type', 'application/octet-stream');
+            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
+            res.set('Content-Length', data.length.toString());
+            res.send(data);
+        } catch (e) {
+            res.status(500);
+            res.send(e.message);
         }
     }
 }

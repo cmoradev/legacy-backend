@@ -43,7 +43,6 @@ export function totalForProducts(sales: MiniStoreSale[]) {
       quantity: curValue.quantity,
       unitMeasurement: curValue.unitMeasurement,
       total: curValue.total,
-      calculation: formatOperation(curValue.miniStoreProduct.calculation, curValue.quantity),
     };
     return preValue;
   }, []);

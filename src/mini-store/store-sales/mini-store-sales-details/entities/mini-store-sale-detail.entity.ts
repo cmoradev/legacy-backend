@@ -2,9 +2,10 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { MiniStoreProduct } from '../../../mini-store-products/entities/mini-store-product.entity';
 import { MiniStoreClassification } from '../../../mini-store-classifications/entities/mini-store-classification.entity';
-import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
 import { MiniStoreDetailsExtraCharges } from '../../mini-store-details-extra-charges/entities/mini-store-details-extra-charges.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
+// eliminar al cambiar los reporte del front
+import { SalesReturnsProducts } from '../../mini-store-sales-returns/entities/sales-returns-products.entity';
 
 @Entity('tie_venta_detalle')
 export class MiniStoreSaleDetail extends Base {
@@ -67,13 +68,13 @@ export class MiniStoreSaleDetail extends Base {
     @ManyToOne(() => MiniStoreClassification, (miniStoreClassification) => miniStoreClassification.miniStoreSaleDetails)
     miniStoreClassification: MiniStoreClassification;
 
-    @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
-    returnedProducts: SalesReturnsProducts;
-
     @OneToMany(() => MiniStoreDetailsExtraCharges, (extraCharges) => extraCharges.miniSaleChargeDetails,
       {
           cascade: ['insert'],
       })
     extraCharges: MiniStoreDetailsExtraCharges[];
+
+    @OneToMany(type => SalesReturnsProducts, returnedProduct => returnedProduct.saleDetail)
+    returnedProducts: SalesReturnsProducts;
 
 }

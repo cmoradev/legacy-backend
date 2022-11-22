@@ -1,19 +1,24 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Permission } from './entities/permission.entity';
 import { PermissionsService } from './permissions.service';
 import { PermissionDto } from './DTO/permission.dto';
+import { Response } from 'express';
 
 @Crud({
     model: {
         type: Permission,
     },
     query: {
-        limit: 10,
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
-            role: {eager: false},
-            route: {eager: false},
-            actions: {eager: false},
+            role: { eager: false },
+            route: { eager: false },
+            actions: { eager: false },
         },
     },
 })
@@ -26,6 +31,16 @@ export class PermissionsController implements CrudController<Permission> {
 
     get base(): CrudController<Permission> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Get('roots')
@@ -108,4 +123,16 @@ export class PermissionsController implements CrudController<Permission> {
         });
     }
 
+    @Post('permission-role')
+    public async PermissionRole(@Res() res: Response, @Body() params: {
+        idRole: number
+    }
+    ) {
+        try {
+            const permission = await this.service.getPermissionRole(params.idRole);
+            res.status(200).send(permission);
+        } catch (e) {
+            res.status(401).send({ data: { statusCode: 401, message: e.message } });
+        }
+    }
 }

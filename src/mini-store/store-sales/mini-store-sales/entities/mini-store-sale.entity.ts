@@ -1,18 +1,18 @@
-import  { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { User } from '../../../../system/users/entities/user.entity';
-import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 import { Student } from '../../../../school-colegio-ingles/students/entities/student.entity';
 import { Cycle } from '../../../../school-colegio-ingles/cycles/entities/cycle.entity';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 import { BranchOffice } from '../../../../system/branch-office/entities/branch-office.entity';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MiniStoreQuotation } from '../../mini-store-quotation/entities/mini-store-quotation.entity';
 import { Transaction } from '../../../../system/transaction/entities/transaction.entity';
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('tie_ventas')
 export class MiniStoreSale extends Base {
@@ -115,29 +115,12 @@ export class MiniStoreSale extends Base {
   @ManyToOne(() => User, (user) => user.miniStoreCancelingSales)
   agentCanceling: User;
 
-  @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale,
-    {
-      cascade: ['insert'],
-    })
-  returnedProducts: SalesReturns[];
-
   @ManyToOne(type => User, (u) => u.sales)
   @JoinColumn({
     name: 'id_agente',
     referencedColumnName: 'id',
   })
   cashier: User;
-
-  @OneToOne(type => MiniStoreQuotation, quotation => quotation.quotation, {
-    cascade: ['insert', 'update'],
-  })
-  quotation: MiniStoreQuotation;
-
-  @OneToOne(type => MiniStoreQuotation, quotation => quotation.sale, {
-    cascade: ['insert', 'update'],
-  })
-  sale: MiniStoreQuotation;
-
 
   @Column('int', {
     nullable: false,
@@ -236,5 +219,11 @@ export class MiniStoreSale extends Base {
   codeWayToPay: string | null;
 
   @OneToMany(() => Transaction, (transaction) => transaction.sale)
-    transactions: Transaction[];
+  transactions: Transaction[];
+
+  @OneToMany(type => SalesReturns, returnedProducts => returnedProducts.sale,
+    {
+      cascade: ['insert'],
+    })
+  returnedProducts: SalesReturns[];
 }

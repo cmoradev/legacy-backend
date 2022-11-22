@@ -1,4 +1,16 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Res } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post, Put,
+    Query,
+    Res
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
 import { XmlToJson } from '@signati/pdf';
@@ -39,6 +51,16 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
     constructor(readonly service: CreditNoteSchoolService,
         readonly smartWebService: FactSw,
         readonly configService: ConfigService) {
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 
     @Post('generate/credit-note')

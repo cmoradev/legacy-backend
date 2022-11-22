@@ -1,3 +1,4 @@
+// eliminar al cambiar los reporte del front
 import { MiniStoreInvoice } from '../entities/mini-store-invoice.entity';
 import { TypeStudent } from '../../../../school-colegio-ingles/students/interface/studentsSchool.interface';
 import { MiniStoreSaleMethodPayment } from '../../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
@@ -6,6 +7,29 @@ import { InvoiceReport } from '../../mini-store-sales-payments/interface/Invoice
 import { formatDate } from '../../../../common/date';
 
 export class InvoiceProcessor {
+
+  private checkStatusInvoice(id: number) {
+    let status = '';
+    switch (id) {
+      case 1:
+        status = 'Activo'; // Facturado
+        break;
+      case 2:
+        status = 'Cancelado';
+        break;
+      case 3:
+        status = 'En Proceso de Cancelacion';
+        break;
+      case 4:
+        status = 'No Cancelable';
+        break;
+      default:
+        status = 'No Facturado';
+    }
+    return status;
+  }
+
+  // eliminar al cambiar los reporte del front
   public structureInvoiceReport(invoices: MiniStoreInvoice[]): InvoiceReport[] {
     const flatReport: InvoiceReport[] = [];
     for (const invoice of invoices) {
@@ -54,26 +78,5 @@ export class InvoiceProcessor {
       });
     }
     return flatReport;
-  }
-
-  private checkStatusInvoice(id: number) {
-    let status = '';
-    switch (id) {
-      case 1:
-        status = 'Activo'; // Facturado
-        break;
-      case 2:
-        status = 'Cancelado';
-        break;
-      case 3:
-        status = 'En Proceso de Cancelacion';
-        break;
-      case 4:
-        status = 'No Cancelable';
-        break;
-      default:
-        status = 'No Facturado';
-    }
-    return status;
   }
 }

@@ -1,5 +1,6 @@
 export interface NotInvoiced {
     p_id: number;
+    v_id: number;
     f_id: number;
     v_folio: string;
     p_folio: string;
@@ -8,10 +9,12 @@ export interface NotInvoiced {
     f_rfc?: string;
     f_type?: string;
     f_status?: string;
-    p_quantity: number;
+    p_quantity: number[];
     p_change: number;
     v_observations: string;
     p_income: number;
+    a_id: number;
+    a_tipo: string;
     a_key: string;
     a_fullname: string;
     v_branch_office: string;
@@ -21,9 +24,39 @@ export interface NotInvoiced {
     f_created_at?: string;
     p_stamping: string | number;
     p_state: string;
-    f_metodo_pago: number;
-    f_metodo_pago_codigo: number;
+    f_metodo_pago: string;
+    f_metodo_pago_codigo: string;
+    p_metodo_pago: string;
+    p_metodo_pago_codigo: string;
     p_global_uuid?: string;
     u_fullname_cashier: string;
     us_fullname_cancelation: string;
+    uf_fullname_cashier: string;
+    usf_fullname_cancelation: string;
+    cashier_id: number;
+    cancelation_id: number;
+    vu_fullname_cashier: string,
+    vuc_fullname_cancelation: string,
+    cashier_id_venta: number,
+    cancelation_id_venta: number;
+    bf_branch_office: number;
+    bf_branch_office_name: string;
+    count?: number;
+    vd_id: number;
+    vd_created_at: string;
+    vd_product_name: string;
+    vd_quantity: number;
+    vd_price: number;
+    vd_price_IVA: number;
+    totalIVA: number;
+    total: number;
+    vd_is_IVA: string;
+    types_charges: number[],
+    quantyties_charges: number[],
+    aplications_charges: number[],
+    charges?: {
+        scholarships: number;
+        discounts: number;
+        surcharges: number;
+    }
 }

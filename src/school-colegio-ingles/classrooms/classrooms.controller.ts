@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Classroom } from './entities/classroom.entity';
 import { ClassroomsService } from './classrooms.service';
@@ -15,26 +15,26 @@ import { ClassroomsService } from './classrooms.service';
         },
         limit: 10,
         join: {
-            grade: {eager: false},
-             'grade.level': {
+            grade: { eager: false },
+            'grade.level': {
                 alias: 'grade_level',
-                 eager: false
+                eager: false
             },
             'grade.level.campus': {
                 alias: 'grade_level_campus',
                 eager: false
             },
-            cycle: {eager: false},
-            studyPlan: {eager: false},
-            studyPlanVariant: {eager: false},
-            group: {eager: false},
-            level: {eager: false},
-            'level.campus': {eager: false},
-            assignments: {eager: false},
-            inscriptions: {eager: false},
-            'inscriptions.student': {eager: false},
-            'inscriptions.student.family': {eager: false},
-            'inscriptions.student.incidents': {eager: false},
+            cycle: { eager: false },
+            studyPlan: { eager: false },
+            studyPlanVariant: { eager: false },
+            group: { eager: false },
+            level: { eager: false },
+            'level.campus': { eager: false },
+            assignments: { eager: false },
+            inscriptions: { eager: false },
+            'inscriptions.student': { eager: false },
+            'inscriptions.student.family': { eager: false },
+            'inscriptions.student.incidents': { eager: false },
         },
     },
 })
@@ -45,5 +45,10 @@ export class ClassroomsController implements CrudController<Classroom> {
 
     get base(): CrudController<Classroom> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
     }
 }

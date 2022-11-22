@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import {Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Res} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { IQueryRoutesChildDto, IQueryRoutesFatherDto } from './dto/query-routes.dto';
 import { Route } from './entities/route.entity';
@@ -9,11 +9,15 @@ import { RoutesService } from './routes.service';
         type: Route,
     },
     query: {
-        limit: 10,
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         join: {
-            routeActions: {eager: false},
-            'routeActions.route': {eager: false},
-            'routeActions.action': {eager: false},
+            routeActions: { eager: false },
+            'routeActions.route': { eager: false },
+            'routeActions.action': { eager: false },
         },
     },
 })
@@ -28,6 +32,16 @@ export class RoutesController implements CrudController<Route> {
         return this;
     }
 
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
+    }
+
     @Get('roots')
     async getRoots() {
         return await this.service.getRoots();
@@ -36,14 +50,28 @@ export class RoutesController implements CrudController<Route> {
     @Get('fathers')
     async getFathers(
         @Query() options: IQueryRoutesFatherDto
-    ){
-        return await this.service.getFathers(options);
+    ) {
+        const result = await this.service.getFathers(options)
+        const data = result.data.map((d: any) => {
+            let childs = [];
+
+            d.childs != null ? childs = d.childs.split(",") : null;
+            return { ...d, childs: childs.map((p: string) => { return parseInt(`${p}`) }) }
+        });
+        return { ...result, data };
     }
 
     @Get('childs')
     async getChilds(
         @Query() options: IQueryRoutesChildDto,
-    ){
-        return await this.service.getChilds(options);
+    ) {
+        const result = await this.service.getChilds(options)
+        const data = result.data.map((d: any) => {
+            let childs = [];
+
+            d.childs != null ? childs = d.childs.split(",") : null;
+            return { ...d ,childs: childs.map((p: string) => { return parseInt(`${p}`) }) }
+        });
+        return { ...result, data };
     }
 }

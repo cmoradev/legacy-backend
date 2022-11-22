@@ -20,7 +20,6 @@ import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MiniStoreInvoice } from '../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
@@ -28,8 +27,8 @@ import { XmlComprobante } from '@signati/core';
 import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import { string } from '@hapi/joi';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
+import {IQueryReportAcademiaPayment} from './types/IReports';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -430,6 +429,75 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             return cfdi['cfdi:Comprobante'] as XmlComprobante;
         } catch (e) {
             throw new NotFoundException('Could not save xml or pdf');
+        }
+    }
+
+    public async reportAcademiaPayment({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+        usersIds,
+                                       }: IQueryReportAcademiaPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_aca_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if(status){
+            queryString = `${queryString} AND p_state = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
+        }
+        if(usersIds && usersIds.length > 0){
+            const user = usersIds.map((u) => {return parseInt(`${u}`)})
+            if(status && status == 4){
+                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
+    public async reportAcademiaPaymentInvoice({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+                                              }: IQueryReportAcademiaPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_aca_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+
+        if(status){
+            queryString = `${queryString} AND f_status = '${status}'`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
         }
     }
 }
