@@ -182,14 +182,14 @@ export class InscriptionsController implements CrudController<Inscription> {
         if (options?.isExported) {
             const conceptStatusExcel = new InscriptionAttendanceListReport(arrayGroup, options);
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameList('attendance_list', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}.xlsx`,
+                filename: `${getNameList('Lista de asistencia ', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameList('attendance_list', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}`,
+                name: `${getNameList('Lista de asistencia ', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}`,
             };
             return res.send({ report, data: arrayGroup });
         } else {

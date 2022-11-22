@@ -32,13 +32,11 @@ export class InscriptionAttendanceListReport {
         this.config();
 
         data.forEach((itemGroup, index) => {
-            const sheetName = `${itemGroup.nameGrade} - ${itemGroup.nameGroup}`;
-            const objSheet = this.addWorksheet(
-                `${sheetName}`
-            )
             this.generate(
                 index,
-                objSheet
+                this.addWorksheet(
+                    `${itemGroup.nameGrade} - ${itemGroup.nameGroup}`
+                )
             );
         });
     }
@@ -54,7 +52,7 @@ export class InscriptionAttendanceListReport {
                 width: 10000,
                 height: 20000,
                 firstSheet: 0,
-                activeTab: 1,
+                activeTab: 0,
                 visibility: 'visible',
             },
         ];
@@ -105,10 +103,11 @@ export class InscriptionAttendanceListReport {
             rows.push(columns);
         });
         worksheet.addTable({
-            displayName: 'Report',
-            name: 'Report',
+            displayName: `Report${index}`,
+            name: `Report${index}`,
             ref: 'B5',
             headerRow: true,
+            totalsRow: false,
             style: {
                 theme: 'TableStyleLight9',
                 showRowStripes: true,

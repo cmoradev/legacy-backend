@@ -216,8 +216,8 @@ export class InformativeExcel {
         });
 
         worksheet.addTable({
-            displayName: 'Reporte',
-            name: 'Reporte',
+            displayName: 'Matriz',
+            name: 'Matriz',
             ref: 'B5',
             totalsRow: false,
             headerRow: true,

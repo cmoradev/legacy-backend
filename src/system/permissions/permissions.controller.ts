@@ -1,8 +1,9 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Permission } from './entities/permission.entity';
 import { PermissionsService } from './permissions.service';
 import { PermissionDto } from './DTO/permission.dto';
+import { Response } from 'express';
 
 @Crud({
     model: {
@@ -15,9 +16,9 @@ import { PermissionDto } from './DTO/permission.dto';
             },
         },
         join: {
-            role: {eager: false},
-            route: {eager: false},
-            actions: {eager: false},
+            role: { eager: false },
+            route: { eager: false },
+            actions: { eager: false },
         },
     },
 })
@@ -122,4 +123,16 @@ export class PermissionsController implements CrudController<Permission> {
         });
     }
 
+    @Post('permission-role')
+    public async PermissionRole(@Res() res: Response, @Body() params: {
+        idRole: number
+    }
+    ) {
+        try {
+            const permission = await this.service.getPermissionRole(params.idRole);
+            res.status(200).send(permission);
+        } catch (e) {
+            res.status(401).send({ data: { statusCode: 401, message: e.message } });
+        }
+    }
 }
