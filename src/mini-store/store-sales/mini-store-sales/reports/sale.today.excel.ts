@@ -52,7 +52,7 @@ export class SaleTodayExcel {
   // * Modificar los names.
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = []
-    if(this.params.status && this.params.status == PaymentStatus.trusted){
+    if(this.params.status && this.params.status == PaymentStatus.trusted || this.params.status == PaymentStatus.quotation){
       if(this.params.byClient){
         columns = [
           { name: 'Matricula', filterButton: true },
