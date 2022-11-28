@@ -12,13 +12,14 @@ import { IQueryReportStorePayment } from './types/IReports';
 import { StorePaymentExcel } from './reports/store-payment.excel';
 import { getNameReport } from '../mini-store-sales/reports/helpers';
 import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel';
-import { getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { getDataCharges, getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
 import {reportStorePaymentByClient} from './utils/utils';
 import * as AdmZip from 'adm-zip';
 import { ConfigService } from '../../../common/config/config.service';
+import { Decimal } from '@munyaal/calculations';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
@@ -81,13 +82,25 @@ export class MiniStoreSalesPaymentsReportController {
             matriz
         };
         let data: NotInvoiced[] = [];
+        getDataCharges(result, InvoiceModules.STORE).forEach((r)=>{
+            const index = data.findIndex((d)=> d.p_id == r.p_id);
+            if(index > -1){
+                data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
+                data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
+                data[index].charges = {
+                  discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
+                  scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
+                  surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
+                }
+                data[index].totals = {
+                  IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
+                  totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
+                }
+            }else{
+              data.push(r)
+            }
+          });
         let dataByClient: NotInvoiced[] = [];
-        data = result.map((d: any) => {
-            let p_quantity = [];
-
-            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-        });
 
         if(options.byClient){
             dataByClient = reportStorePaymentByClient(data);

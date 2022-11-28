@@ -11,6 +11,7 @@ export default class SchoolPaymentSeed implements Seeder {
             f.id AS f_id,
             bf.id AS bf_id_branch_office,
             bf.plantel AS bf_name_branch_office,
+            v.id AS v_id,
             v.folio AS v_folio,
             p.folio AS p_folio,
             f.folio AS f_folio,
@@ -43,15 +44,23 @@ export default class SchoolPaymentSeed implements Seeder {
             (CONCAT(uf.nombre, ' ', uf.ap_paterno, ' ', uf.ap_materno)) AS uf_fullname_cashier,
             (CONCAT(usf.nombre, ' ', usf.ap_paterno, ' ', usf.ap_materno)) AS usf_fullname_cancelation,
             uf.id AS f_cashier_id,
-            usf.id AS f_cancelation_id
-        FROM school_charge_payments p
+            usf.id AS f_cancelation_id,
+            (SELECT GROUP_CONCAT(typeExtraCharge) FROM school_charges_details_extra_charges where chargeDetailId = vd.id ) as types_charges,
+            (SELECT GROUP_CONCAT(quantity) FROM school_charges_details_extra_charges where chargeDetailId = vd.id ) as quantyties_charges,
+            (SELECT GROUP_CONCAT(applicationType) FROM school_charges_details_extra_charges where chargeDetailId = vd.id ) as aplications_charges,
+            vd.quantity AS vd_quantity,
+            vd.price AS vd_price,
+            vd.price AS vd_price_IVA,
+            vd.id AS vd_id
 
+        FROM school_charge_payments p
         LEFT JOIN school_charges v ON v.id = p.schoolChargeId
+        LEFT JOIN school_charges_details vd ON vd.schoolChargeId = v.id
         LEFT JOIN alumnos a ON a.id = v.schoolStudentId
         LEFT JOIN usuarios u ON u.id = v.cashierId
         LEFT JOIN usuarios us ON us.id = v.cashierCancellationId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
-        LEFT JOIN usuarios uf ON uf.id = f.id_agente_facturador 
+        LEFT JOIN usuarios uf ON uf.id = f.id_agente_facturador
         LEFT JOIN usuarios usf ON usf.id = f.id_agente_cancelador
         LEFT JOIN planteles bf on bf.id = p.schoolPaymentOfficeId
 

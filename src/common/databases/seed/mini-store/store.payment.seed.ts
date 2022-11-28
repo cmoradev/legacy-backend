@@ -43,10 +43,18 @@ export default class StorePaymentSeed implements Seeder {
             (CONCAT(vu.nombre, ' ', vu.ap_paterno, ' ', vu.ap_materno)) AS vu_fullname_cashier,
             (CONCAT(vuc.nombre, ' ', vuc.ap_paterno, ' ', vuc.ap_materno)) AS vuc_fullname_cancelation,
             vu.id as cashier_id_venta,
-            vuc.id AS cancelation_id_venta
+            vuc.id AS cancelation_id_venta,
+            (SELECT GROUP_CONCAT(typeExtraCharge) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as types_charges,
+            (SELECT GROUP_CONCAT(quantity) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as quantyties_charges,
+            (SELECT GROUP_CONCAT(applicationType) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as aplications_charges,
+            vd.cantidad AS vd_quantity,
+            vd.precio AS vd_price,
+            vd.priceWithIVA AS vd_price_IVA,
+            vd.id AS vd_id
         FROM tie_venta_pagos p
 
         LEFT JOIN tie_ventas v ON v.id = p.saleId
+        LEFT JOIN tie_venta_detalle vd on vd.miniStoreSaleId = v.id
         LEFT JOIN alumnos a ON a.id = v.id_alumno
         LEFT JOIN tie_facturas f ON p.id = f.miniStoreSalePaymentId
         LEFT JOIN usuarios u ON u.id = f.agentBillingId

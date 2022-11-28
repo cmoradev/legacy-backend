@@ -16,22 +16,22 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     typeConcept: 'Recepit' | 'Invoice'
     baseDefault?: number;
 }): DataInvoice => {
-    const {payment, details, type, typeConcept, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0} = payload;
+    const { payment, details, type, typeConcept, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0 } = payload;
 
     // INICIALIZACION DEL OBJ RETORNO
     let obj: DataInvoice = dataInvoiceInit;
 
     let cptArray: any[] = []
 
-    let surchargesTotal: Decimal [] = [];
+    let surchargesTotal: Decimal[] = [];
 
-    const totals = TotalWithCalculation({details, type, payment});
+    const totals = TotalWithCalculation({ details, type, payment });
 
     totals.detailsWithPaymentApplied.concepts.forEach((concept: Concept) => {
         // SE OBTIENE LOS CALCULOS
         let cpt = {} as any;
         const conceptDetails = details.find((d) => d.id === concept.id);
-        const moreDetails = getMoreDatails({detail: conceptDetails, type});
+        const moreDetails = getMoreDatails({ detail: conceptDetails, type });
         let scholarships: Decimal[] = [];
         let discounts: Decimal[] = [];
         let surcharges: Decimal[] = [];
@@ -57,7 +57,7 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
                 recargo: surcharges.length > 0 ? Decimal.sum(...surcharges).toFixed(2) : '0.000',
             } as ConceptReceipt;
             if (type !== InvoiceModules.STORE) {
-                cpt = {...cpt, beca: scholarships.length > 0 ? Decimal.sum(...scholarships).toFixed(2) : '0.00',} as ConceptSchoolAndAcademy
+                cpt = { ...cpt, beca: scholarships.length > 0 ? Decimal.sum(...scholarships).toFixed(2) : '0.00', } as ConceptSchoolAndAcademy
             }
         } else {
             cpt = {
@@ -99,12 +99,12 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
     obj.totals.fiscal.SubTotal = totals.detailsWithPaymentApplied.amount.toFixed(2)
     obj.totals.fiscal.Descuento = totals.detailsWithPaymentApplied.discount.toFixed(2)
     obj.totals.fiscal.Total = Decimal.sum(
-                                Decimal.sub(
-                                    totals.detailsWithPaymentApplied.amount.toFixed(2),
-                                    totals.detailsWithPaymentApplied.discount.toFixed(2)
-                                ),
-                                totals.detailsWithPaymentApplied.tax.toFixed(2)
-                                ).toFixed(2)
+        Decimal.sub(
+            totals.detailsWithPaymentApplied.amount.toFixed(2),
+            totals.detailsWithPaymentApplied.discount.toFixed(2)
+        ),
+        totals.detailsWithPaymentApplied.tax.toFixed(2)
+    ).toFixed(2)
     obj.totals.receipt = {
         SubTotal: obj.totals.fiscal.SubTotal,
         Descuento: obj.totals.fiscal.Descuento,
@@ -124,30 +124,14 @@ const TotalWithCalculation = <T extends Detalles>(payload: {
     detailsWithPaymentApplied: ConceptAmountDetailsResult;
     detailsWithoutPaymentApplied: ConceptAmountDetailsResult;
 } => {
-    const {details, type, payment} = payload;
+    const { details, type, payment } = payload;
     const concepts: Concept[] = details.map((d) => {
-        const charges: Charge[] = d.extraCharges.map((e: ExtraCharges) => {
-            let order = 1;
-            if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Becas) {
-                order = 1;
-            } else if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Descuentos) {
-                order = 2;
-            } else if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Recargos) {
-                order = 3;
-            }
-            return {
-                id: e.typeExtraCharge,
-                amount: e.quantity,
-                order,
-                type: e.typeExtraCharge !== SystemTypeExtraChargesEnum.Recargos ? ChargeTypeEnum.DISCOUNTS : ChargeTypeEnum.SURCHARGES,
-                application: e.applicationType === TypeChargeApplicationEnum.percentage ? ChargeApplicationEnum.PERCENTAGE : ChargeApplicationEnum.QUANTITY
-            } as Charge
-        })
+        const charges: Charge[] = getChargeDetails(d, type);
         return {
             id: d.id,
             quantity: d.quantity,
             basePrice: getPrice(d, type),
-            name: getMoreDatails({detail: d, type}).descrption,
+            name: getMoreDatails({ detail: d, type }).descrption,
             charges,
         } as Concept
     });
@@ -168,4 +152,24 @@ const getPrice = <T extends Detalles>(detail: T, type: InvoiceModules): number =
     } else {
         return typeof detail.price === 'string' ? parseFloat(`${detail.price}`) : detail.price;
     }
+}
+
+export const getChargeDetails = <T extends Detalles>(details: T, type: InvoiceModules): Charge[] => {
+    return details.extraCharges.map((e: ExtraCharges) => {
+        let order = 1;
+        if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Becas) {
+            order = 1;
+        } else if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Descuentos) {
+            order = 2;
+        } else if (type === InvoiceModules.ACADEMY && e.typeExtraCharge === SystemTypeExtraChargesEnum.Recargos) {
+            order = 3;
+        }
+        return {
+            id: e.typeExtraCharge,
+            amount: e.quantity,
+            order,
+            type: e.typeExtraCharge !== SystemTypeExtraChargesEnum.Recargos ? ChargeTypeEnum.DISCOUNTS : ChargeTypeEnum.SURCHARGES,
+            application: e.applicationType === TypeChargeApplicationEnum.percentage ? ChargeApplicationEnum.PERCENTAGE : ChargeApplicationEnum.QUANTITY
+        } as Charge
+    })
 }

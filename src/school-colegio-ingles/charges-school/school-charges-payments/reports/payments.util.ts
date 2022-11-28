@@ -22,9 +22,10 @@ import {
 import {
   AcademyChargeMethodsPayments
 } from '../../../../academy/charges-academy/academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
-import { Decimal } from '@munyaal/calculations';
+import { calculateCharge, calculateInvoicePrices, Charge, Concept, Decimal, FountTypeEnum, TaxPercentageEnum } from '@munyaal/calculations';
 import { Detalles, ExtraCharges } from '../../../../common/point-of-sale/types.pos';
 import { chargesOnCharges, totalAmountConceptAfterExtraCharge } from '../../../../common/point-of-sale/point-of-sale';
+import { getChargeDetails } from '../../../../common/calculations/calculation';
 
 interface ResumeType {
   paymentMethod: InvoiceMethodPayment;
@@ -137,71 +138,76 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
   }
 
   const paymentsArray = [];
+  const ids = [];
   data.forEach((d) => {
-    let iCashier = -1;
-    let imethodsPayments = -1;
-    if (isInvoice || type == InvoiceModules.SCHOOL) {
-      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.f_metodo_pago_codigo));
-    } else {
-      iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${type == InvoiceModules.ACADEMY ? d.cashier_id : d.cashier_id_venta}`));
-      imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.p_metodo_pago_codigo));
-    }
-    if (iCashier == -1) {
-      dataMatriz.cashiers.push(
-        isInvoice || type == InvoiceModules.SCHOOL || type == InvoiceModules.ACADEMY
-          ? { id: parseInt(`${d.cashier_id}`), name: d.u_fullname_cashier } as User
-          : { id: parseInt(`${d.cashier_id_venta}`), name: d.vu_fullname_cashier } as User);
-    }
-    if (imethodsPayments == -1) {
-      dataMatriz.methodsPayments.push(
-        isInvoice || type == InvoiceModules.SCHOOL
-          ? { id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment
-          : { id: parseInt(d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);
-    }
+    const index = ids.findIndex((ii) => ii = d.p_id);
+    if (index == -1) {
+      let iCashier = -1;
+      let imethodsPayments = -1;
+      if (isInvoice || type == InvoiceModules.SCHOOL) {
+        iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${d.cashier_id}`));
+        imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.f_metodo_pago_codigo));
+      } else {
+        iCashier = dataMatriz.cashiers.findIndex((c) => c.id == parseInt(`${type == InvoiceModules.ACADEMY ? d.cashier_id : d.cashier_id_venta}`));
+        imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == parseInt(d.p_metodo_pago_codigo));
+      }
+      if (iCashier == -1) {
+        dataMatriz.cashiers.push(
+          isInvoice || type == InvoiceModules.SCHOOL || type == InvoiceModules.ACADEMY
+            ? { id: parseInt(`${d.cashier_id}`), name: d.u_fullname_cashier } as User
+            : { id: parseInt(`${d.cashier_id_venta}`), name: d.vu_fullname_cashier } as User);
+      }
+      if (imethodsPayments == -1) {
+        dataMatriz.methodsPayments.push(
+          isInvoice || type == InvoiceModules.SCHOOL
+            ? { id: parseInt(d.f_metodo_pago_codigo), name: d.f_metodo_pago } as InvoiceMethodPayment
+            : { id: parseInt(d.p_metodo_pago_codigo), name: d.p_metodo_pago } as InvoiceMethodPayment);
+      }
 
-    switch (type) {
-      case InvoiceModules.SCHOOL:
-        paymentsArray.push({
-          cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id } as User,
-          change: parseFloat(`${d.p_change}`),
-          methodsPayments: [{
-            quantity: parseFloat(`${d.p_quantity}`),
-            invoiceMethodPayment: {
-              id: parseInt(d.f_metodo_pago_codigo),
-              name: d.f_metodo_pago
-            } as Partial<InvoiceMethodPayment>
-          } as Partial<SchoolChargesMethodsPayments>] as SchoolChargesMethodsPayments[]
-        } as SchoolChargePayment);
-        break;
-      case InvoiceModules.STORE:
-        paymentsArray.push({
-          agent: isInvoice ? { name: d.u_fullname_cashier, id: d.cashier_id } as User : { name: d.vu_fullname_cashier, id: d.cashier_id_venta } as User,
-          change: parseFloat(`${d.p_change}`),
-          miniStoreSaleMethodPayments: [{
-            quantity: parseFloat(`${d.p_quantity}`),
-            invoiceMethodPayment: {
-              id: isInvoice ? parseInt(d.f_metodo_pago_codigo) : parseInt(d.p_metodo_pago_codigo),
-              name: isInvoice ? d.f_metodo_pago : d.p_metodo_pago
-            } as Partial<InvoiceMethodPayment>
-          }] as Partial<MiniStoreSaleMethodPayment>
-        } as MiniStoreSalePayment);
-        break;
-      case InvoiceModules.ACADEMY:
-        paymentsArray.push({
-          cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id } as User,
-          change: parseFloat(`${d.p_change}`),
-          methodsPayments: [{
-            quantity: parseFloat(`${d.p_quantity}`),
-            invoiceMethodPayment: {
-              id: isInvoice ? parseInt(d.f_metodo_pago_codigo) : parseInt(d.p_metodo_pago_codigo),
-              name: isInvoice ? d.f_metodo_pago : d.p_metodo_pago
-            } as Partial<InvoiceMethodPayment>
-          } as Partial<AcademyChargeMethodsPayments>] as AcademyChargeMethodsPayments[]
-        } as AcademyChargePayments);
-        break;
-      default:
-        break;
+      switch (type) {
+        case InvoiceModules.SCHOOL:
+          paymentsArray.push({
+            cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id } as User,
+            change: parseFloat(`${d.p_change}`),
+            methodsPayments: [{
+              quantity: parseFloat(`${d.p_quantity}`),
+              invoiceMethodPayment: {
+                id: parseInt(d.f_metodo_pago_codigo),
+                name: d.f_metodo_pago
+              } as Partial<InvoiceMethodPayment>
+            } as Partial<SchoolChargesMethodsPayments>] as SchoolChargesMethodsPayments[]
+          } as SchoolChargePayment);
+          break;
+        case InvoiceModules.STORE:
+          paymentsArray.push({
+            agent: isInvoice ? { name: d.u_fullname_cashier, id: d.cashier_id } as User : { name: d.vu_fullname_cashier, id: d.cashier_id_venta } as User,
+            change: parseFloat(`${d.p_change}`),
+            miniStoreSaleMethodPayments: [{
+              quantity: parseFloat(`${d.p_quantity}`),
+              invoiceMethodPayment: {
+                id: isInvoice ? parseInt(d.f_metodo_pago_codigo) : parseInt(d.p_metodo_pago_codigo),
+                name: isInvoice ? d.f_metodo_pago : d.p_metodo_pago
+              } as Partial<InvoiceMethodPayment>
+            }] as Partial<MiniStoreSaleMethodPayment>
+          } as MiniStoreSalePayment);
+          break;
+        case InvoiceModules.ACADEMY:
+          paymentsArray.push({
+            cashierCharge: { name: d.u_fullname_cashier, id: d.cashier_id } as User,
+            change: parseFloat(`${d.p_change}`),
+            methodsPayments: [{
+              quantity: parseFloat(`${d.p_quantity}`),
+              invoiceMethodPayment: {
+                id: isInvoice ? parseInt(d.f_metodo_pago_codigo) : parseInt(d.p_metodo_pago_codigo),
+                name: isInvoice ? d.f_metodo_pago : d.p_metodo_pago
+              } as Partial<InvoiceMethodPayment>
+            } as Partial<AcademyChargeMethodsPayments>] as AcademyChargeMethodsPayments[]
+          } as AcademyChargePayments);
+          break;
+        default:
+          break;
+      }
+      ids.push(d.p_id);
     }
   })
 
@@ -301,11 +307,12 @@ export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSal
   return resumeDataTable;
 }
 
-export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
+export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, isSale: boolean = false) => {
   return data.map((d: any) => {
     let types_charges = [];
     let aplications_charges = [];
     let quantyties_charges = [];
+    let charges: Charge[] = [];
 
     d.types_charges != null ? types_charges = d.types_charges.split(',') : [];
     d.aplications_charges != null ? aplications_charges = d.aplications_charges.split(',') : [];
@@ -320,16 +327,16 @@ export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
     }
     const detail: Detalles = {
       extraCharges,
-      id: d.vd_id,
+      id: d.vd_id, // v_id
       price: parseInt(d.vd_price_IVA),
       priceWithIVA: parseInt(d.vd_price_IVA),
-      quantity: parseInt(d.vd_quantity),
-      isIva: parseInt(d.vd_is_IVA),
+      quantity: parseInt(d.vd_quantity)
     };
 
     let objAcademy = undefined;
     if (type == InvoiceModules.ACADEMY) {
       objAcademy = chargesOnCharges(detail);
+      charges = getChargeDetails({ extraCharges: extraCharges } as Detalles, InvoiceModules.ACADEMY)
     }
     let totalIVA = type == InvoiceModules.ACADEMY ? objAcademy.subtotal : 0;
     const total = Decimal.mul(d.vd_quantity, d.vd_price_IVA).toNumber();
@@ -339,13 +346,48 @@ export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
     if (type != InvoiceModules.ACADEMY) {
       switch (type) {
         case InvoiceModules.SCHOOL:
+          charges = getChargeDetails({ extraCharges: extraCharges } as Detalles, InvoiceModules.SCHOOL)
           totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
           break;
         case InvoiceModules.STORE:
+          charges = getChargeDetails({ extraCharges: extraCharges } as Detalles, InvoiceModules.STORE)
           totalIVA = totalAmountConceptAfterExtraCharge(detail, 1);
           break;
       }
     }
+
+    const calculation = calculateInvoicePrices({
+      payment: {
+        amount: total,
+        change: 0
+      },
+      concepts: [{
+        id: d.id,
+        quantity: new Decimal(detail.quantity),
+        basePrice: new Decimal(detail.price),
+        name: '',
+        charges,
+      } as Concept],
+      fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
+      ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
+    });
+    console.log({
+      payment: {
+        amount: total,
+        change: 0
+      },
+      concepts: [{
+        id: d.id,
+        quantity: new Decimal(detail.quantity),
+        basePrice: new Decimal(detail.price),
+        name: '',
+        charges,
+      } as Concept],
+      fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
+      ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
+    })
+    console.log(calculation)
+
     return {
       ...d,
       totalIVA,
@@ -358,6 +400,10 @@ export const getDataCharges = (data: NotInvoiced[], type: InvoiceModules) => {
         discounts,
         scholarships,
         surcharges
+      },
+      totals: {
+        IVA: calculation.detailsWithPaymentApplied.tax,
+        totalWithoutIVA: calculation.detailsWithPaymentApplied.amount,
       }
     } as NotInvoiced
   })
