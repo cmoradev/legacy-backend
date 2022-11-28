@@ -57,6 +57,7 @@ import { reportSchoolPaymentByClient } from './utils/utils';
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 import { reportSchoolSaleByClient } from './utils/utilSale';
 import { SchoolSaleExcel } from './reports/school-sales.excel';
+import { Decimal } from '@munyaal/calculations';
 
 @Crud({
   model: {
@@ -547,13 +548,25 @@ export class SchoolChargesPaymentsController
       matriz
     };
     let data: NotInvoiced[] = [];
-    let dataByClient: NotInvoiced[] = [];
-    data = result.map((d: any) => {
-      let p_quantity = [];
-
-      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-      return { ...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) }) } as NotInvoiced
+    getDataCharges(result, InvoiceModules.SCHOOL).forEach((r)=>{
+      const index = data.findIndex((d)=> d.p_id == r.p_id);
+      if(index > -1){
+          data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
+          data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
+          data[index].charges = {
+            discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
+            scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
+            surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
+          }
+          data[index].totals = {
+            IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
+            totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
+          }
+      }else{
+        data.push(r)
+      }
     });
+    let dataByClient: NotInvoiced[] = [];
 
     if (options.byClient) {
       dataByClient = reportSchoolPaymentByClient(data);
@@ -594,13 +607,25 @@ export class SchoolChargesPaymentsController
       matriz
     };
     let data: NotInvoiced[] = [];
-    let dataByClient: NotInvoiced[] = [];
-    data = result.map((d: any) => {
-      let p_quantity = [];
-
-      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-      return { ...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) }) } as NotInvoiced
+    getDataCharges(result, InvoiceModules.SCHOOL).forEach((r)=>{
+      const index = data.findIndex((d)=> d.p_id == r.p_id);
+      if(index > -1){
+          data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
+          data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
+          data[index].charges = {
+            discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
+            scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
+            surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
+          }
+          data[index].totals = {
+            IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
+            totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
+          }
+      }else{
+        data.push(r)
+      }
     });
+    let dataByClient: NotInvoiced[] = [];
 
     if (options.byClient) {
       dataByClient = reportSchoolPaymentByClient(data);

@@ -41,10 +41,18 @@ export default class AcademiaPaymentSeed implements Seeder {
         (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS u_fullname_cashier,
         (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation,
         u.id AS cashier_id,
-        us.id AS cancelation_id
+        us.id AS cancelation_id,
+        (SELECT GROUP_CONCAT(typeExtraCharge) FROM ac_charges_details_extra_charges where chargeDetailId = vd.id ) as types_charges,
+        (SELECT GROUP_CONCAT(quantity) FROM ac_charges_details_extra_charges where chargeDetailId = vd.id ) as quantyties_charges,
+        (SELECT GROUP_CONCAT(applicationType) FROM ac_charges_details_extra_charges where chargeDetailId = vd.id ) as aplications_charges,
+        vd.cantidad AS vd_quantity,
+        vd.precio AS vd_price,
+        vd.precio AS vd_price_IVA,
+        vd.id AS vd_id
     FROM ac_charge_payments p
 
     LEFT JOIN ac_cobros v ON v.id = p.academyChargeId
+    LEFT JOIN ac_cobro_detalle vd ON vd.id_ac_cobro = v.id
     LEFT JOIN alumnos a ON a.id = v.id_alumno
     LEFT JOIN ac_facturas f ON p.id = f.academyChargePaymentId
     LEFT JOIN usuarios u ON u.id = v.id_agente
