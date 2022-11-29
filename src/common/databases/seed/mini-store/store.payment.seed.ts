@@ -20,6 +20,7 @@ export default class StorePaymentSeed implements Seeder {
             p.cambio AS p_change,
             v.observaciones AS v_observations,
             CAST((p.cantidad - p.cambio) AS DECIMAL(12,6)) AS p_income,
+            (SELECT SUM(CAST((cantidad - cambio) AS DECIMAL(12,6))) from tie_venta_pagos where saleId = p.saleId and id not in (p.id)) AS p_total_without_current,
             a.id AS a_id,
             a.id_modalidad AS a_tipo,
             a.matricula AS a_key,

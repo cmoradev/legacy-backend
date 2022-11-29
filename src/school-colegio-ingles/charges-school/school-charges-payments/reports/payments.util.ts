@@ -140,7 +140,7 @@ export const getDataMatrizPayments = (data: NotInvoiced[], type: InvoiceModules,
   const paymentsArray = [];
   const ids = [];
   data.forEach((d) => {
-    const index = ids.findIndex((ii) => ii = d.p_id);
+    const index = ids.findIndex((id) => id == d.p_id);
     if (index == -1) {
       let iCashier = -1;
       let imethodsPayments = -1;
@@ -358,13 +358,13 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
 
     const calculation = calculateInvoicePrices({
       payment: {
-        amount: total,
+        amount: d.p_income,
         change: 0
       },
       concepts: [{
-        id: d.id,
-        quantity: new Decimal(detail.quantity),
-        basePrice: new Decimal(detail.price),
+        id: d.vd_id,
+        quantity: 1,
+        basePrice: d.p_income,
         name: '',
         charges,
       } as Concept],
@@ -373,20 +373,20 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
     });
     console.log({
       payment: {
-        amount: total,
+        amount: d.p_income,
         change: 0
       },
       concepts: [{
         id: d.id,
-        quantity: new Decimal(detail.quantity),
-        basePrice: new Decimal(detail.price),
+        quantity: 1,
+        basePrice: d.p_income,
         name: '',
         charges,
       } as Concept],
       fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
       ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
     })
-    console.log(calculation)
+    console.log(JSON.stringify(calculation, null, 3))
 
     return {
       ...d,
@@ -407,4 +407,63 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
       }
     } as NotInvoiced
   })
+}
+
+export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: InvoiceModules, isInvoice: boolean) => {
+  console.log(`el modulo es ${type}, igual a academia ${type === InvoiceModules.ACADEMY}`)
+  console.log(`el modulo es ${type}, igual a colegio ${type === InvoiceModules.SCHOOL}`)
+  console.log(`el modulo es ${type}, igual a tienda ${type === InvoiceModules.STORE}`)
+  const dataMatriz = getDataMatrizPayments(result, type, isInvoice);
+
+  switch (type) {
+    case InvoiceModules.SCHOOL:
+      dataMatriz.payments as SchoolChargePayment[];
+      break;
+    case InvoiceModules.STORE:
+      dataMatriz.payments as MiniStoreSalePayment[];
+      break;
+    case InvoiceModules.ACADEMY:
+      dataMatriz.payments as AcademyChargePayments[];
+      break;
+    default:
+      break;
+  }
+  const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, type);
+  let data: NotInvoiced[] = [];
+  getDataCharges(result, type).forEach((r) => {
+    const index = data.findIndex((d) => d.p_id == r.p_id);
+    if (index > -1) {
+      data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
+        data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
+        data[index].charges = {
+          discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
+          scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
+          surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
+        }
+    } else {
+      data.push({...r, p_status_Global: null})
+    }
+  });
+  data.forEach((d,i)=>{
+    const totalsPayments = Decimal.add(d.p_total_without_current != null ? d.p_total_without_current : 0, d.p_income);
+    const subtotalSale = Decimal.sub(Decimal.add(d.total,d.charges.surcharges), Decimal.add(d.charges.discounts, d.charges.scholarships));
+    // 1 completo, 2 completo diferido, 3 incompleto diferido
+    if(totalsPayments.toNumber() == subtotalSale.toNumber()){
+      if(d.p_total_without_current != null){
+        // pago diferido de una venta completa
+        data[i].p_status_Global = 2
+      }else{
+        // pago en una sola exhibision
+        data[i].p_status_Global = 1
+      }
+    }else{
+      data[i].p_status_Global = 3
+      //pago diferido de una venta incompleta
+    }
+  })
+  return {
+    data: data,
+    dataConverter: dataMatriz,
+    matriz: matriz
+  }
 }

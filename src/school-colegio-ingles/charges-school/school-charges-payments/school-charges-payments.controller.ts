@@ -559,8 +559,8 @@ export class SchoolChargesPaymentsController
             surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
           }
           data[index].totals = {
-            IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
-            totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
+            IVA: data[index].totals.IVA,
+            totalWithoutIVA: data[index].totals.totalWithoutIVA,
           }
       }else{
         data.push(r)
