@@ -273,7 +273,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSales(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE)
+        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true);
         let dataByClient: NotInvoiced[] = [];
         
 
@@ -305,7 +305,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSalesReturns(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE)
+        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true)
         let dataByClient: NotInvoiced[] = [];
 
         if (options.byClient) {

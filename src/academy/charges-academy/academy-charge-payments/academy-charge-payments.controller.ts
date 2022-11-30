@@ -49,14 +49,15 @@ import * as moment from 'moment';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import {IQueryReportAcademiaPayment} from './types/IReports';
-import {AcademiaPaymentExcel} from './reports/academia-payment.excel';
 import {AcademiaPaymentInvoiceExcel} from './reports/academia-payment-invoice.excel';
 import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import {
+  getDataFullMatrizAndData,
   getDataMatrizPayments,
   getMatrizPayments
 } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import {reportAcademiaPaymentByClient} from './utils/utils';
+import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 
 @Crud({
   model: {
@@ -558,32 +559,21 @@ export class AcademyChargePaymentsController
       @Res() res: Response,
       @Query() options: IQueryReportAcademiaPayment,
   ){
-    const result = await this.service.reportAcademiaPayment(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.ACADEMY, false);
-    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.ACADEMY);
-    const obj = {
-      data: result,
-      dataConverter: dataMatriz,
-      matriz
-    };
-    let data: NotInvoiced[] = [];
+    const obj = getDataFullMatrizAndData(await this.service.reportAcademiaPayment(options),InvoiceModules.ACADEMY, false)
+    
     let dataByClient: NotInvoiced[] = [];
-    data = result.map((d: any) => {
-      let p_quantity = [];
-
-      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-    });
 
     if(options.byClient){
-      dataByClient = reportAcademiaPaymentByClient(data);
+      dataByClient = reportAcademiaPaymentByClient(obj.data.map((d: any) => {
+        let p_quantity = [];
+  
+        d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+        return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+      }));
     }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentExcel(options, options.byClient ? dataByClient : data, {
-        data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
-        matriz
-      });
+      const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
       });
@@ -594,9 +584,9 @@ export class AcademyChargePaymentsController
         type: 'excel',
         name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
       };
-      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
+      return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
-      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
     }
   }
 
@@ -606,46 +596,34 @@ export class AcademyChargePaymentsController
       @Res() res: Response,
       @Query() options: IQueryReportAcademiaPayment,
   ){
-    const result = await this.service.reportAcademiaPaymentInvoice(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.ACADEMY, false);
-    const matriz = getMatrizPayments(dataMatriz.payments,dataMatriz.cashiers,dataMatriz.methodsPayments, InvoiceModules.ACADEMY);
-    const obj = {
-      data: result,
-      dataConverter: dataMatriz,
-      matriz
-    };
-
-    let data: NotInvoiced[] = [];
+    const obj = getDataFullMatrizAndData(await this.service.reportAcademiaPaymentInvoice(options),InvoiceModules.ACADEMY, false)
+    
     let dataByClient: NotInvoiced[] = [];
-    data = result.map((d: any) => {
-      let p_quantity = [];
-
-      d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-      return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-    });
 
     if(options.byClient){
-      dataByClient = reportAcademiaPaymentByClient(data);
+      dataByClient = reportAcademiaPaymentByClient(obj.data.map((d: any) => {
+        let p_quantity = [];
+  
+        d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+        return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+      }));
     }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new AcademiaPaymentInvoiceExcel(options, options.byClient ? dataByClient : data, {
-        data: {...dataMatriz, payments: dataMatriz.payments as AcademyChargePayments[] },
-        matriz
-      });
+      const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos Facturados')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}.xlsx`,
+        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}`,
+        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
       };
-      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
+      return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
-      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+      return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
     }
   }
 }

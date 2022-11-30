@@ -9,21 +9,17 @@ import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
-import { StorePaymentExcel } from './reports/store-payment.excel';
 import { getNameReport } from '../mini-store-sales/reports/helpers';
-import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel';
-import { getDataFullMatrizAndData, getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { getDataFullMatrizAndData } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
 import {reportStorePaymentByClient} from './utils/utils';
 import * as AdmZip from 'adm-zip';
 import { ConfigService } from '../../../common/config/config.service';
-import { Decimal } from '@munyaal/calculations';
+import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
-import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {

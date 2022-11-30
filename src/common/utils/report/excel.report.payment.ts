@@ -369,8 +369,6 @@ export class PaymentExcel {
                             case 'Pagos':
                                 columns.push(value.p_created_at);
                                 columns.push(value.vu_fullname_cashier);
-                                columns.push(this.getStatusFacturado(value).name);
-                                columns.push(this.getStatusFacturado(value).value);
                                 columns.push(value.v_folio);
                                 columns.push(value.p_folio);
                                 columns.push(this.getStatusVentaPago(value.p_status_Global));
@@ -402,10 +400,48 @@ export class PaymentExcel {
                         const columns = [];
                         switch (this.typeReport) {
                             case 'Pagos Facturados':
-
+                                columns.push(value.p_created_at);
+                                columns.push(value.vu_fullname_cashier);
+                                columns.push(value.v_folio);
+                                columns.push(value.p_folio);
+                                columns.push(this.getStatusVentaPago(value.p_status_Global));
+                                columns.push(value.f_folio);
+                                columns.push(this.getStatusFacturado(value).value);
+                                columns.push(this.getTipoClient(value.a_tipo));
+                                columns.push(value.a_key);
+                                columns.push(value.a_fullname);
+                                columns.push(value.v_observations);
+                                columns.push(value.p_metodo_pago);
+                                columns.push(parseFloat(`${value.total}`));
+                                columns.push(parseFloat(`${value.charges.scholarships}`));
+                                columns.push(parseFloat(`${value.charges.discounts}`));
+                                columns.push(parseFloat(`${value.charges.surcharges}`));
+                                columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
+                                columns.push(parseFloat(`${value.totals.IVA}`));
+                                columns.push(parseFloat(`${value.p_income}`));
+                                columns.push(parseFloat(`${value.p_quantity}`));
+                                columns.push(parseFloat(`${value.p_change}`));
                                 break;
                             case 'Pagos':
-
+                                columns.push(value.p_created_at);
+                                columns.push(value.vu_fullname_cashier);
+                                columns.push(value.v_folio);
+                                columns.push(value.p_folio);
+                                columns.push(this.getStatusVentaPago(value.p_status_Global));
+                                columns.push(this.getTipoClient(value.a_tipo));
+                                columns.push(value.a_key);
+                                columns.push(value.a_fullname);
+                                columns.push(value.v_observations);
+                                columns.push(value.p_metodo_pago);
+                                columns.push(parseFloat(`${value.total}`));
+                                columns.push(parseFloat(`${value.charges.scholarships}`));
+                                columns.push(parseFloat(`${value.charges.discounts}`));
+                                columns.push(parseFloat(`${value.charges.surcharges}`));
+                                columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
+                                columns.push(parseFloat(`${value.totals.IVA}`));
+                                columns.push(parseFloat(`${value.p_income}`));
+                                columns.push(parseFloat(`${value.p_quantity}`));
+                                columns.push(parseFloat(`${value.p_change}`));
                                 break;
                             case 'Ventas':
 

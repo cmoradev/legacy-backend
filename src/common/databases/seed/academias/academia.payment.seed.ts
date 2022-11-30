@@ -20,6 +20,7 @@ export default class AcademiaPaymentSeed implements Seeder {
         p.change AS p_change,
         v.observaciones AS v_observations,
         CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
+        (SELECT SUM(CAST((acp.quantity - acp.change) AS DECIMAL(12,6))) from ac_charge_payments acp where academyChargeId = p.academyChargeId and id not in (p.id)) AS p_total_without_current,
         a.id_modalidad AS a_tipo,
         a.id AS a_id,
         a.matricula AS a_key,
