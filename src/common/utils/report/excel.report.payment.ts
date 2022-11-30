@@ -35,7 +35,7 @@ export class PaymentExcel {
         this.config();
         this.generate(
             this.addWorksheet(
-                `${getNameReport('Ingresos', this.params).excel}`,
+                `${this.typeReport} ${getRangeDates(this.params.startDate, this.params.endDate).excel}`,
             ),
         );
     }
@@ -131,6 +131,26 @@ export class PaymentExcel {
                 column.width = 20;
             }
             if (this.type == InvoiceModules.STORE) {
+                if (this.typeReport == 'Pagos') {
+                    if (column.letter === 'C' || column.letter === 'E' || column.letter === 'K' || column.letter === 'L') {
+                        column.width = 40;
+                    }
+                    if (column.letter === 'D' || column.letter === 'F' || column.letter === 'G' || column.letter === 'H' || column.letter === 'I'
+                        || column.letter === 'J' || column.letter === 'N' || column.letter === 'M' || column.letter === 'P' || column.letter === 'Q' || column.letter === 'R'
+                        || column.letter === 'S') {
+                        column.width = 20;
+                    }
+                } else if (this.typeReport == 'Pagos Facturados') {
+                    if (column.letter === 'C' || column.letter === 'H' || column.letter === 'K' || column.letter === 'L') {
+                        column.width = 40;
+                    }
+                    if (column.letter === 'D' || column.letter === 'E' || column.letter === 'F' || column.letter === 'I'
+                        || column.letter === 'J' || column.letter === 'N' || column.letter === 'M' || column.letter === 'P' || column.letter === 'Q' || column.letter === 'R'
+                        || column.letter === 'S') {
+                        column.width = 20;
+                    }
+                }
+            }else{
                 if (this.typeReport == 'Pagos') {
                     if (column.letter === 'C' || column.letter === 'E' || column.letter === 'K' || column.letter === 'L') {
                         column.width = 40;
@@ -381,7 +401,7 @@ export class PaymentExcel {
                     switch (this.typeReport) {
                         case 'Pagos Facturados':
                             columns.push(value.p_created_at);
-                            columns.push(this.type == InvoiceModules.ACADEMY ? value.u_fullname_cashier : value.vu_fullname_cashier);
+                            columns.push(value.u_fullname_cashier);
                             columns.push(value.v_folio);
                             columns.push(value.p_folio);
                             columns.push(this.getStatusVentaPago(value.p_status_Global));
@@ -404,7 +424,7 @@ export class PaymentExcel {
                             break;
                         case 'Pagos':
                             columns.push(value.p_created_at);
-                            columns.push(this.type == InvoiceModules.ACADEMY ? value.u_fullname_cashier : value.vu_fullname_cashier);
+                            columns.push(value.u_fullname_cashier);
                             columns.push(this.getStatusFacturado(value).name);
                             columns.push(this.getStatusFacturado(value).value);
                             columns.push(value.v_folio);
@@ -414,7 +434,7 @@ export class PaymentExcel {
                             columns.push(value.a_key);
                             columns.push(value.a_fullname);
                             columns.push(value.v_observations);
-                            columns.push(value.p_metodo_pago);
+                            columns.push(this.type == InvoiceModules.SCHOOL ? value.f_metodo_pago : value.p_metodo_pago);
                             columns.push(parseFloat(`${value.total}`));
                             columns.push(parseFloat(`${value.charges.scholarships}`));
                             columns.push(parseFloat(`${value.charges.discounts}`));

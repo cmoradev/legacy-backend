@@ -49,12 +49,9 @@ import * as moment from 'moment';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import {IQueryReportAcademiaPayment} from './types/IReports';
-import {AcademiaPaymentInvoiceExcel} from './reports/academia-payment-invoice.excel';
-import {getNameReport, getRangeDates} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import {getRangeDates} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import {
   getDataFullMatrizAndData,
-  getDataMatrizPayments,
-  getMatrizPayments
 } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import {reportAcademiaPaymentByClient} from './utils/utils';
 import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
@@ -575,14 +572,14 @@ export class AcademyChargePaymentsController
     if (options?.isExported) {
       const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
+        filename: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}`,
+        name: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
       };
       return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
@@ -612,14 +609,14 @@ export class AcademyChargePaymentsController
     if (options?.isExported) {
       const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos Facturados')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}.xlsx`
+        filename: `Ac_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}`,
+        name: `Ac_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}`,
       };
       return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {

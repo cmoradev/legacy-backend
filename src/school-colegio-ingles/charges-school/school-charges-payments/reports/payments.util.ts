@@ -308,6 +308,7 @@ export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSal
 }
 
 export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, isSale: boolean = false) => {
+
   return data.map((d: any) => {
 
     let charges: Charge[] = [];
@@ -336,14 +337,14 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
       switch (type) {
         case InvoiceModules.SCHOOL:
           charges = getChargeDetails({ extraCharges: extraCharges } as Detalles, InvoiceModules.SCHOOL)
-          totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
+          //totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
           break;
         case InvoiceModules.STORE:
           charges = getChargeDetails({ extraCharges: extraCharges } as Detalles, InvoiceModules.STORE)
           totalIVA = totalAmountConceptAfterExtraCharge(detail, 1);
           break;
       }
-    }else{
+    } else {
       totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
     }
 
@@ -362,25 +363,6 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
       fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
       ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
     });
-    console.log(d)
-    /*
-    console.log({
-      payment: {
-        amount: isSale? total : d.p_income,
-        change: 0
-      },
-      concepts: [{
-        id: d.vd_id,
-        quantity: 1,
-        basePrice: isSale? total : d.p_income,
-        name: '',
-        charges,
-      } as Concept],
-      fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
-      ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
-    })
-    console.log(JSON.stringify(calculation.detailsWithPaymentApplied, null, 3))
-    */
     return {
       ...d,
       totalIVA,
@@ -399,10 +381,25 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
         totalWithoutIVA: type == InvoiceModules.ACADEMY ? Decimal.sub(isSale ? total : d.p_income, calculation.detailsWithPaymentApplied.tax).toNumber() : calculation.detailsWithPaymentApplied.amount,
       }
     } as NotInvoiced
-  })
+  });
 }
 
-export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: InvoiceModules, isInvoice: boolean) => {
+const removeDuplicates = (originalArray: any, prop: any) => {
+  var newArray = [];
+  var lookupObject: any  = {};
+
+  for(var i in originalArray) {
+     lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
+
+  for(i in lookupObject) {
+      newArray.push(lookupObject[i]);
+  }
+   return newArray;
+}
+
+
+export const getDataFullMatrizAndData = (result: any[] = [], type: InvoiceModules, isInvoice: boolean) => {
   const dataMatriz = getDataMatrizPayments(result, type, isInvoice);
 
   switch (type) {
@@ -420,7 +417,17 @@ export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: Invoi
   }
   const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, type);
   let data: any[] = [];
-  getDataCharges(result, type).forEach((r) => {
+  let dataCharge = getDataCharges(result, type);
+  if(isInvoice && type == InvoiceModules.SCHOOL){
+    const dataDuplicates = dataCharge.map((d)=>{
+      return {
+        ...d,
+        vd_id: `${d.p_id}${d.vd_id}`
+      }
+    });
+    dataCharge = removeDuplicates(dataDuplicates,'vd_id')
+  }
+  dataCharge.forEach((r) => {
     const index = data.findIndex((d) => d.p_id == r.p_id);
     if (index > -1) {
       data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
@@ -437,25 +444,6 @@ export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: Invoi
   data.forEach((d, i) => {
     const totalsPayments = Decimal.add(d.p_total_without_current != null ? d.p_total_without_current : 0, d.p_income);
     const subtotalSale = Decimal.sub(Decimal.add(d.total, d.charges.surcharges), Decimal.add(d.charges.discounts, d.charges.scholarships));
-
-    /*if (type == InvoiceModules.ACADEMY) {
-      const objDetails = getExtraChargesDetails(d, false);
-      const detail: Detalles = {
-        extraCharges: objDetails.extraCharges,
-        id: d.vd_id,
-        price: d.vd_price_IVA,
-        priceWithIVA: d.vd_price_IVA,
-        quantity: d.vd_quantity
-      };
-      const objAcademy = chargesOnCharges(detail);      
-    }*/
-
-    console.log({
-      totalsPayments: totalsPayments,
-      subtotalSale: subtotalSale,
-      p_total_without_current: d.p_total_without_current,
-      p_income: d.p_income
-    })
 
     // 1 completo, 2 completo diferido, 3 incompleto diferido
     if (totalsPayments.toNumber() == subtotalSale.toNumber()) {

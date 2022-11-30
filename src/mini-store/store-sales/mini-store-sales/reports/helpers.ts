@@ -19,6 +19,6 @@ export const getRangeDates = (startDate: string, endDate: string): {excel: strin
   const y  = Moment(endDate);
   return {
     excel: `_${x.date()}${x.month()+1}${x.year()}_${y.date()}${y.month()+1}${y.year()}`,
-    title: ` ${Moment(startDate).format('L')} - ${Moment(endDate).format('L')}`
+    title: ` ${Moment(startDate).add(5, 'hours').format('L')} - ${Moment(endDate).format('L')}`
   }
 }

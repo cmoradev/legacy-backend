@@ -9,7 +9,7 @@ import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
-import { getNameReport } from '../mini-store-sales/reports/helpers';
+import { getNameReport, getRangeDates } from '../mini-store-sales/reports/helpers';
 import { getDataFullMatrizAndData } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
@@ -86,14 +86,14 @@ export class MiniStoreSalesPaymentsReportController {
         if (options?.isExported) {
         const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+                filename: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+                name: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
             };
             return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
         } else {
@@ -122,14 +122,14 @@ export class MiniStoreSalesPaymentsReportController {
         if (options?.isExported) {
             const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos Facturados')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}.xlsx`,
+                filename: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}`,
+                name: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}`,
             };
             return res.send({ report, data: options.byClient ? dataByClient :  obj.data, obj });
         } else {

@@ -50,7 +50,7 @@ import { Environment, InvoiceModules } from '../../../common/point-of-sale/types
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { IQueryReportSchoolPayment } from './types/IReport';
-import { getNameReport } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { getNameReport, getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import { reportSchoolPaymentByClient } from './utils/utils';
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 import { reportSchoolSaleByClient } from './utils/utilSale';
@@ -553,14 +553,14 @@ export class SchoolChargesPaymentsController
         if (options?.isExported) {
         const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+                filename: `Sc_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+                name: `Sc_Pagos_${getRangeDates(options.startDate, options.endDate).excel}`,
             };
             return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
         } else {
@@ -573,7 +573,7 @@ export class SchoolChargesPaymentsController
     @Res() res: Response,
     @Query() options: IQueryReportSchoolPayment,
   ) {
-    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPaymentInvoice(options),InvoiceModules.SCHOOL, false)
+    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPaymentInvoice(options),InvoiceModules.SCHOOL, true)
 
     let dataByClient: NotInvoiced[] = [];
 
@@ -589,14 +589,14 @@ export class SchoolChargesPaymentsController
     if (options?.isExported) {
     const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos Facturados')
         const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-            filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+            filename: `Sc_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
         });
         const report = {
             src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                 buffer,
             ).toString('base64')}`,
             type: 'excel',
-            name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+            name: `Sc_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}`,
         };
         return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {

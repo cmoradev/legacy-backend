@@ -89,7 +89,7 @@ export class SaleReturnExcel {
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Reporte de ${getNameReport(this.params.byClient ? 'Devoluciones por cliente' : 'Devoluciones', this.params).title}`
+        title.value = `Tienda: Reporte de ${getNameReport(this.params.byClient ? 'Devoluciones por cliente' : 'Devoluciones', this.params).title}`
         title.style = {
             alignment: {horizontal: 'center', vertical: 'middle'},
         };
