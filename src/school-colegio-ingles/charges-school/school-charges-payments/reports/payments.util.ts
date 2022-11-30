@@ -343,6 +343,8 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
           totalIVA = totalAmountConceptAfterExtraCharge(detail, 1);
           break;
       }
+    }else{
+      totalIVA = Decimal.sub(Decimal.sum(total, surcharges), Decimal.sum(discounts, scholarships)).toNumber();
     }
 
     const calculation = calculateInvoicePrices({
@@ -360,7 +362,8 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
       fountType: type === InvoiceModules.ACADEMY ? FountTypeEnum.DISCOUNT_ON_DISCOUNT : FountTypeEnum.TRADITIONAL,
       ivaPercentage: type === InvoiceModules.SCHOOL ? TaxPercentageEnum.T0 : TaxPercentageEnum.T16
     });
-    /*console.log(d)
+    console.log(d)
+    /*
     console.log({
       payment: {
         amount: isSale? total : d.p_income,
@@ -393,14 +396,13 @@ export const getDataCharges = (data: NotInvoiced[] = [], type: InvoiceModules, i
       },
       totals: {
         IVA: calculation.detailsWithPaymentApplied.tax,
-        totalWithoutIVA: type == InvoiceModules.ACADEMY ? Decimal.sub(d.p_income, calculation.detailsWithPaymentApplied.tax).toNumber() : calculation.detailsWithPaymentApplied.amount,
+        totalWithoutIVA: type == InvoiceModules.ACADEMY ? Decimal.sub(isSale ? total : d.p_income, calculation.detailsWithPaymentApplied.tax).toNumber() : calculation.detailsWithPaymentApplied.amount,
       }
     } as NotInvoiced
   })
 }
 
 export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: InvoiceModules, isInvoice: boolean) => {
-  console.log(`el modulo es ${type}, igual a tienda ${type === InvoiceModules.STORE}`)
   const dataMatriz = getDataMatrizPayments(result, type, isInvoice);
 
   switch (type) {
@@ -447,6 +449,13 @@ export const getDataFullMatrizAndData = (result: NotInvoiced[] = [], type: Invoi
       };
       const objAcademy = chargesOnCharges(detail);      
     }*/
+
+    console.log({
+      totalsPayments: totalsPayments,
+      subtotalSale: subtotalSale,
+      p_total_without_current: d.p_total_without_current,
+      p_income: d.p_income
+    })
 
     // 1 completo, 2 completo diferido, 3 incompleto diferido
     if (totalsPayments.toNumber() == subtotalSale.toNumber()) {

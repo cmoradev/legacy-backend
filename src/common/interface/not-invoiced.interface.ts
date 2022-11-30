@@ -9,6 +9,7 @@ export interface NotInvoiced {
     f_rfc?: string;
     f_type?: string;
     f_status?: string;
+    fu_fullname_cashier: string;
     p_quantity: number[]; //school payment number
     p_change: number; //school payment number
     v_observations: string; //school payment number

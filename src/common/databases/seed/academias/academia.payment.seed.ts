@@ -16,11 +16,12 @@ export default class AcademiaPaymentSeed implements Seeder {
         f.rfc AS f_rfc,
         f.invoiceType AS f_type,
         f.status AS f_status,
+        (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS fu_fullname_cashier,
         p.quantity AS p_quantity,
         p.change AS p_change,
         v.observaciones AS v_observations,
         CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
-        (SELECT SUM(CAST((acp.quantity - acp.change) AS DECIMAL(12,6))) from ac_charge_payments acp where academyChargeId = p.academyChargeId and id not in (p.id)) AS p_total_without_current,
+        (SELECT SUM(CAST((acp.quantity - acp.change) AS DECIMAL(12,6))) from ac_charge_payments acp where acp.academyChargeId = p.academyChargeId and id not in (p.id)) AS p_total_without_current,
         a.id_modalidad AS a_tipo,
         a.id AS a_id,
         a.matricula AS a_key,
@@ -58,6 +59,7 @@ export default class AcademiaPaymentSeed implements Seeder {
     LEFT JOIN ac_facturas f ON p.id = f.academyChargePaymentId
     LEFT JOIN usuarios u ON u.id = v.id_agente
     LEFT JOIN usuarios us ON us.id = v.id_agente_cancelacion
+    LEFT JOIN usuarios fu ON u.id = f.id_agente_facturador
     LEFT JOIN planteles bf ON bf.id = p.academyPaymentOfficeId
 
     ORDER BY v.id DESC;

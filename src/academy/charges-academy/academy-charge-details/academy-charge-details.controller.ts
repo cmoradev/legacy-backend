@@ -51,7 +51,7 @@ export class AcademyChargeDetailsController implements CrudController<AcademyCha
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSaleAcademia(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.ACADEMY)
+        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.ACADEMY, true)
         let dataByClient: NotInvoiced[] = [];
 
         if (options.byClient) {

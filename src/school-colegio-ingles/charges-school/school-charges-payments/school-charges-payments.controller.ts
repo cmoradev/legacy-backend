@@ -34,7 +34,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { convertPaymentsReportCollege, getDataMatrizPayments, getMatrizPayments, getDataCharges } from './reports/payments.util';
+import { convertPaymentsReportCollege, getDataCharges, getDataFullMatrizAndData } from './reports/payments.util';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
@@ -50,14 +50,12 @@ import { Environment, InvoiceModules } from '../../../common/point-of-sale/types
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { IQueryReportSchoolPayment } from './types/IReport';
-import { SchoolPaymentExcel } from './reports/shoool-payment.excel';
 import { getNameReport } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
-import { SchoolPaymentInvoiceExcel } from './reports/school-payment-invoice.excel';
 import { reportSchoolPaymentByClient } from './utils/utils';
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 import { reportSchoolSaleByClient } from './utils/utilSale';
 import { SchoolSaleExcel } from './reports/school-sales.excel';
-import { Decimal } from '@munyaal/calculations';
+import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 
 @Crud({
   model: {
@@ -539,58 +537,35 @@ export class SchoolChargesPaymentsController
     @Res() res: Response,
     @Query() options: IQueryReportSchoolPayment,
   ) {
-    const result = await this.service.reportSchoolPayment(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, false);
-    const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
-    const obj = {
-      data: result,
-      dataConverter: dataMatriz,
-      matriz
-    };
-    let data: NotInvoiced[] = [];
-    getDataCharges(result, InvoiceModules.SCHOOL).forEach((r)=>{
-      const index = data.findIndex((d)=> d.p_id == r.p_id);
-      if(index > -1){
-          data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
-          data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
-          data[index].charges = {
-            discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
-            scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
-            surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
-          }
-          data[index].totals = {
-            IVA: data[index].totals.IVA,
-            totalWithoutIVA: data[index].totals.totalWithoutIVA,
-          }
-      }else{
-        data.push(r)
-      }
-    });
-    let dataByClient: NotInvoiced[] = [];
+    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPayment(options),InvoiceModules.SCHOOL, false)
 
-    if (options.byClient) {
-      dataByClient = reportSchoolPaymentByClient(data);
-    }
+        let dataByClient: NotInvoiced[] = [];
 
-    if (options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentExcel(options, options.byClient ? dataByClient : data, {
-        data: { ...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
-        matriz
-      });
-      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
-      });
-      const report = {
-        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-          buffer,
-        ).toString('base64')}`,
-        type: 'excel',
-        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
-      };
-      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
-    } else {
-      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
-    }
+        if(options.byClient){
+            dataByClient = reportSchoolPaymentByClient(obj.data.map((d: any) => {
+                let p_quantity = [];
+    
+                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+            }));
+        }
+
+        if (options?.isExported) {
+        const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos')
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+            };
+            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
+        } else {
+            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
+        }
   }
 
   @Get('/report-school-payment-invoice')
@@ -598,57 +573,34 @@ export class SchoolChargesPaymentsController
     @Res() res: Response,
     @Query() options: IQueryReportSchoolPayment,
   ) {
-    const result = await this.service.reportSchoolPaymentInvoice(options);
-    const dataMatriz = getDataMatrizPayments(result, InvoiceModules.SCHOOL, true);
-    const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.SCHOOL);
-    const obj = {
-      data: result,
-      dataConverter: dataMatriz,
-      matriz
-    };
-    let data: NotInvoiced[] = [];
-    getDataCharges(result, InvoiceModules.SCHOOL).forEach((r)=>{
-      const index = data.findIndex((d)=> d.p_id == r.p_id);
-      if(index > -1){
-          data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
-          data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
-          data[index].charges = {
-            discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
-            scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
-            surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
-          }
-          data[index].totals = {
-            IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
-            totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
-          }
-      }else{
-        data.push(r)
-      }
-    });
+    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPaymentInvoice(options),InvoiceModules.SCHOOL, false)
+
     let dataByClient: NotInvoiced[] = [];
 
-    if (options.byClient) {
-      dataByClient = reportSchoolPaymentByClient(data);
+    if(options.byClient){
+        dataByClient = reportSchoolPaymentByClient(obj.data.map((d: any) => {
+            let p_quantity = [];
+
+            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        }));
     }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new SchoolPaymentInvoiceExcel(options, options.byClient ? dataByClient : data, {
-        data: { ...dataMatriz, payments: dataMatriz.payments as SchoolChargePayment[] },
-        matriz
-      });
-      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}.xlsx`,
-      });
-      const report = {
-        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-          buffer,
-        ).toString('base64')}`,
-        type: 'excel',
-        name: `${getNameReport(options.byClient ? 'Pagos_facturados_por_cliente' : 'Pagos_Facturados', options).excel}`,
-      };
-      return res.send({ report, data: options.byClient ? dataByClient : data, obj });
+    const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos Facturados')
+        const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+            filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+        });
+        const report = {
+            src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                buffer,
+            ).toString('base64')}`,
+            type: 'excel',
+            name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+        };
+        return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
-      return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+        return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
     }
   }
 
@@ -658,7 +610,7 @@ export class SchoolChargesPaymentsController
     @Query() options: IQueryReportSaleTodayOp,
   ) {
     const result = await this.service.reportSalesSchool(options);
-    let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.SCHOOL)
+    let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.SCHOOL, true)
     let dataByClient: NotInvoiced[] = [];
 
     if (options.byClient) {

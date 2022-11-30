@@ -50,7 +50,7 @@ import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import {IQueryReportAcademiaPayment} from './types/IReports';
 import {AcademiaPaymentInvoiceExcel} from './reports/academia-payment-invoice.excel';
-import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import {getNameReport, getRangeDates} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import {
   getDataFullMatrizAndData,
   getDataMatrizPayments,
@@ -575,14 +575,14 @@ export class AcademyChargePaymentsController
     if (options?.isExported) {
       const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
+        filename: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
+        name: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}`,
       };
       return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
@@ -612,14 +612,14 @@ export class AcademyChargePaymentsController
     if (options?.isExported) {
       const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos Facturados')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-        filename: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}.xlsx`,
+        filename: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}.xlsx`
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
             buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `${getNameReport(options.byClient ? 'Pagos_por_cliente' : 'Pagos', options).excel}`,
+        name: `${options.byClient ? 'Pagos_por_cliente' : 'Pagos'} ${getRangeDates(options.startDate, options.endDate).excel}`,
       };
       return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {
