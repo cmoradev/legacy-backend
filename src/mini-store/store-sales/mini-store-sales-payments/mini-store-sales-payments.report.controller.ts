@@ -9,17 +9,14 @@ import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
-import { StorePaymentExcel } from './reports/store-payment.excel';
-import { getNameReport } from '../mini-store-sales/reports/helpers';
-import { StorePaymentInvoiceExcel } from './reports/store-payment-invoice.excel';
-import { getDataCharges, getDataMatrizPayments, getMatrizPayments } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { getNameReport, getRangeDates } from '../mini-store-sales/reports/helpers';
+import { getDataFullMatrizAndData } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
 import {reportStorePaymentByClient} from './utils/utils';
 import * as AdmZip from 'adm-zip';
 import { ConfigService } from '../../../common/config/config.service';
-import { Decimal } from '@munyaal/calculations';
+import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
@@ -72,58 +69,35 @@ export class MiniStoreSalesPaymentsReportController {
     private async reportStorePayment(
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
-    ) {
-        const result = await this.service.reportStorePayment(options);
-        const dataMatriz = getDataMatrizPayments(result, InvoiceModules.STORE, false);
-        const matriz = getMatrizPayments(dataMatriz.payments as MiniStoreSalePayment[], dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.STORE);
-        const obj = {
-            data: result,
-            dataConverter: dataMatriz,
-            matriz
-        };
-        let data: NotInvoiced[] = [];
-        getDataCharges(result, InvoiceModules.STORE).forEach((r)=>{
-            const index = data.findIndex((d)=> d.p_id == r.p_id);
-            if(index > -1){
-                data[index].total = Decimal.sum(r.total, data[index].total).toNumber(),
-                data[index].totalIVA = Decimal.sum(r.totalIVA, data[index].totalIVA).toNumber(),
-                data[index].charges = {
-                  discounts: Decimal.sum(r.charges.discounts, data[index].charges.discounts).toNumber(),
-                  scholarships: Decimal.sum(r.charges.scholarships, data[index].charges.scholarships).toNumber(),
-                  surcharges: Decimal.sum(r.charges.surcharges, data[index].charges.surcharges).toNumber(),
-                }
-                data[index].totals = {
-                  IVA: Decimal.sum(r.totals.IVA, data[index].totals.IVA).toNumber(),
-                  totalWithoutIVA: Decimal.sum(r.totals.totalWithoutIVA, data[index].totals.totalWithoutIVA).toNumber(),
-                }
-            }else{
-              data.push(r)
-            }
-          });
+    ) {    
+        const obj = getDataFullMatrizAndData(await this.service.reportStorePayment(options),InvoiceModules.STORE, false)
+
         let dataByClient: NotInvoiced[] = [];
 
         if(options.byClient){
-            dataByClient = reportStorePaymentByClient(data);
+            dataByClient = reportStorePaymentByClient(obj.data.map((d: any) => {
+                let p_quantity = [];
+    
+                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+            }));
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentExcel(options, options.byClient ? dataByClient : data, {
-                data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
-                matriz
-            });
+        const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}.xlsx`,
+                filename: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ingresos_por_cliente' : 'Ingresos', options).excel}`,
+                name: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : data, obj });
+            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
         }
     }
 
@@ -133,45 +107,33 @@ export class MiniStoreSalesPaymentsReportController {
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
     ) {
-        const result = await this.service.reportStorePaymentInvoice(options);
-        const dataMatriz = getDataMatrizPayments(result, InvoiceModules.STORE, false);
-        const matriz = getMatrizPayments(dataMatriz.payments as MiniStoreSalePayment[], dataMatriz.cashiers, dataMatriz.methodsPayments, InvoiceModules.STORE);
-        const obj = {
-            data: result,
-            dataConverter: dataMatriz,
-            matriz
-        };
-        let data: NotInvoiced[] = [];
+        const obj = getDataFullMatrizAndData(await this.service.reportStorePaymentInvoice(options),InvoiceModules.STORE, false);
         let dataByClient: NotInvoiced[] = [];
-        data = result.map((d: any) => {
-            let p_quantity = [];
-
-            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-        });
 
         if(options.byClient){
-            dataByClient = reportStorePaymentByClient(data);
+            dataByClient = reportStorePaymentByClient(obj.data.map((d: any) => {
+                let p_quantity = [];
+    
+                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+            }));
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new StorePaymentInvoiceExcel(options, options.byClient ? dataByClient : data, {
-                data: {...dataMatriz, payments: dataMatriz.payments as MiniStoreSalePayment[] },
-                matriz
-            });
+            const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos Facturados')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
-                filename: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}.xlsx`,
+                filename: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
             const report = {
                 src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
                     buffer,
                 ).toString('base64')}`,
                 type: 'excel',
-                name: `${getNameReport(options.byClient ? 'Ingresos_facturados_por_cliente' : 'Ingresos_facturados', options).excel}`,
+                name: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : data, obj });
+            return res.send({ report, data: options.byClient ? dataByClient :  obj.data, obj });
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : data, obj });
+            return res.send({ report: false, data: options.byClient ? dataByClient :  obj.data, obj });
         }
     }
 

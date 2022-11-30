@@ -19,10 +19,12 @@ export default class SchoolPaymentSeed implements Seeder {
             f.rfc AS f_rfc,
             f.invoiceType AS f_type,
             f.status AS f_status,
+            (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS fu_fullname_cashier,
             p.quantity AS p_quantity,
             p.change AS p_change,
             v.observations AS v_observations,
             CAST((p.quantity - p.change) AS DECIMAL(12,6)) AS p_income,
+            (SELECT SUM(CAST((acp.quantity - acp.change) AS DECIMAL(12,6))) from school_charge_payments acp where acp.schoolChargeId = p.schoolChargeId and id not in (p.id)) AS p_total_without_current,
             a.id_modalidad AS a_tipo,
             a.id AS a_id,
             a.matricula AS a_key,
@@ -60,6 +62,7 @@ export default class SchoolPaymentSeed implements Seeder {
         LEFT JOIN usuarios u ON u.id = v.cashierId
         LEFT JOIN usuarios us ON us.id = v.cashierCancellationId
         LEFT JOIN school_charges_invoice f ON p.id = f.schoolChargePaymentId
+        LEFT JOIN usuarios fu ON u.id = f.id_agente_facturador
         LEFT JOIN usuarios uf ON uf.id = f.id_agente_facturador
         LEFT JOIN usuarios usf ON usf.id = f.id_agente_cancelador
         LEFT JOIN planteles bf on bf.id = p.schoolPaymentOfficeId

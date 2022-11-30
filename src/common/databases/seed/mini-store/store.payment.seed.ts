@@ -16,10 +16,12 @@ export default class StorePaymentSeed implements Seeder {
             f.rfc AS f_rfc,
             f.invoiceType AS f_type,
             f.status AS f_status,
+            (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS fu_fullname_cashier,
             p.cantidad AS p_quantity,
             p.cambio AS p_change,
             v.observaciones AS v_observations,
             CAST((p.cantidad - p.cambio) AS DECIMAL(12,6)) AS p_income,
+            (SELECT SUM(CAST((cantidad - cambio) AS DECIMAL(12,6))) from tie_venta_pagos where saleId = p.saleId and id not in (p.id)) AS p_total_without_current,
             a.id AS a_id,
             a.id_modalidad AS a_tipo,
             a.matricula AS a_key,
@@ -60,6 +62,7 @@ export default class StorePaymentSeed implements Seeder {
         LEFT JOIN usuarios u ON u.id = f.agentBillingId
         LEFT JOIN usuarios us ON us.id = f.agentCancelingId
         LEFT JOIN usuarios vu ON vu.id = v.id_agente
+        LEFT JOIN usuarios fu ON u.id = f.id_agente_facturador
         LEFT JOIN usuarios vuc ON vuc.id = v.agentCancelingId
         ORDER BY v.id DESC
         `);

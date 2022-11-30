@@ -74,23 +74,24 @@ export class SaleExcel {
                 { name: 'Cliente', filterButton: false },
                 { name: 'Folio de venta', filterButton: false },
                 { name: 'Vendedor', filterButton: false },
-                { name: 'Cantidad', filterButton: false },
                 { name: 'Productos', filterButton: false },
+                { name: 'Cantidad', filterButton: false },
                 { name: 'Precio', filterButton: false },
+                { name: 'Importe', filterButton: false },
+                { name: 'Descuentos', filterButton: false },
                 {
                     name: 'Total del pago',
                     filterButton: false,
                     totalsRowLabel: 'Total',
                     totalsRowFunction: 'sum',
                 },
-                { name: 'Descuentos', filterButton: false },
                 { name: 'Observaciones', filterButton: false },
             ];
         }
 
         worksheet.mergeCells(`B2:K2`);
         const title = worksheet.getCell('B2');
-        title.value = `Reporte de ${getNameReport(this.params.byClient ? 'Ventas por cliente' : 'Ventas', this.params).title}`
+        title.value = `Tienda: Reporte de ${getNameReport(this.params.byClient ? 'Ventas por cliente' : 'Ventas', this.params).title}`
         title.style = {
             alignment: {horizontal: 'center', vertical: 'middle'},
         };
@@ -130,11 +131,12 @@ export class SaleExcel {
                 columns.push(value.a_fullname);
                 columns.push(value.v_folio);
                 columns.push(value.vu_fullname_cashier);
-                columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(value.vd_product_name);
+                columns.push(parseInt(`${value.vd_quantity}`));
                 columns.push(parseInt(`${value.vd_price_IVA}`));
-                columns.push(parseFloat(`${value.totalIVA}`));
+                columns.push(parseInt(`${value.total}`)); 
                 columns.push(value.charges.discounts);
+                columns.push(parseFloat(`${value.totalIVA}`));
                 columns.push(value.v_observations);
                 rows.push(columns);
             });

@@ -9,10 +9,13 @@ export interface NotInvoiced {
     f_rfc?: string;
     f_type?: string;
     f_status?: string;
+    fu_fullname_cashier: string;
     p_quantity: number[]; //school payment number
     p_change: number; //school payment number
     v_observations: string; //school payment number
     p_income: number;
+    p_total_without_current?: number; // suma de otros pagos sin contar el actual para saber si es diferido.
+    p_status_Global?: number | null; // 1 completo, 2 completo diferido, 3 incompleto diferido
     a_id: number; // id alumno/cliente/props
     a_tipo: string; // tipo de alumno/cliente/props
     a_key: string; // matricula de alumno/cliente/props
