@@ -21,7 +21,7 @@ export class SaleTodayExcel {
     this.config();
     this.generate(
       this.addWorksheet(
-        `${getNameReport('Ventas',this.params).excel}`,
+        `${getNameReport('Ventas', this.params).excel}`,
       ),
     );
   }
@@ -49,44 +49,41 @@ export class SaleTodayExcel {
     });
   }
 
-  // * Modificar los names.
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = []
-    if(this.params.status && this.params.status == PaymentStatus.trusted){
-      if(this.params.byClient){
-        columns = [
-          { name: 'Matricula', filterButton: true },
-          { name: 'Nombre', filterButton: false },
-          { name: 'Numero de ventas', filterButton: false },
-          {
-            name: 'Total de venta',
-            filterButton: false,
-            totalsRowLabel: 'Total',
-            totalsRowFunction: 'sum',
-          },
-          { name: 'Sucursal', filterButton: true },
-          { name: 'Ciclo', filterButton: true },
-        ];
-      }else{
-        columns = [
-          { name: 'Matricula', filterButton: true },
-          { name: 'Nombre', filterButton: false },
-          { name: 'Fecha de creación', filterButton: true },
-          { name: 'Folio de venta',filterButton: false },      
-          {
-            name: 'Total de venta',
-            filterButton: false,
-            totalsRowLabel: 'Total',
-            totalsRowFunction: 'sum',
-          },
-          { name: 'Sucursal', filterButton: true },
-          { name: 'Ciclo', filterButton: true },
-        ];
-      }
+    if (this.params.byClient) {
+      columns = [
+        { name: 'Matricula', filterButton: true },
+        { name: 'Nombre', filterButton: false },
+        { name: 'Numero de ventas', filterButton: false },
+        {
+          name: 'Total de venta',
+          filterButton: false,
+          totalsRowLabel: 'Total',
+          totalsRowFunction: 'sum',
+        },
+        { name: 'Sucursal', filterButton: true },
+        { name: 'Ciclo', filterButton: true },
+      ];
+    } else {
+      columns = [
+        { name: 'Matricula', filterButton: true },
+        { name: 'Nombre', filterButton: false },
+        { name: 'Fecha de creación', filterButton: true },
+        { name: 'Folio de venta', filterButton: false },
+        {
+          name: 'Total de venta',
+          filterButton: false,
+          totalsRowLabel: 'Total',
+          totalsRowFunction: 'sum',
+        },
+        { name: 'Sucursal', filterButton: true },
+        { name: 'Ciclo', filterButton: true },
+      ];
     }
     worksheet.mergeCells(`B2:K2`);
     const title = worksheet.getCell('B2');
-    title.value = `Tienda: Reporte de ${getNameReport(this.params.byClient ? 'Ventas por cliente' :  'Ventas',this.params).title}`
+    title.value = `Tienda: Reporte de ${getNameReport(this.params.byClient ? 'Ventas por cliente' : 'Ventas', this.params).title}`
     title.style = {
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
@@ -108,33 +105,29 @@ export class SaleTodayExcel {
       size: 12,
     };
     const rows = [];
-    if(this.params.byClient){
-      if(this.params.status && this.params.status == PaymentStatus.trusted){
-        this.rows.forEach((value: IReportSaleTodayRow) => {
-          const columns = [];
-          columns.push(value.studentRegistration);
-          columns.push(value.studentName);
-          columns.push(value.countSale);
-          columns.push(parseFloat(`${value.TotalDetalles}`));
-          columns.push(value.plantel);
-          columns.push(value.ciclo);
-          rows.push(columns);
-        });
-      }
-    }else{
-      if(this.params.status && this.params.status == PaymentStatus.trusted){
-        this.rows.forEach((value: IReportSaleTodayRow) => {
-          const columns = [];
-          columns.push(value.studentRegistration);
-          columns.push(value.studentName);
-          columns.push(formatDate(value.createdAt));
-          columns.push(value.folio);
-          columns.push(parseFloat(`${value.TotalDetalles}`));
-          columns.push(value.plantel);
-          columns.push(value.ciclo);
-          rows.push(columns);
-        });
-      }
+    if (this.params.byClient) {
+      this.rows.forEach((value: IReportSaleTodayRow) => {
+        const columns = [];
+        columns.push(value.studentRegistration);
+        columns.push(value.studentName);
+        columns.push(value.countSale);
+        columns.push(parseFloat(`${value.TotalDetalles}`));
+        columns.push(value.plantel);
+        columns.push(value.ciclo);
+        rows.push(columns);
+      });
+    } else {
+      this.rows.forEach((value: IReportSaleTodayRow) => {
+        const columns = [];
+        columns.push(value.studentRegistration);
+        columns.push(value.studentName);
+        columns.push(formatDate(value.createdAt));
+        columns.push(value.folio);
+        columns.push(parseFloat(`${value.TotalDetalles}`));
+        columns.push(value.plantel);
+        columns.push(value.ciclo);
+        rows.push(columns);
+      });
     }
     worksheet.addTable({
       displayName: 'Reporte',
@@ -154,9 +147,6 @@ export class SaleTodayExcel {
     worksheet.columns.forEach((column) => {
       column.width = 10;
 
-      if (column.letter === 'K') {
-        column.numFmt = '$#,##0.00';
-      }
       if (column.letter === 'C' || column.letter === 'J') {
         column.width = 45;
       }

@@ -277,6 +277,7 @@ export class PaymentExcel {
                         { name: 'Subtotal IVA', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Monto pagado', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Cambio', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Subtotal', filterButton: false, totalsRowFunction: 'sum' },
                     ];
                     if (this.type == InvoiceModules.STORE) {
                         const indexScholarships = columns.findIndex((c) => c.name == 'Becas venta')
@@ -308,6 +309,7 @@ export class PaymentExcel {
                         { name: 'Subtotal IVA', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Monto pagado', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Cambio', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Subtotal', filterButton: false, totalsRowFunction: 'sum' },
                     ];
                     if (this.type == InvoiceModules.STORE) {
                         const indexScholarships = columns.findIndex((c) => c.name == 'Becas venta')
@@ -364,6 +366,7 @@ export class PaymentExcel {
                             columns.push(parseFloat(`${value.p_income}`));
                             columns.push(parseFloat(`${value.p_quantity}`));
                             columns.push(parseFloat(`${value.p_change}`));
+                            columns.push(parseFloat(`${value.p_income}`));
                             break;
                         case 'Pagos':
                             columns.push(value.p_created_at);
@@ -385,6 +388,7 @@ export class PaymentExcel {
                             columns.push(parseFloat(`${value.p_income}`));
                             columns.push(parseFloat(`${value.p_quantity}`));
                             columns.push(parseFloat(`${value.p_change}`));
+                            columns.push(parseFloat(`${value.p_income}`));
                             break;
                         case 'Ventas':
 
@@ -421,6 +425,7 @@ export class PaymentExcel {
                             columns.push(parseFloat(`${value.p_income}`));
                             columns.push(parseFloat(`${value.p_quantity}`));
                             columns.push(parseFloat(`${value.p_change}`));
+                            columns.push(parseFloat(`${value.p_income}`));
                             break;
                         case 'Pagos':
                             columns.push(value.p_created_at);
@@ -444,6 +449,7 @@ export class PaymentExcel {
                             columns.push(parseFloat(`${value.p_income}`));
                             columns.push(parseFloat(`${value.p_quantity}`));
                             columns.push(parseFloat(`${value.p_change}`));
+                            columns.push(parseFloat(`${value.p_income}`));
                             break;
                         case 'Ventas':
 
