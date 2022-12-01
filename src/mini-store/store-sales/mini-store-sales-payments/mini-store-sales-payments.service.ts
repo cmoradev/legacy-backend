@@ -312,10 +312,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     'miniStoreSaleMethodPayments.invoiceMethod',
                     'agent'
                 ],
-            });    
+            });
         }else{
             let quantitySum = 0;
-            sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {                
+            sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {
                 let price = d.priceWithIVA
                 quantitySum = Decimal.add(quantitySum, Decimal.mul(price,d.quantity)).toNumber();
             });
@@ -331,7 +331,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             payment.observations = sale.observations ? sale.observations : '';
             payment.miniStoreSaleMethodPayments = [];
         }
-        
+
         return {
             sale,
             payment,
@@ -435,7 +435,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
         const data: NotInvoiced[] = await this.connection.query(`
             SELECT *
-            FROM vw_tie_payments vw
+            FROM vw_my_tie_payments vw
             WHERE vw.v_status = '2'
               AND vw.p_income > 0
               AND vw.p_state != '4'
@@ -478,7 +478,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const data: NotInvoiced[] = await this.connection.query(`
             SELECT *
-            FROM vw_tie_payments vw
+            FROM vw_my_tie_payments vw
             WHERE (vw.f_status IS NULL OR vw.f_status = '0')
               AND vw.p_stamping = '0'
               AND vw.v_status = '2'
