@@ -28,6 +28,8 @@ import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
+import {IQueryReportSchoolPayment} from './types/IReport';
+import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -44,6 +46,22 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
     ) {
         super(repo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({id}, {withDeleted: true});
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.restore(id);
     }
 
     getHighestPayment(formadepago: SchoolChargesMethodsPayments[]) {
@@ -69,17 +87,16 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
                 'chargesDetails.extraCharges',
             ],
         });
-        const payment = await this.repo.findOne({
-            where: {
-                id: query.chargePaymentId,
-            },
-            relations: [
-                'methodsPayments',
-                'methodsPayments.Bank', // se agregaron para crear el recibo en el server
-                'methodsPayments.invoiceMethodPayment', // se agregaron para crear el recibo en el server
-                'cashierCharge', // se agregaron para crear el recibo en el server
-            ],
-        });
+
+        const payment = await this.repo.createQueryBuilder('payment')
+            .withDeleted()
+            .leftJoinAndSelect('payment.methodsPayments', 'methodsPayments')
+            .leftJoinAndSelect('methodsPayments.Bank', 'Bank')
+            .leftJoinAndSelect('methodsPayments.invoiceMethodPayment', 'invoiceMethodPayment')
+            .innerJoinAndSelect('payment.cashierCharge', 'cashierCharge')
+            .andWhere('payment.id = :idp', {idp: query.chargePaymentId})
+            .getOne();
+
         const highestPayment = this.getHighestPayment(payment.methodsPayments);
         return {
             charge,
@@ -160,6 +177,98 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             }
         });
         return cashiers;
+    }
+
+    public async reportSchoolPayment({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+        usersIds,
+                                 }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if(status){
+            queryString = `${queryString} AND p_state = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        if(usersIds && usersIds.length > 0){
+            const user = usersIds.map((u) => {return parseInt(`${u}`)})
+            if(status && status == 4){
+                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
+    public async reportSchoolPaymentInvoice({
+        status,
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+        codigoPago,
+                                            }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+
+        if(status){
+            queryString = `${queryString} AND f_status = ${status}`;
+        }
+        if(cycleId){
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if(branchOfficeId){
+            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
+        }
+        if(codigoPago){
+            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
+    }
+
+    public async reportSalesSchool({
+        startDate,
+        endDate,
+        cycleId,
+        branchOfficeId,
+                                   }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
+        let queryString = `SELECT * FROM vw_sch_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+
+        if (cycleId) {
+            queryString = `${queryString} AND v_cycle = ${cycleId}`;
+        }
+        if (branchOfficeId) {
+            queryString = `${queryString} AND v_id_branch_office = ${branchOfficeId}`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (e) {
+            throw new NotFoundException(
+                `Error in query or conection [${queryString}]`,
+            );
+        }
     }
 
     public async simpleReport(payments: SchoolChargePayment[], sales: SchoolCharge[], query: any, options?: { base64: boolean }): Promise<string | any> {

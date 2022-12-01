@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Department } from './entities/department.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,5 +12,21 @@ export class DepartmentsService extends TypeOrmCrudService<Department> {
         readonly departmentRepo: Repository<Department>,
     ) {
         super(departmentRepo);
+    }
+
+    public async softDeleteOne(id: number) {
+        const object = await this.findOne(id);
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.softDelete(id);
+    }
+
+    public async softRestoreOne(id: number) {
+        const object = await this.repo.findOne({id}, {withDeleted: true});
+        if (!object) {
+            throw new NotFoundException('This entity does not exists')
+        }
+        return await this.repo.restore(id);
     }
 }

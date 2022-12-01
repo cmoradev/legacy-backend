@@ -1,8 +1,10 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { MiniStoreSaleMethodPayment } from '../../../mini-store/store-sales/mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
-import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
+
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('facturacion_formas_pago')
 export class InvoiceMethodPayment extends Base {

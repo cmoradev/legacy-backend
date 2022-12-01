@@ -3,7 +3,6 @@ import { MiniStoreSalesPaymentsController } from './mini-store-sales-payments.co
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
-import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -17,7 +16,8 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { MiniStoreSalesPaymentsReportController } from './mini-store-sales-payments.report.controller';
 import { UsersModule } from '../../../system/users/users.module';
 import { ConfigModule } from '../../../common/config/config.module';
-
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 @Module({
     imports: [
         TypeOrmModule.forFeature([

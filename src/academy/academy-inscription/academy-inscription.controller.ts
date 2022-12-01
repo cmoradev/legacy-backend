@@ -19,6 +19,7 @@ import { AcademyInscriptionService } from './academy-inscription.service';
             student: {eager: false},
             inscriptionCampus: {eager: false},
             academyGroup: {eager: false},
+            'academyGroup.academyGroupCycle': {eager: false},
             enrollmentAgent: {eager: false},
             unEnrollerAgent: {eager: false},
             inscriptionStatus: {eager: false},
@@ -29,6 +30,7 @@ import { AcademyInscriptionService } from './academy-inscription.service';
             'concepts.acInsConStatusPayment': {eager: false},
             'concepts.academyChargeDetail': {eager: false},
             'concepts.extraCharges': {eager: false},
+            'concepts.academyChargeDetail.extraCharges': {eager: false},
         },
     },
 })

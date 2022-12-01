@@ -1,8 +1,8 @@
 import {
   Body,
-  Controller,
-  Get, NotFoundException,
-  Post,
+  Controller, Delete,
+  Get, NotFoundException, Param, ParseIntPipe,
+  Post, Put,
   Query,
   Req,
   Res,
@@ -34,7 +34,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
-import { convertPaymentsReportCollege } from './reports/payments.util';
+import { convertPaymentsReportCollege, getDataCharges, getDataFullMatrizAndData } from './reports/payments.util';
 import { ConfigService } from '../../../common/config/config.service';
 import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
@@ -49,21 +49,33 @@ import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.int
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
+import { IQueryReportSchoolPayment } from './types/IReport';
+import { getNameReport, getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { reportSchoolPaymentByClient } from './utils/utils';
+import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
+import { reportSchoolSaleByClient } from './utils/utilSale';
+import { SchoolSaleExcel } from './reports/school-sales.excel';
+import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
 
 @Crud({
   model: {
     type: SchoolChargePayment,
   },
   query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
+    },
     limit: 10,
     join: {
-      schoolCharge: {eager: false},
+      schoolCharge: { eager: false },
       'schoolCharge.schoolStudent': { alias: 'schoolStudent', eager: false },
-      paymentStatus: {eager: false},
-      methodsPayments: {eager: false},
-      cashierCharge: {eager: false},
-      cashierChargeCancellation: {eager: false},
-      schoolChargesInvoice: {eager: false},
+      paymentStatus: { eager: false },
+      methodsPayments: { eager: false },
+      cashierCharge: { eager: false },
+      cashierChargeCancellation: { eager: false },
+      schoolChargesInvoice: { eager: false },
     },
   },
 })
@@ -90,9 +102,19 @@ export class SchoolChargesPaymentsController
     return this;
   }
 
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
+
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
+  }
+
   @Post('/receipt')
   async billingGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
-    let error: any[] = []
+    const error: any[] = []
     try {
       // query.chargeId = 335;
       // query.chargePaymentId = 344;
@@ -128,22 +150,22 @@ export class SchoolChargesPaymentsController
         width: 100,
         height: 100,
         image: `data:image/png;base64, ${logo.toString('base64')}`,
-      }) == false ? error.push(`error al agregar el logo`): null;
-      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`): null;
-      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`): null;
+      }) == false ? error.push(`error al agregar el logo`) : null;
+      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
+      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
       const regimen = RegimenFiscalList.find(
         (f) => f.value === branchOfficeSett.regime,
       );
-      if (regimen == undefined){
+      if (regimen == undefined) {
         error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
-      }else{
+      } else {
         Receip.addEmisor({
           name: branchOfficeSett.businessName,
           rfc: branchOfficeSett.rfc,
           regimen:
             branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
           expedido: branchOfficeSett.address,
-        }) == false ? error.push(`error al agregar los datos del emisor`): null;
+        }) == false ? error.push(`error al agregar los datos del emisor`) : null;
       }
       const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
       Receip.addReceptor({
@@ -151,17 +173,18 @@ export class SchoolChargesPaymentsController
         curp: student.curp ? student.curp : '',
         matricula: student.matricula,
         type: InvoiceModules.SCHOOL
-      }) == false ? error.push(`error al agregar los datos del receptor`): null;
+      }) == false ? error.push(`error al agregar los datos del receptor`) : null;
+
       const ven =
         result.payment.cashierCharge.name +
         ' ' +
         result.payment.cashierCharge.lastnameFather +
         ' ' +
         result.payment.cashierCharge.lastnameMother;
+
       Receip.addInformacion({
         vendedor: ven,
-      }) == false ? error.push(`error al agregar los datos del vendedor`): null;
-
+      }) == false ? error.push(`error al agregar los datos del vendedor`) : null;
       Receip.addCatidad({
         ...invoiceDetails.totals.receipt
       });
@@ -186,7 +209,7 @@ export class SchoolChargesPaymentsController
       });
     } catch (e) {
       res.send({
-        error: error,
+        error,
       });
     }
   }
@@ -390,7 +413,7 @@ export class SchoolChargesPaymentsController
           // 4. Actualizamos los campos con la factura los datos del sat
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
-          invoiceFinded.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          invoiceFinded.total = +cfdi[ 'cfdi:Comprobante' ]._attributes.Total;
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
             invoiceFinded,
           );
@@ -474,7 +497,7 @@ export class SchoolChargesPaymentsController
           // 4. Actualizamos los campos con la factura los datos del sat
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
-          invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          invoice.total = +cfdi[ 'cfdi:Comprobante' ]._attributes.Total;
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
             invoice,
           );
@@ -506,6 +529,109 @@ export class SchoolChargesPaymentsController
       console.log(e);
       response.status(400);
       response.send(e);
+    }
+  }
+
+  @Get('/report-school-payment')
+  private async reportSchoolPayment(
+    @Res() res: Response,
+    @Query() options: IQueryReportSchoolPayment,
+  ) {
+    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPayment(options),InvoiceModules.SCHOOL, false)
+
+        let dataByClient: NotInvoiced[] = [];
+
+        if(options.byClient){
+            dataByClient = reportSchoolPaymentByClient(obj.data.map((d: any) => {
+                let p_quantity = [];
+    
+                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+            }));
+        }
+
+        if (options?.isExported) {
+        const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos')
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `Sc_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `Sc_Pagos_${getRangeDates(options.startDate, options.endDate).excel}`,
+            };
+            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
+        } else {
+            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
+        }
+  }
+
+  @Get('/report-school-payment-invoice')
+  private async reportSchoolPaymentInvoice(
+    @Res() res: Response,
+    @Query() options: IQueryReportSchoolPayment,
+  ) {
+    const obj = getDataFullMatrizAndData(await this.service.reportSchoolPaymentInvoice(options),InvoiceModules.SCHOOL, true)
+
+    let dataByClient: NotInvoiced[] = [];
+
+    if(options.byClient){
+        dataByClient = reportSchoolPaymentByClient(obj.data.map((d: any) => {
+            let p_quantity = [];
+
+            d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
+            return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
+        }));
+    }
+
+    if (options?.isExported) {
+    const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.SCHOOL, 'Pagos Facturados')
+        const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+            filename: `Sc_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
+        });
+        const report = {
+            src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                buffer,
+            ).toString('base64')}`,
+            type: 'excel',
+            name: `Sc_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}`,
+        };
+        return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
+    } else {
+        return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
+    }
+  }
+
+  @Get('report-sale-school')
+  private async reportSaleSchool(
+    @Res() res,
+    @Query() options: IQueryReportSaleTodayOp,
+  ) {
+    const result = await this.service.reportSalesSchool(options);
+    let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.SCHOOL, true)
+    let dataByClient: NotInvoiced[] = [];
+
+    if (options.byClient) {
+      dataByClient = reportSchoolSaleByClient(data);
+    }
+
+    if (options?.isExported) {
+      const conceptStatusExcel = new SchoolSaleExcel(options, options.byClient ? dataByClient : data);
+      const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+        filename: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}.xlsx`,
+      });
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+          buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}`,
+      };
+      return res.send({ report, data: options.byClient ? dataByClient : data });
+    } else {
+      return res.send({ report: false, data: options.byClient ? dataByClient : data });
     }
   }
 

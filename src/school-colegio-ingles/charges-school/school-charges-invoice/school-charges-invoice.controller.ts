@@ -1,4 +1,17 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, Req, Res } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    ParseIntPipe,
+    Post, Put,
+    Query,
+    Req,
+    Res
+} from '@nestjs/common';
 import {
     Crud,
     CrudController,
@@ -18,16 +31,22 @@ import { ConfigService } from '../../../common/config/config.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 
 @Crud({
     model: {
         type: SchoolChargesInvoice,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 10,
         join: {
-            schoolChargePayment: {eager: false},
-            schoolCharge: {eager: false},
+            schoolChargePayment: { eager: false },
+            schoolCharge: { eager: false },
             'schoolCharge.chargesDetails': {
                 alias: 'details_chargesDetails',
                 eager: false
@@ -36,13 +55,13 @@ import { Public } from '../../../common/docorators/public.decorator';
                 alias: 'details_chargesDetails_extraCharges',
                 eager: false
             },
-            'schoolCharge.schoolStudent': {eager: false},
+            'schoolCharge.schoolStudent': { eager: false },
             'schoolCharge.chargesDetails.schoolPlanPayment': {
                 alias: 'concepts',
                 eager: false
             },
-            agentBilling: {eager: false},
-            agentCanceling: {eager: false},
+            agentBilling: { eager: false },
+            agentCanceling: { eager: false },
         },
     },
 })
@@ -63,14 +82,24 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         return this;
     }
 
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
+    }
+
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.pdf');
             // data:application/pdf;filename=generated.pdf;base64,
-            res.send({src: 'data:application/pdf;base64,' + pdf64.toString('base64')});
+            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
         } catch (e) {
-            res.send({error: e}).status(400);
+            res.send({ error: e }).status(400);
         }
     }
 
@@ -78,9 +107,9 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     public async xml(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.xml');
-            res.send({src: pdf64.toString('base64')});
+            res.send({ src: pdf64.toString('base64') });
         } catch (e) {
-            res.send({error: e}).status(400);
+            res.send({ error: e }).status(400);
         }
     }
 
@@ -196,7 +225,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                     const workbook = new ReportInvoice().generateReport(dataReport, query, company);
                     const dateName = new Date();
                     const fileName = dateName.toTimeString() + '.xlsx';
-                    const result = await workbook.xlsx.writeBuffer({filename: fileName});
+                    const result = await workbook.xlsx.writeBuffer({ filename: fileName });
                     const buffer = Buffer.from(result);
                     const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
                     res.status(200);
@@ -250,6 +279,30 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Post('zip-invoices')
+    async zipInvoices(@Res() res: Response, @Body() params: {
+        array: NotInvoiced[]
+    }
+    ) {
+        try {
+            const zip = new AdmZip();
+            params.array.forEach((i: NotInvoiced) => {
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+            });
+
+            const downloadName = `${Date.now()}.zip`;
+            const data = zip.toBuffer();
+            res.set('Content-Type', 'application/octet-stream');
+            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
+            res.set('Content-Length', data.length.toString());
+            res.send(data);
+        } catch (e) {
+            res.status(500);
+            res.send(e.message);
         }
     }
 

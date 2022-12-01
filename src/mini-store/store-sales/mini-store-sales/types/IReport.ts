@@ -1,4 +1,9 @@
-import { PaymentStatus } from "../../../../common/enums/PaymentStatus";
+import { TypeInformativeReport } from '../../../../common/enums/typeInformativeReport.enum';
+import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
+
+export interface IQueryReportSaleTodayOp extends IQueryReportSaleToday{
+  byClient?: boolean;
+}
 
 export interface IQueryReportSaleToday {
   status?: PaymentStatus;
@@ -25,9 +30,32 @@ export interface IReportSaleTodayRow {
   cycleId: number;
   ciclo: string;
   cantidadPagos: number;
-  idsPagos: Array<number>;
+  idsPagos: number[];
   TotalPagos: number;
   TotalDetalles: number;
-  idsDetalles: Array<number>;
+  idsDetalles: number[];
   TotalAdeudo: string;
+  countSale?: number
+}
+
+export interface IReportInformativeRow {
+  v_createdAt: Date;
+  vd_id_venta_detalle: number;
+  v_id_venta: number;
+  v_folio_venta: string;
+  p_id_product: number;
+  p_name_product: string;
+  c_id: number;
+  c_name_classification: string;
+  u_id_agent: number;
+  u_fullname_agent: string;
+  vd_quantity: number;
+  vd_price: number;
+  ids_ventas_pagos: number;
+  folios_ventas_pagos: string;
+  subtotal: number;
+}
+
+export interface IQueryReportInformative extends IQueryReportSaleToday {
+  type: TypeInformativeReport
 }

@@ -52,10 +52,6 @@ import { InvoicesBankModule } from './system/invoices-bank/invoices-bank.module'
 import { InvoiceModule } from './invoice/invoice.module';
 import { ClassificationsModule } from './fixed-assets-control/classifications/classifications.module';
 import { LocationsModule } from './fixed-assets-control/locations/locations.module';
-import { CountriesModule } from './system/countries/countries.module';
-import { StatesModule } from './system/states/states.module';
-import { CitiesModule } from './system/cities/cities.module';
-import { MunicipalitiesModule } from './system/municipalities/municipalities.module';
 import { SystemModule } from './system/system.module';
 import { AcademyModule } from './academy/academy.module';
 import { AcademyModalitiesModule } from './academy/academy-modalities/academy-modalities.module';
@@ -65,7 +61,6 @@ import { MiniStoreDashBoardModule } from './mini-store/mini-store-dash-board/min
 import { AcademyDashBoardModule } from './academy/academy-dash-board/academy-dash-board.module';
 import { UsersModule } from './system/users/users.module';
 import { InvoiceMethodsPaymentsModule } from './invoice/invoice-methods-payments/invoice-methods-payments.module';
-import { InvoiceKeysModule } from './invoice/invoice-keys/invoice-keys.module';
 import { SystemConceptsTypeModule } from './system/system-concepts-type/system-concepts-type.module';
 import { AcademyActivitiesGroupModule } from './academy/academy-activities-group/academy-activities-group.module';
 import { ShiftModule } from './system/shift/shift.module';
@@ -80,7 +75,6 @@ import { AcademyChargeInvoiceModule } from './academy/charges-academy/academy-ch
 import { AcademyChargeSurchargesModule } from './academy/charges-academy/academy-charge-surcharges/academy-charge-surcharges.module';
 import { AcademyChargeWayOfPayingModule } from './academy/charges-academy/academy-charge-way-of-paying/academy-charge-way-of-paying.module';
 import { AcademyChargeModule } from './academy/charges-academy/academy-charge/academy-charge.module';
-import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { BranchOfficeSettingModule } from './system/branch-office-setting/branch-office-setting.module';
 import { PaymentPlansModule } from './school-colegio-ingles/payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './school-colegio-ingles/payment-plan-concepts/payment-plan-concepts.module';
@@ -108,19 +102,17 @@ import { AcademyInscriptionChargesModule } from './academy/academy-inscription-c
 import { FamilyFiscalModule } from './school-colegio-ingles/family-fiscal/family-fiscal.module';
 import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { RouteActionModule } from './system/route-action/route-action.module';
-import { MiniStoreQuotationModule } from './mini-store/store-sales/mini-store-quotation/mini-store-quotation.module';
 import { SchoolPaymentsChargesModule } from './school-colegio-ingles/school-payments-charges/school-payments-charges.module';
 import { TransactionModule } from './system/transaction/transactions.module';
+
+// eliminar al cambiar los reporte del front
+import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 
 export const routes: Routes = [
     {
         path: '/invoice',
         module: InvoiceModule,
         children: [
-            {
-                path: '/keys',
-                module: InvoiceKeysModule,
-            },
             {
                 path: '/companies',
                 module: BranchOfficeSettingModule,
@@ -141,10 +133,6 @@ export const routes: Routes = [
             { path: '/departments', module: DepartmentsModule },
             { path: '/invoices-methods-payments', module: InvoiceMethodsPaymentsModule },
             { path: '/invoices-bank', module: InvoicesBankModule },
-            { path: '/countries', module: CountriesModule },
-            { path: '/states', module: StatesModule },
-            { path: '/cities', module: CitiesModule },
-            { path: '/municipalities', module: MunicipalitiesModule },
             { path: '/payments-status', module: SystemPaymentsStatusModule },
             { path: '/inscription-status', module: InscriptionStatusModule },
             { path: '/concepts-type', module: SystemConceptsTypeModule },
@@ -219,7 +207,6 @@ export const routes: Routes = [
             { path: '/classifications', module: MiniStoreClassificationsModule },
             { path: '/prices-lists', module: MiniStorePricesListsModule },
             { path: '/sales', module: MiniStoreSalesModule },
-            { path: '/quotation', module: MiniStoreQuotationModule },
             { path: '/sales-payments', module: MiniStoreSalesPaymentsModule },
             { path: '/sales-methods-payments', module: MiniStoreSalesMethodsPaymentsModule },
             { path: '/sales-details', module: MiniStoreSalesDetailsModule },

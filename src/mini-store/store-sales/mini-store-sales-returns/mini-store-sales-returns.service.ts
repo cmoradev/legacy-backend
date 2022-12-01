@@ -40,3 +40,4 @@ export class MiniStoreSalesReturnsService extends TypeOrmCrudService<SalesReturn
         return await this.repo.update({ id }, { invoiceStatus: status });
     }
 }
+	

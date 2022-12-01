@@ -118,7 +118,7 @@ const chainCharges = <D extends Detalles>(payload: {
         }
     }
 }
-const chargesOnCharges = <D extends Detalles>(concept: D) => {
+export const chargesOnCharges = <D extends Detalles>(concept: D) => {
     const { extraCharges = [] } = concept
     const detailTotal = totalAmountConcept(concept);
 

@@ -16,6 +16,9 @@ import { reportInscriptionList } from './reports/inscription-group.report';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
+import { QueryReportInscriptions, ReportInscriptionsRow } from '../../school-colegio-ingles/inscriptions/types/inscriptionsQuery';
+import { InscriptionAttendanceListReport } from './reports/inscription-attendance-list.report';
+import { getNameList } from './reports/helpers';
 
 @Crud({
     model: {
@@ -32,23 +35,23 @@ import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
             inscripStudent: {
                 eager: false,
             },
-            inscripCampus: {eager: false},
-            inscripGrade: {eager: false},
-            inscripGroup: {eager: false},
-            inscripLevel: {eager: false},
-            inscripCycle: {eager: false},
-            inscripAgentCreator: {eager: false},
-            inscripAgentEditor: {eager: false},
-            inscripClassroom: {eager: false},
-            paymentPlan: {eager: false},
-            inscripAssignmentsInscription: {eager: false},
-            inscripStudyPlanVariant: {eager: false},
-            inscripStudyPlan: {eager: false},
+            inscripCampus: { eager: false },
+            inscripGrade: { eager: false },
+            inscripGroup: { eager: false },
+            inscripLevel: { eager: false },
+            inscripCycle: { eager: false },
+            inscripAgentCreator: { eager: false },
+            inscripAgentEditor: { eager: false },
+            inscripClassroom: { eager: false },
+            paymentPlan: { eager: false },
+            inscripAssignmentsInscription: { eager: false },
+            inscripStudyPlanVariant: { eager: false },
+            inscripStudyPlan: { eager: false },
             schoolPayments: { alias: 'schoolPayments', eager: false },
             'schoolPayments.paymentPlanConcept': { alias: 'paymentPlanConcepts', eager: false },
             'schoolPayments.schoolChargeDetail': { alias: 'schoolChargesDetails', eager: false },
             'schoolPayments.schoolChargeDetail.extraCharges': { alias: 'extraCharges', eager: false },
-            'schoolPayments.extraCharges': {eager: false},
+            'schoolPayments.extraCharges': { eager: false },
         },
     },
 })
@@ -155,5 +158,44 @@ export class InscriptionsController implements CrudController<Inscription> {
     @Get('dashboard')
     public async dashboard() {
         return this.service.getInscriptions();
+    }
+
+    @Get('attendance_list')
+    public async attendance_list(@Res() res, @Query() options: QueryReportInscriptions) {
+        const dataInscription = await this.service.reportInscriptions(options);
+        const arrayGroup: {
+            idGroup: number,
+            nameGroup: string,
+            idGrade: number,
+            nameGrade: string,
+            inscriptions: ReportInscriptionsRow[]
+        }[] = [];
+
+        dataInscription.forEach((i) => {
+            const index = arrayGroup.findIndex((f) => i.groupId == f.idGroup);
+            if (index > -1) {
+                arrayGroup[index].inscriptions.push(i);
+            } else {
+                arrayGroup.push({ inscriptions: [i], idGroup: i.groupId, nameGroup: i.groupName, idGrade: i.gradeId, nameGrade: i.gradeName })
+            }
+        });
+        if (options?.isExported) {
+            const conceptStatusExcel = new InscriptionAttendanceListReport(arrayGroup, options);
+            const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
+                filename: `${getNameList('Lista de asistencia ', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}.xlsx`,
+            });
+            const report = {
+                src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+                    buffer,
+                ).toString('base64')}`,
+                type: 'excel',
+                name: `${getNameList('Lista de asistencia ', options, arrayGroup.length ?  arrayGroup[0].inscriptions : []).excel}`,
+            };
+            return res.send({ report, data: arrayGroup });
+        } else {
+            return res.send({ report: false, data: arrayGroup });
+        }
+
+
     }
 }

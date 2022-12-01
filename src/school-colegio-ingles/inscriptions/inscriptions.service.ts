@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Inscription } from './entities/inscription.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Like, Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Connection, getRepository, Like, Repository } from 'typeorm';
 import { Student } from '../students/entities/student.entity';
 import { Attendance, VerificarInscriprions } from './interfaces/inscriptions.interface';
 import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
@@ -35,6 +35,7 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 import { PaymentPlanConcept } from '../payment-plan-concepts/entities/payment-plan-concept.entity';
 import { IQueryReport } from '../school-payments/interfaces/IQueryReport';
+import { QueryReportInscriptions, ReportInscriptionsRow } from './types/inscriptionsQuery';
 
 export interface IRelationsInscriptions {
     Student: Student[],
@@ -74,6 +75,8 @@ interface ITableImportInscription {
 @Injectable()
 export class InscriptionsService extends TypeOrmCrudService<Inscription> {
     constructor(
+        @InjectConnection(ColegioDBNameConnection)
+            private connection: Connection,
         @InjectRepository(Inscription, ColegioDBNameConnection) readonly repo: Repository<Inscription>,
         @InjectRepository(Student, ColegioDBNameConnection) readonly student: Repository<Student>,
         readonly classroomService: ClassroomsService,
@@ -563,5 +566,28 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         }
         return {exceptions, inscriptions};
 
+    }
+
+    public async reportInscriptions({
+        levelId,
+        gradeId,
+        groupId,
+    }: QueryReportInscriptions): Promise<ReportInscriptionsRow[]> {
+        let queryString = `SELECT * FROM vw_col_inscriptions where inscriptionStatus != '0' AND studentId is not null`
+
+        if (levelId) {
+            queryString = `${queryString} AND levelId = ${parseInt(`${levelId}`)}`;
+        }
+        if (gradeId !== undefined && gradeId.length > 0) { 
+            queryString = `${queryString} AND gradeId IN (${gradeId.join(',')})`;
+        }
+        if (groupId !== undefined && groupId.length > 0) {
+            queryString = `${queryString} AND groupId IN (${groupId.join(',')})`;
+        }
+        try {
+            return this.connection.query(queryString);
+        } catch (a) {
+            throw new NotFoundException(`Error in query or conection [${queryString}]`,);
+        }
     }
 }

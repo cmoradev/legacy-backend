@@ -34,6 +34,8 @@ export class AcademyInscriptionService extends TypeOrmCrudService<AcademyInscrip
     }
 
     async inscripciones(query: { month: any; groupId?: number[]; status?: InscriptionStatus[], ciclyId?: number; branchOfficeId?: number }): Promise<AcademyInscription[]> {
+        if (!query.groupId.length) return []
+
         const insccripciones = this.repo.createQueryBuilder('i')
             .leftJoinAndSelect('i.academyGroup', 'academyGroup')
             .leftJoinAndSelect('i.student', 'student')

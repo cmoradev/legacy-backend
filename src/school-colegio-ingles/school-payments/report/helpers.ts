@@ -17,7 +17,7 @@ import { PaymentStatus } from "./../../../common/enums/PaymentStatus";
       case PaymentStatus.trusted:
         return 'Fiado';
       default:
-        return 'NA';
+        return '';
     }
   
   }

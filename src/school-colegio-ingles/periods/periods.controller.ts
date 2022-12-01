@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import {Controller, Delete, Param, ParseIntPipe, Put} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Periods } from './entities/periods.entity';
 import { PeriodsService } from './periods.service';
@@ -8,6 +8,11 @@ import { PeriodsService } from './periods.service';
         type: Periods,
     },
     query: {
+        filter: {
+            deletedAt: {
+                $eq: null,
+            },
+        },
         limit: 10,
         join: {
             periodsCycle: {eager: false},
@@ -21,5 +26,15 @@ export class PeriodsController implements CrudController<Periods> {
 
     get base(): CrudController<Periods> {
         return this;
+    }
+
+    @Delete('soft-deleted/:id')
+    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softDeleteOne(id);
+    }
+
+    @Put('soft-restore/:id')
+    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.softRestoreOne(id);
     }
 }

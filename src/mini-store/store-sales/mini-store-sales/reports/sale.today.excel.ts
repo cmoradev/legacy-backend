@@ -1,18 +1,18 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
-import { formatDate } from './../../../../common/date';
+import { formatDate } from '../../../../common/date';
 import * as moment from 'moment';
-import { IQueryReportSaleToday, IReportSaleTodayRow } from '../types/IReport';
-import { getNameReportSaleToday } from './helpers';
+import { IQueryReportSaleTodayOp, IReportSaleTodayRow } from '../types/IReport';
+import { getNameReport } from './helpers';
 import { PaymentStatus } from '../../../../common/enums/PaymentStatus';
 
 const esMx = require('moment/locale/es-mx');
 
 export class SaleTodayExcel {
   private rows: IReportSaleTodayRow[] = [];
-  private params: IQueryReportSaleToday;
+  private params: IQueryReportSaleTodayOp;
   private workbook: Workbook;
 
-  constructor(params: IQueryReportSaleToday, data: IReportSaleTodayRow[] = []) {
+  constructor(params: IQueryReportSaleTodayOp, data: IReportSaleTodayRow[] = []) {
     this.rows = data;
     this.params = params;
 
@@ -21,7 +21,7 @@ export class SaleTodayExcel {
     this.config();
     this.generate(
       this.addWorksheet(
-        `${getNameReportSaleToday(this.params).excel}`,
+        `${getNameReport('Ventas', this.params).excel}`,
       ),
     );
   }
@@ -51,25 +51,39 @@ export class SaleTodayExcel {
 
   private generate(worksheet: Worksheet): Worksheet {
     let columns: TableColumnProperties[] = []
-    if(this.params.status && this.params.status == PaymentStatus.trusted){
+    if (this.params.byClient) {
       columns = [
         { name: 'Matricula', filterButton: true },
         { name: 'Nombre', filterButton: false },
-        { name: 'Fecha de creación', filterButton: true },
-        { name: "Folio de venta",filterButton: false },      
+        { name: 'Numero de ventas', filterButton: false },
         {
           name: 'Total de venta',
           filterButton: false,
           totalsRowLabel: 'Total',
           totalsRowFunction: 'sum',
         },
-        { name: "Sucursal", filterButton: true },
-        { name: "Ciclo", filterButton: true },
+        { name: 'Sucursal', filterButton: true },
+        { name: 'Ciclo', filterButton: true },
+      ];
+    } else {
+      columns = [
+        { name: 'Matricula', filterButton: true },
+        { name: 'Nombre', filterButton: false },
+        { name: 'Fecha de creación', filterButton: true },
+        { name: 'Folio de venta', filterButton: false },
+        {
+          name: 'Total de venta',
+          filterButton: false,
+          totalsRowLabel: 'Total',
+          totalsRowFunction: 'sum',
+        },
+        { name: 'Sucursal', filterButton: true },
+        { name: 'Ciclo', filterButton: true },
       ];
     }
     worksheet.mergeCells(`B2:K2`);
     const title = worksheet.getCell('B2');
-    title.value = `Reporte de ${getNameReportSaleToday(this.params).title}`
+    title.value = `Tienda: Reporte de ${getNameReport(this.params.byClient ? 'Ventas por cliente' : 'Ventas', this.params).title}`
     title.style = {
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
@@ -91,7 +105,18 @@ export class SaleTodayExcel {
       size: 12,
     };
     const rows = [];
-    if(this.params.status && this.params.status == PaymentStatus.trusted){
+    if (this.params.byClient) {
+      this.rows.forEach((value: IReportSaleTodayRow) => {
+        const columns = [];
+        columns.push(value.studentRegistration);
+        columns.push(value.studentName);
+        columns.push(value.countSale);
+        columns.push(parseFloat(`${value.TotalDetalles}`));
+        columns.push(value.plantel);
+        columns.push(value.ciclo);
+        rows.push(columns);
+      });
+    } else {
       this.rows.forEach((value: IReportSaleTodayRow) => {
         const columns = [];
         columns.push(value.studentRegistration);
@@ -122,9 +147,6 @@ export class SaleTodayExcel {
     worksheet.columns.forEach((column) => {
       column.width = 10;
 
-      if (column.letter === 'K') {
-        column.numFmt = '$#,##0.00';
-      }
       if (column.letter === 'C' || column.letter === 'J') {
         column.width = 45;
       }

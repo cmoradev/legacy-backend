@@ -10,7 +10,6 @@ import { Role } from '../../roles/entities/role.entity';
 import { Department } from '../../departments/entities/department.entity';
 import { Teacher } from '../../../school-colegio-ingles/teachers/entities/teacher.entity';
 import { AcademyInscription } from '../../../academy/academy-inscription/entities/academy-inscription.entity';
-import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 import { SchoolCharge } from '../../../school-colegio-ingles/charges-school/school-charges/entities/school-charge.entity';
 import { SchoolChargePayment } from '../../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { SchoolChargesInvoice } from '../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
@@ -22,6 +21,9 @@ import { AcademyChargeInvoice } from '../../../academy/charges-academy/academy-c
 import { AcademyChargePayments } from '../../../academy/charges-academy/academy-charge-payments/entities/academy-charge-payments.entity';
 import { Base } from '../../../common/orm/entities/base.entity';
 import { Family } from '../../../school-colegio-ingles/families/entities/family.entity';
+
+// eliminar al cambiar los reporte del front
+import { SalesReturns } from '../../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
 
 @Entity('usuarios')
 export class User extends Base {
@@ -165,9 +167,6 @@ export class User extends Base {
     @OneToMany(() => AcademyInscription, (academyInscription) => academyInscription.unEnrollerAgent)
     userAcInsDown: AcademyInscription[];
 
-    @OneToMany(type => SalesReturns, saleReturns => saleReturns.agent)
-    salesReturns: SalesReturns[];
-
     @OneToMany(type => MiniStoreSalePayment, mssp => mssp.agent)
     salePayments: MiniStoreSalePayment[];
 
@@ -220,4 +219,7 @@ export class User extends Base {
         cascade: ['insert', 'update'],
     })
     family: Family;
+
+    @OneToMany(type => SalesReturns, saleReturns => saleReturns.agent)
+    salesReturns: SalesReturns[];
 }

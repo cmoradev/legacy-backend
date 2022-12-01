@@ -13,8 +13,8 @@ export class AcademyActivityReport {
                 firstSheet: 0, activeTab: 2, visibility: 'visible',
             },
         ];
-        for (const data of resultData) {
-            const sheetName = `${data.g_name.split('/').join(' ')}`;
+        resultData.forEach((data, index) => {
+            const sheetName = `${index} - ${data.g_name.split('/').join(' ')}`;
 
             const groupSheet = workbook.addWorksheet(sheetName, {
                 properties:
@@ -93,7 +93,7 @@ export class AcademyActivityReport {
 
             const verticalEnd = 13 + 3 + data.students.length;
             const dynamicKeys = Array.from(Array(horizontal + 1).keys());
-            dynamicKeys.map((colNumber, index) => {
+            dynamicKeys.map((colNumber) => {
                 if (colNumber === 1 || colNumber >= 8 && colNumber <= horizontal) {
                     groupSheet.getColumn(colNumber).width = 3;
                 }
@@ -175,7 +175,7 @@ export class AcademyActivityReport {
                     bgColor: {argb: '1E88E5'},
                 },
             };
-        }
+        });
 
         const result = await workbook.xlsx.writeBuffer({
                 filename: (+new Date()).toString() + '.xlsx',
