@@ -39,6 +39,7 @@ import { getDataCharges } from '../../../school-colegio-ingles/charges-school/sc
         join: {
             cashier: { eager: false },
             student: { eager: false },
+            cycle: { eager: false },
             storeBranchOffice: { eager: false },
             storeBranchOfficeSet: { eager: false },
             miniStoreSalePayments: { eager: false },
@@ -275,7 +276,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         const result = await this.service.reportSales(options);
         let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true);
         let dataByClient: NotInvoiced[] = [];
-        
+
 
         if (options.byClient) {
             dataByClient = reportStoreSaleByClient(data);
