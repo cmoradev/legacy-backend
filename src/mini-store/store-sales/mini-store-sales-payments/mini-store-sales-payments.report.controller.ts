@@ -10,13 +10,11 @@ import { UsersService } from '../../../system/users/users.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
 import { getNameReport, getRangeDates } from '../mini-store-sales/reports/helpers';
-import { getDataFullMatrizAndData } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
-import {reportStorePaymentByClient} from './utils/utils';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import * as AdmZip from 'adm-zip';
 import { ConfigService } from '../../../common/config/config.service';
-import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
+import { getDataFullMatrizAndData, reportPaymentByClient, PaymentExcel } from '../../../common/utils/report/index';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 import { convertPaymentsReport } from './reports/payments.util';
@@ -69,22 +67,21 @@ export class MiniStoreSalesPaymentsReportController {
     private async reportStorePayment(
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
-    ) {    
-        const obj = getDataFullMatrizAndData(await this.service.reportStorePayment(options),InvoiceModules.STORE, false)
+    ) {
+        const obj = getDataFullMatrizAndData(
+            await this.service.reportStorePayment(options),
+            InvoiceModules.STORE,
+            false,
+            options.status != null ? parseInt(`${options.status}`) : 0);
 
-        let dataByClient: NotInvoiced[] = [];
+        let dataByClient = [];
 
-        if(options.byClient){
-            dataByClient = reportStorePaymentByClient(obj.data.map((d: any) => {
-                let p_quantity = [];
-    
-                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-            }));
+        if (options.byClient) {
+            dataByClient = reportPaymentByClient(obj.data);
         }
 
         if (options?.isExported) {
-        const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos')
+            const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
@@ -107,20 +104,20 @@ export class MiniStoreSalesPaymentsReportController {
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
     ) {
-        const obj = getDataFullMatrizAndData(await this.service.reportStorePaymentInvoice(options),InvoiceModules.STORE, false);
-        let dataByClient: NotInvoiced[] = [];
+        const obj = getDataFullMatrizAndData(
+            await this.service.reportStorePaymentInvoice(options),
+            InvoiceModules.STORE,
+            true,
+            options.status != null ? parseInt(`${options.status}`) : 0);
 
-        if(options.byClient){
-            dataByClient = reportStorePaymentByClient(obj.data.map((d: any) => {
-                let p_quantity = [];
-    
-                d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-                return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-            }));
+        let dataByClient = [];
+
+        if (options.byClient) {
+            dataByClient = reportPaymentByClient(obj.data);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos Facturados')
+            const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.STORE, 'Pagos Facturados')
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
             });
@@ -131,9 +128,9 @@ export class MiniStoreSalesPaymentsReportController {
                 type: 'excel',
                 name: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient :  obj.data, obj });
+            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient :  obj.data, obj });
+            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
         }
     }
 
@@ -146,7 +143,7 @@ export class MiniStoreSalesPaymentsReportController {
             const zip = new AdmZip();
             params.array.forEach((i: NotInvoiced) => {
                 zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
             });
 
             const downloadName = `${Date.now()}.zip`;

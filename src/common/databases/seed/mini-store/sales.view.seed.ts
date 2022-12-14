@@ -6,40 +6,42 @@ export default class SalesViewSeed implements Seeder {
         await connection.query(`DROP VIEW IF EXISTS vw_tie_sales;`);
         await connection.query(`
         CREATE VIEW vw_tie_sales AS
-        SELECT
-            vd.id AS vd_id,
-            v.id AS v_id,
-            v.folio AS v_folio,
-            v.id_estado_pago AS v_status,
-            vd.createdAt AS vd_created_at,
-            a.id AS a_id,
-            a.id_modalidad AS a_tipo,
-            a.matricula AS a_key,
-            (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)) AS a_fullname,
-            v.cycleId AS v_cycle,
-            v.storeBranchOfficeId AS v_branch_office,
-            vd.product_name AS vd_product_name,
-            vd.cantidad AS vd_quantity,
-            vd.precio AS vd_price,
-            vd.priceWithIVA AS vd_price_IVA,
-            (vd.priceWithIVA* vd.cantidad) AS totalIVA,
-            (vd.precio * vd.cantidad) AS total,
-            vd.isIva AS vd_is_IVA,
-            (CONCAT(vu.nombre, ' ', vu.ap_paterno, ' ', vu.ap_materno)) AS vu_fullname_cashier,
-            vu.id AS cashier_id_venta,
-            (CONCAT(vuc.nombre, ' ', vuc.ap_paterno, ' ', vuc.ap_materno)) AS vuc_fullname_cancelation,
-            vuc.id AS cancelation_id_venta,
-            v.observaciones AS v_observations,
-            (SELECT GROUP_CONCAT(typeExtraCharge) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as types_charges,
-            (SELECT GROUP_CONCAT(quantity) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as quantyties_charges,
-            (SELECT GROUP_CONCAT(applicationType) FROM mini_store_details_extra_charges where miniSaleChargeDetailsId = vd.id ) as aplications_charges
+        SELECT v.id                                                                      AS v_id,
+       v.folio                                                                   AS v_folio,
+       v.id_estado_pago                                                          AS v_status,
+       v.createdAt                                                               AS v_created_at,
+       a.id                                                                      AS a_id,
+       a.id_modalidad                                                            AS a_type,
+       a.matricula                                                               AS a_key,
+       (CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno))                  AS a_fullname,
+       v.cycleId                                                                 AS v_cycle,
+       v.storeBranchOfficeId                                                     AS v_branch_office,
+       v.observaciones                                                           AS v_observations,
+       (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno))                  AS u_fullname_cashier,
+       (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno))               AS us_fullname_cancelation,
+       (SELECT GROUP_CONCAT(CONCAT(miniSaleChargeDetailsId, ';', typeExtraCharge, ';', quantity, ';', applicationType))
+        FROM mini_store_details_extra_charges
+        where miniSaleChargeDetailsId IN
+              (SELECT id FROM tie_venta_detalle where miniStoreSaleId = v.id)) AS extras,
+       (SELECT SUM(CAST((cantidad - cambio) AS DECIMAL(12, 6)))
+        from tie_venta_pagos
+        where saleId = v.id
+          and systemPaymentStatusId in (2, 3))                                   AS p_total_without_current,
+       (SELECT GROUP_CONCAT(CONCAT(id, ';', cantidad, ';', priceWithIVA))
+        FROM tie_venta_detalle
+        where miniStoreSaleId = v.id)                                          AS details,
+        (SELECT GROUP_CONCAT(CONCAT(id, ';', product_name))
+        FROM tie_venta_detalle
+        where miniStoreSaleId = v.id)                                          AS details_names,
+       (SELECT SUM(CAST((cantidad * priceWithIVA) AS DECIMAL(12, 6)))
+        FROM tie_venta_detalle
+        where miniStoreSaleId = v.id)                                          AS total_details_without_extra
 
-        FROM tie_venta_detalle vd
+        FROM tie_ventas v
 
-        LEFT JOIN tie_ventas v ON v.id = vd.miniStoreSaleId
-        LEFT JOIN usuarios vu ON vu.id = v.id_agente
-        LEFT JOIN usuarios vuc ON vuc.id = v.agentCancelingId
-        LEFT JOIN alumnos a ON a.id = v.id_alumno
+         LEFT JOIN usuarios u ON u.id = v.id_agente
+         LEFT JOIN usuarios us ON us.id = v.agentCancelingId
+         LEFT JOIN alumnos a ON a.id = v.id_alumno
         ORDER BY v.id DESC;
         `)
     }

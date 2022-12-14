@@ -18,7 +18,7 @@ import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
@@ -472,8 +472,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         branchOfficeId,
         codigoPago,
         usersIds,
-    }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_tie_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+    }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_tie_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
 
         if (status) {
             queryString = `${queryString} AND p_state = ${status}`;
@@ -490,8 +490,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         if (usersIds && usersIds.length > 0) {
             const user = usersIds.map((u) => { return parseInt(`${u}`) })
             if (status && status == 4) {
-                queryString = `${queryString} AND cancelation_id_venta in (${user.join(',')})`;
-            } else { queryString = `${queryString} AND cashier_id_venta in (${user.join(',')})`; }
+                queryString = `${queryString} AND p_cashier_id in (${user.join(',')})`;
+            } else { queryString = `${queryString} AND p_cancelation_id in (${user.join(',')})`; }
         }
         try {
             return this.connection.query(queryString);
@@ -509,8 +509,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         cycleId,
         branchOfficeId,
         codigoPago,
-    }: IQueryReportStorePayment): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+    }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
 
         if (status) {
             queryString = `${queryString} AND f_status = '${status}'`;
