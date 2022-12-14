@@ -36,6 +36,7 @@ import { dataFullSale, PaymentExcel, reportPaymentByClient } from 'src/common/ut
         join: {
             cashier: { eager: false },
             student: { eager: false },
+            cycle: { eager: false },
             storeBranchOffice: { eager: false },
             storeBranchOfficeSet: { eager: false },
             miniStoreSalePayments: { eager: false },
