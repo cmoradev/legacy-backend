@@ -3,12 +3,10 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargeDetails } from './entities/academy-charge-details.entity';
 import { AcademyChargeDetailsService } from './academy-charge-details.service';
 import {IQueryReportSaleTodayOp} from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
-import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
-import {getDataCharges} from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
-import {InvoiceModules} from '../../../common/point-of-sale/types.pos';
-import {reportAcademiaSaleByClient} from './utils/utils';
-import {AcademiaSalesExcel} from './reports/academia-sales.excel';
+import {NotInvoiced, PaymentExtraCharge} from '../../../common/interface/not-invoiced.interface';
 import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { dataFullSale, PaymentExcel, reportPaymentByClient } from 'src/common/utils/report';
+import { InvoiceModules } from 'src/common/point-of-sale/types.pos';
 
 @Crud({
     model: {
@@ -51,15 +49,15 @@ export class AcademyChargeDetailsController implements CrudController<AcademyCha
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSaleAcademia(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.ACADEMY, true)
-        let dataByClient: NotInvoiced[] = [];
+        let data: PaymentExtraCharge[] = dataFullSale(result, InvoiceModules.ACADEMY)
+        let dataByClient = [];
 
         if (options.byClient) {
-            dataByClient = reportAcademiaSaleByClient(data);
+            dataByClient = reportPaymentByClient(data);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new AcademiaSalesExcel(options, options.byClient ? dataByClient : data);
+            const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : data, [], InvoiceModules.ACADEMY, 'Ventas');
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}.xlsx`,
             });

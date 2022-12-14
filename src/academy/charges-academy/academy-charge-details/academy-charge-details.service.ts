@@ -5,7 +5,7 @@ import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.ser
 import {Connection, Repository} from 'typeorm';
 import { AcademyChargeDetails } from './entities/academy-charge-details.entity';
 import {IQueryReportSaleTodayOp} from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
-import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
+import {NotInvoiced, VWPaymentExtraCharge} from '../../../common/interface/not-invoiced.interface';
 
 @Injectable()
 export class AcademyChargeDetailsService extends TypeOrmCrudService<AcademyChargeDetails> {
@@ -37,14 +37,14 @@ export class AcademyChargeDetailsService extends TypeOrmCrudService<AcademyCharg
         endDate,
         cycleId,
         branchOfficeId,
-                                    }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_aca_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+                                    }: IQueryReportSaleTodayOp): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_aca_sales where v_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
         if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if (branchOfficeId) {
-            queryString = `${queryString} AND v_id_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         try {
             return this.connection.query(queryString);
