@@ -1,7 +1,7 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import { formatDate } from '../../../common/date';
 import * as moment from 'moment';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { PaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { IQueryReportStorePayment } from '../../../mini-store/store-sales/mini-store-sales-payments/types/IReports';
 import { getNameReport, getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
@@ -10,7 +10,7 @@ import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 const esMx = require('moment/locale/es-mx');
 
 export class PaymentExcel {
-    private rows: NotInvoiced[] = [];
+    private rows: PaymentExtraCharge[] = [];
     private dataMatriz: any[][];
     private params: IQueryReportStorePayment;
     private workbook: Workbook;
@@ -19,7 +19,7 @@ export class PaymentExcel {
 
     constructor(
         params: IQueryReportStorePayment,
-        data: NotInvoiced[] = [],
+        data: PaymentExtraCharge[] = [],
         dataMatriz: any[][] = [],
         type: InvoiceModules,
         typeReport: 'Ventas' | 'Pagos' | 'Pagos Facturados'
@@ -90,25 +90,26 @@ export class PaymentExcel {
         const columns: TableColumnProperties[] = this.getColumnsTable();
         const rows = this.getRowsTable();
 
-        const columnsMatriz: TableColumnProperties[] = this.dataMatriz[0].map((item) => {
-            return { name: item, filterButton: false, }
-        });
-        const rowsMatriz = [...this.dataMatriz.slice(1, this.dataMatriz.length).map((item) => item)];
-
-        worksheet.addTable({
-            displayName: 'Matriz',
-            name: 'Matriz',
-            ref: `B5`,
-            totalsRow: false,
-            headerRow: true,
-            style: {
-                theme: 'TableStyleLight9',
-                showRowStripes: true,
-                showColumnStripes: true,
-            },
-            columns: columnsMatriz,
-            rows: rowsMatriz,
-        });
+        if(this.typeReport != 'Ventas'){
+            const columnsMatriz: TableColumnProperties[] = this.dataMatriz[0].map((item) => {
+                return { name: item, filterButton: false, }
+            });
+            const rowsMatriz = [...this.dataMatriz.slice(1, this.dataMatriz.length).map((item) => item)];
+            worksheet.addTable({
+                displayName: 'Matriz',
+                name: 'Matriz',
+                ref: `B5`,
+                totalsRow: false,
+                headerRow: true,
+                style: {
+                    theme: 'TableStyleLight9',
+                    showRowStripes: true,
+                    showColumnStripes: true,
+                },
+                columns: columnsMatriz,
+                rows: rowsMatriz,
+            });
+        }
 
         worksheet.addTable({
             displayName: 'Reporte',
@@ -150,7 +151,7 @@ export class PaymentExcel {
                         column.width = 20;
                     }
                 }
-            }else{
+            } else {
                 if (this.typeReport == 'Pagos') {
                     if (column.letter === 'C' || column.letter === 'E' || column.letter === 'K' || column.letter === 'L') {
                         column.width = 40;
@@ -169,6 +170,15 @@ export class PaymentExcel {
                         || column.letter === 'S') {
                         column.width = 20;
                     }
+                }
+            }
+
+            if(this.typeReport == 'Ventas'){
+                if (column.letter === 'C' || column.letter === 'F' || column.letter === 'H' || column.letter === 'I') {
+                    column.width = 40;
+                }  
+                if (column.letter === 'D' || column.letter === 'E' || column.letter === 'G') {
+                    column.width = 20;
                 }
             }
 
@@ -199,14 +209,19 @@ export class PaymentExcel {
         return `${text} Reporte de ${this.typeReport == 'Ventas' ? 'ventas' : this.typeReport} ${getNameReport(this.params.byClient ? 'por cliente' : '', this.params, this.typeReport == "Pagos Facturados").title}`
     }
 
-    public getStatusFacturado(value: NotInvoiced): { name: string, value: string } {
-        if (value.f_uuid != null) {
-            return { name: 'Facturado', value: value.f_uuid }
-        } else if (value.p_global_uuid != null) {
-            return { name: 'Facturado global', value: value.p_global_uuid }
+    public getStatusFacturado(value: PaymentExtraCharge): { name: string, value: string } {
+        if (value.p_state == 2) {
+            if (value.f_uuid != null) {
+                return { name: 'Facturado', value: value.f_uuid }
+            } else if (value.p_global_uuid != null) {
+                return { name: 'Facturado global', value: value.p_global_uuid }
+            } else {
+                return { name: 'No facturado', value: '' }
+            }
         } else {
-            return { name: 'No facturado', value: '' }
+            return { name: 'N/A', value: 'N/A' }
         }
+
     }
 
     public getStatusVentaPago(value: any): string {
@@ -217,6 +232,20 @@ export class PaymentExcel {
                 return 'Completo diferido'
             } else {
                 return 'Incompleto'
+            }
+        } else {
+            return ''
+        }
+    }
+
+    public getStatusVentaPagoSale(value: any): string {
+        if (value != null) {
+            if (value == 1) {
+                return 'Completo'
+            } else if (value == 2) {
+                return 'Incompleto con pagos'
+            } else {
+                return 'Incompleto sin pagos'
             }
         } else {
             return ''
@@ -257,7 +286,7 @@ export class PaymentExcel {
                 case 'Pagos Facturados':
                     columns = [
                         { name: 'Fecha de creación', filterButton: false },
-                        { name: 'Facturador', filterButton: true },
+                        { name: 'Usuario', filterButton: true },
                         { name: 'Folio de venta', filterButton: false },
                         { name: 'Folio de pago', filterButton: false },
                         { name: 'Estatus venta/pago', filterButton: true },
@@ -270,7 +299,7 @@ export class PaymentExcel {
                         { name: 'Forma de pago', filterButton: true },
                         { name: 'Total venta', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Becas venta', filterButton: false, totalsRowFunction: 'sum' },
-                        { name: 'Descuentos venta iva', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Descuentos venta', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Recargos venta', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Subtotal sin iva', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
@@ -289,7 +318,7 @@ export class PaymentExcel {
                 case 'Pagos':
                     columns = [
                         { name: 'Fecha de creación', filterButton: false },
-                        { name: 'Vendedor', filterButton: true },
+                        { name: 'Usuario', filterButton: true },
                         { name: 'Facturado', filterButton: true },
                         { name: 'Folio fiscal', filterButton: false },
                         { name: 'Folio de venta', filterButton: false },
@@ -302,9 +331,9 @@ export class PaymentExcel {
                         { name: 'Forma de pago', filterButton: true },
                         { name: 'Total venta', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Becas venta', filterButton: false, totalsRowFunction: 'sum' },
-                        { name: 'Descuentos venta iva', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Descuentos venta', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Recargos venta', filterButton: false, totalsRowFunction: 'sum' },
-                        { name: 'Subtotal sin iva', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Subtotal sin IVA', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Subtotal IVA', filterButton: false, totalsRowFunction: 'sum' },
                         { name: 'Monto pagado', filterButton: false, totalsRowFunction: 'sum' },
@@ -319,7 +348,32 @@ export class PaymentExcel {
                     }
                     break;
                 case 'Ventas':
-
+                    columns = [
+                        { name: 'Fecha de creación', filterButton: false },
+                        { name: 'Usuario', filterButton: true },
+                        { name: 'Tipo', filterButton: true },
+                        { name: 'Matricula', filterButton: true },
+                        { name: 'Nombre', filterButton: false },
+                        { name: 'Folio de venta', filterButton: false },
+                        { name: 'Estatus venta/pago', filterButton: true },
+                        { name: 'Concepto', filterButton: false},
+                        { name: 'Cantidad', filterButton: false},
+                        { name: 'Precio', filterButton: false},
+                        { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Becas detalle', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Descuentos detalle', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Recargos detalle', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Subtotal detalle sin iva', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'detalle IVA', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Subtotal detalle', filterButton: false, totalsRowFunction: 'sum' },
+                        { name: 'Total venta', filterButton: false, totalsRowFunction: 'sum' },
+                    ];
+                    if (this.type == InvoiceModules.STORE) {
+                        const indexScholarships = columns.findIndex((c) => c.name == 'Becas detalle')
+                        columns.splice(indexScholarships, 1);
+                        const indexSurcharges = columns.findIndex((c) => c.name == 'Recargos detalle')
+                        columns.splice(indexSurcharges, 1);
+                    }
                     break;
                 default:
                     break;
@@ -331,10 +385,10 @@ export class PaymentExcel {
     public getRowsTable() {
         const rows = [];
         if (this.params.byClient) {
-            this.rows.forEach((value: NotInvoiced) => {
+            this.rows.forEach((value: PaymentExtraCharge) => {
                 const columns = [];
-                columns.push(formatDate(getRangeDates(this.params.startDate, this.params.endDate).excel))
-                columns.push(value.a_tipo);
+                columns.push(getRangeDates(this.params.startDate, this.params.endDate).title)
+                columns.push(this.getTipoClient(value.a_type));
                 columns.push(value.a_key);
                 columns.push(value.a_fullname);
                 columns.push(parseFloat(`${value.count}`));
@@ -342,125 +396,95 @@ export class PaymentExcel {
                 rows.push(columns);
             });
         } else {
-            if (this.type == InvoiceModules.STORE) {
-                this.rows.forEach((value: NotInvoiced) => {
-                    const columns = [];
-                    switch (this.typeReport) {
-                        case 'Pagos Facturados':
-                            columns.push(value.p_created_at);
-                            columns.push(value.fu_fullname_cashier);
-                            columns.push(value.v_folio);
-                            columns.push(value.p_folio);
-                            columns.push(this.getStatusVentaPago(value.p_status_Global));
-                            columns.push(value.f_folio);
-                            columns.push(this.getStatusFacturado(value).value);
-                            columns.push(this.getTipoClient(value.a_tipo));
-                            columns.push(value.a_key);
-                            columns.push(value.a_fullname);
-                            columns.push(value.v_observations);
-                            columns.push(value.p_metodo_pago);
-                            columns.push(parseFloat(`${value.total}`));
-                            columns.push(parseFloat(`${value.charges.discounts}`));
-                            columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
-                            columns.push(parseFloat(`${value.totals.IVA}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            columns.push(parseFloat(`${value.p_quantity}`));
-                            columns.push(parseFloat(`${value.p_change}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            break;
-                        case 'Pagos':
-                            columns.push(value.p_created_at);
-                            columns.push(value.vu_fullname_cashier);
-                            columns.push(this.getStatusFacturado(value).name);
-                            columns.push(this.getStatusFacturado(value).value);
-                            columns.push(value.v_folio);
-                            columns.push(value.p_folio);
-                            columns.push(this.getStatusVentaPago(value.p_status_Global));
-                            columns.push(this.getTipoClient(value.a_tipo));
-                            columns.push(value.a_key);
-                            columns.push(value.a_fullname);
-                            columns.push(value.v_observations);
-                            columns.push(value.p_metodo_pago);
-                            columns.push(parseFloat(`${value.total}`));
-                            columns.push(parseFloat(`${value.charges.discounts}`));
-                            columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
-                            columns.push(parseFloat(`${value.totals.IVA}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            columns.push(parseFloat(`${value.p_quantity}`));
-                            columns.push(parseFloat(`${value.p_change}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            break;
-                        case 'Ventas':
-
-                            break;
-                        default:
-                            break;
-                    }
-
-                    rows.push(columns);
-                });
-            } else {
-                this.rows.forEach((value: NotInvoiced) => {
-                    const columns = [];
-                    switch (this.typeReport) {
-                        case 'Pagos Facturados':
-                            columns.push(value.p_created_at);
-                            columns.push(value.u_fullname_cashier);
-                            columns.push(value.v_folio);
-                            columns.push(value.p_folio);
-                            columns.push(this.getStatusVentaPago(value.p_status_Global));
-                            columns.push(value.f_folio);
-                            columns.push(this.getStatusFacturado(value).value);
-                            columns.push(this.getTipoClient(value.a_tipo));
-                            columns.push(value.a_key);
-                            columns.push(value.a_fullname);
-                            columns.push(value.v_observations);
-                            columns.push(value.p_metodo_pago);
-                            columns.push(parseFloat(`${value.total}`));
+            this.rows.forEach((value: PaymentExtraCharge) => {
+                const columns = [];
+                switch (this.typeReport) {
+                    case 'Pagos Facturados':
+                        columns.push(value.p_created_at);
+                        columns.push(value.f_status == '1' ? value.u_fullname_cashier : value.us_fullname_cancelation);
+                        columns.push(value.v_folio);
+                        columns.push(value.p_folio);
+                        columns.push(this.getStatusVentaPago(value.p_status_Global));
+                        columns.push(value.f_folio);
+                        columns.push(this.getStatusFacturado(value).value);
+                        columns.push(this.getTipoClient(value.a_type));
+                        columns.push(value.a_key);
+                        columns.push(value.a_fullname);
+                        columns.push(value.v_observations);
+                        columns.push(value.f_metodo_pago);
+                        columns.push(parseFloat(`${value.total_details_without_extra}`));
+                        if (this.type != InvoiceModules.STORE) {
                             columns.push(parseFloat(`${value.charges.scholarships}`));
-                            columns.push(parseFloat(`${value.charges.discounts}`));
+                        }
+                        columns.push(parseFloat(`${value.charges.discounts}`));
+                        if (this.type != InvoiceModules.STORE) {
                             columns.push(parseFloat(`${value.charges.surcharges}`));
-                            columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
-                            columns.push(parseFloat(`${value.totals.IVA}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            columns.push(parseFloat(`${value.p_quantity}`));
-                            columns.push(parseFloat(`${value.p_change}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            break;
-                        case 'Pagos':
-                            columns.push(value.p_created_at);
-                            columns.push(value.u_fullname_cashier);
-                            columns.push(this.getStatusFacturado(value).name);
-                            columns.push(this.getStatusFacturado(value).value);
-                            columns.push(value.v_folio);
-                            columns.push(value.p_folio);
-                            columns.push(this.getStatusVentaPago(value.p_status_Global));
-                            columns.push(this.getTipoClient(value.a_tipo));
-                            columns.push(value.a_key);
-                            columns.push(value.a_fullname);
-                            columns.push(value.v_observations);
-                            columns.push(this.type == InvoiceModules.SCHOOL ? value.f_metodo_pago : value.p_metodo_pago);
-                            columns.push(parseFloat(`${value.total}`));
+                        }
+                        columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
+                        columns.push(parseFloat(`${value.totals.IVA}`));
+                        columns.push(parseFloat(`${value.p_income}`));
+                        columns.push(parseFloat(`${value.p_quantity}`));
+                        columns.push(parseFloat(`${value.p_change}`));
+                        columns.push(parseFloat(`${value.p_income}`));
+                        break;
+                    case 'Pagos':
+                        columns.push(value.p_created_at);
+                        columns.push(this.params.status == 2 ? value.p_fullname_cashier : value.p_fullname_cancelation);
+                        columns.push(this.getStatusFacturado(value).name);
+                        columns.push(this.getStatusFacturado(value).value);
+                        columns.push(value.v_folio);
+                        columns.push(value.p_folio);
+                        columns.push(this.params.status == 2 ? this.getStatusVentaPago(value.p_status_Global) : 'N/A');
+                        columns.push(this.getTipoClient(value.a_type));
+                        columns.push(value.a_key);
+                        columns.push(value.a_fullname);
+                        columns.push(value.v_observations);
+                        columns.push(value.p_metodo_pago);
+                        columns.push(parseFloat(`${value.total_details_without_extra}`));
+                        if (this.type != InvoiceModules.STORE) {
                             columns.push(parseFloat(`${value.charges.scholarships}`));
-                            columns.push(parseFloat(`${value.charges.discounts}`));
+                        }
+                        columns.push(parseFloat(`${value.charges.discounts}`));
+                        if (this.type != InvoiceModules.STORE) {
                             columns.push(parseFloat(`${value.charges.surcharges}`));
-                            columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
-                            columns.push(parseFloat(`${value.totals.IVA}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            columns.push(parseFloat(`${value.p_quantity}`));
-                            columns.push(parseFloat(`${value.p_change}`));
-                            columns.push(parseFloat(`${value.p_income}`));
-                            break;
-                        case 'Ventas':
+                        }
+                        columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
+                        columns.push(parseFloat(`${value.totals.IVA}`));
+                        columns.push(parseFloat(`${value.p_income}`));
+                        columns.push(parseFloat(`${value.p_quantity}`));
+                        columns.push(parseFloat(`${value.p_change}`));
+                        columns.push(parseFloat(`${value.p_income}`));
+                        break;
+                    case 'Ventas':
+                        columns.push(value.v_created_at);
+                        columns.push(value.u_fullname_cashier);
+                        columns.push(this.getTipoClient(value.a_type));
+                        columns.push(value.a_key);
+                        columns.push(value.a_fullname);
+                        columns.push(value.v_folio);
+                        columns.push(this.getStatusVentaPagoSale(value.p_status_Global));
+                        columns.push(value.concept.name);
+                        columns.push(value.concept.quantity);
+                        columns.push(value.concept.price);
+                        columns.push(value.concept.import);
+                        if (this.type != InvoiceModules.STORE) {
+                            columns.push(parseFloat(`${value.charges.scholarships}`));
+                        }
+                        columns.push(parseFloat(`${value.charges.discounts}`));
+                        if (this.type != InvoiceModules.STORE) {
+                            columns.push(parseFloat(`${value.charges.surcharges}`));
+                        }
+                        columns.push(parseFloat(`${value.totals.totalWithoutIVA}`));
+                        columns.push(parseFloat(`${value.totals.IVA}`));
+                        columns.push(parseFloat(`${value.p_income}`));
+                        columns.push(parseFloat(`${value.total_details_without_extra}`));
+                        break;
+                    default:
+                        break;
+                }
 
-                            break;
-                        default:
-                            break;
-                    }
-
-                    rows.push(columns);
-                });
-            }
+                rows.push(columns);
+            });
         }
         return rows;
     }
