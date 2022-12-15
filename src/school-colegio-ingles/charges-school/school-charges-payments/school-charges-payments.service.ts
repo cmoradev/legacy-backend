@@ -12,7 +12,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import * as moment from 'moment';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { SimpleReportCollege } from './reports/simple.report';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
@@ -187,7 +187,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         branchOfficeId,
         codigoPago,
         usersIds,
-                                 }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
+                                 }: IQueryReportSchoolPayment): Promise<VWPaymentExtraCharge[]> {
         let queryString = `SELECT * FROM vw_sch_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
         if(status){
@@ -197,16 +197,16 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
-            queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
+            queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
         if(usersIds && usersIds.length > 0){
             const user = usersIds.map((u) => {return parseInt(`${u}`)})
             if(status && status == 4){
-                queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+                queryString = `${queryString} AND p_cancelation_id in (${user.join(',')})`;
+            }else {queryString = `${queryString} AND p_cashier_id in (${user.join(',')})`;}
         }
         try {
             return this.connection.query(queryString);
@@ -224,8 +224,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         cycleId,
         branchOfficeId,
         codigoPago,
-                                            }: IQueryReportSchoolPayment): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_sch_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+                                            }: IQueryReportSchoolPayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_sch_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
 
         if(status){
             queryString = `${queryString} AND f_status = ${status}`;
@@ -234,7 +234,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND bf_id_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
@@ -253,14 +253,14 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         endDate,
         cycleId,
         branchOfficeId,
-                                   }: IQueryReportSaleTodayOp): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_sch_sales where vd_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+                                   }: IQueryReportSaleTodayOp): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_sch_sales where v_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
         if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if (branchOfficeId) {
-            queryString = `${queryString} AND v_id_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         try {
             return this.connection.query(queryString);

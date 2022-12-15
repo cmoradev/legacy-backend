@@ -50,11 +50,7 @@ import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import {IQueryReportAcademiaPayment} from './types/IReports';
 import {getRangeDates} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
-import {
-  getDataFullMatrizAndData,
-} from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
-import {reportAcademiaPaymentByClient} from './utils/utils';
-import { PaymentExcel } from '../../../common/utils/report/excel.report.payment';
+import { getDataFullMatrizAndData, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report';
 
 @Crud({
   model: {
@@ -556,17 +552,16 @@ export class AcademyChargePaymentsController
       @Res() res: Response,
       @Query() options: IQueryReportAcademiaPayment,
   ){
-    const obj = getDataFullMatrizAndData(await this.service.reportAcademiaPayment(options),InvoiceModules.ACADEMY, false)
-    
-    let dataByClient: NotInvoiced[] = [];
+    const obj = getDataFullMatrizAndData(
+      await this.service.reportAcademiaPayment(options),
+      InvoiceModules.ACADEMY, 
+      false,
+      options.status != null ? parseInt(`${options.status}`) : 0);
 
-    if(options.byClient){
-      dataByClient = reportAcademiaPaymentByClient(obj.data.map((d: any) => {
-        let p_quantity = [];
-  
-        d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-        return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-      }));
+    let dataByClient = [];
+
+    if (options.byClient) {
+      dataByClient = reportPaymentByClient(obj.data);
     }
 
     if (options?.isExported) {
@@ -593,17 +588,17 @@ export class AcademyChargePaymentsController
       @Res() res: Response,
       @Query() options: IQueryReportAcademiaPayment,
   ){
-    const obj = getDataFullMatrizAndData(await this.service.reportAcademiaPaymentInvoice(options),InvoiceModules.ACADEMY, false)
     
-    let dataByClient: NotInvoiced[] = [];
+    const obj = getDataFullMatrizAndData(
+      await this.service.reportAcademiaPaymentInvoice(options),
+      InvoiceModules.ACADEMY, 
+      true,
+      options.status != null ? parseInt(`${options.status}`) : 0);
 
-    if(options.byClient){
-      dataByClient = reportAcademiaPaymentByClient(obj.data.map((d: any) => {
-        let p_quantity = [];
-  
-        d.p_quantity != null ? p_quantity = d.p_quantity.split(',') : [];
-        return {...d, v_status: parseInt(`${d.v_status}`), p_quantity: p_quantity.map((p: string) => { return parseInt(`${p}`) })} as NotInvoiced
-      }));
+    let dataByClient = [];
+
+    if (options.byClient) {
+      dataByClient = reportPaymentByClient(obj.data);
     }
 
     if (options?.isExported) {

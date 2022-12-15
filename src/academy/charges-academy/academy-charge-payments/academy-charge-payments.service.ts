@@ -17,7 +17,7 @@ import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments
 import { ConfigService } from '../../../common/config/config.service';
 import moment = require('moment');
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
@@ -440,7 +440,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         branchOfficeId,
         codigoPago,
         usersIds,
-                                       }: IQueryReportAcademiaPayment): Promise<NotInvoiced[]> {
+                                       }: IQueryReportAcademiaPayment): Promise<VWPaymentExtraCharge[]> {
         let queryString = `SELECT * FROM vw_aca_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
 
         if(status){
@@ -450,7 +450,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
@@ -477,8 +477,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         cycleId,
         branchOfficeId,
         codigoPago,
-                                              }: IQueryReportAcademiaPayment): Promise<NotInvoiced[]> {
-        let queryString = `SELECT * FROM vw_aca_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND f_folio is not null`;
+                                              }: IQueryReportAcademiaPayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT * FROM vw_aca_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
 
         if(status){
             queryString = `${queryString} AND f_status = '${status}'`;
@@ -487,7 +487,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
         if(branchOfficeId){
-            queryString = `${queryString} AND bf_branch_office = ${branchOfficeId}`;
+            queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
         if(codigoPago){
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;

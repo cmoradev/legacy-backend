@@ -17,13 +17,10 @@ import { SaleTodayExcel } from './reports/sale.today.excel';
 import { InformativeExcel } from './reports/informative.excel';
 import { Decimal } from '@munyaal/calculations';
 import { TypeInformativeReport } from '../../../common/enums/typeInformativeReport.enum';
-import { reportSaleTodayByClient } from './utils/utils';
-import { reportStoreSaleByClient } from './utils/utilSale';
-import { SaleExcel } from './reports/sale.excel';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { NotInvoiced, PaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { SaleReturnExcel } from './reports/sale-return.excel';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { getDataCharges } from '../../../school-colegio-ingles/charges-school/school-charges-payments/reports/payments.util';
+import { dataFullSale, PaymentExcel, reportPaymentByClient } from 'src/common/utils/report';
 
 @Crud({
     model: {
@@ -39,6 +36,7 @@ import { getDataCharges } from '../../../school-colegio-ingles/charges-school/sc
         join: {
             cashier: { eager: false },
             student: { eager: false },
+            cycle: { eager: false },
             storeBranchOffice: { eager: false },
             storeBranchOfficeSet: { eager: false },
             miniStoreSalePayments: { eager: false },
@@ -176,7 +174,7 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         });
 
         if (options.byClient) {
-            dataByClient = reportSaleTodayByClient(data);
+            //dataByClient = reportSaleTodayByClient(data);
         }
 
         if (options?.isExported) {
@@ -210,8 +208,8 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 case TypeInformativeReport.PRODUCTS:
                     const index = data.findIndex((d: IReportInformativeRow) => d.p_id_product == r.p_id_product);
                     if (index > -1) {
-                        data[ index ].vd_quantity = Decimal.sum(data[ index ].vd_quantity, r.vd_quantity).toNumber();
-                        data[ index ].subtotal = Decimal.mul(data[ index ].vd_quantity, r.vd_price).toNumber();
+                        data[index].vd_quantity = Decimal.sum(data[index].vd_quantity, r.vd_quantity).toNumber();
+                        data[index].subtotal = Decimal.mul(data[index].vd_quantity, r.vd_price).toNumber();
                     } else {
                         data.push(r);
                     }
@@ -222,10 +220,10 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 case TypeInformativeReport.CATEGORIES:
                     const indexCategory = data.findIndex((d: IReportInformativeRow) => d.c_id == r.c_id);
                     if (indexCategory > -1) {
-                        data[ indexCategory ].vd_quantity = Decimal.sum(data[ indexCategory ].vd_quantity, r.vd_quantity).toNumber();
+                        data[indexCategory].vd_quantity = Decimal.sum(data[indexCategory].vd_quantity, r.vd_quantity).toNumber();
                         const priceCategories = Decimal.mul(r.vd_quantity, r.vd_price).toNumber();
-                        data[ indexCategory ].subtotal = Decimal.sum(
-                            data[ indexCategory ].subtotal,
+                        data[indexCategory].subtotal = Decimal.sum(
+                            data[indexCategory].subtotal,
                             priceCategories,
                         ).toNumber();
 
@@ -236,10 +234,10 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
                 case TypeInformativeReport.CASHIERS:
                     const indexCashier = data.findIndex((d: IReportInformativeRow) => d.u_id_agent == r.u_id_agent);
                     if (indexCashier > -1) {
-                        data[ indexCashier ].vd_quantity = Decimal.sum(data[ indexCashier ].vd_quantity, r.vd_quantity).toNumber();
+                        data[indexCashier].vd_quantity = Decimal.sum(data[indexCashier].vd_quantity, r.vd_quantity).toNumber();
                         const priceCashier = Decimal.mul(r.vd_quantity, r.vd_price).toNumber();
-                        data[ indexCashier ].subtotal = Decimal.sum(
-                            data[ indexCashier ].subtotal,
+                        data[indexCashier].subtotal = Decimal.sum(
+                            data[indexCashier].subtotal,
                             priceCashier,
                         ).toNumber();
                     } else {
@@ -273,16 +271,15 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSales(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true);
-        let dataByClient: NotInvoiced[] = [];
-        
+        let data: PaymentExtraCharge[] = dataFullSale(result, InvoiceModules.STORE)
+        let dataByClient = [];
 
         if (options.byClient) {
-            dataByClient = reportStoreSaleByClient(data);
+            dataByClient = reportPaymentByClient(data);
         }
 
         if (options?.isExported) {
-            const conceptStatusExcel = new SaleExcel(options, options.byClient ? dataByClient : data);
+            const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : data, [], InvoiceModules.STORE, 'Ventas');
             const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
                 filename: `${getNameReport(options.byClient ? 'Ventas_por_cliente' : 'Ventas', options).excel}.xlsx`,
             });
@@ -305,11 +302,12 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSalesReturns(options);
-        let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true)
+        let data: NotInvoiced[] = []
+        //let data: NotInvoiced[] = getDataCharges(result, InvoiceModules.STORE, true)
         let dataByClient: NotInvoiced[] = [];
 
         if (options.byClient) {
-            dataByClient = reportStoreSaleByClient(data);
+            //dataByClient = reportStoreSaleByClient(data);
         }
 
         if (options?.isExported) {
