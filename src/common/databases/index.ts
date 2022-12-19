@@ -91,6 +91,7 @@ import { Route } from '../../system/routes/entities/route.entity';
 import { SystemExtraCharges } from '../../system/system-extra-charges/entities/system-extra-charges.entity';
 import { Action } from '../../system/actions/entities/action.entity';
 import { InscriptionStatus } from '../../system/inscription-status/entities/inscription-status.entity';
+import { Identifier } from '../../system/identifier/entities/identifier.entity';
 
 // eliminar al cambiar los reporte del front
 import { SalesReturns } from '../../mini-store/store-sales/mini-store-sales-returns/entities/sales-returns.entity';
@@ -188,6 +189,7 @@ const entities = [
   SystemPaymentStatus,
   SystemTypeExtraCharges,
   User,
+  Identifier,
   SalesReturns,
   SalesReturnsProducts,
 ];

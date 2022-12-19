@@ -37,6 +37,8 @@ export default class MyAcademiaPaymentSeed implements Seeder {
             p.globalUuid AS p_global_uuid,
             (CONCAT(u.nombre, ' ', u.ap_paterno, ' ', u.ap_materno)) AS u_fullname_cashier,
             (CONCAT(us.nombre, ' ', us.ap_paterno, ' ', us.ap_materno)) AS us_fullname_cancelation,
+            (CONCAT(pu.nombre, ' ', pu.ap_paterno, ' ', pu.ap_materno)) AS p_fullname_cashier,
+            (CONCAT(puc.nombre, ' ', puc.ap_paterno, ' ', puc.ap_materno)) AS p_fullname_cancelation,
             u.id AS cashier_id,
             us.id AS cancelation_id,
             pu.id AS p_cashier_id,

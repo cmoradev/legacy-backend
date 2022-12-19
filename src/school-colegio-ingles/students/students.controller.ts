@@ -17,6 +17,7 @@ import { alumnos } from './catalogue/students.catalogue';
         },
         limit: 10,
         join: {
+            identifiers: {eager: false},
             family: {eager: false},
             academiesModality: {eager: false},
             studentCampus: {eager: false},
