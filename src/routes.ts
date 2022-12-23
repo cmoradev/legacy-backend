@@ -104,6 +104,7 @@ import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { RouteActionModule } from './system/route-action/route-action.module';
 import { SchoolPaymentsChargesModule } from './school-colegio-ingles/school-payments-charges/school-payments-charges.module';
 import { TransactionModule } from './system/transaction/transactions.module';
+import { IdentifierModule } from './system/identifier/identifier.module';
 
 // eliminar al cambiar los reporte del front
 import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
@@ -143,7 +144,8 @@ export const routes: Routes = [
             { path: '/settings', module: SettingsModule },
             { path: '/folios', module: FoliosModule },
             { path: '/xls', module: XlsImporterModule },
-            { path: '/transaction', module: TransactionModule }
+            { path: '/transaction', module: TransactionModule },
+            { path: '/identifier', module: IdentifierModule }
         ],
     },
     {

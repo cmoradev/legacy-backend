@@ -170,4 +170,7 @@ export class Student extends Base {
 
     @OneToMany(() => Transaction, (transaction) => transaction.student)
     transactions: Transaction[];
+
+    @OneToMany(type => MiniStoreSale, identifier => identifier.student)
+    identifiers: MiniStoreSale[];
 }

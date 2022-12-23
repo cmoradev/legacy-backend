@@ -7,8 +7,8 @@ export default class AcademiaPaymentSeed implements Seeder {
         await connection.query(`
         CREATE VIEW vw_aca_payments AS
         SELECT p.*,
-       (select p_way from vw_tie_way_payments where p_id = p.p_id Limit 1)                      AS p_metodo_pago_codigo,
-       (select p_way_name from vw_tie_way_payments where p_id = p.p_id Limit 1)                 AS p_metodo_pago,
+       (select p_way from vw_aca_way_payments where p_id = p.p_id Limit 1)                      AS p_metodo_pago_codigo,
+       (select p_way_name from vw_aca_way_payments where p_id = p.p_id Limit 1)                 AS p_metodo_pago,
        (SELECT GROUP_CONCAT(CONCAT(chargeDetailId, ';', typeExtraCharge, ';', quantity, ';', applicationType))
         FROM ac_charges_details_extra_charges
         where chargeDetailId IN
