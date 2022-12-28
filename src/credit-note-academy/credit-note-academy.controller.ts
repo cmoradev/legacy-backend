@@ -122,7 +122,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             })
 
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
-            const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
+            const pathXml = `${this.configService.getPath()}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
             const cfdi = await XmlToJson(pathXml) as XmlCdfi;
             await this.service.saveCreditNote(
