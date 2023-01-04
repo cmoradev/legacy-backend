@@ -1,36 +1,51 @@
-import { Body, Controller, Delete, NotFoundException, Param, ParseIntPipe, Post, Put, Res, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
-import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
-import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { FactSw } from '../../../webService/FactSw';
-import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
-import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
-import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
-import { User } from '../../../system/users/entities/user.entity';
-import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
-import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
+import {
+    Body,
+    Controller,
+    Delete,
+    NotFoundException,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Res,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
+import {Crud, CrudController} from '@nestjsx/crud';
+import {MiniStoreSalePayment} from './entities/mini-store-sale-payment.entity';
+import {MiniStoreSalesPaymentsService} from './mini-store-sales-payments.service';
+import {
+    InvoiceMethodsPaymentsService
+} from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
+import {QueryBilling} from './interface/InvoiceMiniStore.interface';
+import {roundQuantity} from '../../../common/point-of-sale/point-of-sale';
+import {getDetailsPaymentsGlobal} from '../../../common/point-of-sale/utils';
+import {FactSw} from '../../../webService/FactSw';
+import {GenerateGlobalInvoice, GenerateInvoiceMunyaal, GenerateInvoice} from '../../../common/utils/invoice/generator/generateInvoice';
+import {MiniStoreInvoice} from '../mini-store-invoices/entities/mini-store-invoice.entity';
+import {MiniStoreInvoicesService} from '../mini-store-invoices/mini-store-invoices.service';
+import {BranchOfficeSettingService} from '../../../system/branch-office-setting/branch-office-setting.service';
+import {StatusInvoce} from '../../../invoice/interface/StatusInvoce.interface';
+import {readFileSync} from 'fs';
+import {ExportacionEnum, FormaPago, RegimenFiscalList} from '@signati/core';
+import {BranchOfficeService} from '../../../system/branch-office/branch-office.service';
+import {ConfigService} from '../../../common/config/config.service';
+import {NotInvoicedDto} from '../../../common/dto/not-invoiced.dto';
+import {NotInvoiced} from '../../../common/interface/not-invoiced.interface';
+import {ObjetoImpEnum} from '@signati/core/lib/signati/types/Tags/concepts.interface';
+import {Environment, InvoiceModules} from '../../../common/point-of-sale/types.pos';
+import {ConceptsPriceByPaymentBilligCalculation} from '../../../common/calculations/calculation';
+import {Recibo} from '../../../common/pdfmake/Recibo';
+import * as moment from 'moment';
 import { PDF, XmlToJson } from '@signati/pdf';
 import * as fs from 'fs';
-import { readFileSync } from 'fs';
-import { FormaPago, RegimenFiscalList } from '@signati/core';
+import { A117 } from '../../../pdf/A117/desing/A117';
+import {PaymentStatus} from '../../../common/enums/PaymentStatus';
+import { User } from '../../../system/users/entities/user.entity';
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
-import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
-import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
-import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
-import { Recibo } from '../../../common/pdfmake/Recibo';
-import * as moment from 'moment';
-import { PaymentStatus } from '../../../common/enums/PaymentStatus';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi/dist/src';
 
 @Crud({
     model: {
@@ -123,8 +138,31 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             RegimenFiscalReceptor: query.receiver.keyRegimen,
         }
         try {
-            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
+            const timbrado = await GenerateInvoiceMunyaal({
+                type: InvoiceModules.STORE,
+                ...invoiceDetails,
+                folio: 'MVP-01',
+                serie: branchOfficeSett.serieFacturacion,
+                emisor: branchOfficeSett,
+                env: this.env,
+                informacionGlobal: query.informacionGlobal,
+                receptor,
+                codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+                TipoDeComprobante: TipoComprobanteEnum.I,
+                Exportacion: ExportacionEnumMunyaal.E01,
+                MetodoPago: MetodoPagoEnum.PUE,
+                Moneda: MonedaEnum.MXN,
+            });
 
+            await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
+
+            respuesta.stamping = true;
+            respuesta.msg = 'Pago Facturado';
+            //respuesta.invoice = resultInvoice;
+            respuesta.uuid = timbrado.data.uuid.toUpperCase();
+            response.status(200);
+            response.send(respuesta);
+            /*const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -219,6 +257,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         receptor,
                         codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
                     });
+
                     const timbrado = await this.smartWeb.facturar(xml);
 
                     await this.service.updatePayment({
@@ -254,6 +293,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.send(respuesta);
                 }
             }
+            */
 
         } catch (e) {
             console.log(e);
