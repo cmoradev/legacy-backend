@@ -21,7 +21,7 @@ import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import { GenerateGlobalInvoice, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
+import { GenerateGlobalInvoice, GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -393,31 +393,31 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
             let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
 
-            const xml = await GenerateGlobalInvoice({
+            const timbrado = await GenerateGlobalInvoiceMunyaal({
                 branchOfficeConfig,
                 wayPayment,
                 details,
                 env: this.env,
                 folio: invoice.folio,
                 infoGlobal: {
-                    periodicity: query.periodicity,
-                    month: query.month,
-                    year: query.year,
+                  periodicity: query.periodicity,
+                  month: query.month,
+                  year: query.year,
                 },
-                percentageTax: '0.16'
-            });
+                percentageTax: '0.16',
+                type: InvoiceModules.STORE,
+                TipoDeComprobante: TipoComprobanteEnum.I,
+                Exportacion: ExportacionEnumMunyaal.E01,
+                MetodoPago: MetodoPagoEnum.PUE,
+                Moneda: MonedaEnum.MXN,
+              });
 
-            const stamping = await this.smartWeb.facturar(xml);
-
-            const uuid = stamping.data.uuid.toUpperCase();
+            const uuid = timbrado.data.uuid.toUpperCase();
 
             await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
 
-            const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
-
             invoice.uuid = uuid;
             invoice.status = 1;
-            invoice.total = +cfdi._attributes.Total;
 
             invoice = await this.miniStoreInvoicesService.updateInvoice(invoice);
 
@@ -427,7 +427,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             response.send({
                 uuid,
                 invoice,
-                stamping,
+                stamping: timbrado,
                 concepts,
                 msg: 'Factura global timbrada',
             });

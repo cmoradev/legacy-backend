@@ -31,7 +31,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateGlobalInvoice, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
+import { GenerateGlobalInvoice, GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { readFileSync } from 'fs';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
 import { ConfigService } from '../../../common/config/config.service';
@@ -466,7 +466,7 @@ export class AcademyChargePaymentsController
 
       let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
 
-      const xml = await GenerateGlobalInvoice({
+      const timbrado = await GenerateGlobalInvoiceMunyaal({
         branchOfficeConfig,
         wayPayment,
         details,
@@ -477,20 +477,21 @@ export class AcademyChargePaymentsController
           month: query.month,
           year: query.year,
         },
-        percentageTax: '0.16'
+        percentageTax: '0.16',
+        type: InvoiceModules.ACADEMY,
+        TipoDeComprobante: TipoComprobanteEnum.I,
+        Exportacion: ExportacionEnumMunyaal.E01,
+        MetodoPago: MetodoPagoEnum.PUE,
+        Moneda: MonedaEnum.MXN,
       });
 
-      const stamping = await this.smartWeb.facturar(xml);
-
-      const uuid = stamping.data.uuid.toUpperCase();
+    const uuid = timbrado.data.uuid.toUpperCase();
 
       await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
 
-      const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
-
       invoice.uuid = uuid;
       invoice.status = 1;
-      invoice.total = cfdi._attributes.Total;
+      
 
       invoice = await this.academyChargeInvoiceService.updateInvoice(invoice);
 
@@ -500,7 +501,7 @@ export class AcademyChargePaymentsController
       response.send({
         uuid,
         invoice,
-        stamping,
+        stamping: timbrado,
         concepts,
         msg: 'Factura global timbrada',
       });

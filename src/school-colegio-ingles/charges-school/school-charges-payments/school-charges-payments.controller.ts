@@ -21,6 +21,7 @@ import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-ch
 import { readFileSync } from 'fs';
 import {
   GenerateGlobalInvoice,
+  GenerateGlobalInvoiceMunyaal,
   GenerateInvoiceMunyaal,
 } from '../../../common/utils/invoice/generator/generateInvoice';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
@@ -391,16 +392,16 @@ export class SchoolChargesPaymentsController
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
             student
-        });
+          });
 
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as SchoolChargePayment);
-          
+
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
-        
+
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
             invoiceFinded,
           );
@@ -458,16 +459,16 @@ export class SchoolChargesPaymentsController
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
             student
-        });
+          });
 
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as SchoolChargePayment);
-        
+
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
-          
+
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
             invoice,
           );
@@ -670,7 +671,7 @@ export class SchoolChargesPaymentsController
 
       let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
 
-      const xml = await GenerateGlobalInvoice({
+      const timbrado = await GenerateGlobalInvoiceMunyaal({
         branchOfficeConfig,
         wayPayment,
         details,
@@ -681,30 +682,29 @@ export class SchoolChargesPaymentsController
           month: query.month,
           year: query.year,
         },
-        percentageTax: '0'
+        percentageTax: '0',
+        type: InvoiceModules.SCHOOL,
+        TipoDeComprobante: TipoComprobanteEnum.I,
+        Exportacion: ExportacionEnumMunyaal.E01,
+        MetodoPago: MetodoPagoEnum.PUE,
+        Moneda: MonedaEnum.MXN,
       });
 
-      const stamping = await this.smartWeb.facturar(xml);
 
-      const uuid = stamping.data.uuid.toUpperCase();
+      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), timbrado.data.uuid.toUpperCase());
 
-      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
-
-      const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
-
-      invoice.uuid = uuid;
+      invoice.uuid = timbrado.data.uuid.toUpperCase();
       invoice.status = 1;
-      invoice.total = +cfdi._attributes.Total;
 
       invoice = await this.schoolChargeInvoiceService.updateInvoice(invoice);
 
-      await this.schoolChargeInvoiceService.sendMail(branchOffice, uuid, branchOfficeConfig.email);
+      await this.schoolChargeInvoiceService.sendMail(branchOffice, timbrado.data.uuid.toUpperCase(), branchOfficeConfig.email);
 
       response.status(200);
       response.send({
-        uuid,
+        uuid: timbrado.data.uuid.toUpperCase(),
         invoice,
-        stamping,
+        stamping: timbrado,
         concepts,
         msg: 'Factura global timbrada',
       });
