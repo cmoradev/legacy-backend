@@ -30,7 +30,9 @@ import {
     ComprobanteImpuestosTraslado, ImpuestoEnum,
     TipoFactorEnum, ComprobanteConcepto,
     ComprobanteConceptoImpuestos, ComprobanteConceptoImpuestosTraslado,
-    ObjetoImpEnum as ObjetoImpEnumMunyaal
+    ObjetoImpEnum as ObjetoImpEnumMunyaal,
+    Iedu as IeduMunyaal,
+    ComprobanteConceptoComplementoConcepto
 } from "@munyaal/cfdi/dist/src";
 import { FactSw } from '../../../../webService/FactSw';
 import { A117 } from '../../../../pdf/A117/desing/A117';
@@ -363,6 +365,7 @@ export interface InvoiceModule extends CFDIWebtel {
     TipoDeComprobante: TipoComprobanteEnum;
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
+    student?: XmlIeduAttribute;
 }
 
 export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
@@ -381,7 +384,8 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         receptor,
         codigoFormaPago,
         env,
-        type
+        type,
+        student
     } = params;
     const CFDIService = initializeCfdi({
         pathXsltCfdi40: env.xslt,
@@ -465,6 +469,9 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
             impuestos.Traslados.push(traslados);
 
             concepto.Impuestos = impuestos;
+        }else{
+            concepto.ComplementoConcepto = new ComprobanteConceptoComplementoConcepto();
+            concepto.ComplementoConcepto.iedu = new IeduMunyaal(student);
         }
         comprobante.Conceptos.push(concepto);
     }
@@ -496,6 +503,8 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
 
     await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid);
     const logo = readFileSync(`${env.instancePath}logos/tienditalogo.png`)
+    //'academiaslogo.png'
+    //colegiologo
     const desingpdf = new A117(`${folder}${timbrado.data.uuid.toUpperCase()}.xml`, {
         lugarExpedicion: emisor.address,
         logo: `data:image/png;base64, ${logo.toString('base64')}`,

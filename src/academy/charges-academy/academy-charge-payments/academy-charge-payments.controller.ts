@@ -31,13 +31,10 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
-import * as fs from 'fs';
+import { GenerateGlobalInvoice, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { readFileSync } from 'fs';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
-import { PDF, XmlToJson } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
@@ -48,9 +45,10 @@ import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calcula
 import * as moment from 'moment';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
-import {IQueryReportAcademiaPayment} from './types/IReports';
-import {getRangeDates} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { IQueryReportAcademiaPayment } from './types/IReports';
+import { getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
 import { getDataFullMatrizAndData, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi/dist/src';
 
 @Crud({
   model: {
@@ -64,16 +62,16 @@ import { getDataFullMatrizAndData, PaymentExcel, reportPaymentByClient } from '.
     },
     limit: 10,
     join: {
-      academyCharge: {eager: false},
-      'academyCharge.chargesDetails': {eager: false},
-      'academyCharge.schoolStudent': {eager: false},
-      'academyCharge.chargesDetails.extraCharges': {eager: false},
-      academyPaymentOffice: {eager: false},
-      academyPaymentOfficeSet: {eager: false},
-      methodsPayments: {eager: false},
-      cashierCharge: {eager: false},
-      cashierChargeCancellation: {eager: false},
-      academyChargesInvoice: {eager: false},
+      academyCharge: { eager: false },
+      'academyCharge.chargesDetails': { eager: false },
+      'academyCharge.schoolStudent': { eager: false },
+      'academyCharge.chargesDetails.extraCharges': { eager: false },
+      academyPaymentOffice: { eager: false },
+      academyPaymentOfficeSet: { eager: false },
+      methodsPayments: { eager: false },
+      cashierCharge: { eager: false },
+      cashierChargeCancellation: { eager: false },
+      academyChargesInvoice: { eager: false },
     },
   },
 })
@@ -203,9 +201,6 @@ export class AcademyChargePaymentsController
     };
 
     try {
-      const logo = readFileSync(
-        `${this.configService.getPath()}logos/academiaslogo.png`,
-      );
       if (invoiceFind) {
         if (invoiceFind.academyChargePayment.stamping === 1) {
           const invocePayment = await this.academyChargeInvoiceService.findInvoiceByPayment(
@@ -221,47 +216,33 @@ export class AcademyChargePaymentsController
           respuesta.uuid = invocePayment.uuid;
           res.send(respuesta);
         } else {
-          const xml = await GenerateInvoice({
+          const timbrado = await GenerateInvoiceMunyaal({
+            type: InvoiceModules.ACADEMY,
             ...invoiceDetails,
             folio: invoiceFind.folio,
             serie: branchOfficeSett.serieFacturacion,
-            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
             emisor: branchOfficeSett,
+            env: this.env,
             informacionGlobal: query.informacionGlobal,
             receptor,
-            env
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            TipoDeComprobante: TipoComprobanteEnum.I,
+            Exportacion: ExportacionEnumMunyaal.E01,
+            MetodoPago: MetodoPagoEnum.PUE,
+            Moneda: MonedaEnum.MXN,
           });
-          const timbrado = await this.smartWeb.facturar(xml);
+
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as AcademyChargePayments);
-          // Guardamos el xml
-          const pathXml =
-            `${this.configService.getPath()}comprobantes/academias/` +
-            timbrado.data.uuid.toUpperCase() +
-            '.xml';
-          fs.writeFileSync(pathXml, timbrado.data.cfdi);
-          // Obtenemos los datos del xml
-          const cfdi = await XmlToJson(pathXml);
-          // 4. Actualizamos los campos con la factura los datos del sat
+          
           invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFind.status = 1;
-          invoiceFind.total = cfdi['cfdi:Comprobante']._attributes.Total;
           const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(
             invoiceFind,
           );
-          // Generamos el PDf del xml
-          const desingpdf = new A117(pathXml, {
-            lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
-          });
-          const pdf = new PDF<A117>(desingpdf);
-          await pdf.save(
-            `${this.configService.getPath()}comprobantes/academias/` +
-            timbrado.data.uuid.toUpperCase(),
-          );
-          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
+          
           this.service.sendMail(
             currentOffice,
             timbrado.data.uuid,
@@ -301,45 +282,29 @@ export class AcademyChargePaymentsController
           factura,
         );
         if (invoice) {
-          const xml = await GenerateInvoice({
+          const timbrado = await GenerateInvoiceMunyaal({
+            type: InvoiceModules.ACADEMY,
             ...invoiceDetails,
             folio: invoice.folio,
             serie: branchOfficeSett.serieFacturacion,
-            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
             emisor: branchOfficeSett,
+            env: this.env,
             informacionGlobal: query.informacionGlobal,
             receptor,
-            env
-          });
-          const timbrado = await this.smartWeb.facturar(xml);
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            TipoDeComprobante: TipoComprobanteEnum.I,
+            Exportacion: ExportacionEnumMunyaal.E01,
+            MetodoPago: MetodoPagoEnum.PUE,
+            Moneda: MonedaEnum.MXN,
+        });
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as AcademyChargePayments);
-          // Guardamos el xml
-          const pathXml =
-            `${this.configService.getPath()}comprobantes/academias/` +
-            timbrado.data.uuid.toUpperCase() +
-            '.xml';
-          fs.writeFileSync(pathXml, timbrado.data.cfdi);
-          // Obtenemos los datos del xml
-          const cfdi = await XmlToJson(pathXml);
-          // 4. Actualizamos los campos con la factura los datos del sat
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
-          invoice.total = cfdi['cfdi:Comprobante']._attributes.Total;
           const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(
             invoice,
-          );
-          // Generamos el PDf del xml
-          const desingpdf = new A117(pathXml, {
-            lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
-          });
-          const pdf = new PDF<A117>(desingpdf);
-          await pdf.save(
-            `${this.configService.getPath()}comprobantes/academias/` +
-            timbrado.data.uuid.toUpperCase(),
           );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           this.service.sendMail(
@@ -398,22 +363,22 @@ export class AcademyChargePaymentsController
         width: 100,
         height: 100,
         image: `data:image/png;base64, ${logo.toString('base64')}`,
-      }) == false ? error.push(`error al agregar el logo`): null;
-      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`): null;
-      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`): null;
+      }) == false ? error.push(`error al agregar el logo`) : null;
+      Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
+      Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
       const regimen = RegimenFiscalList.find(
         (f) => f.value === branchOfficeSett.regime,
       );
-      if (regimen == undefined){
+      if (regimen == undefined) {
         error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
-      }else{
+      } else {
         Receip.addEmisor({
           name: branchOfficeSett.businessName,
           rfc: branchOfficeSett.rfc,
           regimen:
             branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
           expedido: branchOfficeSett.address,
-        }) == false ? error.push(`error al agregar los datos del emisor`): null;
+        }) == false ? error.push(`error al agregar los datos del emisor`) : null;
       }
       let name = '';
       if (result.payment.stamping == 0) {
@@ -426,7 +391,7 @@ export class AcademyChargePaymentsController
         curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
         matricula: result.charge.schoolStudent.matricula,
         type: InvoiceModules.ACADEMY
-      }) == false ? error.push(`error al agregar los datos del receptor`): null;
+      }) == false ? error.push(`error al agregar los datos del receptor`) : null;
       const ven =
         result.payment.cashierCharge.name +
         ' ' +
@@ -435,7 +400,7 @@ export class AcademyChargePaymentsController
         result.payment.cashierCharge.lastnameMother;
       Receip.addInformacion({
         vendedor: ven,
-      }) == false ? error.push(`error al agregar los datos del vendedor`): null;
+      }) == false ? error.push(`error al agregar los datos del vendedor`) : null;
 
       Receip.addCatidad({
         ...invoiceDetails.totals.receipt
@@ -458,10 +423,10 @@ export class AcademyChargePaymentsController
         src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
       });
     }
-      catch (e) {
-        res.send({
-            error,
-        });
+    catch (e) {
+      res.send({
+        error,
+      });
     }
   }
 
@@ -549,12 +514,12 @@ export class AcademyChargePaymentsController
   @Public()
   @Get('/report-academia-payment')
   private async reportAcademiaPayment(
-      @Res() res: Response,
-      @Query() options: IQueryReportAcademiaPayment,
-  ){
+    @Res() res: Response,
+    @Query() options: IQueryReportAcademiaPayment,
+  ) {
     const obj = getDataFullMatrizAndData(
       await this.service.reportAcademiaPayment(options),
-      InvoiceModules.ACADEMY, 
+      InvoiceModules.ACADEMY,
       false,
       options.status != null ? parseInt(`${options.status}`) : 0);
 
@@ -565,13 +530,13 @@ export class AcademyChargePaymentsController
     }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos')
+      const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`,
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-            buffer,
+          buffer,
         ).toString('base64')}`,
         type: 'excel',
         name: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
@@ -585,13 +550,13 @@ export class AcademyChargePaymentsController
   @Public()
   @Get('/report-academia-payment-invoice')
   private async reportAcademiaPaymentInvoice(
-      @Res() res: Response,
-      @Query() options: IQueryReportAcademiaPayment,
-  ){
-    
+    @Res() res: Response,
+    @Query() options: IQueryReportAcademiaPayment,
+  ) {
+
     const obj = getDataFullMatrizAndData(
       await this.service.reportAcademiaPaymentInvoice(options),
-      InvoiceModules.ACADEMY, 
+      InvoiceModules.ACADEMY,
       true,
       options.status != null ? parseInt(`${options.status}`) : 0);
 
@@ -602,13 +567,13 @@ export class AcademyChargePaymentsController
     }
 
     if (options?.isExported) {
-      const conceptStatusExcel = new PaymentExcel(options,options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos Facturados')
+      const conceptStatusExcel = new PaymentExcel(options, options.byClient ? dataByClient : obj.data, obj.matriz, InvoiceModules.ACADEMY, 'Pagos Facturados')
       const buffer = await conceptStatusExcel.getWorkBook().xlsx.writeBuffer({
         filename: `Ac_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}.xlsx`
       });
       const report = {
         src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-            buffer,
+          buffer,
         ).toString('base64')}`,
         type: 'excel',
         name: `Ac_Pagos_facturados_${getRangeDates(options.startDate, options.endDate).excel}`,
