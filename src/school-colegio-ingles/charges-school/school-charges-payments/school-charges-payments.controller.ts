@@ -51,7 +51,7 @@ import { getNameReport, getRangeDates } from '../../../mini-store/store-sales/mi
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 import { getDataFullMatrizAndData, reportPaymentByClient, PaymentExcel, dataFullSale } from '../../../common/utils/report/index';
 import { convertPaymentsReportCollege } from './reports/payments.util';
-import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi/dist/src';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi';
 
 @Crud({
   model: {
@@ -401,6 +401,7 @@ export class SchoolChargesPaymentsController
 
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
+          invoiceFinded.total = timbrado.Total;
 
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
             invoiceFinded,
@@ -468,6 +469,7 @@ export class SchoolChargesPaymentsController
 
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
+          invoice.total = timbrado.Total;
 
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
             invoice,

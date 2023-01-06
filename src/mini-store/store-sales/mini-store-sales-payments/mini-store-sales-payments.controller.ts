@@ -42,7 +42,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi/dist/src';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi';
 
 @Crud({
     model: {
@@ -172,6 +172,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
+                    invoiceFind.total = timbrado.Total;
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
 
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
@@ -232,6 +233,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     //Actualizamos la factura
                     invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;
+                    invoice.total = timbrado.Total;
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)

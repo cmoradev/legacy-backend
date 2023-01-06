@@ -1,12 +1,34 @@
-import { Comprobante, CFDI, Receptor, Emisor, Concepts, Impuestos, Relacionado, XmlReceptorAttribute, ObjetoImpEnum } from "@signati/core";
-import { ConceptWithTaxes, InvoiceSat } from "../../../../credit-note-academy/credit-note-academy.service";
-import { MiniStoreInvoice } from "../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
-import { SchoolChargesInvoice } from "../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
-import { BranchOfficeSetting } from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
-import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
-import { AcademyChargeInvoice } from "../../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
-import { Environment } from "../../../../common/point-of-sale/types.pos";
+import {ConceptWithTaxes, InvoiceSat} from "../../../../credit-note-academy/credit-note-academy.service";
+import {
+    MiniStoreInvoice
+} from "../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
+import {
+    SchoolChargesInvoice
+} from "../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
+import {BranchOfficeSetting} from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
+import {
+    AcademyChargeInvoice
+} from "../../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
+import {Environment} from "../../../../common/point-of-sale/types.pos";
 import * as moment from 'moment-timezone';
+import {
+    Comprobante,
+    AttributesComprobanteReceptorElement,
+    ExportacionEnum,
+    initializeCfdi,
+    ComprobanteEmisor,
+    ComprobanteReceptor,
+    RegimenFiscalEnum,
+    ComprobanteConcepto,
+    ComprobanteConceptoImpuestos,
+    ComprobanteConceptoImpuestosTraslado,
+    TipoFactorEnum,
+    ImpuestoEnum,
+    ComprobanteConceptoImpuestosRetencion,
+    ComprobanteImpuestos, ComprobanteImpuestosTraslado,
+    ComprobanteCfdiRelacionados, ComprobanteCfdiRelacionadosCfdiRelacionado, TipoRelacionEnum
+} from "@munyaal/cfdi";
+import { FullGenerateXml, getFolderComprobantes } from "./generateInvoice";
 
 interface CreditNoteTelweb {
     env: Environment;
@@ -14,42 +36,52 @@ interface CreditNoteTelweb {
     settingsBranchOffice: BranchOfficeSetting;
     invoice: InvoiceSat;
     concepts: ConceptWithTaxes[] | any[];
-    receiver: Partial<XmlReceptorAttribute>;
+    receiver: Partial<AttributesComprobanteReceptorElement>;
     relations: MiniStoreInvoice[] | AcademyChargeInvoice[] | SchoolChargesInvoice[];
 }
-export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
-    const { env, settingsBranchOffice, invoice, receiver, relations = [], concepts = [], impuestos = {} } = payload
-    const { instancePath, xslt } = env
 
-    const cerSAT = `${instancePath}CSD/` + settingsBranchOffice.cerCSD;
-    const keySAT = `${instancePath}CSD/` + settingsBranchOffice.keyCSD;
+export async function CreditNote(payload: CreditNoteTelweb) {
+    const {env, settingsBranchOffice, invoice, receiver, relations = [], concepts = [], impuestos = {}} = payload
+    const {instancePath, xslt} = env
+
+
+    const CFDIService = initializeCfdi({
+        pathXsltCfdi40: xslt,
+        password: settingsBranchOffice.password,
+        pathKey: `${instancePath}CSD/${settingsBranchOffice.keyCSD}`,
+        pathCertificate: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
+    })
+
+    let folder = getFolderComprobantes(env.instancePath,undefined, true);
+    console.log(folder)
+    CFDIService.overridePaths({
+        pathXmlFolder: folder
+    });
+
     let totalImpuestosRetenidos = 0;
-    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
-    const cfdiAttributes: Comprobante = {
+
+    const comprobante = new Comprobante({
+        Version: '4.0',
         Serie: invoice.Serie,
         Folio: invoice.Folio,
-        Fecha: fecha,
-        Sello: '',
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
         FormaPago: invoice.FormaPago,
-        NoCertificado: '',
-        Certificado: '',
+        Moneda: invoice.Moneda,
         SubTotal: invoice.SubTotal,
         Descuento: invoice.Descuento ? invoice.Descuento : '0',
-        Moneda: invoice.Moneda,
         Total: invoice.Total,
         TipoDeComprobante: invoice.TipoDeComprobante,
+        Exportacion: '01',
         MetodoPago: invoice.MetodoPago,
         LugarExpedicion: invoice.LugarExpedicion,
-        Exportacion: ExportacionEnum.NoAplica
-    }
-    const cfdi = new CFDI(cfdiAttributes, { debug: true, xslt });
-    await cfdi.setAttributesXml({ version: '1.0', encoding: 'utf-8' });
-    const emisor = new Emisor({
+    });
+
+    comprobante.Emisor = new ComprobanteEmisor({
         Rfc: settingsBranchOffice.rfc,
         Nombre: settingsBranchOffice.businessName,
-        RegimenFiscal: settingsBranchOffice.regime,
+        RegimenFiscal: settingsBranchOffice.regime as unknown as RegimenFiscalEnum,
     });
-    const receptor = new Receptor({
+    comprobante.Receptor = new ComprobanteReceptor({
         Nombre: receiver.Nombre,
         Rfc: receiver.Rfc,
         UsoCFDI: receiver.UsoCFDI,
@@ -57,54 +89,64 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
         RegimenFiscalReceptor: receiver.RegimenFiscalReceptor
     })
 
-    await cfdi.emisor(emisor);
-    await cfdi.receptor(receptor);
-    concepts.map(async (concept) => {
-        const concepto = new Concepts({
-            ClaveProdServ: concept.claveProd,
-            Descripcion: concept.descrption,
-            Descuento: concept.discountTotal,
-            Cantidad: concept.quantity,
-            Importe: concept.importe,
-            ObjetoImp: concept.objectoImp,
-            ValorUnitario: concept.unitPrice,
-            ClaveUnidad: concept.ClaveUnidad,
+    concepts.map(async (payload) => {
+        const concept = new ComprobanteConcepto({
+            ClaveProdServ: payload.claveProd,
+            Descripcion: payload.descrption,
+            Descuento: payload.discountTotal,
+            Cantidad: payload.quantity,
+            Importe: payload.importe,
+            ObjetoImp: payload.objectoImp,
+            ValorUnitario: payload.unitPrice,
+            ClaveUnidad: payload.ClaveUnidad,
         });
-        if (concept.impuestos && concept.impuestos.trasladado) {
-            const { trasladado } = concept.impuestos
-            concepto.traslado({
-                Importe: trasladado.Importe,
-                Impuesto: '002',
-                TipoFactor: 'Tasa',
-                TasaOCuota: '0.16',
-                Base: trasladado.Base,
+        const impuestosCon = new ComprobanteConceptoImpuestos();
+        if (payload.impuestos && payload.impuestos.trasladado) {
+
+            const traslados = new ComprobanteConceptoImpuestosTraslado({
+                Base: payload.impuestos.trasladado.Base,
+                Importe: payload.impuestos.trasladado.Importe,
+                Impuesto: ImpuestoEnum.I002,
+                TasaOCuota: '0.160000',
+                TipoFactor: TipoFactorEnum.Tasa
             });
+
+            impuestosCon.Traslados.push(traslados);
+
         }
-        if (typeof concept.impuestosRetenidos !== 'undefined') {
-            totalImpuestosRetenidos += Number(concept.impuestosRetenidos.Importe);
-            concepto.retencion({
-                Importe: concept.impuestosRetenidos.Importe,
-                Impuesto: concept.impuestosRetenidos.Impuesto,
-                TasaOCuota: concept.impuestosRetenidos.TasaOCuota,
-                TipoFactor: concept.impuestosRetenidos.TipoFactor,
-                Base: concept.impuestosRetenidos.Base,
-            });
+        if (typeof payload.impuestosRetenidos !== 'undefined') {
+            totalImpuestosRetenidos += Number(payload.impuestosRetenidos.Importe);
+            const retenidos = new ComprobanteConceptoImpuestosRetencion({
+                Importe: payload.impuestosRetenidos.Importe,
+                Impuesto: payload.impuestosRetenidos.Impuesto,
+                TasaOCuota: payload.impuestosRetenidos.TasaOCuota,
+                TipoFactor: payload.impuestosRetenidos.TipoFactor,
+                Base: payload.impuestosRetenidos.Base,
+            })
+            impuestosCon.Retenciones.push(retenidos)
         }
-        await cfdi.concepto(concepto);
+        if (impuestosCon.Traslados.length || impuestosCon.Retenciones.length) {
+            concept.Impuestos = impuestos;
+        }
+        comprobante.Conceptos.push(concept);
     });
 
     if (impuestos.translados.Base > 0) {
-        const impuestosTransladados = new Impuestos({
-            TotalImpuestosTrasladados: impuestos.translados.Importe
+        const impuestosCom = new ComprobanteImpuestos({
+            TotalImpuestosTrasladados: impuestos.translados.Importe,
+    
         });
-        await impuestosTransladados.traslados({
+
+        const traslado = new ComprobanteImpuestosTraslado({
             Base: impuestos.translados.Base,
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.16',
+            Impuesto: ImpuestoEnum.I002,
+            TasaOCuota: '0.160000',
             Importe: impuestos.translados.Importe,
+            TipoFactor: TipoFactorEnum.Tasa
         });
-        await cfdi.impuesto(impuestosTransladados);
+
+        impuestosCom.Traslados.push(traslado);
+        comprobante.Impuestos = impuestosCom;
     }
     // if (totalImpuestosRetenidos > 0) {
     //     const impuestosRetenidos = new Impuestos({
@@ -138,14 +180,21 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<string> {
     //     });
     //     await cfdi.impuesto(impuestosRetenidosTransladados);
     // }
-    const relation = new Relacionado({ TipoRelacion: '01' })
+    
+    
+    const cfdiRelacionados = new ComprobanteCfdiRelacionados({
+        TipoRelacion: TipoRelacionEnum.TR01
+    });
+
     for (const document of relations) {
-        await relation.addRelation(document.uuid);
+        const cfdiRelacionado = new ComprobanteCfdiRelacionadosCfdiRelacionado({
+            UUID: document.uuid
+        });
+        cfdiRelacionados.CfdiRelacionado.push(cfdiRelacionado);
     }
-    await cfdi.relacionados(relation);
-    await cfdi.certificar(cerSAT);
-    await cfdi.sellar(keySAT, settingsBranchOffice.password);
-    return await cfdi.getXmlCdfi();
 
 
+    comprobante.CfdiRelacionados.push(cfdiRelacionados)
+
+    return FullGenerateXml(comprobante, CFDIService,folder, `${env.instancePath}logos/tienditalogo.png`, settingsBranchOffice.address)
 }

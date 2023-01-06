@@ -124,7 +124,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                     xslt: this.configService.getXsltPath()
                 }
             })
-
+/*
             const timbrado = await this.smartWebService.facturar(xmlCreditNote);
             const pathXml = `${this.configService.getPath()}/comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
             fs.writeFileSync(pathXml, timbrado.data.cfdi);
@@ -137,7 +137,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 request.branchOfficeModuleId,
                 request.userCreatorId,
                 workPath
-            );
+            );*/
         } catch (err) {
             console.log(err)
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);

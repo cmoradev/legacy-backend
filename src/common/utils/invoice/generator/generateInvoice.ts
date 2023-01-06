@@ -394,7 +394,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         pathCertificate: env.instancePath + 'CSD/' + emisor.cerCSD,
     })
 
-    let folder = getFolderComprobantes(type, env.instancePath);
+    let folder = getFolderComprobantes(env.instancePath,type);
 
     CFDIService.overridePaths({
         pathXmlFolder: folder
@@ -511,7 +511,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         pathCertificate: `${instancePath}CSD/${cerCSD}`,
     })
 
-    let folder = getFolderComprobantes(type, instancePath);
+    let folder = getFolderComprobantes(instancePath, type);
 
     CFDIService.overridePaths({
         pathXmlFolder: folder
@@ -610,21 +610,25 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
     return FullGenerateXml(comprobante, CFDIService,folder, `${env.instancePath}logos/tienditalogo.png`, branchOfficeConfig.zip.trim().toUpperCase())
 }
 
-const getFolderComprobantes = (type: InvoiceModules, path: string) => {
+export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCredit?: boolean) => {
     let folder = `${path}comprobantes/`;
-    switch (type) {
-        case InvoiceModules.ACADEMY:
-            return folder + 'academias/'
-        case InvoiceModules.SCHOOL:
-            return folder + 'colegio/'
-        case InvoiceModules.STORE:
-            return folder + 'tienda/'
-        default:
-            return folder
+    if(isCredit){
+        return folder + 'notas-credito/'
+    }else{
+        switch (type) {
+            case InvoiceModules.ACADEMY:
+                return folder + 'academias/'
+            case InvoiceModules.SCHOOL:
+                return folder + 'colegio/'
+            case InvoiceModules.STORE:
+                return folder + 'tienda/'
+            default:
+                return folder
+        }
     }
 }
 
-const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string ) => {
+export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string ) => {
     const xml = await CFDIService.getXMLSellado(comprobante);
 
     const sw = new FactSw();
@@ -642,6 +646,8 @@ const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, p
     });
     const pdf = new PDF<A117>(desingpdf);
     await pdf.save(`${path}${timbrado.data.uuid.toUpperCase()}`);
-    console.log(timbrado)
-    return timbrado;
+    return {
+        ...timbrado,
+        Total: comprobante.Total
+    };
 }
