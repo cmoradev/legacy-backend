@@ -401,7 +401,7 @@ export class SchoolChargesPaymentsController
 
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
-          invoiceFinded.total = timbrado.Total;
+          invoiceFinded.total = parseFloat(timbrado.Total);
 
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
             invoiceFinded,
@@ -469,7 +469,7 @@ export class SchoolChargesPaymentsController
 
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
-          invoice.total = timbrado.Total;
+          invoice.total = parseFloat(timbrado.Total);
 
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
             invoice,
@@ -697,6 +697,7 @@ export class SchoolChargesPaymentsController
 
       invoice.uuid = timbrado.data.uuid.toUpperCase();
       invoice.status = 1;
+      invoice.total = timbrado.Total
 
       invoice = await this.schoolChargeInvoiceService.updateInvoice(invoice);
 
@@ -715,6 +716,74 @@ export class SchoolChargesPaymentsController
       response.status(400);
       response.send(e);
     }
+  }
+
+  @Get('/details-invoice')
+  async detailsInvoiceByUuid(@Query() params: { uuid: string }, @Res() res) {
+      try {
+          const result = await this.service.detailsInvoiceByUuid(params);
+          const invoice = await this.schoolChargeInvoiceService.findOne({
+              where: {
+                  uuid: params.uuid,
+              },
+              relations: [
+                  'agentCanceling',
+                  'agentBilling',
+              ],
+          });
+          if (result) {
+              const chargesDetails = [];
+              let folio = '';
+              result.forEach((p, index) => {
+                chargesDetails.push(...p.schoolCharge.chargesDetails.map((s)=>{return {...s, schoolCharge:{ id: p.schoolCharge.id, folio: p.schoolCharge.folio, chargesPayments: { id: p.id, folio: p.folio } }, }}));
+                  folio = index == 0 ? p.schoolCharge.folio : `${folio}, ${p.schoolCharge.folio}`
+              });
+              const obj: SchoolChargesInvoice = {
+                  ...invoice,
+                  agentBilling: invoice.agentBilling,
+                  agentCanceling: invoice.agentCanceling,
+                  schoolCharge: {
+                      id: 0,
+                      folio,
+                      chargesDetails
+                  } as SchoolCharge,
+                  schoolChargePayment:{
+                    change: 0,
+                    createdAt: invoice.createdAt,
+                    dateCancellation: invoice.cancellationDate,
+                    deletedAt: invoice.deletedAt,
+                    folio: 'N/A',
+                    globalUuid: params.uuid,
+                    id: 0,
+                    cashierChargeCancellation: invoice.agentCanceling,
+                    isIVA: true,
+                    observations: "",
+                    paymentStatus: 2,
+                    quantity: invoice.total,
+                    stamping: 1,
+                    updatedAt: invoice.updatedAt,
+                    uuid: params.uuid,
+                    reasonCancellation: invoice.reasonCancellation,
+                  } as SchoolChargePayment
+              } as SchoolChargesInvoice
+              res.status(200);
+              res.send(obj);
+          } else {
+              res.status(400);
+              res.send({
+                  error: 'PAYMENTS_NOT_FOUND',
+              });
+          }
+      } catch (e) {
+
+          res.status(400);
+          res.send({
+              error: {
+                  msj: 'NOT_FOUND',
+                  details: e
+              },
+          });
+      }
   }
 
 }

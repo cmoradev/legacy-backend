@@ -12,17 +12,18 @@ import {
     Res
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { XmlCdfi, XmlReceptorAttribute } from '@signati/core';
-import { XmlToJson } from '@signati/pdf';
-import * as fs from 'fs';
+import { XmlReceptorAttribute } from '@signati/core';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
-import { ConceptWithTaxes, CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
+import { CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
 import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
-import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
-import { Payment } from '../common/point-of-sale/types.pos';
+import { InvoiceModules } from '../common/point-of-sale/types.pos';
+import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import { InvoiceStatus } from '../invoice/types/invoice-status';
+import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
+import { User } from '../system/users/entities/user.entity';
 
 @Crud({
     model: {
@@ -63,12 +64,15 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         @Body() request: {
             invoice: InvoiceSat,
             receiver: Partial<XmlReceptorAttribute>,
-            concepts: ConceptWithTaxes[],
+            concepts: any[],
+            calculations: any,
             invoicesRelations: AcademyChargeInvoice[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
-        }): Promise<void> {
+        },
+        @Res() response
+    ){
         if (!request) {
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
@@ -91,26 +95,17 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
-            const detalles = ConceptsPriceByPaymentBillig({
-                details: request.concepts as any[],
-                payment: {
-                    quantity: +request.invoice.Total,
-                    change: 0
-                } as Payment,
-                type: 1,
-                application: 2
-            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId,)
 
-            const xmlCreditNote = await CreditNote({
-                concepts: detalles.detalles,
-                impuestos: detalles.impuestos,
+            const timbrado = await CreditNote({
+                concepts: request.concepts,
+                calculations: request.calculations,
                 invoice: {
                     ...request.invoice,
-                    Total: detalles.total.toString(),
-                    SubTotal: detalles.subtotal.toString(),
-                    Descuento: detalles.discount.toString()
+                    SubTotal: request.calculations.subtotal,
+                    Descuento: request.calculations.discounts,
+                    Total: request.calculations.total,
                 },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
@@ -118,22 +113,32 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 env: {
                     instancePath: workPath,
                     xslt: this.configService.getXsltPath()
-                }
+                },
+                type: InvoiceModules.ACADEMY
+            });
+            const invoicesId = request.invoicesRelations.map((invoice) => {
+                return invoice.id;
             })
-/*
-            const timbrado = await this.smartWebService.facturar(xmlCreditNote);
-            const pathXml = `${this.configService.getPath()}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
-            fs.writeFileSync(pathXml, timbrado.data.cfdi);
-            const cfdi = await XmlToJson(pathXml) as XmlCdfi;
-            await this.service.saveCreditNote(
-                cfdi,
-                timbrado,
-                request.invoicesRelations,
-                request.branchOfficeId,
-                request.branchOfficeModuleId,
-                request.userCreatorId,
-                workPath
-            );*/
+            const creditNoteAcademy: Partial<CreditNoteAcademy> = {
+                folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
+                uuid: timbrado.data.uuid,
+                businessName: request.receiver.Nombre,
+                rfc: request.receiver.Rfc,
+                total: parseFloat(timbrado.Total),
+                invoiceType: InvoiceType.expenses,
+                status: InvoiceStatus.billed,
+                invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
+                agentBilling: { id: request.userCreatorId } as User,
+                invoicesAcademy: invoicesId as unknown as AcademyChargeInvoice[],
+            }
+            const creditNote = await this.service.saveCreditNote(creditNoteAcademy);
+            response.status(200);
+            response.send({
+                uuid: timbrado.data.uuid,
+                invoice: creditNote,
+                stamping: timbrado,
+                msg: 'Nota de Crédito timbrada',
+            });
         } catch (err) {
             console.log(err)
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);

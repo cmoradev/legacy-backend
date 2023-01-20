@@ -32,7 +32,7 @@ import {
     ComprobanteConceptoImpuestos, ComprobanteConceptoImpuestosTraslado,
     ObjetoImpEnum as ObjetoImpEnumMunyaal,
     Iedu as IeduMunyaal,
-    ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum,
+    ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum,
 } from "@munyaal/cfdi";
 import { FactSw } from '../../../../webService/FactSw';
 import { A117 } from '../../../../pdf/A117/desing/A117';
@@ -231,7 +231,7 @@ export type GlobalInvoiceParams = {
     branchOfficeConfig: BranchOfficeSetting,
     env: Environment,
     folio: string,
-    wayPayment: FormaPago;
+    wayPayment: FormaPago | FormaPagoEnum;
     details: InvoiceDetails;
     infoGlobal: {
         periodicity: PeriodicityEnum;
@@ -406,7 +406,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         Serie: serie,
         Folio: folio,
         Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
-        FormaPago: codigoFormaPago,
+        FormaPago: codigoFormaPago as FormaPagoEnum,
         Moneda,
         SubTotal: totals.fiscal.SubTotal,
         Descuento: totals.fiscal.Descuento,
@@ -432,8 +432,9 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
     });
 
     for (const cts of concepts.conceptsInvoice) {
-        const { ClaveProdServ, Cantidad, ClaveUnidad, Descripcion, ValorUnitario, Descuento, Importe, ObjetoImp } = cts.concept
+        const { ClaveProdServ, Cantidad, ClaveUnidad, Descripcion, ValorUnitario, Descuento, Importe, ObjetoImp, NoIdentificacion } = cts.concept
         const concepto = new ComprobanteConcepto({
+            NoIdentificacion,
             ClaveProdServ,
             Cantidad: Cantidad.toString(),
             ClaveUnidad,
@@ -522,7 +523,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         Serie: serieFacturacion,
         Folio: folio,
         Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
-        FormaPago: wayPayment,
+        FormaPago: wayPayment as FormaPagoEnum,
         Moneda,
         SubTotal: parseFloat(`${subtotal}`).toFixed(2),
         Descuento: parseFloat(`${discount}`).toFixed(2),
@@ -567,7 +568,8 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
             ValorUnitario: amount.toString(),
             Importe: amount.toString(),
             Descuento: payload.discount.toString(),
-            ObjetoImp: payload.objectImp as ObjetoImpEnumMunyaal
+            ObjetoImp: payload.objectImp as ObjetoImpEnumMunyaal,
+            NoIdentificacion: payload.noIdentity
         });
 
         if (percentageTax !== '0' && payload.objectImp === ObjetoImpEnumMunyaal.OI02) {

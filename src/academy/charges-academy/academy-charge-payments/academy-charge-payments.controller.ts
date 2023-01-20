@@ -493,6 +493,7 @@ export class AcademyChargePaymentsController
 
       invoice.uuid = uuid;
       invoice.status = 1;
+      invoice.total = timbrado.Total
       
 
       invoice = await this.academyChargeInvoiceService.updateInvoice(invoice);
@@ -585,5 +586,74 @@ export class AcademyChargePaymentsController
     } else {
       return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
     }
+  }
+
+  @Get('/details-invoice')
+  async detailsInvoiceByUuid(@Query() params: { uuid: string }, @Res() res) {
+      try {
+          const result = await this.service.detailsInvoiceByUuid(params);
+          const invoice = await this.academyChargeInvoiceService.findOne({
+              where: {
+                  uuid: params.uuid,
+              },
+              relations: [
+                  'agentCanceling',
+                  'agentBilling',
+              ],
+          });
+          if (result) {
+              const chargesDetails = [];
+              let folio = '';
+              result.forEach((p, index) => {
+                chargesDetails.push(...p.academyCharge.chargesDetails.map((s)=>{return {...s, academyCharge:{ id: p.academyCharge.id, folio: p.academyCharge.folio, chargesPayments: { id: p.id, folio: p.folio } }, }}));
+                  folio = index == 0 ? p.academyCharge.folio : `${folio}, ${p.academyCharge.folio}`
+              });
+              const obj: AcademyChargeInvoice = {
+                  ...invoice,
+                  agentBilling: invoice.agentBilling,
+                  agentCanceling: invoice.agentCanceling,
+                  academyCharge: {
+                      id: 0,
+                      folio,
+                      chargesDetails
+                  } as AcademyCharge,
+                  academyChargePayment:{
+                    change: 0,
+                    createdAt: invoice.createdAt,
+                    dateCancellation: invoice.cancellationDate,
+                    deletedAt: invoice.deletedAt,
+                    folio: 'N/A',
+                    globalUuid: params.uuid,
+                    id: 0,
+                    cashierChargeCancellation: invoice.agentCanceling,
+                    observations: "",
+                    paymentStatus: 2,
+                    quantity: parseFloat(invoice.total),
+                    isIVA: true,
+                    stamping: 1,
+                    updatedAt: invoice.updatedAt,
+                    uuid: params.uuid,
+                    reasonCancellation: invoice.reasonCancellation,
+
+                  } as AcademyChargePayments
+              } as AcademyChargeInvoice
+              res.status(200);
+              res.send(obj);
+          } else {
+              res.status(400);
+              res.send({
+                  error: 'PAYMENTS_NOT_FOUND',
+              });
+          }
+      } catch (e) {
+
+          res.status(400);
+          res.send({
+              error: {
+                  msj: 'NOT_FOUND',
+                  details: e
+              },
+          });
+      }
   }
 }

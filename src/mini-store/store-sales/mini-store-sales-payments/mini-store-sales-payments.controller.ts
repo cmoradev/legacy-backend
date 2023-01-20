@@ -9,7 +9,9 @@ import {
     Put,
     Res,
     UsePipes,
-    ValidationPipe
+    ValidationPipe,
+    Get,
+    Query
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
@@ -134,7 +136,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
             RegimenFiscalReceptor: query.receiver.keyRegimen,
         }
-        try {            
+        try {
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -172,7 +174,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
-                    invoiceFind.total = timbrado.Total;
+                    invoiceFind.total = parseFloat(timbrado.Total);
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
 
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
@@ -233,7 +235,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     //Actualizamos la factura
                     invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;
-                    invoice.total = timbrado.Total;
+                    invoice.total = parseFloat(timbrado.Total);
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
                     
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
@@ -420,6 +422,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
             invoice.uuid = uuid;
             invoice.status = 1;
+            invoice.total = timbrado.Total;
 
             invoice = await this.miniStoreInvoicesService.updateInvoice(invoice);
 
@@ -437,6 +440,77 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             console.log(e);
             response.status(400);
             response.send(e);
+        }
+    }
+
+    @Get('/details-invoice')
+    async detailsInvoiceByUuid(@Query() params: { uuid: string }, @Res() res) {
+        try {
+
+            const result = await this.service.detailsInvoiceByUuid(params);
+            const invoice = await this.miniStoreInvoicesService.findOne({
+                where: {
+                    uuid: params.uuid,
+                },
+                relations: [
+                    'agentCanceling',
+                    'agentBilling',
+                ],
+            });
+            if (result) {
+                const miniStoreSaleDetails = [];
+                let folio = '';
+                result.forEach((p, index) => {
+                    miniStoreSaleDetails.push(...p.miniStoreSale.miniStoreSaleDetails.map((s)=>{return {...s, miniStoreSale:{ id: p.miniStoreSale.id, folio: p.miniStoreSale.folio, miniStoreSalePayments: { id: p.id, folio: p.folio } }, }}));
+                    folio = index == 0 ? p.miniStoreSale.folio : `${folio}, ${p.miniStoreSale.folio}`
+                });
+                const obj: MiniStoreInvoice = {
+                    ...invoice,
+                    agentBilling: invoice.agentBilling,
+                    agentCanceling: invoice.agentCanceling,
+                    miniStoreSale: {
+                        id: 0,
+                        folio,
+                        miniStoreSaleDetails
+                    } as MiniStoreSale,
+                    miniStoreSalePayment: {
+                        change: 0,
+                        createdAt: invoice.createdAt,
+                        dateCancellation: invoice.cancellationDate,
+                        deletedAt: invoice.deletedAt,
+                        folio: 'N/A',
+                        globalUuid: params.uuid,
+                        id: 0,
+                        idAgentCancellation: invoice.idCancelingAgent,
+                        idSale: 0,
+                        idStatusPayment: 1,
+                        isIVA: true,
+                        observations: "",
+                        paymentStatus: 2,
+                        quantity: invoice.total,
+                        reasonCancellation: invoice.reasonCancellation,
+                        stamping: 1,
+                        updatedAt: invoice.updatedAt,
+                        uuid: params.uuid,
+                    } as MiniStoreSalePayment
+                } as MiniStoreInvoice
+                res.status(200);
+                res.send(obj);
+            } else {
+                res.status(400);
+                res.send({
+                    error: 'PAYMENTS_NOT_FOUND',
+                });
+            }
+        } catch (e) {
+
+            res.status(400);
+            res.send({
+                error: {
+                    msj: 'NOT_FOUND',
+                    details: e
+                },
+            });
         }
     }
 }

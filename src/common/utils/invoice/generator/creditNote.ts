@@ -1,15 +1,15 @@
-import {ConceptWithTaxes, InvoiceSat} from "../../../../credit-note-academy/credit-note-academy.service";
+import { ConceptWithTaxes, InvoiceSat } from "../../../../credit-note-academy/credit-note-academy.service";
 import {
     MiniStoreInvoice
 } from "../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
 import {
     SchoolChargesInvoice
 } from "../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
-import {BranchOfficeSetting} from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
+import { BranchOfficeSetting } from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
 import {
     AcademyChargeInvoice
 } from "../../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
-import {Environment} from "../../../../common/point-of-sale/types.pos";
+import { Environment, InvoiceModules } from "../../../../common/point-of-sale/types.pos";
 import * as moment from 'moment-timezone';
 import {
     Comprobante,
@@ -25,25 +25,33 @@ import {
     TipoFactorEnum,
     ImpuestoEnum,
     ComprobanteConceptoImpuestosRetencion,
+    ObjetoImpEnum,
     ComprobanteImpuestos, ComprobanteImpuestosTraslado,
-    ComprobanteCfdiRelacionados, ComprobanteCfdiRelacionadosCfdiRelacionado, TipoRelacionEnum
+    ComprobanteCfdiRelacionados, ComprobanteCfdiRelacionadosCfdiRelacionado, TipoRelacionEnum, FormaPagoEnum, MonedaEnum, TipoComprobanteEnum, MetodoPagoEnum
 } from "@munyaal/cfdi";
 import { FullGenerateXml, getFolderComprobantes } from "./generateInvoice";
+import { DataInvoice } from "../../../../common/calculations/TypesCalculation";
+import { Concept, Decimal } from "@munyaal/calculations";
+import { getMoreDatails } from "../../../../common/point-of-sale/utils";
+import { sanitizeStringToXml } from "../../sanitizeStringToXml";
 
 interface CreditNoteTelweb {
     env: Environment;
-    impuestos: any;
     settingsBranchOffice: BranchOfficeSetting;
     invoice: InvoiceSat;
-    concepts: ConceptWithTaxes[] | any[];
-    receiver: Partial<AttributesComprobanteReceptorElement>;
+    receiver: any;
     relations: MiniStoreInvoice[] | AcademyChargeInvoice[] | SchoolChargesInvoice[];
+    type: InvoiceModules;
+    calculations: any;
+    concepts: any[]
 }
 
 export async function CreditNote(payload: CreditNoteTelweb) {
-    const {env, settingsBranchOffice, invoice, receiver, relations = [], concepts = [], impuestos = {}} = payload
-    const {instancePath, xslt} = env
+    const { env, settingsBranchOffice, invoice, receiver, relations = [],
+        concepts, type, calculations } = payload
+    const { instancePath, xslt } = env;
 
+    const isGlobal = receiver.rfc == 'XEXX010101000' || receiver.rfc == 'XAXX010101000';
 
     const CFDIService = initializeCfdi({
         pathXsltCfdi40: xslt,
@@ -52,27 +60,24 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         pathCertificate: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
     })
 
-    let folder = getFolderComprobantes(env.instancePath,undefined, true);
-    console.log(folder)
+    let folder = getFolderComprobantes(env.instancePath, undefined, true);
     CFDIService.overridePaths({
         pathXmlFolder: folder
     });
-
-    let totalImpuestosRetenidos = 0;
 
     const comprobante = new Comprobante({
         Version: '4.0',
         Serie: invoice.Serie,
         Folio: invoice.Folio,
         Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
-        FormaPago: invoice.FormaPago,
-        Moneda: invoice.Moneda,
-        SubTotal: invoice.SubTotal,
-        Descuento: invoice.Descuento ? invoice.Descuento : '0',
-        Total: invoice.Total,
-        TipoDeComprobante: invoice.TipoDeComprobante,
-        Exportacion: '01',
-        MetodoPago: invoice.MetodoPago,
+        FormaPago: invoice.FormaPago as FormaPagoEnum,
+        Moneda: invoice.Moneda as MonedaEnum,
+        SubTotal: new Decimal(invoice.SubTotal).toFixed(2),
+        Descuento: invoice.Descuento ? new Decimal(invoice.Descuento).toFixed(2) : '0',
+        Total: new Decimal(invoice.Total).toFixed(2),
+        TipoDeComprobante: invoice.TipoDeComprobante as TipoComprobanteEnum,
+        Exportacion: ExportacionEnum.E01,
+        MetodoPago: invoice.MetodoPago as MetodoPagoEnum,
         LugarExpedicion: invoice.LugarExpedicion,
     });
 
@@ -88,100 +93,58 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         DomicilioFiscalReceptor: receiver.DomicilioFiscalReceptor,
         RegimenFiscalReceptor: receiver.RegimenFiscalReceptor
     })
-
-    concepts.map(async (payload) => {
-        const concept = new ComprobanteConcepto({
-            ClaveProdServ: payload.claveProd,
-            Descripcion: payload.descrption,
-            Descuento: payload.discountTotal,
-            Cantidad: payload.quantity,
-            Importe: payload.importe,
-            ObjetoImp: payload.objectoImp,
-            ValorUnitario: payload.unitPrice,
-            ClaveUnidad: payload.ClaveUnidad,
+    for (const cts of generateConceptsCreditNote(type, calculations, concepts, isGlobal)) {
+        const { ClaveProdServ, Cantidad, ClaveUnidad, Descripcion, ValorUnitario, Descuento, Importe, ObjetoImp, NoIdentificacion } = cts.concept
+        const concepto = new ComprobanteConcepto({
+            NoIdentificacion,
+            ClaveProdServ,
+            Cantidad: Cantidad,
+            ClaveUnidad,
+            Descripcion,
+            ValorUnitario: ValorUnitario,
+            Descuento: Descuento,
+            Importe: Importe,
+            ObjetoImp
         });
-        const impuestosCon = new ComprobanteConceptoImpuestos();
-        if (payload.impuestos && payload.impuestos.trasladado) {
+        if (type !== InvoiceModules.SCHOOL && ObjetoImp === ObjetoImpEnum.OI02) {
+            const impuestos = new ComprobanteConceptoImpuestos();
 
             const traslados = new ComprobanteConceptoImpuestosTraslado({
-                Base: payload.impuestos.trasladado.Base,
-                Importe: payload.impuestos.trasladado.Importe,
+                Base: cts.base,
+                Importe: cts.import,
                 Impuesto: ImpuestoEnum.I002,
                 TasaOCuota: '0.160000',
                 TipoFactor: TipoFactorEnum.Tasa
             });
 
-            impuestosCon.Traslados.push(traslados);
+            impuestos.Traslados.push(traslados);
 
+            concepto.Impuestos = impuestos;
         }
-        if (typeof payload.impuestosRetenidos !== 'undefined') {
-            totalImpuestosRetenidos += Number(payload.impuestosRetenidos.Importe);
-            const retenidos = new ComprobanteConceptoImpuestosRetencion({
-                Importe: payload.impuestosRetenidos.Importe,
-                Impuesto: payload.impuestosRetenidos.Impuesto,
-                TasaOCuota: payload.impuestosRetenidos.TasaOCuota,
-                TipoFactor: payload.impuestosRetenidos.TipoFactor,
-                Base: payload.impuestosRetenidos.Base,
-            })
-            impuestosCon.Retenciones.push(retenidos)
-        }
-        if (impuestosCon.Traslados.length || impuestosCon.Retenciones.length) {
-            concept.Impuestos = impuestos;
-        }
-        comprobante.Conceptos.push(concept);
+        comprobante.Conceptos.push(concepto);
+    }
+
+
+    const impuestos = new ComprobanteImpuestos({
+        TotalImpuestosTrasladados: new Decimal(calculations.data.detailsWithPaymentApplied.tax).toFixed(2),
     });
 
-    if (impuestos.translados.Base > 0) {
-        const impuestosCom = new ComprobanteImpuestos({
-            TotalImpuestosTrasladados: impuestos.translados.Importe,
-    
-        });
+    if (type !== InvoiceModules.SCHOOL) {
 
         const traslado = new ComprobanteImpuestosTraslado({
-            Base: impuestos.translados.Base,
+            Base: new Decimal(calculations.data.detailsWithPaymentApplied.baseTax).toFixed(2),
             Impuesto: ImpuestoEnum.I002,
             TasaOCuota: '0.160000',
-            Importe: impuestos.translados.Importe,
+            Importe: new Decimal(calculations.data.detailsWithPaymentApplied.tax).toFixed(2),
             TipoFactor: TipoFactorEnum.Tasa
         });
 
-        impuestosCom.Traslados.push(traslado);
-        comprobante.Impuestos = impuestosCom;
+        impuestos.Traslados.push(traslado);
     }
-    // if (totalImpuestosRetenidos > 0) {
-    //     const impuestosRetenidos = new Impuestos({
-    //         TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-    //     });
-    //     await impuestosRetenidos.retenciones({
-    //         Impuesto: invoice.Impuesto,
-    //         // TasaOCuota: invoice.TasaOCuota,
-    //         // TipoFactor: invoice.TipoFactor,
-    //         Importe: totalImpuestosRetenidos.toString(),
-    //     });
-    //     await cfdi.impuesto(impuestosRetenidos);
-    // }
-    // if (totalImpuestosRetenidos > 0 && totalImpuestosTrasladados > 0) {
-    //     const impuestosRetenidosTransladados = new Impuestos({
-    //         TotalImpuestosRetenidos: totalImpuestosRetenidos > 0 ? totalImpuestosRetenidos.toString() : '',
-    //         TotalImpuestosTrasladados: totalImpuestosTrasladados > 0 ? totalImpuestosTrasladados.toString() : ''
-    //     });
-    //     impuestosRetenidosTransladados.traslados({
-    //         Base: invoice.SubTotal,
-    //         Impuesto: invoice.Impuesto,
-    //         TasaOCuota: invoice.TasaOCuota,
-    //         TipoFactor: invoice.TipoFactor,
-    //         Importe: totalImpuestosTrasladados.toString(),
-    //     });
-    //     impuestosRetenidosTransladados.retenciones({
-    //         Impuesto: invoice.Impuesto,
-    //         //TasaOCuota: invoice.TasaOCuota,
-    //         //TipoFactor: invoice.TipoFactor,
-    //         Importe: totalImpuestosRetenidos.toString(),
-    //     });
-    //     await cfdi.impuesto(impuestosRetenidosTransladados);
-    // }
-    
-    
+
+    comprobante.Impuestos = impuestos;
+
+
     const cfdiRelacionados = new ComprobanteCfdiRelacionados({
         TipoRelacion: TipoRelacionEnum.TR01
     });
@@ -193,8 +156,60 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         cfdiRelacionados.CfdiRelacionado.push(cfdiRelacionado);
     }
 
-
     comprobante.CfdiRelacionados.push(cfdiRelacionados)
 
-    return FullGenerateXml(comprobante, CFDIService,folder, `${env.instancePath}logos/tienditalogo.png`, settingsBranchOffice.address)
+    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, settingsBranchOffice.zip.trim().toUpperCase())
+}
+
+const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, concepts: any[], isGlobal: boolean) => {
+    let cptArray: any[] = []
+    let cpt = {} as any;
+    if(isGlobal){
+        concepts.forEach((conceptDetails: any) => {
+            cpt = {
+                concept: {
+                    ClaveProdServ: conceptDetails.sat_code,
+                    Cantidad: conceptDetails.quantity,
+                    ClaveUnidad: conceptDetails.unitMeasurement,
+                    Descripcion: sanitizeStringToXml(conceptDetails.concept),
+                    ValorUnitario:  conceptDetails.ValorUnitario,
+                    Importe: conceptDetails.Importe,
+                    Descuento: conceptDetails.Descuento,
+                    ObjetoImp: type !== InvoiceModules.SCHOOL ? ObjetoImpEnum.OI02 : ObjetoImpEnum.OI01
+                },
+                base: '',
+                import: ''
+            };
+            if (cpt.concept.ObjetoImp === ObjetoImpEnum.OI02) {
+                cpt.base = new Decimal(conceptDetails.baseTax).toFixed(2);
+                cpt.import = new Decimal(conceptDetails.tax).toFixed(2);
+            }
+            cptArray.push(cpt)
+        });
+    }else{
+        calculations.data.detailsWithoutPaymentApplied.concepts.forEach((concept: Concept) => {
+            const conceptDetails = concepts.find((d) => d.id === concept.id);
+            const moreDetails = getMoreDatails({ detail: conceptDetails, type });
+            cpt = {
+                concept: {
+                    ClaveProdServ: moreDetails.claveProd,
+                    Cantidad: concept.quantity,
+                    ClaveUnidad: moreDetails?.ClaveUnidad || 'E48',
+                    Descripcion: sanitizeStringToXml(moreDetails.descrption),
+                    ValorUnitario: concept.fiscalPrices.unitPrice,
+                    Importe: concept.fiscalPrices.amount,
+                    Descuento: concept.fiscalPrices.discount,
+                    ObjetoImp: type !== InvoiceModules.SCHOOL ? ObjetoImpEnum.OI02 : ObjetoImpEnum.OI01
+                },
+                base: '',
+                import: ''
+            };
+            if (cpt.concept.ObjetoImp === ObjetoImpEnum.OI02) {
+                cpt.base =  new Decimal(concept.fiscalPrices.baseTax).toFixed(2);
+                cpt.import =  new Decimal(concept.fiscalPrices.tax).toFixed(2);
+            }
+            cptArray.push(cpt)
+        });
+    }
+    return cptArray;
 }

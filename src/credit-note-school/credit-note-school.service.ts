@@ -45,9 +45,9 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
     }
 
     async saveCreditNote(
-        creditNoteAcademy: Partial<CreditNoteSchool>
+        creditNote: Partial<CreditNoteSchool>
     ) {
-        await this.repo.save(creditNoteAcademy);
+       return await this.repo.save(creditNote);
     }
 
     async branchOfficeSetting(

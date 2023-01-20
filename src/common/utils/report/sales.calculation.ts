@@ -1,10 +1,10 @@
 import { calculateInvoicePrices, Charge, ChargeApplicationEnum, ChargeTypeEnum, Concept, Decimal, FountTypeEnum, Payment, TaxPercentageEnum } from '@munyaal/calculations';
 import { SystemTypeExtraChargesEnum } from '../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { TypeChargeApplicationEnum } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
-import { Detalles, ExtraCharges, InvoiceModules } from "../../../common/point-of-sale/types.pos";
+import { ExtraCharges, InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { getDataCharges } from './payments.calculation';
-import { ConceptsPriceByPaymentBilligCalculation } from 'src/common/calculations/calculation';
-import { ConceptSchoolAndAcademy } from 'src/common/calculations/TypesCalculation';
+import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
+import { ConceptSchoolAndAcademy } from '../../../common/calculations/TypesCalculation';
 
 export const saleDetailsCalculations = (
     payload: {

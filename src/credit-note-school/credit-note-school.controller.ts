@@ -9,25 +9,23 @@ import {
     ParseIntPipe,
     Post, Put,
     Query,
-    Res
+    Res,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlReceptorAttribute } from '@signati/core';
 import { ConfigService } from '../common/config/config.service';
 import { Public } from '../common/docorators/public.decorator';
-import { ConceptWithTaxes, InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
+import { InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
 import { SchoolChargesInvoice } from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
-import { Response } from 'express';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
-import { ConceptsPriceByPaymentBillig } from '../common/point-of-sale/point-of-sale';
-import {SchoolChargePayment} from '../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
 import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { User } from '../system/users/entities/user.entity';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
+import { InvoiceModules } from '../common/point-of-sale/types.pos';
 
 @Crud({
     model: {
@@ -70,14 +68,15 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         @Body() request: {
             invoice: InvoiceSat,
             receiver: Partial<XmlReceptorAttribute>,
-            concepts: ConceptWithTaxes[],
+            concepts: any[],
+            calculations: any,
             invoicesRelations: SchoolChargesInvoice[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
         },
-        @Res() res: Response
-    ): Promise<void> {
+        @Res() response
+    ){
 
 
         if (!request) {
@@ -102,26 +101,16 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
         }
         try {
-            const detalles = ConceptsPriceByPaymentBillig({
-                details: request.concepts as any[],
-                payment: {
-                    quantity: +request.invoice.Total,
-                    change: 0
-                } as SchoolChargePayment,
-                type: 2,
-                ivaDefault: 1,
-                ivaByDetail: 0,
-            });
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId)
             const timbrado = await CreditNote({
-                concepts: detalles.detalles,
-                impuestos: detalles.impuestos,
+                concepts: request.concepts,
+                calculations: request.calculations,
                 invoice: {
                     ...request.invoice,
-                    Total: detalles.total.toString(),
-                    SubTotal: detalles.subtotal.toString(),
-                    Descuento: detalles.discount.toString()
+                    SubTotal: request.calculations.subtotal,
+                    Descuento: request.calculations.discounts,
+                    Total: request.calculations.total,
                 },
                 receiver: request.receiver,
                 relations: request.invoicesRelations,
@@ -129,26 +118,33 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 env: {
                     instancePath: workPath,
                     xslt: this.configService.getXsltPath()
-                }
+                },
+                type: InvoiceModules.SCHOOL
             });
 
             const invoicesId = request.invoicesRelations.map((invoice) => {
                 return invoice.id;
             })
-            const creditNoteAcademy: Partial<CreditNoteSchool> = {
+            const creditNoteSchool: Partial<CreditNoteSchool> = {
                 folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
                 uuid: timbrado.data.uuid,
                 businessName: request.receiver.Nombre,
                 rfc: request.receiver.Rfc,
-                total: timbrado.Total,
+                total: parseFloat(timbrado.Total),
                 invoiceType: InvoiceType.expenses,
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
                 agentBilling: { id: request.userCreatorId } as User,
                 invoiceSchool: invoicesId as unknown as SchoolChargesInvoice[],
             }
-
-            return await this.service.saveCreditNote(creditNoteAcademy);
+            const creditNote = await this.service.saveCreditNote(creditNoteSchool);
+            response.status(200);
+            response.send({
+                uuid: timbrado.data.uuid,
+                invoice: creditNote,
+                stamping: timbrado,
+                msg: 'Nota de Crédito timbrada',
+            });
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -184,7 +180,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
     }
 
     @Post('/send-credit-note')
-    async sendMail(@Body() request, @Res() response: Response) {
+    async sendMail(@Body() request, @Res() response) {
         if (!request.branchOfficeId) {
             throw new HttpException('branchOfficeId is required', HttpStatus.BAD_REQUEST);
         }
