@@ -3,20 +3,21 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
-    "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
-    "rootDir": "./src",
     "outDir": "./dist",
-    "allowJs": true,
     "baseUrl": "./",
     "incremental": true,
-    "allowSyntheticDefaultImports": true,
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": ["node_modules", "dist"]
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "allowJs": true,
+  }
 }

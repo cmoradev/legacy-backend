@@ -35,9 +35,7 @@ import {
     ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum,
 } from "@munyaal/cfdi";
 import { FactSw } from '../../../../webService/FactSw';
-import { A117 } from '../../../../pdf/A117/desing/A117';
-import { readFileSync } from 'fs';
-import { PDF } from '@signati/pdf';
+import { CfdiPdf } from "@munyaal/cfdi-pdf"
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -394,7 +392,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         pathCertificate: env.instancePath + 'CSD/' + emisor.cerCSD,
     })
 
-    let folder = getFolderComprobantes(env.instancePath,type);
+    let folder = getFolderComprobantes(env.instancePath, type);
 
     CFDIService.overridePaths({
         pathXmlFolder: folder
@@ -469,22 +467,19 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         TotalImpuestosTrasladados: taxes.amount,
     });
 
-    if (type !== InvoiceModules.SCHOOL) {
+    const traslado = new ComprobanteImpuestosTraslado({
+        Base: taxes.base,
+        Impuesto: ImpuestoEnum.I002,
+        TasaOCuota: '0.160000',
+        Importe: taxes.amount,
+        TipoFactor: type !== InvoiceModules.SCHOOL ? TipoFactorEnum.Tasa : TipoFactorEnum.Exento
+    });
 
-        const traslado = new ComprobanteImpuestosTraslado({
-            Base: taxes.base,
-            Impuesto: ImpuestoEnum.I002,
-            TasaOCuota: '0.160000',
-            Importe: taxes.amount,
-            TipoFactor: TipoFactorEnum.Tasa
-        });
-
-        impuestos.Traslados.push(traslado);
-    }
+    impuestos.Traslados.push(traslado);
 
     comprobante.Impuestos = impuestos;
 
-    return FullGenerateXml(comprobante, CFDIService,folder, `${env.instancePath}logos/tienditalogo.png`, emisor.address)
+    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, emisor.address)
 
 };
 
@@ -549,7 +544,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
     });
 
     comprobante.InformacionGlobal = new ComprobanteInformacionGlobal({
-        Meses: month as unknown  as MesesEnum,
+        Meses: month as unknown as MesesEnum,
         Periodicidad: periodicity as unknown as PeriodicidadEnum,
         Anio: year
     });
@@ -594,29 +589,27 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         TotalImpuestosTrasladados: taxes.toFixed(2),
     });
 
-    if (percentageTax !== '0') {
+    const traslado = new ComprobanteImpuestosTraslado({
+        Base: subtotal.toFixed(2),
+        Impuesto: ImpuestoEnum.I002,
+        TasaOCuota: '0.160000',
+        Importe: taxes.toFixed(2),
+        TipoFactor: type !== InvoiceModules.SCHOOL ? TipoFactorEnum.Tasa : TipoFactorEnum.Exento
+    });
 
-        const traslado = new ComprobanteImpuestosTraslado({
-            Base: subtotal.toFixed(2),
-            Impuesto: ImpuestoEnum.I002,
-            TasaOCuota: '0.160000',
-            Importe: taxes.toFixed(2),
-            TipoFactor: TipoFactorEnum.Tasa
-        });
+    impuestos.Traslados.push(traslado);
 
-        impuestos.Traslados.push(traslado);
-    }
 
     comprobante.Impuestos = impuestos;
 
-    return FullGenerateXml(comprobante, CFDIService,folder, `${env.instancePath}logos/tienditalogo.png`, branchOfficeConfig.zip.trim().toUpperCase())
+    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, branchOfficeConfig.zip.trim().toUpperCase())
 }
 
 export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCredit?: boolean) => {
     let folder = `${path}comprobantes/`;
-    if(isCredit){
+    if (isCredit) {
         return folder + 'notas-credito/'
-    }else{
+    } else {
         switch (type) {
             case InvoiceModules.ACADEMY:
                 return folder + 'academias/'
@@ -630,7 +623,7 @@ export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCre
     }
 }
 
-export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string ) => {
+export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string) => {
     const xml = await CFDIService.getXMLSellado(comprobante);
 
     const sw = new FactSw();
@@ -638,16 +631,11 @@ export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService:
     const timbrado = await sw.facturar(xml);
 
     await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid);
-    //'academiaslogo.png'
-    //colegiologo
-    //tienditalogo
-    const logo = readFileSync(logoPath)
-    const desingpdf = new A117(`${path}${timbrado.data.uuid.toUpperCase()}.xml`, {
-        lugarExpedicion,
-        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-    });
-    const pdf = new PDF<A117>(desingpdf);
-    await pdf.save(`${path}${timbrado.data.uuid.toUpperCase()}`);
+
+    const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
+
+    pdf.createDocument(`${timbrado.data.uuid.toUpperCase()}`, `${path}`)
+
     return {
         ...timbrado,
         Total: comprobante.Total
