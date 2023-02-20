@@ -634,7 +634,7 @@ export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService:
 
     const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
 
-    pdf.createDocument(`${timbrado.data.uuid}`, `${path}`)
+    pdf.createDocument(`${timbrado.data.uuid.toUpperCase()}`, `${path}`)
 
     return {
         ...timbrado,
