@@ -630,7 +630,7 @@ export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService:
 
     const timbrado = await sw.facturar(xml);
 
-    await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid);
+    await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid.toUpperCase());
 
     const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
 
