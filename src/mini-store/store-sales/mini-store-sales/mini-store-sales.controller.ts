@@ -20,7 +20,7 @@ import { TypeInformativeReport } from '../../../common/enums/typeInformativeRepo
 import { NotInvoiced, PaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { SaleReturnExcel } from './reports/sale-return.excel';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
-import { dataFullSale, PaymentExcel, reportPaymentByClient } from 'src/common/utils/report';
+import { dataFullSale, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report';
 
 @Crud({
     model: {

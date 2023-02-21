@@ -292,7 +292,6 @@ export const getDataCharges = (data: VWPaymentExtraCharge[] = [], type: InvoiceM
 
 export const getDataFullMatrizAndData = (result: VWPaymentExtraCharge[] = [], type: InvoiceModules, isInvoice: boolean = false, status: number) => {
     const dataMatriz = getDataMatrizPayments(result, type, isInvoice, status);
-    console.log(JSON.stringify(dataMatriz, null, 3))
     const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, type);
     let data = getDataCharges(result, type);
     data.forEach((d, i) => {

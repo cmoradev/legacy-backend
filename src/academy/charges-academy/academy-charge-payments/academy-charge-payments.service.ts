@@ -500,4 +500,27 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
             );
         }
     }
+
+    public async detailsInvoiceByUuid(params: {
+        uuid: string
+    }) {
+        const result = this.repo
+            .createQueryBuilder('payment')
+            .leftJoinAndSelect('payment.academyCharge', 'academyCharge')
+            .leftJoinAndSelect('academyCharge.chargesDetails', 'chargesDetails')
+            .leftJoinAndSelect('chargesDetails.extraCharges', 'extraCharges')
+            .select([
+                'payment.id',
+                'payment.folio',
+                'payment.globalUuid',
+                'academyCharge.id',
+                'academyCharge.folio',
+                'chargesDetails',
+                'extraCharges'
+            ])
+            .where('payment.globalUuid = :UUID', {
+                UUID: params.uuid,
+            });
+        return await result.getMany();
+    }
 }

@@ -63,7 +63,6 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
             cpt = {
                 concept: {
                     ClaveProdServ: moreDetails.claveProd,
-                    NoIdentificacion: `1`,
                     Cantidad: concept.quantity.toFixed(6),
                     ClaveUnidad: moreDetails?.ClaveUnidad || 'E48',
                     Descripcion: sanitizeStringToXml(moreDetails.descrption),

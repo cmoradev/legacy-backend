@@ -37,6 +37,38 @@ export class SchoolChargePayment extends Base {
     })
     quantity: number;
 
+    @Column('decimal', {
+        nullable: true,
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
+    })
+    totalWithCharges: number | null;
+
+    @Column('decimal', {
+        nullable: true,
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
+    })
+    totalWithoutCharges: number | null;
+
+    @Column('decimal', {
+        nullable: true,
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
+    })
+    totalDiscount: number | null;
+
+    @Column('decimal', {
+        nullable: true,
+        default: () => '0.000000',
+        precision: 15,
+        scale: 6,
+    })
+    totalSurcharges: number | null;
+
     @Column({
         type: 'timestamp',
         nullable: true,
