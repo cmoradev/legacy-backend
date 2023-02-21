@@ -181,8 +181,8 @@ const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, con
                 import: ''
             };
             if (cpt.concept.ObjetoImp === ObjetoImpEnum.OI02) {
-                cpt.base = new Decimal(conceptDetails.baseTax).toFixed(2);
-                cpt.import = new Decimal(conceptDetails.tax).toFixed(2);
+                cpt.base = new Decimal(conceptDetails.baseTax).toFixed(6);
+                cpt.import = new Decimal(conceptDetails.tax).toFixed(6);
             }
             cptArray.push(cpt)
         });
@@ -205,8 +205,8 @@ const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, con
                 import: ''
             };
             if (cpt.concept.ObjetoImp === ObjetoImpEnum.OI02) {
-                cpt.base =  new Decimal(concept.fiscalPrices.baseTax).toFixed(2);
-                cpt.import =  new Decimal(concept.fiscalPrices.tax).toFixed(2);
+                cpt.base =  new Decimal(concept.fiscalPrices.baseTax).toFixed(6);
+                cpt.import =  new Decimal(concept.fiscalPrices.tax).toFixed(6);
             }
             cptArray.push(cpt)
         });
