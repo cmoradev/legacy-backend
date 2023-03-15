@@ -262,6 +262,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             }
 
         } catch (e) {
+            console.warn(e)
             res.status(400).send(e);
         }
     }
