@@ -1,28 +1,37 @@
-import { Body, Controller, Delete, NotFoundException, Param, ParseIntPipe, Post, Put, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    NotFoundException,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Res,
+    UsePipes,
+    ValidationPipe,
+    Get,
+    Query
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
+import {
+    InvoiceMethodsPaymentsService
+} from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import { GenerateGlobalInvoice, GenerateInvoice } from '../../../common/utils/invoice/generator/generateInvoice';
+import { GenerateGlobalInvoice, GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
-import { User } from '../../../system/users/entities/user.entity';
-import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { PDF, XmlToJson } from '@signati/pdf';
-import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
@@ -31,6 +40,11 @@ import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calcula
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import * as moment from 'moment';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
+import { User } from '../../../system/users/entities/user.entity';
+import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
+import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
+import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi';
 
 @Crud({
     model: {
@@ -44,11 +58,11 @@ import { PaymentStatus } from '../../../common/enums/PaymentStatus';
         },
         limit: 10,
         join: {
-            agent: {eager: false},
-            miniStoreSaleMethodPayments: {eager: false},
-            'miniStoreSaleMethodPayments.invoiceMethodPayment': {eager: false},
-            miniStoreInvoices: {eager: false},
-            miniStoreSale: {eager: false},
+            agent: { eager: false },
+            miniStoreSaleMethodPayments: { eager: false },
+            'miniStoreSaleMethodPayments.invoiceMethodPayment': { eager: false },
+            miniStoreInvoices: { eager: false },
+            miniStoreSale: { eager: false },
         },
     },
 })
@@ -123,8 +137,6 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             RegimenFiscalReceptor: query.receiver.keyRegimen,
         }
         try {
-            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
-
             if (invoiceFind) {
                 if (invoiceFind.miniStoreSalePayment.stamping === 1) {
                     const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
@@ -139,7 +151,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.status(200);
                     response.send(respuesta);
                 } else {
-                    const xml = await GenerateInvoice({
+                    const timbrado = await GenerateInvoiceMunyaal({
+                        type: InvoiceModules.STORE,
                         ...invoiceDetails,
                         folio: invoiceFind.folio,
                         serie: branchOfficeSett.serieFacturacion,
@@ -147,36 +160,25 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         env: this.env,
                         informacionGlobal: query.informacionGlobal,
                         receptor,
-                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
+                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+                        TipoDeComprobante: TipoComprobanteEnum.I,
+                        Exportacion: ExportacionEnumMunyaal.E01,
+                        MetodoPago: MetodoPagoEnum.PUE,
+                        Moneda: MonedaEnum.MXN,
                     });
 
-                    const timbrado = await this.smartWeb.facturar(xml);
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
                     } as MiniStoreSalePayment);
-                    // Guardamos el xml
-                    const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
-                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
-                    // Obtenemos los datos del xml
-                    const cfdi = await XmlToJson(pathXml);
-                    // 4. Actualizamos los campos con la factura los datos del sat
+                    
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
-                    invoiceFind.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+                    invoiceFind.total = parseFloat(timbrado.Total);
                     const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
-                    // Generamos el PDf del xml
 
-                    const desingpdf = new A117(pathXml, {
-                        lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
-                    const pdf = new PDF<A117>(desingpdf);
-                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
-                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
 
-                    // falta regresar el dato
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoice;
@@ -209,7 +211,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
 
                 if (invoice) {
-                    const xml = await GenerateInvoice({
+                    const timbrado = await GenerateInvoiceMunyaal({
+                        type: InvoiceModules.STORE,
                         ...invoiceDetails,
                         folio: invoice.folio,
                         serie: branchOfficeSett.serieFacturacion,
@@ -217,35 +220,27 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         env: this.env,
                         informacionGlobal: query.informacionGlobal,
                         receptor,
-                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago
+                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+                        TipoDeComprobante: TipoComprobanteEnum.I,
+                        Exportacion: ExportacionEnumMunyaal.E01,
+                        MetodoPago: MetodoPagoEnum.PUE,
+                        Moneda: MonedaEnum.MXN,
                     });
-                    const timbrado = await this.smartWeb.facturar(xml);
-
+                    //Actualizamos el pago
                     await this.service.updatePayment({
                         id: query.salePaymentId,
                         stamping: 1,
                     } as MiniStoreSalePayment);
-                    // Guardamos el xml
-                    const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase() + '.xml';
-                    fs.writeFileSync(pathXml, timbrado.data.cfdi);
-                    // Obtenemos los datos del xml
-                    const cfdi = await XmlToJson(pathXml);
-                    // 4. Actualizamos los campos con la factura los datos del sat
+
+                    //Actualizamos la factura
                     invoice.uuid = timbrado.data.uuid.toUpperCase();
                     invoice.status = 1;
-                    invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+                    invoice.total = parseFloat(timbrado.Total);
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
-                    // Generamos el PDf del xml
-                    const desingpdf = new A117(pathXml, {
-                        lugarExpedicion: branchOfficeSett.address,
-                        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                    });
-                    const pdf = new PDF<A117>(desingpdf);
-                    await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + timbrado.data.uuid.toUpperCase());
+                    
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-                    // falta regresar el dato
-
+                    
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoiceFirst;
@@ -254,6 +249,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     response.send(respuesta);
                 }
             }
+
 
         } catch (e) {
             console.log(e);
@@ -275,7 +271,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             });
 
             let invoiceFind = {} as MiniStoreInvoice;
-            if(query.salePaymentId != 0){
+            if (query.salePaymentId != 0) {
                 invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
                     paymentId: query.salePaymentId,
                     status: StatusInvoce.invoiced,
@@ -291,10 +287,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
             const Receip = new Recibo();
             Receip.setType(InvoiceModules.STORE);
-            
-            if(result.sale.statusSale != PaymentStatus.quotation){
+
+            if (result.sale.statusSale != PaymentStatus.quotation) {
                 Receip.addLabel();
-            }else{
+            } else {
                 Receip.addLabelQuote();
             }
             Receip.addLogo({
@@ -302,7 +298,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 height: 100,
                 image: `data:image/png;base64, ${logo.toString('base64')}`,
             }) == false ? error.push(`error al agregar el logo`) : null;
-            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null; 
+            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
             Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
             const regimen = RegimenFiscalList.find(
                 (f) => f.value === branchOfficeSett.regime,
@@ -401,31 +397,32 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
             let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
 
-            const xml = await GenerateGlobalInvoice({
+            const timbrado = await GenerateGlobalInvoiceMunyaal({
                 branchOfficeConfig,
                 wayPayment,
                 details,
                 env: this.env,
                 folio: invoice.folio,
                 infoGlobal: {
-                    periodicity: query.periodicity,
-                    month: query.month,
-                    year: query.year,
+                  periodicity: query.periodicity,
+                  month: query.month,
+                  year: query.year,
                 },
-                percentageTax: '0.16'
-            });
+                percentageTax: '0.16',
+                type: InvoiceModules.STORE,
+                TipoDeComprobante: TipoComprobanteEnum.I,
+                Exportacion: ExportacionEnumMunyaal.E01,
+                MetodoPago: MetodoPagoEnum.PUE,
+                Moneda: MonedaEnum.MXN,
+              });
 
-            const stamping = await this.smartWeb.facturar(xml);
-
-            const uuid = stamping.data.uuid.toUpperCase();
+            const uuid = timbrado.data.uuid.toUpperCase();
 
             await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
 
-            const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
-
             invoice.uuid = uuid;
             invoice.status = 1;
-            invoice.total = +cfdi._attributes.Total;
+            invoice.total = timbrado.Total;
 
             invoice = await this.miniStoreInvoicesService.updateInvoice(invoice);
 
@@ -435,7 +432,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             response.send({
                 uuid,
                 invoice,
-                stamping,
+                stamping: timbrado,
                 concepts,
                 msg: 'Factura global timbrada',
             });
@@ -443,6 +440,77 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             console.log(e);
             response.status(400);
             response.send(e);
+        }
+    }
+
+    @Get('/details-invoice')
+    async detailsInvoiceByUuid(@Query() params: { uuid: string }, @Res() res) {
+        try {
+
+            const result = await this.service.detailsInvoiceByUuid(params);
+            const invoice = await this.miniStoreInvoicesService.findOne({
+                where: {
+                    uuid: params.uuid,
+                },
+                relations: [
+                    'agentCanceling',
+                    'agentBilling',
+                ],
+            });
+            if (result) {
+                const miniStoreSaleDetails = [];
+                let folio = '';
+                result.forEach((p, index) => {
+                    miniStoreSaleDetails.push(...p.miniStoreSale.miniStoreSaleDetails.map((s)=>{return {...s, miniStoreSale:{ id: p.miniStoreSale.id, folio: p.miniStoreSale.folio, miniStoreSalePayments: { id: p.id, folio: p.folio } }, }}));
+                    folio = index == 0 ? p.miniStoreSale.folio : `${folio}, ${p.miniStoreSale.folio}`
+                });
+                const obj: MiniStoreInvoice = {
+                    ...invoice,
+                    agentBilling: invoice.agentBilling,
+                    agentCanceling: invoice.agentCanceling,
+                    miniStoreSale: {
+                        id: 0,
+                        folio,
+                        miniStoreSaleDetails
+                    } as MiniStoreSale,
+                    miniStoreSalePayment: {
+                        change: 0,
+                        createdAt: invoice.createdAt,
+                        dateCancellation: invoice.cancellationDate,
+                        deletedAt: invoice.deletedAt,
+                        folio: 'N/A',
+                        globalUuid: params.uuid,
+                        id: 0,
+                        idAgentCancellation: invoice.idCancelingAgent,
+                        idSale: 0,
+                        idStatusPayment: 1,
+                        isIVA: true,
+                        observations: "",
+                        paymentStatus: 2,
+                        quantity: invoice.total,
+                        reasonCancellation: invoice.reasonCancellation,
+                        stamping: 1,
+                        updatedAt: invoice.updatedAt,
+                        uuid: params.uuid,
+                    } as MiniStoreSalePayment
+                } as MiniStoreInvoice
+                res.status(200);
+                res.send(obj);
+            } else {
+                res.status(400);
+                res.send({
+                    error: 'PAYMENTS_NOT_FOUND',
+                });
+            }
+        } catch (e) {
+
+            res.status(400);
+            res.send({
+                error: {
+                    msj: 'NOT_FOUND',
+                    details: e
+                },
+            });
         }
     }
 }

@@ -89,39 +89,9 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<CreditNoteAcade
     }
 
     async saveCreditNote(
-        cfdi: XmlCdfi,
-        timbrado: StampV4,
-        invoicesAcademy: AcademyChargeInvoice[],
-        branchOfficeId: string | number,
-        branchOfficeModuleId: string | number,
-        userCreatorId: string | number,
-        workPath: string
+        creditNote: Partial<CreditNoteAcademy>
     ) {
-        const academyInvoicesId = invoicesAcademy.map((invoice) => {
-            return invoice.id;
-        })
-        const creditNoteAcademy: Partial<CreditNoteAcademy> = {
-            folio: `${cfdi['cfdi:Comprobante']._attributes.Serie}-${cfdi['cfdi:Comprobante']._attributes.Folio}`,
-            uuid: timbrado.data.uuid,
-            businessName: cfdi['cfdi:Comprobante']['cfdi:Receptor']._attributes.Nombre,
-            rfc: cfdi['cfdi:Comprobante']['cfdi:Receptor']._attributes.Rfc,
-            total: +cfdi['cfdi:Comprobante']._attributes.Total,
-            invoiceType: InvoiceType.expenses,
-            status: InvoiceStatus.billed,
-            invoiceBranchOffice: { id: branchOfficeId } as BranchOffice,
-            agentBilling: { id: userCreatorId } as User,
-            invoicesAcademy: academyInvoicesId as unknown as AcademyChargeInvoice[],
-        }
-        await this.repo.save(creditNoteAcademy);
-        const settingsBranchOffice = await this.branchOfficeSettingRepository.createQueryBuilder('setting').leftJoin('setting.invoiceCampus', 'branchOffice').where('branchOffice.id = :branchOfficeId', { branchOfficeId: branchOfficeId }).andWhere('setting.id = :settingsId', { settingsId: branchOfficeModuleId }).getOne();
-        const pathXml = `${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase() + '.xml';
-        const logo = readFileSync(`${workPath}logos/academiaslogo.png`);
-        const desingpdf = new A117(pathXml, {
-            lugarExpedicion: settingsBranchOffice.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
-        });
-        const pdf = new PDF<A117>(desingpdf);
-        await pdf.save(`${workPath}comprobantes/notas-credito/` + timbrado.data.uuid.toUpperCase());
+       return await this.repo.save(creditNote);
     }
 
     async branchOfficeSetting(branchOfficeId: string | number, branchOfficeModuleId: string | number) {

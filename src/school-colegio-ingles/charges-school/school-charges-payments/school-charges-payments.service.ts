@@ -498,4 +498,27 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         };
         return await transporter.sendMail(mailOptions);
     }
+
+    public async detailsInvoiceByUuid(params: {
+        uuid: string
+    }) {
+        const result = this.repo
+            .createQueryBuilder('payment')
+            .leftJoinAndSelect('payment.schoolCharge', 'schoolCharge')
+            .leftJoinAndSelect('schoolCharge.chargesDetails', 'chargesDetails')
+            .leftJoinAndSelect('chargesDetails.extraCharges', 'extraCharges')
+            .select([
+                'payment.id',
+                'payment.folio',
+                'payment.globalUuid',
+                'schoolCharge.id',
+                'schoolCharge.folio',
+                'chargesDetails',
+                'extraCharges'
+            ])
+            .where('payment.globalUuid = :UUID', {
+                UUID: params.uuid,
+            });
+        return await result.getMany();
+    }
 }

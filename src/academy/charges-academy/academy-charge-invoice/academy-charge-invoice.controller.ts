@@ -39,7 +39,7 @@ import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { Public } from '../../../common/docorators/public.decorator';
 import * as AdmZip from 'adm-zip';
-import { NotInvoiced } from 'src/common/interface/not-invoiced.interface';
+import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 
 @Crud({
     model: {
