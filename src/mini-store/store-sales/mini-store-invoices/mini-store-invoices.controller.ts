@@ -179,6 +179,8 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 },
             });
 
+            console.log(payment)
+
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
             const result = await this.smartWeb.cancelarCSD({
@@ -192,6 +194,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             });
 
             const status = result.data.uuid[invoice.uuid];
+            console.log(status)
             /** Nuevos estados para la venta:
              * 0.- Sin facturar
              * 1.- Facturado
