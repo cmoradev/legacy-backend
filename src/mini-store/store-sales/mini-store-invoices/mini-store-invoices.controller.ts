@@ -173,13 +173,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                     id: cancelInvoiceSw.branchOfficeSettingId,
                 },
             });
-            const payment = await this.miniStoreSalesPaymentsService.findOne({
-                where: {
-                    id: invoice.miniStoreSalePayment.id,
-                },
-            });
-
-            console.log(payment)
 
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
@@ -194,7 +187,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             });
 
             const status = result.data.uuid[invoice.uuid];
-            console.log(status)
             /** Nuevos estados para la venta:
              * 0.- Sin facturar
              * 1.- Facturado
@@ -235,6 +227,12 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                         invoice: updateInvoice,
                     }).status(200)
                 } else {
+                    const payment = await this.miniStoreSalesPaymentsService.findOne({
+                        where: {
+                            id: invoice.miniStoreSalePayment.id,
+                        },
+                    });
+
                     payment.stamping = 0;
 
                     const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
