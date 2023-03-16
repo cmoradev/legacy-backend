@@ -40,6 +40,8 @@ import { A117 } from '../../../pdf/A117/desing/A117';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { Public } from '../../../common/docorators/public.decorator';
+import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
+import { In } from 'typeorm';
 
 @Crud({
     model: {
@@ -157,27 +159,23 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     @Post('cancel-invoice')
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
-
             const invoice = await this.service.findOne({
                 where: {
                     id: cancelInvoiceSw.invoiceId,
                 },
                 relations: ['miniStoreSalePayment'],
             });
+
             const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
                     id: cancelInvoiceSw.branchOfficeSettingId,
                 },
             });
-            const payment = await this.miniStoreSalesPaymentsService.findOne({
-                where: {
-                    id: invoice.miniStoreSalePayment.id,
-                },
-            });
 
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
+
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -213,14 +211,38 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                 invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
-                payment.stamping = 0;
+
                 const updateInvoice = await this.service.updateInvoice(invoice);
-                const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
-                res.send({
-                    msg: 'Cancelado',
-                    payment: updatePay,
-                    invoice: updateInvoice,
-                }).status(200);
+
+                if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
+                    const payments = await this.miniStoreSalesPaymentsService.find({ where: { globalUuid: invoice.uuid } })
+
+                    const ids = payments.map(value => value.id)
+
+                    const updatePay = await this.miniStoreSalesPaymentsService.repo.update({ id: In(ids) }, { stamping: 0, globalUuid: null });
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                } else {
+                    const payment = await this.miniStoreSalesPaymentsService.findOne({
+                        where: {
+                            id: invoice.miniStoreSalePayment.id,
+                        },
+                    });
+
+                    payment.stamping = 0;
+
+                    const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                }
             }
             if (status === '203' || +status === 203) {
                 res.send({
@@ -238,6 +260,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             }
 
         } catch (e) {
+            console.warn(e)
             res.status(400).send(e);
         }
     }

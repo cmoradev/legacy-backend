@@ -16,7 +16,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
   app.enableCors({ origin: '*' });
-  app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
   app.use(boolParser());
   app.use(bodyParser.json({ limit: '50mb' }));
   const environment = process.env.NODE_ENV || 'development';

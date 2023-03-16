@@ -18,14 +18,13 @@ import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
-import * as fs from 'fs';
 import { readFileSync } from 'fs';
 import {
   GenerateGlobalInvoice,
-  GenerateInvoiceIedu,
+  GenerateGlobalInvoiceMunyaal,
+  GenerateInvoiceMunyaal,
 } from '../../../common/utils/invoice/generator/generateInvoice';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
-import { PDF, XmlToJson } from '@signati/pdf';
 import { User } from '../../../system/users/entities/user.entity';
 import { FactSw, StampV4 } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
@@ -35,7 +34,6 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
 import { Recibo } from '../../../common/pdfmake/Recibo';
 import * as moment from 'moment';
 import { StudentsService } from '../../students/students.service';
@@ -53,6 +51,7 @@ import { getNameReport, getRangeDates } from '../../../mini-store/store-sales/mi
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
 import { getDataFullMatrizAndData, reportPaymentByClient, PaymentExcel, dataFullSale } from '../../../common/utils/report/index';
 import { convertPaymentsReportCollege } from './reports/payments.util';
+import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi';
 
 @Crud({
   model: {
@@ -362,9 +361,6 @@ export class SchoolChargesPaymentsController
       rfcPago: query.receiver.rfc,
     };
     try {
-      const logo = readFileSync(
-        `${this.configService.getPath()}logos/colegiologo.png`,
-      );
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {
           const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment(
@@ -380,49 +376,35 @@ export class SchoolChargesPaymentsController
           invoiceResponse.uuid = invoicePayment.uuid;
           response.send(invoiceResponse);
         } else {
-          let timbrado: StampV4;
-          const xml = await GenerateInvoiceIedu(
-            {
-              ...invoiceDetails,
-              folio: invoiceFinded.folio,
-              serie: branchOfficeSett.serieFacturacion,
-              codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-              emisor: branchOfficeSett,
-              receptor,
-              informacionGlobal: query.informacionGlobal,
-              student,
-              env,
-            });
-          timbrado = await this.smartWeb.facturar(xml);
+
+          const timbrado = await GenerateInvoiceMunyaal({
+            type: InvoiceModules.SCHOOL,
+            ...invoiceDetails,
+            folio: invoiceFinded.folio,
+            serie: branchOfficeSett.serieFacturacion,
+            emisor: branchOfficeSett,
+            env: this.env,
+            informacionGlobal: query.informacionGlobal,
+            receptor,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            TipoDeComprobante: TipoComprobanteEnum.I,
+            Exportacion: ExportacionEnumMunyaal.E01,
+            MetodoPago: MetodoPagoEnum.PUE,
+            Moneda: MonedaEnum.MXN,
+            student
+          });
 
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as SchoolChargePayment);
-          // Guardamos el xml
-          const pathXml =
-            `${this.configService.getPath()}comprobantes/colegio/` +
-            timbrado.data.uuid.toUpperCase() +
-            '.xml';
-          fs.writeFileSync(pathXml, timbrado.data.cfdi);
-          // Obtenemos los datos del xml
-          const cfdi = await XmlToJson(pathXml);
-          // 4. Actualizamos los campos con la factura los datos del sat
+
           invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
           invoiceFinded.status = 1;
-          invoiceFinded.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          invoiceFinded.total = parseFloat(timbrado.Total);
+
           const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
             invoiceFinded,
-          );
-          // Generamos el PDf del xml
-          const desingpdf = new A117(pathXml, {
-            lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
-          });
-          const pdf = new PDF<A117>(desingpdf);
-          await pdf.save(
-            `${this.configService.getPath()}comprobantes/colegio/` +
-            timbrado.data.uuid.toUpperCase(),
           );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           this.schoolChargeInvoiceService.sendMail(
@@ -463,50 +445,34 @@ export class SchoolChargesPaymentsController
           factura,
         );
         if (invoice) {
-          let timbrado: StampV4;
-          const xml = await GenerateInvoiceIedu(
-            {
-
-              ...invoiceDetails,
-              folio: invoice.folio,
-              serie: branchOfficeSett.serieFacturacion,
-              codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-              emisor: branchOfficeSett,
-              receptor,
-              informacionGlobal: query.informacionGlobal,
-              student,
-              env,
-            });
-          timbrado = await this.smartWeb.facturar(xml);
+          const timbrado = await GenerateInvoiceMunyaal({
+            type: InvoiceModules.SCHOOL,
+            ...invoiceDetails,
+            folio: invoice.folio,
+            serie: branchOfficeSett.serieFacturacion,
+            emisor: branchOfficeSett,
+            env: this.env,
+            informacionGlobal: query.informacionGlobal,
+            receptor,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            TipoDeComprobante: TipoComprobanteEnum.I,
+            Exportacion: ExportacionEnumMunyaal.E01,
+            MetodoPago: MetodoPagoEnum.PUE,
+            Moneda: MonedaEnum.MXN,
+            student
+          });
 
           await this.service.updatePayment({
             id: query.chargePaymentId,
             stamping: 1,
           } as SchoolChargePayment);
-          // Guardamos el xml
-          const pathXml =
-            `${this.configService.getPath()}/comprobantes/colegio/` +
-            timbrado.data.uuid.toUpperCase() +
-            '.xml';
-          fs.writeFileSync(pathXml, timbrado.data.cfdi);
-          // Obtenemos los datos del xml
-          const cfdi = await XmlToJson(pathXml);
-          // 4. Actualizamos los campos con la factura los datos del sat
+
           invoice.uuid = timbrado.data.uuid.toUpperCase();
           invoice.status = 1;
-          invoice.total = +cfdi['cfdi:Comprobante']._attributes.Total;
+          invoice.total = parseFloat(timbrado.Total);
+
           const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
             invoice,
-          );
-          // Generamos el PDf del xml
-          const desingpdf = new A117(pathXml, {
-            lugarExpedicion: branchOfficeSett.address,
-            logo: `data:image/png;base64, ${logo.toString('base64')}`,
-          });
-          const pdf = new PDF<A117>(desingpdf);
-          await pdf.save(
-            `${this.configService.getPath()}comprobantes/colegio/` +
-            timbrado.data.uuid.toUpperCase(),
           );
           // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
           await this.schoolChargeInvoiceService.sendMail(
@@ -707,7 +673,7 @@ export class SchoolChargesPaymentsController
 
       let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
 
-      const xml = await GenerateGlobalInvoice({
+      const timbrado = await GenerateGlobalInvoiceMunyaal({
         branchOfficeConfig,
         wayPayment,
         details,
@@ -718,30 +684,30 @@ export class SchoolChargesPaymentsController
           month: query.month,
           year: query.year,
         },
-        percentageTax: '0'
+        percentageTax: '0',
+        type: InvoiceModules.SCHOOL,
+        TipoDeComprobante: TipoComprobanteEnum.I,
+        Exportacion: ExportacionEnumMunyaal.E01,
+        MetodoPago: MetodoPagoEnum.PUE,
+        Moneda: MonedaEnum.MXN,
       });
 
-      const stamping = await this.smartWeb.facturar(xml);
 
-      const uuid = stamping.data.uuid.toUpperCase();
+      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), timbrado.data.uuid.toUpperCase());
 
-      await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
-
-      const cfdi = await this.service.saveXmlAndPdf(uuid, stamping.data.cfdi, branchOfficeConfig.address)
-
-      invoice.uuid = uuid;
+      invoice.uuid = timbrado.data.uuid.toUpperCase();
       invoice.status = 1;
-      invoice.total = +cfdi._attributes.Total;
+      invoice.total = timbrado.Total
 
       invoice = await this.schoolChargeInvoiceService.updateInvoice(invoice);
 
-      await this.schoolChargeInvoiceService.sendMail(branchOffice, uuid, branchOfficeConfig.email);
+      await this.schoolChargeInvoiceService.sendMail(branchOffice, timbrado.data.uuid.toUpperCase(), branchOfficeConfig.email);
 
       response.status(200);
       response.send({
-        uuid,
+        uuid: timbrado.data.uuid.toUpperCase(),
         invoice,
-        stamping,
+        stamping: timbrado,
         concepts,
         msg: 'Factura global timbrada',
       });
@@ -750,6 +716,74 @@ export class SchoolChargesPaymentsController
       response.status(400);
       response.send(e);
     }
+  }
+
+  @Get('/details-invoice')
+  async detailsInvoiceByUuid(@Query() params: { uuid: string }, @Res() res) {
+      try {
+          const result = await this.service.detailsInvoiceByUuid(params);
+          const invoice = await this.schoolChargeInvoiceService.findOne({
+              where: {
+                  uuid: params.uuid,
+              },
+              relations: [
+                  'agentCanceling',
+                  'agentBilling',
+              ],
+          });
+          if (result) {
+              const chargesDetails = [];
+              let folio = '';
+              result.forEach((p, index) => {
+                chargesDetails.push(...p.schoolCharge.chargesDetails.map((s)=>{return {...s, schoolCharge:{ id: p.schoolCharge.id, folio: p.schoolCharge.folio, chargesPayments: { id: p.id, folio: p.folio } }, }}));
+                  folio = index == 0 ? p.schoolCharge.folio : `${folio}, ${p.schoolCharge.folio}`
+              });
+              const obj: SchoolChargesInvoice = {
+                  ...invoice,
+                  agentBilling: invoice.agentBilling,
+                  agentCanceling: invoice.agentCanceling,
+                  schoolCharge: {
+                      id: 0,
+                      folio,
+                      chargesDetails
+                  } as SchoolCharge,
+                  schoolChargePayment:{
+                    change: 0,
+                    createdAt: invoice.createdAt,
+                    dateCancellation: invoice.cancellationDate,
+                    deletedAt: invoice.deletedAt,
+                    folio: 'N/A',
+                    globalUuid: params.uuid,
+                    id: 0,
+                    cashierChargeCancellation: invoice.agentCanceling,
+                    isIVA: true,
+                    observations: "",
+                    paymentStatus: 2,
+                    quantity: invoice.total,
+                    stamping: 1,
+                    updatedAt: invoice.updatedAt,
+                    uuid: params.uuid,
+                    reasonCancellation: invoice.reasonCancellation,
+                  } as SchoolChargePayment
+              } as SchoolChargesInvoice
+              res.status(200);
+              res.send(obj);
+          } else {
+              res.status(400);
+              res.send({
+                  error: 'PAYMENTS_NOT_FOUND',
+              });
+          }
+      } catch (e) {
+
+          res.status(400);
+          res.send({
+              error: {
+                  msj: 'NOT_FOUND',
+                  details: e
+              },
+          });
+      }
   }
 
 }

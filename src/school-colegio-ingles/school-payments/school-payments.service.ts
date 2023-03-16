@@ -61,8 +61,8 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
       );
     }
     if (
-      options.statusPayment !== 0 &&
-      options.statusPayment !== '0' &&
+      parseInt(`${options.statusPayment}`) !== 0 &&
+      `${options.statusPayment}` !== '0' &&
       typeof options.statusPayment !== 'undefined'
     )
       payments.andWhere('schoolPayments.statusPayment = :statusPayment', {

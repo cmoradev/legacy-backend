@@ -32,6 +32,8 @@ import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoic
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
+import { In } from 'typeorm';
 
 @Crud({
     model: {
@@ -137,19 +139,17 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 },
                 relations: ['schoolChargePayment'],
             });
+
             const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
                     id: cancelInvoiceSw.branchOfficeSettingId,
                 },
             });
-            const payment = await this.schoolChargePayment.findOne({
-                where: {
-                    id: invoice.schoolChargePayment.id,
-                },
-            });
+
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
+
             const responseSmartWeb = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -176,14 +176,38 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
-                payment.stamping = 0;
+
                 const updateInvoice = await this.service.updateInvoice(invoice);
-                const updatePay = await this.schoolChargePayment.updatePayment(payment);
-                res.send({
-                    msg: 'Cancelado',
-                    payment: updatePay,
-                    invoice: updateInvoice,
-                }).status(200);
+
+                if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
+                    const payments = await this.schoolChargePayment.find({ where: { globalUuid: invoice.uuid } })
+
+                    const ids = payments.map(value => value.id)
+
+                    const updatePay = await this.schoolChargePayment.repo.update({ id: In(ids) }, { stamping: 0, globalUuid: null });
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                } else {
+                    const payment = await this.schoolChargePayment.findOne({
+                        where: {
+                            id: invoice.schoolChargePayment.id,
+                        },
+                    });
+
+                    payment.stamping = 0;
+
+                    const updatePay = await this.schoolChargePayment.updatePayment(payment);
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                }
             }
             if (status === '203' || +status === 203) {
                 res.send({
@@ -291,7 +315,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
             const zip = new AdmZip();
             params.array.forEach((i: NotInvoiced) => {
                 zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
             });
 
             const downloadName = `${Date.now()}.zip`;

@@ -1,14 +1,41 @@
-import { CFDI, Comprobante, Concepts, Emisor, FormaPago, FormaPagoType, Iedu, Impuestos, Receptor, XmlIeduAttribute } from '@signati/core';
+import {
+    CFDI,
+    Comprobante,
+    Concepts,
+    Emisor,
+    FormaPago,
+    FormaPagoType,
+    Iedu,
+    Impuestos,
+    Receptor,
+    XmlIeduAttribute
+} from '@signati/core';
 import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
-import { mulQuantity, subQuantity, sumQuantity } from '../../../point-of-sale/point-of-sale';
+import { sumQuantity } from '../../../point-of-sale/point-of-sale';
 import * as moment from 'moment-timezone';
-import { add } from 'exact-math';
 import { sanitizeStringToXml } from '../../sanitizeStringToXml';
 import { BranchOfficeSetting } from '../../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MonthEnum, PeriodicityEnum } from '../../../dto/not-invoiced.dto';
 import { ivaFromFinalAmount } from '../../../numbers';
-import { CFDIWebtel, Environment, InvoiceDetails } from '../../../point-of-sale/types.pos';
+import { CFDIWebtel, Environment, InvoiceDetails, InvoiceModules } from '../../../point-of-sale/types.pos';
+import {
+    initializeCfdi, Comprobante as ComprobanteCfdi,
+    MonedaEnum,
+    TipoComprobanteEnum,
+    ExportacionEnum as ExportacionEnumMunyaal,
+    MetodoPagoEnum, ComprobanteEmisor,
+    RegimenFiscalEnum, UsoCfdiEnum,
+    ComprobanteReceptor, ComprobanteImpuestos,
+    ComprobanteImpuestosTraslado, ImpuestoEnum,
+    TipoFactorEnum, ComprobanteConcepto,
+    ComprobanteConceptoImpuestos, ComprobanteConceptoImpuestosTraslado,
+    ObjetoImpEnum as ObjetoImpEnumMunyaal,
+    Iedu as IeduMunyaal,
+    ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum,
+} from "@munyaal/cfdi";
+import { FactSw } from '../../../../webService/FactSw';
+import { CfdiPdf } from "@munyaal/cfdi-pdf"
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -78,10 +105,10 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     await cfd.receptor(recep);
 
     for (const cts of concepts.conceptsInvoice) {
-        const concepto = new Concepts({...cts.concept});
+        const concepto = new Concepts({ ...cts.concept });
         if (importeImpuesto !== 0 && cts.concept.ObjetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
 
-                concepto.traslado({
+            concepto.traslado({
                 Base: cts.base,
                 Impuesto: '002',
                 TipoFactor: 'Tasa',
@@ -202,7 +229,7 @@ export type GlobalInvoiceParams = {
     branchOfficeConfig: BranchOfficeSetting,
     env: Environment,
     folio: string,
-    wayPayment: FormaPago;
+    wayPayment: FormaPago | FormaPagoEnum;
     details: InvoiceDetails;
     infoGlobal: {
         periodicity: PeriodicityEnum;
@@ -328,4 +355,289 @@ export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promis
     await cfd.sellar(key, branchOfficeConfig.password);
 
     return cfd.getXmlCdfi();
+}
+
+export interface InvoiceModule extends CFDIWebtel {
+    type: InvoiceModules;
+    Moneda: MonedaEnum;
+    TipoDeComprobante: TipoComprobanteEnum;
+    Exportacion: ExportacionEnumMunyaal;
+    MetodoPago: MetodoPagoEnum;
+    student?: XmlIeduAttribute;
+}
+
+export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
+    const {
+        Moneda,
+        MetodoPago,
+        TipoDeComprobante,
+        Exportacion,
+        folio,
+        serie,
+        informacionGlobal,
+        emisor,
+        taxes,
+        totals,
+        concepts,
+        receptor,
+        codigoFormaPago,
+        env,
+        type,
+        student
+    } = params;
+    const CFDIService = initializeCfdi({
+        pathXsltCfdi40: env.xslt,
+        password: emisor.password,
+        pathKey: env.instancePath + 'CSD/' + emisor.keyCSD,
+        pathCertificate: env.instancePath + 'CSD/' + emisor.cerCSD,
+    })
+
+    let folder = getFolderComprobantes(env.instancePath, type);
+
+    CFDIService.overridePaths({
+        pathXmlFolder: folder
+    });
+
+
+    const comprobante = new ComprobanteCfdi({
+        Version: '4.0',
+        Serie: serie,
+        Folio: folio,
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
+        FormaPago: codigoFormaPago as FormaPagoEnum,
+        Moneda,
+        SubTotal: totals.fiscal.SubTotal,
+        Descuento: totals.fiscal.Descuento,
+        Total: totals.fiscal.Total,
+        TipoDeComprobante,
+        Exportacion,
+        MetodoPago,
+        LugarExpedicion: emisor.zip,
+    });
+
+    comprobante.Emisor = new ComprobanteEmisor({
+        Rfc: emisor.rfc.trim().toUpperCase(),
+        Nombre: emisor.businessName.trim().toUpperCase(),
+        RegimenFiscal: emisor.fiscalRegime as RegimenFiscalEnum
+    });
+
+    comprobante.Receptor = new ComprobanteReceptor({
+        Rfc: receptor.Rfc,
+        Nombre: receptor.Nombre,
+        UsoCFDI: receptor.UsoCFDI as UsoCfdiEnum,
+        RegimenFiscalReceptor: receptor.RegimenFiscalReceptor as RegimenFiscalEnum,
+        DomicilioFiscalReceptor: receptor.DomicilioFiscalReceptor
+    });
+
+    for (const cts of concepts.conceptsInvoice) {
+        const { ClaveProdServ, Cantidad, ClaveUnidad, Descripcion, ValorUnitario, Descuento, Importe, ObjetoImp, NoIdentificacion } = cts.concept
+        const concepto = new ComprobanteConcepto({
+            NoIdentificacion,
+            ClaveProdServ,
+            Cantidad: Cantidad.toString(),
+            ClaveUnidad,
+            Descripcion,
+            ValorUnitario: ValorUnitario.toString(),
+            Descuento: Descuento.toString(),
+            Importe: Importe.toString(),
+            ObjetoImp: ObjetoImp as ObjetoImpEnumMunyaal
+        });
+        if (type !== InvoiceModules.SCHOOL && cts.concept.ObjetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
+            const impuestos = new ComprobanteConceptoImpuestos();
+
+            const traslados = new ComprobanteConceptoImpuestosTraslado({
+                Base: cts.base,
+                Importe: cts.import,
+                Impuesto: ImpuestoEnum.I002,
+                TasaOCuota: '0.160000',
+                TipoFactor: TipoFactorEnum.Tasa
+            });
+
+            impuestos.Traslados.push(traslados);
+
+            concepto.Impuestos = impuestos;
+        } else {
+            concepto.ComplementoConcepto = new ComprobanteConceptoComplementoConcepto();
+            concepto.ComplementoConcepto.iedu = new IeduMunyaal(student);
+        }
+        comprobante.Conceptos.push(concepto);
+    }
+
+    const impuestos = new ComprobanteImpuestos({
+        TotalImpuestosTrasladados: taxes.amount,
+    });
+
+    const traslado = new ComprobanteImpuestosTraslado({
+        Base: taxes.base,
+        Impuesto: ImpuestoEnum.I002,
+        TasaOCuota: '0.160000',
+        Importe: taxes.amount,
+        TipoFactor: type !== InvoiceModules.SCHOOL ? TipoFactorEnum.Tasa : TipoFactorEnum.Exento
+    });
+
+    impuestos.Traslados.push(traslado);
+
+    comprobante.Impuestos = impuestos;
+
+    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, emisor.address)
+
+};
+
+export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams & {
+    type: InvoiceModules;
+    Moneda: MonedaEnum;
+    TipoDeComprobante: TipoComprobanteEnum;
+    Exportacion: ExportacionEnumMunyaal;
+    MetodoPago: MetodoPagoEnum;
+}): Promise<any> => {
+    const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax, type, Moneda, TipoDeComprobante, Exportacion, MetodoPago } = params;
+
+    const { keyCSD, cerCSD, serieFacturacion, password } = branchOfficeConfig;
+
+    const { instancePath, xslt } = env;
+
+    const { discount, taxes, total, subtotal, details: concepts } = details;
+
+    const { periodicity, month, year } = infoGlobal;
+
+    const CFDIService = initializeCfdi({
+        pathXsltCfdi40: env.xslt,
+        password: password,
+        pathKey: `${instancePath}CSD/${keyCSD}`,
+        pathCertificate: `${instancePath}CSD/${cerCSD}`,
+    })
+
+    let folder = getFolderComprobantes(instancePath, type);
+
+    CFDIService.overridePaths({
+        pathXmlFolder: folder
+    });
+
+    const comprobante = new ComprobanteCfdi({
+        Version: '4.0',
+        Serie: serieFacturacion,
+        Folio: folio,
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
+        FormaPago: wayPayment as FormaPagoEnum,
+        Moneda,
+        SubTotal: parseFloat(`${subtotal}`).toFixed(2),
+        Descuento: parseFloat(`${discount}`).toFixed(2),
+        Total: parseFloat(`${total}`).toFixed(2),
+        TipoDeComprobante,
+        Exportacion,
+        MetodoPago,
+        LugarExpedicion: branchOfficeConfig.zip.trim().toUpperCase(),
+    });
+
+    comprobante.Emisor = new ComprobanteEmisor({
+        Rfc: sanitizeStringToXml(branchOfficeConfig.rfc.trim().toUpperCase()),
+        Nombre: sanitizeStringToXml(branchOfficeConfig.businessName.trim().toUpperCase()),
+        RegimenFiscal: branchOfficeConfig.fiscalRegime.trim().toUpperCase() as RegimenFiscalEnum,
+    });
+
+    comprobante.Receptor = new ComprobanteReceptor({
+        Rfc: 'XAXX010101000',
+        Nombre: 'PUBLICO EN GENERAL',
+        DomicilioFiscalReceptor: branchOfficeConfig.zip.trim().toUpperCase(),
+        RegimenFiscalReceptor: RegimenFiscalEnum.RF616,
+        UsoCFDI: UsoCfdiEnum.S01
+    });
+
+    comprobante.InformacionGlobal = new ComprobanteInformacionGlobal({
+        Meses: month as unknown as MesesEnum,
+        Periodicidad: periodicity as unknown as PeriodicidadEnum,
+        Anio: year
+    });
+
+    for (const payload of concepts) {
+        const { iva, amountWithOutIva } = ivaFromFinalAmount(payload.amount, -2, sumQuantity(percentageTax, 1));
+
+        const amount = parseFloat(`${amountWithOutIva}`).toFixed(2);
+        const tax = parseFloat(`${iva}`).toFixed(2);
+
+        const concept = new ComprobanteConcepto({
+            ClaveProdServ: payload.keyProdServ,
+            Cantidad: payload.quantity.toString(),
+            ClaveUnidad: payload.keyUnit,
+            Descripcion: payload.description,
+            ValorUnitario: amount.toString(),
+            Importe: amount.toString(),
+            Descuento: payload.discount.toString(),
+            ObjetoImp: payload.objectImp as ObjetoImpEnumMunyaal,
+            NoIdentificacion: payload.noIdentity
+        });
+
+        if (percentageTax !== '0' && payload.objectImp === ObjetoImpEnumMunyaal.OI02) {
+            const impuestos = new ComprobanteConceptoImpuestos();
+
+            const traslados = new ComprobanteConceptoImpuestosTraslado({
+                Base: amount,
+                Importe: tax,
+                Impuesto: ImpuestoEnum.I002,
+                TasaOCuota: '0.160000',
+                TipoFactor: TipoFactorEnum.Tasa
+            });
+
+            impuestos.Traslados.push(traslados);
+
+            concept.Impuestos = impuestos;
+        }
+
+        comprobante.Conceptos.push(concept);
+    }
+    const impuestos = new ComprobanteImpuestos({
+        TotalImpuestosTrasladados: taxes.toFixed(2),
+    });
+
+    const traslado = new ComprobanteImpuestosTraslado({
+        Base: subtotal.toFixed(2),
+        Impuesto: ImpuestoEnum.I002,
+        TasaOCuota: '0.160000',
+        Importe: taxes.toFixed(2),
+        TipoFactor: type !== InvoiceModules.SCHOOL ? TipoFactorEnum.Tasa : TipoFactorEnum.Exento
+    });
+
+    impuestos.Traslados.push(traslado);
+
+
+    comprobante.Impuestos = impuestos;
+
+    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, branchOfficeConfig.zip.trim().toUpperCase())
+}
+
+export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCredit?: boolean) => {
+    let folder = `${path}comprobantes/`;
+    if (isCredit) {
+        return folder + 'notas-credito/'
+    } else {
+        switch (type) {
+            case InvoiceModules.ACADEMY:
+                return folder + 'academias/'
+            case InvoiceModules.SCHOOL:
+                return folder + 'colegio/'
+            case InvoiceModules.STORE:
+                return folder + 'tienda/'
+            default:
+                return folder
+        }
+    }
+}
+
+export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string) => {
+    const xml = await CFDIService.getXMLSellado(comprobante);
+
+    const sw = new FactSw();
+
+    const timbrado = await sw.facturar(xml);
+
+    await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid.toUpperCase());
+
+    const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
+
+    pdf.createDocument(`${timbrado.data.uuid.toUpperCase()}`, `${path}`)
+
+    return {
+        ...timbrado,
+        Total: comprobante.Total
+    };
 }

@@ -613,4 +613,27 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             return e;
         }
     }
+
+    public async detailsInvoiceByUuid(params: {
+        uuid: string
+    }) {
+        const result = this.repo
+            .createQueryBuilder('sales-payments')
+            .leftJoinAndSelect('sales-payments.miniStoreSale', 'miniStoreSale')
+            .leftJoinAndSelect('miniStoreSale.miniStoreSaleDetails', 'miniStoreSaleDetails')
+            .leftJoinAndSelect('miniStoreSaleDetails.extraCharges', 'extraCharges')
+            .select([
+                'sales-payments.id',
+                'sales-payments.folio',
+                'sales-payments.globalUuid',
+                'miniStoreSale.id',
+                'miniStoreSale.folio',
+                'miniStoreSaleDetails',
+                'extraCharges'
+            ])
+            .where('sales-payments.globalUuid = :UUID', {
+                UUID: params.uuid,
+            });
+        return await result.getMany();
+    }
 }

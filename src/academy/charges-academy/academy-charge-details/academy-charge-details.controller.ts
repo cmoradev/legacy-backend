@@ -3,10 +3,10 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargeDetails } from './entities/academy-charge-details.entity';
 import { AcademyChargeDetailsService } from './academy-charge-details.service';
 import {IQueryReportSaleTodayOp} from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
-import {NotInvoiced, PaymentExtraCharge} from '../../../common/interface/not-invoiced.interface';
+import {PaymentExtraCharge} from '../../../common/interface/not-invoiced.interface';
 import {getNameReport} from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
-import { dataFullSale, PaymentExcel, reportPaymentByClient } from 'src/common/utils/report';
-import { InvoiceModules } from 'src/common/point-of-sale/types.pos';
+import { dataFullSale, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @Crud({
     model: {
