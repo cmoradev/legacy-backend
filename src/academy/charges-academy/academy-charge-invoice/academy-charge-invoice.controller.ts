@@ -31,7 +31,7 @@ import { User } from '../../../system/users/entities/user.entity';
 
 import { ReportData } from './dto/reportData.dto';
 import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
-import { Between } from 'typeorm';
+import { Between, In } from 'typeorm';
 import * as Moment from 'moment';
 import { ReportInvoice } from './reports/invoice.reports';
 import { ConfigService } from '../../../common/config/config.service';
@@ -40,6 +40,7 @@ import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/poin
 import { Public } from '../../../common/docorators/public.decorator';
 import * as AdmZip from 'adm-zip';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 
 @Crud({
     model: {
@@ -138,7 +139,6 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     @Post('cancel-invoice')
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
-
             const invoice = await this.service.findOne({
                 where: {
                     id: cancelInvoiceSw.invoiceId,
@@ -152,14 +152,10 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                     id: cancelInvoiceSw.branchOfficeSettingId,
                 },
             });
-            const payment = await this.academyChargePaymentsService.findOne({
-                where: {
-                    id: invoice.academyChargePayment.id,
-                },
-            });
 
             const cer = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
+
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -195,14 +191,38 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
                 invoice.agentCanceling = {
                     id: cancelInvoiceSw.cashierId,
                 } as User;
-                payment.stamping = 0;
+
                 const updateInvoice = await this.service.updateInvoice(invoice);
-                const updatePay = await this.academyChargePaymentsService.updatePayment(payment);
-                res.send({
-                    msg: 'Cancelado',
-                    payment: updatePay,
-                    invoice: updateInvoice,
-                }).status(200);
+
+                if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
+                    const payments = await this.academyChargePaymentsService.find({ where: { globalUuid: invoice.uuid } })
+
+                    const ids = payments.map(value => value.id)
+
+                    const updatePay = await this.academyChargePaymentsService.repo.update({ id: In(ids) }, { stamping: 0, globalUuid: null });
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                } else {
+                    const payment = await this.academyChargePaymentsService.findOne({
+                        where: {
+                            id: invoice.academyChargePayment.id,
+                        },
+                    });
+
+                    payment.stamping = 0;
+
+                    const updatePay = await this.academyChargePaymentsService.updatePayment(payment);
+
+                    res.send({
+                        msg: 'Cancelado',
+                        payment: updatePay,
+                        invoice: updateInvoice,
+                    }).status(200)
+                }
             }
             if (status === '203' || +status === 203) {
                 res.send({
@@ -423,7 +443,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
             const zip = new AdmZip();
             params.array.forEach((i: NotInvoiced) => {
                 zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`); 
+                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
             });
 
             const downloadName = `${Date.now()}.zip`;
