@@ -462,22 +462,24 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         }
         comprobante.Conceptos.push(concepto);
     }
+    
+    if (type !== InvoiceModules.SCHOOL){
+         const impuestos = new ComprobanteImpuestos({
+            TotalImpuestosTrasladados: taxes.amount,
+        });
 
-    const impuestos = new ComprobanteImpuestos({
-        TotalImpuestosTrasladados: taxes.amount,
-    });
+        const traslado = new ComprobanteImpuestosTraslado({
+            Base: taxes.base,
+            Impuesto: ImpuestoEnum.I002,
+            TasaOCuota: '0.160000',
+            Importe: taxes.amount,
+            TipoFactor: TipoFactorEnum.Tasa
+        });
 
-    const traslado = new ComprobanteImpuestosTraslado({
-        Base: taxes.base,
-        Impuesto: ImpuestoEnum.I002,
-        TasaOCuota: '0.160000',
-        Importe: taxes.amount,
-        TipoFactor: type !== InvoiceModules.SCHOOL ? TipoFactorEnum.Tasa : TipoFactorEnum.Exento
-    });
+        impuestos.Traslados.push(traslado);
 
-    impuestos.Traslados.push(traslado);
-
-    comprobante.Impuestos = impuestos;
+        comprobante.Impuestos = impuestos;
+    }
 
     return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, emisor.address)
 
