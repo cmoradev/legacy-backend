@@ -270,8 +270,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 typeConcept: 'Recepit',
             });
 
-            let invoiceFind = {} as MiniStoreInvoice;
-            if (query.salePaymentId != 0) {
+            let invoiceFind = undefined;
+            if (query.salePaymentId != 0 && result.payment.globalUuid == null) {
                 invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
                     paymentId: query.salePaymentId,
                     status: StatusInvoce.invoiced,
@@ -315,14 +315,14 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 }) == false ? error.push(`error al agregar los datos del emisor`) : null;
             }
             let name = '';
-            if (result.payment.stamping == 0) {
+            if (result.payment.stamping == 0 || invoiceFind == undefined) {
                 name = `${result.sale.student.name} ${result.sale.student.lastNameFather} ${result.sale.student.lastNameMother} `;
             } else {
                 name = invoiceFind.businessName
             }
             Receip.addReceptor({
                 name,
-                curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
+                curp: result.payment.stamping == 0 || invoiceFind == undefined ? 'XAXX010101000' : invoiceFind.rfc,
                 matricula: result.sale.student.matricula,
                 type: InvoiceModules.STORE
             }) == false ? error.push(`error al agregar los datos del receptor`) : null;
