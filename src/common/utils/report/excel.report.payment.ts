@@ -410,7 +410,7 @@ export class PaymentExcel {
                         columns.push(this.getTipoClient(value.a_type));
                         columns.push(value.a_key);
                         columns.push(value.a_fullname);
-                        columns.push(value.v_observations);
+                        columns.push(this.type == InvoiceModules.ACADEMY ? value.v_observaciones : value.v_observations);
                         columns.push(value.f_metodo_pago);
                         columns.push(parseFloat(`${value.total_details_without_extra}`));
                         if (this.type != InvoiceModules.STORE) {
@@ -438,7 +438,7 @@ export class PaymentExcel {
                         columns.push(this.getTipoClient(value.a_type));
                         columns.push(value.a_key);
                         columns.push(value.a_fullname);
-                        columns.push(value.v_observations);
+                        columns.push(this.type == InvoiceModules.ACADEMY ? value.v_observaciones : value.v_observations);
                         columns.push(value.p_metodo_pago);
                         columns.push(parseFloat(`${value.total_details_without_extra}`));
                         if (this.type != InvoiceModules.STORE) {

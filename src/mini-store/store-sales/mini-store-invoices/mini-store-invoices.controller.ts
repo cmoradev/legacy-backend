@@ -159,7 +159,6 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     @Post('cancel-invoice')
     async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
         try {
-
             const invoice = await this.service.findOne({
                 where: {
                     id: cancelInvoiceSw.invoiceId,
@@ -173,14 +172,10 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                     id: cancelInvoiceSw.branchOfficeSettingId,
                 },
             });
-            const payment = await this.miniStoreSalesPaymentsService.findOne({
-                where: {
-                    id: invoice.miniStoreSalePayment.id,
-                },
-            });
 
             const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
             const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
+
             const result = await this.smartWeb.cancelarCSD({
                 rfc: branchOfficeSett.rfc,
                 password: branchOfficeSett.password,
@@ -232,6 +227,12 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
                         invoice: updateInvoice,
                     }).status(200)
                 } else {
+                    const payment = await this.miniStoreSalesPaymentsService.findOne({
+                        where: {
+                            id: invoice.miniStoreSalePayment.id,
+                        },
+                    });
+
                     payment.stamping = 0;
 
                     const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
@@ -259,6 +260,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
             }
 
         } catch (e) {
+            console.warn(e)
             res.status(400).send(e);
         }
     }

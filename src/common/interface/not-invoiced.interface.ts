@@ -15,6 +15,7 @@ export interface NotInvoiced {
     p_quantity: number;
     p_change: number;
     v_observations: string;
+    v_observaciones: string;
     p_income: number;
     a_id: number;
     a_type: TypeStudent;

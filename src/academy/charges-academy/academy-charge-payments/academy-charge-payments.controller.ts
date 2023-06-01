@@ -350,12 +350,15 @@ export class AcademyChargePaymentsController
           id: query.branchOfficeSettingId,
         },
       });
-      const invoiceFind = await this.academyChargeInvoiceService.findInvoiceByPayment(
-        {
-          paymentId: query.chargePaymentId,
-          status: StatusInvoce.invoiced,
-        },
-      );
+      let invoiceFind = undefined;
+      if(result.payment.globalUuid == null ){
+        invoiceFind = await this.academyChargeInvoiceService.findInvoiceByPayment(
+          {
+            paymentId: query.chargePaymentId,
+            status: StatusInvoce.invoiced,
+          },
+        );
+      }
 
       const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
       const Receip = new Recibo();
@@ -383,14 +386,14 @@ export class AcademyChargePaymentsController
         }) == false ? error.push(`error al agregar los datos del emisor`) : null;
       }
       let name = '';
-      if (result.payment.stamping == 0) {
+      if (result.payment.stamping == 0 || invoiceFind == undefined) {
         name = `${result.charge.schoolStudent.name} ${result.charge.schoolStudent.lastNameFather} ${result.charge.schoolStudent.lastNameMother} `;
       } else {
         name = invoiceFind.businessName
       }
       Receip.addReceptor({
         name,
-        curp: result.payment.stamping == 0 ? 'XAXX010101000' : invoiceFind.rfc,
+        curp: result.payment.stamping == 0 || invoiceFind == undefined ? 'XAXX010101000' : invoiceFind.rfc,
         matricula: result.charge.schoolStudent.matricula,
         type: InvoiceModules.ACADEMY
       }) == false ? error.push(`error al agregar los datos del receptor`) : null;
