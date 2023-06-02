@@ -56,7 +56,7 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
         'schoolPayments.payDate BETWEEN :startDate AND :endDate',
         {
           startDate: moment(options.month).startOf('month').toDate(),
-          endDate: moment(options.month).startOf('month').toDate(),
+          endDate: moment(options.month).endOf('month').toDate(),
         },
       );
     }
