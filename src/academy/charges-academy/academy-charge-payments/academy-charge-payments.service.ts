@@ -328,16 +328,19 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     }
 
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
-        const data: NotInvoiced[] = await this.connection.query(`
-                SELECT *
-                FROM vw_my_aca_payments vw
-                WHERE (vw.f_status IS NULL OR vw.f_status = '0')
-                  AND vw.p_stamping = '0'
-                  AND vw.v_status = '2'
-                  AND vw.p_state != '4'
-                  AND vw.p_income > 0
-                  AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}';
-            `);
+        const qr = `
+        SELECT *
+        FROM vw_my_aca_payments vw
+        WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+          AND vw.p_stamping = '0'
+          AND vw.v_status = '2'
+          AND vw.p_state != '4'
+          AND vw.p_income > 0
+          AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}'
+    `
+        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length 
+            ? `${qr} AND vw.p_id IN (${query.ids.join(',')});`
+            : `${qr};`);
 
         data.forEach((value: NotInvoiced) => {
             value.p_income = parseFloat(`${value.p_income}`)

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsISO8601, IsEnum, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsISO8601, IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
 
 export enum PeriodicityEnum {
     Diario = '01',
@@ -53,6 +53,10 @@ export class NotInvoicedDto {
     @IsOptional()
     @IsString()
     year: string;
+
+    @IsOptional()
+    @IsArray ()
+    ids: number[];
 }
 
 
