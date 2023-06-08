@@ -45,6 +45,11 @@ export interface Environment {
     xslt: string
 }
 
+export type RelateParams = {
+    type: string;
+    documents: string[]
+}
+
 export interface CFDIWebtel extends DataInvoice {
     serie: string;
     folio: string;
@@ -54,6 +59,7 @@ export interface CFDIWebtel extends DataInvoice {
     env: Environment;
     informacionGlobal?: InformacionGlobal;
     importeImpuesto?: number;
+    related: RelateParams[];
 }
 export enum InvoiceModules {
     ACADEMY = 1,

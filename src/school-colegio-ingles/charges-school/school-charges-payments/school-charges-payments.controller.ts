@@ -20,7 +20,6 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
 import { readFileSync } from 'fs';
 import {
-  GenerateGlobalInvoice,
   GenerateGlobalInvoiceMunyaal,
   GenerateInvoiceMunyaal,
 } from '../../../common/utils/invoice/generator/generateInvoice';
@@ -391,7 +390,8 @@ export class SchoolChargesPaymentsController
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
-            student
+            student,
+            related: query.related
           });
 
           await this.service.updatePayment({
@@ -459,7 +459,8 @@ export class SchoolChargesPaymentsController
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
-            student
+            student,
+            related: query.related
           });
 
           await this.service.updatePayment({

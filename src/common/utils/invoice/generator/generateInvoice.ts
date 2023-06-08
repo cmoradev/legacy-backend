@@ -32,7 +32,7 @@ import {
     ComprobanteConceptoImpuestos, ComprobanteConceptoImpuestosTraslado,
     ObjetoImpEnum as ObjetoImpEnumMunyaal,
     Iedu as IeduMunyaal,
-    ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum,
+    ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum, ComprobanteCfdiRelacionados, TipoRelacionEnum, ComprobanteCfdiRelacionadosCfdiRelacionado,
 } from "@munyaal/cfdi";
 import { FactSw } from '../../../../webService/FactSw';
 import { CfdiPdf } from "@munyaal/cfdi-pdf"
@@ -374,7 +374,6 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         Exportacion,
         folio,
         serie,
-        informacionGlobal,
         emisor,
         taxes,
         totals,
@@ -383,7 +382,8 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         codigoFormaPago,
         env,
         type,
-        student
+        student,
+        related
     } = params;
     const CFDIService = initializeCfdi({
         pathXsltCfdi40: env.xslt,
@@ -428,6 +428,24 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         RegimenFiscalReceptor: receptor.RegimenFiscalReceptor as RegimenFiscalEnum,
         DomicilioFiscalReceptor: receptor.DomicilioFiscalReceptor
     });
+
+    if (related?.length) {
+        related.forEach(value => {
+            const cfdiRelacionados = new ComprobanteCfdiRelacionados({
+                TipoRelacion: value.type as TipoRelacionEnum
+            });
+
+            value.documents.forEach(document => {
+                const cfdiRelacionado = new ComprobanteCfdiRelacionadosCfdiRelacionado({
+                    UUID: document
+                });
+
+                cfdiRelacionados.CfdiRelacionado.push(cfdiRelacionado);
+            })
+
+            comprobante.CfdiRelacionados.push(cfdiRelacionados)
+        })
+    }
 
     for (const cts of concepts.conceptsInvoice) {
         const { ClaveProdServ, Cantidad, ClaveUnidad, Descripcion, ValorUnitario, Descuento, Importe, ObjetoImp, NoIdentificacion } = cts.concept

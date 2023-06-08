@@ -1,3 +1,4 @@
+import { RelateParams } from '../../../../common/point-of-sale/types.pos';
 import { BusinessNameFamily } from '../../../../school-colegio-ingles/family-fiscal/entities/BusinessNameFamily.entity';
 
 export interface InvoiceReport {
@@ -44,4 +45,5 @@ export class QueryBilling {
     };
     receiver: BusinessNameFamily
     agentBillingId: number;
+    related: RelateParams[];
 }
