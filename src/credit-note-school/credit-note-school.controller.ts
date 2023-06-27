@@ -9,6 +9,7 @@ import {
     ParseIntPipe,
     Post, Put,
     Query,
+    Req,
     Res,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
@@ -16,7 +17,6 @@ import { XmlReceptorAttribute } from '@signati/core';
 import { ConfigService } from '../common/config/config.service';
 import { Public } from '../common/docorators/public.decorator';
 import { InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
-import { SchoolChargesInvoice } from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
@@ -25,7 +25,9 @@ import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { User } from '../system/users/entities/user.entity';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
-import { InvoiceModules } from '../common/point-of-sale/types.pos';
+import { InvoiceModules, RelateParams } from '../common/point-of-sale/types.pos';
+import { SchoolChargesInvoiceService } from '../school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.service';
+import * as fs from 'fs';
 
 @Crud({
     model: {
@@ -50,7 +52,9 @@ import { InvoiceModules } from '../common/point-of-sale/types.pos';
 export class CreditNoteSchoolController implements CrudController<CreditNoteSchool>{
     constructor(readonly service: CreditNoteSchoolService,
         readonly smartWebService: FactSw,
-        readonly configService: ConfigService) {
+        readonly configService: ConfigService,
+        readonly schoolChargesInvoiceService: SchoolChargesInvoiceService
+        ) {
     }
 
     @Delete('soft-deleted/:id')
@@ -70,7 +74,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             receiver: Partial<XmlReceptorAttribute>,
             concepts: any[],
             calculations: any,
-            invoicesRelations: SchoolChargesInvoice[],
+            invoicesRelations: RelateParams[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
@@ -122,9 +126,21 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 type: InvoiceModules.SCHOOL
             });
 
-            const invoicesId = request.invoicesRelations.map((invoice) => {
-                return invoice.id;
+            const uuids: string[] = [];
+            request.invoicesRelations.forEach((d)=>{
+                return d.documents.forEach((dd)=>{
+                    uuids.push(dd)
+                })
             })
+            const invoices = await this.schoolChargesInvoiceService.repo.createQueryBuilder('invoices')
+            .select([
+                'invoices.id'
+            ])
+            .where('invoices.uuid IN (:...uuids)', {
+                uuids: uuids,
+            })
+            .getMany();
+
             const creditNoteSchool: Partial<CreditNoteSchool> = {
                 folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
                 uuid: timbrado.data.uuid,
@@ -135,7 +151,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
                 agentBilling: { id: request.userCreatorId } as User,
-                invoiceSchool: invoicesId as unknown as SchoolChargesInvoice[],
+                invoiceSchool: invoices,
             }
             const creditNote = await this.service.saveCreditNote(creditNoteSchool);
             response.status(200);
@@ -196,6 +212,16 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             response.status(HttpStatus.CREATED).send();
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get(':id/pdf')
+    public async pdf(@Req() req, @Res() res, @Query() query: { uuid: string, rebuild: string }) {
+        try {
+            const pdf64 = fs.readFileSync(`${this.configService.getPath()}comprobantes/notas-credito/` + query.uuid + '.pdf');
+            res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
+        } catch (e) {
+            res.send({ error: e }).status(400);
         }
     }
 }

@@ -68,6 +68,7 @@ import { In } from 'typeorm';
             'miniStoreSale.student': { eager: false },
             agentBilling: { eager: false },
             agentCanceling: { eager: false },
+            creditNoteStore: { eager: false}
         },
     },
 })

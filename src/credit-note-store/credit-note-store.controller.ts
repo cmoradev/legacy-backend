@@ -21,11 +21,12 @@ import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
 import * as fs from 'fs';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
-import { InvoiceModules } from '../common/point-of-sale/types.pos';
+import { InvoiceModules, RelateParams } from '../common/point-of-sale/types.pos';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { User } from '../system/users/entities/user.entity';
+import { MiniStoreInvoicesService } from '../mini-store/store-sales/mini-store-invoices/mini-store-invoices.service';
 
 @Crud({
     model: {
@@ -50,7 +51,8 @@ import { User } from '../system/users/entities/user.entity';
 export class CreditNoteStoreController implements CrudController<CreditNoteStore>{
     constructor(readonly service: CreditNoteStoreService,
         readonly smartWebService: FactSw,
-        readonly configService: ConfigService) {
+        readonly configService: ConfigService,
+        readonly miniStoreSalesPaymentsService: MiniStoreInvoicesService) {
     }
 
     @Delete('soft-deleted/:id')
@@ -70,7 +72,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
             receiver: Partial<XmlReceptorAttribute>,
             concepts: any[],
             calculations: any,
-            invoicesRelations: MiniStoreInvoice[],
+            invoicesRelations: RelateParams[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
@@ -123,9 +125,21 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 },
                 type: InvoiceModules.STORE
             });
-            const invoicesId = request.invoicesRelations.map((invoice) => {
-                return invoice.id;
+            
+            const uuids: string[] = [];
+            request.invoicesRelations.forEach((d)=>{
+                return d.documents.forEach((dd)=>{
+                    uuids.push(dd)
+                })
             })
+            const invoices = await this.miniStoreSalesPaymentsService.repo.createQueryBuilder('invoices')
+            .select([
+                'invoices.id'
+            ])
+            .where('invoices.uuid IN (:...uuids)', {
+                uuids: uuids,
+            })
+            .getMany();
             const creditNoteStore: Partial<CreditNoteStore> = {
                 folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
                 uuid: timbrado.data.uuid,
@@ -136,7 +150,7 @@ export class CreditNoteStoreController implements CrudController<CreditNoteStore
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
                 agentBilling: { id: request.userCreatorId } as User,
-                invoiceStore: invoicesId as unknown as MiniStoreInvoice[],
+                invoiceStore: invoices,
             }
             const creditNote = await this.service.saveCreditNote(creditNoteStore);
             response.status(200);

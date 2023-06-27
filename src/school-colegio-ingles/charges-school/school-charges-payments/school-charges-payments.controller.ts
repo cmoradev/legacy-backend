@@ -71,6 +71,7 @@ import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as Exp
       cashierCharge: { eager: false },
       cashierChargeCancellation: { eager: false },
       schoolChargesInvoice: { eager: false },
+      //"schoolChargesInvoice.creditNotesSchool": { eager: false },
     },
   },
 })

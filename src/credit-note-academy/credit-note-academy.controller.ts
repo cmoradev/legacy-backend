@@ -24,6 +24,7 @@ import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums
 import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { User } from '../system/users/entities/user.entity';
+import { AcademyChargeInvoiceService } from '../academy/charges-academy/academy-charge-invoice/academy-charge-invoice.service';
 
 @Crud({
     model: {
@@ -46,7 +47,12 @@ import { User } from '../system/users/entities/user.entity';
 })
 @Controller('credit-note-academy')
 export class CreditNoteAcademyController implements CrudController<CreditNoteAcademy> {
-    constructor(readonly service: CreditNoteAcademyService, readonly configService: ConfigService, readonly smartWebService: FactSw) {
+    constructor(
+        readonly service: CreditNoteAcademyService, 
+        readonly configService: ConfigService, 
+        readonly smartWebService: FactSw,
+        readonly academyChargeInvoiceService: AcademyChargeInvoiceService
+        ) {
     }
 
     @Delete('soft-deleted/:id')
@@ -66,7 +72,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             receiver: Partial<XmlReceptorAttribute>,
             concepts: any[],
             calculations: any,
-            invoicesRelations: AcademyChargeInvoice[],
+            invoicesRelations: any[],
             branchOfficeId: string | number,
             branchOfficeModuleId: string | number,
             userCreatorId: string | number
@@ -116,9 +122,22 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 },
                 type: InvoiceModules.ACADEMY
             });
-            const invoicesId = request.invoicesRelations.map((invoice) => {
-                return invoice.id;
+
+            const uuids: string[] = [];
+            request.invoicesRelations.forEach((d)=>{
+                return d.documents.forEach((dd)=>{
+                    uuids.push(dd)
+                })
             })
+            const invoices = await this.academyChargeInvoiceService.repo.createQueryBuilder('invoices')
+            .select([
+                'invoices.id'
+            ])
+            .where('invoices.uuid IN (:...uuids)', {
+                uuids: uuids,
+            })
+            .getMany();
+            
             const creditNoteAcademy: Partial<CreditNoteAcademy> = {
                 folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
                 uuid: timbrado.data.uuid,
@@ -129,7 +148,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
                 agentBilling: { id: request.userCreatorId } as User,
-                invoicesAcademy: invoicesId as unknown as AcademyChargeInvoice[],
+                invoicesAcademy: invoices,
             }
             const creditNote = await this.service.saveCreditNote(creditNoteAcademy);
             response.status(200);

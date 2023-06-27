@@ -131,5 +131,9 @@ export class SchoolChargesInvoice extends Base {
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
     @ManyToOne(() => CreditNoteSchool, (creditNoteSchool) => creditNoteSchool.invoiceSchool, { nullable: true })
+    @JoinColumn({
+        name: 'creditNotesSchoolId',
+        referencedColumnName: 'id',
+    })
     creditNotesSchool: CreditNoteSchool;
 }

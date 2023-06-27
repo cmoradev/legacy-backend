@@ -18,6 +18,9 @@ import { SchoolChargesInvoiceModule } from '../school-charges-invoice/school-cha
 import { ConfigModule } from '../../../common/config/config.module';
 import { StudentsModule } from '../../students/students.module';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
+import { SchoolChargesModule } from '../school-charges/school-charges.module';
+import { SchoolChargesDetailsModule } from '../school-charges-details/school-charges-details.module';
+import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-details-extra-charges/school-charges-details-extra-charges.module';
 
 @Module({
   imports: [
@@ -25,9 +28,12 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
     BranchOfficeModule,
     BranchOfficeSettingModule,
     InvoiceMethodsPaymentsModule,
-    forwardRef(() => ChargesSchoolModule),
+    //forwardRef(() => ChargesSchoolModule),
+    SchoolChargesModule,
+    SchoolChargesDetailsModule,
+    SchoolChargesDetailsExtraChargesModule,
     SchoolPaymentsModule,
-    SchoolChargesInvoiceModule,
+    forwardRef(() => SchoolChargesInvoiceModule),
     ConfigModule,
     StudentsModule,
   ],
