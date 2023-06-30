@@ -151,7 +151,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
                 agentBilling: { id: request.userCreatorId } as User,
-                invoiceSchool: invoices,
+                invoicesSchool: invoices,
             }
             const creditNote = await this.service.saveCreditNote(creditNoteSchool);
             response.status(200);

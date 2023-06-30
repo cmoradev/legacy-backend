@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { MiniStoreSalePayment } from '../../mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSale } from '../../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../../system/users/entities/user.entity';
@@ -159,6 +159,11 @@ export class MiniStoreInvoice extends Base {
     @ManyToOne(type => SalesReturns, salesReturns => salesReturns.invoices)
     saleReturn: SalesReturns;
 
-    @ManyToOne(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoiceStore, { nullable: true })
-    creditNoteStore: CreditNoteStore;
+    @ManyToMany(() => CreditNoteStore, (creditNoteStore) => creditNoteStore.invoicesStore, { cascade: true })
+    @JoinTable({
+        name: 'credit_notes_store_invoices'
+    })
+    creditNotesStore: CreditNoteStore[];
+
+    
 }

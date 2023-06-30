@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AcademyChargeInvoice } from '../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { InvoiceStatus } from '../../invoice/types/invoice-status';
 import { InvoiceType } from '../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
@@ -87,6 +87,7 @@ export class CreditNoteAcademy extends Base {
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
 
-    @OneToMany(() => AcademyChargeInvoice, (academyInvoice) => academyInvoice.creditNoteAcademy)
+
+    @ManyToMany(() => AcademyChargeInvoice, academyInvoice => academyInvoice.creditNotesAcademy)
     invoicesAcademy: AcademyChargeInvoice[];
 }
