@@ -32,6 +32,7 @@ import { Response } from 'express';
             'chargesPayments.cashierCharge': {eager: false},
             'chargesPayments.cashierChargeCancellation': {eager: false},
             'chargesPayments.schoolChargesInvoice': {eager: false},
+            //'chargesPayments.schoolChargesInvoice.creditNotesSchool': {eager: false},
             chargesInvoice: {eager: false},
             'chargesInvoice.agentBilling': {eager: false},
             'chargesInvoice.agentCanceling': {eager: false},

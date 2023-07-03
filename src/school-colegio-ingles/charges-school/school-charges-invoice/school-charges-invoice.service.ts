@@ -17,7 +17,7 @@ import * as moment from 'moment';
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
   constructor(
     @InjectRepository(SchoolChargesInvoice, ColegioDBNameConnection)
-      repo: Repository<SchoolChargesInvoice>,
+      readonly repo: Repository<SchoolChargesInvoice>,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
     private readonly configService: ConfigService,
   ) {

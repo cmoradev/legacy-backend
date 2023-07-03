@@ -1,15 +1,6 @@
-import { ConceptWithTaxes, InvoiceSat } from "../../../../credit-note-academy/credit-note-academy.service";
-import {
-    MiniStoreInvoice
-} from "../../../../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity";
-import {
-    SchoolChargesInvoice
-} from "../../../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity";
+import { InvoiceSat } from "../../../../credit-note-academy/credit-note-academy.service";
 import { BranchOfficeSetting } from "../../../../system/branch-office-setting/entities/branch-office-setting.entity";
-import {
-    AcademyChargeInvoice
-} from "../../../../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity";
-import { Environment, InvoiceModules } from "../../../../common/point-of-sale/types.pos";
+import { Environment, InvoiceModules, RelateParams } from "../../../../common/point-of-sale/types.pos";
 import * as moment from 'moment-timezone';
 import {
     Comprobante,
@@ -40,7 +31,7 @@ interface CreditNoteTelweb {
     settingsBranchOffice: BranchOfficeSetting;
     invoice: InvoiceSat;
     receiver: any;
-    relations: MiniStoreInvoice[] | AcademyChargeInvoice[] | SchoolChargesInvoice[];
+    relations: RelateParams[];
     type: InvoiceModules;
     calculations: any;
     concepts: any[]
@@ -80,6 +71,8 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         MetodoPago: invoice.MetodoPago as MetodoPagoEnum,
         LugarExpedicion: invoice.LugarExpedicion,
     });
+
+    if(invoice.condicionesDePago && invoice.condicionesDePago != "")comprobante.CondicionesDePago = invoice.condicionesDePago;
 
     comprobante.Emisor = new ComprobanteEmisor({
         Rfc: settingsBranchOffice.rfc,
@@ -125,11 +118,11 @@ export async function CreditNote(payload: CreditNoteTelweb) {
     }
 
 
-    const impuestos = new ComprobanteImpuestos({
-        TotalImpuestosTrasladados: new Decimal(calculations.data.detailsWithPaymentApplied.tax).toFixed(2),
-    });
-
+    
     if (type !== InvoiceModules.SCHOOL) {
+        const impuestos = new ComprobanteImpuestos({
+            TotalImpuestosTrasladados: new Decimal(calculations.data.detailsWithPaymentApplied.tax).toFixed(2),
+        });
 
         const traslado = new ComprobanteImpuestosTraslado({
             Base: new Decimal(calculations.data.detailsWithPaymentApplied.baseTax).toFixed(2),
@@ -140,23 +133,27 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         });
 
         impuestos.Traslados.push(traslado);
+        comprobante.Impuestos = impuestos;
     }
 
-    comprobante.Impuestos = impuestos;
 
+    if (relations?.length) {
+        relations.forEach(value => {
+            const cfdiRelacionados = new ComprobanteCfdiRelacionados({
+                TipoRelacion: value.type as TipoRelacionEnum
+            });
 
-    const cfdiRelacionados = new ComprobanteCfdiRelacionados({
-        TipoRelacion: TipoRelacionEnum.TR01
-    });
+            value.documents.forEach(document => {
+                const cfdiRelacionado = new ComprobanteCfdiRelacionadosCfdiRelacionado({
+                    UUID: document
+                });
 
-    for (const document of relations) {
-        const cfdiRelacionado = new ComprobanteCfdiRelacionadosCfdiRelacionado({
-            UUID: document.uuid
-        });
-        cfdiRelacionados.CfdiRelacionado.push(cfdiRelacionado);
+                cfdiRelacionados.CfdiRelacionado.push(cfdiRelacionado);
+            })
+
+            comprobante.CfdiRelacionados.push(cfdiRelacionados)
+        })
     }
-
-    comprobante.CfdiRelacionados.push(cfdiRelacionados)
 
     return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, settingsBranchOffice.zip.trim().toUpperCase())
 }
@@ -164,29 +161,7 @@ export async function CreditNote(payload: CreditNoteTelweb) {
 const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, concepts: any[], isGlobal: boolean) => {
     let cptArray: any[] = []
     let cpt = {} as any;
-    if(isGlobal){
-        concepts.forEach((conceptDetails: any) => {
-            cpt = {
-                concept: {
-                    ClaveProdServ: conceptDetails.sat_code,
-                    Cantidad: conceptDetails.quantity,
-                    ClaveUnidad: conceptDetails.unitMeasurement,
-                    Descripcion: sanitizeStringToXml(conceptDetails.concept),
-                    ValorUnitario:  conceptDetails.ValorUnitario,
-                    Importe: conceptDetails.Importe,
-                    Descuento: conceptDetails.Descuento,
-                    ObjetoImp: type !== InvoiceModules.SCHOOL ? ObjetoImpEnum.OI02 : ObjetoImpEnum.OI01
-                },
-                base: '',
-                import: ''
-            };
-            if (cpt.concept.ObjetoImp === ObjetoImpEnum.OI02) {
-                cpt.base = new Decimal(conceptDetails.baseTax).toFixed(6);
-                cpt.import = new Decimal(conceptDetails.tax).toFixed(6);
-            }
-            cptArray.push(cpt)
-        });
-    }else{
+
         calculations.data.detailsWithoutPaymentApplied.concepts.forEach((concept: Concept) => {
             const conceptDetails = concepts.find((d) => d.id === concept.id);
             const moreDetails = getMoreDatails({ detail: conceptDetails, type });
@@ -210,6 +185,6 @@ const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, con
             }
             cptArray.push(cpt)
         });
-    }
+    
     return cptArray;
 }

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { DateTimeZoneTransformer } from '../../common/orm/entities/transformers/date-time-zone.transformer';
 import { InvoiceStatus } from '../../invoice/types/invoice-status';
 import { InvoiceType } from '../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
@@ -104,6 +104,6 @@ export class CreditNoteSchool extends Base {
     @ManyToOne(() => User, (user) => user.miniStoreCancelingInvoices)
     agentCanceling: User;
 
-    @OneToMany(() => SchoolChargesInvoice, (invoiceSchool) => invoiceSchool.creditNotesSchool)
-    invoiceSchool: SchoolChargesInvoice[];
+    @ManyToMany(() => SchoolChargesInvoice, invoiceSchool => invoiceSchool.creditNotesSchool)
+    invoicesSchool: SchoolChargesInvoice[];
 }

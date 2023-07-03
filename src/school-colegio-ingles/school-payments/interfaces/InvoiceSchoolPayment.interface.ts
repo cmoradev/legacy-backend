@@ -1,3 +1,4 @@
+import { RelateParams } from '../../../common/point-of-sale/types.pos';
 import { InformacionGlobal } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { BusinessNameFamily } from '../../family-fiscal/entities/BusinessNameFamily.entity';
 import { Student } from '../../students/entities/student.entity';
@@ -17,4 +18,5 @@ export class QuerySchoolPaymentBilling {
   receiver: BusinessNameFamily;
   student: Student;
   studyPlan: StudyPlan;
+  related: RelateParams[];
 }

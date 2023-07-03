@@ -7,9 +7,14 @@ import { BranchOfficeSetting } from '../system/branch-office-setting/entities/br
 import { CreditNoteStoreController } from './credit-note-store.controller';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
+import { MiniStoreInvoicesModule } from '../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
+import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
+import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CreditNoteStore, BranchOfficeSetting], ColegioDBNameConnection), ConfigModule],
+  imports: [TypeOrmModule.forFeature([CreditNoteStore, BranchOfficeSetting], ColegioDBNameConnection), ConfigModule,
+    MiniStoreInvoicesModule, BranchOfficeModule, BranchOfficeSettingModule
+  ],
   controllers: [CreditNoteStoreController],
   providers: [CreditNoteStoreService, SmartWeb],
   exports: [CreditNoteStoreService],

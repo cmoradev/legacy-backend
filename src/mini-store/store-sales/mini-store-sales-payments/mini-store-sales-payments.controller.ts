@@ -23,7 +23,7 @@ import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import { GenerateGlobalInvoice, GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
+import { GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -165,6 +165,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         Exportacion: ExportacionEnumMunyaal.E01,
                         MetodoPago: MetodoPagoEnum.PUE,
                         Moneda: MonedaEnum.MXN,
+                        related: query.related
                     });
 
                     await this.service.updatePayment({
@@ -225,6 +226,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         Exportacion: ExportacionEnumMunyaal.E01,
                         MetodoPago: MetodoPagoEnum.PUE,
                         Moneda: MonedaEnum.MXN,
+                        related: query.related
                     });
                     //Actualizamos el pago
                     await this.service.updatePayment({

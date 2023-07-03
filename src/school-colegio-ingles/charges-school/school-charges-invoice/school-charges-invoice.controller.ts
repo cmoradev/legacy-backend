@@ -64,6 +64,7 @@ import { In } from 'typeorm';
             },
             agentBilling: { eager: false },
             agentCanceling: { eager: false },
+            creditNotesSchool: { eager: false}
         },
     },
 })

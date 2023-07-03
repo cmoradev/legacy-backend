@@ -44,6 +44,10 @@ import { dataFullSale, PaymentExcel, reportPaymentByClient } from '../../../comm
                 alias: 'miniStoreSalePayments_miniStoreInvoices',
                 eager: false
             },
+            'miniStoreSalePayments.miniStoreInvoices.creditNoteStore': {
+                alias: 'miniStoreSalePayments_miniStoreInvoices_creditNoteStore',
+                eager: false
+            },
             'miniStoreSalePayments.agent': {
                 alias: 'miniStoreSalePayments_agent',
                 eager: false

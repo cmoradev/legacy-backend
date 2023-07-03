@@ -31,7 +31,7 @@ import { User } from '../../../system/users/entities/user.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import { GenerateGlobalInvoice, GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
+import { GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
 import { readFileSync } from 'fs';
 import { FormaPago, RegimenFiscalList } from '@signati/core';
 import { ConfigService } from '../../../common/config/config.service';
@@ -230,6 +230,7 @@ export class AcademyChargePaymentsController
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
+            related: query.related
           });
 
           await this.service.updatePayment({
@@ -297,6 +298,7 @@ export class AcademyChargePaymentsController
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
+            related: query.related
         });
           await this.service.updatePayment({
             id: query.chargePaymentId,
@@ -546,7 +548,7 @@ export class AcademyChargePaymentsController
           buffer,
         ).toString('base64')}`,
         type: 'excel',
-        name: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
+        name: `Ac_Pagos_${getRangeDates(options.startDate, options.endDate).excel}`,
       };
       return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
     } else {

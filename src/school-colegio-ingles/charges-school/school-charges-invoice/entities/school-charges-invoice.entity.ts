@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { Base } from '../../../../common/orm/entities/base.entity';
 import { CreditNoteSchool } from '../../../../credit-note-school/entities/credit-note-school.entity';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
@@ -130,6 +130,9 @@ export class SchoolChargesInvoice extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
-    @ManyToOne(() => CreditNoteSchool, (creditNoteSchool) => creditNoteSchool.invoiceSchool, { nullable: true })
-    creditNotesSchool: CreditNoteSchool;
+    @ManyToMany(() => CreditNoteSchool, (creditNoteSchool) => creditNoteSchool.invoicesSchool, { cascade: true })
+    @JoinTable({
+        name: 'credit_notes_school_invoices'
+    })
+    creditNotesSchool: CreditNoteSchool[];
 }

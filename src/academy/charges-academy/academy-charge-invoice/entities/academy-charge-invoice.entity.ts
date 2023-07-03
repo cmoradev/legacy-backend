@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { InvoiceType } from '../../../../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { User } from '../../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../../academy-charge/entities/academy-charge.entity';
@@ -130,6 +130,9 @@ export class AcademyChargeInvoice extends Base {
     @ManyToOne(() => BranchOfficeSetting, (branchSet) => branchSet.branchOfficeSettAcademyInvoice)
     invoiceBranchOfficeSet: BranchOfficeSetting;
 
-    @ManyToOne(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy, { nullable: true })
-    creditNoteAcademy: CreditNoteAcademy;
+    @ManyToMany(() => CreditNoteAcademy, (creditNoteAcademy) => creditNoteAcademy.invoicesAcademy, { cascade: true })
+    @JoinTable({
+        name: 'credit_notes_academy_invoices'
+    })
+    creditNotesAcademy: CreditNoteAcademy[];
 }
