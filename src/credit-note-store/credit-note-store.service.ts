@@ -1,28 +1,21 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { XmlCdfi } from '@signati/core';
-import { PDF } from '@signati/pdf';
-import { readFileSync } from 'fs';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
-import { CreditNoteSchool } from '../credit-note-school/entities/credit-note-school.entity';
-import { InvoiceStatus } from '../invoice/types/invoice-status';
-import { MiniStoreInvoice } from '../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
-import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
-import { A117 } from '../pdf/A117/desing/A117';
-import { SchoolChargesInvoice } from '../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
-import { User } from '../system/users/entities/user.entity';
-import { StampV4 } from '../webService/FactSw';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
+import * as nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
+import { ConfigService } from '../common/config/config.service';
 
 @Injectable()
 export class CreditNoteStoreService extends TypeOrmCrudService<CreditNoteStore> {
     constructor(
-        @InjectRepository(CreditNoteStore, ColegioDBNameConnection) repo: Repository<CreditNoteStore>,
-        @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>) {
+        @InjectRepository(CreditNoteStore, ColegioDBNameConnection) readonly repo: Repository<CreditNoteStore>,
+        @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
+        private readonly configService: ConfigService) {
         super(repo);
     }
 
@@ -58,9 +51,54 @@ export class CreditNoteStoreService extends TypeOrmCrudService<CreditNoteStore> 
             .getOne();
         return settingsBranchOffice
     }
+
     async getLastFolio() {
         return await this.repo.createQueryBuilder('creditNote')
             .select('COALESCE(MAX(id), 0) + 1', 'last')
             .getRawOne();
+    }
+
+    async sendMailCancelacion(currentBranch: BranchOffice, uuid: string, email: string, subject: string, body: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: currentBranch.Email,
+                pass: currentBranch.EmailPass,
+            },
+        });
+        const pathInvoice = `${this.configService.getPath()}comprobantes/notas-credito/` + uuid.toUpperCase();
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: currentBranch.Email,
+            subject, // 'Tienda - Solicitud de cancelación del Comprobantes de pago CFDI',
+            html: `<div>
+                    <h2>Notificación de cancelación de CFDI</h2><br>
+                    <h4>Motivo de cancelación: </h4>
+                     <p>${body}</p>
+                    <p>Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.</p>
+                    <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, 
+                     transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.</p>
+                     <p>En caso de ser cancelable sin autorizacion se le adjuntara el acuse de cancelación.</p>
+                    <br> 
+                    </div>`,
+            attachments: [
+                {
+                    filename: uuid.toUpperCase() + '.xml',
+                    path: `${pathInvoice}.xml`,
+                },
+                {
+                    filename: uuid.toUpperCase() + '.pdf',
+                    path: `${pathInvoice}.pdf`,
+                },
+                {
+                    filename: `${uuid}-acuse.xml`,
+                    path: pathInvoice + '-acuse.xml',
+                },
+            ],
+        };
+        return await transporter.sendMail(mailOptions);
     }
 }

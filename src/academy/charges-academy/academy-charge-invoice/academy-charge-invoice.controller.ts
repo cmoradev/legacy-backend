@@ -67,7 +67,7 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
             'academyCharge.schoolStudent': { eager: false },
             agentBilling: {eager: false},
             agentCanceling: {eager: false},
-            creditNoteAcademy: { eager: false}
+            creditNotesAcademy: { eager: false}
         },
     },
 })

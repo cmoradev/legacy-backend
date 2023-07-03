@@ -9,12 +9,12 @@ import { CreditNoteSchoolController } from './credit-note-school.controller';
 import { CreditNoteSchoolService } from './credit-note-school.service';
 import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import { SchoolChargesInvoiceModule } from '../school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.module';
-import { ChargesSchoolModule } from '../school-colegio-ingles/charges-school/charges-school.module';
+import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
+import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CreditNoteSchool, BranchOfficeSetting, BranchOffice], ColegioDBNameConnection), ConfigModule,
-  //forwardRef(() =>SchoolChargesInvoiceModule)
-  SchoolChargesInvoiceModule
+  SchoolChargesInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule
   ],
   controllers: [CreditNoteSchoolController],
   providers: [CreditNoteSchoolService, SmartWeb],

@@ -14,7 +14,6 @@ import {
 import { Crud, CrudController } from '@nestjsx/crud';
 import { XmlReceptorAttribute } from '@signati/core';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
-import { AcademyChargeInvoice } from '../academy/charges-academy/academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteAcademyService, InvoiceSat } from './credit-note-academy.service';
@@ -25,6 +24,10 @@ import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { User } from '../system/users/entities/user.entity';
 import { AcademyChargeInvoiceService } from '../academy/charges-academy/academy-charge-invoice/academy-charge-invoice.service';
+import { readFileSync, writeFileSync } from 'fs';
+import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
+import { BranchOfficeService } from '../system/branch-office/branch-office.service';
+import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
 
 @Crud({
     model: {
@@ -51,7 +54,9 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         readonly service: CreditNoteAcademyService, 
         readonly configService: ConfigService, 
         readonly smartWebService: FactSw,
-        readonly academyChargeInvoiceService: AcademyChargeInvoiceService
+        readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
+        readonly branchOffice: BranchOfficeService,
+        readonly branchOfficeSettingService: BranchOfficeSettingService,
         ) {
     }
 
@@ -190,5 +195,140 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
+
+    @Post('cancel-invoice')
+  async cancelInvoiceSwSmartweb(
+    @Body() cancelInvoiceSw: CancelInvoiceSwDto,
+    @Res() res,
+  ) {
+    try {
+      const results = await this.service.repo
+        .createQueryBuilder('credit')
+        .leftJoinAndSelect('credit.invoicesAcademy', 'invoicesAcademy')
+        .select(['credit.id', 'credit.uuid', 'invoicesAcademy.id'])
+        .where('credit.id = :id', {
+          id: cancelInvoiceSw.invoiceId,
+        })
+        .getMany();
+
+      if (typeof results === 'undefined' || results.length === 0) {
+        throw new HttpException(
+          'Not Found Invoice',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const invoice = results[0];
+
+      const currentBranch = await this.branchOffice.findBranch(
+        cancelInvoiceSw.branchOfficeId,
+      );
+
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: cancelInvoiceSw.branchOfficeSettingId,
+        },
+      });
+
+      const cer = readFileSync(
+        `${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD,
+      ).toString('base64');
+      const key = readFileSync(
+        `${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD,
+      ).toString('base64');
+
+      const result = await this.smartWebService.cancelarCSD({
+        rfc: branchOfficeSett.rfc,
+        password: branchOfficeSett.password,
+        uuid: invoice.uuid,
+        cer,
+        key,
+        motivo: cancelInvoiceSw.motivo,
+        folioSustitucion: cancelInvoiceSw.folioSustitucion,
+      });
+
+      const status = result.data.uuid[invoice.uuid.toUpperCase()];
+      /** Nuevos estados para la venta:
+       * 0.- Sin facturar
+       * 1.- Facturado
+       * 2.- Cancelado
+       * 3.- En cola
+       * 4.- Rechazado
+       */
+      
+      if (
+        status === '201' ||
+        +status === 201 ||
+        status === '202' ||
+        +status === 202
+      ) {
+        
+        writeFileSync(
+          `${this.configService.getPath()}comprobantes/notas-credito/` +
+            invoice.uuid.toUpperCase() +
+            '-acuse.xml',
+          result.data.acuse,
+        );
+
+        if (cancelInvoiceSw.sendMail) {
+          for (const email of cancelInvoiceSw.mails) {
+            const sendMails = this.service.sendMailCancelacion(
+              currentBranch,
+              invoice.uuid,
+              email,
+              cancelInvoiceSw.subject,
+              cancelInvoiceSw.body,
+            );
+          }
+        }
+
+        const objUpdate =  {
+          status: 2,
+          reasonCancellation: cancelInvoiceSw.reason,
+          cancellationDate: new Date(),
+          agentCanceling: {
+            id: cancelInvoiceSw.cashierId,
+          } as User,
+        }
+
+        const updateInvoice = await this.service.repo.update(
+          { id: invoice.id }, objUpdate
+         ,
+        );
+        
+
+        res
+          .send({
+            msg: 'Cancelado',
+            invoice: {
+              ...invoice,
+              ...objUpdate,
+              invoicesAcademy: invoice.invoicesAcademy.map((i) => {
+                return { id: i.id };
+              }),
+            },
+          })
+          .status(200);
+      }
+      if (status === '203' || +status === 203) {
+        res
+          .send({
+            msg: 'Error',
+            invoice: '',
+          })
+          .status(400);
+      }
+      if (status === '205' || +status === 205) {
+        res
+          .send({
+            msg: 'Error',
+            invoice: '',
+          })
+          .status(400);
+      }
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  }
 
 }
