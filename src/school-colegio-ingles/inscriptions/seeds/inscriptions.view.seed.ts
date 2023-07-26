@@ -11,6 +11,7 @@ export default class InscriptionsViewSeeds implements Seeder {
             ins.id AS inscriptionId,
             ins.id_status AS inscriptionStatus,
             al.id AS studentId,
+            al.statusStudentInscription as studentStatus,
             al.matricula AS studentRegistration,
             CONCAT(al.nombre, ' ', al.ap_paterno, ' ', al.ap_materno) AS studentName,
     		nv.id AS levelId,
