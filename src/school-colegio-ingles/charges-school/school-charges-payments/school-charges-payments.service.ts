@@ -6,8 +6,12 @@ import { Connection, In, Repository } from 'typeorm';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { QuerySchoolPaymentBilling } from '../../school-payments/interfaces/InvoiceSchoolPayment.interface';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
-import { SchoolChargesMethodsPayments } from '../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
-import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import {
+    SchoolChargesMethodsPayments
+} from '../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
+import {
+    QuerySimpleReport
+} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
 import * as moment from 'moment';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -19,7 +23,7 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
-import { XmlComprobante } from '@signati/core';
+import { RegimenFiscalList, XmlComprobante } from '@signati/core';
 import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { A117 } from '../../../pdf/A117/desing/A117';
@@ -27,9 +31,13 @@ import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
-import {IQueryReportSchoolPayment} from './types/IReport';
+import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { IQueryReportSchoolPayment } from './types/IReport';
 import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-store-sales/types/IReport';
+import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
+import { Recibo } from "../../../common/pdfmake/Recibo";
+import { AttachmentsType } from "../../../types";
+import { ReceiptTemplate } from "../../../templates/receipt";
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -180,33 +188,40 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     }
 
     public async reportSchoolPayment({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
-        usersIds,
-                                 }: IQueryReportSchoolPayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_sch_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+                                         status,
+                                         startDate,
+                                         endDate,
+                                         cycleId,
+                                         branchOfficeId,
+                                         codigoPago,
+                                         usersIds,
+                                     }: IQueryReportSchoolPayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT *
+                           FROM vw_sch_payments
+                           where p_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND v_status = 2`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND p_state = ${status}`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
-        if(usersIds && usersIds.length > 0){
-            const user = usersIds.map((u) => {return parseInt(`${u}`)})
-            if(status && status == 4){
+        if (usersIds && usersIds.length > 0) {
+            const user = usersIds.map((u) => {
+                return parseInt(`${u}`)
+            })
+            if (status && status == 4) {
                 queryString = `${queryString} AND p_cancelation_id in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND p_cashier_id in (${user.join(',')})`;}
+            } else {
+                queryString = `${queryString} AND p_cashier_id in (${user.join(',')})`;
+            }
         }
         try {
             return this.connection.query(queryString);
@@ -218,25 +233,29 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     }
 
     public async reportSchoolPaymentInvoice({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
+                                                status,
+                                                startDate,
+                                                endDate,
+                                                cycleId,
+                                                branchOfficeId,
+                                                codigoPago,
                                             }: IQueryReportSchoolPayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_sch_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
+        let queryString = `SELECT *
+                           FROM vw_sch_payments
+                           where f_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND p_income > 0
+                             AND v_status = 2`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND f_status = ${status}`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
         }
         try {
@@ -249,12 +268,15 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     }
 
     public async reportSalesSchool({
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
+                                       startDate,
+                                       endDate,
+                                       cycleId,
+                                       branchOfficeId,
                                    }: IQueryReportSaleTodayOp): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_sch_sales where v_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+        let queryString = `SELECT *
+                           FROM vw_sch_sales
+                           where v_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND v_status = 2`;
 
         if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
@@ -271,7 +293,9 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         }
     }
 
-    public async simpleReport(payments: SchoolChargePayment[], sales: SchoolCharge[], query: any, options?: { base64: boolean }): Promise<string | any> {
+    public async simpleReport(payments: SchoolChargePayment[], sales: SchoolCharge[], query: any, options?: {
+        base64: boolean
+    }): Promise<string | any> {
         const cashiersAndSales = await this.userRepository.find({
             relations: ['schoolChargesPayments', 'department', 'role'],
         });
@@ -364,16 +388,16 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const qr = `
-        SELECT *
-        FROM vw_my_sch_payments vw
-        WHERE (vw.f_status IS NULL OR vw.f_status = '0')
-          AND vw.p_stamping = '0'
-          AND vw.v_status = '2'
-          AND vw.p_state != '4'
+            SELECT *
+            FROM vw_my_sch_payments vw
+            WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+              AND vw.p_stamping = '0'
+              AND vw.v_status = '2'
+              AND vw.p_state != '4'
           AND vw.p_income > 0
           AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}'
-    `
-        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length 
+        `
+        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length
             ? `${qr} AND vw.p_id IN (${query.ids.join(',')});`
             : `${qr};`);
 
@@ -437,7 +461,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         try {
             return this.connection.query(`
                 UPDATE school_charge_payments p
-                SET stamping = 1, globalUuid = '${uuid}'
+                SET stamping   = 1,
+                    globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {
@@ -524,4 +549,106 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             });
         return await result.getMany();
     }
+
+    public async createReceipt(result: any, branchOfficeSett: any, student: any, invoiceDetails: any) {
+        const logo = readFileSync(
+            `${this.configService.getPath()}logos/colegiologo.png`,
+        );
+
+        const Receip = new Recibo();
+
+        Receip.setType(InvoiceModules.SCHOOL);
+
+        Receip.addLogo({
+            width: 100,
+            height: 100,
+            image: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+
+        Receip.addFolio(result.payment.folio);
+
+        Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+
+        const regimen = RegimenFiscalList.find(
+            (f) => f.value === branchOfficeSett.regime,
+        );
+
+        if (regimen !== undefined) {
+            Receip.addEmisor({
+                name: branchOfficeSett.businessName,
+                rfc: branchOfficeSett.rfc,
+                regimen:
+                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                expedido: branchOfficeSett.address,
+            });
+        }
+
+        const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
+
+        Receip.addReceptor({
+            name,
+            curp: student.curp ? student.curp : '',
+            matricula: student.matricula,
+            type: InvoiceModules.SCHOOL
+        });
+
+        const ven =
+            result.payment.cashierCharge.name +
+            ' ' +
+            result.payment.cashierCharge.lastnameFather +
+            ' ' +
+            result.payment.cashierCharge.lastnameMother;
+
+        Receip.addInformacion({
+            vendedor: ven,
+        });
+
+        Receip.addCatidad({
+            ...invoiceDetails.totals.receipt
+        });
+
+        Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
+
+        Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
+
+        Receip.addObervations(result.payment.observations);
+
+        const forma = result.payment.methodsPayments.map((m) => {
+            return {
+                forma: m.invoiceMethodPayment.name,
+                cantidad: roundQuantity(m.quantity),
+                banco: m.Bank ? m.Bank.name : '',
+                cuenta: m.account,
+                fecha: m.date,
+            };
+        });
+
+        Receip.addFormaPago(forma);
+
+        return Receip
+    }
+
+    async sendReceipt(branch: BranchOffice, attachments: AttachmentsType[], email: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: branch.Email,
+                pass: branch.EmailPass,
+            },
+        });
+
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: branch.Email,
+            subject: 'Confirmación de Pago y Envío de Comprobante',
+            html: ReceiptTemplate,
+            attachments,
+        };
+
+        return await transporter.sendMail(mailOptions);
+    }
+
 }

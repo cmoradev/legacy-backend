@@ -868,7 +868,6 @@ export class ReciboDouble {
 
 
     public addLogo(logo: any) {
-
         if (logo) {
             if (typeof logo === 'object') {
                 this.docDefinition.content[0].columns[0] = {
@@ -981,7 +980,7 @@ export class ReciboDouble {
         this.docDefinition.content[1].columns[0].text[2] = { text: receptor.matricula + '\n' }
         this.docDefinition.content[1].columns[0].text[4] = { text: receptor.name + '\n' }
         this.docDefinition.content[1].columns[0].text[6] = { text: receptor.curp + '\n' }
-        
+
         this.docDefinition.content[6].columns[0].text[2] = { text: receptor.matricula + '\n' }
         this.docDefinition.content[6].columns[0].text[4] = { text: receptor.name + '\n' }
         this.docDefinition.content[6].columns[0].text[6] = { text: receptor.curp + '\n' }

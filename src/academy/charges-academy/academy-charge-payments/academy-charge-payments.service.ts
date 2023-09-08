@@ -2,9 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { Connection, Repository, In } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
-import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
+import {
+    QuerySimpleReport
+} from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
@@ -13,9 +15,10 @@ import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
+import {
+    AcademyChargeMethodsPayments
+} from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { ConfigService } from '../../../common/config/config.service';
-import moment = require('moment');
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
@@ -23,12 +26,17 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { XmlComprobante } from '@signati/core';
+import { RegimenFiscalList, XmlComprobante } from '@signati/core';
 import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import {sumQuantity} from '../../../common/point-of-sale/point-of-sale';
-import {IQueryReportAcademiaPayment} from './types/IReports';
+import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { IQueryReportAcademiaPayment } from './types/IReports';
+import { Recibo } from "../../../common/pdfmake/Recibo";
+import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
+import moment = require('moment');
+import { AttachmentsType } from "../../../types";
+import { ReceiptTemplate } from "../../../templates/receipt";
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChargePayments> {
@@ -53,7 +61,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -85,10 +93,10 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.invoiceStatus) {
-                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
+                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', {invoiceStatus: query.invoiceStatus});
             }
             if (query.cashier) {
-                paymentsQueryBuilder.andWhere('cashierCharge.id = :agentID', { agentID: query.cashier });
+                paymentsQueryBuilder.andWhere('cashierCharge.id = :agentID', {agentID: query.cashier});
             }
         }
         return await paymentsQueryBuilder.getMany();
@@ -122,7 +130,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesQueryBuilder.andWhere('cashier.id = :agentID', { agentID: query.cashier });
+                salesQueryBuilder.andWhere('cashier.id = :agentID', {agentID: query.cashier});
             }
         }
         return await salesQueryBuilder.getMany();
@@ -141,7 +149,9 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         return cashiers;
     }
 
-    async simpleReport(payments: AcademyChargePayments[], sales: AcademyCharge[], options?: { base64: boolean }): Promise<string | any> {
+    async simpleReport(payments: AcademyChargePayments[], sales: AcademyCharge[], options?: {
+        base64: boolean
+    }): Promise<string | any> {
 
         const cashiersAndSales = await this.userRepository.find({
             relations: ['academyChargesPayments', 'department', 'role'],
@@ -230,8 +240,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     }
 
     async updatePayment(data: AcademyChargePayments) {
-        let payment = await this.repo.findOne({ id: data.id });
-        payment = { ...data };
+        let payment = await this.repo.findOne({id: data.id});
+        payment = {...data};
         return await this.repo.save(payment);
     }
 
@@ -269,9 +279,9 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
 
     async countTotalPayments(dateStart: string, dateEnd: string, ciclyId: number, branchOfficeId: number) {
         return await this.repo.createQueryBuilder('payments')
-            .leftJoinAndSelect('payments.academyPaymentOffice', 'academyPaymentOffice', 'academyPaymentOffice.id=:branchOfficeId', { branchOfficeId })
+            .leftJoinAndSelect('payments.academyPaymentOffice', 'academyPaymentOffice', 'academyPaymentOffice.id=:branchOfficeId', {branchOfficeId})
             .leftJoinAndSelect('payments.academyCharge', 'academyCharge')
-            .leftJoinAndSelect('academyCharge.chargeCycle', 'chargeCycle', 'chargeCycle.id=:cycleId', { cycleId: ciclyId })
+            .leftJoinAndSelect('academyCharge.chargeCycle', 'chargeCycle', 'chargeCycle.id=:cycleId', {cycleId: ciclyId})
             .select('SUM(payments.quantity-payments.change)', 'sum')
             .where(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
@@ -329,16 +339,16 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
 
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const qr = `
-        SELECT *
-        FROM vw_my_aca_payments vw
-        WHERE (vw.f_status IS NULL OR vw.f_status = '0')
-          AND vw.p_stamping = '0'
-          AND vw.v_status = '2'
-          AND vw.p_state != '4'
+            SELECT *
+            FROM vw_my_aca_payments vw
+            WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+              AND vw.p_stamping = '0'
+              AND vw.v_status = '2'
+              AND vw.p_state != '4'
           AND vw.p_income > 0
           AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}'
-    `
-        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length 
+        `
+        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length
             ? `${qr} AND vw.p_id IN (${query.ids.join(',')});`
             : `${qr};`);
 
@@ -402,7 +412,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
         try {
             return this.connection.query(`
                 UPDATE ac_charge_payments p
-                SET stamping = 1, globalUuid = '${uuid}'
+                SET stamping   = 1,
+                    globalUuid = '${uuid}'
                 WHERE p.id IN (${ids.join(',')});
             `);
         } catch (e) {
@@ -436,33 +447,40 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     }
 
     public async reportAcademiaPayment({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
-        usersIds,
+                                           status,
+                                           startDate,
+                                           endDate,
+                                           cycleId,
+                                           branchOfficeId,
+                                           codigoPago,
+                                           usersIds,
                                        }: IQueryReportAcademiaPayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_aca_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND v_status = 2`;
+        let queryString = `SELECT *
+                           FROM vw_aca_payments
+                           where p_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND v_status = 2`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND p_state = ${status}`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
-        if(usersIds && usersIds.length > 0){
-            const user = usersIds.map((u) => {return parseInt(`${u}`)})
-            if(status && status == 4){
+        if (usersIds && usersIds.length > 0) {
+            const user = usersIds.map((u) => {
+                return parseInt(`${u}`)
+            })
+            if (status && status == 4) {
                 queryString = `${queryString} AND cancelation_id in (${user.join(',')})`;
-            }else {queryString = `${queryString} AND cashier_id in (${user.join(',')})`;}
+            } else {
+                queryString = `${queryString} AND cashier_id in (${user.join(',')})`;
+            }
         }
         try {
             return this.connection.query(queryString);
@@ -474,25 +492,29 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
     }
 
     public async reportAcademiaPaymentInvoice({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
+                                                  status,
+                                                  startDate,
+                                                  endDate,
+                                                  cycleId,
+                                                  branchOfficeId,
+                                                  codigoPago,
                                               }: IQueryReportAcademiaPayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_aca_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
+        let queryString = `SELECT *
+                           FROM vw_aca_payments
+                           where f_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND p_income > 0
+                             AND v_status = 2`;
 
-        if(status){
+        if (status) {
             queryString = `${queryString} AND f_status = '${status}'`;
         }
-        if(cycleId){
+        if (cycleId) {
             queryString = `${queryString} AND v_cycle = ${cycleId}`;
         }
-        if(branchOfficeId){
+        if (branchOfficeId) {
             queryString = `${queryString} AND v_branch_office = ${branchOfficeId}`;
         }
-        if(codigoPago){
+        if (codigoPago) {
             queryString = `${queryString} AND f_metodo_pago_codigo = ${codigoPago}`;
         }
         try {
@@ -525,5 +547,112 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<AcademyChar
                 UUID: params.uuid,
             });
         return await result.getMany();
+    }
+
+    async sendReceipt(branch: BranchOffice, attachments: AttachmentsType[], email: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: branch.Email,
+                pass: branch.EmailPass,
+            },
+        });
+
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: branch.Email,
+            subject: 'Confirmación de Pago y Envío de Comprobante',
+            html: ReceiptTemplate,
+            attachments,
+        };
+
+        return await transporter.sendMail(mailOptions);
+    }
+
+    public async createReceipt(result: any, branchOfficeSett: any, invoiceFind: any, invoiceDetails: any) {
+        const logo = readFileSync(`${this.configService.getPath()}logos/academiaslogo.png`);
+
+        const Receip = new Recibo();
+
+        Receip.setType(InvoiceModules.ACADEMY);
+
+        Receip.addLabel();
+
+        Receip.addLogo({
+            width: 100,
+            height: 100,
+            image: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+
+        Receip.addFolio(result.payment.folio);
+
+        Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+
+        const regimen = RegimenFiscalList.find(
+            (f) => f.value === branchOfficeSett.regime,
+        );
+
+        if (regimen !== undefined) {
+            Receip.addEmisor({
+                name: branchOfficeSett.businessName,
+                rfc: branchOfficeSett.rfc,
+                regimen:
+                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                expedido: branchOfficeSett.address,
+            });
+        }
+
+        let name = '';
+
+        if (result.payment.stamping == 0 || invoiceFind == undefined) {
+            name = `${result.charge.schoolStudent.name} ${result.charge.schoolStudent.lastNameFather} ${result.charge.schoolStudent.lastNameMother} `;
+        } else {
+            name = invoiceFind.businessName
+        }
+
+        Receip.addReceptor({
+            name,
+            curp: result.payment.stamping == 0 || invoiceFind == undefined ? 'XAXX010101000' : invoiceFind.rfc,
+            matricula: result.charge.schoolStudent.matricula,
+            type: InvoiceModules.ACADEMY
+        });
+
+        const ven =
+            result.payment.cashierCharge.name +
+            ' ' +
+            result.payment.cashierCharge.lastnameFather +
+            ' ' +
+            result.payment.cashierCharge.lastnameMother;
+
+        Receip.addInformacion({
+            vendedor: ven,
+        });
+
+        Receip.addCatidad({
+            ...invoiceDetails.totals.receipt
+        });
+
+        Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
+
+        Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
+
+        Receip.addObervations(result.payment.observations);
+
+        const forma = result.payment.methodsPayments.map((m) => {
+            return {
+                forma: m.invoiceMethodPayment.name,
+                cantidad: roundQuantity(m.quantity),
+                banco: m.Bank ? m.Bank.name : '',
+                cuenta: m.account,
+                fecha: m.date,
+            };
+        });
+
+        Receip.addFormaPago(forma);
+
+        return Receip;
     }
 }

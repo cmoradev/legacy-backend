@@ -15,7 +15,6 @@ import { Transaction } from '../../../system/transaction/entities/transaction.en
 
 @Entity('alumnos')
 export class Student extends Base {
-
     @Column('varchar', {
         nullable: false,
         length: 100,
@@ -91,14 +90,11 @@ export class Student extends Base {
     })
     searchName: string;
 
-    /**
-     * @Deprecated
-     */
-    /*olumn('int', {
-        nullable: false,
-        name: 'id_familia',
-    })
-    idFamily: number;*/
+    @Column('varchar', {nullable: false,})
+    email: string;
+
+    @Column('boolean', {nullable: false,})
+    notify: boolean;
 
     @Column({
         type: 'simple-enum',
@@ -108,16 +104,6 @@ export class Student extends Base {
         default: TypeStudent.student,
     })
     typeStudent: TypeStudent;
-
-    /**
-     * @Deprecated
-     */
-    /*
-    @Column('int', {
-        nullable: false,
-        name: 'id_plantel',
-    })
-    idCampus: number;*/
 
     @Column('text', {
         nullable: true,
@@ -164,7 +150,7 @@ export class Student extends Base {
         enum: StudentInscriptionStatus,
         default: StudentInscriptionStatus.activated,
         nullable: false,
-        name:'statusStudentInscription'
+        name: 'statusStudentInscription'
     })
     statusStudent: StudentInscriptionStatus;
 
