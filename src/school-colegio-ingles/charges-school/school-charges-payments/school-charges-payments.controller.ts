@@ -148,11 +148,9 @@ export class SchoolChargesPaymentsController
 
             const base64 = await receipt.getBase64();
 
-            const content = Buffer.from(base64, 'base64');
-
             res.send({
-                src: content
-            });
+                src: `data:application/pdf;base64,${base64}`
+            })
         } catch (e: any) {
             console.warn(e);
 
