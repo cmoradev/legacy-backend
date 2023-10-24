@@ -58,8 +58,8 @@ export const getDataMatrizPayments = (data: VWPaymentExtraCharge[], type: Invoic
                 );
             }
             imethodsPayments = dataMatriz.methodsPayments.findIndex((m) => m.id == (
-                isInvoice 
-                ? parseInt(d.f_metodo_pago_codigo != null ? d.f_metodo_pago_codigo : d.p_metodo_pago_codigo) 
+                isInvoice
+                ? parseInt(d.f_metodo_pago_codigo != null ? d.f_metodo_pago_codigo : d.p_metodo_pago_codigo)
                 : parseInt(d.p_metodo_pago_codigo)));
 
             if (iCashier == -1) {
@@ -231,8 +231,7 @@ export const getMatrizPayments = (payments: SchoolChargePayment[] | MiniStoreSal
 }
 
 export const getDataCharges = (data: VWPaymentExtraCharge[] = [], type: InvoiceModules, isSale: boolean = false) => {
-
-    return data.map((d: any) => {
+    return data?.map((d: any) => {
         const objDetailsExtra = getExtraChargesDetails(d);
         const detailsGlobal = [];
         objDetailsExtra.forEach((obj) => {
@@ -293,6 +292,7 @@ export const getDataCharges = (data: VWPaymentExtraCharge[] = [], type: InvoiceM
 export const getDataFullMatrizAndData = (result: VWPaymentExtraCharge[] = [], type: InvoiceModules, isInvoice: boolean = false, status: number) => {
     const dataMatriz = getDataMatrizPayments(result, type, isInvoice, status);
     const matriz = getMatrizPayments(dataMatriz.payments, dataMatriz.cashiers, dataMatriz.methodsPayments, type);
+
     let data = getDataCharges(result, type);
     data.forEach((d, i) => {
         const totalsPayments = Decimal.add(d.p_total_without_current != null ? d.p_total_without_current : 0, d.p_income);
