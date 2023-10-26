@@ -2,16 +2,16 @@ import {
     Body,
     Controller,
     Delete,
+    Get,
     NotFoundException,
     Param,
     ParseIntPipe,
     Post,
     Put,
+    Query,
     Res,
     UsePipes,
-    ValidationPipe,
-    Get,
-    Query
+    ValidationPipe
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
@@ -20,16 +20,17 @@ import {
     InvoiceMethodsPaymentsService
 } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import { GenerateGlobalInvoiceMunyaal, GenerateInvoiceMunyaal } from '../../../common/utils/invoice/generator/generateInvoice';
+import {
+    GenerateGlobalInvoiceMunyaal,
+    GenerateInvoiceMunyaal
+} from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { readFileSync } from 'fs';
-import { FormaPago, RegimenFiscalList } from '@signati/core';
+import { FormaPago } from '@signati/core';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../common/config/config.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
@@ -37,14 +38,17 @@ import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
-import { Recibo } from '../../../common/pdfmake/Recibo';
-import * as moment from 'moment';
-import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as ExportacionEnumMunyaal } from '@munyaal/cfdi';
+import {
+    ExportacionEnum as ExportacionEnumMunyaal,
+    MetodoPagoEnum,
+    MonedaEnum,
+    TipoComprobanteEnum
+} from '@munyaal/cfdi';
+import { AttachmentsType } from "../../../types";
 
 @Crud({
     model: {
@@ -58,11 +62,11 @@ import { MetodoPagoEnum, MonedaEnum, TipoComprobanteEnum, ExportacionEnum as Exp
         },
         limit: 10,
         join: {
-            agent: { eager: false },
-            miniStoreSaleMethodPayments: { eager: false },
-            'miniStoreSaleMethodPayments.invoiceMethodPayment': { eager: false },
-            miniStoreInvoices: { eager: false },
-            miniStoreSale: { eager: false },
+            agent: {eager: false},
+            miniStoreSaleMethodPayments: {eager: false},
+            'miniStoreSaleMethodPayments.invoiceMethodPayment': {eager: false},
+            miniStoreInvoices: {eager: false},
+            miniStoreSale: {eager: false},
         },
     },
 })
@@ -172,7 +176,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         id: query.salePaymentId,
                         stamping: 1,
                     } as MiniStoreSalePayment);
-                    
+
                     invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
                     invoiceFind.status = 1;
                     invoiceFind.total = parseFloat(timbrado.Total);
@@ -239,10 +243,10 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                     invoice.status = 1;
                     invoice.total = parseFloat(timbrado.Total);
                     const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
-                    
+
                     // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
                     await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-                    
+
                     respuesta.stamping = true;
                     respuesta.msg = 'Pago Facturado';
                     respuesta.invoice = resultInvoiceFirst;
@@ -260,11 +264,11 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         }
     }
 
-    @Post('/receipt')
-    async billingGet(@Body() query: any, @Res() res) {
-        let error: any[] = []
+    @Post('/send-receipt')
+    public async sendReceipt(@Body() query: any, @Res() res) {
         try {
             const result = await this.service.findSaleByPayment(query);
+
             const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
                 payment: result.payment,
                 details: result.sale.miniStoreSaleDetails,
@@ -273,6 +277,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             });
 
             let invoiceFind = undefined;
+
             if (query.salePaymentId != 0 && result.payment.globalUuid == null) {
                 invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
                     paymentId: query.salePaymentId,
@@ -286,79 +291,75 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 },
             });
 
-            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
-            const Receip = new Recibo();
-            Receip.setType(InvoiceModules.STORE);
+            const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
 
-            if (result.sale.statusSale != PaymentStatus.quotation) {
-                Receip.addLabel();
-            } else {
-                Receip.addLabelQuote();
-            }
-            Receip.addLogo({
-                width: 100,
-                height: 100,
-                image: `data:image/png;base64, ${logo.toString('base64')}`,
-            }) == false ? error.push(`error al agregar el logo`) : null;
-            Receip.addFolio(result.payment.folio) == false ? error.push(`error al agregar el folio`) : null;
-            Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD')) == false ? error.push(`error al agregar la fecha`) : null;
-            const regimen = RegimenFiscalList.find(
-                (f) => f.value === branchOfficeSett.regime,
-            );
-            if (regimen == undefined) {
-                error.push(`error: no se encontro el regimen fiscal del modulo, valide su configuración`)
-            } else {
-                Receip.addEmisor({
-                    name: branchOfficeSett.businessName,
-                    rfc: branchOfficeSett.rfc,
-                    regimen:
-                        branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
-                    expedido: branchOfficeSett.address,
-                }) == false ? error.push(`error al agregar los datos del emisor`) : null;
-            }
-            let name = '';
-            if (result.payment.stamping == 0 || invoiceFind == undefined) {
-                name = `${result.sale.student.name} ${result.sale.student.lastNameFather} ${result.sale.student.lastNameMother} `;
-            } else {
-                name = invoiceFind.businessName
-            }
-            Receip.addReceptor({
-                name,
-                curp: result.payment.stamping == 0 || invoiceFind == undefined ? 'XAXX010101000' : invoiceFind.rfc,
-                matricula: result.sale.student.matricula,
-                type: InvoiceModules.STORE
-            }) == false ? error.push(`error al agregar los datos del receptor`) : null;
-            const ven =
-                result.payment.agent.name +
-                ' ' +
-                result.payment.agent.lastnameFather +
-                ' ' +
-                result.payment.agent.lastnameMother;
-            Receip.addInformacion({
-                vendedor: ven,
-            }) == false ? error.push(`error al agregar los datos del vendedor`) : null;
-            Receip.addCatidad({
-                ...invoiceDetails.totals.receipt
-            });
-            Receip.addDetalles(invoiceDetails.concepts.conceptsMiniStore);
-            Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
-            Receip.addObervations(result.payment.observations);
-            const forma = result.payment.miniStoreSaleMethodPayments.map((m) => {
-                return {
-                    forma: m.invoiceMethod.name,
-                    cantidad: roundQuantity(m.quantity),
-                    banco: m.Bank ? m.Bank.name : '',
-                    cuenta: m.account,
-                    fecha: m.date,
-                };
-            });
-            Receip.addFormaPago(forma);
+            const receipt = await this.service.createReceipt(result, branchOfficeSett, invoiceFind, invoiceDetails);
+
+            const attachments: AttachmentsType[] = [];
+
+            const base64 = await receipt.getBase64();
+
+            const content = Buffer.from(base64, 'base64');
+
+            const filename = `Comprobante-Pago.pdf`.toLowerCase().split(' ').join('-');
+
+            attachments.push({filename, content});
+
+            const data = this.service.sendReceipt(branchOffice, attachments, query.email);
+
+            res.send(data);
+        } catch (e: any) {
+            console.warn(e);
+
+            res.status(404);
+
             res.send({
-                src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
+                error: e,
             });
-        } catch (e) {
+        }
+    }
+
+    @Post('/receipt')
+    public async billingGet(@Body() query: any, @Res() res) {
+        try {
+            const result = await this.service.findSaleByPayment(query);
+
+            const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
+                payment: result.payment,
+                details: result.sale.miniStoreSaleDetails,
+                type: InvoiceModules.STORE,
+                typeConcept: 'Recepit',
+            });
+
+            let invoiceFind = undefined;
+
+            if (query.salePaymentId != 0 && result.payment.globalUuid == null) {
+                invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
+                    paymentId: query.salePaymentId,
+                    status: StatusInvoce.invoiced,
+                });
+            }
+
+            const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+                where: {
+                    id: query.branchOfficeSettingId,
+                },
+            });
+
+            const receipt = await this.service.createReceipt(result, branchOfficeSett, invoiceFind, invoiceDetails);
+
+            const base64 = await receipt.getBase64();
+
             res.send({
-                error: error,
+                src: `data:application/pdf;base64,${base64}`
+            })
+        } catch (e: any) {
+            console.warn(e);
+
+            res.status(404);
+
+            res.send({
+                error: e,
             });
         }
     }
@@ -394,7 +395,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
 
             const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-                where: { id: query.branchOfficeId }
+                where: {id: query.branchOfficeId}
             });
 
             let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
@@ -406,9 +407,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 env: this.env,
                 folio: invoice.folio,
                 infoGlobal: {
-                  periodicity: query.periodicity,
-                  month: query.month,
-                  year: query.year,
+                    periodicity: query.periodicity,
+                    month: query.month,
+                    year: query.year,
                 },
                 percentageTax: '0.16',
                 type: InvoiceModules.STORE,
@@ -416,7 +417,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 Exportacion: ExportacionEnumMunyaal.E01,
                 MetodoPago: MetodoPagoEnum.PUE,
                 Moneda: MonedaEnum.MXN,
-              });
+            });
 
             const uuid = timbrado.data.uuid.toUpperCase();
 
@@ -463,7 +464,16 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                 const miniStoreSaleDetails = [];
                 let folio = '';
                 result.forEach((p, index) => {
-                    miniStoreSaleDetails.push(...p.miniStoreSale.miniStoreSaleDetails.map((s)=>{return {...s, miniStoreSale:{ id: p.miniStoreSale.id, folio: p.miniStoreSale.folio, miniStoreSalePayments: { id: p.id, folio: p.folio } }, }}));
+                    miniStoreSaleDetails.push(...p.miniStoreSale.miniStoreSaleDetails.map((s) => {
+                        return {
+                            ...s,
+                            miniStoreSale: {
+                                id: p.miniStoreSale.id,
+                                folio: p.miniStoreSale.folio,
+                                miniStoreSalePayments: {id: p.id, folio: p.folio}
+                            },
+                        }
+                    }));
                     folio = index == 0 ? p.miniStoreSale.folio : `${folio}, ${p.miniStoreSale.folio}`
                 });
                 const obj: MiniStoreInvoice = {

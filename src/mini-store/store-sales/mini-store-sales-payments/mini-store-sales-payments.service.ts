@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository, In } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { User } from '../../../system/users/entities/user.entity';
@@ -12,11 +12,12 @@ import { QueryBilling, QuerySimpleReport } from './interface/InvoiceMiniStore.in
 import * as nodemailer from 'nodemailer';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import Mail from 'nodemailer/lib/mailer';
-import { MiniStoreSaleMethodPayment } from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
+import {
+    MiniStoreSaleMethodPayment
+} from '../mini-store-sales-methods-payments/entities/mini-store-sale-method-payment.entity';
 import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
-import moment = require('moment');
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
@@ -26,13 +27,19 @@ import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { readFileSync, writeFileSync } from 'fs';
 import { PDF, XmlToJson } from '@signati/pdf';
-import { XmlComprobante } from '@signati/core';
+import { RegimenFiscalList, XmlComprobante } from '@signati/core';
 import { A117 } from '../../../pdf/A117/desing/A117';
-import { sumQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { IQueryReportStorePayment } from './types/IReports';
 import { SimpleReport } from './reports/simple.report';
+import { Recibo } from "../../../common/pdfmake/Recibo";
+import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
+import { PaymentStatus } from "../../../common/enums/PaymentStatus";
+import { AttachmentsType } from "../../../types";
+import { ReceiptTemplate } from "../../../templates/receipt";
+import moment = require('moment');
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -44,7 +51,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         @InjectRepository(MiniStoreInvoice, ColegioDBNameConnection) readonly invoiceRepository: Repository<MiniStoreInvoice>,
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
-        // eliminar al cambiar los reporte del front
         @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
     ) {
         super(repo);
@@ -59,7 +65,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     public async softRestoreOne(id: number) {
-        const object = await this.repo.findOne({ id }, { withDeleted: true });
+        const object = await this.repo.findOne({id}, {withDeleted: true});
         if (!object) {
             throw new NotFoundException('This entity does not exists');
         }
@@ -69,7 +75,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     async countTotalPayments(dateStart: string, dateEnd: string, id: number) {
         return await this.repo.createQueryBuilder('payments')
             .select('SUM(payments.quantity)', 'sum')
-            .where('payments.cashierBillingId = :id', { id })
+            .where('payments.cashierBillingId = :id', {id})
             .andWhere(`DATE(payments.createdAt) BETWEEN '${dateStart}' AND '${dateEnd}'`)
             .getRawOne();
 
@@ -99,10 +105,10 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.invoiceStatus) {
-                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', { invoiceStatus: query.invoiceStatus });
+                paymentsQueryBuilder.andWhere('payment.stamping = :invoiceStatus', {invoiceStatus: query.invoiceStatus});
             }
             if (query.cashier) {
-                paymentsQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                paymentsQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
         return await paymentsQueryBuilder.getMany();
@@ -125,8 +131,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             });
             if (query.invoiceStatus) {
                 salesQueryBuilder.andWhere('payments.stamping= :invoiceStatus', {
-                    invoiceStatus: query.invoiceStatus,
-                },
+                        invoiceStatus: query.invoiceStatus,
+                    },
                 );
             }
             salesQueryBuilder.andWhere('payments.createdAt BETWEEN :startDate AND :endDate',
@@ -135,7 +141,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesQueryBuilder.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                salesQueryBuilder.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
 
@@ -156,7 +162,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         });
     }
 
-    async reportCommission(
+    public async reportCommission(
         quantityCommissions: number,
         payments: MiniStoreSalePayment[],
         sales: MiniStoreSale[],
@@ -190,8 +196,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
                 const result = await workbook.xlsx.writeBuffer({
-                    filename: (+new Date()).toString() + '.xlsx',
-                },
+                        filename: (+new Date()).toString() + '.xlsx',
+                    },
                 );
                 const buffer = Buffer.from(result);
                 const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
@@ -205,7 +211,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         }
     }
 
-    async findSaleByPayment(query: QueryBilling): Promise<{ sale: MiniStoreSale, payment: MiniStoreSalePayment, highestPayment: MiniStoreSaleMethodPayment }> {
+    async findSaleByPayment(query: QueryBilling): Promise<{
+        sale: MiniStoreSale,
+        payment: MiniStoreSalePayment,
+        highestPayment: MiniStoreSaleMethodPayment
+    }> {
         let sale = {} as MiniStoreSale;
         if (query.saleId != 0) {
             sale = await this.salesRepository.findOne({
@@ -237,7 +247,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             let quantitySum = 0;
             sale.miniStoreSaleDetails.forEach((d: MiniStoreSaleDetail) => {
                 let price = d.priceWithIVA
-                quantitySum = Decimal.add(quantitySum, Decimal.mul(price,d.quantity)).toNumber();
+                quantitySum = Decimal.add(quantitySum, Decimal.mul(price, d.quantity)).toNumber();
             });
             payment.quantity = quantitySum;
             payment.change = 0;
@@ -272,9 +282,32 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async updatePayment(data: MiniStoreSalePayment) {
-        let payment = await this.repo.findOne({ id: data.id });
-        payment = { ...data };
+        let payment = await this.repo.findOne({id: data.id});
+        payment = {...data};
         return await this.repo.save(payment);
+    }
+
+    async sendReceipt(branch: BranchOffice, attachments: AttachmentsType[], email: string) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: branch.Email,
+                pass: branch.EmailPass,
+            },
+        });
+
+        const mailOptions: Mail.Options = {
+            to: email,
+            from: branch.Email,
+            subject: 'Confirmación de Pago y Envío de Comprobante',
+            html: ReceiptTemplate,
+            attachments,
+        };
+
+        return await transporter.sendMail(mailOptions);
     }
 
     async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
@@ -307,31 +340,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             ],
         };
         return await transporter.sendMail(mailOptions);
-    }
-
-    public async saveXmlAndPdf(uuid: string, xml: string, address: string): Promise<XmlComprobante> {
-        try {
-            const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
-
-            const path = `${this.configService.getPath()}comprobantes/tienda/${uuid}.xml`;
-
-            writeFileSync(path, xml);
-
-            const cfdi = await XmlToJson(path);
-
-            const desingpdf = new A117(path, {
-                lugarExpedicion: address,
-                logo: `data:image/png;base64, ${logo.toString('base64')}`,
-            });
-
-            const pdf = new PDF<A117>(desingpdf);
-
-            await pdf.save(`${this.configService.getPath()}comprobantes/tienda/${uuid}`);
-
-            return cfdi['cfdi:Comprobante'] as XmlComprobante;
-        } catch (e) {
-            throw new NotFoundException('Could not save xml or pdf');
-        }
     }
 
     public async updateStampingPayments(ids: number[], uuid: string): Promise<any> {
@@ -398,16 +406,16 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
     public async notInvoiced(query: NotInvoicedDto): Promise<NotInvoiced[]> {
         const qr = `
-        SELECT *
-        FROM vw_my_tie_payments vw
-        WHERE (vw.f_status IS NULL OR vw.f_status = '0')
-          AND vw.p_stamping = '0'
-          AND vw.v_status = '2'
-          AND vw.p_state != '4'
+            SELECT *
+            FROM vw_my_tie_payments vw
+            WHERE (vw.f_status IS NULL OR vw.f_status = '0')
+              AND vw.p_stamping = '0'
+              AND vw.v_status = '2'
+              AND vw.p_state != '4'
           AND vw.p_income > 0
           AND vw.p_created_at BETWEEN '${query.startDate}' AND '${query.endDate}'
-    `
-        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length 
+        `
+        const data: NotInvoiced[] = await this.connection.query(query.ids && query.ids.length
             ? `${qr} AND vw.p_id IN (${query.ids.join(',')});`
             : `${qr};`);
 
@@ -442,8 +450,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             where: {
                 isGlobal: `${InvoiceGlobalEnum.IS_GLOBAL}`,
                 status: `${InvoiceStatus.Unbilled}`,
-                invoiceBranchOffice: { id: branchOffice.id },
-                invoiceBranchOfficeSet: { id: branchOfficeConfig.id },
+                invoiceBranchOffice: {id: branchOffice.id},
+                invoiceBranchOfficeSet: {id: branchOfficeConfig.id},
             }
         });
 
@@ -457,26 +465,30 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             payload.rfc = 'XAXX010101000';
             payload.status = InvoiceStatus.Unbilled;
             payload.isGlobal = InvoiceGlobalEnum.IS_GLOBAL;
-            payload.invoiceBranchOffice = { id: branchOffice.id } as BranchOffice;
-            payload.invoiceBranchOfficeSet = { id: branchOfficeConfig.id } as BranchOfficeSetting;
+            payload.invoiceBranchOffice = {id: branchOffice.id} as BranchOffice;
+            payload.invoiceBranchOfficeSet = {id: branchOfficeConfig.id} as BranchOfficeSetting;
             const invoice = await this.invoiceRepository.save(payload);
 
             return this.invoiceRepository.findOne({
-                where: { id: invoice.id }
+                where: {id: invoice.id}
             })
         }
     }
 
     public async reportStorePayment({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
-        usersIds,
-    }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_tie_payments where p_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
+                                        status,
+                                        startDate,
+                                        endDate,
+                                        cycleId,
+                                        branchOfficeId,
+                                        codigoPago,
+                                        usersIds,
+                                    }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT *
+                           FROM vw_tie_payments
+                           where p_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND p_income > 0
+                             AND v_status = 2`;
 
         if (status) {
             queryString = `${queryString} AND p_state = ${status}`;
@@ -491,10 +503,14 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             queryString = `${queryString} AND p_metodo_pago_codigo = ${codigoPago}`;
         }
         if (usersIds && usersIds.length > 0) {
-            const user = usersIds.map((u) => { return parseInt(`${u}`) })
+            const user = usersIds.map((u) => {
+                return parseInt(`${u}`)
+            })
             if (status && status == 4) {
                 queryString = `${queryString} AND p_cashier_id in (${user.join(',')})`;
-            } else { queryString = `${queryString} AND p_cancelation_id in (${user.join(',')})`; }
+            } else {
+                queryString = `${queryString} AND p_cancelation_id in (${user.join(',')})`;
+            }
         }
         try {
             return this.connection.query(queryString);
@@ -506,14 +522,18 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     public async reportStorePaymentInvoice({
-        status,
-        startDate,
-        endDate,
-        cycleId,
-        branchOfficeId,
-        codigoPago,
-    }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
-        let queryString = `SELECT * FROM vw_tie_payments where f_created_at BETWEEN '${startDate}' AND '${endDate}' AND p_income > 0 AND v_status = 2`;
+                                               status,
+                                               startDate,
+                                               endDate,
+                                               cycleId,
+                                               branchOfficeId,
+                                               codigoPago,
+                                           }: IQueryReportStorePayment): Promise<VWPaymentExtraCharge[]> {
+        let queryString = `SELECT *
+                           FROM vw_tie_payments
+                           where f_created_at BETWEEN '${startDate}' AND '${endDate}'
+                             AND p_income > 0
+                             AND v_status = 2`;
 
         if (status) {
             queryString = `${queryString} AND f_status = '${status}'`;
@@ -559,7 +579,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                     endDate: moment(query.endDate).endOf('day').toDate(),
                 });
             if (query.cashier) {
-                salesReturnsQB.andWhere('agent.id = :agentID', { agentID: query.cashier });
+                salesReturnsQB.andWhere('agent.id = :agentID', {agentID: query.cashier});
             }
         }
 
@@ -567,11 +587,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async downloadReport(payments: MiniStoreSalePayment[],
-        sales: MiniStoreSale[],
-        salesReturns: SalesReturns[],
-        cashiers: User[],
-        paymentMethods: InvoiceMethodPayment[],
-        matriz: CellRow[][]) {
+                         sales: MiniStoreSale[],
+                         salesReturns: SalesReturns[],
+                         cashiers: User[],
+                         paymentMethods: InvoiceMethodPayment[],
+                         matriz: CellRow[][]) {
         return new SimpleReport().generate({
             payments,
             cashiers,
@@ -582,12 +602,12 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     async simpleReport(payments: MiniStoreSalePayment[],
-        sales: MiniStoreSale[],
-        salesReturns: SalesReturns[],
-        cashiers: User[],
-        paymentMethods: InvoiceMethodPayment[],
-        matriz: CellRow[][],
-        options?: { base64: boolean }): Promise<string | any> {
+                       sales: MiniStoreSale[],
+                       salesReturns: SalesReturns[],
+                       cashiers: User[],
+                       paymentMethods: InvoiceMethodPayment[],
+                       matriz: CellRow[][],
+                       options?: { base64: boolean }): Promise<string | any> {
 
 
         const workbook = new SimpleReport().generate({
@@ -601,8 +621,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             const fileName = (+new Date()).toString() + '.xlsx';
             if (options && options.base64) {
                 const result = await workbook.xlsx.writeBuffer({
-                    filename: (+new Date()).toString() + '.xlsx',
-                },
+                        filename: (+new Date()).toString() + '.xlsx',
+                    },
                 );
                 const buffer = Buffer.from(result);
                 const b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
@@ -638,5 +658,93 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 UUID: params.uuid,
             });
         return await result.getMany();
+    }
+
+    public async createReceipt(result: any, branchOfficeSett: any, invoiceFind: any, invoiceDetails: any) {
+        const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
+
+        const Receip = new Recibo();
+
+        Receip.setType(InvoiceModules.STORE);
+
+        if (result.sale.statusSale != PaymentStatus.quotation) {
+            Receip.addLabel();
+        } else {
+            Receip.addLabelQuote();
+        }
+
+        Receip.addLogo({
+            width: 100,
+            height: 100,
+            image: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+
+        Receip.addFolio(result.payment.folio);
+
+        Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
+
+        const regimen = RegimenFiscalList.find(
+            (f) => f.value === branchOfficeSett.regime,
+        );
+
+        if (regimen !== undefined) {
+            Receip.addEmisor({
+                name: branchOfficeSett.businessName,
+                rfc: branchOfficeSett.rfc,
+                regimen:
+                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                expedido: branchOfficeSett.address,
+            });
+        }
+
+        let name = '';
+
+        if (result.payment.stamping == 0 || invoiceFind == undefined) {
+            name = `${result.sale.student.name} ${result.sale.student.lastNameFather} ${result.sale.student.lastNameMother} `;
+        } else {
+            name = invoiceFind.businessName
+        }
+
+        Receip.addReceptor({
+            name,
+            curp: result.payment.stamping == 0 || invoiceFind == undefined ? 'XAXX010101000' : invoiceFind.rfc,
+            matricula: result.sale.student.matricula,
+            type: InvoiceModules.STORE
+        });
+
+        const ven =
+            result.payment.agent.name +
+            ' ' +
+            result.payment.agent.lastnameFather +
+            ' ' +
+            result.payment.agent.lastnameMother;
+
+        Receip.addInformacion({
+            vendedor: ven,
+        });
+
+        Receip.addCatidad({
+            ...invoiceDetails.totals.receipt
+        });
+
+        Receip.addDetalles(invoiceDetails.concepts.conceptsMiniStore);
+
+        Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
+
+        Receip.addObervations(result.payment.observations);
+
+        const forma = result.payment.miniStoreSaleMethodPayments.map((m) => {
+            return {
+                forma: m.invoiceMethod.name,
+                cantidad: roundQuantity(m.quantity),
+                banco: m.Bank ? m.Bank.name : '',
+                cuenta: m.account,
+                fecha: m.date,
+            };
+        });
+
+        Receip.addFormaPago(forma);
+
+        return Receip;
     }
 }
