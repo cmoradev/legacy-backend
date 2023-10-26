@@ -46,7 +46,8 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
       .leftJoinAndSelect('inscription.inscripCycle', 'inscripCycle')
       .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom')
       .leftJoinAndSelect('inscription.inscripCampus', 'branchOffice')
-      .where('schoolPayments.isActive = :isActive', { isActive: true });
+      .where('schoolPayments.isActive = :isActive', { isActive: true })
+      .andWhere('inscription.idStatus != \'0\'');
     if (
       options.month !== null &&
       options.month !== '' &&
@@ -101,6 +102,7 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
         gradeId: options.gradeId,
       });
     await payments.addOrderBy('schoolPayments.statusPayment');
+    console.log(payments.getQueryAndParameters())
     return payments.getMany();
   }
 
