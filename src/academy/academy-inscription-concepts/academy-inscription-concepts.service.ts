@@ -135,7 +135,7 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<
     queryString = `${queryString} AND academyId = ${academyId}`;
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
-      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus != '0' AND studentStatus != '0';`;
+      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus = '2' AND studentStatus != '0';`;
     } else if (`${conceptStatus}` === `${PaymentStatus.PaiOut}`) {
       queryString = `${queryString} AND (conceptStatus = ${conceptStatus} OR conceptPaid IS NOT NULL);`;
     } else {

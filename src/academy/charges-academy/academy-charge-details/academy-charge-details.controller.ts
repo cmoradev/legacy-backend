@@ -49,6 +49,7 @@ export class AcademyChargeDetailsController implements CrudController<AcademyCha
         @Query() options: IQueryReportSaleTodayOp,
     ) {
         const result = await this.service.reportSaleAcademia(options);
+
         let data: PaymentExtraCharge[] = dataFullSale(result, InvoiceModules.ACADEMY)
         let dataByClient = [];
 

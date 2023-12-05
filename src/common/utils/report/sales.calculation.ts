@@ -1,5 +1,17 @@
-import { calculateInvoicePrices, Charge, ChargeApplicationEnum, ChargeTypeEnum, Concept, Decimal, FountTypeEnum, Payment, TaxPercentageEnum } from '@munyaal/calculations';
-import { SystemTypeExtraChargesEnum } from '../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import {
+    calculateInvoicePrices,
+    Charge,
+    ChargeApplicationEnum,
+    ChargeTypeEnum,
+    Concept,
+    Decimal,
+    FountTypeEnum,
+    Payment,
+    TaxPercentageEnum
+} from '@munyaal/calculations';
+import {
+    SystemTypeExtraChargesEnum
+} from '../../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { TypeChargeApplicationEnum } from '../../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { ExtraCharges, InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { getDataCharges } from './payments.calculation';
@@ -13,16 +25,16 @@ export const saleDetailsCalculations = (
 
     }
 ) => {
-    const { details = [], type } = payload
+    const {details = [], type} = payload
 
     let obj = {} as any;
     let quantitySum = 0;
     details.forEach((d: any) => {
         let iva = type == InvoiceModules.SCHOOL ? 1 : 1.16
-        let price = type == InvoiceModules.STORE ? d.priceWithIVA : Decimal.mul(d.price, iva).toDecimalPlaces(2)
+        let price = type == InvoiceModules.STORE ? d?.priceWithIVA || 0 : Decimal.mul(d?.price || 0, iva).toDecimalPlaces(2)
         quantitySum = Decimal.add(quantitySum, price).toNumber();
     });
-    const payment: Payment = { amount: quantitySum, change: 0 };
+    const payment: Payment = {amount: quantitySum, change: 0};
     switch (type) {
         case InvoiceModules.ACADEMY:
             obj = ConceptsTotals({
@@ -84,7 +96,7 @@ const ConceptsTotals = (payload: {
     ivaByDetail?: number;
     baseDefault?: number;
 }) => {
-    const { payment, details, type, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0 } = payload;
+    const {payment, details, type, ivaDefault = 1.16, ivaByDetail = .16, baseDefault = 0} = payload;
     //const pago = payment.quantity - payment.change;
     let resultad = {
         total: 0,
@@ -104,7 +116,7 @@ const ConceptsTotals = (payload: {
             return getConcept(d, type);
         });
 
-        const { detailsWithoutPaymentApplied } = calculateInvoicePrices({
+        const {detailsWithoutPaymentApplied} = calculateInvoicePrices({
             payment: {
                 amount: payment.amount,
                 change: payment.change
@@ -141,7 +153,7 @@ const ConceptsTotals = (payload: {
 }
 
 const getConcept = (concept: any, type: InvoiceModules) => {
-    const charges: Charge[] = concept.extraCharges.map((e: ExtraCharges) => {
+    const charges: Charge[] = concept?.extraCharges?.map((e: ExtraCharges) => {
         let order = 1;
         if (type == InvoiceModules.ACADEMY && e.typeExtraCharge == SystemTypeExtraChargesEnum.Becas) {
             order = 1;
@@ -157,10 +169,11 @@ const getConcept = (concept: any, type: InvoiceModules) => {
             type: e.typeExtraCharge != SystemTypeExtraChargesEnum.Recargos ? ChargeTypeEnum.DISCOUNTS : ChargeTypeEnum.SURCHARGES,
             application: e.applicationType == TypeChargeApplicationEnum.percentage ? ChargeApplicationEnum.PERCENTAGE : ChargeApplicationEnum.QUANTITY
         } as Charge
-    })
+    });
+
     return {
         id: concept.id,
-        quantity: concept.quantity,
+        quantity: concept?.quantity || 1,
         basePrice: getPrice(concept, type),
         name: '',
         charges,
@@ -169,9 +182,9 @@ const getConcept = (concept: any, type: InvoiceModules) => {
 
 const getPrice = (detail: any, type: InvoiceModules): number => {
     if (type == InvoiceModules.STORE) {
-        return detail.priceWithIVA;
+        return detail?.priceWithIVA || 0;
     } else {
-        return typeof detail.price == 'string' ? parseFloat(`${detail.price}`) : detail.price;
+        return typeof detail?.price == 'string' ? parseFloat(`${detail?.price || 0}`) : detail?.price || 0;
     }
 }
 
@@ -197,7 +210,7 @@ export const reportPaymentByClient = (
             dataClient[index].p_income = Decimal.sum(dataClient[index].p_income, d.p_income).toNumber();
             dataClient[index].count = Decimal.sum(dataClient[index].count, 1).toNumber();
         } else {
-            dataClient.push({ ...d, count: 1 });
+            dataClient.push({...d, count: 1});
         }
     })
     return dataClient;
@@ -221,7 +234,7 @@ export const dataFullSale = (value: any[], type: InvoiceModules) => {
 
     const result = [];
     data.forEach((d) => {
- 
+
         let array_details_names = [];
         const detailsConvert = [];
         d.details_names != null ? array_details_names = d.details_names.split(',') : [];
@@ -252,7 +265,7 @@ export const dataFullSale = (value: any[], type: InvoiceModules) => {
             const concepts = type == InvoiceModules.STORE
                 ? invoiceDetails.concepts.conceptsMiniStore
                 : invoiceDetails.concepts.conceptsSchoolAndAcademy;
-            const objDetail = detailsConvert.find((d)=>d.id == sd.id);
+            const objDetail = detailsConvert.find((d) => d.id == sd.id);
             result.push({
                 ...d,
                 sale_details: [sd],
