@@ -37,7 +37,7 @@ export class AcademyActivityReport {
             };
 
             bussinessNameCell.value = 'QUINTANA ROO, S.C ';
-            reportTypeCell.value = 'Listado de alumnos por Acacademias ';
+            reportTypeCell.value = 'Listado de alumnos por Academias ';
             dateRangeCell.value = `Academia ${data.a_name}`;
             dateOfIssueCell.value = `Grupo ${data.g_name}`;
 

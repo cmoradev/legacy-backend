@@ -1,7 +1,9 @@
-import { Controller, Get, Query, Req, Res, Body, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
-import { convertPaymentsComissionReport } from './reports/payments.util';
-import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
+import { convertPaymentsComissionReport, convertPaymentsReport } from './reports/payments.util';
+import {
+    InvoiceMethodsPaymentsService
+} from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QuerySimpleReport } from './interface/InvoiceMiniStore.interface';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -9,15 +11,14 @@ import { Response } from 'express';
 import { UsersService } from '../../../system/users/users.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { IQueryReportStorePayment } from './types/IReports';
-import { getNameReport, getRangeDates } from '../mini-store-sales/reports/helpers';
+import { getRangeDates } from '../mini-store-sales/reports/helpers';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import * as AdmZip from 'adm-zip';
 import { ConfigService } from '../../../common/config/config.service';
-import { getDataFullMatrizAndData, reportPaymentByClient, PaymentExcel } from '../../../common/utils/report/index';
+import { getDataFullMatrizAndData, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report/index';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
-import { convertPaymentsReport } from './reports/payments.util';
 
 @Controller('report')
 export class MiniStoreSalesPaymentsReportController {
@@ -48,7 +49,7 @@ export class MiniStoreSalesPaymentsReportController {
             file: '',
         };
         if (query.onlyFile) {
-            result.file = await this.service.reportCommission(quantityCommissions, payments, sales, { base64: true });
+            result.file = await this.service.reportCommission(quantityCommissions, payments, sales, {base64: true});
         } else {
             const cashiers = await this.service.getUserCasher();
             const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
@@ -68,11 +69,9 @@ export class MiniStoreSalesPaymentsReportController {
         @Res() res: Response,
         @Query() options: IQueryReportStorePayment,
     ) {
-        const obj = getDataFullMatrizAndData(
-            await this.service.reportStorePayment(options),
-            InvoiceModules.STORE,
-            false,
-            options.status != null ? parseInt(`${options.status}`) : 0);
+        const result = await this.service.reportStorePayment(options);
+
+        const obj = getDataFullMatrizAndData(result, InvoiceModules.STORE, false, options.status != null ? parseInt(`${options.status}`) : 0);
 
         let dataByClient = [];
 
@@ -92,9 +91,9 @@ export class MiniStoreSalesPaymentsReportController {
                 type: 'excel',
                 name: `Tie_Pagos_${getRangeDates(options.startDate, options.endDate).excel}}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
+            return res.send({report, data: options.byClient ? dataByClient : obj.data, obj});
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
+            return res.send({report: false, data: options.byClient ? dataByClient : obj.data, obj});
         }
     }
 
@@ -128,16 +127,16 @@ export class MiniStoreSalesPaymentsReportController {
                 type: 'excel',
                 name: `Tie_Pagos_Facturados${getRangeDates(options.startDate, options.endDate).excel}`,
             };
-            return res.send({ report, data: options.byClient ? dataByClient : obj.data, obj });
+            return res.send({report, data: options.byClient ? dataByClient : obj.data, obj});
         } else {
-            return res.send({ report: false, data: options.byClient ? dataByClient : obj.data, obj });
+            return res.send({report: false, data: options.byClient ? dataByClient : obj.data, obj});
         }
     }
 
     @Post('zip-invoices')
     async zipInvoices(@Res() res: Response, @Body() params: {
-        array: NotInvoiced[]
-    }
+                          array: NotInvoiced[]
+                      }
     ) {
         try {
             const zip = new AdmZip();

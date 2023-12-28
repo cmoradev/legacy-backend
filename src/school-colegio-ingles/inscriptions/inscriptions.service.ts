@@ -224,8 +224,6 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
 
             const data = await inscripcion.getMany();
 
-            console.log(JSON.stringify(data, null, 3))
-
             let i = 1;
             for (const studen of data) {
                 room.name = studen.inscripClassroom.name;
@@ -578,7 +576,7 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         if (levelId) {
             queryString = `${queryString} AND levelId = ${parseInt(`${levelId}`)}`;
         }
-        if (gradeId !== undefined && gradeId.length > 0) { 
+        if (gradeId !== undefined && gradeId.length > 0) {
             queryString = `${queryString} AND gradeId IN (${gradeId.join(',')})`;
         }
         if (groupId !== undefined && groupId.length > 0) {
