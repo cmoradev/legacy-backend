@@ -7,12 +7,14 @@ export class AcademyActivityReport {
     public async monthlyPayments(resultData: VwAcaGroupType[], options: { year: number, month: number }): Promise<string> {
         const days = getDaysArray(options.year, options.month, 'es');
         const workbook = new Excel.Workbook();
+        
         workbook.views = [
             {
                 x: 0, y: 0, width: 10000, height: 20000,
                 firstSheet: 0, activeTab: 2, visibility: 'visible',
             },
         ];
+        
         resultData.forEach((data, index) => {
             const sheetName = `${index} - ${data.g_name.split('/').join(' ')}`;
 
