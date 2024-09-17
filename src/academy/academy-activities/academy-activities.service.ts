@@ -93,17 +93,19 @@ export class AcademyActivitiesService extends TypeOrmCrudService<AcademyActivity
                         }
                     }
 
-                    students.push({
-                        id: academyInscription?.student?.id,
-                        matricula: academyInscription?.student?.matricula,
-                        name: academyInscription?.student?.name + ' ' + academyInscription?.student?.lastNameFather + ' ' + academyInscription?.student?.lastNameMother,
-                        type: academyInscription.student.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
-                        level: academyInscription?.schoolLevel?.name ?? '',
-                        grade: academyInscription?.schoolGrade?.name ?? '',
-                        group: academyInscription?.schoolGroup?.name ?? '',
-                        state: estado[paymentState],
-                        date,
-                    });
+                    if (estado[paymentState] != 'N/I') {
+                        students.push({
+                            id: academyInscription?.student?.id,
+                            matricula: academyInscription?.student?.matricula,
+                            name: academyInscription?.student?.name + ' ' + academyInscription?.student?.lastNameFather + ' ' + academyInscription?.student?.lastNameMother,
+                            type: academyInscription.student.typeStudent === TypeStudent.student ? 'Alumno' : 'Externo',
+                            level: academyInscription?.schoolLevel?.name ?? '',
+                            grade: academyInscription?.schoolGrade?.name ?? '',
+                            group: academyInscription?.schoolGroup?.name ?? '',
+                            state: estado[paymentState],
+                            date,
+                        });
+                    }
                 }
             }
 

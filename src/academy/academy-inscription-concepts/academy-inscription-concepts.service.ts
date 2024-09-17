@@ -124,15 +124,17 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<
     cycleId,
     conceptStatus,
     branchOfficeId,
-    academyId
+    academyId,
   }: IAcademyQueryReportConcept): Promise<IAcademyReportConceptRow[]> {
     let queryString = `SELECT * FROM vw_aca_status_concepts WHERE conceptPay <= '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
+
     if (
       academyId !== 0 &&
       academyId !== '0' &&
       typeof academyId !== 'undefined'
-    )
-    queryString = `${queryString} AND academyId = ${academyId}`;
+    ) {
+      queryString = `${queryString} AND academyId = ${academyId}`;
+    }
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
       queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus = '2' AND studentStatus != '0';`;
@@ -141,7 +143,7 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<
     } else {
       queryString = `${queryString} AND conceptStatus = ${conceptStatus};`;
     }
-
+    console.log(queryString);
     try {
       return this.connection.query(queryString);
     } catch (e) {
