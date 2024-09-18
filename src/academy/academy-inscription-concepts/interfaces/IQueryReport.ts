@@ -12,7 +12,8 @@ export interface IAcademyQueryReport {
 
 export interface IAcademyQueryReportConcept {
   conceptStatus: PaymentStatus;
-  conceptPay: string | Date;
+  startDate: string | Date;
+  endDate: string | Date;
   cycleId: number | string;
   branchOfficeId: number | string;
   isExported: boolean;
