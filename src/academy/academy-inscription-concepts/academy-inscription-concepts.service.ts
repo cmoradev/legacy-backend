@@ -120,13 +120,14 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<
   }
 
   public async reportConceptsUpToDate({
-    conceptPay,
+    startDate,
+    endDate,
     cycleId,
     conceptStatus,
     branchOfficeId,
     academyId,
   }: IAcademyQueryReportConcept): Promise<IAcademyReportConceptRow[]> {
-    let queryString = `SELECT * FROM vw_aca_status_concepts WHERE conceptPay <= '${conceptPay}' AND cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
+    let queryString = `SELECT * FROM vw_aca_status_concepts WHERE cycleId = ${cycleId} AND branchOfficeId = ${branchOfficeId}`;
 
     if (
       academyId !== 0 &&
@@ -137,13 +138,15 @@ export class AcademyInscriptionConceptsService extends TypeOrmCrudService<
     }
 
     if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
-      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus = '2' AND studentStatus != '0';`;
+      queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus = '2' AND studentStatus != '0'`;
     } else if (`${conceptStatus}` === `${PaymentStatus.PaiOut}`) {
-      queryString = `${queryString} AND (conceptStatus = ${conceptStatus} OR conceptPaid IS NOT NULL);`;
+      queryString = `${queryString} AND (conceptStatus = ${conceptStatus} OR conceptPaid IS NOT NULL)`;
     } else {
-      queryString = `${queryString} AND conceptStatus = ${conceptStatus};`;
+      queryString = `${queryString} AND conceptStatus = ${conceptStatus}`;
     }
-    console.log(queryString);
+
+    queryString = `${queryString} AND conceptPay BETWEEN '${startDate}' AND '${endDate}';`;
+
     try {
       return this.connection.query(queryString);
     } catch (e) {
