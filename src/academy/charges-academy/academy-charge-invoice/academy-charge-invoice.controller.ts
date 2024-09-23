@@ -412,11 +412,11 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
     }
 
-    @Get('/download-pdf')
-    getPdfInvoice(@Query() request, @Res() response) {
+    @Get('/download-pdf/:UUID')
+    getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/academias/${request.UUID}.pdf`;
+            const xml = `${workPath}/comprobantes/academias/${UUID}.pdf`;
             response.download(xml);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)

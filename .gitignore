@@ -1,6 +1,7 @@
 # compiled output
 /dist
-
+/dist.zip
+/distOld.zip
 /node_modules
 *.log
 *.env
