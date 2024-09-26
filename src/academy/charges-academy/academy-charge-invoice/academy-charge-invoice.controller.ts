@@ -70,6 +70,16 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
             creditNotesAcademy: { eager: false}
         },
     },
+    params: {
+        id: {
+            primary: true,
+            disabled: true,
+        },
+        UUID: {
+          type: 'string'
+        },
+      },
+
 })
 @Controller()
 export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
@@ -400,20 +410,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         res.send({ success: true, data });
     }
 
-    @Get('/download-xml')
-    async getXmlInvoice(@Query() request, @Res() response) {
-        try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/academias/${request.UUID}.xml`;
-            response.download(xml);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-
-    }
-
-    @Get('/download-pdf/:UUID')
-    getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
+    @Public()
+    @Get('/download-pdf')
+    getPdfInvoice(@Query('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
             const xml = `${workPath}/comprobantes/academias/${UUID}.pdf`;
@@ -424,7 +423,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     }
 
     @Public()
-    @Get('/download-xml/:UUID')
+    @Get('/download-xml')
     getXmlInvoiceUUID(@Param('UUID') UUID: string, @Res() response) {
         try {
             const workPath = this.configService.getPath();
