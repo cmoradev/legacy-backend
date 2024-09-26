@@ -76,10 +76,10 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
             disabled: true,
         },
         UUID: {
-          type: 'string'
+            type: 'string',
+            disabled: false
         },
-      },
-
+    },
 })
 @Controller()
 export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
@@ -102,6 +102,9 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     async getOneAndDoStuff(
         @ParsedRequest() req: CrudRequest,
     ) {
+        if(req.parsed.search.$and.length > 2){
+            return this.base.getManyBase(req)
+        }
         const invoice = await this.base.getOneBase(req);
         const { academyChargePayment, academyCharge } = invoice
         const { chargesDetails } = academyCharge
