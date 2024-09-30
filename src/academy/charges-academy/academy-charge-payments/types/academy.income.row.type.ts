@@ -7,6 +7,5 @@ export type AcademyIncomeRow = {
   fecha_pago: string;
   academia: string;
   concepto: string;
-  precio: string;
   cobrado: string;
 };

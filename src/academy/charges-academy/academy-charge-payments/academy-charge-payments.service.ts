@@ -877,7 +877,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
        p.createdAt        AS fecha_pago,
        a.nombre           AS academia,
        d.concepto         AS concepto,
-       d.precio           AS precio,
        p.totalWithCharges AS cobrado
 
         FROM ac_cobro_detalle d

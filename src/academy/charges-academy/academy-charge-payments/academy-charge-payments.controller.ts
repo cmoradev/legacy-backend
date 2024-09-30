@@ -64,6 +64,8 @@ import {
 } from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
 import { AcademyIncomeReportQuery } from './dto/academy-income-report-query';
+import { ExcelIncomeAcademy } from 'src/common/utils/report/excel.income.academy';
+import * as moment from 'moment';
 
 @Crud({
   model: {
@@ -104,7 +106,6 @@ export class AcademyChargePaymentsController
     readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
     readonly branchOffice: BranchOfficeService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
-    private smartWeb: FactSw,
     private readonly configService: ConfigService,
   ) {}
 
@@ -576,10 +577,30 @@ export class AcademyChargePaymentsController
   @UsePipes(ValidationPipe)
   async academyIncomeReport(@Query() query: AcademyIncomeReportQuery) {
     try {
-      const data = await this.service.academyIncomeReport(query);
+      const { startDate, endDate } = query;
+      const { rows, matriz } = await this.service.academyIncomeReport(query);
+
+      const excel = new ExcelIncomeAcademy(rows, matriz);
+
+      const filename = `Reporte_Ingresos_Academia_${moment(startDate).format(
+        'YYYY_MM_DD',
+      )}_${moment(endDate).format('YYYY_MM_DD')}.xlsx`;
+
+      const buffer = await excel.getWorkBook().xlsx.writeBuffer({
+        filename,
+      });
+
+      const report = {
+        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
+          buffer,
+        ).toString('base64')}`,
+        type: 'excel',
+        name: filename,
+      };
 
       return {
-        data,
+        data: { rows, matriz },
+        report,
       };
     } catch (e) {
       console.error(e);
