@@ -574,6 +574,7 @@ export class AcademyChargePaymentsController
   }
 
   @Get('/academy-income-report')
+  @Public()
   @UsePipes(ValidationPipe)
   async academyIncomeReport(@Query() query: AcademyIncomeReportQuery) {
     try {
