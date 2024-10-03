@@ -579,6 +579,7 @@ export class AcademyChargePaymentsController
   async academyIncomeReport(@Query() query: AcademyIncomeReportQuery) {
     try {
       const { startDate, endDate } = query;
+
       const { rows, matriz } = await this.service.academyIncomeReport(query);
 
       const excel = new ExcelIncomeAcademy(rows, matriz);

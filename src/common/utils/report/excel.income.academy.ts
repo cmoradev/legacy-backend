@@ -110,22 +110,24 @@ export class ExcelIncomeAcademy {
       rows: rowsMatriz,
     });
 
+    const sumRow = rowsMatriz.length + 5;
+
     // Add sum formula to the last row of the 'Ingreso' column
-    const lastRow = worksheet.getRow(rowsMatriz.length + 6);
-    lastRow.getCell(3).value = {
-      formula: `SUM(C6:C${rowsMatriz.length + 5})`,
+    const summaryLastRow = worksheet.getRow(rowsMatriz.length + 6);
+    summaryLastRow.getCell(3).value = {
+      formula: `SUM(C6:C${sumRow})`,
       date1904: false,
     };
-    lastRow.commit();
+    summaryLastRow.commit();
 
     const columns: TableColumnProperties[] = [
       { name: 'ID Venta', filterButton: false },
       { name: 'Folio Venta', filterButton: false },
-      { name: 'Fecha Venta', filterButton: false },
+      { name: 'Fecha Venta', filterButton: true },
       { name: 'ID Pago', filterButton: false },
       { name: 'Folio Pago', filterButton: false },
-      { name: 'Fecha Pago', filterButton: false },
-      { name: 'Academia', filterButton: false },
+      { name: 'Fecha Pago', filterButton: true },
+      { name: 'Academia', filterButton: true },
       { name: 'Concepto', filterButton: false },
       { name: 'Cobrado', filterButton: false },
     ];
@@ -139,7 +141,7 @@ export class ExcelIncomeAcademy {
       row.fecha_pago,
       row.academia,
       row.concepto,
-      row.cobrado,
+      parseFloat(row.cobrado),
     ]);
 
     worksheet.addTable({
@@ -149,13 +151,25 @@ export class ExcelIncomeAcademy {
       totalsRow: false,
       headerRow: true,
       style: {
-        theme: 'TableStyleLight9',
-        showRowStripes: true,
-        showColumnStripes: true,
+      theme: 'TableStyleLight9',
+      showRowStripes: true,
+      showColumnStripes: true,
       },
       columns,
       rows,
     });
+
+    // Add sum formula to the last row of the 'Ingreso' column
+    const lastRow = worksheet.getRow(rows.length + sumRow + 4);
+
+    lastRow.getCell(10).value = {
+      formula: `SUM(J${rowsMatriz.length + 9}:J${
+      rows.length + sumRow + 3
+      })`,
+      date1904: false,
+    };
+
+    lastRow.commit();
 
     return worksheet;
   }
