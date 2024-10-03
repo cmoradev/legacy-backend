@@ -863,6 +863,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     const startDate = moment(query.startDate)
       .startOf('day')
       .format('YYYY-MM-DD HH:mm:ss');
+
     const endDate = moment(query.endDate)
       .endOf('day')
       .format('YYYY-MM-DD HH:mm:ss');
@@ -877,7 +878,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
        p.createdAt        AS fecha_pago,
        a.nombre           AS academia,
        d.concepto         AS concepto,
-       p.totalWithCharges AS cobrado
+       p.precio           AS cobrado
 
         FROM ac_cobro_detalle d
 
