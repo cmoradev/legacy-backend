@@ -25,7 +25,6 @@ import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { AcademyChargeInvoiceService } from '../academy-charge-invoice/academy-charge-invoice.service';
-import { FactSw } from '../../../webService/FactSw';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { Response } from 'express';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
@@ -63,9 +62,6 @@ import {
   TipoComprobanteEnum,
 } from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
-import { AcademyIncomeReportQuery } from './dto/academy-income-report-query';
-import { ExcelIncomeAcademy } from 'src/common/utils/report/excel.income.academy';
-import * as moment from 'moment';
 
 @Crud({
   model: {
@@ -570,43 +566,6 @@ export class AcademyChargePaymentsController
       console.log(e);
       response.status(400);
       response.send(e);
-    }
-  }
-
-  @Get('/academy-income-report')
-  @Public()
-  @UsePipes(ValidationPipe)
-  async academyIncomeReport(@Query() query: AcademyIncomeReportQuery) {
-    try {
-      const { startDate, endDate } = query;
-
-      const { rows, matriz } = await this.service.academyIncomeReport(query);
-
-      const excel = new ExcelIncomeAcademy(rows, matriz);
-
-      const filename = `Reporte_Ingresos_Academia_${moment(startDate).format(
-        'YYYY_MM_DD',
-      )}_${moment(endDate).format('YYYY_MM_DD')}.xlsx`;
-
-      const buffer = await excel.getWorkBook().xlsx.writeBuffer({
-        filename,
-      });
-
-      const report = {
-        src: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${Buffer.from(
-          buffer,
-        ).toString('base64')}`,
-        type: 'excel',
-        name: filename,
-      };
-
-      return {
-        data: { rows, matriz },
-        report,
-      };
-    } catch (e) {
-      console.error(e);
-      throw new BadRequestException('Hubo un error al generar el reporte');
     }
   }
 

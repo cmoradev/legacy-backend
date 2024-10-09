@@ -39,8 +39,6 @@ import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import moment = require('moment');
 import { AttachmentsType } from '../../../types';
 import { ReceiptTemplate } from '../../../templates/receipt';
-import { AcademyIncomeReportQuery } from './dto/academy-income-report-query';
-import { AcademyIncomeRow } from './types/academy.income.row.type';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
@@ -855,54 +853,5 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     Receip.addFormaPago(forma);
 
     return Receip;
-  }
-
-  public async academyIncomeReport(query: AcademyIncomeReportQuery) {
-    const paymentStatus = parseInt(`${query.paymentStatus}`);
-
-    const startDate = moment(query.startDate)
-      .startOf('day')
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const endDate = moment(query.endDate)
-      .endOf('day')
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const rows: AcademyIncomeRow[] = await this.connection.query(
-      `
-        SELECT v.id       AS id_venta,
-       v.folio            AS folio_venta,
-       v.createdAt        AS fecha_venta,
-       p.id               AS id_pago,
-       p.folio            AS folio_pago,
-       p.createdAt        AS fecha_pago,
-       a.nombre           AS academia,
-       d.concepto         AS concepto,
-       d.precio           AS cobrado
-
-        FROM ac_cobro_detalle d
-
-        INNER JOIN ac_inscrip_conceptos c ON c.id = d.academyInscriptionConceptId
-        INNER JOIN ac_academias a ON a.id = c.id_academia
-        INNER JOIN ac_cobros v ON v.id = d.id_ac_cobro
-        INNER JOIN ac_charge_payments p ON p.academyChargeId = v.id
-
-        WHERE p.paymentStatusId = ? AND p.createdAt BETWEEN ? AND ?;
-            `,
-      [paymentStatus, startDate, endDate],
-    );
-
-    const matriz: { [key: string]: number } = rows.reduce((acc, row) => {
-      if (!acc[row.academia]) {
-        acc[row.academia] = 0;
-      }
-      acc[row.academia] += parseFloat(`${row.cobrado}`);
-      return acc;
-    }, {});
-
-    return {
-      rows,
-      matriz,
-    };
   }
 }

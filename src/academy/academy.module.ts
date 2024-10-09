@@ -8,6 +8,7 @@ import { AcademyInscriptionModule } from './academy-inscription/academy-inscript
 import { AcademyInscriptionConceptsModule } from './academy-inscription-concepts/academy-inscription-concepts.module';
 import { ChargesAcademyModule } from './charges-academy/charges-academy.module';
 import { AcademyInscriptionChargesModule } from './academy-inscription-concept-charges/academy-inscription-charges.module';
+import { AcademyReportsModule } from './academy-reports/academy-reports-module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { AcademyInscriptionChargesModule } from './academy-inscription-concept-c
     AcademyInscriptionConceptsModule,
     AcademyInscriptionChargesModule,
     ChargesAcademyModule,
+    AcademyReportsModule,
   ],
 })
-export class AcademyModule {
-}
+export class AcademyModule {}

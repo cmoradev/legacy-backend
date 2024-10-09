@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class AcademyIncomeReportQuery {
+export class AcademyIncomeQuery {
   @IsString()
   @IsNotEmpty()
   startDate: string;

@@ -1,9 +1,10 @@
 import { TableColumnProperties, Workbook, Worksheet } from 'exceljs';
 import * as moment from 'moment';
-import { AcademyIncomeRow } from 'src/academy/charges-academy/academy-charge-payments/types/academy.income.row.type';
+import { AcademyIncomeRow } from 'src/academy/academy-reports/types/academy.income.row.type';
 
 const esMx = require('moment/locale/es-mx');
 
+// TODO: Eliminar clase
 export class ExcelIncomeAcademy {
   private readonly rows: AcademyIncomeRow[] = [];
   private readonly matriz: { [key: string]: number };
@@ -141,7 +142,7 @@ export class ExcelIncomeAcademy {
       row.fecha_pago,
       row.academia,
       row.concepto,
-      parseFloat(row.cobrado),
+      row.cobrado,
     ]);
 
     worksheet.addTable({
@@ -151,9 +152,9 @@ export class ExcelIncomeAcademy {
       totalsRow: false,
       headerRow: true,
       style: {
-      theme: 'TableStyleLight9',
-      showRowStripes: true,
-      showColumnStripes: true,
+        theme: 'TableStyleLight9',
+        showRowStripes: true,
+        showColumnStripes: true,
       },
       columns,
       rows,
@@ -163,9 +164,7 @@ export class ExcelIncomeAcademy {
     const lastRow = worksheet.getRow(rows.length + sumRow + 4);
 
     lastRow.getCell(10).value = {
-      formula: `SUM(J${rowsMatriz.length + 9}:J${
-      rows.length + sumRow + 3
-      })`,
+      formula: `SUM(J${rowsMatriz.length + 9}:J${rows.length + sumRow + 3})`,
       date1904: false,
     };
 
