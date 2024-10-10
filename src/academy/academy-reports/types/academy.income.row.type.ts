@@ -1,0 +1,21 @@
+export type AcademyIncomeRow = {
+  id_venta: number;
+  folio_venta: string;
+  fecha_venta: string;
+  id_pago: number;
+  folio_pago: string;
+  fecha_pago: string;
+  id_alumno: number;
+  matricula_alumno: string;
+  nombre_alumno: string;
+  id_academia: number;
+  academia: string;
+  precio: number;
+  id_concepto: number;
+  concepto: string;
+  cobrado: number;
+  amountWithCharges: number;
+  amountWithoutCharges: number;
+  discount: number;
+  surcharge: number;
+};
