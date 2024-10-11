@@ -2,8 +2,13 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { AcademyIncomeQuery } from './dto';
-import { startOfDay, endOfDay } from 'date-fns';
-import { AcademyIncomeRow, ChargeDetailsRow, SummaryRow } from './types';
+import { startOfDay, endOfDay, addHours } from 'date-fns';
+import {
+  AcademyIncomeDetailsRow,
+  AcademyIncomeRow,
+  ChargeDetailsRow,
+  SummaryRow,
+} from './types';
 import { academyIncomeQuery } from './query';
 import { ExcelDocument } from 'src/reports';
 import {
@@ -17,6 +22,7 @@ import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
 import { TypeChargeApplicationEnum } from 'src/system/system-extra-charges/enums/system-extra-charges.enum';
 import { SystemTypeExtraChargesEnum } from 'src/system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { PaymentStatus } from 'src/common/enums/PaymentStatus';
 const esMx = require('moment/locale/es-mx');
 
 export class AcademyIncomeService {
@@ -39,7 +45,7 @@ export class AcademyIncomeService {
     // Obtenego cargos aplicados en los conceptos
     const charges = await this.getChargesOfDetails(conceptIDs);
 
-    const rows: AcademyIncomeRow[] = this.recalculateConceptsWithCharges(
+    const rows: AcademyIncomeDetailsRow[] = this.recalculateConceptsWithCharges(
       concepts,
       charges,
     );
@@ -64,13 +70,13 @@ export class AcademyIncomeService {
       return acc;
     }, Object.assign({}));
 
-    const matriz: SummaryRow[] = Object.values(dic);
+    const academies: SummaryRow[] = Object.values(dic);
 
-    matriz.sort((a, b) => b.amountWithoutCharges - a.amountWithoutCharges);
+    academies.sort((a, b) => b.amountWithoutCharges - a.amountWithoutCharges);
 
     return {
       rows,
-      matriz,
+      academies,
     };
   }
 
@@ -81,7 +87,7 @@ export class AcademyIncomeService {
    * @returns Un documento Excel con los datos de ingresos.
    */
   public async academyIncomeDocument(
-    rows: AcademyIncomeRow[],
+    rows: AcademyIncomeDetailsRow[],
     matriz: SummaryRow[],
   ) {
     const excel = new ExcelDocument();
@@ -100,9 +106,11 @@ export class AcademyIncomeService {
       { key: 'I', width: 20 },
       { key: 'J', width: 20 },
       { key: 'K', width: 20 },
+      { key: 'L', width: 20 },
+      { key: 'M', width: 20 },
     ];
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:K${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:M${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Ingresos por academias';
     title.style = {
@@ -111,7 +119,7 @@ export class AcademyIncomeService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:K${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:M${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -171,6 +179,8 @@ export class AcademyIncomeService {
     lastRow += matriz.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
+      { name: 'Matricula', filterButton: false },
+      { name: 'Alumno', filterButton: false },
       { name: 'Folio Venta', filterButton: false },
       { name: 'Fecha Venta', filterButton: false },
       { name: 'Folio Pago', filterButton: false },
@@ -184,7 +194,9 @@ export class AcademyIncomeService {
     ];
 
     const dataRows = rows.map((row) => [
-      row.folio_pago,
+      row.matricula_alumno,
+      row.nombre_alumno,
+      row.folio_venta,
       moment(row.fecha_venta).format('lll'),
       row.folio_pago,
       moment(row.fecha_pago).format('lll'),
@@ -221,26 +233,24 @@ export class AcademyIncomeService {
    */
   private async getDetailsOfIncome(
     query: AcademyIncomeQuery,
-  ): Promise<
-    Omit<
-      AcademyIncomeRow,
-      'amountWithCharges' | 'amountWithoutCharges' | 'discount' | 'surcharge'
-    >[]
-  > {
+  ): Promise<AcademyIncomeRow[]> {
     const paymentStatus = parseInt(`${query.paymentStatus}`);
 
-    const startDate = startOfDay(query.startDate).toISOString();
+    const status = [paymentStatus];
 
-    const endDate = endOfDay(query.endDate).toISOString();
+    if (paymentStatus === PaymentStatus.PaiOut) {
+      status.push(PaymentStatus.Abonar);
+      status.push(PaymentStatus.Debit);
+    }
 
-    const rows: Omit<
-      AcademyIncomeRow,
-      'amountWithCharges' | 'amountWithoutCharges'
-    >[] = await this.connection.query(academyIncomeQuery, [
-      paymentStatus,
-      startDate,
-      endDate,
-    ]);
+    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
+    
+    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+
+    const rows: AcademyIncomeRow[] = await this.connection.query(
+      academyIncomeQuery.replace('@params', status.map(() => '?').join(',')),
+      [startDate, endDate, ...status],
+    );
 
     return rows.map((row) => ({
       ...row,
@@ -252,6 +262,7 @@ export class AcademyIncomeService {
       id_academia: parseInt(`${row.id_academia}`),
       id_alumno: parseInt(`${row.id_alumno}`),
       nombre_alumno: `${row.nombre_alumno}`
+        .trim()
         .split(' ')
         .map(
           (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
@@ -270,13 +281,10 @@ export class AcademyIncomeService {
    * @returns Una lista de filas de ingresos con los cargos recalculados.
    */
   private recalculateConceptsWithCharges(
-    concepts: Omit<
-      AcademyIncomeRow,
-      'amountWithCharges' | 'amountWithoutCharges' | 'surcharge' | 'discount'
-    >[],
+    concepts: AcademyIncomeRow[],
     charges: ChargeDetailsRow[],
-  ) {
-    const rows: AcademyIncomeRow[] = [];
+  ): AcademyIncomeDetailsRow[] {
+    const rows: AcademyIncomeDetailsRow[] = [];
 
     // Agrupo los conceptos por venta
     const sales = concepts.reduce((acc, row) => {
@@ -338,7 +346,7 @@ export class AcademyIncomeService {
           },
         });
 
-        const concepts: AcademyIncomeRow[] = detailsWithPaymentApplied.concepts.map(
+        const concepts: AcademyIncomeDetailsRow[] = detailsWithPaymentApplied.concepts.map(
           (concept) => ({
             ...concept.data,
             amountWithCharges: concept.amountWithCharges.toNumber(),

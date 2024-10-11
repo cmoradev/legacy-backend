@@ -24,4 +24,4 @@ FROM ac_cobro_detalle d
     INNER JOIN ac_charge_payments p ON p.academyChargeId = v.id
     INNER JOIN alumnos s ON v.id_alumno = s.id
 
-WHERE v.id_estado_pago = ? AND p.createdAt BETWEEN ? AND ?;`;
+WHERE (p.createdAt BETWEEN ? AND ?) AND v.id_estado_pago IN (@params) AND p.paymentStatusId IN (1, 2, 5);`;

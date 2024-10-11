@@ -14,6 +14,9 @@ export type AcademyIncomeRow = {
   id_concepto: number;
   concepto: string;
   cobrado: number;
+};
+
+export type AcademyIncomeDetailsRow = AcademyIncomeRow & {
   amountWithCharges: number;
   amountWithoutCharges: number;
   discount: number;

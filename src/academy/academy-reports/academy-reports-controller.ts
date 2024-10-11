@@ -9,13 +9,17 @@ import {
 } from '@nestjs/common';
 import { AcademyIncomeService } from './academy-income-service';
 import { Public } from 'src/common/docorators/public.decorator';
-import { AcademyIncomeQuery } from './dto';
+import { AcademyIncomeQuery, IncomeQuery } from './dto';
+import { IncomeService } from './income-service';
 
 @Controller()
 export class AcademyReportsController {
   private readonly logger = new Logger(AcademyReportsController.name);
 
-  constructor(private readonly academyIncomeService: AcademyIncomeService) {}
+  constructor(
+    private readonly academyIncomeService: AcademyIncomeService,
+    private readonly incomeService: IncomeService,
+  ) {}
 
   @Public()
   @UsePipes(ValidationPipe)
@@ -24,12 +28,12 @@ export class AcademyReportsController {
     try {
       const {
         rows,
-        matriz,
+        academies,
       } = await this.academyIncomeService.academyIncomeData(query);
 
       const document = await this.academyIncomeService.academyIncomeDocument(
         rows,
-        matriz,
+        academies,
       );
 
       const filename = 'Reporte_Ingresos_Academia';
@@ -37,7 +41,7 @@ export class AcademyReportsController {
       const base64 = await document.getBase64(filename);
 
       return {
-        data: { rows, matriz },
+        data: { rows, academies },
         report: {
           filename,
           base64,
@@ -49,6 +53,36 @@ export class AcademyReportsController {
       throw new BadRequestException(
         'Error al generar el reporte de ingresos por academia',
       );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/income-report')
+  async incomeReport(@Query() query: IncomeQuery) {
+    try {
+      const { rows, summary } = await this.incomeService.incomeData(query);
+
+      const document = await this.incomeService.academyIncomeDocument(
+        rows,
+        summary,
+      );
+
+      const filename = 'Reporte_Ingresos';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data: { rows, summary },
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      this.logger.error('Error generating income report');
+      console.error(e);
+      throw new BadRequestException('Error al generar el reporte de ingresos');
     }
   }
 }
