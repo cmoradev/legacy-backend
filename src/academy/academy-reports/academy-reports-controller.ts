@@ -93,18 +93,22 @@ export class AcademyReportsController {
   @Get('/invoices-report')
   async invoicesReport(@Query() query: InvoiceQuery) {
     try {
-      const { rows } = await this.invoiceService.incomeData(query);
-      // const document = await this.incomeService.academyIncomeDocument(
-      //   rows,
-      //   summary,
-      // );
+      const { rows, summary } = await this.invoiceService.incomeData(query);
+
+      const document = await this.invoiceService.academyIncomeDocument(
+        rows,
+        summary,
+      );
+
       const filename = 'Reporte_Facturas';
-      // const base64 = await document.getBase64(filename);
+
+      const base64 = await document.getBase64(filename);
+
       return {
-        data: { rows },
+        data: { rows, summary },
         report: {
           filename,
-          base64: '',
+          base64,
         },
       };
     } catch (e) {

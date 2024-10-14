@@ -11,8 +11,7 @@ import {
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
-import { IncomeDetailsRow, IncomeRow } from './types';
-import { InvoiceRow } from './types/invoice.row';
+import { IncomeDetailsRow, IncomeRow, InvoiceRow } from './types';
 import { InvoiceStatus } from 'src/invoice/types/invoice-status';
 const esMx = require('moment/locale/es-mx');
 

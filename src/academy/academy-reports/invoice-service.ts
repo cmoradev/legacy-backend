@@ -1,13 +1,22 @@
 import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
-import { IncomeQuery, InvoiceQuery } from './dto';
+import { InvoiceQuery } from './dto';
 import { startOfDay, endOfDay } from 'date-fns';
-import { detailInvoiceQuery } from './query';
+import { detailInvoiceQuery, detailsInvoiceQuery } from './query';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
-import { IncomeDetailsRow, InvoiceRow } from './types';
+import {
+  IncomeDetailsRow,
+  InvoiceRow,
+  InvoiceIncomeRow,
+  InvoiceDetailsRow,
+  SummaryRow,
+  IncomeSummaryRow,
+} from './types';
+import { BadRequestException } from '@nestjs/common';
+import { CatalogEnum, searchOption } from '@munyaal/cfdi-catalogs';
 const esMx = require('moment/locale/es-mx');
 
 export class InvoiceService {
@@ -39,22 +48,15 @@ export class InvoiceService {
       ),
     );
 
-    console.table(invoices);
-    console.log(paymentIDs);
-    console.log(UUIDs);
+    const incomes = await this.getIncomes(paymentIDs, UUIDs);
 
-    // const rows: IncomeDetailsRow[] = this.matchInvoicesToIncome(
-    //   incomes,
-    //   invoices,
-    // );
+    const rows = this.matchInvoicesToIncome(incomes, invoices);
 
-    // const grouped = this.groupByMethodAndAgent(rows);
-
-    // const summary = this.buildSummary(rows, grouped);
+    const summary = this.buildSummary(rows);
 
     return {
-      rows: invoices,
-      // summary,
+      rows,
+      summary,
     };
   }
 
@@ -65,44 +67,36 @@ export class InvoiceService {
    * @returns Un documento Excel con los datos de ingresos.
    */
   public async academyIncomeDocument(
-    rows: IncomeDetailsRow[],
-    summary: {
-      headers: string[];
-      data: any[];
-      total: number;
-    },
+    rows: InvoiceDetailsRow[],
+    summary: IncomeSummaryRow[],
   ) {
     const excel = new ExcelDocument();
 
-    const worksheet = excel.addWorksheet('Ingresos');
+    const worksheet = excel.addWorksheet('Facturas');
 
     worksheet.columns = [
       { key: 'A', width: 10 },
       { key: 'B', width: 20 },
-      { key: 'C', width: 20 },
-      { key: 'D', width: 20 },
+      { key: 'C', width: 22 },
+      { key: 'D', width: 30 },
       { key: 'E', width: 20 },
       { key: 'F', width: 20 },
       { key: 'G', width: 20 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
-      { key: 'J', width: 20 },
-      { key: 'K', width: 20 },
-      { key: 'L', width: 20 },
-      { key: 'M', width: 20 },
-      { key: 'N', width: 20 },
     ];
+
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:I${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
-    title.value = 'Ingresos';
+    title.value = 'Facturas';
     title.style = {
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:I${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -113,35 +107,12 @@ export class InvoiceService {
     subtitle.font = { bold: true, size: 12 };
     lastRow += 2;
 
-    const { headers, data } = summary;
+    const summaryColumns: TableColumnProperties[] = [
+      { name: 'Metodo de pago', filterButton: false },
+      { name: 'Total', filterButton: false, totalsRowFunction: 'sum' },
+    ];
 
-    const summaryColumns: TableColumnProperties[] = headers.map(
-      (header, index) => {
-        const column: TableColumnProperties = {
-          name: header,
-          filterButton: false,
-        };
-
-        if (index >= 1) {
-          Object.assign(column, {
-            totalsRowFunction: 'sum',
-          });
-        }
-
-        return column;
-      },
-    );
-
-    summaryColumns.push({
-      name: 'Total',
-      filterButton: false,
-      totalsRowFunction: 'sum',
-    });
-
-    const summaryRows = data.map((row) => {
-      const rowTotal = row.slice(1).reduce((acc, value) => acc + value, 0);
-      return [...row, rowTotal];
-    });
+    const summaryRows = summary.map((row) => [row.title, row.amount]);
 
     worksheet.addTable({
       displayName: 'Resumen',
@@ -157,40 +128,29 @@ export class InvoiceService {
       columns: summaryColumns,
       rows: summaryRows,
     });
+
     lastRow += summaryRows.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
-      { name: 'Matricula', filterButton: false },
-      { name: 'Alumno', filterButton: false },
-      { name: 'Folio Venta', filterButton: false },
-      { name: 'Fecha Venta', filterButton: false },
-      { name: 'Folio Pago', filterButton: false },
-      { name: 'Fecha Pago', filterButton: false },
       { name: 'Folio Factura', filterButton: false },
       { name: 'Fecha Factura', filterButton: false },
-      { name: 'Tipo Factura', filterButton: false },
       { name: 'UUID Factura', filterButton: false },
-      { name: 'Agente', filterButton: true },
-      { name: 'Metodo de pago', filterButton: true },
-      { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Tipo Factura', filterButton: false },
+      { name: 'RFC Cliente', filterButton: false },
+      { name: 'Razon Social Cliente', filterButton: false },
+      { name: 'Forma de Pago', filterButton: true },
+      { name: 'Ingreso', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
     const dataRows = rows.map((row) => [
-      row.matricula_alumno,
-      row.nombre_alumno,
-      row.folio_venta,
-      moment(row.fecha_venta).format('lll'),
-      row.folio_pago,
-      moment(row.fecha_pago).format('lll'),
       row.folio_factura,
-      row.fecha_factura != 'N/A'
-        ? moment(row.fecha_factura).format('lll')
-        : row.fecha_factura,
-      row.tipo_factura,
+      moment(row.fecha_factura).format('lll'),
       row.uuid_factura,
-      row.nombre_agente,
-      row.metodo_pago,
-      row.cobrado,
+      row.global_factura,
+      row.rfc_cliente,
+      row.razon_social_cliente,
+      row.nombre_metodo_pago,
+      row.total_factura,
     ]);
 
     worksheet.addTable({
@@ -225,8 +185,6 @@ export class InvoiceService {
       endOfDay(`${endDate}T12:00:00`).toISOString(),
     ];
 
-    console.log(params);
-
     const rows: InvoiceRow[] = await this.connection.query(
       detailInvoiceQuery,
       params,
@@ -242,5 +200,144 @@ export class InvoiceService {
           ? 'Factura global'
           : 'Factura individual',
     }));
+  }
+
+  /**
+   * Obtiene los detalles de ingresos de facturas basados en los IDs de pagos y UUIDs proporcionados.
+   *
+   * @param {number[]} paymentIDs - Un array de IDs de pagos.
+   * @param {string[]} UUIDs - Un array de UUIDs.
+   * @returns {Promise<InvoiceIncomeRow[]>} - Una promesa que resuelve a un array de detalles de ingresos de facturas.
+   *
+   * @throws {Error} - Lanza un error si ocurre algún problema durante la consulta a la base de datos.
+   */
+  private async getIncomes(
+    paymentIDs: number[],
+    UUIDs: string[],
+  ): Promise<InvoiceIncomeRow[]> {
+    if (paymentIDs.length === 0) paymentIDs.push(0);
+    if (UUIDs.length === 0) UUIDs.push('');
+
+    const paymentIDsParams = paymentIDs.map(() => '?').join(',');
+    const UUIDsParams = UUIDs.map(() => '?').join(',');
+
+    const query = detailsInvoiceQuery
+      .replace('@paymentIDs', paymentIDsParams)
+      .replace('@UUIDs', UUIDsParams);
+
+    const rows = await this.connection.query(query, [...paymentIDs, ...UUIDs]);
+
+    return rows.map((row) => ({
+      ...row,
+      id_venta: parseInt(`${row.id_venta}`),
+      id_pago: parseInt(`${row.id_pago}`),
+      id_metodo_pago: parseInt(`${row.id_metodo_pago}`),
+      cobrado: parseFloat(`${row.cobrado}`),
+    }));
+  }
+
+  private matchInvoicesToIncome(
+    incomes: InvoiceIncomeRow[],
+    invoices: InvoiceRow[],
+  ): InvoiceDetailsRow[] {
+    return invoices.map((invoice) => {
+      const invoiceIncomes = incomes.filter(
+        (income) =>
+          income.id_pago === invoice.id_pago ||
+          income.uuid_factura === invoice.uuid_factura,
+      );
+
+      const method = this.getFiscalMethodPayment(invoiceIncomes);
+
+      const option = searchOption(method.code, CatalogEnum.FormaPago);
+
+      return {
+        ...invoice,
+        nombre_metodo_pago: option?.description || 'No especificado',
+        codigo_metodo_pago: option?.key || 'No especificado',
+      };
+    });
+  }
+
+  /**
+   * Obtiene el método de pago más alto fiscal basado en los ingresos proporcionados.
+   *
+   * @param {InvoiceIncomeRow[]} incomes - Arreglo de objetos que representan los ingresos de las facturas.
+   * @returns {{ code: string; value: number }} - El método de pago con el valor más alto.
+   * @throws {BadRequestException} - Si no existen métodos de pago en los ingresos proporcionados.
+   */
+  private getFiscalMethodPayment(incomes: InvoiceIncomeRow[]) {
+    const groupMethods = incomes.reduce((acc, current) => {
+      if (!acc[`${current.codigo_metodo_pago}`]) {
+        acc[`${current.codigo_metodo_pago}`] = current.cobrado;
+      } else {
+        acc[`${current.codigo_metodo_pago}`] += current.cobrado;
+      }
+
+      return acc;
+    }, Object.assign({}));
+
+    const methods: { code: string; value: number }[] = [];
+
+    for (const key in groupMethods) {
+      const value = groupMethods[key];
+      if (!!value) {
+        methods.push({
+          code: key,
+          value: value,
+        });
+      }
+    }
+
+    if (methods.length === 0) {
+      throw new BadRequestException('No existen métodos de pago');
+    }
+
+    methods.sort((a, b) => b.value - a.value);
+
+    const [method] = methods;
+
+    return method;
+  }
+
+  /**
+   * Construye un resumen de ingresos a partir de una lista de detalles de facturas.
+   *
+   * @param {InvoiceDetailsRow[]} rows - Lista de filas de detalles de facturas.
+   * @returns {IncomeSummaryRow[]} Resumen de ingresos agrupado por método de pago.
+   *
+   * @remarks
+   * Este método agrupa las filas de detalles de facturas por el código del método de pago
+   * y calcula el total de la factura para cada grupo. Luego, busca la descripción del método
+   * de pago en el catálogo y construye un resumen con el id, título y monto de cada grupo.
+   */
+  private buildSummary(rows: InvoiceDetailsRow[]) {
+    const grouped = rows.reduce((acc, current) => {
+      if (!acc[`${current.codigo_metodo_pago}`]) {
+        acc[`${current.codigo_metodo_pago}`] = current.total_factura;
+      } else {
+        acc[`${current.codigo_metodo_pago}`] += current.total_factura;
+      }
+
+      return acc;
+    }, Object.assign({}));
+
+    const summary: IncomeSummaryRow[] = [];
+
+    for (const key in grouped) {
+      if (grouped.hasOwnProperty(key)) {
+        const element = grouped[key];
+
+        const wayPayment = searchOption(key, CatalogEnum.FormaPago);
+
+        summary.push({
+          id: parseInt(key),
+          title: wayPayment.description,
+          amount: element,
+        });
+      }
+    }
+
+    return summary;
   }
 }

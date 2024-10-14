@@ -465,7 +465,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
             SELECT vw.p_way, SUM(vw.p_ingreso) as p_total
             FROM vw_aca_way_payments vw
             WHERE vw.p_id IN (${ids.join(', ')})
-            GROUP BY vw.p_way;
+            GROUP BY vw.p_way
+            ORDER BY p_total DESC;
         `);
 
     const way = data?.[0]?.p_way;
