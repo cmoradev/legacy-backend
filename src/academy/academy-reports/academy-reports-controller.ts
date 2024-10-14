@@ -85,4 +85,30 @@ export class AcademyReportsController {
       throw new BadRequestException('Error al generar el reporte de ingresos');
     }
   }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/invoices-report')
+  async invoicesReport(@Query() query: IncomeQuery) {
+    try {
+      // const { rows, summary } = await this.incomeService.incomeData(query);
+      // const document = await this.incomeService.academyIncomeDocument(
+      //   rows,
+      //   summary,
+      // );
+      // const filename = 'Reporte_Ingresos';
+      // const base64 = await document.getBase64(filename);
+      // return {
+      //   data: { rows, summary },
+      //   report: {
+      //     filename,
+      //     base64,
+      //   },
+      // };
+    } catch (e) {
+      this.logger.error('Error generating invoice report');
+      console.error(e);
+      throw new BadRequestException('Error al generar el reporte de facturas');
+    }
+  }
 }

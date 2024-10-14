@@ -2,7 +2,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { AcademyIncomeQuery } from './dto';
-import { startOfDay, endOfDay, addHours } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import {
   AcademyIncomeDetailsRow,
   AcademyIncomeRow,
