@@ -7,8 +7,7 @@ import { detailInvoiceQuery } from './query';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
-import { IncomeDetailsRow, IncomeRow, InvoiceRow } from './types';
-import { InvoiceStatus } from 'src/invoice/types/invoice-status';
+import { IncomeDetailsRow, InvoiceRow } from './types';
 const esMx = require('moment/locale/es-mx');
 
 export class InvoiceService {
@@ -26,16 +25,23 @@ export class InvoiceService {
   public async incomeData(query: InvoiceQuery) {
     const invoices = await this.getInvoices(query);
 
-    // const paymentIDs = Array.from(new Set(incomes.map((row) => row.id_pago)));
-    // const invoiceUUIDs = Array.from(
-    //   new Set(
-    //     incomes
-    //       .filter((row) => !!row.uuid_factura)
-    //       .map((row) => row.uuid_factura),
-    //   ),
-    // );
+    const paymentIDs = Array.from(
+      new Set(
+        invoices.filter((row) => !!row.id_pago).map((row) => row.id_pago),
+      ),
+    );
 
-    // const invoices = await this.getInvoices(invoiceUUIDs, paymentIDs);
+    const UUIDs = Array.from(
+      new Set(
+        invoices
+          .filter((row) => row.global_factura === 'Factura global')
+          .map((row) => row.uuid_factura),
+      ),
+    );
+
+    console.table(invoices);
+    console.log(paymentIDs);
+    console.log(UUIDs);
 
     // const rows: IncomeDetailsRow[] = this.matchInvoicesToIncome(
     //   incomes,
@@ -47,7 +53,7 @@ export class InvoiceService {
     // const summary = this.buildSummary(rows, grouped);
 
     return {
-      // rows,
+      rows: invoices,
       // summary,
     };
   }
@@ -219,6 +225,8 @@ export class InvoiceService {
       endOfDay(`${endDate}T12:00:00`).toISOString(),
     ];
 
+    console.log(params);
+
     const rows: InvoiceRow[] = await this.connection.query(
       detailInvoiceQuery,
       params,
@@ -229,6 +237,10 @@ export class InvoiceService {
       id_factura: parseInt(`${row.id_factura}`),
       id_pago: parseInt(`${row.id_pago}`),
       total_factura: parseFloat(`${row.total_factura}`),
+      global_factura:
+        `${row.global_factura}` == '0'
+          ? 'Factura global'
+          : 'Factura individual',
     }));
   }
 }

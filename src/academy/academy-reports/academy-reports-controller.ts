@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { AcademyIncomeService } from './academy-income-service';
 import { Public } from 'src/common/docorators/public.decorator';
-import { AcademyIncomeQuery, IncomeQuery } from './dto';
+import { AcademyIncomeQuery, IncomeQuery, InvoiceQuery } from './dto';
 import { IncomeService } from './income-service';
+import { InvoiceService } from './invoice-service';
 
 @Controller()
 export class AcademyReportsController {
@@ -19,6 +20,7 @@ export class AcademyReportsController {
   constructor(
     private readonly academyIncomeService: AcademyIncomeService,
     private readonly incomeService: IncomeService,
+    private readonly invoiceService: InvoiceService,
   ) {}
 
   @Public()
@@ -89,22 +91,22 @@ export class AcademyReportsController {
   @Public()
   @UsePipes(ValidationPipe)
   @Get('/invoices-report')
-  async invoicesReport(@Query() query: IncomeQuery) {
+  async invoicesReport(@Query() query: InvoiceQuery) {
     try {
-      // const { rows, summary } = await this.incomeService.incomeData(query);
+      const { rows } = await this.invoiceService.incomeData(query);
       // const document = await this.incomeService.academyIncomeDocument(
       //   rows,
       //   summary,
       // );
-      // const filename = 'Reporte_Ingresos';
+      const filename = 'Reporte_Facturas';
       // const base64 = await document.getBase64(filename);
-      // return {
-      //   data: { rows, summary },
-      //   report: {
-      //     filename,
-      //     base64,
-      //   },
-      // };
+      return {
+        data: { rows },
+        report: {
+          filename,
+          base64: '',
+        },
+      };
     } catch (e) {
       this.logger.error('Error generating invoice report');
       console.error(e);
