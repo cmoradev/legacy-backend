@@ -125,7 +125,7 @@ export class AcademyReportsController {
     try {
       const { groups } = await this.groupService.getData(query);
 
-      const document = await this.groupService.buildDocument(groups);
+      const document = await this.groupService.buildDocument(groups, query);
 
       const filename = 'Reporte_Grupos';
 

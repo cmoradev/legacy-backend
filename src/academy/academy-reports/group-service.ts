@@ -9,6 +9,7 @@ import { AcademyDetailsRow, GroupRow, InscriptionDetailsRow } from './types';
 import { ConfigService } from 'src/common/config/config.service';
 import { Configuration } from 'src/common/config/config.keys';
 import { fileExists } from 'src/helpers';
+import { endOfDay, startOfDay } from 'date-fns';
 const esMx = require('moment/locale/es-mx');
 
 export class GroupService {
@@ -27,17 +28,6 @@ export class GroupService {
   public async getData(query: GroupQuery) {
     const academies = await this.getAcademies(query);
 
-    console.table(
-      academies.map(
-        ({ id_academia, nombre_academia, id_grupo, nombre_grupo }) => ({
-          id_academia,
-          nombre_academia,
-          id_grupo,
-          nombre_grupo,
-        }),
-      ),
-    );
-
     const inscriptions = await this.getInscripcions(query);
 
     const groups = this.matchInscriptions(academies, inscriptions);
@@ -49,11 +39,19 @@ export class GroupService {
     };
   }
 
-  public async buildDocument(groups: GroupRow[]) {
+  public async buildDocument(groups: GroupRow[], query: GroupQuery) {
     const excel = new ExcelDocument();
 
-    const startDate = '2024-11-01';
-    const endDate = '2024-11-01';
+    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
+    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+
+    const monthNameStart = moment(startDate).format('MMMM');
+    const monthNameEnd = moment(endDate).format('MMMM');
+
+    const monthName =
+      monthNameStart === monthNameEnd
+        ? monthNameStart
+        : `${monthNameStart} - ${monthNameEnd}`;
 
     const ASSETS_FOLDER = this.configService.get(Configuration.ASSETS_PATH);
 
@@ -85,41 +83,16 @@ export class GroupService {
     }
 
     groups.forEach((group, index) => {
-      const {
-        nombre_academia,
-        nombre_grupo,
-        minimo_grupo,
-        maximo_grupo,
-        integrantes,
-      } = group;
+      const { nombre_academia, nombre_grupo, integrantes } = group;
 
       const worksheet = excel.addWorksheet(
         `${index + 1}. ${nombre_grupo}`.slice(0, 31),
       );
 
       worksheet.columns = [
-        { key: 'A', width: 4 },
+        { key: 'A', width: 3 },
         { key: 'B', width: 10 },
         { key: 'C', width: 35 },
-        { key: 'D', width: 4 },
-        { key: 'E', width: 4 },
-        { key: 'F', width: 4 },
-        { key: 'G', width: 4 },
-        { key: 'H', width: 4 },
-        { key: 'I', width: 4 },
-        { key: 'J', width: 4 },
-        { key: 'K', width: 4 },
-        { key: 'L', width: 4 },
-        { key: 'M', width: 4 },
-        { key: 'N', width: 4 },
-        { key: 'O', width: 4 },
-        { key: 'P', width: 4 },
-        { key: 'Q', width: 4 },
-        { key: 'R', width: 4 },
-        { key: 'S', width: 4 },
-        { key: 'T', width: 4 },
-        { key: 'U', width: 4 },
-        { key: 'V', width: 4 },
       ];
 
       let lastRow = 1;
@@ -155,9 +128,7 @@ export class GroupService {
       };
       lastRow++;
 
-      worksheet.getCell(
-        `C${lastRow}`,
-      ).value = `Min: ${minimo_grupo} - Max: ${maximo_grupo}`;
+      worksheet.getCell(`C${lastRow}`).value = `Mes: ${monthName}`;
       worksheet.getCell(`C${lastRow}`).alignment = { horizontal: 'center' };
       worksheet.getCell(`C${lastRow}`).border = {
         top: { style: 'thin' },
@@ -182,11 +153,54 @@ export class GroupService {
       }
 
       lastRow++;
-      const headers = ['No', 'Matricula', 'Nombre Alumno'];
 
-      for (let i = 0; i < 3; i++) {
-        headers.push(...['Lu', 'Ma', 'Mi', 'Ju', 'Vi']);
+      const headers = ['No', 'Matricula', 'Nombre Alumno'];
+      const days = [];
+
+      const currentDate = moment(startDate);
+      const endMoment = moment(endDate);
+
+      while (currentDate.isSameOrBefore(endMoment)) {
+        const dayOfWeekName = currentDate.format('dd');
+        const dayOfWeek = currentDate.format('DD');
+
+        if (dayOfWeekName !== 'sá' && dayOfWeekName !== 'do') {
+          headers.push(dayOfWeek);
+          days.push(dayOfWeekName);
+        }
+        currentDate.add(1, 'day');
       }
+
+      for (let i = 4; i < headers.length + 1; i++) {
+        worksheet.getColumn(i).width = 3;
+      }
+
+      for (let i = 0; i < days.length; i++) {
+        const cell = worksheet.getCell(lastRow, i + 4);
+
+        cell.value = days[i];
+        cell.numFmt = '00';
+        cell.font = {
+          bold: true,
+          color: { argb: 'FFFFFFFF' },
+        };
+        cell.alignment = {
+          horizontal: 'center',
+        };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '4F81BD' },
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      }
+
+      lastRow++;
 
       headers.forEach((header) => {
         const cell = worksheet.getCell(lastRow, lastCol);
@@ -273,9 +287,9 @@ export class GroupService {
    * letra en mayúscula y el resto en minúscula.
    */
   private async getAcademies(args: GroupQuery): Promise<AcademyDetailsRow[]> {
-    const { groupId } = args;
+    const { cycleId } = args;
 
-    const rows: any[] = await this.connection.query(academiasQuery, [groupId]);
+    const rows: any[] = await this.connection.query(academiasQuery, [cycleId]);
 
     return rows.map(
       (row): AcademyDetailsRow => ({
@@ -332,10 +346,10 @@ export class GroupService {
   private async getInscripcions(
     args: GroupQuery,
   ): Promise<InscriptionDetailsRow[]> {
-    const { groupId } = args;
+    const { cycleId } = args;
 
     const rows: any[] = await this.connection.query(inscripcionesQuery, [
-      groupId,
+      cycleId,
     ]);
 
     return rows.map(

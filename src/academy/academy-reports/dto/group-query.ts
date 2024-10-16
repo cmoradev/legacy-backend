@@ -1,9 +1,17 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class GroupQuery {
   @IsNumber()
   @IsNotEmpty()
   @Type(() => Number)
-  groupId: number;
+  cycleId: number;
+
+  @IsString()
+  @IsNotEmpty()
+  startDate: string;
+
+  @IsString()
+  @IsNotEmpty()
+  endDate: string;
 }
