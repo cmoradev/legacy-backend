@@ -37,7 +37,7 @@ export class AcademyIncomeService {
    * @param query - Consulta de ingresos por academias.
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
-  public async academyIncomeData(query: AcademyIncomeQuery) {
+  public async getData(query: AcademyIncomeQuery) {
     // Obtengo conceptos
     const concepts = await this.getDetailsOfIncome(query);
 
@@ -86,7 +86,7 @@ export class AcademyIncomeService {
    * @param matriz - Matriz de resumen de ingresos por academias.
    * @returns Un documento Excel con los datos de ingresos.
    */
-  public async academyIncomeDocument(
+  public async buildDocument(
     rows: AcademyIncomeDetailsRow[],
     matriz: SummaryRow[],
   ) {

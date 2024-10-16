@@ -4,3 +4,4 @@ export * from './income-summary.row.type';
 export * from './income.row.type';
 export * from './summary.row.type';
 export * from './invoice.row.type';
+export * from './group.row.type';

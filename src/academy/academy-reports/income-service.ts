@@ -27,7 +27,7 @@ export class IncomeService {
    * @param query - Consulta de ingresos por academias.
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
-  public async incomeData(query: IncomeQuery) {
+  public async getData(query: IncomeQuery) {
     const incomes = await this.getDetailsOfIncome(query);
 
     const paymentIDs = Array.from(new Set(incomes.map((row) => row.id_pago)));
@@ -62,7 +62,7 @@ export class IncomeService {
    * @param matriz - Matriz de resumen de ingresos por academias.
    * @returns Un documento Excel con los datos de ingresos.
    */
-  public async academyIncomeDocument(
+  public async buildDocument(
     rows: IncomeDetailsRow[],
     summary: {
       headers: string[];

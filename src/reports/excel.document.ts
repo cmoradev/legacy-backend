@@ -9,7 +9,11 @@ export class ExcelDocument {
     this.config();
   }
 
-  public addWorksheet(name: string, color: string = '1226AA') {
+  public get book(): Workbook {
+    return this.workbook;
+  }
+
+  public addWorksheet(name: string, color: string = '4F81BD') {
     const workbook = this.workbook.addWorksheet(name, {
       properties: { tabColor: { argb: color } },
     });
