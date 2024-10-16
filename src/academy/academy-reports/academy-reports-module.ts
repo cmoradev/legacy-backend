@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AcademyBankStatementService } from './academy-bank-statement-service';
 import { AcademyIncomeService } from './academy-income-service';
 import { AcademyReportsController } from './academy-reports-controller';
 import { IncomeService } from './income-service';
@@ -15,6 +16,7 @@ import { ConfigModule } from 'src/common/config/config.module';
     IncomeService,
     InvoiceService,
     GroupService,
+    AcademyBankStatementService,
   ],
 })
 export class AcademyReportsModule {}

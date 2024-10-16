@@ -9,15 +9,17 @@ import {
 } from '@nestjs/common';
 import { AcademyIncomeService } from './academy-income-service';
 import { Public } from 'src/common/docorators/public.decorator';
+import { IncomeService } from './income-service';
+import { InvoiceService } from './invoice-service';
+import { GroupService } from './group-service';
 import {
+  AcademyBankStatementQuery,
   AcademyIncomeQuery,
   GroupQuery,
   IncomeQuery,
   InvoiceQuery,
 } from './dto';
-import { IncomeService } from './income-service';
-import { InvoiceService } from './invoice-service';
-import { GroupService } from './group-service';
+import { AcademyBankStatementService } from './academy-bank-statement-service';
 
 @Controller()
 export class AcademyReportsController {
@@ -25,6 +27,7 @@ export class AcademyReportsController {
 
   constructor(
     private readonly academyIncomeService: AcademyIncomeService,
+    private readonly academyBankStatementService: AcademyBankStatementService,
     private readonly incomeService: IncomeService,
     private readonly invoiceService: InvoiceService,
     private readonly groupService: GroupService,
@@ -143,6 +146,21 @@ export class AcademyReportsController {
       this.logger.error('Error generating list of groups report');
       throw new BadRequestException(
         'Error al generar las listas de asistencia',
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/academy-bank-statement-report')
+  async academyBankStatementReport(@Query() query: AcademyBankStatementQuery) {
+    try {
+      return await this.academyBankStatementService.academyBankStatement(query);
+    } catch (e) {
+      this.logger.error('Error generating academy bank statement report');
+      console.error(e);
+      throw new BadRequestException(
+        `Error al generar el reporte de estado de cuenta de ${query.studentId} en rango de fechas (${query.startDate}-${query.endDate}) por academia`,
       );
     }
   }

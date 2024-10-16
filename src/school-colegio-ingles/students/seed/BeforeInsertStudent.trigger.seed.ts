@@ -20,6 +20,8 @@ export default class BeforeInsertStudentTriggerSeed implements Seeder {
 
             ELSEIF NEW.id_modalidad = 2 THEN SET prefix = 'CLT';
 
+            ELSEIF NEW.id_modalidad = 4 THEN SET prefix = 'EXT';
+
             ELSE SET prefix = 'PRO';
 
             END IF;
