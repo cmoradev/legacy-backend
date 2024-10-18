@@ -11,37 +11,7 @@ import {
   MonthDate,
 } from '../../common/functions';
 import { IAcademyReportConceptRow } from '../academy-inscription-concepts/interfaces/IQueryReport';
-
-type auxIAcademyReportConceptRow = {
-  yearAndMonth: string;
-} & IAcademyReportConceptRow;
-
-type base = {
-  id: number;
-  name: string;
-};
-
-type groupByMonth = {
-  academies: base[];
-  dataWithMonth: auxIAcademyReportConceptRow[];
-  dataGroupByAcademy: ObjGroupByAcademy,
-  dataGroupByMount: ObjGroupByMount;
-  dataGroupByMountAndAcademy: ObjGroupByMountAndAcademy;
-};
-
-export type ObjGroupByMountAndAcademy = {
-  [property: string]: {
-    [property: string]: IAcademyReportConceptRow[]
-  }
-}
-
-export type ObjGroupByMount = {
-  [property: string]: IAcademyReportConceptRow[]
-}
-
-export type ObjGroupByAcademy = {
-  [property: string]: IAcademyReportConceptRow[]
-}
+import { auxIAcademyReportConceptRow, baseAcademyBankStatement, groupByMonth } from './types';
 
 export class AcademyBankStatementService {
   constructor(
@@ -96,7 +66,7 @@ export class AcademyBankStatementService {
 
     if (typeof conceptStatus !== 'undefined') {
       if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
-        queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL AND inscriptionStatus = '2'`;
+        queryString = `${queryString} AND conceptStatus = ${conceptStatus} AND conceptPaid IS NULL`;
       } else if (`${conceptStatus}` === `${PaymentStatus.PaiOut}`) {
         queryString = `${queryString} AND (conceptStatus = ${conceptStatus} OR conceptPaid IS NOT NULL)`;
       } else {
@@ -104,7 +74,7 @@ export class AcademyBankStatementService {
       }
     }
 
-    queryString = `${queryString} AND conceptPay BETWEEN '${startDate}' AND '${endDate}';`;
+    queryString = `${queryString} AND conceptPay BETWEEN '${startDate}' AND '${endDate}' AND inscriptionStatus = '2';`;
 
     try {
       return this.connection.query(queryString);
@@ -120,7 +90,7 @@ export class AcademyBankStatementService {
    * @param data - Consulta de los conceptos sin tratar.
    * @returns listado de los datos agrupados por fecha y academia.
    */
-  private groupByMonth(data: IAcademyReportConceptRow[]): groupByMonth {
+  public groupByMonth(data: IAcademyReportConceptRow[]): groupByMonth {
     const dataWithMonth = data
       .map((value: IAcademyReportConceptRow) => ({
         ...value,
@@ -176,9 +146,9 @@ export class AcademyBankStatementService {
    * @param dataWithMonth - Listado de los conceptos con el mes y año correspondiente.
    * @returns Una matriz con los totales por academia y mes .
    */
-  private getMatriz(
+  public getMatriz(
     months: MonthDate[],
-    academies: base[],
+    academies: baseAcademyBankStatement[],
     dataWithMonth: auxIAcademyReportConceptRow[],
   ) {
     const resumeDataTable = [
@@ -249,7 +219,7 @@ export class AcademyBankStatementService {
    * @param data - Consulta de los conceptos sin tratar.
    * @returns Una lista unica de academias.
    */
-  private getUniqueAcademyIds(data: IAcademyReportConceptRow[]) {
+  public getUniqueAcademyIds(data: IAcademyReportConceptRow[]) {
     const seenAcademyIds = new Set<number>(); // Array de academyId sin repetir
 
     return data

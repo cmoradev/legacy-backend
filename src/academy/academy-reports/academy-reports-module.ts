@@ -7,6 +7,7 @@ import { IncomeService } from './income-service';
 import { InvoiceService } from './invoice-service';
 import { GroupService } from './group-service';
 import { ConfigModule } from 'src/common/config/config.module';
+import { AcademyDebitService } from './academy-debit-service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([]), ConfigModule],
@@ -17,6 +18,7 @@ import { ConfigModule } from 'src/common/config/config.module';
     InvoiceService,
     GroupService,
     AcademyBankStatementService,
+    AcademyDebitService
   ],
 })
 export class AcademyReportsModule {}

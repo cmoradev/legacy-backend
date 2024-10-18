@@ -20,6 +20,8 @@ import {
   InvoiceQuery,
 } from './dto';
 import { AcademyBankStatementService } from './academy-bank-statement-service';
+import { AcademyDebitService } from './academy-debit-service';
+import { AcademyDebitQuery } from './dto/academy-debit-query';
 
 @Controller()
 export class AcademyReportsController {
@@ -31,6 +33,7 @@ export class AcademyReportsController {
     private readonly incomeService: IncomeService,
     private readonly invoiceService: InvoiceService,
     private readonly groupService: GroupService,
+    private readonly debitService: AcademyDebitService
   ) {}
 
   @Public()
@@ -161,6 +164,35 @@ export class AcademyReportsController {
       console.error(e);
       throw new BadRequestException(
         `Error al generar el reporte de estado de cuenta de ${query.studentId} en rango de fechas (${query.startDate}-${query.endDate}) por academia`,
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/academy-debit-report')
+  async academyDebitReport(@Query() query: AcademyDebitQuery){
+    try {
+      const data = await this.debitService.academyDebit(query);
+
+      const document = await this.debitService.buildDocument(data.matriz, data.rows.dataWithMonth);
+
+      const filename = 'Reporte_Academias_Adeudos';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data,
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      this.logger.error('Error generating academy debit report');
+      throw new BadRequestException(
+        'Error al generar los adeudos de academias',
       );
     }
   }

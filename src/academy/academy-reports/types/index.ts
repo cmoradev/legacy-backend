@@ -5,3 +5,4 @@ export * from './income.row.type';
 export * from './summary.row.type';
 export * from './invoice.row.type';
 export * from './group.row.type';
+export * from './academy.bank.statement.type';
