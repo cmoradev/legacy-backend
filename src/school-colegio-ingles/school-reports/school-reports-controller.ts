@@ -45,9 +45,9 @@ export class SchoolReportsController {
         },
       };
     } catch (e) {
-      this.logger.error('Error generating income report');
+      this.logger.error('Error generating school income report');
       console.error(e);
-      throw new BadRequestException('Error al generar el reporte de ingresos');
+      throw new BadRequestException('Error al generar el reporte de ingresos de colegio');
     }
   }
 
@@ -60,7 +60,7 @@ export class SchoolReportsController {
 
       const document = await this.invoiceService.buildDocument(rows, summary);
 
-      const filename = 'Reporte_Facturas';
+      const filename = 'Reporte_Facturas_Colegio';
 
       const base64 = await document.getBase64(filename);
 
@@ -72,16 +72,16 @@ export class SchoolReportsController {
         },
       };
     } catch (e) {
-      this.logger.error('Error generating invoice report');
+      this.logger.error('Error generating school invoice report');
       console.error(e);
-      throw new BadRequestException('Error al generar el reporte de facturas');
+      throw new BadRequestException('Error al generar el reporte de facturas de colegio');
     }
   }
 
   @Public()
   @UsePipes(ValidationPipe)
   @Get('/school-income-group-report')
-  async academyIncomeReport(@Query() query: SchoolIncomeGroupQuery) {
+  async incomeGroupsReport(@Query() query: SchoolIncomeGroupQuery) {
     try {
       const { rows, groups } = await this.incomeGroupService.getData(
         query,
@@ -92,7 +92,7 @@ export class SchoolReportsController {
         groups,
       );
 
-      const filename = 'Reporte_Ingresos_Academia';
+      const filename = 'Reporte_Ingresos_Colegio';
 
       const base64 = await document.getBase64(filename);
 
@@ -104,10 +104,10 @@ export class SchoolReportsController {
         },
       };
     } catch (e) {
-      this.logger.error('Error generating academy income report');
+      this.logger.error('Error generating school income group report');
       console.error(e);
       throw new BadRequestException(
-        'Error al generar el reporte de ingresos por academia',
+        'Error al generar el reporte de ingresos por grados de colegio',
       );
     }
   }

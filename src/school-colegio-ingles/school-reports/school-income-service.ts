@@ -53,9 +53,9 @@ export class SchoolIncomeService {
   }
 
     /**
-   * Genera un documento Excel con los datos de ingresos por academias.
-   * @param rows - Filas de ingresos por academias.
-   * @param matriz - Matriz de resumen de ingresos por academias.
+   * Genera un documento Excel con los datos de ingresos de colegio.
+   * @param rows - Filas de ingresos.
+   * @param matriz - Matriz de resumen de ingresos de colegio.
    * @returns Un documento Excel con los datos de ingresos.
    */
     public async buildDocument(
@@ -207,7 +207,7 @@ export class SchoolIncomeService {
 
   /**
    * Obtiene los detalles de ventas entre un rango de fechas y un estado especifico.
-   * @param query - Consulta de ingresos por academias.
+   * @param query - Consulta de ingresos del colegio.
    * @returns Una lista de detalles de ingresos.
    */
   private async getDetailsOfIncome(args: incomeQuery): Promise<SchoolIncomeRow[]> {

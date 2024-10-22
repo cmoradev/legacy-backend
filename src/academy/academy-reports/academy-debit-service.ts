@@ -104,7 +104,6 @@ export class AcademyDebitService {
       { key: 'G', width: 45 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
-      { key: 'J', width: 20 },
     ];
 
     let lastRow = 2;
@@ -172,7 +171,6 @@ export class AcademyDebitService {
       { name: 'Matricula', filterButton: false },
       { name: 'Nombre', filterButton: false },
       { name: 'Concepto', filterButton: false },
-      { name: 'Cantidad', filterButton: false },
       { name: 'Precio', filterButton: false },
       { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
     ];
@@ -184,7 +182,6 @@ export class AcademyDebitService {
       row.studentRegistration,
       row.studentName,
       row.conceptName,
-      row.conceptQuantity,
       parseFloat(row.conceptPrice),
       (row.conceptQuantity * parseInt(row.conceptPrice))
     ]);

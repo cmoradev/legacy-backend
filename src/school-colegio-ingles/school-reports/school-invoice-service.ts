@@ -20,8 +20,8 @@ export class SchoolInvoiceService {
   }
 
   /**
-   * Obtiene los datos de ingresos por academias.
-   * @param query - Consulta de ingresos por academias.
+   * Obtiene los datos de ingresos facturados de colegio.
+   * @param query - Consulta de ingresos facturados de colegio.
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
   public async getData(query: InvoiceQuery) {
@@ -54,9 +54,9 @@ export class SchoolInvoiceService {
   }
 
   /**
-   * Genera un documento Excel con los datos de ingresos por academias.
-   * @param rows - Filas de ingresos por academias.
-   * @param matriz - Matriz de resumen de ingresos por academias.
+   * Genera un documento Excel con los datos de las facturas de colegio.
+   * @param rows - Filas de ingresos facturados.
+   * @param matriz - Matriz de resumen de ingresos facturados de colegio.
    * @returns Un documento Excel con los datos de ingresos.
    */
   public async buildDocument(
@@ -166,7 +166,7 @@ export class SchoolInvoiceService {
 
   /**
    * Obtiene los detalles de ventas entre un rango de fechas y un estado especifico.
-   * @param query - Consulta de ingresos por academias.
+   * @param query - Consulta de ingresos facturados.
    * @returns Una lista de detalles de ingresos.
    */
   private async getInvoices(args: InvoiceQuery): Promise<SchoolInvoiceRow[]> {

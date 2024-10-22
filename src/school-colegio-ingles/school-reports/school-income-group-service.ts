@@ -29,16 +29,16 @@ export class SchoolIncomeGroupService {
   }
 
   /**
-   * Obtiene los datos de ingresos por academias.
-   * @param query - Consulta de ingresos por academias.
+   * Obtiene los datos de ingresos por los grados de colegio.
+   * @param query - Consulta de ingresos por grados de colegio.
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
   public async getData(query: IncomeGroupQuery) {
-    // Obtengo conceptos
+    // Conceptos
     const concepts = await this.getDetailsOfIncome(query);
 
     const conceptIDs = concepts.map((row) => row.id_concepto);
-    // Obtenego cargos aplicados en los conceptos
+    // Conceptos con cargos aplicados
     const charges = await this.getChargesOfDetails(conceptIDs);
 
     const rows: SchoolIncomeDetailsGroupRow[] = this.recalculateConceptsWithCharges(
@@ -77,9 +77,9 @@ export class SchoolIncomeGroupService {
   }
 
   /**
-   * Genera un documento Excel con los datos de ingresos por academias.
-   * @param rows - Filas de ingresos por academias.
-   * @param matriz - Matriz de resumen de ingresos por academias.
+   * Genera un documento Excel con los datos de ingresos por grados academicos.
+   * @param rows - Filas de ingresos por grados.
+   * @param matriz - Matriz de resumen de ingresos por grados academicos.
    * @returns Un documento Excel con los datos de ingresos.
    */
   public async buildDocument(
@@ -228,7 +228,7 @@ export class SchoolIncomeGroupService {
 
   /**
    * Obtiene los detalles de ventas entre un rango de fechas y un estado especifico.
-   * @param query - Consulta de ingresos por academias.
+   * @param query - Consulta.
    * @returns Una lista de detalles de ingresos.
    */
   private async getDetailsOfIncome(
