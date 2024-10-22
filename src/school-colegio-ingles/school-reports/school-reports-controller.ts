@@ -9,7 +9,8 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/common/docorators/public.decorator';
 import { SchoolIncomeService } from './school-income-service';
-import { SchoolIncomeQuery } from './dto';
+import { SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
+import { SchoolInvoiceService } from './school-invoice-service';
 
 @Controller()
 export class SchoolReportsController {
@@ -17,6 +18,7 @@ export class SchoolReportsController {
 
   constructor(
     private readonly incomeService: SchoolIncomeService,
+    private readonly invoiceService: SchoolInvoiceService
   ) {}
 
 
@@ -44,6 +46,33 @@ export class SchoolReportsController {
       this.logger.error('Error generating income report');
       console.error(e);
       throw new BadRequestException('Error al generar el reporte de ingresos');
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/school-invoices-report')
+  async invoicesReport(@Query() query: SchoolInvoiceQuery) {
+    try {
+      const { rows, summary } = await this.invoiceService.getData(query);
+
+      const document = await this.invoiceService.buildDocument(rows, summary);
+
+      const filename = 'Reporte_Facturas';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data: { rows, summary },
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      this.logger.error('Error generating invoice report');
+      console.error(e);
+      throw new BadRequestException('Error al generar el reporte de facturas');
     }
   }
 
