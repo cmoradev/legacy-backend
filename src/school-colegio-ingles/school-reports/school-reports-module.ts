@@ -4,13 +4,15 @@ import { SchoolIncomeService } from './school-income-service';
 import { ConfigModule } from 'src/common/config/config.module';
 import { SchoolReportsController } from './school-reports-controller';
 import { SchoolInvoiceService } from './school-invoice-service';
+import { SchoolIncomeGroupService } from './school-income-group-service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([]), ConfigModule],
   controllers: [SchoolReportsController],
   providers: [
     SchoolIncomeService,
-    SchoolInvoiceService
+    SchoolInvoiceService,
+    SchoolIncomeGroupService
   ],
 })
 export class SchoolReportsModule {}
