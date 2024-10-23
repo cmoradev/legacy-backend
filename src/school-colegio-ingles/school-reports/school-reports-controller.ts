@@ -9,7 +9,14 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/common/docorators/public.decorator';
 import { SchoolIncomeService } from './school-income-service';
-import { SchoolBankStatementQuery, SchoolDebitQuery, SchoolGroupQuery, SchoolIncomeGroupQuery, SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
+import {
+  SchoolBankStatementQuery,
+  SchoolDebitQuery,
+  SchoolGroupQuery,
+  SchoolIncomeGroupQuery,
+  SchoolIncomeQuery,
+  SchoolInvoiceQuery,
+} from './dto';
 import { SchoolInvoiceService } from './school-invoice-service';
 import { SchoolIncomeGroupService } from './school-income-group-service';
 import { SchoolGroupService } from './school-group-service';
@@ -26,9 +33,8 @@ export class SchoolReportsController {
     private readonly incomeGroupService: SchoolIncomeGroupService,
     private readonly groupService: SchoolGroupService,
     private readonly schoolBankStatementService: SchoolBankStatementService,
-    private readonly debitService: SchoolDebitService
+    private readonly debitService: SchoolDebitService,
   ) {}
-
 
   @Public()
   @UsePipes(ValidationPipe)
@@ -53,7 +59,9 @@ export class SchoolReportsController {
     } catch (e) {
       this.logger.error('Error generating school income report');
       console.error(e);
-      throw new BadRequestException('Error al generar el reporte de ingresos de colegio');
+      throw new BadRequestException(
+        'Error al generar el reporte de ingresos de colegio',
+      );
     }
   }
 
@@ -80,7 +88,9 @@ export class SchoolReportsController {
     } catch (e) {
       this.logger.error('Error generating school invoice report');
       console.error(e);
-      throw new BadRequestException('Error al generar el reporte de facturas de colegio');
+      throw new BadRequestException(
+        'Error al generar el reporte de facturas de colegio',
+      );
     }
   }
 
@@ -89,9 +99,7 @@ export class SchoolReportsController {
   @Get('/school-income-group-report')
   async incomeGroupsReport(@Query() query: SchoolIncomeGroupQuery) {
     try {
-      const { rows, groups } = await this.incomeGroupService.getData(
-        query,
-      );
+      const { rows, groups } = await this.incomeGroupService.getData(query);
 
       const document = await this.incomeGroupService.buildDocument(
         rows,
@@ -150,11 +158,14 @@ export class SchoolReportsController {
   @Public()
   @UsePipes(ValidationPipe)
   @Get('/school-debit-report')
-  async schoolDebitReport(@Query() query: SchoolDebitQuery){
+  async schoolDebitReport(@Query() query: SchoolDebitQuery) {
     try {
       const data = await this.debitService.schoolDebit(query);
 
-      const document = await this.debitService.buildDocument(data.matriz, data.rows.dataWithMonth);
+      const document = await this.debitService.buildDocument(
+        data.matriz,
+        data.rows.dataWithMonth,
+      );
 
       const filename = 'Reporte_Academias_Adeudos';
 
@@ -190,5 +201,4 @@ export class SchoolReportsController {
       );
     }
   }
-
 }
