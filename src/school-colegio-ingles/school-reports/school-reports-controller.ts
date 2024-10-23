@@ -9,10 +9,12 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/common/docorators/public.decorator';
 import { SchoolIncomeService } from './school-income-service';
-import { SchoolGroupQuery, SchoolIncomeGroupQuery, SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
+import { SchoolBankStatementQuery, SchoolDebitQuery, SchoolGroupQuery, SchoolIncomeGroupQuery, SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
 import { SchoolInvoiceService } from './school-invoice-service';
 import { SchoolIncomeGroupService } from './school-income-group-service';
 import { SchoolGroupService } from './school-group-service';
+import { SchoolDebitService } from './school-debit-service';
+import { SchoolBankStatementService } from './school-bank-statement-service';
 
 @Controller()
 export class SchoolReportsController {
@@ -22,7 +24,9 @@ export class SchoolReportsController {
     private readonly incomeService: SchoolIncomeService,
     private readonly invoiceService: SchoolInvoiceService,
     private readonly incomeGroupService: SchoolIncomeGroupService,
-    private readonly groupService: SchoolGroupService
+    private readonly groupService: SchoolGroupService,
+    private readonly schoolBankStatementService: SchoolBankStatementService,
+    private readonly debitService: SchoolDebitService
   ) {}
 
 
@@ -139,6 +143,50 @@ export class SchoolReportsController {
       this.logger.error('Error generating list of school groups report');
       throw new BadRequestException(
         'Error al generar las listas de asistencia de colegio',
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/school-debit-report')
+  async schoolDebitReport(@Query() query: SchoolDebitQuery){
+    try {
+      const data = await this.debitService.schoolDebit(query);
+
+      const document = await this.debitService.buildDocument(data.matriz, data.rows.dataWithMonth);
+
+      const filename = 'Reporte_Academias_Adeudos';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data,
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      this.logger.error('Error generating school debit report');
+      throw new BadRequestException(
+        'Error al generar los adeudos de academias',
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/school-bank-statement-report')
+  async schoolBankStatementReport(@Query() query: SchoolBankStatementQuery) {
+    try {
+      return await this.schoolBankStatementService.schoolBankStatement(query);
+    } catch (e) {
+      this.logger.error('Error generating academy bank statement report');
+      console.error(e);
+      throw new BadRequestException(
+        `Error al generar el reporte de estado de cuenta de ${query.studentId} en rango de fechas (${query.startDate}-${query.endDate}) por academia`,
       );
     }
   }

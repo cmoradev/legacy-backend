@@ -6,6 +6,8 @@ import { SchoolReportsController } from './school-reports-controller';
 import { SchoolInvoiceService } from './school-invoice-service';
 import { SchoolIncomeGroupService } from './school-income-group-service';
 import { SchoolGroupService } from './school-group-service';
+import { SchoolBankStatementService } from './school-bank-statement-service';
+import { SchoolDebitService } from './school-debit-service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([]), ConfigModule],
@@ -14,7 +16,9 @@ import { SchoolGroupService } from './school-group-service';
     SchoolIncomeService,
     SchoolInvoiceService,
     SchoolIncomeGroupService,
-    SchoolGroupService
+    SchoolGroupService,
+    SchoolBankStatementService,
+    SchoolDebitService
   ],
 })
 export class SchoolReportsModule {}
