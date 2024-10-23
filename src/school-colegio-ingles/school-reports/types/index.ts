@@ -4,3 +4,4 @@ export * from './school.income-summary.row.type';
 export * from './school.income.group.row.type';
 export * from './school.charge.details.row.type';
 export * from './school.summary.row.type';
+export * from './school.group.row.type';

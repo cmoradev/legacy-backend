@@ -9,9 +9,10 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/common/docorators/public.decorator';
 import { SchoolIncomeService } from './school-income-service';
-import { SchoolIncomeGroupQuery, SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
+import { SchoolGroupQuery, SchoolIncomeGroupQuery, SchoolIncomeQuery, SchoolInvoiceQuery } from './dto';
 import { SchoolInvoiceService } from './school-invoice-service';
 import { SchoolIncomeGroupService } from './school-income-group-service';
+import { SchoolGroupService } from './school-group-service';
 
 @Controller()
 export class SchoolReportsController {
@@ -20,7 +21,8 @@ export class SchoolReportsController {
   constructor(
     private readonly incomeService: SchoolIncomeService,
     private readonly invoiceService: SchoolInvoiceService,
-    private readonly incomeGroupService: SchoolIncomeGroupService
+    private readonly incomeGroupService: SchoolIncomeGroupService,
+    private readonly groupService: SchoolGroupService
   ) {}
 
 
@@ -108,6 +110,35 @@ export class SchoolReportsController {
       console.error(e);
       throw new BadRequestException(
         'Error al generar el reporte de ingresos por grados de colegio',
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
+  @Get('/school-group-report')
+  async groupReport(@Query() query: SchoolGroupQuery) {
+    try {
+      const { groups } = await this.groupService.getData(query);
+
+      const document = await this.groupService.buildDocument(groups, query);
+
+      const filename = 'Reporte_Grupos_Colegio';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data: { groups },
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      this.logger.error('Error generating list of school groups report');
+      throw new BadRequestException(
+        'Error al generar las listas de asistencia de colegio',
       );
     }
   }
