@@ -110,6 +110,7 @@ import { IdentifierModule } from './system/identifier/identifier.module';
 import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { AcademyReportsModule } from './academy/academy-reports/academy-reports-module';
 import { SchoolReportsModule } from './school-colegio-ingles/school-reports/school-reports-module';
+import { MiniStoreReportsModule } from './mini-store/mini-store-reports/mini-store-reports-module';
 
 export const routes: Routes = [
   {
@@ -248,6 +249,7 @@ export const routes: Routes = [
         ],
       },
       { path: '/sales-returns', module: MiniStoreSalesReturnsModule },
+      { path: '/reports', module: MiniStoreReportsModule}
     ],
   },
   {

@@ -18,6 +18,7 @@ import { CashRegisterTransactionsModule } from './cash-register-transactions/cas
 import { MiniStorePrices } from './mini-store-prices/entities/mini-store-prices.entity';
 // eliminar al cambiar los reporte del front
 import { MiniStoreSalesReturnsModule } from './store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
+import { MiniStoreReportsModule } from './mini-store-reports/mini-store-reports-module';
 @Module({
     imports: [
         MiniStoreProductsModule,
@@ -38,6 +39,7 @@ import { MiniStoreSalesReturnsModule } from './store-sales/mini-store-sales-retu
         CashRegisterTransactionsModule,
         MiniStorePrices,
         MiniStoreSalesReturnsModule,
+        MiniStoreReportsModule
     ],
 })
 export class MiniStoreModule {
