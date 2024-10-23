@@ -109,6 +109,7 @@ import { IdentifierModule } from './system/identifier/identifier.module';
 // eliminar al cambiar los reporte del front
 import { MiniStoreSalesReturnsModule } from './mini-store/store-sales/mini-store-sales-returns/mini-store-sales-returns.module';
 import { AcademyReportsModule } from './academy/academy-reports/academy-reports-module';
+import { SchoolReportsModule } from './school-colegio-ingles/school-reports/school-reports-module';
 
 export const routes: Routes = [
   {
@@ -204,6 +205,8 @@ export const routes: Routes = [
       },
       { path: '/incidents', module: IncidentsModule },
       { path: '/check-in', module: CheckInModule },
+
+      { path: '/reports', module: SchoolReportsModule },
     ],
   },
   {

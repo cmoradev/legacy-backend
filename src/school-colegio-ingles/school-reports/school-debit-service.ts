@@ -1,25 +1,25 @@
 import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
-import { AcademyDebitQuery } from './dto';
+import { SchoolDebitQuery } from './dto';
 import { startOfDay, endOfDay} from 'date-fns';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { NotFoundException } from '@nestjs/common';
 import {
   getMonthsBetweenDate,
 } from '../../common/functions';
-import { IAcademyReportConceptRow } from '../academy-inscription-concepts/interfaces/IQueryReport';
-import { AcademyBankStatementService } from './academy-bank-statement-service';
 import { ExcelDocument } from '../../reports/excel.document';
 import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
-import { auxIAcademyReportConceptRow } from './types';
+import { IReportConceptRow } from '../school-payments/interfaces/IReportConceptRow.interface';
+import { SchoolBankStatementService } from './school-bank-statement-service';
+import { auxISchoolReportConceptRow } from './types';
 const esMx = require('moment/locale/es-mx');
 
-export class AcademyDebitService {
+export class SchoolDebitService {
   constructor(
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
-    private readonly academyBankStatementService: AcademyBankStatementService
+    private readonly schoolBankStatementService: SchoolBankStatementService
   ) {}
 
   /**
@@ -27,20 +27,20 @@ export class AcademyDebitService {
    * @param query - Consulta de ingresos por academias.
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
-  public async academyDebit(query: AcademyDebitQuery) {
+  public async schoolDebit(query: SchoolDebitQuery) {
     
     const concepts = await this.getDebitDetailsConcept(query);
 
-    const conceptsByMonth = this.academyBankStatementService.groupByMonth(concepts);
+    const conceptsByMonth = this.schoolBankStatementService.groupByMonth(concepts);
 
     const months = getMonthsBetweenDate(
       new Date(query.startDate),
       new Date(query.endDate),
     );
 
-    const matriz = this.academyBankStatementService.getMatriz(
+    const matriz = this.schoolBankStatementService.getMatriz(
       months,
-      conceptsByMonth.academies,
+      conceptsByMonth.grades,
       conceptsByMonth.dataWithMonth,
     );
 
@@ -56,8 +56,8 @@ export class AcademyDebitService {
    * @returns Una lista de detalles de ingresos.
    */
   private async getDebitDetailsConcept(
-    query: AcademyDebitQuery,
-  ): Promise<IAcademyReportConceptRow[]> {
+    query: SchoolDebitQuery,
+  ): Promise<IReportConceptRow[]> {
     const conceptStatus = query.paymentStatus
       ? parseInt(`${query.paymentStatus}`)
       : undefined;
@@ -66,7 +66,7 @@ export class AcademyDebitService {
 
     const endDate = endOfDay(query.endDate).toISOString();
 
-    let queryString = `SELECT * FROM vw_aca_status_concepts WHERE inscriptionStatus = '2'`;
+    let queryString = `SELECT * FROM vw_status_concepts WHERE inscriptionStatus = '2'`;
 
     if (typeof conceptStatus !== 'undefined') {
       if (`${conceptStatus}` === `${PaymentStatus.Debit}`) {
@@ -89,7 +89,7 @@ export class AcademyDebitService {
     }
   }
 
-  public async buildDocument(matriz: string[][], rows: auxIAcademyReportConceptRow[]) {
+  public async buildDocument(matriz: string[][], rows: auxISchoolReportConceptRow[]) {
     const excel = new ExcelDocument();
 
     const worksheet = excel.addWorksheet('Adeudos');
@@ -178,7 +178,7 @@ export class AcademyDebitService {
     const dataRows = rows.map((row) => [
       moment(row.conceptPay).format('lll'),
       row.yearAndMonth,
-      row.academyName,
+      row.gradeName,
       row.studentRegistration,
       row.studentName,
       row.conceptName,
