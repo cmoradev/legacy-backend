@@ -23,6 +23,8 @@ export default class ProductsViewSeeds implements Seeder {
         FROM tie_productos p
         LEFT JOIN tie_listaprecios lp ON lp.id = p.StorePriceListId
         LEFT JOIN tie_clasificaciones c ON c.id = p.StoreClassificationId
+        WHERE p.activo = 1
+        AND p.deletedAt IS NULL
         ORDER BY p.id DESC`);
     }
 }

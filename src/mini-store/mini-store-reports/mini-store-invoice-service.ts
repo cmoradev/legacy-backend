@@ -127,7 +127,7 @@ export class MiniStoreInvoiceService {
     const dataColumns: TableColumnProperties[] = [
       { name: 'Folio Factura', filterButton: false },
       { name: 'Fecha Factura', filterButton: false },
-      { name: 'UUID Factura', filterButton: false },
+      { name: 'UUID Factura', filterButton: true },
       { name: 'Tipo Factura', filterButton: false },
       { name: 'RFC Cliente', filterButton: false },
       { name: 'Razon Social Cliente', filterButton: false },
