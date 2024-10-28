@@ -2,7 +2,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { AcademyBankStatementQuery } from './dto';
-import { startOfDay, endOfDay, format } from 'date-fns';
+import { format } from 'date-fns';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { NotFoundException } from '@nestjs/common';
 import {
@@ -10,8 +10,11 @@ import {
   getMonthsBetweenDate,
   MonthDate,
 } from '../../common/functions';
-import { IAcademyReportConceptRow } from '../academy-inscription-concepts/interfaces/IQueryReport';
-import { auxIAcademyReportConceptRow, baseAcademyBankStatement, groupByMonth } from './types';
+import { IAcademyReportConceptDetailsRow, IAcademyReportConceptRow } from '../academy-inscription-concepts/interfaces/IQueryReport';
+import { auxIAcademyReportConceptRow, baseAcademyBankStatement, ChargeDetailsRow, groupByMonth } from './types';
+import { SystemTypeExtraChargesEnum } from 'src/system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { calculateInvoicePrices, ChargeApplicationEnum, ChargeTypeEnum, Concept, FountTypeEnum } from '@munyaal/calculations';
+import { TypeChargeApplicationEnum } from 'src/system/system-extra-charges/enums/system-extra-charges.enum';
 
 export class AcademyBankStatementService {
   constructor(
@@ -25,19 +28,29 @@ export class AcademyBankStatementService {
    */
   public async academyBankStatement(query: AcademyBankStatementQuery) {
     
-    const concepts = await this.getDetailsConcept(query);
+    const result = await this.getDetailsConcept(query);
+
+    const conceptIDs = result.map((row) => row.conceptId);
+    // Obtenego cargos aplicados en los conceptos
+    const charges = await this.getChargesOfDetails(conceptIDs);
+
+    const concepts = this.recalculateConceptsWithCharges(result, charges);
 
     const conceptsByMonth = this.groupByMonth(concepts);
 
     const months = getMonthsBetweenDate(
-      new Date(query.startDate),
-      new Date(query.endDate),
+      query.startDate,
+      query.endDate
     );
 
     const matriz = this.getMatriz(
       months,
       conceptsByMonth.academies,
-      conceptsByMonth.dataWithMonth,
+      conceptsByMonth.dataWithMonth.sort(
+        (a, b) =>
+          new Date(a.yearAndMonth).getTime() -
+          new Date(b.yearAndMonth).getTime(),
+      ),
     );
 
     return {
@@ -58,9 +71,9 @@ export class AcademyBankStatementService {
       ? parseInt(`${query.paymentStatus}`)
       : undefined;
 
-    const startDate = startOfDay(query.startDate).toISOString();
+    const startDate = query.startDate;
 
-    const endDate = endOfDay(query.endDate).toISOString();
+    const endDate = query.endDate;
 
     let queryString = `SELECT * FROM vw_aca_status_concepts WHERE studentId = ${query.studentId}`;
 
@@ -92,14 +105,14 @@ export class AcademyBankStatementService {
    */
   public groupByMonth(data: IAcademyReportConceptRow[]): groupByMonth {
     const dataWithMonth = data
-      .map((value: IAcademyReportConceptRow) => ({
+      .map((value: auxIAcademyReportConceptRow) => ({
         ...value,
         yearAndMonth: format(value.conceptPay, 'yyyy-MM'),
       }))
       .sort(
         (a, b) =>
-          new Date(a.yearAndMonth).getTime() -
-          new Date(b.yearAndMonth).getTime(),
+          new Date(`${a.conceptPay}`).getTime() -
+          new Date(`${b.conceptPay}`).getTime(),
       );
 
     const academies = this.getUniqueAcademyIds(dataWithMonth);
@@ -146,7 +159,7 @@ export class AcademyBankStatementService {
    * @param dataWithMonth - Listado de los conceptos con el mes y año correspondiente.
    * @returns Una matriz con los totales por academia y mes .
    */
-  public getMatriz(
+  private getMatriz(
     months: MonthDate[],
     academies: baseAcademyBankStatement[],
     dataWithMonth: auxIAcademyReportConceptRow[],
@@ -188,9 +201,7 @@ export class AcademyBankStatementService {
         total = filtered
           ? filtered.reduce((previousValue, currentValue) => {
               return (
-                previousValue +
-                currentValue.conceptQuantity *
-                  parseFloat(currentValue.conceptPrice)
+                previousValue + parseFloat(currentValue.amountWithCharges)
               );
             }, 0)
           : 0;
@@ -233,4 +244,130 @@ export class AcademyBankStatementService {
       })
       .map((value) => ({ id: value.academyId, name: value.academyName }));
   }
+
+  /**
+   * Obtiene los cargos aplicados en los conceptos/detalles de venta
+   * @param ids - Lista de IDs de conceptos/detalles de venta.
+   * @returns Una lista de detalles de cargos aplicados.
+   */
+  public async getChargesOfDetails(
+    ids: number[],
+  ): Promise<ChargeDetailsRow[]> {
+    if (!!ids.length) {
+      const params = ids.map((id) => `?`).join(',');
+
+      const query = `
+      SELECT 
+        c.id              as id,
+        c.name            as description,
+        c.quantity        as quantity,
+        c.applicationType as applcation,
+        c.operationType   as operation,
+        c.typeExtraCharge as internalType,
+        c.inscChargeDetailId  as id_detalle
+      FROM ac_inscrip_concepts_extra_charges c
+  
+      WHERE c.inscChargeDetailId IN (${[params]});`;
+
+      const rows: any[] = await this.connection.query(query, ids);
+
+      return rows.map((row) => {
+        let order = 0;
+
+        if (row.internalType == SystemTypeExtraChargesEnum.Becas) {
+          order = 1;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Descuentos) {
+          order = 2;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Recargos) {
+          order = 3;
+        }
+
+        return {
+          ...row,
+          id: parseInt(`${row.id}`),
+          quantity: parseFloat(`${row.quantity}`),
+          id_detalle: parseInt(`${row.id_detalle}`),
+          type:
+            row.internalType == SystemTypeExtraChargesEnum.Recargos
+              ? ChargeTypeEnum.SURCHARGES
+              : ChargeTypeEnum.DISCOUNTS,
+          applcation:
+            row.applcation == TypeChargeApplicationEnum.percentage
+              ? ChargeApplicationEnum.PERCENTAGE
+              : ChargeApplicationEnum.QUANTITY,
+          order,
+        };
+      });
+    }
+    return [];
+  }
+
+  public recalculateConceptsWithCharges(
+    concepts: IAcademyReportConceptRow[],
+    charges: ChargeDetailsRow[],
+  ): IAcademyReportConceptRow[] {
+    const rows: IAcademyReportConceptRow[] = [];
+
+    // Agrupo los conceptos por venta
+    const sales = concepts.reduce((acc, row) => {
+      if (!acc[`${row.conceptId}`]) {
+        acc[`${row.conceptId}`] = [row];
+      } else {
+        acc[`${row.conceptId}`]?.push(row);
+      }
+      return acc;
+    }, {});
+
+    // Por cada venta se recalculan los cargos aplicados segun lo cobrado
+    for (const saleID in sales) {
+      if (Object.prototype.hasOwnProperty.call(sales, saleID)) {
+        const details = sales[`${saleID}`];
+
+        const { detailsWithoutPaymentApplied } = calculateInvoicePrices({
+          fountType: FountTypeEnum.DISCOUNT_ON_DISCOUNT,
+          ivaPercentage: 0.16,
+          concepts: details.map(
+            (detail): Concept<IAcademyReportConceptRow> => {
+              const chargesApplied = charges.filter(
+                (charge) => charge.id_detalle === detail.conceptId,
+              );
+
+              return {
+                id: detail.conceptId,
+                name: detail.conceptName,
+                charges: chargesApplied.map((charge) => ({
+                  amount: charge.quantity,
+                  application: charge.applcation,
+                  type: charge.type,
+                  order: charge.order,
+                })),
+                quantity: 1,
+                basePrice: detail.conceptPrice,
+                data: detail,
+              };
+            },
+          ),
+          payment: {
+            amount: 0,
+            change: 0,
+          },
+        });
+
+        const concepts: IAcademyReportConceptDetailsRow[] = detailsWithoutPaymentApplied.concepts.map(
+          (concept) => ({
+            ...concept.data,
+            amountWithCharges: concept.amountWithCharges.toNumber(),
+            amountWithoutCharges: concept.amountWithoutCharges.toNumber(),
+            discount: concept.discountWithIVA.toNumber(),
+            surcharge: concept.chargeWithIVA.toNumber(),
+          }),
+        );
+
+        rows.push(...concepts);
+      }
+    }
+
+    return rows;
+  }
+  
 }

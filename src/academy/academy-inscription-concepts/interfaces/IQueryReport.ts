@@ -41,6 +41,13 @@ export interface IAcademyReportConceptRow {
   conceptStatus: string;
 }
 
+export type IAcademyReportConceptDetailsRow = IAcademyReportConceptRow & {
+  amountWithCharges: number;
+  amountWithoutCharges: number;
+  discount: number;
+  surcharge: number;
+};
+
 export interface AcademyReportStructure {
   enrollment: string,
   clientName: string,

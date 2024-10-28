@@ -34,8 +34,8 @@ export class SchoolDebitService {
     const conceptsByMonth = this.schoolBankStatementService.groupByMonth(concepts);
 
     const months = getMonthsBetweenDate(
-      new Date(query.startDate),
-      new Date(query.endDate),
+      query.startDate,
+      query.endDate,
     );
 
     const matriz = this.schoolBankStatementService.getMatriz(

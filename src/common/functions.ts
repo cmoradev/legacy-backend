@@ -1,4 +1,4 @@
-import { isSameMonth, format, addMonths, isBefore, startOfMonth, endOfMonth } from 'date-fns';
+import { isSameMonth, format, addMonths, isBefore, lightFormat, getYear, getMonth, getDay } from 'date-fns';
 import { es } from 'date-fns/locale/es'
 
 /*
@@ -26,13 +26,28 @@ export interface MonthDate {
   date: string;
 }
 
-export function getMonthsBetweenDate(startDate: Date, endDate: Date): MonthDate[] {
+export function getMonthsBetweenDate(startDate: string, endDate: string): MonthDate[] {
+  const [startYear, startMonth, startDay] = startDate.split('-');
+  const [endYear, endMonth, endDay] = endDate.split('-');
   const months: MonthDate[] = [];
+  
+  const startDayUtc = new Date(
+    parseInt(startYear),
+    parseInt(startMonth)-1,
+    parseInt(startDay)
+  );
 
-  let currentDate = startDate;
+  const endDayUtc = new Date(
+    parseInt(endYear),
+    parseInt(endMonth)-1,
+    parseInt(endDay)
+  );
+
+  
+  let currentDate = startDayUtc;
 
   // Recorremos el rango mes por mes
-  while (isBefore(currentDate, endDate) || format(currentDate, 'yyyy-MM') === format(endDate, 'yyyy-MM')) {
+  while (isBefore(currentDate, endDayUtc) || (isSameMonth(currentDate, endDayUtc) && !isBefore(currentDate, endDayUtc))) {
     // Formateamos la fecha para obtener el mes y año en el formato deseado
     months.push({
       name: format(currentDate, 'MMMM', { locale: es }).toUpperCase(),
@@ -44,9 +59,6 @@ export function getMonthsBetweenDate(startDate: Date, endDate: Date): MonthDate[
     // Pasamos al siguiente mes
     currentDate = addMonths(currentDate, 1);
   }
-
-  months.shift();
-
   return months;
 
 }
