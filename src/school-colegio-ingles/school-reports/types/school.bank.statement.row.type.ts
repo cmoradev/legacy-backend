@@ -21,6 +21,13 @@ export interface ISchoolReportConceptRow {
   conceptStatus: string;
 }
 
+export type ISchoolReportConceptDetailsRow = ISchoolReportConceptRow & {
+  amountWithCharges: number;
+  amountWithoutCharges: number;
+  discount: number;
+  surcharge: number;
+};
+
 export interface SchoolMonthDate {
   name: string;
   month: string;
@@ -28,7 +35,7 @@ export interface SchoolMonthDate {
   date: string;
 }
 
-export interface auxISchoolReportConceptRow extends ISchoolReportConceptRow {
+export interface auxISchoolReportConceptRow extends ISchoolReportConceptDetailsRow {
   yearAndMonth: string;
 }
 

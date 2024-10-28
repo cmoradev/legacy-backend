@@ -43,8 +43,7 @@ export class AcademyDebitService {
     );
 
     const matriz = this.getMatriz(
-      conceptsByMonth.academies,
-      conceptsByMonth.dataWithMonth,
+      conceptsByMonth.dataWithMonth
     );
 
     return {
@@ -218,13 +217,10 @@ export class AcademyDebitService {
 
   /**
    * Obtiene la matriz de totales de los conceptos.
-   * @param months - Listado de los meses consultados.
-   * @param academies - Listado de academias de los conceptos consultados, sin duplicar.
    * @param dataWithMonth - Listado de los conceptos con el mes y año correspondiente.
    * @returns Una matriz con los totales por academia y mes .
    */
   private getMatriz(
-    academies: baseAcademyBankStatement[],
     dataWithMonth: auxIAcademyReportConceptRow[],
   ) {
     const resumeDataTable = [
