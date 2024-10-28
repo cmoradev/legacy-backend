@@ -7,8 +7,17 @@ import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
 import { InvoiceStatus } from 'src/invoice/types/invoice-status';
 import { MiniStoreIncomeQuery as IncomeQuery } from './dto';
-import { MiniStoreIncomeDetailsRow, MiniStoreIncomeRow, MiniStoreInvoiceRow } from './types';
-import { MiniStoreIncomeQuery, MiniStoreIncomeWithPaymentMethodQuery, MiniStoreInvoiceQuery } from './query/mini-store-income-query';
+import {
+  MiniStoreIncomeDetailsRow,
+  MiniStoreIncomeRow,
+  MiniStoreInvoiceRow,
+} from './types';
+import {
+  MiniStoreIncomeQuery,
+  MiniStoreIncomeWithPaymentMethodQuery,
+  MiniStoreInvoiceQuery,
+} from './query/mini-store-income-query';
+import { format } from 'date-fns';
 const esMx = require('moment/locale/es-mx');
 
 export class MiniStoreIncomeService {
@@ -84,10 +93,14 @@ export class MiniStoreIncomeService {
       { key: 'K', width: 20 },
       { key: 'L', width: 20 },
       { key: 'M', width: 20 },
-      { key: 'N', width: 20 },
+      { key: 'N', width: 40 },
+      { key: 'O', width: 20 },
+      { key: 'P', width: 20 },
+      { key: 'Q', width: 20 },
     ];
+
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:Q${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Ingresos';
     title.style = {
@@ -96,7 +109,7 @@ export class MiniStoreIncomeService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:Q${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -154,15 +167,18 @@ export class MiniStoreIncomeService {
     lastRow += summaryRows.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
-      { name: 'Matricula', filterButton: false },
-      { name: 'Alumno', filterButton: false },
-      { name: 'Folio Venta', filterButton: false },
-      { name: 'Fecha Venta', filterButton: false },
-      { name: 'Folio Pago', filterButton: false },
-      { name: 'Fecha Pago', filterButton: false },
-      { name: 'Folio Factura', filterButton: false },
-      { name: 'Fecha Factura', filterButton: false },
-      { name: 'Tipo Factura', filterButton: false },
+      { name: 'Matricula', filterButton: true },
+      { name: 'Alumno', filterButton: true },
+      { name: 'Folio Venta', filterButton: true },
+      { name: 'Fecha Venta', filterButton: true },
+      { name: 'Hora Venta', filterButton: false },
+      { name: 'Folio Pago', filterButton: true },
+      { name: 'Fecha Pago', filterButton: true },
+      { name: 'Hora Pago', filterButton: false },
+      { name: 'Folio Factura', filterButton: true },
+      { name: 'Fecha Factura', filterButton: true },
+      { name: 'Hora Factura', filterButton: false },
+      { name: 'Tipo Factura', filterButton: true },
       { name: 'UUID Factura', filterButton: false },
       { name: 'Agente', filterButton: true },
       { name: 'Metodo de pago', filterButton: true },
@@ -173,12 +189,17 @@ export class MiniStoreIncomeService {
       row.matricula_alumno,
       row.nombre_alumno,
       row.folio_venta,
-      moment(row.fecha_venta).format('lll'),
+      format(row.fecha_venta, 'dd/MM/yyyy'),
+      format(row.fecha_venta, 'pp'),
       row.folio_pago,
-      moment(row.fecha_pago).format('lll'),
+      format(row.fecha_pago, 'dd/MM/yyyy'),
+      format(row.fecha_pago, 'pp'),
       row.folio_factura,
       row.fecha_factura != 'N/A'
-        ? moment(row.fecha_factura).format('lll')
+        ? format(row.fecha_factura, 'dd/MM/yyyy')
+        : row.fecha_factura,
+      row.fecha_factura != 'N/A'
+        ? format(row.fecha_factura, 'pp')
         : row.fecha_factura,
       row.tipo_factura,
       row.uuid_factura,
@@ -210,7 +231,9 @@ export class MiniStoreIncomeService {
    * @param query - Consulta de ingresos de tienda.
    * @returns Una lista de detalles de ingresos.
    */
-  private async getDetailsOfIncome(args: IncomeQuery): Promise<MiniStoreIncomeRow[]> {
+  private async getDetailsOfIncome(
+    args: IncomeQuery,
+  ): Promise<MiniStoreIncomeRow[]> {
     let { startDate, endDate } = args;
 
     let query = MiniStoreIncomeQuery;
@@ -225,7 +248,10 @@ export class MiniStoreIncomeService {
       params.push(parseInt(`${args.method}`));
     }
 
-    const rows: MiniStoreIncomeRow[] = await this.connection.query(query, params);
+    const rows: MiniStoreIncomeRow[] = await this.connection.query(
+      query,
+      params,
+    );
 
     return rows.map((row) => ({
       ...row,

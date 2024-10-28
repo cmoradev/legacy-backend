@@ -126,40 +126,47 @@ export class AcademyChargePaymentsController
     @Res() response,
     @Query() query: QuerySimpleReport,
   ) {
-    const payments = await this.service.fetchFilteredPayments(query);
-    const charges = await this.service.fetchFilteredSales(query);
-    const result = {
-      payments: {
-        matriz: [],
-        payments: [],
-      },
-      sales: [],
-      returns: [],
-      file: '',
-    };
-
-    if (query.onlyFile) {
-      result.file = await this.service.simpleReport(payments, charges, {
-        base64: true,
-      });
-    } else {
-      const cashiers = await this.service.getUserCasher();
-      const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find({
-        where: {
-          showReport: true,
-          isActive: true,
+    try {
+      const payments = await this.service.fetchFilteredPayments(query);
+      const charges = await this.service.fetchFilteredSales(query);
+      const result = {
+        payments: {
+          matriz: [],
+          payments: [],
         },
-      });
+        sales: [],
+        returns: [],
+        file: '',
+      };
 
-      const viewPayments = convertPaymentsReportAc(
-        payments,
-        cashiers,
-        paymenMethods,
-      );
-      result.payments = viewPayments;
+      if (query.onlyFile) {
+        result.file = await this.service.simpleReport(payments, charges, {
+          base64: true,
+        });
+      } else {
+        const cashiers = await this.service.getUserCasher();
+        const paymenMethods = await this.invoiceMethodsPaymentsService.repo.find(
+          {
+            where: {
+              showReport: true,
+              isActive: true,
+            },
+          },
+        );
+
+        const viewPayments = convertPaymentsReportAc(
+          payments,
+          cashiers,
+          paymenMethods,
+        );
+        result.payments = viewPayments;
+      }
+
+      response.send(result);
+    } catch (e) {
+      console.error(e);
+      response.status(400).send({ message: 'No se puedo generar el reporte' });
     }
-
-    response.send(result);
   }
 
   @Get('/time-change')

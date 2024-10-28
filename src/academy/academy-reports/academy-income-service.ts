@@ -23,6 +23,7 @@ import { TableColumnProperties } from 'exceljs';
 import { TypeChargeApplicationEnum } from 'src/system/system-extra-charges/enums/system-extra-charges.enum';
 import { SystemTypeExtraChargesEnum } from 'src/system/system-type-extra-charges/entities/system-type-extra-charges.entity';
 import { PaymentStatus } from 'src/common/enums/PaymentStatus';
+import { format } from 'date-fns';
 const esMx = require('moment/locale/es-mx');
 
 export class AcademyIncomeService {
@@ -108,9 +109,11 @@ export class AcademyIncomeService {
       { key: 'K', width: 20 },
       { key: 'L', width: 20 },
       { key: 'M', width: 20 },
+      { key: 'N', width: 20 },
+      { key: 'O', width: 20 },
     ];
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:M${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:O${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Ingresos por academias';
     title.style = {
@@ -119,7 +122,7 @@ export class AcademyIncomeService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:M${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:O${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -179,12 +182,14 @@ export class AcademyIncomeService {
     lastRow += matriz.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
-      { name: 'Matricula', filterButton: false },
-      { name: 'Alumno', filterButton: false },
-      { name: 'Folio Venta', filterButton: false },
-      { name: 'Fecha Venta', filterButton: false },
-      { name: 'Folio Pago', filterButton: false },
-      { name: 'Fecha Pago', filterButton: false },
+      { name: 'Matricula', filterButton: true },
+      { name: 'Alumno', filterButton: true },
+      { name: 'Folio Venta', filterButton: true },
+      { name: 'Fecha Venta', filterButton: true },
+      { name: 'Hora Venta', filterButton: false },
+      { name: 'Folio Pago', filterButton: true },
+      { name: 'Fecha Pago', filterButton: true },
+      { name: 'Hora Pago', filterButton: false },
       { name: 'Academia', filterButton: true },
       { name: 'Concepto', filterButton: false },
       { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
@@ -197,9 +202,11 @@ export class AcademyIncomeService {
       row.matricula_alumno,
       row.nombre_alumno,
       row.folio_venta,
-      moment(row.fecha_venta).format('lll'),
+      format(row.fecha_venta, 'dd/MM/yyyy'),
+      format(row.fecha_venta, 'pp'),
       row.folio_pago,
-      moment(row.fecha_pago).format('lll'),
+      format(row.fecha_pago, 'dd/MM/yyyy'),
+      format(row.fecha_pago, 'pp'),
       row.academia,
       row.concepto,
       row.amountWithoutCharges,
@@ -244,7 +251,7 @@ export class AcademyIncomeService {
     }
 
     const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
-    
+
     const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
 
     const rows: AcademyIncomeRow[] = await this.connection.query(
@@ -355,6 +362,8 @@ export class AcademyIncomeService {
             surcharge: concept.chargeWithIVA.toNumber(),
           }),
         );
+
+        console.log(concepts);
 
         rows.push(...concepts);
       }
