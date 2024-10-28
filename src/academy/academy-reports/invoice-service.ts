@@ -2,7 +2,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { InvoiceQuery } from './dto';
-import { startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay, format } from 'date-fns';
 import { detailInvoiceQuery, detailsInvoiceQuery } from './query';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
@@ -77,17 +77,18 @@ export class InvoiceService {
     worksheet.columns = [
       { key: 'A', width: 10 },
       { key: 'B', width: 20 },
-      { key: 'C', width: 22 },
-      { key: 'D', width: 30 },
-      { key: 'E', width: 20 },
+      { key: 'C', width: 20 },
+      { key: 'D', width: 20 },
+      { key: 'E', width: 40 },
       { key: 'F', width: 20 },
       { key: 'G', width: 20 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
+      { key: 'J', width: 20 },
     ];
 
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:I${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Facturas';
     title.style = {
@@ -96,7 +97,7 @@ export class InvoiceService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:I${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -132,11 +133,12 @@ export class InvoiceService {
     lastRow += summaryRows.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
-      { name: 'Folio Factura', filterButton: false },
-      { name: 'Fecha Factura', filterButton: false },
-      { name: 'UUID Factura', filterButton: false },
-      { name: 'Tipo Factura', filterButton: false },
-      { name: 'RFC Cliente', filterButton: false },
+      { name: 'Folio Factura', filterButton: true },
+      { name: 'Fecha Factura', filterButton: true },
+      { name: 'Hora Factura', filterButton: false },
+      { name: 'UUID Factura', filterButton: true },
+      { name: 'Tipo Factura', filterButton: true },
+      { name: 'RFC Cliente', filterButton: true },
       { name: 'Razon Social Cliente', filterButton: false },
       { name: 'Forma de Pago', filterButton: true },
       { name: 'Ingreso', filterButton: false, totalsRowFunction: 'sum' },
@@ -144,7 +146,8 @@ export class InvoiceService {
 
     const dataRows = rows.map((row) => [
       row.folio_factura,
-      moment(row.fecha_factura).format('lll'),
+      format(row.fecha_factura, 'dd/MM/yyyy'),
+      format(row.fecha_factura, 'pp'),
       row.uuid_factura,
       row.global_factura,
       row.rfc_cliente,

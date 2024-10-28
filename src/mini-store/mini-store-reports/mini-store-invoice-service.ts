@@ -2,14 +2,22 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { MiniStoreInvoiceQuery as InvoiceQuery } from './dto';
-import { startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay, format } from 'date-fns';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
 import { BadRequestException } from '@nestjs/common';
 import { CatalogEnum, searchOption } from '@munyaal/cfdi-catalogs';
-import { MiniStoreIncomeSummaryRow, MiniStoreInvoiceDetailsRow, MiniStoreInvoiceIncomeRow, MiniStoreInvoiceRow } from './types';
-import { MiniStoreDetailInvoiceQuery, MiniStoreDetailsInvoiceQuery } from './query/mini-store-invoice-query';
+import {
+  MiniStoreIncomeSummaryRow,
+  MiniStoreInvoiceDetailsRow,
+  MiniStoreInvoiceIncomeRow,
+  MiniStoreInvoiceRow,
+} from './types';
+import {
+  MiniStoreDetailInvoiceQuery,
+  MiniStoreDetailsInvoiceQuery,
+} from './query/mini-store-invoice-query';
 const esMx = require('moment/locale/es-mx');
 
 export class MiniStoreInvoiceService {
@@ -71,7 +79,7 @@ export class MiniStoreInvoiceService {
       { key: 'A', width: 10 },
       { key: 'B', width: 20 },
       { key: 'C', width: 22 },
-      { key: 'D', width: 30 },
+      { key: 'D', width: 40 },
       { key: 'E', width: 20 },
       { key: 'F', width: 20 },
       { key: 'G', width: 20 },
@@ -125,10 +133,11 @@ export class MiniStoreInvoiceService {
     lastRow += summaryRows.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
-      { name: 'Folio Factura', filterButton: false },
-      { name: 'Fecha Factura', filterButton: false },
+      { name: 'Folio Factura', filterButton: true },
+      { name: 'Fecha Factura', filterButton: true },
+      { name: 'Hora Factura', filterButton: false },
       { name: 'UUID Factura', filterButton: true },
-      { name: 'Tipo Factura', filterButton: false },
+      { name: 'Tipo Factura', filterButton: true },
       { name: 'RFC Cliente', filterButton: false },
       { name: 'Razon Social Cliente', filterButton: false },
       { name: 'Forma de Pago', filterButton: true },
@@ -137,7 +146,8 @@ export class MiniStoreInvoiceService {
 
     const dataRows = rows.map((row) => [
       row.folio_factura,
-      moment(row.fecha_factura).format('lll'),
+      format(row.fecha_factura, 'dd/MM/yyyy'),
+      format(row.fecha_factura, 'pp'),
       row.uuid_factura,
       row.global_factura,
       row.rfc_cliente,
@@ -169,7 +179,9 @@ export class MiniStoreInvoiceService {
    * @param query - Consulta de ingresos por academias.
    * @returns Una lista de detalles de ingresos.
    */
-  private async getInvoices(args: InvoiceQuery): Promise<MiniStoreInvoiceRow[]> {
+  private async getInvoices(
+    args: InvoiceQuery,
+  ): Promise<MiniStoreInvoiceRow[]> {
     let { startDate, endDate } = args;
 
     const params: any[] = [
@@ -214,9 +226,10 @@ export class MiniStoreInvoiceService {
     const paymentIDsParams = paymentIDs.map(() => '?').join(',');
     const UUIDsParams = UUIDs.map(() => '?').join(',');
 
-    const query = MiniStoreDetailsInvoiceQuery
-      .replace('@paymentIDs', paymentIDsParams)
-      .replace('@UUIDs', UUIDsParams);
+    const query = MiniStoreDetailsInvoiceQuery.replace(
+      '@paymentIDs',
+      paymentIDsParams,
+    ).replace('@UUIDs', UUIDsParams);
 
     const rows = await this.connection.query(query, [...paymentIDs, ...UUIDs]);
 
