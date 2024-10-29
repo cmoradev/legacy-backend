@@ -1,8 +1,8 @@
-import { IAcademyReportConceptRow } from '../../../academy/academy-inscription-concepts/interfaces/IQueryReport';
+import { IAcademyReportConceptDetailsRow } from '../../../academy/academy-inscription-concepts/interfaces/IQueryReport';
 
 export type auxIAcademyReportConceptRow = {
   yearAndMonth: string;
-} & IAcademyReportConceptRow;
+} & IAcademyReportConceptDetailsRow;
 
 export type baseAcademyBankStatement = {
   id: number;
@@ -19,14 +19,14 @@ export type groupByMonth = {
 
 export type ObjGroupByMountAndAcademy = {
   [property: string]: {
-    [property: string]: IAcademyReportConceptRow[];
+    [property: string]: IAcademyReportConceptDetailsRow[];
   };
 };
 
 export type ObjGroupByMount = {
-  [property: string]: IAcademyReportConceptRow[];
+  [property: string]: IAcademyReportConceptDetailsRow[];
 };
 
 export type ObjGroupByAcademy = {
-  [property: string]: IAcademyReportConceptRow[];
+  [property: string]: IAcademyReportConceptDetailsRow[];
 };

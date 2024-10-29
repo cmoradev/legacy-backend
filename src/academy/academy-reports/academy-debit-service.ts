@@ -2,24 +2,21 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { AcademyDebitQuery } from './dto';
-import { startOfDay, endOfDay} from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { NotFoundException } from '@nestjs/common';
-import {
-  getMonthsBetweenDate,
-} from '../../common/functions';
 import { IAcademyReportConceptRow } from '../academy-inscription-concepts/interfaces/IQueryReport';
 import { AcademyBankStatementService } from './academy-bank-statement-service';
 import { ExcelDocument } from '../../reports/excel.document';
 import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
-import { auxIAcademyReportConceptRow } from './types';
+import { auxIAcademyReportConceptRow, baseAcademyBankStatement, SummaryRow } from './types';
 const esMx = require('moment/locale/es-mx');
 
 export class AcademyDebitService {
   constructor(
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
-    private readonly academyBankStatementService: AcademyBankStatementService
+    private readonly academyBankStatementService: AcademyBankStatementService,
   ) {}
 
   /**
@@ -28,31 +25,36 @@ export class AcademyDebitService {
    * @returns Un objeto que contiene las filas de ingresos y la matriz de resumen.
    */
   public async academyDebit(query: AcademyDebitQuery) {
-    
-    const concepts = await this.getDebitDetailsConcept(query);
+    const result = await this.getDebitDetailsConcept(query);
 
-    const conceptsByMonth = this.academyBankStatementService.groupByMonth(concepts);
+    const conceptIDs = result.map((row) => row.conceptId);
 
-    const months = getMonthsBetweenDate(
-      new Date(query.startDate),
-      new Date(query.endDate),
+    const charges = await this.academyBankStatementService.getChargesOfDetails(
+      conceptIDs,
     );
 
-    const matriz = this.academyBankStatementService.getMatriz(
-      months,
-      conceptsByMonth.academies,
-      conceptsByMonth.dataWithMonth,
+    const concepts = this.academyBankStatementService.recalculateConceptsWithCharges(
+      result,
+      charges,
+    );
+
+    const conceptsByMonth = this.academyBankStatementService.groupByMonth(
+      concepts,
+    );
+
+    const matriz = this.getMatriz(
+      conceptsByMonth.dataWithMonth
     );
 
     return {
-      rows: { ...conceptsByMonth, months },
+      rows: { ...conceptsByMonth, months: [] },
       matriz,
     };
   }
 
   /**
    * Obtiene los detalles de ventas entre un rango de fechas y un estado especifico (opcional).
-   * @param query - Consulta de ingresos por academias/mes 
+   * @param query - Consulta de ingresos por academias/mes
    * @returns Una lista de detalles de ingresos.
    */
   private async getDebitDetailsConcept(
@@ -89,27 +91,32 @@ export class AcademyDebitService {
     }
   }
 
-  public async buildDocument(matriz: string[][], rows: auxIAcademyReportConceptRow[]) {
+  public async buildDocument(
+    matriz: string[][],
+    rows: auxIAcademyReportConceptRow[],
+  ) {
     const excel = new ExcelDocument();
 
-    const worksheet = excel.addWorksheet('Adeudos');
+    const worksheet = excel.addWorksheet('Adeudos academias');
 
     worksheet.columns = [
       { key: 'A', width: 10 },
-      { key: 'B', width: 20 },
+      { key: 'B', width: 30 },
       { key: 'C', width: 20 },
       { key: 'D', width: 20 },
       { key: 'E', width: 20 },
-      { key: 'F', width: 20 },
+      { key: 'F', width: 45 },
       { key: 'G', width: 45 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
+      { key: 'J', width: 20 },
+      { key: 'K', width: 20 },  
     ];
 
     let lastRow = 2;
     worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
-    title.value = 'Adeudos';
+    title.value = 'Adeudos academia';
     title.style = {
       alignment: { horizontal: 'center', vertical: 'middle' },
     };
@@ -146,7 +153,7 @@ export class AcademyDebitService {
       },
     );
 
-    const summaryRows = [...matriz.slice(1, -1)];
+    const summaryRows = [...matriz.slice(1, -1).map((row) => row.map((column) => isNaN(parseInt(column)) ? column : parseFloat(column)))];
 
     worksheet.addTable({
       displayName: 'Resumen',
@@ -168,11 +175,13 @@ export class AcademyDebitService {
       { name: 'Fecha', filterButton: false },
       { name: 'Mes', filterButton: true },
       { name: 'Academia', filterButton: true },
-      { name: 'Matricula', filterButton: false },
-      { name: 'Nombre', filterButton: false },
+      { name: 'Matricula', filterButton: true },
+      { name: 'Nombre', filterButton: true },
       { name: 'Concepto', filterButton: false },
-      { name: 'Precio', filterButton: false },
-      { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Importe', filterButton: false , totalsRowFunction: 'sum'},
+      { name: 'Descuento', filterButton: false , totalsRowFunction: 'sum'},
+      { name: 'Recargo', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Por cobrar', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
     const dataRows = rows.map((row) => [
@@ -182,8 +191,10 @@ export class AcademyDebitService {
       row.studentRegistration,
       row.studentName,
       row.conceptName,
-      parseFloat(row.conceptPrice),
-      (row.conceptQuantity * parseInt(row.conceptPrice))
+      row.amountWithoutCharges,
+      row.discount,
+      row.surcharge,
+      row.amountWithCharges
     ]);
 
     worksheet.addTable({
@@ -202,5 +213,58 @@ export class AcademyDebitService {
     });
 
     return excel;
+  }
+
+  /**
+   * Obtiene la matriz de totales de los conceptos.
+   * @param dataWithMonth - Listado de los conceptos con el mes y año correspondiente.
+   * @returns Una matriz con los totales por academia y mes .
+   */
+  private getMatriz(
+    dataWithMonth: auxIAcademyReportConceptRow[],
+  ) {
+    const resumeDataTable = [
+      ['ACADEMIA', 'IMPORTE', 'DESCUENTO', 'RECARGO', 'POR COBRAR'],
+    ];
+
+    let totalSubAmount = 0;
+    let totalDiscount = 0;
+    let totalSurcharge = 0;
+    let totalAmount = 0;
+
+    const dic: { [key: string]: any } = dataWithMonth.reduce((acc, row) => {
+      if (!acc[`${row.academyId}`]) {
+        acc[`${row.academyId}`] = {
+          title: row.academyName,
+          amountWithCharges: row.amountWithCharges,
+          amountWithoutCharges: row.amountWithoutCharges,
+          discount: row.discount,
+          surcharge: row.surcharge,
+        };
+
+      } else {
+        acc[`${row.academyId}`].amountWithCharges += row.amountWithCharges;
+        acc[`${row.academyId}`].amountWithoutCharges +=
+          row.amountWithoutCharges;
+        acc[`${row.academyId}`].discount += row.discount;
+        acc[`${row.academyId}`].surcharge += row.surcharge;
+
+      }
+      totalSubAmount += row.amountWithoutCharges;
+      totalDiscount += row.discount;
+      totalSurcharge += row.surcharge;
+      totalAmount += row.amountWithCharges;
+      return acc;
+    }, Object.assign({}));
+
+    const array: SummaryRow[] = Object.values(dic);
+
+    for (const item of array) {
+      resumeDataTable.push([item.title, item.amountWithoutCharges.toString(), item.discount.toString(), item.surcharge.toString(), item.amountWithCharges.toString()])
+    }
+
+    resumeDataTable.push(['TOTALES', totalSubAmount.toString(), totalDiscount.toString(), totalSurcharge.toString(), totalAmount.toString() ])
+
+    return resumeDataTable;
   }
 }

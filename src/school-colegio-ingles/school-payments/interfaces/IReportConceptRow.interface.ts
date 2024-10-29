@@ -20,3 +20,10 @@ export interface IReportConceptRow {
   conceptPrice: string;
   conceptStatus: string;
 }
+
+export type IReportConceptDetailsRow = IReportConceptRow & {
+  amountWithCharges: number;
+  amountWithoutCharges: number;
+  discount: number;
+  surcharge: number;
+};

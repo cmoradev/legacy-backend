@@ -10,8 +10,11 @@ import {
   MonthDate,
 } from '../../common/functions';
 import { SchoolBankStatementQuery } from './dto';
-import { IReportConceptRow } from '../school-payments/interfaces/IReportConceptRow.interface';
-import { auxISchoolReportConceptRow, SchoolBase, SchoolGroupByMonth, SchoolMonthDate } from './types';
+import { IReportConceptDetailsRow, IReportConceptRow } from '../school-payments/interfaces/IReportConceptRow.interface';
+import { auxISchoolReportConceptRow, SchoolBase, SchoolChargeDetailsRow, SchoolGroupByMonth, SchoolMonthDate } from './types';
+import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { calculateInvoicePrices, ChargeApplicationEnum, ChargeTypeEnum, Concept, FountTypeEnum } from '@munyaal/calculations';
+import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 
 export class SchoolBankStatementService {
   constructor(
@@ -25,13 +28,20 @@ export class SchoolBankStatementService {
    */
   public async schoolBankStatement(query: SchoolBankStatementQuery) {
     
-    const concepts = await this.getDetailsConcept(query);
+    const result = await this.getDetailsConcept(query);
 
+    const conceptIDs = result.map((row) => row.conceptId);
+
+    // Obtenego cargos aplicados en los conceptos
+    const charges = await this.getChargesOfDetails(conceptIDs);
+
+    const concepts = this.recalculateConceptsWithCharges(result, charges);
+    
     const conceptsByMonth = this.groupByMonth(concepts);
-
+    
     const months = getMonthsBetweenDate(
-      new Date(query.startDate),
-      new Date(query.endDate),
+      query.startDate,
+      query.endDate,
     );
 
     const matriz = this.getMatriz(
@@ -92,7 +102,7 @@ export class SchoolBankStatementService {
    */
   public groupByMonth(data: IReportConceptRow[]): SchoolGroupByMonth {
     const dataWithMonth = data
-      .map((value: IReportConceptRow) => ({
+      .map((value: auxISchoolReportConceptRow) => ({
         ...value,
         yearAndMonth: format(value.conceptPay, 'yyyy-MM'),
       }))
@@ -188,9 +198,7 @@ export class SchoolBankStatementService {
         total = filtered
           ? filtered.reduce((previousValue, currentValue) => {
               return (
-                previousValue +
-                currentValue.conceptQuantity *
-                  parseFloat(currentValue.conceptPrice)
+                previousValue + parseFloat(currentValue.amountWithCharges)
               );
             }, 0)
           : 0;
@@ -232,5 +240,125 @@ export class SchoolBankStatementService {
         return false; // Si el gradeId ya fue visto, lo excluye
       })
       .map((value) => ({ id: value.gradeId, name: `${value.levelName} - ${value.gradeName}` }));
+  }
+
+  public async getChargesOfDetails(
+    ids: number[],
+  ): Promise<SchoolChargeDetailsRow[]> {
+    if (!!ids.length) {
+      const params = ids.map((id) => `?`).join(',');
+
+      const query = `
+      SELECT 
+        c.id              as id,
+        c.name            as description,
+        c.quantity        as quantity,
+        c.applicationType as applcation,
+        c.operationType   as operation,
+        c.typeExtraCharge as internalType,
+        c.schoolPaymentChargeDetailId  as id_detalle
+      FROM school_payment_charge c
+  
+      WHERE c.schoolPaymentChargeDetailId IN (${[params]});`;
+
+      const rows: any[] = await this.connection.query(query, ids);
+
+      return rows.map((row) => {
+        let order = 0;
+
+        if (row.internalType == SystemTypeExtraChargesEnum.Becas) {
+          order = 1;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Descuentos) {
+          order = 2;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Recargos) {
+          order = 3;
+        }
+
+        return {
+          ...row,
+          id: parseInt(`${row.id}`),
+          quantity: parseFloat(`${row.quantity}`),
+          id_detalle: parseInt(`${row.id_detalle}`),
+          type:
+            row.internalType == SystemTypeExtraChargesEnum.Recargos
+              ? ChargeTypeEnum.SURCHARGES
+              : ChargeTypeEnum.DISCOUNTS,
+          applcation:
+            row.applcation == TypeChargeApplicationEnum.percentage
+              ? ChargeApplicationEnum.PERCENTAGE
+              : ChargeApplicationEnum.QUANTITY,
+          order,
+        };
+      });
+    }
+    return [];
+  }
+
+  public recalculateConceptsWithCharges(
+    concepts: IReportConceptRow[],
+    charges: SchoolChargeDetailsRow[],
+  ): IReportConceptDetailsRow[] {
+    const rows: IReportConceptDetailsRow[] = [];
+
+    // Agrupo los conceptos por venta
+    const sales = concepts.reduce((acc, row) => {
+      if (!acc[`${row.conceptId}`]) {
+        acc[`${row.conceptId}`] = [row];
+      } else {
+        acc[`${row.conceptId}`]?.push(row);
+      }
+      return acc;
+    }, {});
+
+    // Por cada venta se recalculan los cargos aplicados segun lo cobrado
+    for (const saleID in sales) {
+      if (Object.prototype.hasOwnProperty.call(sales, saleID)) {
+        const details = sales[`${saleID}`];
+
+        const { detailsWithoutPaymentApplied } = calculateInvoicePrices({
+          fountType: FountTypeEnum.DISCOUNT_ON_DISCOUNT,
+          ivaPercentage: 0.16,
+          concepts: details.map(
+            (detail): Concept<IReportConceptRow> => {
+              const chargesApplied = charges.filter(
+                (charge) => charge.id_detalle === detail.conceptId,
+              );
+
+              return {
+                id: detail.conceptId,
+                name: detail.conceptName,
+                charges: chargesApplied.map((charge) => ({
+                  amount: charge.quantity,
+                  application: charge.applcation,
+                  type: charge.type,
+                  order: charge.order,
+                })),
+                quantity: 1,
+                basePrice: detail.conceptPrice,
+                data: detail,
+              };
+            },
+          ),
+          payment: {
+            amount: 0,
+            change: 0,
+          },
+        });
+
+        const concepts: IReportConceptDetailsRow[] = detailsWithoutPaymentApplied.concepts.map(
+          (concept) => ({
+            ...concept.data,
+            amountWithCharges: concept.amountWithCharges.toNumber(),
+            amountWithoutCharges: concept.amountWithoutCharges.toNumber(),
+            discount: concept.discountWithIVA.toNumber(),
+            surcharge: concept.chargeWithIVA.toNumber(),
+          }),
+        );
+
+        rows.push(...concepts);
+      }
+    }
+
+    return rows;
   }
 }
