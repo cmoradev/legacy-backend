@@ -10,6 +10,8 @@ import { BadRequestException } from '@nestjs/common';
 import { CatalogEnum, searchOption } from '@munyaal/cfdi-catalogs';
 import { SchoolIncomeSummaryRow, SchoolInvoiceDetailsRow, SchoolInvoiceIncomeRow, SchoolInvoiceRow } from './types';
 import { SchoolDetailInvoiceQuery, SchoolDetailsInvoiceQuery } from './query';
+import { Decimal } from '@munyaal/calculations';
+import { getPriceWithIva } from '../../common/functions';
 const esMx = require('moment/locale/es-mx');
 
 export class SchoolInvoiceService {
@@ -77,6 +79,8 @@ export class SchoolInvoiceService {
       { key: 'G', width: 20 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
+      { key: 'J', width: 20 },
+      { key: 'K', width: 20 },
     ];
 
     let lastRow = 2;
@@ -132,19 +136,25 @@ export class SchoolInvoiceService {
       { name: 'RFC Cliente', filterButton: false },
       { name: 'Razon Social Cliente', filterButton: false },
       { name: 'Forma de Pago', filterButton: true },
+      { name: 'Ingreso sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Ingreso', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
-    const dataRows = rows.map((row) => [
-      row.folio_factura,
-      moment(row.fecha_factura).format('lll'),
-      row.uuid_factura,
-      row.global_factura,
-      row.rfc_cliente,
-      row.razon_social_cliente,
-      row.nombre_metodo_pago,
-      row.total_factura,
-    ]);
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.total_factura), ivaPercentage: 0.16})
+      return [  row.folio_factura,
+        moment(row.fecha_factura).format('lll'),
+        row.uuid_factura,
+        row.global_factura,
+        row.rfc_cliente,
+        row.razon_social_cliente,
+        row.nombre_metodo_pago,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
 
     worksheet.addTable({
       displayName: 'Datos',

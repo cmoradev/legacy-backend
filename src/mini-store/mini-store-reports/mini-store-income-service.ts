@@ -18,6 +18,8 @@ import {
   MiniStoreInvoiceQuery,
 } from './query/mini-store-income-query';
 import { format } from 'date-fns';
+import { Decimal } from '@munyaal/calculations';
+import { getPriceWithIva } from '../../common/functions';
 const esMx = require('moment/locale/es-mx');
 
 export class MiniStoreIncomeService {
@@ -97,6 +99,8 @@ export class MiniStoreIncomeService {
       { key: 'O', width: 20 },
       { key: 'P', width: 20 },
       { key: 'Q', width: 20 },
+      { key: 'R', width: 20 },
+      { key: 'S', width: 20 },
     ];
 
     let lastRow = 2;
@@ -182,31 +186,38 @@ export class MiniStoreIncomeService {
       { name: 'UUID Factura', filterButton: false },
       { name: 'Agente', filterButton: true },
       { name: 'Metodo de pago', filterButton: true },
+      { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
-    const dataRows = rows.map((row) => [
-      row.matricula_alumno,
-      row.nombre_alumno,
-      row.folio_venta,
-      format(row.fecha_venta, 'dd/MM/yyyy'),
-      format(row.fecha_venta, 'pp'),
-      row.folio_pago,
-      format(row.fecha_pago, 'dd/MM/yyyy'),
-      format(row.fecha_pago, 'pp'),
-      row.folio_factura,
-      row.fecha_factura != 'N/A'
-        ? format(row.fecha_factura, 'dd/MM/yyyy')
-        : row.fecha_factura,
-      row.fecha_factura != 'N/A'
-        ? format(row.fecha_factura, 'pp')
-        : row.fecha_factura,
-      row.tipo_factura,
-      row.uuid_factura,
-      row.nombre_agente,
-      row.metodo_pago,
-      row.cobrado,
-    ]);
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.cobrado), ivaPercentage: 0.16})
+      return [
+        row.matricula_alumno,
+        row.nombre_alumno,
+        row.folio_venta,
+        format(row.fecha_venta, 'dd/MM/yyyy'),
+        format(row.fecha_venta, 'pp'),
+        row.folio_pago,
+        format(row.fecha_pago, 'dd/MM/yyyy'),
+        format(row.fecha_pago, 'pp'),
+        row.folio_factura,
+        row.fecha_factura != 'N/A'
+          ? format(row.fecha_factura, 'dd/MM/yyyy')
+          : row.fecha_factura,
+        row.fecha_factura != 'N/A'
+          ? format(row.fecha_factura, 'pp')
+          : row.fecha_factura,
+        row.tipo_factura,
+        row.uuid_factura,
+        row.nombre_agente,
+        row.metodo_pago,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
 
     worksheet.addTable({
       displayName: 'Datos',

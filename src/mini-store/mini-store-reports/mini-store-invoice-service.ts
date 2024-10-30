@@ -8,6 +8,8 @@ import { ExcelDocument } from 'src/reports';
 import { TableColumnProperties } from 'exceljs';
 import { BadRequestException } from '@nestjs/common';
 import { CatalogEnum, searchOption } from '@munyaal/cfdi-catalogs';
+import { getPriceWithIva } from '../../common/functions';
+import { Decimal } from '@munyaal/calculations';
 import {
   MiniStoreIncomeSummaryRow,
   MiniStoreInvoiceDetailsRow,
@@ -85,6 +87,8 @@ export class MiniStoreInvoiceService {
       { key: 'G', width: 20 },
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
+      { key: 'J', width: 20 },
+      { key: 'K', width: 20 },
     ];
 
     let lastRow = 2;
@@ -141,20 +145,27 @@ export class MiniStoreInvoiceService {
       { name: 'RFC Cliente', filterButton: false },
       { name: 'Razon Social Cliente', filterButton: false },
       { name: 'Forma de Pago', filterButton: true },
+      { name: 'Ingreso sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Ingreso', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
-    const dataRows = rows.map((row) => [
-      row.folio_factura,
-      format(row.fecha_factura, 'dd/MM/yyyy'),
-      format(row.fecha_factura, 'pp'),
-      row.uuid_factura,
-      row.global_factura,
-      row.rfc_cliente,
-      row.razon_social_cliente,
-      row.nombre_metodo_pago,
-      row.total_factura,
-    ]);
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.total_factura), ivaPercentage: 0.16})
+      return [
+        row.folio_factura,
+        format(row.fecha_factura, 'dd/MM/yyyy'),
+        format(row.fecha_factura, 'pp'),
+        row.uuid_factura,
+        row.global_factura,
+        row.rfc_cliente,
+        row.razon_social_cliente,
+        row.nombre_metodo_pago,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
 
     worksheet.addTable({
       displayName: 'Datos',
