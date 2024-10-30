@@ -1,5 +1,6 @@
 import { isSameMonth, format, addMonths, isBefore, lightFormat, getYear, getMonth, getDay } from 'date-fns';
 import { es } from 'date-fns/locale/es'
+import { AmountAndTaxParams, Decimal } from '@munyaal/calculations';
 
 /*
  * Agrupa un arreglo con la propiedad especificada
@@ -63,4 +64,24 @@ export function getMonthsBetweenDate(startDate: string, endDate: string): MonthD
 
 }
 
+/**
+ * Obtiene el monto y el impuesto de un precio con IVA.
+ * @param {Object} params - Parámetros de entrada para obtener el monto y el impuesto.
+ * @returns {Object} - Monto y impuesto calculados.
+ * Ejemplo: getAmountAndTaxFromPriceWithIva({ base, ivaPercentage })
+ */
+export const getPriceWithIva = (params: AmountAndTaxParams) => {
+  const base = new Decimal (params.base);
 
+  const percentage = params.ivaPercentage > 1 ? new Decimal(params.ivaPercentage).div(100).add(1) : new Decimal(params.ivaPercentage).add(1);
+
+  const amount = base.div(percentage);
+
+  const tax = base.sub(amount);
+
+  return {
+      base,
+      amount,
+      tax
+  }
+}

@@ -19,6 +19,8 @@ import { SchoolIncomeGroupQuery as IncomeGroupQuery } from './dto';
 import { SchoolIncomeDetailsGroupRow, SchoolIncomeGroupRow, SchoolSummaryRow } from './types';
 import { SchoolChargeDetailsRow } from './types/school.charge.details.row.type';
 import { SchoolIncomeGroupQuery } from './query';
+import { getPriceWithIva } from '../../common/functions';
+import { Decimal } from '@munyaal/calculations';
 const esMx = require('moment/locale/es-mx');
 
 export class SchoolIncomeGroupService {
@@ -104,6 +106,8 @@ export class SchoolIncomeGroupService {
       { key: 'K', width: 20 },
       { key: 'L', width: 20 },
       { key: 'M', width: 20 },
+      { key: 'N', width: 20 },
+      { key: 'O', width: 20 },
     ];
     let lastRow = 2;
     worksheet.mergeCells(`B${lastRow}:M${lastRow}`);
@@ -188,25 +192,32 @@ export class SchoolIncomeGroupService {
       { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Discuento', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Recargo', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
-    const dataRows = rows.map((row) => [
-      row.matricula_alumno,
-      row.nombre_alumno,
-      row.folio_venta,
-      moment(row.fecha_venta).format('lll'),
-      row.folio_pago,
-      moment(row.fecha_pago).format('lll'),
-      row.nivel,
-      row.grado,
-      row.grupo,
-      row.concepto,
-      row.amountWithoutCharges,
-      row.discount,
-      row.surcharge,
-      row.amountWithCharges,
-    ]);
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.amountWithCharges), ivaPercentage: 0.16})
+      return [
+        row.matricula_alumno,
+        row.nombre_alumno,
+        row.folio_venta,
+        moment(row.fecha_venta).format('lll'),
+        row.folio_pago,
+        moment(row.fecha_pago).format('lll'),
+        row.nivel,
+        row.grado,
+        row.grupo,
+        row.concepto,
+        row.amountWithoutCharges,
+        row.discount,
+        row.surcharge,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
 
     worksheet.addTable({
       displayName: 'Datos',

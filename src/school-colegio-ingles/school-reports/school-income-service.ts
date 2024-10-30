@@ -9,6 +9,8 @@ import { SchoolIncomeQuery, SchoolIncomeWithPaymentMethodQuery, SchoolInvoiceQue
 import { InvoiceStatus } from '../../invoice/types/invoice-status';
 import { TableColumnProperties } from 'exceljs';
 import { ExcelDocument } from '../../reports/excel.document';
+import { Decimal } from '@munyaal/calculations';
+import { getPriceWithIva } from '../../common/functions';
 const esMx = require('moment/locale/es-mx');
 
 export class SchoolIncomeService {
@@ -85,6 +87,8 @@ export class SchoolIncomeService {
         { key: 'L', width: 20 },
         { key: 'M', width: 20 },
         { key: 'N', width: 20 },
+        { key: 'O', width: 20 },
+        { key: 'P', width: 20 },
       ];
       let lastRow = 2;
       worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
@@ -169,23 +173,28 @@ export class SchoolIncomeService {
         { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
       ];
   
-      const dataRows = rows.map((row) => [
-        row.matricula_alumno,
-        row.nombre_alumno,
-        row.folio_venta,
-        moment(row.fecha_venta).format('lll'),
-        row.folio_pago,
-        moment(row.fecha_pago).format('lll'),
-        row.folio_factura,
-        row.fecha_factura != 'N/A'
-          ? moment(row.fecha_factura).format('lll')
-          : row.fecha_factura,
-        row.tipo_factura,
-        row.uuid_factura,
-        row.nombre_agente,
-        row.metodo_pago,
-        row.cobrado,
-      ]);
+      const dataRows = rows.map((row) => {
+        const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.cobrado), ivaPercentage: 0.16})
+        return [
+          row.matricula_alumno,
+          row.nombre_alumno,
+          row.folio_venta,
+          moment(row.fecha_venta).format('lll'),
+          row.folio_pago,
+          moment(row.fecha_pago).format('lll'),
+          row.folio_factura,
+          row.fecha_factura != 'N/A'
+            ? moment(row.fecha_factura).format('lll')
+            : row.fecha_factura,
+          row.tipo_factura,
+          row.uuid_factura,
+          row.nombre_agente,
+          row.metodo_pago,
+          parseFloat(amount.toFixed(2)),
+          parseFloat(tax.toFixed(2)),
+          parseFloat(base.toFixed(2)),
+        ]
+      });
   
       worksheet.addTable({
         displayName: 'Datos',

@@ -17,13 +17,15 @@ import {
   calculateInvoicePrices,
   FountTypeEnum,
   Concept,
+  Decimal,
 } from '@munyaal/calculations';
 import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
-import { TypeChargeApplicationEnum } from 'src/system/system-extra-charges/enums/system-extra-charges.enum';
-import { SystemTypeExtraChargesEnum } from 'src/system/system-type-extra-charges/entities/system-type-extra-charges.entity';
-import { PaymentStatus } from 'src/common/enums/PaymentStatus';
+import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
+import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { format } from 'date-fns';
+import { getPriceWithIva } from '../../common/functions';
 const esMx = require('moment/locale/es-mx');
 
 export class AcademyIncomeService {
@@ -111,6 +113,8 @@ export class AcademyIncomeService {
       { key: 'M', width: 20 },
       { key: 'N', width: 20 },
       { key: 'O', width: 20 },
+      { key: 'P', width: 20 },
+      { key: 'Q', width: 20 },
     ];
     let lastRow = 2;
     worksheet.mergeCells(`B${lastRow}:O${lastRow}`);
@@ -193,27 +197,34 @@ export class AcademyIncomeService {
       { name: 'Academia', filterButton: true },
       { name: 'Concepto', filterButton: false },
       { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
-      { name: 'Discuento', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Descuento', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Recargo', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
     ];
 
-    const dataRows = rows.map((row) => [
-      row.matricula_alumno,
-      row.nombre_alumno,
-      row.folio_venta,
-      format(row.fecha_venta, 'dd/MM/yyyy'),
-      format(row.fecha_venta, 'pp'),
-      row.folio_pago,
-      format(row.fecha_pago, 'dd/MM/yyyy'),
-      format(row.fecha_pago, 'pp'),
-      row.academia,
-      row.concepto,
-      row.amountWithoutCharges,
-      row.discount,
-      row.surcharge,
-      row.amountWithCharges,
-    ]);
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.amountWithCharges), ivaPercentage: 0.16})
+      return [
+        row.matricula_alumno,
+        row.nombre_alumno,
+        row.folio_venta,
+        format(row.fecha_venta, 'dd/MM/yyyy'),
+        format(row.fecha_venta, 'pp'),
+        row.folio_pago,
+        format(row.fecha_pago, 'dd/MM/yyyy'),
+        format(row.fecha_pago, 'pp'),
+        row.academia,
+        row.concepto,
+        row.amountWithoutCharges,
+        row.discount,
+        row.surcharge,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
 
     worksheet.addTable({
       displayName: 'Datos',
@@ -362,8 +373,6 @@ export class AcademyIncomeService {
             surcharge: concept.chargeWithIVA.toNumber(),
           }),
         );
-
-        console.log(concepts);
 
         rows.push(...concepts);
       }
