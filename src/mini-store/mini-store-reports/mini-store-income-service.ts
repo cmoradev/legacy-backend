@@ -104,7 +104,7 @@ export class MiniStoreIncomeService {
     ];
 
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:Q${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:S${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Ingresos';
     title.style = {
@@ -113,7 +113,7 @@ export class MiniStoreIncomeService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:Q${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:S${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -233,6 +233,161 @@ export class MiniStoreIncomeService {
       columns: dataColumns,
       rows: dataRows,
     });
+
+    return excel;
+  }
+
+  /**
+   * Genera un documento Excel con los datos de ingresos de tienda.
+   * @param rows - Filas de ingresos de tienda.
+   * @param matriz - Matriz de resumen de ingresos de tienda.
+   * @returns Un documento Excel con los datos de ingresos.
+   */
+  public async buildDocumentLite(
+    rows: MiniStoreIncomeDetailsRow[],
+    summary: {
+      headers: string[];
+      data: any[];
+      total: number;
+    },
+  ) {
+    const excel = new ExcelDocument();
+
+    const worksheet = excel.addWorksheet('Ingresos tienda');
+
+    worksheet.columns = [
+      { key: 'A', width: 4},
+      { key: 'B', width: 15},
+      { key: 'C', width: 21},
+      { key: 'D', width: 10},
+      { key: 'E', width: 21},
+      { key: 'F', width: 9},
+      { key: 'G', width: 15},
+      { key: 'H', width: 10},
+      { key: 'I', width: 10},
+      { key: 'J', width: 10}
+    ];
+
+    let lastRow = 2;
+    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
+    const title = worksheet.getCell(`B${lastRow}`);
+    title.value = 'Ingresos';
+    title.style = {
+      alignment: { horizontal: 'center', vertical: 'middle' },
+    };
+    title.font = { bold: true, size: 16 };
+    lastRow += 1;
+
+    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
+    const subtitle = worksheet.getCell(`B${lastRow}`);
+    subtitle.value = `Reporte emitido en ${moment()
+      .locale('es')
+      .format('lll')}`;
+    subtitle.style = {
+      alignment: { horizontal: 'center', vertical: 'middle' },
+    };
+    subtitle.font = { bold: true, size: 12 };
+    lastRow += 2;
+
+
+
+    const { headers, data } = summary;
+
+    const summaryColumns: TableColumnProperties[] = headers.map(
+      (header, index) => {
+        const column: TableColumnProperties = {
+          name: header,
+          filterButton: false,
+        };
+
+        if (index >= 1) {
+          Object.assign(column, {
+            totalsRowFunction: 'sum',
+          });
+        }
+
+        return column;
+      },
+    );
+
+    summaryColumns.push({
+      name: 'Total',
+      filterButton: false,
+      totalsRowFunction: 'sum',
+    });
+
+    const summaryRows = data.map((row) => {
+      const rowTotal = row.slice(1).reduce((acc, value) => acc + value, 0);
+      return [...row, rowTotal];
+    });
+
+    worksheet.addTable({
+      displayName: 'Resumen',
+      name: 'Resumen',
+      ref: `B${lastRow}`,
+      totalsRow: true,
+      headerRow: true,
+      style: {
+        theme: 'TableStyleLight9',
+        showRowStripes: true,
+        showColumnStripes: true,
+      },
+      columns: summaryColumns,
+      rows: summaryRows,
+    });
+
+    worksheet.getRows(lastRow, (lastRow+summaryRows.length+rows.length)).forEach((row) => {
+      row.alignment = { wrapText: true}
+    });
+
+    lastRow += summaryRows.length + 3;
+
+    const dataColumns: TableColumnProperties[] = [
+      { name: 'Folio Venta', filterButton: true },
+      { name: 'Fecha y hora venta', filterButton: false },
+      { name: 'Folio Pago', filterButton: true },
+      { name: 'Fecha y hora pago', filterButton: false },
+      { name: 'Matricula', filterButton: true },
+      { name: 'Alumno', filterButton: true },
+      { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
+    ];
+
+    const dataRows = rows.map((row) => {
+      const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.cobrado), ivaPercentage: 0.16})
+      return [
+        row.folio_venta,
+        format(row.fecha_venta, 'dd/MM/yyyy pp'),
+        row.folio_pago,
+        format(row.fecha_pago, 'dd/MM/yyyy pp'),
+        row.matricula_alumno,
+        row.nombre_alumno,
+        parseFloat(amount.toFixed(2)),
+        parseFloat(tax.toFixed(2)),
+        parseFloat(base.toFixed(2)),
+      ]
+    });
+
+    worksheet.addTable({
+      displayName: 'Datos',
+      name: 'Datos',
+      ref: `B${lastRow}`,
+      totalsRow: true,
+      headerRow: true,
+      style: {
+        theme: 'TableStyleLight9',
+        showRowStripes: true,
+        showColumnStripes: true,
+      },
+      columns: dataColumns,
+      rows: dataRows,
+    });
+
+    worksheet.pageSetup.orientation = 'landscape';
+    // n / 2.54 centimetros entre pulgadas, excel dimensiona en pulgadas
+    worksheet.pageSetup.margins.left = 1.5 / 2.54
+    worksheet.pageSetup.margins.right = 1.5 / 2.54
 
     return excel;
   }
