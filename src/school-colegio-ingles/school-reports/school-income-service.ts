@@ -170,6 +170,8 @@ export class SchoolIncomeService {
         { name: 'UUID Factura', filterButton: false },
         { name: 'Agente', filterButton: true },
         { name: 'Metodo de pago', filterButton: true },
+        { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
+        { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
         { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
       ];
   

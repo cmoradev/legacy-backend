@@ -35,12 +35,22 @@ export class MiniStoreReportsController {
 
       const base64 = await document.getBase64(filename);
 
+      const documentLite = await this.miniStoreIncomeService.buildDocumentLite(rows, summary);
+
+      const filenameLite = 'Reporte_Ingresos_Tienda';
+
+      const base64Lite = await documentLite.getBase64(filenameLite);
+
       return {
         data: { rows, summary },
         report: {
           filename,
           base64,
         },
+        reportLite: {
+          filename: filenameLite,
+          base64: base64Lite,
+        }
       };
     } catch (e) {
       this.logger.error('Error generating mini store: income report');

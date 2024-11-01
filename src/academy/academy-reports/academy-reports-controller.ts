@@ -83,12 +83,22 @@ export class AcademyReportsController {
 
       const base64 = await document.getBase64(filename);
 
+      const documentLite = await this.incomeService.buildDocumentLite(rows, summary);
+
+      const filenameLite = 'Reporte_Ingresos';
+
+      const base64Lite = await documentLite.getBase64(filenameLite);
+
       return {
         data: { rows, summary },
         report: {
           filename,
           base64,
         },
+        reportLite: {
+          filename: filenameLite,
+          base64: base64Lite,
+        }
       };
     } catch (e) {
       this.logger.error('Error generating income report');
