@@ -129,7 +129,7 @@ export class SchoolDebitService {
 
     worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
-    subtitle.value = `Reporte emitido en ${moment().utc(true)
+    subtitle.value = `Reporte emitido en ${moment().utc(true).local()
       .locale('es')
       .format('lll')}`;
     subtitle.style = {
