@@ -143,16 +143,6 @@ export class MiniStoreIncomeService {
       },
     );
 
-    summaryColumns.push({
-      name: 'Total',
-      filterButton: false,
-      totalsRowFunction: 'sum',
-    });
-
-    const summaryRows = data.map((row) => {
-      const rowTotal = row.slice(1).reduce((acc, value) => acc + value, 0);
-      return [...row, rowTotal];
-    });
 
     worksheet.addTable({
       displayName: 'Resumen',
@@ -166,9 +156,9 @@ export class MiniStoreIncomeService {
         showColumnStripes: true,
       },
       columns: summaryColumns,
-      rows: summaryRows,
+      rows: data,
     });
-    lastRow += summaryRows.length + 3;
+    lastRow += data.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
       { name: 'Matricula', filterButton: true },
@@ -487,7 +477,7 @@ export class MiniStoreIncomeService {
     let total = 0;
     const agents = Array.from(new Set(rows.map((row) => row.nombre_agente)));
 
-    const headers: string[] = ['Metodo de Pago', ...agents];
+    const headers: string[] = ['Metodo de Pago', ...agents, 'Total'];
 
     const data = [];
 
@@ -509,6 +499,16 @@ export class MiniStoreIncomeService {
 
         data.push(row);
       }
+    }
+
+    for (let index = 0; index < data.length; index++) {
+      const total = data[index].filter((value) => typeof value == 'number').reduce((previousValue, currentValue) => {
+        return (
+          previousValue + currentValue
+        );
+      }, 0);
+
+      data[index].push(total)
     }
 
     return {
