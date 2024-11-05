@@ -103,7 +103,7 @@ export class MiniStoreInvoiceService {
 
     worksheet.mergeCells(`B${lastRow}:I${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
-    subtitle.value = `Reporte emitido en ${moment()
+    subtitle.value = `Reporte emitido en ${moment().utc(true).local()
       .locale('es')
       .format('lll')}`;
     subtitle.style = {
