@@ -247,19 +247,20 @@ export class MiniStoreIncomeService {
 
     worksheet.columns = [
       { key: 'A', width: 4},
-      { key: 'B', width: 15},
-      { key: 'C', width: 21},
-      { key: 'D', width: 10},
-      { key: 'E', width: 21},
-      { key: 'F', width: 9},
-      { key: 'G', width: 15},
+      { key: 'B', width: 12},
+      { key: 'C', width: 12},
+      { key: 'D', width: 12},
+      { key: 'E', width: 12},
+      { key: 'F', width: 12},
+      { key: 'G', width: 20},
       { key: 'H', width: 10},
       { key: 'I', width: 10},
-      { key: 'J', width: 10}
+      { key: 'J', width: 10},
+      { key: 'K', width: 10}
     ];
 
     let lastRow = 2;
-    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:K${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
     title.value = 'Ingresos';
     title.style = {
@@ -268,7 +269,7 @@ export class MiniStoreIncomeService {
     title.font = { bold: true, size: 16 };
     lastRow += 1;
 
-    worksheet.mergeCells(`B${lastRow}:J${lastRow}`);
+    worksheet.mergeCells(`B${lastRow}:K${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
     subtitle.value = `Reporte emitido en ${moment()
       .locale('es')
@@ -300,16 +301,7 @@ export class MiniStoreIncomeService {
       },
     );
 
-    summaryColumns.push({
-      name: 'Total',
-      filterButton: false,
-      totalsRowFunction: 'sum',
-    });
-
-    const summaryRows = data.map((row) => {
-      const rowTotal = row.slice(1).reduce((acc, value) => acc + value, 0);
-      return [...row, rowTotal];
-    });
+  
 
     worksheet.addTable({
       displayName: 'Resumen',
@@ -323,14 +315,14 @@ export class MiniStoreIncomeService {
         showColumnStripes: true,
       },
       columns: summaryColumns,
-      rows: summaryRows,
+      rows: data,
     });
 
-    worksheet.getRows(lastRow, (lastRow+summaryRows.length+rows.length)).forEach((row) => {
+    worksheet.getRows(lastRow, (lastRow+data.length+rows.length)).forEach((row) => {
       row.alignment = { wrapText: true}
     });
 
-    lastRow += summaryRows.length + 3;
+    lastRow += data.length + 3;
 
     const dataColumns: TableColumnProperties[] = [
       { name: 'Folio Venta', filterButton: true },
@@ -339,6 +331,7 @@ export class MiniStoreIncomeService {
       { name: 'Fecha y hora pago', filterButton: false },
       { name: 'Matricula', filterButton: true },
       { name: 'Alumno', filterButton: true },
+      { name: 'Metodo de pago', filterButton: true },
       { name: 'Cobrado sin iva', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'IVA', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Cobrado', filterButton: false, totalsRowFunction: 'sum' },
@@ -353,6 +346,7 @@ export class MiniStoreIncomeService {
         format(row.fecha_pago, 'dd/MM/yyyy pp'),
         row.matricula_alumno,
         row.nombre_alumno,
+        row.metodo_pago,
         parseFloat(amount.toFixed(2)),
         parseFloat(tax.toFixed(2)),
         parseFloat(base.toFixed(2)),
