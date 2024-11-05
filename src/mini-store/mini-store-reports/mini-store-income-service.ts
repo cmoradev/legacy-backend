@@ -115,7 +115,7 @@ export class MiniStoreIncomeService {
 
     worksheet.mergeCells(`B${lastRow}:S${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
-    subtitle.value = `Reporte emitido en ${moment()
+    subtitle.value = `Reporte emitido en ${moment().utc(true)
       .locale('es')
       .format('lll')}`;
     subtitle.style = {
@@ -271,7 +271,7 @@ export class MiniStoreIncomeService {
 
     worksheet.mergeCells(`B${lastRow}:K${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
-    subtitle.value = `Reporte emitido en ${moment()
+    subtitle.value = `Reporte emitido en ${moment().utc(true)
       .locale('es')
       .format('lll')}`;
     subtitle.style = {
