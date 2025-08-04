@@ -81,7 +81,7 @@ export class AcademyDebitService {
     }
 
     queryString = `${queryString} AND conceptPay BETWEEN '${startDate}' AND '${endDate}';`;
-
+    console.log(queryString);
     try {
       return this.connection.query(queryString);
     } catch (e) {

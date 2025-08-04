@@ -97,6 +97,7 @@ export class IncomeService {
       { key: 'R', width: 20 },
       { key: 'S', width: 20 },
     ];
+    
     let lastRow = 2;
     worksheet.mergeCells(`B${lastRow}:S${lastRow}`);
     const title = worksheet.getCell(`B${lastRow}`);
