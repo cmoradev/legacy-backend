@@ -60,7 +60,7 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         Version: '4.0',
         Serie: invoice.Serie,
         Folio: invoice.Folio,
-        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss'),
         FormaPago: invoice.FormaPago as FormaPagoEnum,
         Moneda: invoice.Moneda as MonedaEnum,
         SubTotal: new Decimal(invoice.SubTotal).toFixed(2),

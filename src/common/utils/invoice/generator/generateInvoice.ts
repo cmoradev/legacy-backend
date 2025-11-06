@@ -57,7 +57,7 @@ export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
     const key = instancePath + 'CSD/' + emisor.keyCSD;
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
 
-    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
 
     const comprobante: Comprobante = {
         Serie: serie,
@@ -158,7 +158,7 @@ export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIe
     const { instancePath, xslt } = env
     const key = instancePath + 'CSD/' + emisor.keyCSD;
     const cer = instancePath + 'CSD/' + emisor.cerCSD;
-    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
 
     const comprobante: Comprobante = {
         Serie: serie,
@@ -250,7 +250,7 @@ export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promis
 
     const { periodicity, month, year } = infoGlobal;
 
-    const today = moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+    const today = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
 
     const key: string = `${instancePath}CSD/${keyCSD}`;
     const cer: string = `${instancePath}CSD/${cerCSD}`;
@@ -403,7 +403,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         Version: '4.0',
         Serie: serie,
         Folio: folio,
-        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss'),
         FormaPago: codigoFormaPago as FormaPagoEnum,
         Moneda,
         SubTotal: totals.fiscal.SubTotal,
@@ -537,7 +537,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         Version: '4.0',
         Serie: serieFacturacion,
         Folio: folio,
-        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss'),
+        Fecha: moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss'),
         FormaPago: wayPayment as FormaPagoEnum,
         Moneda,
         SubTotal: parseFloat(`${subtotal}`).toFixed(2),
