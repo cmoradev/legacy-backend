@@ -7,6 +7,7 @@ import {
   Res,
   UnauthorizedException,
   UseGuards,
+  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -22,6 +23,7 @@ import { RefreshGuard } from './guards/refresh.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Public } from '../../common/docorators/public.decorator';
+import { ValidateAdminPasswordDto } from './dto/validate-admin-password.dto';
 
 @Controller()
 export class AuthController {
@@ -121,4 +123,22 @@ export class AuthController {
       res.status(401).send({ data: { statusCode: 401, message: e.message } });
     }
   }
+
+  @Post('validate-password')
+  @UsePipes(ValidationPipe)
+  public async validateAdminPassword(
+    @Body(new ValidationPipe()) validate: ValidateAdminPasswordDto,
+  ) {
+    const isValid = await this.authService.validateAdminPassword(validate);
+    
+    if (!isValid) {
+      throw new UnauthorizedException('Credenciales incorrecta');
+    }
+
+    return {
+      isValid: true
+    };
+
+  }
+
 }
