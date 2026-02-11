@@ -21,6 +21,7 @@ import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import { ValidateAdminPasswordDto } from './dto/validate-admin-password.dto';
 
 interface UserBody {
   name: string;
@@ -224,6 +225,21 @@ export class AuthService {
     } catch (e) {
       // tslint:disable-next-line:no-console
       console.error(e.message);
+    }
+  }
+
+  async validateAdminPassword(validate: ValidateAdminPasswordDto){
+    try {
+      const user = await this.usersService.findOne({
+        where: {
+          email: validate.email, role: { id: 1}
+        }
+      })
+      if (!user) throw new BadRequestException('User not found');
+      
+      return bcrypt.compareSync(validate.password, user.password.replace('$2y$', '$2a$'))
+    } catch (error) {
+      console.error(error)
     }
   }
 }
