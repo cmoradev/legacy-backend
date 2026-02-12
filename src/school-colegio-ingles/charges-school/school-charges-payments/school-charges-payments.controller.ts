@@ -27,7 +27,7 @@ import {
   GenerateGlobalInvoiceMunyaal,
   GenerateInvoiceMunyaal,
 } from '../../../common/utils/invoice/generator/generateInvoice';
-import { FormaPago } from '@signati/core';
+import { FormaPago, RegimenFiscalList } from '@signati/core';
 import { User } from '../../../system/users/entities/user.entity';
 import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
@@ -71,6 +71,11 @@ import {
   TipoComprobanteEnum,
 } from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
+import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
+import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
+import { readFileSync } from 'fs';
+import * as moment from 'moment';
+import { getImagePath } from '../../../helpers/index';
 
 @Crud({
   model: {
@@ -810,6 +815,98 @@ export class SchoolChargesPaymentsController
 
       res.status(404);
 
+      res.send({
+        error: e,
+      });
+    }
+  }
+
+  @Post('/receipt-double')
+  async billingDoubleGet(@Body() query: QuerySchoolPaymentBilling, @Res() res) {
+    try {
+      const student = query.student;
+      const result = await this.service.findSaleByPayment(query);
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: query.branchOfficeSettingId,
+        },
+      });
+
+      const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
+        payment: result.payment,
+        details: result.charge.chargesDetails,
+        type: InvoiceModules.SCHOOL,
+        ivaDefault: 1,
+        ivaByDetail: 0,
+        typeConcept: 'Recepit'
+      });
+
+      const Receip = new ReciboDouble();
+
+      const path = await getImagePath(this.configService.getPath(), `logos/colegiologo.png`)
+
+      if(path){
+        const logo = readFileSync(path);
+        Receip.addLogo({
+          width: 100,
+          height: 100,
+          image: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+      }
+      
+      Receip.addFolio(result.charge.folio);
+      Receip.addFolio2(result.charge.folio);
+      Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      Receip.addDate2(moment(result.charge.createdAt).format('YYYY-MM-DD'));
+      const regimen = RegimenFiscalList.find(
+        (f) => f.value === branchOfficeSett.regime,
+      );
+      Receip.addEmisor({
+        name: branchOfficeSett.businessName,
+        rfc: branchOfficeSett.rfc,
+        regimen:
+          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+        expedido: branchOfficeSett.address,
+      });
+      const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;
+      Receip.addReceptor({
+        name,
+        curp: student.curp ? student.curp : '',
+        matricula: student.matricula,
+      });
+      const ven =
+        result.payment.cashierCharge.name +
+        ' ' +
+        result.payment.cashierCharge.lastnameFather +
+        ' ' +
+        result.payment.cashierCharge.lastnameMother;
+      Receip.addInformacion({
+        vendedor: ven,
+      });
+
+      Receip.addCatidad({
+        ...invoiceDetails.totals.receipt
+      });
+      Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
+
+      Receip.addNumberToLetter(+invoiceDetails.totals.receipt.Total);
+      Receip.addObervations(result.payment.observations);
+      const forma = result.payment.methodsPayments.map((m) => {
+        return {
+          forma: m.invoiceMethodPayment.name,
+          cantidad: roundQuantity(m.quantity),
+          banco: m.Bank ? m.Bank.name : '',
+          cuenta: m.account,
+          fecha: m.date,
+        };
+      });
+      Receip.addFormaPago(forma);
+      // await pdf.save('/home/misael/Documents/proyectos/amir')
+      const download = Buffer.from(await Receip.getBase64(), 'base64');
+      res.send({
+        src: 'data:application/pdf;base64,' + (await Receip.getBase64()),
+      });
+    } catch (e) {
       res.send({
         error: e,
       });
