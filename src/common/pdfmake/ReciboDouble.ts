@@ -14,7 +14,9 @@ export class ReciboDouble {
             {
                 columns: [
                     {
-                        text: 'logo'
+                        text: 'logo',
+                        width: 100,
+                        height: 100
                     },
                     {
                         width: 40,
@@ -438,7 +440,9 @@ export class ReciboDouble {
             {
                 columns: [
                     {
-                        text: 'logo'
+                        text: 'logo',
+                        width: 100,
+                        height: 100
                     },
                     {
                         width: 40,
