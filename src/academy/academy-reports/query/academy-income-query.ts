@@ -9,7 +9,7 @@ SELECT
     p.totalWithCharges  AS cobrado,
     s.id                AS id_alumno,
     s.matricula         AS matricula_alumno,
-    CONCAT(s.nombre, ' ', s.ap_paterno, '', s.ap_materno) AS nombre_alumno,
+    CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS nombre_alumno,
     a.id                AS id_academia,
     a.nombre            AS academia,
     d.id                AS id_concepto,
