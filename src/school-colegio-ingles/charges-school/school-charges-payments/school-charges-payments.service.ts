@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
@@ -38,6 +38,9 @@ import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { Recibo } from "../../../common/pdfmake/Recibo";
 import { AttachmentsType } from "../../../types";
 import { ReceiptTemplate } from "../../../templates/receipt";
+import { CancellationDto } from './types/Cancellation.dto';
+import { AuthService } from '../../../system/auth/auth.service';
+import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -52,6 +55,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
         private readonly configService: ConfigService,
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
+        private readonly authService: AuthService
     ) {
         super(repo);
     }
@@ -649,6 +653,58 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         };
 
         return await transporter.sendMail(mailOptions);
+    }
+
+    public async cancelPayment(id: number, payload: CancellationDto) {
+
+        try {
+
+            const object = await this.findOne(id);
+
+            if (!object) {
+                throw new NotFoundException('Pago no encontrado')
+            }
+
+            const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
+
+            const user = await this.userRepository.findOne({
+                where: {
+                    id: userID
+                },
+                relations: ['role'],
+            });
+
+            if(!user){
+                throw new NotFoundException('El usuario para cancelar no encontrado')
+            }
+
+            if(user.role.id != 1){   
+                const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
+                if (!isValid) {
+                    throw new UnauthorizedException('Credenciales de administrador incorrecta');
+                }
+            }
+
+            const result = await this.repo.update({id}, {
+                reasonCancellation,
+                dateCancellation: new Date(),
+                paymentStatus: PaymentStatus.Cancelled,
+                cashierChargeCancellation: {id: userID}
+            });
+
+            if(result && result.affected && result.affected > 0) {
+                return id;
+            }else {
+                throw new BadRequestException(`Error al cancelar el pago ${id}`);    
+            }
+
+        } catch (e) {
+            if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
+
+            console.error(`Error al cancelar ${id}: ${e}`);
+
+            throw new BadRequestException(`Error al cancelar el pago ${id}`);
+        }
     }
 
 }

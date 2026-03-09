@@ -235,7 +235,7 @@ export class AuthService {
           email: validate.email, role: { id: 1}
         }
       })
-      if (!user) throw new BadRequestException('User not found');
+      if (!user) throw new UnauthorizedException('User not found');
       
       return bcrypt.compareSync(validate.password, user.password.replace('$2y$', '$2a$'))
     } catch (error) {

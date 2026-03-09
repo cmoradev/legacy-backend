@@ -76,6 +76,7 @@ import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { readFileSync } from 'fs';
 import * as moment from 'moment';
 import { getImagePath } from '../../../helpers/index';
+import { CancellationDto } from './types/Cancellation.dto';
 
 @Crud({
   model: {
@@ -911,5 +912,14 @@ export class SchoolChargesPaymentsController
         error: e,
       });
     }
+  }
+
+  @Post('/:id/cancel')
+  @UsePipes(ValidationPipe)
+  async cancelPayment(
+    @Param("id") id: string,
+    @Body() payload: CancellationDto
+  ) {
+    return this.service.cancelPayment(+id, payload);
   }
 }
