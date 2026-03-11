@@ -21,7 +21,7 @@ export const inscripcionesQuery = `
 SELECT i.id_academia                                         AS id_academia,
        i.id_ac_grupo                                         AS id_grupo,
        a.matricula                                           AS matricula_alumno,
-       CONCAT(a.nombre, ' ', a.ap_paterno, '', a.ap_materno) AS nombre_alumno
+       CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno) AS nombre_alumno
 
 FROM ac_inscripciones_alumnos i
 
