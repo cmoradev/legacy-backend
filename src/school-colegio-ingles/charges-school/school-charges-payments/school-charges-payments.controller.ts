@@ -76,7 +76,7 @@ import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
 import { readFileSync } from 'fs';
 import * as moment from 'moment';
 import { getImagePath } from '../../../helpers/index';
-import { CancellationDto } from './types/Cancellation.dto';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 
 @Crud({
   model: {

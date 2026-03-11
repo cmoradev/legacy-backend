@@ -38,7 +38,7 @@ import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { Recibo } from "../../../common/pdfmake/Recibo";
 import { AttachmentsType } from "../../../types";
 import { ReceiptTemplate } from "../../../templates/receipt";
-import { CancellationDto } from './types/Cancellation.dto';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 
@@ -663,6 +663,10 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
             if (!object) {
                 throw new NotFoundException('Pago no encontrado')
+            }
+
+            if (object.paymentStatus === PaymentStatus.Cancelled) {
+                throw new BadRequestException('El pago ya está cancelado');
             }
 
             const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
