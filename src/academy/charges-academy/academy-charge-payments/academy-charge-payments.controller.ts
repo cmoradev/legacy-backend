@@ -62,6 +62,7 @@ import {
   TipoComprobanteEnum,
 } from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 
 @Crud({
   model: {
@@ -762,5 +763,14 @@ export class AcademyChargePaymentsController
         },
       });
     }
+  }
+
+  @Post('/:id/cancel')
+  @UsePipes(ValidationPipe)
+  async cancelPayment(
+    @Param("id") id: string,
+    @Body() payload: CancellationDto
+  ) {
+    return this.service.cancelPayment(+id, payload);
   }
 }
