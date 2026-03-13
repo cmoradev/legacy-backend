@@ -10,7 +10,17 @@ import { AcademyBankStatementService } from './academy-bank-statement-service';
 import { ExcelDocument } from '../../reports/excel.document';
 import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
-import { auxIAcademyReportConceptRow, baseAcademyBankStatement, SummaryRow } from './types';
+import { ChargeApplicationEnum, ChargeTypeEnum } from '@munyaal/calculations';
+import {
+  auxIAcademyReportConceptRow,
+  ChargeDetailsRow,
+  SummaryRow,
+} from './types';
+import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charges/entities/system-type-extra-charges.entity';
+import {
+  ApplicationFormEnum,
+  TypeChargeApplicationEnum,
+} from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 const esMx = require('moment/locale/es-mx');
 
 export class AcademyDebitService {
@@ -29,9 +39,12 @@ export class AcademyDebitService {
 
     const conceptIDs = result.map((row) => row.conceptId);
 
-    const charges = await this.academyBankStatementService.getChargesOfDetails(
-      conceptIDs,
-    );
+    const [chargesFromDetails, automaticCharges] = await Promise.all([
+      this.academyBankStatementService.getChargesOfDetails(conceptIDs),
+      this.getAutomaticChargesOfDetails(conceptIDs),
+    ]);
+
+    const charges = [...chargesFromDetails, ...automaticCharges];
 
     const concepts = this.academyBankStatementService.recalculateConceptsWithCharges(
       result,
@@ -42,14 +55,81 @@ export class AcademyDebitService {
       concepts,
     );
 
-    const matriz = this.getMatriz(
-      conceptsByMonth.dataWithMonth
-    );
+    const matriz = this.getMatriz(conceptsByMonth.dataWithMonth);
 
     return {
       rows: { ...conceptsByMonth, months: [] },
       matriz,
     };
+  }
+
+  private async getAutomaticChargesOfDetails(
+    ids: number[],
+  ): Promise<ChargeDetailsRow[]> {
+    if (!ids.length) {
+      return [];
+    }
+
+    const automaticType = Number(ApplicationFormEnum.Automatic);
+
+    const formTypes = automaticType === 3 ? [3] : [automaticType, 3];
+
+    const placeholders = formTypes.map(() => '?').join(',');
+
+    const query = `
+      SELECT
+        c.id                 as id,
+        c.nombre             as description,
+        c.porcentaje         as quantity,
+        c.typeApplication    as applcation,
+        c.operation          as operation,
+        c.id_tipo_descuento  as internalType
+      FROM ac_descuentos c
+      WHERE c.id_formaplicacion IN (${placeholders});
+    `;
+
+    const automaticCharges: any[] = await this.connection.query(
+      query,
+      formTypes,
+    );
+    console.log(automaticCharges)
+
+    const uniqueIds = [...new Set(ids)];
+    const mappedCharges: ChargeDetailsRow[] = [];
+
+    uniqueIds.forEach((detailId) => {
+      automaticCharges.forEach((row) => {
+        let order = 0;
+
+        if (row.internalType == SystemTypeExtraChargesEnum.Becas) {
+          order = 1;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Descuentos) {
+          order = 2;
+        } else if (row.internalType == SystemTypeExtraChargesEnum.Recargos) {
+          order = 3;
+        }
+
+        mappedCharges.push({
+          id: parseInt(`${row.id}`),
+          description: row.description,
+          quantity: parseFloat(`${row.quantity}`),
+          applcation:
+            row.applcation == TypeChargeApplicationEnum.percentage
+              ? ChargeApplicationEnum.PERCENTAGE
+              : ChargeApplicationEnum.QUANTITY,
+          operation: row.operation,
+          internalType: row.internalType,
+          id_detalle: detailId,
+          type:
+            row.internalType == SystemTypeExtraChargesEnum.Recargos
+              ? ChargeTypeEnum.SURCHARGES
+              : ChargeTypeEnum.DISCOUNTS,
+          order,
+        });
+      });
+    });
+
+    return mappedCharges;
   }
 
   /**
@@ -110,7 +190,7 @@ export class AcademyDebitService {
       { key: 'H', width: 20 },
       { key: 'I', width: 20 },
       { key: 'J', width: 20 },
-      { key: 'K', width: 20 },  
+      { key: 'K', width: 20 },
     ];
 
     let lastRow = 2;
@@ -125,7 +205,9 @@ export class AcademyDebitService {
 
     worksheet.mergeCells(`B${lastRow}:N${lastRow}`);
     const subtitle = worksheet.getCell(`B${lastRow}`);
-    subtitle.value = `Reporte emitido en ${moment().utc(true).local()
+    subtitle.value = `Reporte emitido en ${moment()
+      .utc(true)
+      .local()
       .locale('es')
       .format('lll')}`;
     subtitle.style = {
@@ -153,7 +235,15 @@ export class AcademyDebitService {
       },
     );
 
-    const summaryRows = [...matriz.slice(1, -1).map((row) => row.map((column) => isNaN(parseInt(column)) ? column : parseFloat(column)))];
+    const summaryRows = [
+      ...matriz
+        .slice(1, -1)
+        .map((row) =>
+          row.map((column) =>
+            isNaN(parseInt(column)) ? column : parseFloat(column),
+          ),
+        ),
+    ];
 
     worksheet.addTable({
       displayName: 'Resumen',
@@ -178,8 +268,8 @@ export class AcademyDebitService {
       { name: 'Matricula', filterButton: true },
       { name: 'Nombre', filterButton: true },
       { name: 'Concepto', filterButton: false },
-      { name: 'Importe', filterButton: false , totalsRowFunction: 'sum'},
-      { name: 'Descuento', filterButton: false , totalsRowFunction: 'sum'},
+      { name: 'Importe', filterButton: false, totalsRowFunction: 'sum' },
+      { name: 'Descuento', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Recargo', filterButton: false, totalsRowFunction: 'sum' },
       { name: 'Por cobrar', filterButton: false, totalsRowFunction: 'sum' },
     ];
@@ -194,7 +284,7 @@ export class AcademyDebitService {
       row.amountWithoutCharges,
       row.discount,
       row.surcharge,
-      row.amountWithCharges
+      row.amountWithCharges,
     ]);
 
     worksheet.addTable({
@@ -220,9 +310,7 @@ export class AcademyDebitService {
    * @param dataWithMonth - Listado de los conceptos con el mes y año correspondiente.
    * @returns Una matriz con los totales por academia y mes .
    */
-  private getMatriz(
-    dataWithMonth: auxIAcademyReportConceptRow[],
-  ) {
+  private getMatriz(dataWithMonth: auxIAcademyReportConceptRow[]) {
     const resumeDataTable = [
       ['ACADEMIA', 'IMPORTE', 'DESCUENTO', 'RECARGO', 'POR COBRAR'],
     ];
@@ -241,14 +329,12 @@ export class AcademyDebitService {
           discount: row.discount,
           surcharge: row.surcharge,
         };
-
       } else {
         acc[`${row.academyId}`].amountWithCharges += row.amountWithCharges;
         acc[`${row.academyId}`].amountWithoutCharges +=
           row.amountWithoutCharges;
         acc[`${row.academyId}`].discount += row.discount;
         acc[`${row.academyId}`].surcharge += row.surcharge;
-
       }
       totalSubAmount += row.amountWithoutCharges;
       totalDiscount += row.discount;
@@ -260,10 +346,22 @@ export class AcademyDebitService {
     const array: SummaryRow[] = Object.values(dic);
 
     for (const item of array) {
-      resumeDataTable.push([item.title, item.amountWithoutCharges.toString(), item.discount.toString(), item.surcharge.toString(), item.amountWithCharges.toString()])
+      resumeDataTable.push([
+        item.title,
+        item.amountWithoutCharges.toString(),
+        item.discount.toString(),
+        item.surcharge.toString(),
+        item.amountWithCharges.toString(),
+      ]);
     }
 
-    resumeDataTable.push(['TOTALES', totalSubAmount.toString(), totalDiscount.toString(), totalSurcharge.toString(), totalAmount.toString() ])
+    resumeDataTable.push([
+      'TOTALES',
+      totalSubAmount.toString(),
+      totalDiscount.toString(),
+      totalSurcharge.toString(),
+      totalAmount.toString(),
+    ]);
 
     return resumeDataTable;
   }
