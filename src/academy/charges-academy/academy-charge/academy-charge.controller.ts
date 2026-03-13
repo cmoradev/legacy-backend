@@ -1,7 +1,8 @@
-import { Controller, Delete, Param, ParseIntPipe, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyCharge } from './entities/academy-charge.entity';
 import { AcademyChargeService } from './academy-charge.service';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 
 @Crud({
     model: {
@@ -63,5 +64,14 @@ export class AcademyChargeController implements CrudController<AcademyCharge> {
     @Put('soft-restore/:id')
     public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
         return await this.service.softRestoreOne(id);
+    }
+
+    @Post('/:id/cancel')
+    @UsePipes(ValidationPipe)
+    async cancelSale(
+    @Param("id") id: string,
+    @Body() payload: CancellationDto
+    ) {
+        return this.service.cancelSale(+id, payload);
     }
 }
