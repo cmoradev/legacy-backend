@@ -9,7 +9,7 @@ import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AuthService } from '../../../system/auth/auth.service';
 import { User } from '../../../system/users/entities/user.entity';
 import { AcademyChargeDetails } from '../academy-charge-details/entities/academy-charge-details.entity';
-import { AcademyChargePayments } from '../academy-charge-payments/entities/academy-charge-payments.entity';
+import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Injectable()
 export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
@@ -79,14 +79,17 @@ export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
                     },
                     relations: ['academyInscriptionConcept']
                 });
+
+                console.log(JSON.stringify(saleDetails, null, 3))
                 /** Obtener los pagos de los detalles de la venta */
                 const payments = saleDetails.map(detail => detail.academyInscriptionConcept.id);
                 
                 /** Los pagos usados en la venta que se cancelara regresan a su estado inicial */
                 await manager.update(
-                    AcademyChargePayments,
+                    AcademyInscriptionConcepts,
                     {id: In(payments)},
                     { 
+                        paidDate: null,
                         paymentStatus: PaymentStatus.Debit
                     }
                 );
