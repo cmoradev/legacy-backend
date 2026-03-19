@@ -11,6 +11,9 @@ import { PaymentStatus } from 'src/common/enums/PaymentStatus';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { User } from '../../../system/users/entities/user.entity';
 import { AuthService } from '../../../system/auth/auth.service';
+import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
+import { Decimal } from '@munyaal/calculations';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
@@ -203,58 +206,41 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                     const object = await this.findOne(id);
         
                     if (!object) {
-                        throw new NotFoundException('Venta colegio no encontrado')
+                        throw new NotFoundException('Venta tienda no encontrado')
                     }
     
                     if (object.statusSale === PaymentStatus.Cancelled) {
                         throw new BadRequestException('La venta ya está cancelada');
                     }
         
-                    const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
-        
-                    const user = await this.userRepository.findOne({
-                        where: {
-                            id: userID
-                        },
-                        relations: ['role'],
-                    });
-        
-                    if(!user){
-                        throw new NotFoundException('El usuario para cancelar no encontrado')
-                    }
-        
-                    if(user.role.id != 1){   
-                        const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                        if (!isValid) {
-                            throw new UnauthorizedException('Credenciales de administrador incorrecta');
-                        }
-                    }
+                    const { reasonCancellation} = payload;
+
+                    const user = await this.authService.validateUserCancellation(payload);
     
                     return await this.dataSource.transaction(async (manager) => {
 
-                        /* Implementar el regreso del stock del producto
+                        const saleDetails = await manager
+                            .createQueryBuilder(MiniStoreSaleDetail, 'details')
+                            .leftJoinAndSelect('details.miniStoreSale', 'sale')
+                            .leftJoinAndSelect('details.miniStoreProduct', 'product')
+                            .select(['details.id', 'details.quantity', 'sale.id', 'product.id', 'product.stock'])
+                            .where('sale.id = :saleId', { saleId: id })
+                            .getMany();
 
-                        const saleDetails = await manager.find(MiniStoreSaleDetail, {
-                            where: {
-                                miniStoreSale: { id }
-                            },
-                            relations: ['miniStoreProduct']
-                        });
-                        // Obtener los productos de los detalles de la venta
-                        const products = saleDetails.map(detail => detail.miniStoreProduct.id);
+
+                        for (const detail of saleDetails) {
+                            
+                            await manager.update( MiniStoreProduct, { id: detail.miniStoreProduct.id },
+                                {
+                                    stock: Decimal.add(detail.miniStoreProduct.stock, detail.quantity).toNumber()
+                                }
+                            );
+                            
+                        }
+
                         
-                        // Los pagos usados en la venta que se cancelara regresan a su estado inicial
-                        await manager.update(
-                            MiniStoreProduct,
-                            {id: In(products)},
-                            { 
-                                
-                            }
-                        );
-
-                        */
-    
                         /** Se cancela la venta */
+                        
                         const result = await manager.update(
                             MiniStoreSale,
                             { id },
@@ -262,12 +248,12 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                                 reasonCancellation: reasonCancellation,
                                 dateCancellation: new Date(),
                                 statusSale: PaymentStatus.Cancelled,
-                                agentCanceling: { id: userID }
+                                agentCanceling: { id: user.id }
                             }
                         );
     
                         if (!result.affected) {
-                            throw new Error(`No se pudo cancelar la venta ${id}`);
+                            throw new Error(`No se pudo cancelar la venta tienda ${id}`);
                         }
     
                         return id;
@@ -276,9 +262,9 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
                 } catch (e) {
                     if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
         
-                    console.error(`Error al cancelar ${id}: ${e}`);
+                    console.error(`Error al cancelar venta tienda${id}: ${e}`);
         
-                    throw new BadRequestException(`Error al cancelar la venta ${id}`);
+                    throw new BadRequestException(`Error al cancelar la venta tienda ${id}`);
                 }
             }
 }

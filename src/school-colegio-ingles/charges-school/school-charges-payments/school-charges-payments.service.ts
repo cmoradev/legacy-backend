@@ -41,6 +41,8 @@ import { ReceiptTemplate } from "../../../templates/receipt";
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
+import { ConceptsByDetailsSale } from '../../../common/cancellation/concepts';
+import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -662,52 +664,50 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             const object = await this.findOne(id);
 
             if (!object) {
-                throw new NotFoundException('Pago no encontrado')
+                throw new NotFoundException('Pago colegio no encontrado')
             }
 
             if (object.paymentStatus === PaymentStatus.Cancelled) {
                 throw new BadRequestException('El pago ya está cancelado');
             }
 
-            const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
+            const { reasonCancellation} = payload;
 
-            const user = await this.userRepository.findOne({
-                where: {
-                    id: userID
-                },
-                relations: ['role'],
-            });
+            const user = await this.authService.validateUserCancellation(payload);
 
-            if(!user){
-                throw new NotFoundException('El usuario para cancelar no encontrado')
-            }
+            return await this.connection.transaction(async (manager) => {
+                
+                const conceptIds = await ConceptsByDetailsSale({id, type: 'payment', tpv: InvoiceModules.SCHOOL, manager})
 
-            if(user.role.id != 1){   
-                const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                if (!isValid) {
-                    throw new UnauthorizedException('Credenciales de administrador incorrecta');
+                await manager.update(
+                    SchoolPayment,
+                    {id: In(conceptIds)},
+                    { 
+                        statusPayment: PaymentStatus.Abonar,
+                        paidDate: new Date()
+                    }
+                );
+
+                const result = await this.repo.update({id}, {
+                    reasonCancellation,
+                    dateCancellation: new Date(),
+                    paymentStatus: PaymentStatus.Cancelled,
+                    cashierChargeCancellation: {id: user.id}
+                });
+
+                if(result && result.affected && result.affected > 0) {
+                    return id;
+                }else {
+                    throw new BadRequestException(`Error al cancelar el pago colegio ${id}`);    
                 }
-            }
-
-            const result = await this.repo.update({id}, {
-                reasonCancellation,
-                dateCancellation: new Date(),
-                paymentStatus: PaymentStatus.Cancelled,
-                cashierChargeCancellation: {id: userID}
             });
-
-            if(result && result.affected && result.affected > 0) {
-                return id;
-            }else {
-                throw new BadRequestException(`Error al cancelar el pago ${id}`);    
-            }
 
         } catch (e) {
             if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
 
-            console.error(`Error al cancelar ${id}: ${e}`);
+            console.error(`Error al cancelar pago colegio ${id}: ${e}`);
 
-            throw new BadRequestException(`Error al cancelar el pago ${id}`);
+            throw new BadRequestException(`Error al cancelar el pago colegio ${id}`);
         }
     }
 

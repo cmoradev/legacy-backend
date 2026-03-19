@@ -758,52 +758,36 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             const object = await this.findOne(id);
 
             if (!object) {
-                throw new NotFoundException('Pago no encontrado')
+                throw new NotFoundException('Pago tienda no encontrado')
             }
 
             if (object.paymentStatus === PaymentStatus.Cancelled) {
                 throw new BadRequestException('El pago ya está cancelado');
             }
 
-            const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
+            const { reasonCancellation} = payload;
 
-            const user = await this.userRepository.findOne({
-                where: {
-                    id: userID
-                },
-                relations: ['role'],
-            });
-
-            if(!user){
-                throw new NotFoundException('El usuario para cancelar no encontrado')
-            }
-
-            if(user.role.id != 1){   
-                const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                if (!isValid) {
-                    throw new UnauthorizedException('Credenciales de administrador incorrecta');
-                }
-            }
+            const user = await this.authService.validateUserCancellation(payload);
 
             const result = await this.repo.update({id}, {
                 reasonCancellation,
                 dateCancellation: new Date(),
                 paymentStatus: PaymentStatus.Cancelled,
-                agentCanceling: {id: userID}
+                agentCanceling: {id: user.id}
             });
 
             if(result && result.affected && result.affected > 0) {
                 return id;
             }else {
-                throw new BadRequestException(`Error al cancelar el pago ${id}`);    
+                throw new BadRequestException(`Error al cancelar el pago tienda ${id}`);    
             }
 
         } catch (e) {
             if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
 
-            console.error(`Error al cancelar ${id}: ${e}`);
+            console.error(`Error al cancelar pago tienda ${id}: ${e}`);
 
-            throw new BadRequestException(`Error al cancelar el pago ${id}`);
+            throw new BadRequestException(`Error al cancelar el pago tienda ${id}`);
         }
     }
 }

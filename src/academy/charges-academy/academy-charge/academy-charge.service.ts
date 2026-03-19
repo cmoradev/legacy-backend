@@ -8,8 +8,9 @@ import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { AuthService } from '../../../system/auth/auth.service';
 import { User } from '../../../system/users/entities/user.entity';
-import { AcademyChargeDetails } from '../academy-charge-details/entities/academy-charge-details.entity';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
+import { ConceptsByDetailsSale } from '../../../common/cancellation/concepts';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @Injectable()
 export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
@@ -44,50 +45,26 @@ export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
             const object = await this.findOne(id);
 
             if (!object) {
-                throw new NotFoundException('Venta colegio no encontrado')
+                throw new NotFoundException('Venta academia no encontrado')
             }
 
             if (object.status === PaymentStatus.Cancelled) {
                 throw new BadRequestException('La venta ya está cancelada');
             }
 
-            const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
+            const { reasonCancellation} = payload;
 
-            const user = await this.userRepository.findOne({
-                where: {
-                    id: userID
-                },
-                relations: ['role'],
-            });
-
-            if(!user){
-                throw new NotFoundException('El usuario para cancelar no encontrado')
-            }
-
-            if(user.role.id != 1){   
-                const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                if (!isValid) {
-                    throw new UnauthorizedException('Credenciales de administrador incorrecta');
-                }
-            }
+            const user = await this.authService.validateUserCancellation(payload);
 
             return await this.dataSource.transaction(async (manager) => {
 
-                const saleDetails = await manager.find(AcademyChargeDetails, {
-                    where: {
-                        academyCharge: { id }
-                    },
-                    relations: ['academyInscriptionConcept']
-                });
-
-                console.log(JSON.stringify(saleDetails, null, 3))
                 /** Obtener los pagos de los detalles de la venta */
-                const payments = saleDetails.map(detail => detail.academyInscriptionConcept.id);
+                const conceptIds = await ConceptsByDetailsSale({id, type: 'sale', tpv: InvoiceModules.ACADEMY, manager})
                 
                 /** Los pagos usados en la venta que se cancelara regresan a su estado inicial */
                 await manager.update(
                     AcademyInscriptionConcepts,
-                    {id: In(payments)},
+                    {id: In(conceptIds)},
                     { 
                         paidDate: null,
                         paymentStatus: PaymentStatus.Debit
@@ -102,12 +79,12 @@ export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
                         reasonsCancellation: reasonCancellation,
                         dateCancellation: new Date(),
                         status: PaymentStatus.Cancelled,
-                        cashierCancellation: { id: userID }
+                        cashierCancellation: { id: user.id }
                     }
                 );
 
                 if (!result.affected) {
-                    throw new Error(`No se pudo cancelar la venta ${id}`);
+                    throw new Error(`No se pudo cancelar la venta academias ${id}`);
                 }
 
                 return id;
@@ -116,9 +93,9 @@ export class AcademyChargeService extends TypeOrmCrudService<AcademyCharge> {
         } catch (e) {
             if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
 
-            console.error(`Error al cancelar ${id}: ${e}`);
+            console.error(`Error al cancelar venta academias ${id}: ${e}`);
 
-            throw new BadRequestException(`Error al cancelar la venta ${id}`);
+            throw new BadRequestException(`Error al cancelar la venta academias ${id}`);
         }
     }
 }

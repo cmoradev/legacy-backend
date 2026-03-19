@@ -42,6 +42,8 @@ import { ReceiptTemplate } from '../../../templates/receipt';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
+import { ConceptsByDetailsSale } from '../../../common/cancellation/concepts';
+import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
 
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
@@ -867,52 +869,50 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
               const object = await this.findOne(id);
   
               if (!object) {
-                  throw new NotFoundException('Pago no encontrado')
+                  throw new NotFoundException('Pago academia no encontrado')
               }
   
               if (object.paymentStatus === PaymentStatus.Cancelled) {
                   throw new BadRequestException('El pago ya está cancelado');
               }
   
-              const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
+              const { reasonCancellation} = payload;
+
+              const user = await this.authService.validateUserCancellation(payload);
+
+              return await this.connection.transaction(async (manager) => {
+                              
+                  const conceptIds = await ConceptsByDetailsSale({id, type: 'payment', tpv: InvoiceModules.ACADEMY, manager})
   
-              const user = await this.userRepository.findOne({
-                  where: {
-                      id: userID
-                  },
-                  relations: ['role'],
-              });
+                  await manager.update(
+                      AcademyInscriptionConcepts,
+                      {id: In(conceptIds)},
+                      { 
+                          paymentStatus: PaymentStatus.Abonar,
+                          paidDate: new Date()
+                      }
+                  );
   
-              if(!user){
-                  throw new NotFoundException('El usuario para cancelar no encontrado')
-              }
+                  const result = await this.repo.update({id}, {
+                    reasonCancellation,
+                    dateCancellation: new Date(),
+                    paymentStatus: PaymentStatus.Cancelled,
+                    cashierChargeCancellation: {id: user.id}
+                });
   
-              if(user.role.id != 1){   
-                  const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                  if (!isValid) {
-                      throw new UnauthorizedException('Credenciales de administrador incorrecta');
+                  if(result && result.affected && result.affected > 0) {
+                      return id;
+                  }else {
+                      throw new BadRequestException(`Error al cancelar el pago academias ${id}`);    
                   }
-              }
-  
-              const result = await this.repo.update({id}, {
-                  reasonCancellation,
-                  dateCancellation: new Date(),
-                  paymentStatus: PaymentStatus.Cancelled,
-                  cashierChargeCancellation: {id: userID}
               });
-  
-              if(result && result.affected && result.affected > 0) {
-                  return id;
-              }else {
-                  throw new BadRequestException(`Error al cancelar el pago ${id}`);    
-              }
   
           } catch (e) {
               if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
   
-              console.error(`Error al cancelar ${id}: ${e}`);
+              console.error(`Error al cancelar pago academias ${id}: ${e}`);
   
-              throw new BadRequestException(`Error al cancelar el pago ${id}`);
+              throw new BadRequestException(`Error al cancelar el pago academias ${id}`);
           }
       }
 }

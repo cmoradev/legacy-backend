@@ -10,6 +10,8 @@ import { AuthService } from '../../../system/auth/auth.service';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
 import { SchoolChargeDetails } from '../school-charges-details/entities/school-charge-details.entity';
 import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
+import { ConceptsByDetailsSale } from '../../../common/cancellation/concepts';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 
 @Injectable()
 export class SchoolChargesService extends TypeOrmCrudService<SchoolCharge> {
@@ -53,41 +55,18 @@ export class SchoolChargesService extends TypeOrmCrudService<SchoolCharge> {
                     throw new BadRequestException('La venta ya está cancelada');
                 }
     
-                const {userID, adminEmail, adminPassword, reasonCancellation} = payload;
-    
-                const user = await this.userRepository.findOne({
-                    where: {
-                        id: userID
-                    },
-                    relations: ['role'],
-                });
-    
-                if(!user){
-                    throw new NotFoundException('El usuario para cancelar no encontrado')
-                }
-    
-                if(user.role.id != 1){   
-                    const isValid = await this.authService.validateAdminPassword({email: adminEmail, password: adminPassword})
-                    if (!isValid) {
-                        throw new UnauthorizedException('Credenciales de administrador incorrecta');
-                    }
-                }
+                const { reasonCancellation} = payload;
+
+                const user = await this.authService.validateUserCancellation(payload);
 
                 return await this.dataSource.transaction(async (manager) => {
 
-                    const saleDetails = await manager.find(SchoolChargeDetails, {
-                        where: {
-                            schoolCharge: { id }
-                        },
-                        relations: ['schoolPlanPayment']
-                    });
-                    /** Obtener los pagos de los detalles de la venta */
-                    const payments = saleDetails.map(detail => detail.schoolPlanPayment.id);
+                    const conceptIds = await ConceptsByDetailsSale({id, type: 'sale', tpv: InvoiceModules.SCHOOL, manager})
                     
                     /** Los pagos usados en la venta que se cancelara regresan a su estado inicial */
                     await manager.update(
                         SchoolPayment,
-                        {id: In(payments)},
+                        {id: In(conceptIds)},
                         { 
                             statusPayment: PaymentStatus.Debit,
                             paidDate: null
@@ -102,12 +81,12 @@ export class SchoolChargesService extends TypeOrmCrudService<SchoolCharge> {
                             reasonsCancellation: reasonCancellation,
                             dateCancellation: new Date(),
                             status: PaymentStatus.Cancelled,
-                            cashierCancellation: { id: userID }
+                            cashierCancellation: { id: user.id }
                         }
                     );
 
                     if (!result.affected) {
-                        throw new Error(`No se pudo cancelar la venta ${id}`);
+                        throw new Error(`No se pudo cancelar la venta colegio ${id}`);
                     }
 
                     return id;
@@ -116,9 +95,9 @@ export class SchoolChargesService extends TypeOrmCrudService<SchoolCharge> {
             } catch (e) {
                 if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
     
-                console.error(`Error al cancelar ${id}: ${e}`);
+                console.error(`Error al cancelar venta colegio ${id}: ${e}`);
     
-                throw new BadRequestException(`Error al cancelar la venta ${id}`);
+                throw new BadRequestException(`Error al cancelar la venta colegio ${id}`);
             }
         }
 }
