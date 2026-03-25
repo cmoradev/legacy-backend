@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
-import { Connection, In, Repository } from 'typeorm';
+import { Connection, DeepPartial, In, Repository } from 'typeorm';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { User } from '../../../system/users/entities/user.entity';
@@ -44,7 +44,9 @@ import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import { ConceptsByDetailsSale } from '../../../common/cancellation/concepts';
 import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/entities/academy-inscription-concepts.entity';
-
+import { Decimal } from '@munyaal/calculations';
+import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
+import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
   AcademyChargePayments
@@ -915,4 +917,159 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
               throw new BadRequestException(`Error al cancelar el pago academias ${id}`);
           }
       }
+    
+    public async addPayment(
+    payload: SalePaymentDto,
+  ): Promise<AcademyChargePayments> {
+    try {
+      return await this.connection.transaction(async (manager) => {
+        const charge = await manager.findOne(AcademyCharge, {
+          where: { id: payload.saleId },
+          relations: [
+            'chargesDetails',
+            'chargesDetails.extraCharges',
+            'chargesDetails.academyInscriptionConcept',
+            'chargesPayments',
+          ],
+        });
+
+        if (!charge) {
+          throw new NotFoundException(
+            `Venta academia ${payload.saleId} no encontrada`,
+          );
+        }
+
+        if (charge.status === PaymentStatus.Cancelled) {
+          throw new BadRequestException(
+            `La venta academia ${payload.saleId} está cancelada`,
+          );
+        }
+
+        const totalPayment = Decimal.sub(payload.quantity, payload.change).toNumber();
+
+        const previousPayments = charge.chargesPayments.filter(
+          (p) => p.paymentStatus === PaymentStatus.PaiOut,
+        );
+
+        let previousTotal = 0;
+        previousPayments.forEach((p) => {
+          previousTotal = Decimal.sum(previousTotal,  Decimal.sub(p.quantity, p.change)).toNumber();
+        });
+
+        const saleInvoiceDetails = saleDetailsCalculations({
+          details: charge.chargesDetails,
+          type: InvoiceModules.ACADEMY,
+        });
+
+        const saleTotal = saleInvoiceDetails.total;
+
+        const methodsSubTotal = payload.methodsPayments.reduce(
+          (acc, m) => sumQuantity(acc, m.quantity),
+          0,
+        );
+
+        const methodsTotal = Decimal.sub(methodsSubTotal, payload.change).toNumber();
+
+        if (methodsTotal !== totalPayment) {
+          throw new BadRequestException(
+            `La suma de métodos de pago (${methodsTotal}) no coincide con el monto del pago (${totalPayment})`,
+          );
+        }
+
+        const newTotalPaid = sumQuantity(previousTotal, totalPayment);
+
+        if (newTotalPaid > saleTotal) {
+          throw new BadRequestException(
+            `El monto total de pagos (${newTotalPaid}) excede el total de la venta (${saleTotal})`,
+          );
+        }
+
+        const methodsPayments: DeepPartial<
+          AcademyChargeMethodsPayments
+        >[] = payload.methodsPayments.map((method) => {
+          const {
+            Bank,
+            date,
+            quantity,
+            codePaymentMethod,
+            invoiceMethodPayment,
+          } = method;
+
+          return {
+            date,
+            quantity,
+            codePaymentMethod,
+            invoiceMethodPayment: { id: invoiceMethodPayment.id },
+            Bank: Bank ? { id: Bank.id } : null,
+          };
+        });
+
+        const newPayment: DeepPartial<AcademyChargePayments> = {
+          cashierCharge: { id: payload.cashier },
+          academyCharge: { id: payload.saleId },
+          academyPaymentOffice: { id: payload.paymentOfficeId },
+          academyPaymentOfficeSet: { id: payload.paymentOfficeSetId },
+          totalWithCharges: payload.total.totalWithCharges,
+          totalWithoutCharges: payload.total.totalWithoutCharges,
+          totalDiscount: payload.total.totalDiscount,
+          totalSurcharges: payload.total.totalSurcharges,
+          quantity: payload.quantity,
+          change: payload.change,
+          isIVA: false,
+          observations: payload.observations,
+          paymentStatus: PaymentStatus.PaiOut,
+          methodsPayments,
+        };
+
+        const savedPayment = await manager.save(
+          AcademyChargePayments,
+          newPayment,
+        );
+
+        
+        const conceptIds = charge.chargesDetails
+          .filter(
+            (d) =>
+              d.academyInscriptionConcept && d.academyInscriptionConcept.id,
+          )
+          .map((d) => d.academyInscriptionConcept.id);
+
+        if (conceptIds.length > 0) {
+          
+          if (newTotalPaid >= saleTotal) {
+            
+            await manager.update(
+              AcademyInscriptionConcepts,
+              { id: In(conceptIds) },
+              {
+                paymentStatus: PaymentStatus.PaiOut,
+                paidDate: new Date(),
+              },
+            );
+          } else {
+            
+            await manager.update(
+              AcademyInscriptionConcepts,
+              { id: In(conceptIds) },
+              {
+                paymentStatus: PaymentStatus.Abonar,
+              },
+            );
+          }
+        }
+
+        return savedPayment;
+      });
+    } catch (e) {
+      if (e?.status) throw e;
+
+      console.error(
+        `Error al agregar pago a venta academia ${payload.saleId}: ${e}`,
+      );
+
+      throw new BadRequestException(
+        `Error al agregar pago a la venta academia ${payload.saleId}`,
+      );
+    }
+  }
 }

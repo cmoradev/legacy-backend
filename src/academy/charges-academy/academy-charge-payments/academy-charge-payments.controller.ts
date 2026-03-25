@@ -63,6 +63,7 @@ import {
 } from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 
 @Crud({
   model: {
@@ -768,9 +769,17 @@ export class AcademyChargePaymentsController
   @Post('/:id/cancel')
   @UsePipes(ValidationPipe)
   async cancelPayment(
-    @Param("id") id: string,
-    @Body() payload: CancellationDto
+    @Param('id') id: string,
+    @Body() payload: CancellationDto,
   ) {
     return this.service.cancelPayment(+id, payload);
+  }
+
+  @Post('add')
+  @UsePipes(ValidationPipe)
+  async addPayment(
+    @Body() payload: SalePaymentDto,
+  ): Promise<AcademyChargePayments> {
+    return this.service.addPayment(payload);
   }
 }

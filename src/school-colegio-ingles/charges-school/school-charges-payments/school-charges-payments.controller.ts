@@ -77,6 +77,7 @@ import { readFileSync } from 'fs';
 import * as moment from 'moment';
 import { getImagePath } from '../../../helpers/index';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 
 @Crud({
   model: {
@@ -839,14 +840,17 @@ export class SchoolChargesPaymentsController
         type: InvoiceModules.SCHOOL,
         ivaDefault: 1,
         ivaByDetail: 0,
-        typeConcept: 'Recepit'
+        typeConcept: 'Recepit',
       });
 
       const Receip = new ReciboDouble();
 
-      const path = await getImagePath(this.configService.getPath(), `logos/colegiologo.png`)
+      const path = await getImagePath(
+        this.configService.getPath(),
+        `logos/colegiologo.png`,
+      );
 
-      if(path){
+      if (path) {
         const logo = readFileSync(path);
         Receip.addLogo({
           width: 100,
@@ -854,7 +858,7 @@ export class SchoolChargesPaymentsController
           image: `data:image/png;base64, ${logo.toString('base64')}`,
         });
       }
-      
+
       Receip.addFolio(result.charge.folio);
       Receip.addFolio2(result.charge.folio);
       Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
@@ -886,7 +890,7 @@ export class SchoolChargesPaymentsController
       });
 
       Receip.addCatidad({
-        ...invoiceDetails.totals.receipt
+        ...invoiceDetails.totals.receipt,
       });
       Receip.addDetalles(invoiceDetails.concepts.conceptsSchoolAndAcademy);
 
@@ -917,9 +921,17 @@ export class SchoolChargesPaymentsController
   @Post('/:id/cancel')
   @UsePipes(ValidationPipe)
   async cancelPayment(
-    @Param("id") id: string,
-    @Body() payload: CancellationDto
+    @Param('id') id: string,
+    @Body() payload: CancellationDto,
   ) {
     return this.service.cancelPayment(+id, payload);
+  }
+
+  @Post('add')
+  @UsePipes(ValidationPipe)
+  async addPayment(
+    @Body() payload: SalePaymentDto,
+  ): Promise<SchoolChargePayment> {
+    return this.service.addPayment(payload);
   }
 }
