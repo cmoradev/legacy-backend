@@ -6,10 +6,11 @@ import { SchoolCharge } from './entities/school-charge.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { AuthModule } from '../../../system/auth/auth.module';
 import { User } from '../../../system/users/entities/user.entity';
+import { SchoolPayment } from '../../school-payments/entities/school-payment.entity';
 
 @Module({
     imports: [
-      TypeOrmModule.forFeature([SchoolCharge, User], ColegioDBNameConnection), 
+      TypeOrmModule.forFeature([SchoolCharge, User, SchoolPayment], ColegioDBNameConnection), 
       AuthModule
     ],
     controllers: [SchoolChargesController],

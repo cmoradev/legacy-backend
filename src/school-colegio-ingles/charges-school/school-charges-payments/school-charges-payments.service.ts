@@ -849,6 +849,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
               { id: In(conceptIds) },
               {
                 statusPayment: PaymentStatus.Abonar,
+                paidDate: new Date(),
               },
             );
           }

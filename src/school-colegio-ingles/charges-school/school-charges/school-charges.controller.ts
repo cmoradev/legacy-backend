@@ -4,6 +4,7 @@ import { SchoolCharge } from './entities/school-charge.entity';
 import { SchoolChargesService } from './school-charges.service';
 import { Response } from 'express';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { CreateSchoolSaleDto } from '../../../common/dto/create-school-sale.dto';
 
 @Crud({
     model: {
@@ -76,6 +77,12 @@ export class SchoolChargesController implements CrudController<SchoolCharge> {
             res.send(e);
         }
 
+    }
+
+    @Post('/sale')
+    @UsePipes(ValidationPipe)
+    async createSale(@Body() payload: CreateSchoolSaleDto) {
+        return this.service.createSale(payload);
     }
 
     @Post('/:id/cancel')
