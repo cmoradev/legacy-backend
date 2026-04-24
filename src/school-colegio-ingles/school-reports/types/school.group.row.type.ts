@@ -16,6 +16,9 @@ export type SchoolInscriptionDetailsRow = {
   id_grupo: number;
   matricula_alumno;
   nombre_alumno;
+  apellido_paterno: string;
+  apellido_materno: string;
+  nombre: string;
 };
 
 export type SchoolGroupRow = {
@@ -34,4 +37,7 @@ export type SchoolStudent = {
   matricula_alumno: string;
   nombre_alumno: string;
   estado_inscripcion: number;
+  apellido_paterno: string;
+  apellido_materno: string;
+  nombre: string;
 };
