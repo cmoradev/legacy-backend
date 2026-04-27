@@ -100,6 +100,16 @@ export class SchoolPayment extends Base {
     })
     statusPayment: PaymentStatus;
 
+    @Column('varchar', {
+        nullable: true,
+    })
+    ministoreSale: string | null;
+
+    @Column('varchar', {
+        nullable: true,
+    })
+    ministorePayment: string | null;
+
     @OneToMany(type => SchoolChargeDetails, schoolCharge => schoolCharge.schoolPlanPayment)
     schoolChargeDetail: SchoolChargeDetails[];
 

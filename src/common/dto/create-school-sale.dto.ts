@@ -10,7 +10,7 @@ import { Type } from 'class-transformer';
 import { TotalDto, MethodPaymentDto } from './sale-payment.dto';
 
 export class ChargeDetailExtraChargeDto {
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   name: string;
 
@@ -18,12 +18,15 @@ export class ChargeDetailExtraChargeDto {
   quantity: number;
 
   @IsOptional()
+  @IsNumber()
   applicationType: number;
 
   @IsOptional()
-  operationType: number;
+  @IsString()
+  operationType: string;
 
   @IsOptional()
+  @IsNumber()
   typeExtraCharge: number;
 
   @IsOptional()
