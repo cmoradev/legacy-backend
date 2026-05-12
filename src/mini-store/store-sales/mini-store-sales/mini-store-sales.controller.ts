@@ -1,13 +1,17 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   Query,
   Req,
   Res,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
@@ -37,6 +41,7 @@ import {
 } from '../../../common/interface/not-invoiced.interface';
 import { SaleReturnExcel } from './reports/sale-return.excel';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import {
   dataFullSale,
   PaymentExcel,
@@ -474,5 +479,14 @@ export class MiniStoreSalesController implements CrudController<MiniStoreSale> {
         data: options.byClient ? dataByClient : data,
       });
     }
+  }
+
+  @Post('/:id/cancel')
+  @UsePipes(ValidationPipe)
+  async cancelPayment(
+    @Param("id") id: string,
+    @Body() payload: CancellationDto
+  ) {
+    return this.service.cancelSale(+id, payload);
   }
 }

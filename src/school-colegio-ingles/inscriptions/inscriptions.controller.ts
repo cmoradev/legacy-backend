@@ -76,6 +76,21 @@ export class InscriptionsController implements CrudController<Inscription> {
         return await this.service.softRestoreOne(id);
     }
 
+    @Get('by-student-cycle')
+    public async findByStudentAndCycle(
+      @Query('studentId', ParseIntPipe) studentId: number,
+      @Query('cycleId', ParseIntPipe) cycleId: number,
+    ) {
+      return this.service.findByStudentAndCycle(studentId, cycleId);
+    }
+
+    @Get('pending-payments/:inscriptionId')
+    public async findPendingPayments(
+      @Param('inscriptionId', ParseIntPipe) inscriptionId: number,
+    ) {
+      return this.service.findPendingPayments(inscriptionId);
+    }
+
     @Get('/check-duplicate')
     public async addInsccripciones(@Req() req, @Res() res: Response, @Query() options: IQueryReport) {
         try {

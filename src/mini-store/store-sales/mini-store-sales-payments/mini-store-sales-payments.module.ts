@@ -18,6 +18,7 @@ import { UsersModule } from '../../../system/users/users.module';
 import { ConfigModule } from '../../../common/config/config.module';
 // eliminar al cambiar los reporte del front
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
+import { AuthModule } from '../../../system/auth/auth.module';
 @Module({
     imports: [
         TypeOrmModule.forFeature([
@@ -33,7 +34,8 @@ import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns
         BranchOfficeSettingModule,
         InvoiceMethodsPaymentsModule,
         UsersModule,
-        ConfigModule
+        ConfigModule,
+        AuthModule
     ],
     exports: [
         MiniStoreSalesPaymentsService,

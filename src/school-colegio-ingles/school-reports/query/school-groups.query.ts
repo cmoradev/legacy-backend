@@ -19,7 +19,10 @@ SELECT i.inscripClassroomId                                   AS id_grupo,
 		   i.inscripGradeId	                      								AS id_grado,
        i.inscripLevelId			                       						AS id_nivel,
        a.matricula                                            AS matricula_alumno,
-       CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)  AS nombre_alumno
+       CONCAT(a.nombre, ' ', a.ap_paterno, ' ', a.ap_materno)  AS nombre_alumno,
+       a.ap_paterno                                           AS apellido_paterno,
+       a.ap_materno                                           AS apellido_materno,
+       a.nombre                                               AS nombre
 
 FROM  inscripciones i
 

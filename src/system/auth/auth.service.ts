@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Role } from '../roles/entities/role.entity';
@@ -22,6 +23,7 @@ import Mail from 'nodemailer/lib/mailer';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { ValidateAdminPasswordDto } from './dto/validate-admin-password.dto';
+import { CancellationDto } from '../../common/dto/Cancellation.dto';
 
 interface UserBody {
   name: string;
@@ -235,11 +237,38 @@ export class AuthService {
           email: validate.email, role: { id: 1}
         }
       })
-      if (!user) throw new BadRequestException('User not found');
+      if (!user) throw new UnauthorizedException('User not found');
       
       return bcrypt.compareSync(validate.password, user.password.replace('$2y$', '$2a$'))
     } catch (error) {
       console.error(error)
     }
+  }
+
+
+  async validateUserCancellation(payload: CancellationDto) {
+    const { userID, adminEmail, adminPassword } = payload;
+
+    const user = await this.usersService.findOne({
+      where: { id: userID },
+      relations: ['role'],
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    if (user.role.id !== 1) {
+      const isValid = await this.validateAdminPassword({
+        email: adminEmail,
+        password: adminPassword,
+      });
+
+      if (!isValid) {
+        throw new UnauthorizedException('Credenciales de administrador incorrecta');
+      }
+    }
+
+    return user;
   }
 }

@@ -1,12 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSale } from './entities/mini-store-sale.entity';
-import { Connection, Repository } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import * as moment from 'moment';
 import { IQueryReportSaleToday, IQueryReportSaleTodayOp, IReportInformativeRow, IReportSaleTodayRow} from './types/IReport';
 import {NotInvoiced, VWPaymentExtraCharge} from '../../../common/interface/not-invoiced.interface';
+import { PaymentStatus } from 'src/common/enums/PaymentStatus';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { User } from '../../../system/users/entities/user.entity';
+import { AuthService } from '../../../system/auth/auth.service';
+import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
+import { MiniStoreProduct } from '../../mini-store-products/entities/mini-store-product.entity';
+import { Decimal } from '@munyaal/calculations';
 
 @Injectable()
 export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
@@ -14,6 +21,9 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
         @InjectConnection(ColegioDBNameConnection)
     private connection: Connection,
         @InjectRepository(MiniStoreSale, ColegioDBNameConnection) readonly repo: Repository<MiniStoreSale>,
+        @InjectRepository(User, ColegioDBNameConnection) readonly userRepository: Repository<User>,
+        private readonly authService: AuthService,
+        @InjectConnection(ColegioDBNameConnection) private readonly dataSource: Connection,
     ) {
         super(repo);
     }
@@ -188,4 +198,73 @@ export class MiniStoreSalesService extends TypeOrmCrudService<MiniStoreSale> {
               );
           }
       }
+    
+    public async cancelSale(id: number, payload: CancellationDto) {
+        
+                try {
+        
+                    const object = await this.findOne(id);
+        
+                    if (!object) {
+                        throw new NotFoundException('Venta tienda no encontrado')
+                    }
+    
+                    if (object.statusSale === PaymentStatus.Cancelled) {
+                        throw new BadRequestException('La venta ya está cancelada');
+                    }
+        
+                    const { reasonCancellation} = payload;
+
+                    const user = await this.authService.validateUserCancellation(payload);
+    
+                    return await this.dataSource.transaction(async (manager) => {
+
+                        const saleDetails = await manager
+                            .createQueryBuilder(MiniStoreSaleDetail, 'details')
+                            .leftJoinAndSelect('details.miniStoreSale', 'sale')
+                            .leftJoinAndSelect('details.miniStoreProduct', 'product')
+                            .select(['details.id', 'details.quantity', 'sale.id', 'product.id', 'product.stock'])
+                            .where('sale.id = :saleId', { saleId: id })
+                            .getMany();
+
+
+                        for (const detail of saleDetails) {
+                            
+                            await manager.update( MiniStoreProduct, { id: detail.miniStoreProduct.id },
+                                {
+                                    stock: Decimal.add(detail.miniStoreProduct.stock, detail.quantity).toNumber()
+                                }
+                            );
+                            
+                        }
+
+                        
+                        /** Se cancela la venta */
+                        
+                        const result = await manager.update(
+                            MiniStoreSale,
+                            { id },
+                            {
+                                reasonCancellation: reasonCancellation,
+                                dateCancellation: new Date(),
+                                statusSale: PaymentStatus.Cancelled,
+                                agentCanceling: { id: user.id }
+                            }
+                        );
+    
+                        if (!result.affected) {
+                            throw new Error(`No se pudo cancelar la venta tienda ${id}`);
+                        }
+    
+                        return id;
+                    });
+    
+                } catch (e) {
+                    if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
+        
+                    console.error(`Error al cancelar venta tienda${id}: ${e}`);
+        
+                    throw new BadRequestException(`Error al cancelar la venta tienda ${id}`);
+                }
+            }
 }

@@ -15,6 +15,7 @@ import { AcademyChargeInvoiceModule } from '../academy-charge-invoice/academy-ch
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { ConfigModule } from '../../../common/config/config.module';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
+import { AuthModule } from '../../../system/auth/auth.module';
 
 @Module({
     imports: [
@@ -31,7 +32,8 @@ import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy
         forwardRef(() => AcademyChargeInvoiceModule),
         InvoiceMethodsPaymentsModule,
         AcademyChargeModule,
-        ConfigModule
+        ConfigModule,
+        AuthModule
     ],
     controllers: [AcademyChargePaymentsController],
     providers: [AcademyChargePaymentsService, SmartWeb],

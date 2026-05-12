@@ -21,6 +21,7 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
 import { SchoolChargesModule } from '../school-charges/school-charges.module';
 import { SchoolChargesDetailsModule } from '../school-charges-details/school-charges-details.module';
 import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-details-extra-charges/school-charges-details-extra-charges.module';
+import { AuthModule } from '../../../system/auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-detail
     forwardRef(() => SchoolChargesInvoiceModule),
     ConfigModule,
     StudentsModule,
+    AuthModule
   ],
   providers: [SchoolChargesPaymentsService, SmartWeb],
   controllers: [SchoolChargesPaymentsController],

@@ -36,7 +36,35 @@ export class SchoolGroupService {
 
     const groups = this.matchInscriptions(classrooms, inscriptions);
 
-    groups.sort((a, b) => a.nombre_grupo.localeCompare(b.nombre_grupo));
+    const nivelOrder = {
+      Maternal: 0,
+      Preescolar: 1,
+      Primaria: 2,
+      Secundaria: 3,
+    };
+
+    groups.sort((a, b) => {
+      const nivelDiff =
+        (nivelOrder[a.nivel] ?? 99) - (nivelOrder[b.nivel] ?? 99);
+      if (nivelDiff !== 0) return nivelDiff;
+
+      const gradoDiff = a.id_grado - b.id_grado;
+      if (gradoDiff !== 0) return gradoDiff;
+
+      return a.nombre_grupo.localeCompare(b.nombre_grupo);
+    });
+
+    groups.forEach((group) => {
+      group.integrantes.sort((a, b) => {
+        const cmp1 = a.apellido_paterno.localeCompare(b.apellido_paterno);
+        if (cmp1 !== 0) return cmp1;
+
+        const cmp2 = a.apellido_materno.localeCompare(b.apellido_materno);
+        if (cmp2 !== 0) return cmp2;
+
+        return a.nombre.localeCompare(b.nombre);
+      });
+    });
 
     return {
       groups,
@@ -355,7 +383,47 @@ export class SchoolGroupService {
           .toUpperCase()
           .split(' ')
           .join(' '),
-        nombre_alumno: `${row.nombre_alumno}`
+        nombre_alumno: `${row.apellido_paterno}`
+          .trim()
+          .split(' ')
+          .map(
+            (word) =>
+              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+          )
+          .join(' ') + ' ' +
+          `${row.apellido_materno}`
+            .trim()
+            .split(' ')
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+          )
+          .join(' ') + ' ' +
+          `${row.nombre}`
+            .trim()
+            .split(' ')
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+            )
+            .join(' '),
+        apellido_paterno: `${row.apellido_paterno}`
+          .trim()
+          .split(' ')
+          .map(
+            (word) =>
+              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+          )
+          .join(' '),
+        apellido_materno: `${row.apellido_materno}`
+          .trim()
+          .split(' ')
+          .map(
+            (word) =>
+              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+          )
+          .join(' '),
+        nombre: `${row.nombre}`
           .trim()
           .split(' ')
           .map(
@@ -434,7 +502,7 @@ export class SchoolGroupService {
           id_nivel,
           nivel,
           grado,
-          integrantes
+          integrantes,
         };
       },
     );

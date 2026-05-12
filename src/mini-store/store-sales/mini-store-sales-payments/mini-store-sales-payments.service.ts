@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
@@ -39,6 +39,8 @@ import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { PaymentStatus } from "../../../common/enums/PaymentStatus";
 import { AttachmentsType } from "../../../types";
 import { ReceiptTemplate } from "../../../templates/receipt";
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { AuthService } from '../../../system/auth/auth.service';
 import moment = require('moment');
 
 @Injectable()
@@ -52,6 +54,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
         @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
+        private readonly authService: AuthService
     ) {
         super(repo);
     }
@@ -747,5 +750,44 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         Receip.addFormaPago(forma);
 
         return Receip;
+    }
+
+    public async cancelPayment(id: number, payload: CancellationDto) {
+        try {
+
+            const object = await this.findOne(id);
+
+            if (!object) {
+                throw new NotFoundException('Pago tienda no encontrado')
+            }
+
+            if (object.paymentStatus === PaymentStatus.Cancelled) {
+                throw new BadRequestException('El pago ya está cancelado');
+            }
+
+            const { reasonCancellation} = payload;
+
+            const user = await this.authService.validateUserCancellation(payload);
+
+            const result = await this.repo.update({id}, {
+                reasonCancellation,
+                dateCancellation: new Date(),
+                paymentStatus: PaymentStatus.Cancelled,
+                agentCanceling: {id: user.id}
+            });
+
+            if(result && result.affected && result.affected > 0) {
+                return id;
+            }else {
+                throw new BadRequestException(`Error al cancelar el pago tienda ${id}`);    
+            }
+
+        } catch (e) {
+            if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
+
+            console.error(`Error al cancelar pago tienda ${id}: ${e}`);
+
+            throw new BadRequestException(`Error al cancelar el pago tienda ${id}`);
+        }
     }
 }

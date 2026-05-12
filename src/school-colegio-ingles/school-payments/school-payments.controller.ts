@@ -1,4 +1,18 @@
-import {Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolPayment } from './entities/school-payment.entity';
 import { SchoolPaymentsService } from './school-payments.service';
@@ -8,6 +22,7 @@ import { SchoolPaymentsReport } from './report/schoolPayments.report';
 import { Response } from 'express';
 import { ConceptStatusExcel } from './report/concept.status.excel';
 import { getNameStatusConcept } from './report/helpers';
+import { AssignMiniStorePaymentDto } from './dto/assign-mini-store-payment.dto';
 
 @Crud({
   model: {
@@ -114,5 +129,13 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
     } else {
       return res.send({ report: false, data });
     }
+  }
+
+  @Post('assign-mini-store-payment')
+  @UsePipes(ValidationPipe)
+  public async assignMiniStorePayment(
+    @Body() payload: AssignMiniStorePaymentDto,
+  ) {
+    return this.service.assignMiniStorePayment(payload);
   }
 }

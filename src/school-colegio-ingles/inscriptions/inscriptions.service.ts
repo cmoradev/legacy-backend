@@ -12,7 +12,7 @@ import { BranchOffice } from '../../system/branch-office/entities/branch-office.
 import { Cycle } from '../cycles/entities/cycle.entity';
 import { Classroomembers, ListQuery } from './types/listQuery';
 import { LevelsService } from '../levels/levels.service';
-import { InscriptionStatusStudent } from '../../common/enums/PaymentStatus';
+import { InscriptionStatusStudent, PaymentStatus } from '../../common/enums/PaymentStatus';
 import { Group } from '../groups/entities/group.entity';
 import { Grade } from '../grades/entities/grade.entity';
 import { Level } from '../levels/entities/level.entity';
@@ -587,5 +587,38 @@ export class InscriptionsService extends TypeOrmCrudService<Inscription> {
         } catch (a) {
             throw new NotFoundException(`Error in query or conection [${queryString}]`,);
         }
+    }
+
+    async findPendingPayments(inscriptionId: number): Promise<SchoolPayment[]> {
+    const paymentRepo = this.connection.getRepository(SchoolPayment);
+    return paymentRepo
+      .createQueryBuilder('payment')
+      .leftJoinAndSelect('payment.paymentPlanConcept', 'paymentPlanConcept')
+      .where('payment.inscription = :inscriptionId', { inscriptionId })
+      .andWhere('payment.statusPayment IN (:...statuses)', {
+        statuses: [PaymentStatus.Debit, PaymentStatus.Abonar],
+      })
+      .andWhere('payment.isActive = :isActive', { isActive: true })
+      .andWhere('payment.deletedAt IS NULL')
+      .orderBy('payment.payDate', 'ASC')
+      .getMany();
+  }
+
+  async findByStudentAndCycle(
+    studentId: number,
+    cycleId: number,
+  ): Promise<Inscription[]> {
+    return this.repo
+      .createQueryBuilder('inscription')
+      .leftJoinAndSelect('inscription.inscripLevel', 'inscripLevel')
+      .leftJoinAndSelect('inscription.inscripGrade', 'inscripGrade')
+      .leftJoinAndSelect('inscription.inscripGroup', 'inscripGroup')
+      .leftJoinAndSelect('inscription.inscripClassroom', 'inscripClassroom')
+      .leftJoinAndSelect('inscription.inscripCycle', 'inscripCycle')
+      .where('inscription.inscripStudent = :studentId', { studentId })
+      .andWhere('inscription.inscripCycle = :cycleId', { cycleId })
+      .andWhere('inscription.deletedAt IS NULL')
+      .andWhere('inscription.idStatus != :status', { status: 0 })
+      .getMany();
     }
 }

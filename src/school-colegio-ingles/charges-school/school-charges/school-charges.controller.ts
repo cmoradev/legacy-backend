@@ -1,8 +1,10 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Req, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolCharge } from './entities/school-charge.entity';
 import { SchoolChargesService } from './school-charges.service';
 import { Response } from 'express';
+import { CancellationDto } from '../../../common/dto/Cancellation.dto';
+import { CreateSchoolSaleDto } from '../../../common/dto/create-school-sale.dto';
 
 @Crud({
     model: {
@@ -75,5 +77,20 @@ export class SchoolChargesController implements CrudController<SchoolCharge> {
             res.send(e);
         }
 
+    }
+
+    @Post('/sale')
+    @UsePipes(ValidationPipe)
+    async createSale(@Body() payload: CreateSchoolSaleDto) {
+        return this.service.createSale(payload);
+    }
+
+    @Post('/:id/cancel')
+    @UsePipes(ValidationPipe)
+    async cancelSale(
+    @Param("id") id: string,
+    @Body() payload: CancellationDto
+    ) {
+    return this.service.cancelSale(+id, payload);
     }
 }

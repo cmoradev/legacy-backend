@@ -103,10 +103,7 @@ const ConceptsTotals = (payload: {
   const {
     payment,
     details,
-    type,
-    ivaDefault = 1.16,
-    ivaByDetail = 0.16,
-    baseDefault = 0,
+    type
   } = payload;
   //const pago = payment.quantity - payment.change;
   let resultad = {
