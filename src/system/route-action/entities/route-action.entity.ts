@@ -4,7 +4,6 @@ import { Route } from '../../routes/entities/route.entity';
 
 @Entity('route_action')
 export class RouteAction {
-
     @PrimaryGeneratedColumn({
         type: 'int',
     })

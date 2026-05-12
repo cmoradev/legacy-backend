@@ -8,11 +8,6 @@ import { RouteActionService } from './route-action.service';
     type: RouteAction,
   },
   query: {
-    filter: {
-      deletedAt: {
-        $eq: null,
-      },
-    },
     join: {
       route: { eager: false },
       action: { eager: false },
@@ -25,15 +20,5 @@ export class RouteActionController implements CrudController<RouteAction> {
 
   get base(): CrudController<RouteAction> {
     return this;
-  }
-
-  @Delete('soft-deleted/:id')
-  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.service.softDeleteOne(id);
-  }
-
-  @Put('soft-restore/:id')
-  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.service.softRestoreOne(id);
   }
 }
