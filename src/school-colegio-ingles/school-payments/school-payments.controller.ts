@@ -23,6 +23,7 @@ import { Response } from 'express';
 import { ConceptStatusExcel } from './report/concept.status.excel';
 import { getNameStatusConcept } from './report/helpers';
 import { AssignMiniStorePaymentDto } from './dto/assign-mini-store-payment.dto';
+import { ToggleSchoolPaymentActiveDto } from './dto/toggle-school-payment-active.dto';
 
 @Crud({
   model: {
@@ -137,5 +138,13 @@ export class SchoolPaymentsController implements CrudController<SchoolPayment> {
     @Body() payload: AssignMiniStorePaymentDto,
   ) {
     return this.service.assignMiniStorePayment(payload);
+  }
+
+  @Put('toggle-active')
+  @UsePipes(ValidationPipe)
+  public async toggleActive(
+    @Body() payload: ToggleSchoolPaymentActiveDto,
+  ) {
+    return this.service.toggleActiveByIds(payload.schoolPaymentIds);
   }
 }

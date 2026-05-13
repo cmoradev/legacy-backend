@@ -432,6 +432,42 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
     });
   }
 
+  public async toggleActiveByIds(ids: number[]) {
+    if (!ids || ids.length === 0) {
+      throw new BadRequestException('El arreglo de schoolPaymentIds está vacío');
+    }
+
+    return await this.connection.transaction(async (manager) => {
+      const schoolPayments = await manager.find(SchoolPayment, {
+        where: { id: In(ids) },
+        select: ['id', 'isActive'],
+      });
+
+      const foundIds = schoolPayments.map((payment) => payment.id);
+      const missingIds = ids.filter((id) => !foundIds.includes(id));
+
+      if (foundIds.length > 0) {
+        await manager
+          .createQueryBuilder()
+          .update(SchoolPayment)
+          .set({ isActive: () => 'NOT isActive' })
+          .whereInIds(foundIds)
+          .execute();
+      }
+
+      const updated = schoolPayments.map((payment) => ({
+        id: payment.id,
+        previousIsActive: payment.isActive,
+        currentIsActive: !payment.isActive,
+      }));
+
+      return {
+        updated,
+        missingIds,
+      };
+    });
+  }
+
   private appendUniqueCsv(currentValue: string | null, id: number) {
     const nextValue = `${id}`;
     const existing = (currentValue || '')
