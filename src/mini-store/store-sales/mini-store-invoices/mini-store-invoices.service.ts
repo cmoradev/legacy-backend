@@ -54,7 +54,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     async changeStautsInvoice(data: ChangeStatusInvoiceMiniStoreInterface) {
-        const fecha = MomentTimeZone().tz('America/Mexico_City').format('YYYY-MM-DDThh:mm:ss');
+        const fecha = MomentTimeZone().tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
         const invoice = await this.repo.findOne({id: data.id});
         invoice.status = data.status;
         invoice.idCancelingAgent = data.idCancelingAgent;
