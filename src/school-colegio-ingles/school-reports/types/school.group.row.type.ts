@@ -33,6 +33,14 @@ export type SchoolGroupRow = {
   integrantes: SchoolStudent[];
 };
 
+export type SchoolGradeRow = {
+  id_nivel: number;
+  nivel: string;
+  id_grado: number;
+  grado: string;
+  integrantes: SchoolStudent[];
+};
+
 export type SchoolStudent = {
   matricula_alumno: string;
   nombre_alumno: string;
