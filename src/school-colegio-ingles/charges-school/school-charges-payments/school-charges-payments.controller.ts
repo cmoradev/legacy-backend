@@ -115,7 +115,7 @@ export class SchoolChargesPaymentsController
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
     readonly schoolChargeInvoiceService: SchoolChargesInvoiceService,
     readonly branchOffice: BranchOfficeService,
-    readonly student: StudentsService,
+    readonly studentService: StudentsService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private smartWeb: FactSw,
     private readonly configService: ConfigService,
@@ -215,11 +215,6 @@ export class SchoolChargesPaymentsController
       uuid: '',
     };
 
-    const env = {
-      instancePath: this.configService.getPath(),
-      xslt: this.configService.getXsltPath(),
-    };
-
     const receptor = {
       Nombre: query.receiver.businessName,
       Rfc: query.receiver.rfc,
@@ -228,20 +223,17 @@ export class SchoolChargesPaymentsController
       RegimenFiscalReceptor: query.receiver.keyRegimen,
     };
 
-    const capitalizarPrimeraLetra = (str: string) => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    };
+    const studentMetada = await this.studentService.getIEDUMetadata(query.student.id);
 
     const student = {
-      version: '1.0',
-      nombreAlumno: `${query.student.name} ${query.student.lastNameFather} ${query.student.lastNameMother}`,
-      CURP: query.student.curp,
-      nivelEducativo: capitalizarPrimeraLetra(
-        query.studyPlan.level.name.toLocaleLowerCase(),
-      ),
-      autRVOE: query.studyPlan.code,
       rfcPago: query.receiver.rfc,
+      version: studentMetada.version,
+      nombreAlumno: studentMetada.nombreAlumno,
+      nivelEducativo: studentMetada.nivelEducativo,
+      CURP: studentMetada.CURP,
+      autRVOE: studentMetada.RVOE,
     };
+
     try {
       if (invoiceFinded) {
         if (invoiceFinded.schoolChargePayment.stamping === 1) {

@@ -1,5 +1,5 @@
-import { isSameMonth, format, addMonths, isBefore, lightFormat, getYear, getMonth, getDay } from 'date-fns';
-import { es } from 'date-fns/locale/es'
+import { isSameMonth, format, addMonths, isBefore } from 'date-fns';
+import { es } from 'date-fns/locale/es';
 import { AmountAndTaxParams, Decimal } from '@munyaal/calculations';
 
 /*
@@ -27,41 +27,45 @@ export interface MonthDate {
   date: string;
 }
 
-export function getMonthsBetweenDate(startDate: string, endDate: string): MonthDate[] {
+export function getMonthsBetweenDate(
+  startDate: string,
+  endDate: string,
+): MonthDate[] {
   const [startYear, startMonth, startDay] = startDate.split('-');
   const [endYear, endMonth, endDay] = endDate.split('-');
   const months: MonthDate[] = [];
-  
+
   const startDayUtc = new Date(
     parseInt(startYear),
-    parseInt(startMonth)-1,
-    parseInt(startDay)
+    parseInt(startMonth) - 1,
+    parseInt(startDay),
   );
 
   const endDayUtc = new Date(
     parseInt(endYear),
-    parseInt(endMonth)-1,
-    parseInt(endDay)
+    parseInt(endMonth) - 1,
+    parseInt(endDay),
   );
 
-  
   let currentDate = startDayUtc;
 
   // Recorremos el rango mes por mes
-  while (isBefore(currentDate, endDayUtc) || (isSameMonth(currentDate, endDayUtc) && !isBefore(currentDate, endDayUtc))) {
+  while (
+    isBefore(currentDate, endDayUtc) ||
+    (isSameMonth(currentDate, endDayUtc) && !isBefore(currentDate, endDayUtc))
+  ) {
     // Formateamos la fecha para obtener el mes y año en el formato deseado
     months.push({
       name: format(currentDate, 'MMMM', { locale: es }).toUpperCase(),
       month: format(currentDate, 'MM'),
       year: format(currentDate, 'yyyy'),
-      date: format(currentDate, 'yyyy-MM')
+      date: format(currentDate, 'yyyy-MM'),
     });
 
     // Pasamos al siguiente mes
     currentDate = addMonths(currentDate, 1);
   }
   return months;
-
 }
 
 /**
@@ -71,17 +75,24 @@ export function getMonthsBetweenDate(startDate: string, endDate: string): MonthD
  * Ejemplo: getAmountAndTaxFromPriceWithIva({ base, ivaPercentage })
  */
 export const getPriceWithIva = (params: AmountAndTaxParams) => {
-  const base = new Decimal (params.base);
+  const base = new Decimal(params.base);
 
-  const percentage = params.ivaPercentage > 1 ? new Decimal(params.ivaPercentage).div(100).add(1) : new Decimal(params.ivaPercentage).add(1);
+  const percentage =
+    params.ivaPercentage > 1
+      ? new Decimal(params.ivaPercentage).div(100).add(1)
+      : new Decimal(params.ivaPercentage).add(1);
 
   const amount = base.div(percentage);
 
   const tax = base.sub(amount);
 
   return {
-      base,
-      amount,
-      tax
-  }
-}
+    base,
+    amount,
+    tax,
+  };
+};
+
+export const capitalizarPrimeraLetra = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
