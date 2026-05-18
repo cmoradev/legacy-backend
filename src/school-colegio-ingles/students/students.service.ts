@@ -121,7 +121,7 @@ export class StudentsService extends TypeOrmCrudService<Student> {
     }
 
     const inscription: Inscription = await this.inscriptionRepo.findOne({
-      where: { student: { id: studentId } },
+      where: { inscripStudent: studentId },
       relations: ['inscripStudyPlan', 'inscripLevel'],
       order: { createdAt: 'DESC' },
     });
