@@ -157,6 +157,35 @@ export class SchoolReportsController {
 
   @Public()
   @UsePipes(ValidationPipe)
+  @Get('/school-grade-report')
+  async gradeReport(@Query() query: SchoolGroupQuery) {
+    try {
+      const { grades } = await this.groupService.getGradesData(query);
+
+      const document = await this.groupService.buildGradeDocument(grades, query);
+
+      const filename = 'Reporte_Grados_Colegio';
+
+      const base64 = await document.getBase64(filename);
+
+      return {
+        data: { grades },
+        report: {
+          filename,
+          base64,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      this.logger.error('Error generating list of school grades report');
+      throw new BadRequestException(
+        'Error al generar las listas de asistencia por grado de colegio',
+      );
+    }
+  }
+
+  @Public()
+  @UsePipes(ValidationPipe)
   @Get('/school-debit-report')
   async schoolDebitReport(@Query() query: SchoolDebitQuery) {
     try {
