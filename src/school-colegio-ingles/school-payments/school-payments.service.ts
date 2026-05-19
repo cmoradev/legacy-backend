@@ -252,9 +252,105 @@ export class SchoolPaymentsService extends TypeOrmCrudService<SchoolPayment> {
         .filter((id) => !Number.isNaN(id));
 
       if (chargeIds.length === 0) {
-        throw new BadRequestException(
-          'No se encontraron ventas de colegio relacionadas a los schoolPayments',
-        );
+        const totalConceptos =
+          saleDetailsCalculations({
+            details: schoolPayments,
+            type: InvoiceModules.SCHOOL,
+          }).total || 0;
+
+        const ministorePaymentIds = Array.from(
+          new Set(
+            [].concat(
+              ...schoolPayments.map((paymentItem) =>
+                this.parseCsvIds(paymentItem.ministorePayment),
+              ),
+            ),
+          ),
+        ).filter((id) => id !== miniStorePaymentId);
+
+        let totalPagosMiniStoreRelacionados = 0;
+
+        if (ministorePaymentIds.length > 0) {
+          const ministorePayments = await manager.find(MiniStoreSalePayment, {
+            where: { id: In(ministorePaymentIds) },
+          });
+
+          totalPagosMiniStoreRelacionados = ministorePayments
+            .filter(
+              (paymentItem) => paymentItem.paymentStatus === PaymentStatus.PaiOut,
+            )
+            .reduce(
+              (acc, paymentItem) =>
+                Decimal.sum(
+                  acc,
+                  Decimal.sub(paymentItem.quantity || 0, paymentItem.change || 0),
+                ).toNumber(),
+              0,
+            );
+        }
+
+        const faltanteAntesDelPagoActual = Decimal.sub(
+          totalConceptos,
+          totalPagosMiniStoreRelacionados,
+        ).toNumber();
+
+        const montoNecesarioDeLaBolsa =
+          faltanteAntesDelPagoActual > 0 ? faltanteAntesDelPagoActual : 0;
+
+        const shouldPayOut = availableAmount >= montoNecesarioDeLaBolsa;
+        const appliedAmount = shouldPayOut ? montoNecesarioDeLaBolsa : 0;
+
+        if (shouldPayOut) {
+          availableAmount = Decimal.sub(availableAmount, appliedAmount).toNumber();
+        }
+
+        for (const schoolPayment of schoolPayments) {
+          const updatedMinistoreSale = this.appendUniqueCsv(
+            schoolPayment.ministoreSale,
+            miniStoreSaleId,
+          );
+          const updatedMinistorePayment = this.appendUniqueCsv(
+            schoolPayment.ministorePayment,
+            miniStorePaymentId,
+          );
+
+          const newStatus = shouldPayOut
+            ? PaymentStatus.PaiOut
+            : PaymentStatus.Abonar;
+
+          await manager.update(
+            SchoolPayment,
+            { id: schoolPayment.id },
+            {
+              statusPayment: newStatus,
+              paidDate:
+                newStatus === PaymentStatus.PaiOut
+                  ? new Date()
+                  : schoolPayment.paidDate || null,
+              ministoreSale: updatedMinistoreSale,
+              ministorePayment: updatedMinistorePayment,
+            },
+          );
+
+          response.push({
+            id: schoolPayment.id,
+            previousStatus: schoolPayment.statusPayment,
+            currentStatus: newStatus,
+            ministoreSale: updatedMinistoreSale,
+            ministorePayment: updatedMinistorePayment,
+            appliedAmount,
+            schoolChargeId: 0,
+          });
+        }
+
+        return {
+          miniStoreSaleId,
+          miniStorePaymentId,
+          initialAmount: miniStorePaymentTotal,
+          remainingAmount: availableAmount,
+          updated: response,
+          ignoredIds,
+        };
       }
 
       const charges = await manager.find(SchoolCharge, {
