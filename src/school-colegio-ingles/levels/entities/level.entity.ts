@@ -24,6 +24,12 @@ export class Level extends Base {
   })
   name: string;
 
+  @Column('varchar', {
+    nullable: true,
+    name: 'RVOE',
+  })
+  RVOE: string;
+
   @OneToMany(() => PaymentPlan, (paymentPlan) => paymentPlan.level)
   paymentPlans: PaymentPlan[];
 

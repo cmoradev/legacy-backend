@@ -125,13 +125,23 @@ export class StudentsService extends TypeOrmCrudService<Student> {
       relations: ['inscripStudyPlan', 'inscripLevel'],
       order: { createdAt: 'DESC' },
     });
-
+    
     if (!inscription) {
       throw new NotFoundException('Inscription for this student does not exists');
     }
 
-    if (!inscription.inscripStudyPlan || !inscription.inscripLevel) {
-      throw new NotFoundException('Study plan or level for this inscription does not exists');
+    let RVOE: string = undefined;
+
+    if (inscription.inscripLevel && inscription.inscripLevel.RVOE) {
+      RVOE = inscription.inscripLevel.RVOE;
+    } else if (inscription.inscripStudyPlan && inscription.inscripStudyPlan.code) {
+      RVOE = inscription.inscripStudyPlan.code;
+    } else {
+      throw new NotFoundException('RVOE not exists');
+    }
+
+    if (!inscription.inscripLevel) {
+      throw new NotFoundException('Level for this inscription does not exists');
     }
 
     return {
@@ -139,7 +149,7 @@ export class StudentsService extends TypeOrmCrudService<Student> {
       nombreAlumno: `${student.name} ${student.lastNameFather} ${student.lastNameMother}`,
       nivelEducativo: capitalizarPrimeraLetra(inscription.inscripLevel.name),
       CURP: `${student.curp}`.toUpperCase(),
-      RVOE: inscription.inscripStudyPlan.code,
+      RVOE,
     };
   }
 }
