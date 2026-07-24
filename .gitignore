@@ -10,7 +10,8 @@
 /uploads
 /xls-imports
 /signatures
-/storage
+# Storage (ignorar contenido excepto .gitkeep)
+/storage/**
 # Logs
 logs
 *.log
