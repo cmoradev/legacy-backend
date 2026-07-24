@@ -1,27 +1,9 @@
-import {
-    AlignmentType,
-    Document,
-    Media,
-    Packer,
-    PageBorderDisplay,
-    PageOrientation,
-    Paragraph,
-    RelativeHorizontalPosition,
-    TextRun,
-    UnderlineType,
-    WidthType,
-} from 'docx';
-import * as path from 'path';
-import * as toPdf from 'office-to-pdf';
-import { TableDocx, TableHeaderDocx, TableRowsDocx } from '../../../common/office/docx/Table.docx';
-import * as fs from 'fs';
 import { TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf } from 'pdfmake/build/pdfmake';
-import { vfs } from 'pdfmake/build/pdfmake';
 import { pdfMake } from 'pdfmake/build/vfs_fonts';
 
 // @ts-ignore
-vfs = pdfMake.vfs;
+createPdf.vfs = pdfMake.vfs;
 
 export async function orderRecipe(options: {
     applicant: string,

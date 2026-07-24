@@ -38,7 +38,6 @@ import { ClassroomPermissionModule } from './school-colegio-ingles/classroom-per
 import { IncidentClassificationModule } from './school-colegio-ingles/incident-classification/incident-classification.module';
 import { IncidentsModule } from './school-colegio-ingles/incidents/incidents.module';
 import { DepartmentsModule } from './system/departments/departments.module';
-import { CheckInModule } from './school-colegio-ingles/check-in/check-in.module';
 import { AuthModule } from './system/auth/auth.module';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
 import { MatrixCompaniesModule } from './fixed-assets-control/matrix-companies/matrix-companies.module';
@@ -100,7 +99,6 @@ import { AcademyChargeMethodsPaymentsModule } from './academy/charges-academy/ac
 import { AcademyChargePaymentsModule } from './academy/charges-academy/academy-charge-payments/academy-charge-payments.module';
 import { AcademyInscriptionChargesModule } from './academy/academy-inscription-concept-charges/academy-inscription-charges.module';
 import { FamilyFiscalModule } from './school-colegio-ingles/family-fiscal/family-fiscal.module';
-import { XlsImporterModule } from './xls-importer/xls-importer.module';
 import { RouteActionModule } from './system/route-action/route-action.module';
 import { SchoolPaymentsChargesModule } from './school-colegio-ingles/school-payments-charges/school-payments-charges.module';
 import { TransactionModule } from './system/transaction/transactions.module';
@@ -149,7 +147,6 @@ export const routes: Routes = [
       { path: '/stats', module: StatsModule },
       { path: '/settings', module: SettingsModule },
       { path: '/folios', module: FoliosModule },
-      { path: '/xls', module: XlsImporterModule },
       { path: '/transaction', module: TransactionModule },
       { path: '/identifier', module: IdentifierModule },
     ],
@@ -205,7 +202,6 @@ export const routes: Routes = [
         module: IncidentClassificationModule,
       },
       { path: '/incidents', module: IncidentsModule },
-      { path: '/check-in', module: CheckInModule },
 
       { path: '/reports', module: SchoolReportsModule },
     ],

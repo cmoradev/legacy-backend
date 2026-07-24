@@ -18,6 +18,7 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
 import { Public } from '../../common/docorators/public.decorator';
+import { ConfigService } from '../../common/config/config.service';
 
 @Crud({
     model: {
@@ -35,7 +36,10 @@ import { Public } from '../../common/docorators/public.decorator';
 })
 @Controller()
 export class SettingsController implements CrudController<Company> {
-    constructor(public service: SettingsService) {
+    constructor(
+        public service: SettingsService,
+        private readonly configService: ConfigService,
+    ) {
     }
 
     @Delete('soft-deleted/:id')
@@ -51,7 +55,12 @@ export class SettingsController implements CrudController<Company> {
     @Post('upload-logo')
     @UseInterceptors(FileInterceptor('logo', {
         storage: diskStorage({
-            destination: '/var/www/uploads/temp',
+            destination: (req, file, cb) => {
+                const uploadsPath = process.env.UPLOADS_PATH || '/var/www/uploads';
+                const tempDir = `${uploadsPath}/temp`;
+                try { fs.mkdirSync(tempDir, { recursive: true }); } catch (e) { /* exists */ }
+                cb(null, tempDir);
+            },
             filename(req, file, cb): void {
                 const uniqueName = +new Date();
                 cb(null, uniqueName + file.originalname);
@@ -64,7 +73,11 @@ export class SettingsController implements CrudController<Company> {
                 error: 'UNDEFINED_COMPANY_ID',
             });
         }
-        const companyPaths = [`/var/www/uploads/${params.companyID}/`, `/var/www/uploads/${params.companyID}/images/`];
+        const uploadsPath = this.configService.getUploadsPath();
+        const companyPaths = [
+            `${uploadsPath}/${params.companyID}/`,
+            `${uploadsPath}/${params.companyID}/images/`,
+        ];
         for (const path of companyPaths) {
             try {
                 await fs.promises.mkdir(path);
@@ -72,9 +85,11 @@ export class SettingsController implements CrudController<Company> {
                 // err
             }
         }
-        fs.rename(logo.path, `/var/www/uploads/${params.companyID}/images/` + logo.filename, (err) => {
-            // err
-        });
+        fs.rename(
+            logo.path,
+            `${uploadsPath}/${params.companyID}/images/` + logo.filename,
+            (err) => { /* err */ }
+        );
         let urlHost = '';
         if (req.headers['x-forwarded-host']) {
             urlHost = `${req.protocol}://${req.headers['x-forwarded-host']}`;
@@ -99,7 +114,8 @@ export class SettingsController implements CrudController<Company> {
                 error: 'UNDEFINED_LOGO_NAME',
             });
         }
-        const companyPath = `/var/www/uploads/${params.companyID}/images`;
+        const uploadsPath = this.configService.getUploadsPath();
+        const companyPath = `${uploadsPath}/${params.companyID}/images`;
         try {
             const logo = await fs.promises.readFile(`${companyPath}/${params.logoName}`);
             res.send(logo);

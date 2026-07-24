@@ -181,17 +181,17 @@ export class IncomeService {
         row.matricula_alumno,
         row.nombre_alumno,
         row.folio_venta,
-        format(row.fecha_venta, 'dd/MM/yyyy'),
-        format(row.fecha_venta, 'pp'),
+        format(new Date(row.fecha_venta), 'dd/MM/yyyy'),
+        format(new Date(row.fecha_venta), 'pp'),
         row.folio_pago,
-        format(row.fecha_pago, 'dd/MM/yyyy'),
-        format(row.fecha_pago, 'pp'),
+        format(new Date(row.fecha_pago), 'dd/MM/yyyy'),
+        format(new Date(row.fecha_pago), 'pp'),
         row.folio_factura,
         row.fecha_factura != 'N/A'
-          ? format(row.fecha_factura, 'dd/MM/yyyy')
+          ? format(new Date(row.fecha_factura), 'dd/MM/yyyy')
           : row.fecha_factura,
         row.fecha_factura != 'N/A'
-          ? format(row.fecha_factura, 'pp')
+          ? format(new Date(row.fecha_factura), 'pp')
           : row.fecha_factura,
         row.tipo_factura,
         row.uuid_factura,
@@ -333,9 +333,9 @@ export class IncomeService {
       const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.cobrado), ivaPercentage: 0.16})
       return [
         row.folio_venta,
-        format(row.fecha_venta, 'dd/MM/yyyy pp'),
+        format(new Date(row.fecha_venta), 'dd/MM/yyyy pp'),
         row.folio_pago,
-        format(row.fecha_pago, 'dd/MM/yyyy pp'),
+        format(new Date(row.fecha_pago), 'dd/MM/yyyy pp'),
         row.matricula_alumno,
         row.nombre_alumno,
         row.metodo_pago,
@@ -379,8 +379,8 @@ export class IncomeService {
     let query = incomeQuery; // incomeWithPaymentMethodQuery
 
     const params: any[] = [
-      startOfDay(`${startDate}T12:00:00`).toISOString(),
-      endOfDay(`${endDate}T12:00:00`).toISOString(),
+      startOfDay(new Date(`${startDate}T12:00:00`)).toISOString(),
+      endOfDay(new Date(`${endDate}T12:00:00`)).toISOString(),
     ];
 
     if (!!args?.method) {

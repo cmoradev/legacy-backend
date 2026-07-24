@@ -116,8 +116,8 @@ export class SchoolGroupService {
   public async buildGradeDocument(grades: SchoolGradeRow[], query: GroupQuery) {
     const excel = new ExcelDocument();
 
-    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
-    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+    const startDate = startOfDay(new Date(`${query.startDate}T12:00:00`)).toISOString();
+    const endDate = endOfDay(new Date(`${query.endDate}T12:00:00`)).toISOString();
 
     const monthNameStart = moment(startDate).format('MMMM');
     const monthNameEnd = moment(endDate).format('MMMM');
@@ -332,8 +332,8 @@ export class SchoolGroupService {
   public async buildDocument(groups: SchoolGroupRow[], query: GroupQuery) {
     const excel = new ExcelDocument();
 
-    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
-    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+    const startDate = startOfDay(new Date(`${query.startDate}T12:00:00`)).toISOString();
+    const endDate = endOfDay(new Date(`${query.endDate}T12:00:00`)).toISOString();
 
     const monthNameStart = moment(startDate).format('MMMM');
     const monthNameEnd = moment(endDate).format('MMMM');

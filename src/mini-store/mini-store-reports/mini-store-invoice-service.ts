@@ -154,8 +154,8 @@ export class MiniStoreInvoiceService {
       const { amount, base, tax} = getPriceWithIva({base: new Decimal(row.total_factura), ivaPercentage: 0.16})
       return [
         row.folio_factura,
-        format(row.fecha_factura, 'dd/MM/yyyy'),
-        format(row.fecha_factura, 'pp'),
+        format(new Date(row.fecha_factura), 'dd/MM/yyyy'),
+        format(new Date(row.fecha_factura), 'pp'),
         row.uuid_factura,
         row.global_factura,
         row.rfc_cliente,
@@ -197,8 +197,8 @@ export class MiniStoreInvoiceService {
 
     const params: any[] = [
       `${args?.invoiceStatus}`,
-      startOfDay(`${startDate}T12:00:00`).toISOString(),
-      endOfDay(`${endDate}T12:00:00`).toISOString(),
+      startOfDay(new Date(`${startDate}T12:00:00`)).toISOString(),
+      endOfDay(new Date(`${endDate}T12:00:00`)).toISOString(),
     ];
 
     const rows: MiniStoreInvoiceRow[] = await this.connection.query(

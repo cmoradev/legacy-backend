@@ -1,5 +1,5 @@
 import { isSameMonth, format, addMonths, isBefore } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { es } from 'date-fns/locale';
 import { AmountAndTaxParams, Decimal } from '@munyaal/calculations';
 
 /*

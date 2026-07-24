@@ -3,7 +3,6 @@ import { InscriptionsController } from './inscriptions.controller';
 import { InscriptionsService } from './inscriptions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Inscription } from './entities/inscription.entity';
-import { MulterModule } from '@nestjs/platform-express';
 import { Student } from '../students/entities/student.entity';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { ClassroomsModule } from '../classrooms/classrooms.module';
@@ -32,10 +31,7 @@ import { PaymentPlanConceptsModule } from '../payment-plan-concepts/payment-plan
         PaymentPlansModule,
         PaymentPlanConceptsModule,
         StudyPlanVariantsModule,
-        StudyPlansModule,
-        MulterModule.register({
-            dest: './upload',
-        }),
+        StudyPlansModule
     ],
     exports: [InscriptionsService],
     controllers: [InscriptionsController],

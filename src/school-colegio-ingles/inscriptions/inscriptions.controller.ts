@@ -1,15 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, Req, Res } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Inscription } from './entities/inscription.entity';
 import { InscriptionsService } from './inscriptions.service';
-import { diskStorage } from 'multer';
-import xlsx from 'node-xlsx';
-import * as path from 'path';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { VerifyregistratioDto } from './dto/verifyregistratio.dto';
-import { Attendance, VerificarInscriprions } from './interfaces/inscriptions.interface';
-import { ExcelSheet } from '../../common/office/sheets/interfaces/excel.interface';
-import { sheetToObjPage } from '../../common/office/sheets';
+import { Attendance } from './interfaces/inscriptions.interface';
 import { Response } from 'express';
 import { ListQuery } from './types/listQuery';
 import { reportInscriptionList } from './reports/inscription-group.report';
@@ -150,24 +143,6 @@ export class InscriptionsController implements CrudController<Inscription> {
             res.send(e);
         }
 
-    }
-
-    @Post('/verifyinscription')
-    @UseInterceptors(FileInterceptor('file', {
-        storage: diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, './uploads');
-            },
-            filename: (req, file, cb) => {
-                cb(null, Date.now() + '_' + file.originalname);
-            },
-        }),
-    }))
-    async verifyregistration(@UploadedFile() file, @Body() data: VerifyregistratioDto): Promise<any> {
-        const pathfile = path.join(__dirname, `../../../uploads/` + file.filename);
-        const Sheets: ExcelSheet[] = xlsx.parse(pathfile);
-        const inscripcion: VerificarInscriprions = await sheetToObjPage(Sheets);
-        return await this.service.verificarInscription(inscripcion, data);
     }
 
     @Get('dashboard')

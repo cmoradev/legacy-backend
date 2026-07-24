@@ -14,7 +14,6 @@ import { CreditNoteAcademyModule } from './credit-note-academy/credit-note-acade
 import { CreditNoteSchoolModule } from './credit-note-school/credit-note-school.module';
 import { CreditNoteStoreModule } from './credit-note-store/credit-note-store.module';
 import { FixedAssetsControlModule } from './fixed-assets-control/fixed-assets-control.module';
-import { IntegrationsModule } from './integrations/integrations.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { MiniStoreModule } from './mini-store/mini-store.module';
 import { routes } from './routes';
@@ -22,8 +21,6 @@ import { SchoolColegioInglesModule } from './school-colegio-ingles/school-colegi
 import { JwtGuard } from './system/auth/guards/jwt.guard';
 import { SystemModule } from './system/system.module';
 import { TransactionModule } from './system/transaction/transactions.module';
-import { XlsImporterModule } from './xls-importer/xls-importer.module';
-
 // @ts-ignore left join only
 // tslint:disable-next-line:only-arrow-functions
 TypeOrmCrudService.prototype.getJoinType = function (s: string) {
@@ -43,11 +40,9 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
     RouterModule.forRoutes(routes),
     SchoolColegioInglesModule,
     MiniStoreModule,
-    XlsImporterModule,
     FixedAssetsControlModule,
     SystemModule,
     InvoiceModule,
-    IntegrationsModule,
     AcademyModule,
     CreditNoteAcademyModule,
     CreditNoteSchoolModule,

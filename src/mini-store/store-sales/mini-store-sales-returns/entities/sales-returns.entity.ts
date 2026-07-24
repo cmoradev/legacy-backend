@@ -5,8 +5,7 @@ import { User } from '../../../../system/users/entities/user.entity';
 import { MiniStoreInvoice } from '../../mini-store-invoices/entities/mini-store-invoice.entity';
 import { InvoicementStatusEnum } from '../../mini-store-invoices/enums/invoicement-status.enum';
 import { InvoiceMethodPayment } from '../../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { MultNumber } from '@signati/sdk-node/lib/util';
-import { add } from 'exact-math';
+import { Decimal } from '@munyaal/calculations';
 import { Base } from '../../../../common/orm/entities/base.entity';
 
 @Entity({name: 'sale_returns'})
@@ -67,12 +66,12 @@ export class SalesReturns extends Base {
     @BeforeInsert()
     updateAmount() {
         this.amount = this.details.reduce((amount, detail) => {
-            return add(amount, MultNumber(detail.quantity, detail.saleDetail.priceWithIVA));
+            return Decimal.add(amount, Decimal.mul(detail.quantity, detail.saleDetail.priceWithIVA)).toNumber();
         }, 0).toFixed(6) || '0.000000';
 
         this.details = this.details.map<SalesReturnsProducts>(salesReturnProduct => {
             const {quantity, saleDetail} = salesReturnProduct;
-            salesReturnProduct.amount = MultNumber(quantity, saleDetail.priceWithIVA) || '0.000000';
+            salesReturnProduct.amount = Decimal.mul(quantity, saleDetail.priceWithIVA).toFixed(6) || '0.000000';
             return {
                 ...salesReturnProduct,
             } as any;

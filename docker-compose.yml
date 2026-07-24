@@ -1,0 +1,31 @@
+services:
+  erp-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: erp-api-dev
+    ports:
+      - "${API_PORT:-3000}:3000"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./storage:/app/storage
+    environment:
+      - NODE_ENV=development
+      - API_PORT=3000
+      - API_AUTH_ENABLED=${API_AUTH_ENABLED:-true}
+      - API_SECRET=${API_SECRET}
+      - API_MAIL=${API_MAIL}
+      - API_MAIL_PASSWORD=${API_MAIL_PASSWORD}
+      - DB_DBNAME_CONNECTION=${DB_DBNAME_CONNECTION}
+      - DB_DBNAME=${DB_DBNAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_SYNCHRONIZE=${DB_SYNCHRONIZE:-false}
+      - INVOICES_PATH=/app/storage/
+      - XSLT=/app/storage/xslt/4.0/cadenaoriginal.xslt
+      - ASSETS_PATH=/app/storage/
+      - UPLOADS_PATH=/app/storage/uploads/
+    restart: unless-stopped

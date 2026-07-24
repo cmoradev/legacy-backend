@@ -170,7 +170,13 @@ export class AuthService {
     clientUrl: string,
   ) {
     const environment = process.env.NODE_ENV || 'development';
-    const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
+    const envFile = `${environment}.env`;
+    let processEnv: any;
+    if (fs.existsSync(envFile)) {
+      processEnv = dotenv.parse(fs.readFileSync(envFile));
+    } else {
+      processEnv = process.env;
+    }
     const transporter = nodemailer.createTransport({
       service: 'gmail.com',
       host: 'smtp.gmail.com',

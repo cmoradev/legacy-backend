@@ -144,9 +144,9 @@ export class AcademyDebitService {
       ? parseInt(`${query.paymentStatus}`)
       : undefined;
 
-    const startDate = startOfDay(query.startDate).toISOString();
+    const startDate = startOfDay(new Date(query.startDate)).toISOString();
 
-    const endDate = endOfDay(query.endDate).toISOString();
+    const endDate = endOfDay(new Date(query.endDate)).toISOString();
 
     let queryString = `SELECT * FROM vw_aca_status_concepts WHERE inscriptionStatus = '2'`;
 

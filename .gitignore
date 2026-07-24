@@ -10,7 +10,7 @@
 /uploads
 /xls-imports
 /signatures
-
+/storage
 # Logs
 logs
 *.log

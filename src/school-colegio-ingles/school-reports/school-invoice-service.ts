@@ -184,8 +184,8 @@ export class SchoolInvoiceService {
 
     const params: any[] = [
       `${args?.invoiceStatus}`,
-      startOfDay(`${startDate}T12:00:00`).toISOString(),
-      endOfDay(`${endDate}T12:00:00`).toISOString(),
+      startOfDay(new Date(`${startDate}T12:00:00`)).toISOString(),
+      endOfDay(new Date(`${endDate}T12:00:00`)).toISOString(),
     ];
 
     const rows: SchoolInvoiceRow[] = await this.connection.query(

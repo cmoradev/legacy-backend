@@ -254,9 +254,9 @@ export class SchoolIncomeGroupService {
       status.push(PaymentStatus.Debit);
     }
 
-    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
+    const startDate = startOfDay(new Date(`${query.startDate}T12:00:00`)).toISOString();
     
-    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+    const endDate = endOfDay(new Date(`${query.endDate}T12:00:00`)).toISOString();
 
     const rows: SchoolIncomeGroupRow[] = await this.connection.query(
       SchoolIncomeGroupQuery.replace('@params', status.map(() => '?').join(',')),

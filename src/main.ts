@@ -19,7 +19,13 @@ async function bootstrap() {
   app.use(boolParser());
   app.use(bodyParser.json({ limit: '50mb' }));
   const environment = process.env.NODE_ENV || 'development';
-  const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
+  const envFile = `${environment}.env`;
+  let processEnv: any;
+  if (fs.existsSync(envFile)) {
+    processEnv = dotenv.parse(fs.readFileSync(envFile));
+  } else {
+    processEnv = process.env;
+  }
   const options = new DocumentBuilder()
     .setTitle('Apps')
     .setDescription('Es la aplicación de escuela')

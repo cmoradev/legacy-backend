@@ -5,9 +5,6 @@ import { SchoolDebitQuery } from './dto';
 import { startOfDay, endOfDay} from 'date-fns';
 import { PaymentStatus } from '../../common/enums/PaymentStatus';
 import { NotFoundException } from '@nestjs/common';
-import {
-  getMonthsBetweenDate,
-} from '../../common/functions';
 import { ExcelDocument } from '../../reports/excel.document';
 import * as moment from 'moment';
 import { TableColumnProperties } from 'exceljs';
@@ -69,9 +66,9 @@ export class SchoolDebitService {
       ? parseInt(`${query.paymentStatus}`)
       : undefined;
 
-    const startDate = startOfDay(query.startDate).toISOString();
+    const startDate = startOfDay(new Date(query.startDate)).toISOString();
 
-    const endDate = endOfDay(query.endDate).toISOString();
+    const endDate = endOfDay(new Date(query.endDate)).toISOString();
 
     let queryString = `SELECT * FROM vw_status_concepts WHERE inscriptionStatus = '2'`;
 

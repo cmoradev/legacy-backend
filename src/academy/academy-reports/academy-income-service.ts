@@ -210,11 +210,11 @@ export class AcademyIncomeService {
         row.matricula_alumno,
         row.nombre_alumno,
         row.folio_venta,
-        format(row.fecha_venta, 'dd/MM/yyyy'),
-        format(row.fecha_venta, 'pp'),
+        format(new Date(row.fecha_venta), 'dd/MM/yyyy'),
+        format(new Date(row.fecha_venta), 'pp'),
         row.folio_pago,
-        format(row.fecha_pago, 'dd/MM/yyyy'),
-        format(row.fecha_pago, 'pp'),
+        format(new Date(row.fecha_pago), 'dd/MM/yyyy'),
+        format(new Date(row.fecha_pago), 'pp'),
         row.academia,
         row.concepto,
         row.amountWithoutCharges,
@@ -261,9 +261,9 @@ export class AcademyIncomeService {
       status.push(PaymentStatus.Debit);
     }
 
-    const startDate = startOfDay(`${query.startDate}T12:00:00`).toISOString();
+    const startDate = startOfDay(new Date(`${query.startDate}T12:00:00`)).toISOString();
 
-    const endDate = endOfDay(`${query.endDate}T12:00:00`).toISOString();
+    const endDate = endOfDay(new Date(`${query.endDate}T12:00:00`)).toISOString();
 
     const rows: AcademyIncomeRow[] = await this.connection.query(
       academyIncomeQuery.replace('@params', status.map(() => '?').join(',')),

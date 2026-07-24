@@ -5,7 +5,13 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
 const environment = process.env.NODE_ENV || 'development';
-const processEnv: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
+const envFile = `${environment}.env`;
+let processEnv: any;
+if (fs.existsSync(envFile)) {
+  processEnv = dotenv.parse(fs.readFileSync(envFile));
+} else {
+  processEnv = process.env;
+}
 export const ColegioDBNameConnection = processEnv.DB_DBNAME_CONNECTION;
 
 @Injectable()

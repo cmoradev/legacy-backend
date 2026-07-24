@@ -20,7 +20,6 @@ import { AssignmentIncriptionModule } from './assignment-incription/assignment-i
 import { ClassroomPermissionModule } from './classroom-permission/classroom-permission.module';
 import { IncidentsModule } from './incidents/incidents.module';
 import { IncidentClassificationModule } from './incident-classification/incident-classification.module';
-import { CheckInModule } from './check-in/check-in.module';
 import { FamilyFiscalModule } from './family-fiscal/family-fiscal.module';
 import { PaymentPlansModule } from './payment-plans/payment-plans.module';
 import { PaymentPlanConceptsModule } from './payment-plan-concepts/payment-plan-concepts.module';
@@ -46,7 +45,7 @@ import { SchoolReportsModule } from './school-reports/school-reports-module';
     ClassroomsModule,
     AssignmentIncriptionModule, ClassroomPermissionModule,
     IncidentsModule, IncidentClassificationModule,
-    CheckInModule, FamilyFiscalModule,
+    FamilyFiscalModule,
     PaymentPlansModule, PaymentPlanConceptsModule,
     SchoolPaymentsModule, ChargesSchoolModule, PeriodsModule, SchoolPaymentsChargesModule,
     SchoolReportsModule

@@ -1,7 +1,4 @@
 import { Body, Controller, Get, Post, Res } from '@nestjs/common';
-import { FacturacionModerna } from 'invoice-modern';
-import * as moment from 'moment-timezone';
-import { OptionsFactMod } from 'invoice-modern/lib/interfaces/FactMod';
 import { MiniStoreSalePayment } from '../mini-store/store-sales/mini-store-sales-payments/entities/mini-store-sale-payment.entity';
 import { MiniStoreSaleDetail } from '../mini-store/store-sales/mini-store-sales-details/entities/mini-store-sale-detail.entity';
 import { AcademyChargeDetails } from '../academy/charges-academy/academy-charge-details/entities/academy-charge-details.entity';

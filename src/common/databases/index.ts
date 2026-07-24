@@ -52,7 +52,6 @@ import { SchoolChargesDetailsExtraCharges } from '../../school-colegio-ingles/ch
 import { SchoolChargesInvoice } from '../../school-colegio-ingles/charges-school/school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolChargesMethodsPayments } from '../../school-colegio-ingles/charges-school/school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { SchoolChargePayment } from '../../school-colegio-ingles/charges-school/school-charges-payments/entities/school-charge-payment.entity';
-import { CheckIn } from '../../school-colegio-ingles/check-in/entities/check-in.entity';
 import { ClassroomPermission } from '../../school-colegio-ingles/classroom-permission/entities/classroom-permission.entity';
 import { Classroom } from '../../school-colegio-ingles/classrooms/entities/classroom.entity';
 import { Cycle } from '../../school-colegio-ingles/cycles/entities/cycle.entity';
@@ -147,7 +146,6 @@ const entities = [
   SchoolChargesInvoice,
   SchoolChargesMethodsPayments,
   SchoolChargePayment,
-  CheckIn,
   ClassroomPermission,
   Classroom,
   Cycle,

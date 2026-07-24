@@ -13,8 +13,12 @@ export class ConfigService {
   private readonly envConfig: EnvConfig;
 
   constructor(filePath: string) {
-    const config = dotenv.parse(fs.readFileSync(filePath));
-    this.envConfig = this.validateInput(config);
+    if (filePath && fs.existsSync(filePath)) {
+      const config = dotenv.parse(fs.readFileSync(filePath));
+      this.envConfig = this.validateInput(config);
+    } else {
+      this.envConfig = this.validateInput(process.env as EnvConfig);
+    }
   }
 
   /**
@@ -41,7 +45,8 @@ export class ConfigService {
       INVOICES_PATH: Joi.string(),
       XSLT: Joi.string(),
       ASSETS_PATH: Joi.string(),
-    });
+      UPLOADS_PATH: Joi.string(),
+    }).unknown(true);
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
     );
@@ -123,5 +128,9 @@ export class ConfigService {
 
   public getXsltPath(): string {
     return this.envConfig.XSLT as string;
+  }
+
+  public getUploadsPath(): string {
+    return this.envConfig.UPLOADS_PATH as string;
   }
 }
