@@ -11,3 +11,13 @@ docker-compose*.yml
 .github/
 k8s/
 /storage
+.vscode/
+.idea/
+test/
+scripts/
+README.md
+AGENTS.md
+development.config.js
+production.config.js
+.prettierrc
+eslintrc.js

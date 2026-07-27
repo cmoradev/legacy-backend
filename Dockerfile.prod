@@ -1,0 +1,84 @@
+# syntax=docker/dockerfile:1.6
+
+ARG NODE_VERSION=18
+ARG API_PORT=3000
+
+# ============================================================================
+# Stage 1: builder
+# ============================================================================
+FROM node:${NODE_VERSION}-alpine AS builder
+
+# Dependencias de compilación nativas que algunos paquetes del proyecto (bcrypt,
+# mysql2, etc.) pueden necesitar para compilar binarios durante npm install.
+RUN apk add --no-cache --virtual .build-deps \
+        python3 \
+        make \
+        g++ \
+        openssl \
+        openssl-dev
+
+WORKDIR /app
+
+# Copia primero los manifiestos para aprovechar la cache de Docker.
+COPY package.json package-lock.json ./
+
+# Instala TODAS las dependencias (incluidas devDependencies) necesarias para
+# compilar el proyecto con `nest build`.
+# Nota: se usa `npm install` porque package-lock.json puede estar desincronizado.
+# Cuando se regenere el lock file, se puede cambiar a `npm ci` para builds reproducibles.
+RUN npm install
+
+# Archivos de configuración de TypeScript / Nest necesarios para el build.
+COPY tsconfig.build.json tsconfig.json nest-cli.json ./
+
+# Código fuente a compilar.
+COPY src/ ./src/
+
+# Compila la aplicación -> genera dist/
+RUN npm run build
+
+# Elimina las devDependencies del node_modules existente, dejando solo las
+# dependencias de producción necesarias en runtime.
+RUN npm prune --omit=dev
+
+# ============================================================================
+# Stage 2: production
+# ============================================================================
+FROM node:${NODE_VERSION}-alpine AS production
+
+ARG API_PORT=3000
+ENV NODE_ENV=production \
+    API_PORT=${API_PORT}
+
+# openssl es requerido por el cliente MySQL / TypeORM en runtime.
+RUN apk add --no-cache openssl wget
+
+# La imagen base node:18-alpine ya incluye el usuario `node` (uid 1000).
+WORKDIR /app
+
+# Copia artefactos del builder con propietario node:node para evitar
+# un costoso `chown -R` sobre node_modules.
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/package.json ./package.json
+
+# Recursos estáticos servidos en runtime (si existen en el contexto).
+COPY --chown=node:node public/ ./public/
+
+# Directorio de almacenamiento: se monta como volumen o se provee en runtime.
+RUN mkdir -p storage/uploads && chown -R node:node storage
+
+LABEL org.opencontainers.image.title="erp-api" \
+      org.opencontainers.image.description="API ERP (NestJS 7 + TypeORM + MySQL)" \
+      org.opencontainers.image.source="https://github.com/DevelopersCI/colegio-api-core" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.authors="DevelopersCI"
+
+EXPOSE ${API_PORT}
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget --quiet --tries=1 --spider "http://localhost:${API_PORT:-3000}/" || exit 1
+
+USER node
+
+CMD ["node", "dist/main.js"]
