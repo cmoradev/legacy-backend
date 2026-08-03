@@ -47,6 +47,7 @@ import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/e
 import { Decimal } from '@munyaal/calculations';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
+import { getImagePath } from 'src/helpers';
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
   AcademyChargePayments
@@ -774,9 +775,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     invoiceFind: any,
     invoiceDetails: any,
   ) {
-    const logo = readFileSync(
-      `${this.configService.getPath()}logos/academiaslogo.png`,
-    );
 
     const Receip = new Recibo();
 
@@ -784,11 +782,19 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
 
     Receip.addLabel();
 
-    Receip.addLogo({
-      width: 100,
-      height: 100,
-      image: `data:image/png;base64, ${logo.toString('base64')}`,
-    });
+    const path = await getImagePath(
+        this.configService.getPath(),
+        `logos/academiaslogo.png`,
+    );
+
+    if (path) {
+        const logo = readFileSync(path);
+        Receip.addLogo({
+            width: 100,
+            height: 100,
+            image: `data:image/png;base64, ${logo.toString('base64')}`,
+        });
+    }
 
     Receip.addFolio(result.payment.folio);
 

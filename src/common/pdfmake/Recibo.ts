@@ -19,11 +19,15 @@ export class Recibo {
     private docDefinition: TDocumentDefinitions | any = {
         pageSize: 'A4',
         pageMargins: [20, 25, 20, 25],
-        content: [
+        content: [       
             {
                 columns: [
                     {
-                        text: 'logo'
+                        
+                        text: 'logo',
+                        width: 100,
+                        height: 100
+                    
                     },
                     {
                         width: 40,

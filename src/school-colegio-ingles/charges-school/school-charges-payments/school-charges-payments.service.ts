@@ -46,6 +46,7 @@ import { SchoolPayment } from '../../school-payments/entities/school-payment.ent
 import { Decimal } from '@munyaal/calculations';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
+import { getImagePath } from 'src/helpers';
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -560,19 +561,25 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     }
 
     public async createReceipt(result: any, branchOfficeSett: any, student: any, invoiceDetails: any) {
-        const logo = readFileSync(
-            `${this.configService.getPath()}logos/colegiologo.png`,
-        );
 
         const Receip = new Recibo();
 
         Receip.setType(InvoiceModules.SCHOOL);
 
-        Receip.addLogo({
-            width: 100,
-            height: 100,
-            image: `data:image/png;base64, ${logo.toString('base64')}`,
-        });
+        const path = await getImagePath(
+            this.configService.getPath(),
+            `logos/colegiologo.png`,
+        );
+
+        if (path) {
+            const logo = readFileSync(path);
+            Receip.addLogo({
+                width: 100,
+                height: 100,
+                image: `data:image/png;base64, ${logo.toString('base64')}`,
+            });
+        }
+
 
         Receip.addFolio(result.payment.folio);
 

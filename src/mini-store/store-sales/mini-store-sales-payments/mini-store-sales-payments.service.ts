@@ -25,10 +25,8 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
-import { readFileSync, writeFileSync } from 'fs';
-import { PDF, XmlToJson } from '@signati/pdf';
-import { RegimenFiscalList, XmlComprobante } from '@signati/core';
-import { A117 } from '../../../pdf/A117/desing/A117';
+import { readFileSync } from 'fs';
+import { RegimenFiscalList } from '@signati/core';
 import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -42,6 +40,7 @@ import { ReceiptTemplate } from "../../../templates/receipt";
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import moment = require('moment');
+import { getImagePath } from 'src/helpers';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -665,7 +664,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
     }
 
     public async createReceipt(result: any, branchOfficeSett: any, invoiceFind: any, invoiceDetails: any) {
-        const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
 
         const Receip = new Recibo();
 
@@ -677,11 +675,19 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             Receip.addLabelQuote();
         }
 
-        Receip.addLogo({
-            width: 100,
-            height: 100,
-            image: `data:image/png;base64, ${logo.toString('base64')}`,
-        });
+        const path = await getImagePath(
+            this.configService.getPath(),
+            `logos/tienditalogo.png`,
+        );
+
+        if (path) {
+            const logo = readFileSync(path);
+            Receip.addLogo({
+                width: 100,
+                height: 100,
+                image: `data:image/png;base64, ${logo.toString('base64')}`,
+            });
+        }
 
         Receip.addFolio(result.payment.folio);
 
