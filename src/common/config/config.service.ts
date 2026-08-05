@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
 import { connections } from './config.env';
+import * as path from 'path';
 
 export interface EnvConfig {
   [key: string]: any;
@@ -43,9 +44,13 @@ export class ConfigService {
       API_MAIL: Joi.string(),
       API_MAIL_PASSWORD: Joi.string(),
       INVOICES_PATH: Joi.string(),
-      XSLT: Joi.string(),
       ASSETS_PATH: Joi.string(),
       UPLOADS_PATH: Joi.string(),
+      S3_ACCESS_KEY_ID: Joi.string().required(),
+      S3_SECRET_ACCESS_KEY: Joi.string().required(),
+      S3_REGION: Joi.string().required(),
+      S3_BUCKET_NAME: Joi.string().required(),
+      S3_FOLDER: Joi.string().allow('').default(''),
     }).unknown(true);
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
@@ -127,10 +132,50 @@ export class ConfigService {
   }
 
   public getXsltPath(): string {
-    return this.envConfig.XSLT as string;
+    return path.join(process.cwd(), 'xslt', '4.0', 'cadenaoriginal.xslt');
   }
 
   public getUploadsPath(): string {
     return this.envConfig.UPLOADS_PATH as string;
+  }
+
+  /**
+   * Retorna el Access Key ID de AWS S3
+   * @return string
+   */
+  public getS3AccessKeyId(): string {
+    return this.envConfig.S3_ACCESS_KEY_ID as string;
+  }
+
+  /**
+   * Retorna el Secret Access Key de AWS S3
+   * @return string
+   */
+  public getS3SecretAccessKey(): string {
+    return this.envConfig.S3_SECRET_ACCESS_KEY as string;
+  }
+
+  /**
+   * Retorna la región de AWS S3
+   * @return string
+   */
+  public getS3Region(): string {
+    return this.envConfig.S3_REGION as string;
+  }
+
+  /**
+   * Retorna el nombre del bucket de S3
+   * @return string
+   */
+  public getS3BucketName(): string {
+    return this.envConfig.S3_BUCKET_NAME as string;
+  }
+
+  /**
+   * Retorna el folder/prefijo dentro del bucket de S3
+   * @return string
+   */
+  public getS3Folder(): string {
+    return this.envConfig.S3_FOLDER as string;
   }
 }
