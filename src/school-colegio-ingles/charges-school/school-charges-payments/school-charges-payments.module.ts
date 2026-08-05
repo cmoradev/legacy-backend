@@ -22,6 +22,7 @@ import { SchoolChargesModule } from '../school-charges/school-charges.module';
 import { SchoolChargesDetailsModule } from '../school-charges-details/school-charges-details.module';
 import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-details-extra-charges/school-charges-details-extra-charges.module';
 import { AuthModule } from '../../../system/auth/auth.module';
+import { StorageModule } from 'src/common/storage/storage.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { AuthModule } from '../../../system/auth/auth.module';
     forwardRef(() => SchoolChargesInvoiceModule),
     ConfigModule,
     StudentsModule,
-    AuthModule
+    AuthModule,
+    StorageModule
   ],
   providers: [SchoolChargesPaymentsService, SmartWeb],
   controllers: [SchoolChargesPaymentsController],

@@ -10,11 +10,12 @@ import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
 import { AcademyChargeInvoiceModule } from '../academy/charges-academy/academy-charge-invoice/academy-charge-invoice.module';
 import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
+import { StorageModule } from 'src/common/storage/storage.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CreditNoteAcademy, BranchOfficeSetting], ColegioDBNameConnection),
-    ConfigModule, AcademyChargeInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule],
+    ConfigModule, AcademyChargeInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule],
   controllers: [CreditNoteAcademyController],
   providers: [CreditNoteAcademyService, SmartWeb],
   exports: [CreditNoteAcademyService],

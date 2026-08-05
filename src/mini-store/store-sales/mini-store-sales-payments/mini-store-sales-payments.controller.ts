@@ -50,6 +50,7 @@ import {
 } from '@munyaal/cfdi';
 import { AttachmentsType } from "../../../types";
 import { CancellationDto } from 'src/common/dto/Cancellation.dto';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
     model: {
@@ -86,6 +87,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         readonly branchOfficeSettingService: BranchOfficeSettingService,
         private smartWeb: FactSw,
         private readonly configService: ConfigService,
+        private _s3Service: S3Service
     ) {
     }
 
@@ -170,7 +172,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         Exportacion: ExportacionEnumMunyaal.E01,
                         MetodoPago: MetodoPagoEnum.PUE,
                         Moneda: MonedaEnum.MXN,
-                        related: query.related
+                        related: query.related,
+                        s3Service: this._s3Service
                     });
 
                     await this.service.updatePayment({
@@ -231,7 +234,8 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
                         Exportacion: ExportacionEnumMunyaal.E01,
                         MetodoPago: MetodoPagoEnum.PUE,
                         Moneda: MonedaEnum.MXN,
-                        related: query.related
+                        related: query.related,
+                        s3Service: this._s3Service
                     });
                     //Actualizamos el pago
                     await this.service.updatePayment({

@@ -34,6 +34,7 @@ import { MiniStoreInvoicesService } from '../mini-store/store-sales/mini-store-i
 import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
   model: {
@@ -64,6 +65,7 @@ export class CreditNoteStoreController
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     readonly configService: ConfigService,
     readonly miniStoreSalesPaymentsService: MiniStoreInvoicesService,
+    private _s3Service: S3Service
   ) {}
 
   @Delete('soft-deleted/:id')
@@ -157,6 +159,7 @@ export class CreditNoteStoreController
           xslt: this.configService.getXsltPath(),
         },
         type: InvoiceModules.STORE,
+        s3Service: this._s3Service
       });
 
       const uuids: string[] = [];

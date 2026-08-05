@@ -4,7 +4,6 @@ import { Environment, InvoiceModules, RelateParams } from "../../../../common/po
 import * as moment from 'moment-timezone';
 import {
     Comprobante,
-    AttributesComprobanteReceptorElement,
     ExportacionEnum,
     initializeCfdi,
     ComprobanteEmisor,
@@ -15,16 +14,15 @@ import {
     ComprobanteConceptoImpuestosTraslado,
     TipoFactorEnum,
     ImpuestoEnum,
-    ComprobanteConceptoImpuestosRetencion,
     ObjetoImpEnum,
     ComprobanteImpuestos, ComprobanteImpuestosTraslado,
     ComprobanteCfdiRelacionados, ComprobanteCfdiRelacionadosCfdiRelacionado, TipoRelacionEnum, FormaPagoEnum, MonedaEnum, TipoComprobanteEnum, MetodoPagoEnum
 } from "@munyaal/cfdi";
 import { FullGenerateXml, getFolderComprobantes } from "./generateInvoice";
-import { DataInvoice } from "../../../../common/calculations/TypesCalculation";
 import { Concept, Decimal } from "@munyaal/calculations";
 import { getMoreDatails } from "../../../../common/point-of-sale/utils";
 import { sanitizeStringToXml } from "../../sanitizeStringToXml";
+import { S3Service } from "src/common/storage/s3.service";
 
 interface CreditNoteTelweb {
     env: Environment;
@@ -34,12 +32,13 @@ interface CreditNoteTelweb {
     relations: RelateParams[];
     type: InvoiceModules;
     calculations: any;
-    concepts: any[]
+    concepts: any[];
+    s3Service?: S3Service
 }
 
 export async function CreditNote(payload: CreditNoteTelweb) {
     const { env, settingsBranchOffice, invoice, receiver, relations = [],
-        concepts, type, calculations } = payload
+        concepts, type, calculations, s3Service } = payload
     const { instancePath, xslt } = env;
 
     const isGlobal = receiver.rfc == 'XEXX010101000' || receiver.rfc == 'XAXX010101000';
@@ -155,7 +154,7 @@ export async function CreditNote(payload: CreditNoteTelweb) {
         })
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, settingsBranchOffice.zip.trim().toUpperCase())
+    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath, s3Service)
 }
 
 const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, concepts: any[], isGlobal: boolean) => {

@@ -64,6 +64,7 @@ import {
 import { AttachmentsType } from '../../../types';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
   model: {
@@ -105,6 +106,7 @@ export class AcademyChargePaymentsController
     readonly branchOffice: BranchOfficeService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private readonly configService: ConfigService,
+    private _s3Service: S3Service
   ) {}
 
   get base(): CrudController<AcademyChargePayments> {
@@ -254,6 +256,7 @@ export class AcademyChargePaymentsController
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
             related: query.related,
+            s3Service: this._s3Service
           });
 
           await this.service.updatePayment({
@@ -323,6 +326,7 @@ export class AcademyChargePaymentsController
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
             related: query.related,
+            s3Service: this._s3Service
           });
           await this.service.updatePayment({
             id: query.chargePaymentId,

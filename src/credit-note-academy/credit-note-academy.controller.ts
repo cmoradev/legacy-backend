@@ -28,6 +28,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
     model: {
@@ -57,6 +58,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
+        private _s3Service: S3Service
         ) {
     }
 
@@ -125,7 +127,8 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                     instancePath: workPath,
                     xslt: this.configService.getXsltPath()
                 },
-                type: InvoiceModules.ACADEMY
+                type: InvoiceModules.ACADEMY,
+                s3Service: this._s3Service
             });
 
             const uuids: string[] = [];

@@ -78,6 +78,7 @@ import * as moment from 'moment';
 import { getImagePath } from '../../../helpers/index';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
   model: {
@@ -119,6 +120,7 @@ export class SchoolChargesPaymentsController
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private smartWeb: FactSw,
     private readonly configService: ConfigService,
+    private _s3Service: S3Service
   ) {}
 
   get base(): CrudController<SchoolChargePayment> {
@@ -267,6 +269,7 @@ export class SchoolChargesPaymentsController
             Moneda: MonedaEnum.MXN,
             student,
             related: query.related,
+            s3Service: this._s3Service
           });
 
           await this.service.updatePayment({
@@ -337,6 +340,7 @@ export class SchoolChargesPaymentsController
             Moneda: MonedaEnum.MXN,
             student,
             related: query.related,
+            s3Service: this._s3Service
           });
 
           await this.service.updatePayment({

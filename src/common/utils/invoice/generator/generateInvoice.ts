@@ -34,8 +34,9 @@ import {
     Iedu as IeduMunyaal,
     ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum, ComprobanteCfdiRelacionados, TipoRelacionEnum, ComprobanteCfdiRelacionadosCfdiRelacionado,
 } from "@munyaal/cfdi";
-import { FactSw } from '../../../../webService/FactSw';
+import { FactSw, TDF } from '../../../../webService/FactSw';
 import { CfdiPdf } from "@munyaal/cfdi-pdf"
+import { S3Service } from 'src/common/storage/s3.service';
 
 const genericRFC = ['XEXX010101000', 'XAXX010101000'];
 
@@ -364,6 +365,7 @@ export interface InvoiceModule extends CFDIWebtel {
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
     student?: XmlIeduAttribute;
+    s3Service?: S3Service;
 }
 
 export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
@@ -383,7 +385,8 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         env,
         type,
         student,
-        related
+        related,
+        s3Service
     } = params;
     const CFDIService = initializeCfdi({
         pathXsltCfdi40: env.xslt,
@@ -499,7 +502,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
         comprobante.Impuestos = impuestos;
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, emisor.address)
+    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath,s3Service)
 
 };
 
@@ -509,8 +512,9 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
     TipoDeComprobante: TipoComprobanteEnum;
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
+    s3Service?: S3Service
 }): Promise<any> => {
-    const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax, type, Moneda, TipoDeComprobante, Exportacion, MetodoPago } = params;
+    const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax, type, Moneda, TipoDeComprobante, Exportacion, MetodoPago, s3Service } = params;
 
     const { keyCSD, cerCSD, serieFacturacion, password } = branchOfficeConfig;
 
@@ -624,7 +628,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         comprobante.Impuestos = impuestos;
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, `${env.instancePath}logos/tienditalogo.png`, branchOfficeConfig.zip.trim().toUpperCase())
+    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath, s3Service)
 }
 
 export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCredit?: boolean) => {
@@ -645,7 +649,7 @@ export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCre
     }
 }
 
-export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, logoPath: string, lugarExpedicion: string) => {
+export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, instancePath: string, s3Service?: S3Service) => {
     const xml = await CFDIService.getXMLSellado(comprobante);
 
     const sw = new FactSw();
@@ -658,8 +662,60 @@ export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService:
 
     pdf.createDocument(`${timbrado.data.uuid.toUpperCase()}`, `${path}`)
 
+    if(instancePath && s3Service){
+        const pdfBuffer = await pdf.getBuffer();
+
+        await _saveFiles(s3Service, pdfBuffer, timbrado.data, path, instancePath)
+    }
+
     return {
         ...timbrado,
         Total: comprobante.Total
     };
 }
+
+const _saveFiles = async (
+  s3Service: S3Service,
+  pdfBuffer: Buffer,
+  data: TDF,
+  path: string,
+  instancePath: string,
+) => {
+  const { qrCode, cfdi, uuid } = data;
+
+  const STORAGE_ROOT = instancePath;
+
+  const folder = path
+    .replace(new RegExp(`^${STORAGE_ROOT}/?`), '')
+    .replace(/\/+$/, '');
+
+  const imgBuffer = Buffer.from(qrCode, 'base64');
+  const xmlBuffer = Buffer.from(cfdi, 'utf-8');
+
+  const [xmlKey, pdfKey, imgKey] = await Promise.all([
+    s3Service.putObjectCommand({
+      type: 'application/xml',
+      buffer: xmlBuffer,
+      key: `${folder}/${uuid}.xml`,
+    }),
+    s3Service.putObjectCommand({
+      type: 'application/pdf',
+      buffer: pdfBuffer,
+      key: `${folder}/${uuid}.pdf`,
+    }),
+    s3Service.putObjectCommand({
+      type: 'image/jpeg',
+      buffer: imgBuffer,
+      key: `${folder}/${uuid}.jpg`,
+    }),
+  ]);
+
+  return {
+    xmlKey,
+    xmlBuffer,
+    pdfKey,
+    pdfBuffer,
+    imgKey,
+    imgBuffer,
+  };
+};
