@@ -83,6 +83,21 @@ export class SchoolChargesInvoice extends Base {
     folioSustitucion: string | null;
 
     @Column({
+        type: 'varchar',
+        length: 36,
+        nullable: true,
+        name: 'pending_stamp_uuid',
+    })
+    pendingStampUuid: string | null;
+
+    @Column({
+        type: 'datetime',
+        nullable: true,
+        name: 'pending_stamp_at',
+    })
+    pendingStampAt: Date | null;
+
+    @Column({
         type: 'simple-enum',
         nullable: false,
         default: InvoiceType.income,

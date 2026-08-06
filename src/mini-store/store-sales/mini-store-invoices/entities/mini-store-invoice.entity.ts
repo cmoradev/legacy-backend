@@ -130,6 +130,21 @@ export class MiniStoreInvoice extends Base {
     })
     folioSustitucion: string | null;
 
+    @Column({
+        type: 'varchar',
+        length: 36,
+        nullable: true,
+        name: 'pending_stamp_uuid',
+    })
+    pendingStampUuid: string | null;
+
+    @Column({
+        type: 'datetime',
+        nullable: true,
+        name: 'pending_stamp_at',
+    })
+    pendingStampAt: Date | null;
+
     /**
      * Relación que corresponde al la factura al pago de una venta
      */

@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MiniStoreSalesPaymentsController } from './mini-store-sales-payments.controller';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
+import { MiniStoreSalesPaymentsBillingService } from './mini-store-sales-payments-billing.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
@@ -41,12 +42,13 @@ import { StorageModule } from 'src/common/storage/storage.module';
     ],
     exports: [
         MiniStoreSalesPaymentsService,
+        MiniStoreSalesPaymentsBillingService,
     ],
     controllers: [
         MiniStoreSalesPaymentsController,
         MiniStoreSalesPaymentsReportController,
     ],
-    providers: [MiniStoreSalesPaymentsService, SmartWeb],
+    providers: [MiniStoreSalesPaymentsService, MiniStoreSalesPaymentsBillingService, SmartWeb],
 })
 export class MiniStoreSalesPaymentsModule {
 }

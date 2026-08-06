@@ -96,6 +96,21 @@ export class AcademyChargeInvoice extends Base {
     })
     folioSustitucion: string | null;
 
+    @Column({
+        type: 'varchar',
+        length: 36,
+        nullable: true,
+        name: 'pending_stamp_uuid',
+    })
+    pendingStampUuid: string | null;
+
+    @Column({
+        type: 'datetime',
+        nullable: true,
+        name: 'pending_stamp_at',
+    })
+    pendingStampAt: Date | null;
+
     @ManyToOne(() => User, (user) => user.schoolChargesBillingInvoices)
     @JoinColumn({
         name: 'id_agente_facturador',

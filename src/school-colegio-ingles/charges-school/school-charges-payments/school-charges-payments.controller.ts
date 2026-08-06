@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -18,22 +17,14 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
 import { QuerySchoolPaymentBilling } from '../../school-payments/interfaces/InvoiceSchoolPayment.interface';
-import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
-import {
-  GenerateGlobalInvoiceMunyaal,
-  GenerateInvoiceMunyaal,
-} from '../../../common/utils/invoice/generator/generateInvoice';
-import { FormaPago, RegimenFiscalList } from '@signati/core';
-import { User } from '../../../system/users/entities/user.entity';
+import { RegimenFiscalList } from '@signati/core';
 import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { Response } from 'express';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { ConfigService } from '../../../common/config/config.service';
@@ -41,11 +32,8 @@ import { StudentsService } from '../../students/students.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {
-  NotInvoiced,
   PaymentExtraCharge,
 } from '../../../common/interface/not-invoiced.interface';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import {
   Environment,
   InvoiceModules,
@@ -64,12 +52,6 @@ import {
   reportPaymentByClient,
 } from '../../../common/utils/report/index';
 import { convertPaymentsReportCollege } from './reports/payments.util';
-import {
-  ExportacionEnum as ExportacionEnumMunyaal,
-  MetodoPagoEnum,
-  MonedaEnum,
-  TipoComprobanteEnum,
-} from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
@@ -79,6 +61,7 @@ import { getImagePath } from '../../../helpers/index';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { S3Service } from 'src/common/storage/s3.service';
+import { SchoolChargesPaymentsBillingService } from './school-charges-payments-billing.service';
 
 @Crud({
   model: {
@@ -113,6 +96,7 @@ export class SchoolChargesPaymentsController
 
   constructor(
     readonly service: SchoolChargesPaymentsService,
+    readonly serviceBilling: SchoolChargesPaymentsBillingService,
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
     readonly schoolChargeInvoiceService: SchoolChargesInvoiceService,
     readonly branchOffice: BranchOfficeService,
@@ -182,193 +166,85 @@ export class SchoolChargesPaymentsController
 
   @Post('/billing')
   async billing(@Body() query: QuerySchoolPaymentBilling, @Res() response) {
-    const result = await this.service.findSaleByPayment(query);
-
-    const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
-      payment: result.payment,
-      details: result.charge.chargesDetails,
-      type: InvoiceModules.SCHOOL,
-      ivaDefault: 1,
-      ivaByDetail: 0,
-      typeConcept: 'Invoice',
-    });
-
-    const currentOffice = await this.branchOffice.findBranch(
-      query.branchOfficeId,
-    );
-
-    const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-      where: {
-        id: query.branchOfficeSettingId,
-      },
-    });
-
-    const invoiceFinded = await this.schoolChargeInvoiceService.findInvoiceByPayment(
-      {
-        paymentId: query.chargePaymentId,
-        status: StatusInvoce.noBilling,
-      },
-    );
-
-    const invoiceResponse = {
-      stamping: false,
-      msg: '',
-      invoice: {},
-      uuid: '',
-    };
-
-    const receptor = {
-      Nombre: query.receiver.businessName,
-      Rfc: query.receiver.rfc,
-      UsoCFDI: query.usoCfdi.value,
-      DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-      RegimenFiscalReceptor: query.receiver.keyRegimen,
-    };
-
-    const studentMetada = await this.studentService.getIEDUMetadata(query.student.id);
-
-    const student = {
-      rfcPago: query.receiver.rfc,
-      version: studentMetada.version,
-      nombreAlumno: studentMetada.nombreAlumno,
-      nivelEducativo: studentMetada.nivelEducativo,
-      CURP: studentMetada.CURP,
-      autRVOE: studentMetada.RVOE,
-    };
-
     try {
-      if (invoiceFinded) {
-        if (invoiceFinded.schoolChargePayment.stamping === 1) {
-          const invoicePayment = await this.schoolChargeInvoiceService.findInvoiceByPayment(
-            {
-              paymentId: query.chargePaymentId,
-              status: StatusInvoce.invoiced,
-              stamping: 1,
-            },
-          );
-          invoiceResponse.stamping = true;
-          invoiceResponse.invoice = invoicePayment;
-          invoiceResponse.msg = 'PAGO FACTURADO';
-          invoiceResponse.uuid = invoicePayment.uuid;
-          response.send(invoiceResponse);
-        } else {
-          const timbrado = await GenerateInvoiceMunyaal({
-            type: InvoiceModules.SCHOOL,
-            ...invoiceDetails,
-            folio: invoiceFinded.folio,
-            serie: branchOfficeSett.serieFacturacion,
-            emisor: branchOfficeSett,
-            env: this.env,
-            informacionGlobal: query.informacionGlobal,
-            receptor,
-            codigoFormaPago: result.highestPayment
-              .codePaymentMethod as FormaPago,
-            TipoDeComprobante: TipoComprobanteEnum.I,
-            Exportacion: ExportacionEnumMunyaal.E01,
-            MetodoPago: MetodoPagoEnum.PUE,
-            Moneda: MonedaEnum.MXN,
-            student,
-            related: query.related,
-            s3Service: this._s3Service
-          });
-
-          await this.service.updatePayment({
-            id: query.chargePaymentId,
-            stamping: 1,
-          } as SchoolChargePayment);
-
-          invoiceFinded.uuid = timbrado.data.uuid.toUpperCase();
-          invoiceFinded.status = 1;
-          invoiceFinded.total = parseFloat(timbrado.Total);
-
-          const resultInvoice = await this.schoolChargeInvoiceService.updateInvoice(
-            invoiceFinded,
-          );
-          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          this.schoolChargeInvoiceService.sendMail(
-            currentOffice,
-            timbrado.data.uuid,
-            query.receiver.email,
-          );
-          // falta regresar el dato
-          invoiceResponse.stamping = true;
-          invoiceResponse.msg = 'Pago Facturado';
-          invoiceResponse.invoice = resultInvoice;
-          invoiceResponse.uuid = timbrado.data.uuid.toUpperCase();
-          response.send(invoiceResponse);
-        }
+      const result = await this.serviceBilling.processBilling(query);
+      if (result.stamping) {
+        response.send(result);
       } else {
-        const factura = new SchoolChargesInvoice();
-        factura.folio = '';
-        factura.uuid = '';
-        factura.businessName = query.receiver.businessName;
-        factura.rfc = query.receiver.rfc;
-        factura.agentBilling = {
-          id: query.agentBillingId,
-        } as User;
-        factura.status = 0; // Pendiente de procesar en facturación moderna
-        factura.schoolCharge = {
-          id: query.chargeId,
-        } as SchoolCharge;
-        factura.schoolChargePayment = {
-          id: query.chargePaymentId,
-        } as SchoolChargePayment;
-        factura.invoiceBranchOffice = {
-          id: query.branchOfficeId,
-        } as BranchOffice;
-        factura.invoiceBranchOfficeSet = {
-          id: query.branchOfficeSettingId,
-        } as BranchOfficeSetting;
-        const invoice = await this.schoolChargeInvoiceService.saveInvoice(
-          factura,
-        );
-        if (invoice) {
-          const timbrado = await GenerateInvoiceMunyaal({
-            type: InvoiceModules.SCHOOL,
-            ...invoiceDetails,
-            folio: invoice.folio,
-            serie: branchOfficeSett.serieFacturacion,
-            emisor: branchOfficeSett,
-            env: this.env,
-            informacionGlobal: query.informacionGlobal,
-            receptor,
-            codigoFormaPago: result.highestPayment
-              .codePaymentMethod as FormaPago,
-            TipoDeComprobante: TipoComprobanteEnum.I,
-            Exportacion: ExportacionEnumMunyaal.E01,
-            MetodoPago: MetodoPagoEnum.PUE,
-            Moneda: MonedaEnum.MXN,
-            student,
-            related: query.related,
-            s3Service: this._s3Service
-          });
+        response.status(400).send(result);
+      }
+    } catch (e) {
+      console.log(e);
+      response.status(400);
+      response.send(e);
+    }
+  }
 
-          await this.service.updatePayment({
-            id: query.chargePaymentId,
-            stamping: 1,
-          } as SchoolChargePayment);
+  @Post('/reconcile-pending')
+  async reconcilePendingStamps(@Res() response) {
+    try {
+      const pendingInvoices = await this.service.invoiceRepository
+        .createQueryBuilder('inv')
+        .innerJoinAndSelect('inv.schoolChargePayment', 'pay')
+        .where('inv.pendingStampUuid IS NOT NULL')
+        .andWhere('inv.status = 0')
+        .getMany();
 
-          invoice.uuid = timbrado.data.uuid.toUpperCase();
+      const results = [];
+
+      for (const invoice of pendingInvoices) {
+        try {
+          // Intentar completar la actualización pendiente
+          invoice.uuid = invoice.pendingStampUuid;
           invoice.status = 1;
-          invoice.total = parseFloat(timbrado.Total);
+          await this.schoolChargeInvoiceService.updateInvoice(invoice);
 
-          const resultInvoiceFirst = await this.schoolChargeInvoiceService.updateInvoice(
-            invoice,
-          );
-          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          await this.schoolChargeInvoiceService.sendMail(
-            currentOffice,
-            timbrado.data.uuid,
-            query.receiver.email,
-          );
-          // falta regresar el dato
-          invoiceResponse.stamping = true;
-          invoiceResponse.msg = 'Pago Facturado';
-          invoiceResponse.invoice = resultInvoiceFirst;
-          invoiceResponse.uuid = timbrado.data.uuid.toUpperCase();
-          response.send(invoiceResponse);
+          await this.serviceBilling.updatePayment({
+            id: invoice.schoolChargePayment.id,
+            stamping: 1,
+          } as any);
+
+          invoice.pendingStampUuid = null;
+          invoice.pendingStampAt = null;
+          await this.schoolChargeInvoiceService.updateInvoice(invoice);
+
+          results.push({
+            invoiceId: invoice.id,
+            uuid: invoice.uuid,
+            status: 'recovered',
+          });
+        } catch (err) {
+          // Verificar si pasaron más de 24 horas → limpiar para permitir reintentar
+          const hoursSincePending = invoice.pendingStampAt
+            ? (Date.now() - new Date(invoice.pendingStampAt).getTime()) / (1000 * 60 * 60)
+            : Infinity;
+
+          if (hoursSincePending > 24) {
+            invoice.pendingStampUuid = null;
+            invoice.pendingStampAt = null;
+            await this.schoolChargeInvoiceService.updateInvoice(invoice);
+
+            results.push({
+              invoiceId: invoice.id,
+              uuid: invoice.uuid,
+              status: 'cleared_for_retry',
+              message: 'Han pasado más de 24h, se limpia para reintentar',
+            });
+          } else {
+            results.push({
+              invoiceId: invoice.id,
+              pendingUuid: invoice.pendingStampUuid,
+              status: 'failed',
+              message: err.message,
+            });
+          }
         }
       }
+
+      response.send({
+        total: pendingInvoices.length,
+        results,
+      });
     } catch (e) {
       console.log(e);
       response.status(400);
@@ -601,78 +477,9 @@ export class SchoolChargesPaymentsController
     @Res() response,
   ): Promise<any> {
     try {
-      const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
-
-      if (!concepts.length) {
-        throw new NotFoundException('Concepts not exists');
-      }
-
-      const details = getDetailsPaymentsGlobal(
-        concepts,
-        ObjetoImpEnum.NoobjetoDeimpuesto,
-        0,
-      );
-
-      const wayPayment = await this.service.getWayPayment(concepts);
-
-      const branchOffice = await this.branchOffice.findBranch(
-        query.branchOfficeId,
-      );
-
-      const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-        where: { id: query.branchOfficeId },
-      });
-
-      let invoice = await this.service.getGlobalInvoice(
-        branchOffice,
-        branchOfficeConfig,
-      );
-
-      const timbrado = await GenerateGlobalInvoiceMunyaal({
-        branchOfficeConfig,
-        wayPayment,
-        details,
-        env: this.env,
-        folio: invoice.folio,
-        infoGlobal: {
-          periodicity: query.periodicity,
-          month: query.month,
-          year: query.year,
-        },
-        percentageTax: '0',
-        type: InvoiceModules.SCHOOL,
-        TipoDeComprobante: TipoComprobanteEnum.I,
-        Exportacion: ExportacionEnumMunyaal.E01,
-        MetodoPago: MetodoPagoEnum.PUE,
-        Moneda: MonedaEnum.MXN,
-        s3Service: this._s3Service
-      });
-
-      await this.service.updateStampingPayments(
-        concepts.map((value: NotInvoiced) => value.p_id),
-        timbrado.data.uuid.toUpperCase(),
-      );
-
-      invoice.uuid = timbrado.data.uuid.toUpperCase();
-      invoice.status = 1;
-      invoice.total = timbrado.Total;
-
-      invoice = await this.schoolChargeInvoiceService.updateInvoice(invoice);
-
-      await this.schoolChargeInvoiceService.sendMail(
-        branchOffice,
-        timbrado.data.uuid.toUpperCase(),
-        branchOfficeConfig.email,
-      );
-
+      const result = await this.serviceBilling.processGlobalBilling(query);
       response.status(200);
-      response.send({
-        uuid: timbrado.data.uuid.toUpperCase(),
-        invoice,
-        stamping: timbrado,
-        concepts,
-        msg: 'Factura global timbrada',
-      });
+      response.send(result);
     } catch (e) {
       console.log(e);
       response.status(400);

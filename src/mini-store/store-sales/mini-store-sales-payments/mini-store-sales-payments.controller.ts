@@ -16,38 +16,22 @@ import {
 import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreSalePayment } from './entities/mini-store-sale-payment.entity';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
+import { MiniStoreSalesPaymentsBillingService } from './mini-store-sales-payments-billing.service';
 import {
     InvoiceMethodsPaymentsService
 } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { FactSw } from '../../../webService/FactSw';
-import {
-    GenerateGlobalInvoiceMunyaal,
-    GenerateInvoiceMunyaal
-} from '../../../common/utils/invoice/generator/generateInvoice';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { FormaPago } from '@signati/core';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../common/config/config.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
-import { User } from '../../../system/users/entities/user.entity';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
-import {
-    ExportacionEnum as ExportacionEnumMunyaal,
-    MetodoPagoEnum,
-    MonedaEnum,
-    TipoComprobanteEnum
-} from '@munyaal/cfdi';
 import { AttachmentsType } from "../../../types";
 import { CancellationDto } from 'src/common/dto/Cancellation.dto';
 import { S3Service } from 'src/common/storage/s3.service';
@@ -81,6 +65,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     constructor(
         readonly service: MiniStoreSalesPaymentsService,
+        readonly serviceBilling: MiniStoreSalesPaymentsBillingService,
         readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
         readonly miniStoreInvoicesService: MiniStoreInvoicesService,
         readonly branchOffice: BranchOfficeService,
@@ -107,161 +92,14 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     @Post('/billing')
     async billing(@Body() query: QueryBilling, @Res() response) {
-        const result = await this.service.findSaleByPayment(query);
-
-        const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
-            payment: result.payment,
-            details: result.sale.miniStoreSaleDetails,
-            type: InvoiceModules.STORE,
-            typeConcept: 'Invoice'
-        });
-
-        const currentOffice = await this.branchOffice.findBranch(query.branchOfficeId);
-
-        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-            where: {
-                id: query.branchOfficeSettingId,
-            },
-        });
-
-        const invoiceFind = await this.miniStoreInvoicesService.findInvoiceByPayment({
-            paymentId: query.salePaymentId,
-            status: StatusInvoce.noBilling,
-        });
-
-        const respuesta = {
-            stamping: false,
-            msg: '',
-            invoice: {},
-            uuid: '',
-        };
-
-        const receptor = {
-            Nombre: query.receiver.businessName,
-            Rfc: query.receiver.rfc,
-            UsoCFDI: query.usoCfdi.value,
-            DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-            RegimenFiscalReceptor: query.receiver.keyRegimen,
-        }
         try {
-            if (invoiceFind) {
-                if (invoiceFind.miniStoreSalePayment.stamping === 1) {
-                    const invocePayment = await this.miniStoreInvoicesService.findInvoiceByPayment({
-                        paymentId: query.salePaymentId,
-                        status: StatusInvoce.invoiced,
-                        stamping: 1,
-                    });
-                    respuesta.stamping = true;
-                    respuesta.invoice = invocePayment;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.uuid = invocePayment.uuid;
-                    response.status(200);
-                    response.send(respuesta);
-                } else {
-                    const timbrado = await GenerateInvoiceMunyaal({
-                        type: InvoiceModules.STORE,
-                        ...invoiceDetails,
-                        folio: invoiceFind.folio,
-                        serie: branchOfficeSett.serieFacturacion,
-                        emisor: branchOfficeSett,
-                        env: this.env,
-                        informacionGlobal: query.informacionGlobal,
-                        receptor,
-                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                        TipoDeComprobante: TipoComprobanteEnum.I,
-                        Exportacion: ExportacionEnumMunyaal.E01,
-                        MetodoPago: MetodoPagoEnum.PUE,
-                        Moneda: MonedaEnum.MXN,
-                        related: query.related,
-                        s3Service: this._s3Service
-                    });
-
-                    await this.service.updatePayment({
-                        id: query.salePaymentId,
-                        stamping: 1,
-                    } as MiniStoreSalePayment);
-
-                    invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
-                    invoiceFind.status = 1;
-                    invoiceFind.total = parseFloat(timbrado.Total);
-                    const resultInvoice = await this.miniStoreInvoicesService.updateInvoice(invoiceFind);
-
-                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-
-                    respuesta.stamping = true;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.invoice = resultInvoice;
-                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
-                    response.status(200);
-                    response.send(respuesta);
-                }
+            const result = await this.serviceBilling.processBilling(query);
+            if (result.stamping) {
+                response.status(200);
+                response.send(result);
             } else {
-                const factura = new MiniStoreInvoice();
-                factura.folio = '';
-                factura.uuid = '';
-                factura.businessName = query.receiver.businessName;
-                factura.rfc = query.receiver.rfc;
-                factura.agentBilling = {
-                    id: query.agentBillingId,
-                } as User;
-                factura.status = 0; // Pendiente de procesar en facturación moderna
-                factura.miniStoreSale = {
-                    id: query.saleId,
-                } as MiniStoreSale;
-                factura.miniStoreSalePayment = {
-                    id: query.salePaymentId,
-                } as MiniStoreSalePayment;
-                factura.invoiceBranchOffice = {
-                    id: query.branchOfficeId,
-                } as BranchOffice;
-                factura.invoiceBranchOfficeSet = {
-                    id: query.branchOfficeSettingId,
-                } as BranchOfficeSetting;
-                const invoice = await this.miniStoreInvoicesService.saveInvoice(factura);
-
-                if (invoice) {
-                    const timbrado = await GenerateInvoiceMunyaal({
-                        type: InvoiceModules.STORE,
-                        ...invoiceDetails,
-                        folio: invoice.folio,
-                        serie: branchOfficeSett.serieFacturacion,
-                        emisor: branchOfficeSett,
-                        env: this.env,
-                        informacionGlobal: query.informacionGlobal,
-                        receptor,
-                        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
-                        TipoDeComprobante: TipoComprobanteEnum.I,
-                        Exportacion: ExportacionEnumMunyaal.E01,
-                        MetodoPago: MetodoPagoEnum.PUE,
-                        Moneda: MonedaEnum.MXN,
-                        related: query.related,
-                        s3Service: this._s3Service
-                    });
-                    //Actualizamos el pago
-                    await this.service.updatePayment({
-                        id: query.salePaymentId,
-                        stamping: 1,
-                    } as MiniStoreSalePayment);
-
-                    //Actualizamos la factura
-                    invoice.uuid = timbrado.data.uuid.toUpperCase();
-                    invoice.status = 1;
-                    invoice.total = parseFloat(timbrado.Total);
-                    const resultInvoiceFirst = await this.miniStoreInvoicesService.updateInvoice(invoice);
-
-                    // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-                    await this.service.sendMail(currentOffice, timbrado.data.uuid, query.receiver.email);
-
-                    respuesta.stamping = true;
-                    respuesta.msg = 'Pago Facturado';
-                    respuesta.invoice = resultInvoiceFirst;
-                    respuesta.uuid = timbrado.data.uuid.toUpperCase();
-                    response.status(200);
-                    response.send(respuesta);
-                }
+                response.status(400).send(result);
             }
-
-
         } catch (e) {
             console.log(e);
             response.status(400);
@@ -385,65 +223,14 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
 
     @Post('/global-billing')
     @UsePipes(ValidationPipe)
-    public async globalBilling(@Body() query: NotInvoicedDto, @Res() response): Promise<any> {
+    public async globalBilling(
+        @Body() query: NotInvoicedDto,
+        @Res() response,
+    ): Promise<any> {
         try {
-            const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
-
-            if (!concepts.length) {
-                throw new NotFoundException('Concepts not exists');
-            }
-
-            const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.SíObjetoDeImpuesto);
-
-            const wayPayment = await this.service.getWayPayment(concepts);
-
-            const branchOffice = await this.branchOffice.findBranch(query.branchOfficeId);
-
-            const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-                where: {id: query.branchOfficeId}
-            });
-
-            let invoice = await this.service.getGlobalInvoice(branchOffice, branchOfficeConfig);
-
-            const timbrado = await GenerateGlobalInvoiceMunyaal({
-                branchOfficeConfig,
-                wayPayment,
-                details,
-                env: this.env,
-                folio: invoice.folio,
-                infoGlobal: {
-                    periodicity: query.periodicity,
-                    month: query.month,
-                    year: query.year,
-                },
-                percentageTax: '0.16',
-                type: InvoiceModules.STORE,
-                TipoDeComprobante: TipoComprobanteEnum.I,
-                Exportacion: ExportacionEnumMunyaal.E01,
-                MetodoPago: MetodoPagoEnum.PUE,
-                Moneda: MonedaEnum.MXN,
-            });
-
-            const uuid = timbrado.data.uuid.toUpperCase();
-
-            await this.service.updateStampingPayments(concepts.map((value: NotInvoiced) => value.p_id), uuid);
-
-            invoice.uuid = uuid;
-            invoice.status = 1;
-            invoice.total = timbrado.Total;
-
-            invoice = await this.miniStoreInvoicesService.updateInvoice(invoice);
-
-            await this.service.sendMail(branchOffice, uuid, branchOfficeConfig.email);
-
+            const result = await this.serviceBilling.processGlobalBilling(query);
             response.status(200);
-            response.send({
-                uuid,
-                invoice,
-                stamping: timbrado,
-                concepts,
-                msg: 'Factura global timbrada',
-            });
+            response.send(result);
         } catch (e) {
             console.log(e);
             response.status(400);

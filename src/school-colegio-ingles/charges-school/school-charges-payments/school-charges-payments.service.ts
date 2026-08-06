@@ -23,10 +23,8 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
-import { RegimenFiscalList, XmlComprobante } from '@signati/core';
-import { readFileSync, writeFileSync } from 'fs';
-import { PDF, XmlToJson } from '@signati/pdf';
-import { A117 } from '../../../pdf/A117/desing/A117';
+import { RegimenFiscalList } from '@signati/core';
+import { readFileSync } from 'fs';
 import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
@@ -47,6 +45,8 @@ import { Decimal } from '@munyaal/calculations';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { getImagePath } from 'src/helpers';
+import { getHighestPayment } from './utils';
+
 
 @Injectable()
 export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolChargePayment> {
@@ -82,14 +82,6 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         return await this.repo.restore(id);
     }
 
-    getHighestPayment(formadepago: SchoolChargesMethodsPayments[]) {
-        const methodpaymenst = formadepago.sort((a, b) => {
-            return a.quantity - b.quantity;
-        });
-
-        return methodpaymenst[0];
-    }
-
     async findSaleByPayment(query: QuerySchoolPaymentBilling): Promise<{
         charge: SchoolCharge,
         payment: SchoolChargePayment,
@@ -115,18 +107,12 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             .andWhere('payment.id = :idp', {idp: query.chargePaymentId})
             .getOne();
 
-        const highestPayment = this.getHighestPayment(payment.methodsPayments);
+        const highestPayment = getHighestPayment(payment.methodsPayments);
         return {
             charge,
             payment,
             highestPayment,
         };
-    }
-
-    async updatePayment(data: SchoolChargePayment) {
-        let payment = await this.repo.findOne({id: data.id});
-        payment = {...data};
-        return await this.repo.save(payment);
     }
 
     async fetchFilteredPayments(query: QuerySimpleReport) {
@@ -464,44 +450,6 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             return this.invoiceRepository.findOne({
                 where: {id: invoice.id}
             })
-        }
-    }
-
-    public async updateStampingPayments(ids: number[], uuid: string): Promise<any> {
-        try {
-            return this.connection.query(`
-                UPDATE school_charge_payments p
-                SET stamping   = 1,
-                    globalUuid = '${uuid}'
-                WHERE p.id IN (${ids.join(',')});
-            `);
-        } catch (e) {
-            throw new NotFoundException('Error updating payments to invoiced');
-        }
-    }
-
-    public async saveXmlAndPdf(uuid: string, xml: string, address: string): Promise<XmlComprobante> {
-        try {
-            const logo = readFileSync(`${this.configService.getPath()}logos/colegiologo.png`);
-
-            const path = `${this.configService.getPath()}comprobantes/colegio/${uuid}.xml`;
-
-            writeFileSync(path, xml);
-
-            const cfdi = await XmlToJson(path);
-
-            const desingpdf = new A117(path, {
-                lugarExpedicion: address,
-                logo: `data:image/png;base64, ${logo.toString('base64')}`,
-            });
-
-            const pdf = new PDF<A117>(desingpdf);
-
-            await pdf.save(`${this.configService.getPath()}comprobantes/colegio/${uuid}`);
-
-            return cfdi['cfdi:Comprobante'] as XmlComprobante;
-        } catch (e) {
-            throw new NotFoundException('Could not save xml or pdf');
         }
     }
 

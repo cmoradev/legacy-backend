@@ -538,39 +538,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     }
   }
 
-  public async saveXmlAndPdf(
-    uuid: string,
-    xml: string,
-    address: string,
-  ): Promise<XmlComprobante> {
-    try {
-      const logo = readFileSync(
-        `${this.configService.getPath()}logos/academiaslogo.png`,
-      );
-
-      const path = `${this.configService.getPath()}comprobantes/academias/${uuid}.xml`;
-
-      writeFileSync(path, xml);
-
-      const cfdi = await XmlToJson(path);
-
-      const desingpdf = new A117(path, {
-        lugarExpedicion: address,
-        logo: `data:image/png;base64, ${logo.toString('base64')}`,
-      });
-
-      const pdf = new PDF<A117>(desingpdf);
-
-      await pdf.save(
-        `${this.configService.getPath()}comprobantes/academias/${uuid}`,
-      );
-
-      return cfdi['cfdi:Comprobante'] as XmlComprobante;
-    } catch (e) {
-      throw new NotFoundException('Could not save xml or pdf');
-    }
-  }
-
   public async reportAcademiaPayment({
     status,
     startDate,

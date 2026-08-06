@@ -111,7 +111,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             const workPath = this.configService.getPath();
             const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId,)
 
-            const timbrado = await CreditNote({
+            const fullResult = await CreditNote({
                 concepts: request.concepts,
                 calculations: request.calculations,
                 invoice: {
@@ -148,10 +148,10 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             
             const creditNoteAcademy: Partial<CreditNoteAcademy> = {
                 folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
-                uuid: timbrado.data.uuid,
+                uuid: fullResult.uuid,
                 businessName: request.receiver.Nombre,
                 rfc: request.receiver.Rfc,
-                total: parseFloat(timbrado.Total),
+                total: parseFloat(fullResult.total),
                 invoiceType: InvoiceType.expenses,
                 status: InvoiceStatus.billed,
                 invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
@@ -161,9 +161,9 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             const creditNote = await this.service.saveCreditNote(creditNoteAcademy);
             response.status(200);
             response.send({
-                uuid: timbrado.data.uuid,
+                uuid: fullResult.uuid,
                 invoice: creditNote,
-                stamping: timbrado,
+                stamping: fullResult,
                 msg: 'Nota de Crédito timbrada',
             });
         } catch (err) {

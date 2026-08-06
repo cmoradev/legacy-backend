@@ -1,10 +1,8 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -17,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
+import { AcademyChargePaymentsBillingService } from './academy-charge-payments-billing.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
 import { QuerySimpleReport } from '../../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface';
 import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
@@ -28,21 +27,10 @@ import { AcademyChargeInvoiceService } from '../academy-charge-invoice/academy-c
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { Response } from 'express';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { User } from '../../../system/users/entities/user.entity';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
-import {
-  GenerateGlobalInvoiceMunyaal,
-  GenerateInvoiceMunyaal,
-} from '../../../common/utils/invoice/generator/generateInvoice';
-import { FormaPago } from '@signati/core';
 import { ConfigService } from '../../../common/config/config.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import {
   Environment,
   InvoiceModules,
@@ -55,12 +43,6 @@ import {
   PaymentExcel,
   reportPaymentByClient,
 } from '../../../common/utils/report';
-import {
-  ExportacionEnum as ExportacionEnumMunyaal,
-  MetodoPagoEnum,
-  MonedaEnum,
-  TipoComprobanteEnum,
-} from '@munyaal/cfdi';
 import { AttachmentsType } from '../../../types';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
@@ -101,6 +83,7 @@ export class AcademyChargePaymentsController
 
   constructor(
     readonly service: AcademyChargePaymentsService,
+    readonly serviceBilling: AcademyChargePaymentsBillingService,
     readonly invoiceMethodsPaymentsService: InvoiceMethodsPaymentsService,
     readonly academyChargeInvoiceService: AcademyChargeInvoiceService,
     readonly branchOffice: BranchOfficeService,
@@ -181,177 +164,12 @@ export class AcademyChargePaymentsController
 
   @Post('/billing')
   async billing(@Body() query: QueryBillingAcademy, @Res() res: Response) {
-    const result = await this.service.findSaleByPayment(query);
-    const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
-      payment: result.payment,
-      details: result.charge.chargesDetails,
-      type: InvoiceModules.ACADEMY,
-      typeConcept: 'Invoice',
-    });
-
-    const currentOffice = await this.branchOffice.findBranch(
-      query.branchOfficeId,
-    );
-    const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-      where: {
-        id: query.branchOfficeSettingId,
-      },
-    });
-    const invoiceFind = await this.academyChargeInvoiceService.findInvoiceByPayment(
-      {
-        paymentId: query.chargePaymentId,
-        status: StatusInvoce.noBilling,
-      },
-    );
-
-    const respuesta = {
-      stamping: false,
-      msg: '',
-      invoice: {},
-      uuid: '',
-    };
-
-    const env = {
-      instancePath: this.configService.getPath(),
-      xslt: this.configService.getXsltPath(),
-    };
-
-    const receptor = {
-      Nombre: query.receiver.businessName,
-      Rfc: query.receiver.rfc,
-      UsoCFDI: query.usoCfdi.value,
-      DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-      RegimenFiscalReceptor: query.receiver.keyRegimen,
-    };
-
     try {
-      if (invoiceFind) {
-        if (invoiceFind.academyChargePayment.stamping === 1) {
-          const invocePayment = await this.academyChargeInvoiceService.findInvoiceByPayment(
-            {
-              paymentId: query.chargePaymentId,
-              status: StatusInvoce.invoiced,
-              stamping: 1,
-            },
-          );
-          respuesta.stamping = true;
-          respuesta.invoice = invocePayment;
-          respuesta.msg = 'Pago Facturado';
-          respuesta.uuid = invocePayment.uuid;
-          res.send(respuesta);
-        } else {
-          const timbrado = await GenerateInvoiceMunyaal({
-            type: InvoiceModules.ACADEMY,
-            ...invoiceDetails,
-            folio: invoiceFind.folio,
-            serie: branchOfficeSett.serieFacturacion,
-            emisor: branchOfficeSett,
-            env: this.env,
-            informacionGlobal: query.informacionGlobal,
-            receptor,
-            codigoFormaPago: result.highestPayment
-              .codePaymentMethod as FormaPago,
-            TipoDeComprobante: TipoComprobanteEnum.I,
-            Exportacion: ExportacionEnumMunyaal.E01,
-            MetodoPago: MetodoPagoEnum.PUE,
-            Moneda: MonedaEnum.MXN,
-            related: query.related,
-            s3Service: this._s3Service
-          });
-
-          await this.service.updatePayment({
-            id: query.chargePaymentId,
-            stamping: 1,
-          } as AcademyChargePayments);
-
-          invoiceFind.uuid = timbrado.data.uuid.toUpperCase();
-          invoiceFind.status = 1;
-          invoiceFind.total = timbrado.Total;
-          const resultInvoice = await this.academyChargeInvoiceService.updateInvoice(
-            invoiceFind,
-          );
-
-          this.service.sendMail(
-            currentOffice,
-            timbrado.data.uuid,
-            query.receiver.email,
-          );
-          // falta regresar el dato
-          respuesta.stamping = true;
-          respuesta.msg = 'Pago Facturado';
-          respuesta.invoice = resultInvoice;
-          respuesta.uuid = timbrado.data.uuid.toUpperCase();
-          res.send(respuesta);
-        }
+      const result = await this.serviceBilling.processBilling(query);
+      if (result.stamping) {
+        res.send(result);
       } else {
-        const factura = new AcademyChargeInvoice();
-
-        factura.folio = '';
-        factura.uuid = '';
-        factura.businessName = query.receiver.businessName;
-        factura.rfc = query.receiver.rfc;
-        factura.agentBilling = {
-          id: query.agentBillingId,
-        } as User;
-        factura.status = 0; // Pendiente de procesar en facturación moderna
-        factura.academyCharge = {
-          id: query.chargeId,
-        } as AcademyCharge;
-        factura.academyChargePayment = {
-          id: query.chargePaymentId,
-        } as AcademyChargePayments;
-        factura.invoiceBranchOffice = {
-          id: query.branchOfficeId,
-        } as BranchOffice;
-        factura.invoiceBranchOfficeSet = {
-          id: query.branchOfficeSettingId,
-        } as BranchOfficeSetting;
-        const invoice = await this.academyChargeInvoiceService.saveInvoice(
-          factura,
-        );
-        if (invoice) {
-          const timbrado = await GenerateInvoiceMunyaal({
-            type: InvoiceModules.ACADEMY,
-            ...invoiceDetails,
-            folio: invoice.folio,
-            serie: branchOfficeSett.serieFacturacion,
-            emisor: branchOfficeSett,
-            env: this.env,
-            informacionGlobal: query.informacionGlobal,
-            receptor,
-            codigoFormaPago: result.highestPayment
-              .codePaymentMethod as FormaPago,
-            TipoDeComprobante: TipoComprobanteEnum.I,
-            Exportacion: ExportacionEnumMunyaal.E01,
-            MetodoPago: MetodoPagoEnum.PUE,
-            Moneda: MonedaEnum.MXN,
-            related: query.related,
-            s3Service: this._s3Service
-          });
-          await this.service.updatePayment({
-            id: query.chargePaymentId,
-            stamping: 1,
-          } as AcademyChargePayments);
-          invoice.uuid = timbrado.data.uuid.toUpperCase();
-          invoice.status = 1;
-          invoice.total = timbrado.Total;
-          const resultInvoiceFirst = await this.academyChargeInvoiceService.updateInvoice(
-            invoice,
-          );
-          // Enviamos correo al cliente con sus documentos fiscales (PDF y XML)
-          this.service.sendMail(
-            currentOffice,
-            timbrado.data.uuid,
-            query.receiver.email,
-          );
-          // falta regresar el dato
-
-          respuesta.stamping = true;
-          respuesta.msg = 'Pago Facturado';
-          respuesta.invoice = resultInvoiceFirst;
-          respuesta.uuid = timbrado.data.uuid.toUpperCase();
-          res.send(respuesta);
-        }
+        res.status(400).send(result);
       }
     } catch (e) {
       console.log(e);
@@ -507,74 +325,9 @@ export class AcademyChargePaymentsController
     @Res() response,
   ): Promise<any> {
     try {
-      const concepts: NotInvoiced[] = await this.service.notInvoiced(query);
-
-      if (!concepts.length) {
-        throw new NotFoundException('Concepts not exists');
-      }
-
-      const details = getDetailsPaymentsGlobal(
-        concepts,
-        ObjetoImpEnum.SíObjetoDeImpuesto,
-      );
-
-      const wayPayment = await this.service.getWayPayment(concepts);
-
-      const branchOffice = await this.branchOffice.findBranch(
-        query.branchOfficeId,
-      );
-
-      const branchOfficeConfig = await this.branchOfficeSettingService.findOne({
-        where: { id: query.branchOfficeId },
-      });
-
-      let invoice = await this.service.getGlobalInvoice(
-        branchOffice,
-        branchOfficeConfig,
-      );
-
-      const timbrado = await GenerateGlobalInvoiceMunyaal({
-        branchOfficeConfig,
-        wayPayment,
-        details,
-        env: this.env,
-        folio: invoice.folio,
-        infoGlobal: {
-          periodicity: query.periodicity,
-          month: query.month,
-          year: query.year,
-        },
-        percentageTax: '0.16',
-        type: InvoiceModules.ACADEMY,
-        TipoDeComprobante: TipoComprobanteEnum.I,
-        Exportacion: ExportacionEnumMunyaal.E01,
-        MetodoPago: MetodoPagoEnum.PUE,
-        Moneda: MonedaEnum.MXN,
-      });
-
-      const uuid = timbrado.data.uuid.toUpperCase();
-
-      await this.service.updateStampingPayments(
-        concepts.map((value: NotInvoiced) => value.p_id),
-        uuid,
-      );
-
-      invoice.uuid = uuid;
-      invoice.status = 1;
-      invoice.total = timbrado.Total;
-
-      invoice = await this.academyChargeInvoiceService.updateInvoice(invoice);
-
-      await this.service.sendMail(branchOffice, uuid, branchOfficeConfig.email);
-
+      const result = await this.serviceBilling.processGlobalBilling(query);
       response.status(200);
-      response.send({
-        uuid,
-        invoice,
-        stamping: timbrado,
-        concepts,
-        msg: 'Factura global timbrada',
-      });
+      response.send(result);
     } catch (e) {
       console.log(e);
       response.status(400);

@@ -23,6 +23,7 @@ import { SchoolChargesDetailsModule } from '../school-charges-details/school-cha
 import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-details-extra-charges/school-charges-details-extra-charges.module';
 import { AuthModule } from '../../../system/auth/auth.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { SchoolChargesPaymentsBillingService } from './school-charges-payments-billing.service';
 
 @Module({
   imports: [
@@ -41,9 +42,9 @@ import { StorageModule } from 'src/common/storage/storage.module';
     AuthModule,
     StorageModule
   ],
-  providers: [SchoolChargesPaymentsService, SmartWeb],
+  providers: [SchoolChargesPaymentsService, SchoolChargesPaymentsBillingService, SmartWeb],
   controllers: [SchoolChargesPaymentsController],
-  exports: [SchoolChargesPaymentsService],
+  exports: [SchoolChargesPaymentsService, SchoolChargesPaymentsBillingService],
 })
 export class SchoolChargesPaymentsModule {
 }

@@ -1,17 +1,8 @@
-import {
-    CFDI,
-    Comprobante,
-    Concepts,
-    Emisor,
+import {    
     FormaPago,
-    FormaPagoType,
-    Iedu,
-    Impuestos,
-    Receptor,
     XmlIeduAttribute
 } from '@signati/core';
-import { ObjetoImpEnum, XmlConceptoAttributes } from '@signati/core/lib/signati/types/Tags/concepts.interface';
-import { ExportacionEnum } from '@signati/core/lib/signati/types/Catalogs/FormaPago'
+import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { sumQuantity } from '../../../point-of-sale/point-of-sale';
 import * as moment from 'moment-timezone';
 import { sanitizeStringToXml } from '../../sanitizeStringToXml';
@@ -34,197 +25,9 @@ import {
     Iedu as IeduMunyaal,
     ComprobanteConceptoComplementoConcepto, ComprobanteInformacionGlobal, MesesEnum, PeriodicidadEnum, FormaPagoEnum, ComprobanteCfdiRelacionados, TipoRelacionEnum, ComprobanteCfdiRelacionadosCfdiRelacionado,
 } from "@munyaal/cfdi";
-import { FactSw, TDF } from '../../../../webService/FactSw';
+import { FactSw, StampV4, TDF } from '../../../../webService/FactSw';
 import { CfdiPdf } from "@munyaal/cfdi-pdf"
 import { S3Service } from 'src/common/storage/s3.service';
-
-const genericRFC = ['XEXX010101000', 'XAXX010101000'];
-
-export async function GenerateInvoice(payload: CFDIWebtel): Promise<string> {
-    const {
-        folio,
-        serie,
-        informacionGlobal,
-        emisor,
-        taxes,
-        totals,
-        concepts,
-        receptor,
-        codigoFormaPago,
-        env,
-        importeImpuesto = .16,
-    } = payload;
-    const { instancePath, xslt } = env
-    const key = instancePath + 'CSD/' + emisor.keyCSD;
-    const cer = instancePath + 'CSD/' + emisor.cerCSD;
-
-    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
-
-    const comprobante: Comprobante = {
-        Serie: serie,
-        Folio: folio,
-        Fecha: fecha,
-        Sello: '',
-        FormaPago: codigoFormaPago,
-        NoCertificado: '',
-        Certificado: '',
-        // condicionesDePago: 'Contado',
-        SubTotal: totals.fiscal.SubTotal,
-        Descuento: totals.fiscal.Descuento,
-        Total: totals.fiscal.Total,
-        Moneda: 'MXN',
-        TipoDeComprobante: 'I',
-        MetodoPago: 'PUE',
-        LugarExpedicion: emisor.zip,
-        Exportacion: ExportacionEnum.NoAplica
-    };
-    const cfd = new CFDI(comprobante, {
-        debug: true,
-        xslt,
-    });
-
-    const isGeneric = genericRFC.includes(receptor.Rfc.replace(/\s/g, ''))
-
-    if (isGeneric) {
-        await cfd.informacionGlobal(informacionGlobal)
-    }
-
-    const emi = new Emisor({
-        Rfc: sanitizeStringToXml(emisor.rfc.trim().toUpperCase()),
-        Nombre: sanitizeStringToXml(emisor.businessName.trim().toUpperCase()),
-        RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
-    });
-    await cfd.emisor(emi);
-
-    const recep = new Receptor({
-        ...receptor,
-        Rfc: sanitizeStringToXml(receptor.Rfc),
-        Nombre: sanitizeStringToXml(receptor.Nombre),
-        DomicilioFiscalReceptor: isGeneric ? emisor.zip : receptor.DomicilioFiscalReceptor
-    });
-
-    await cfd.receptor(recep);
-
-    for (const cts of concepts.conceptsInvoice) {
-        const concepto = new Concepts({ ...cts.concept });
-        if (importeImpuesto !== 0 && cts.concept.ObjetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
-
-            concepto.traslado({
-                Base: cts.base,
-                Impuesto: '002',
-                TipoFactor: 'Tasa',
-                TasaOCuota: '0.16',
-                Importe: cts.import,
-            });
-        }
-        await cfd.concepto(concepto);
-    }
-
-    const impuesto: Impuestos = new Impuestos({
-        TotalImpuestosTrasladados: taxes.amount,
-    });
-
-    if (importeImpuesto !== 0) {
-        impuesto.traslados({
-            Base: taxes.base,
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.16',
-            Importe: taxes.amount,
-        });
-        await cfd.impuesto(impuesto);
-    }
-    await cfd.certificar(cer);
-    await cfd.sellar(key, emisor.password);
-    const xml = await cfd.getXmlCdfi();
-    console.log(xml)
-    return xml;
-}
-
-export async function GenerateInvoiceIedu(payload: CFDIWebtel & { student: XmlIeduAttribute }): Promise<string> {
-    const {
-        folio,
-        serie,
-        taxes,
-        totals,
-        concepts,
-        informacionGlobal,
-        emisor,
-        receptor,
-        codigoFormaPago,
-        env,
-        student,
-        importeImpuesto = .16,
-    } = payload;
-    const { instancePath, xslt } = env
-    const key = instancePath + 'CSD/' + emisor.keyCSD;
-    const cer = instancePath + 'CSD/' + emisor.cerCSD;
-    const fecha = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
-
-    const comprobante: Comprobante = {
-        Serie: serie,
-        Folio: folio,
-        Fecha: fecha,
-        Sello: '',
-        FormaPago: codigoFormaPago,
-        NoCertificado: '',
-        Certificado: '',
-        // condicionesDePago: 'Contado',
-        SubTotal: totals.fiscal.SubTotal,
-        Descuento: totals.fiscal.Descuento,
-        Total: totals.fiscal.Total,
-        Moneda: 'MXN',
-        TipoDeComprobante: 'I',
-        MetodoPago: 'PUE',
-        LugarExpedicion: emisor.zip, // ,
-        Exportacion: ExportacionEnum.NoAplica
-    };
-    const cfd = new CFDI(comprobante, { debug: true, xslt });
-
-    const isGeneric = genericRFC.includes(receptor.Rfc.replace(/\s/g, ''))
-
-    if (isGeneric) {
-        cfd.informacionGlobal(informacionGlobal)
-    }
-
-    const emi = new Emisor({
-        Rfc: sanitizeStringToXml(emisor.rfc.trim().toUpperCase()),
-        Nombre: sanitizeStringToXml(emisor.businessName.trim().toUpperCase()),
-        RegimenFiscal: emisor.fiscalRegime.trim().toUpperCase(),
-    });
-    await cfd.emisor(emi);
-
-    const recep = new Receptor({
-        ...receptor,
-        Rfc: sanitizeStringToXml(receptor.Rfc),
-        Nombre: sanitizeStringToXml(receptor.Nombre),
-        DomicilioFiscalReceptor: isGeneric ? emisor.zip : receptor.DomicilioFiscalReceptor
-    });
-
-    await cfd.receptor(recep);
-    for (const ctp of concepts.conceptsInvoice) {
-        const concepto = new Concepts(ctp.concept);
-        const ieduObject: XmlIeduAttribute = student;
-        const iedu = new Iedu(ieduObject);
-        await concepto.complemento(iedu);
-        await cfd.concepto(concepto);
-    }
-    const impuesto: Impuestos = new Impuestos({
-        TotalImpuestosTrasladados: '0',
-    });
-
-    impuesto.traslados({
-        Base: '1.00',
-        Impuesto: '002',
-        TipoFactor: 'Exento',
-    });
-    await cfd.impuesto(impuesto);
-
-    await cfd.certificar(cer);
-    await cfd.sellar(key, emisor.password);
-    const xml = await cfd.getXmlCdfi();
-    return xml;
-}
 
 export type GlobalInvoiceParams = {
     branchOfficeConfig: BranchOfficeSetting,
@@ -240,124 +43,6 @@ export type GlobalInvoiceParams = {
     percentageTax: string
 }
 
-export const GenerateGlobalInvoice = async (params: GlobalInvoiceParams): Promise<any> => {
-    const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax } = params;
-
-    const { keyCSD, cerCSD, serieFacturacion } = branchOfficeConfig;
-
-    const { instancePath, xslt } = env;
-
-    const { discount, taxes, total, subtotal, details: concepts } = details;
-
-    const { periodicity, month, year } = infoGlobal;
-
-    const today = moment.tz('America/Mexico_City').format('YYYY-MM-DDTHH:mm:ss');
-
-    const key: string = `${instancePath}CSD/${keyCSD}`;
-    const cer: string = `${instancePath}CSD/${cerCSD}`;
-
-    const comprobante: Comprobante = {
-        Version: '4.0',
-        Serie: serieFacturacion,
-        Folio: folio,
-        Fecha: today,
-        Sello: '',
-        FormaPago: wayPayment,
-        NoCertificado: '',
-        Certificado: '',
-        SubTotal: parseFloat(`${subtotal}`).toFixed(2),
-        Descuento: parseFloat(`${discount}`).toFixed(2),
-        Moneda: 'MXN',
-        Total: parseFloat(`${total}`).toFixed(2),
-        TipoDeComprobante: 'I',
-        Exportacion: ExportacionEnum.NoAplica,
-        MetodoPago: 'PUE',
-        LugarExpedicion: branchOfficeConfig.zip.trim().toUpperCase(),
-    };
-
-    const emitter = new Emisor({
-        Rfc: sanitizeStringToXml(branchOfficeConfig.rfc.trim().toUpperCase()),
-        Nombre: sanitizeStringToXml(branchOfficeConfig.businessName.trim().toUpperCase()),
-        RegimenFiscal: branchOfficeConfig.fiscalRegime.trim().toUpperCase(),
-    });
-
-    const receiver = new Receptor({
-        Rfc: 'XAXX010101000',
-        Nombre: 'PUBLICO EN GENERAL',
-        DomicilioFiscalReceptor: branchOfficeConfig.zip.trim().toUpperCase(),
-        RegimenFiscalReceptor: '616',
-        UsoCFDI: 'S01'
-    });
-
-    const cfd = new CFDI(comprobante, {
-        debug: true,
-        xslt,
-    });
-
-    await cfd.emisor(emitter);
-
-    await cfd.receptor(receiver);
-
-    await cfd.informacionGlobal({
-        Año: year,
-        Meses: month,
-        Periodicidad: periodicity
-    });
-
-
-    for (const payload of concepts) {
-        const { iva, amountWithOutIva } = ivaFromFinalAmount(payload.amount, -2, sumQuantity(percentageTax, 1));
-
-        const amount = parseFloat(`${amountWithOutIva}`).toFixed(2);
-        const tax = parseFloat(`${iva}`).toFixed(2);
-
-        const concept = new Concepts({
-            ClaveProdServ: payload.keyProdServ,
-            NoIdentificacion: payload.noIdentity,
-            Cantidad: payload.quantity,
-            ClaveUnidad: payload.keyUnit,
-            Descripcion: payload.description,
-            ValorUnitario: amount,
-            Importe: amount,
-            Descuento: payload.discount,
-            ObjetoImp: payload.objectImp
-        } as XmlConceptoAttributes);
-
-        if (percentageTax !== '0' && payload.objectImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
-            concept.traslado({
-                Base: amount,
-                Impuesto: '002',
-                TipoFactor: 'Tasa',
-                TasaOCuota: '0.16',
-                Importe: tax,
-            });
-        }
-
-        await cfd.concepto(concept);
-    }
-
-    const impuesto: Impuestos = new Impuestos({
-        TotalImpuestosTrasladados: taxes.toFixed(2),
-    });
-
-    if (percentageTax !== '0') {
-        impuesto.traslados({
-            Base: subtotal.toFixed(2),
-            Impuesto: '002',
-            TipoFactor: 'Tasa',
-            TasaOCuota: '0.16',
-            Importe: taxes.toFixed(2),
-        });
-        await cfd.impuesto(impuesto);
-    }
-
-    await cfd.certificar(cer);
-
-    await cfd.sellar(key, branchOfficeConfig.password);
-
-    return cfd.getXmlCdfi();
-}
-
 export interface InvoiceModule extends CFDIWebtel {
     type: InvoiceModules;
     Moneda: MonedaEnum;
@@ -368,7 +53,7 @@ export interface InvoiceModule extends CFDIWebtel {
     s3Service?: S3Service;
 }
 
-export const GenerateInvoiceMunyaal = async (params: InvoiceModule) => {
+export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<FullGenerateResult> => {
     const {
         Moneda,
         MetodoPago,
@@ -513,7 +198,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
     s3Service?: S3Service
-}): Promise<any> => {
+}): Promise<FullGenerateResult> => {
     const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax, type, Moneda, TipoDeComprobante, Exportacion, MetodoPago, s3Service } = params;
 
     const { keyCSD, cerCSD, serieFacturacion, password } = branchOfficeConfig;
@@ -649,34 +334,94 @@ export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCre
     }
 }
 
-export const FullGenerateXml = async (comprobante: ComprobanteCfdi, CFDIService: any, path: string, instancePath: string, s3Service?: S3Service) => {
-    const xml = await CFDIService.getXMLSellado(comprobante);
-
-    const sw = new FactSw();
-
-    const timbrado = await sw.facturar(xml);
-
-    await CFDIService.saveXml(timbrado.data.cfdi, timbrado.data.uuid.toUpperCase());
-
-    const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
-
-    pdf.createDocument(`${timbrado.data.uuid.toUpperCase()}`, `${path}`)
-
-    if(instancePath && s3Service){
-        const pdfBuffer = await pdf.getBuffer();
-
-        await _saveFiles(s3Service, pdfBuffer, timbrado.data, path, instancePath)
-    }
-
-    return {
-        ...timbrado,
-        Total: comprobante.Total
-    };
+export interface InvoiceStepError {
+  step: string;
+  message: string;
+  stack?: string;
 }
+
+export interface FullGenerateResult {
+  stamped: boolean;
+  xmlSaved: boolean;
+  pdfGenerated: boolean;
+  s3Uploaded: boolean;
+  uuid?: string;
+  timbrado?: StampV4;
+  total?: string;
+  warnings: InvoiceStepError[];
+}
+
+export const FullGenerateXml = async (
+  comprobante: ComprobanteCfdi,
+  CFDIService: any,
+  path: string,
+  instancePath: string,
+  s3Service?: S3Service,
+): Promise<FullGenerateResult> => {
+  const result: FullGenerateResult = {
+    stamped: false,
+    xmlSaved: false,
+    pdfGenerated: false,
+    s3Uploaded: false,
+    warnings: [],
+  };
+
+  // ── PASO 1: Sellado + Timbrado (CRÍTICO — si falla, se propaga) ──
+  const xml = await CFDIService.getXMLSellado(comprobante);
+  const sw = new FactSw();
+  const timbrado = await sw.facturar(xml);
+  result.stamped = true;
+
+  // ── PASO 2: Guardar XML timbrado (CRÍTICO — si falla, se propaga) ──
+  await CFDIService.saveXml(
+    timbrado.data.cfdi,
+    timbrado.data.uuid.toUpperCase(),
+  );
+  result.xmlSaved = true;
+
+  result.uuid = timbrado.data.uuid.toUpperCase();
+  result.timbrado = timbrado;
+  result.total = comprobante.Total;
+
+  // ── PASO 3: Generar PDF (NO CRÍTICO) ──
+  let pdf: CfdiPdf;
+  try {
+    pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
+    await pdf.createDocument(
+      `${timbrado.data.uuid.toUpperCase()}`,
+      `${path}`,
+    );
+    result.pdfGenerated = true;
+  } catch (err) {
+    result.warnings.push({
+      step: 'pdf',
+      message: err.message,
+      stack: err.stack,
+    });
+  }
+
+  // ── PASO 4: Subir archivos a S3 (NO CRÍTICO) ──
+  if (instancePath && s3Service) {
+    try {
+      const pdfBuffer =
+        pdf && result.pdfGenerated ? await pdf.getBuffer() : null;
+      await _saveFiles(s3Service, pdfBuffer, timbrado.data, path, instancePath);
+      result.s3Uploaded = true;
+    } catch (err) {
+      result.warnings.push({
+        step: 's3',
+        message: err.message,
+        stack: err.stack,
+      });
+    }
+  }
+
+  return result;
+};
 
 const _saveFiles = async (
   s3Service: S3Service,
-  pdfBuffer: Buffer,
+  pdfBuffer: Buffer | null,
   data: TDF,
   path: string,
   instancePath: string,
@@ -692,23 +437,37 @@ const _saveFiles = async (
   const imgBuffer = Buffer.from(qrCode, 'base64');
   const xmlBuffer = Buffer.from(cfdi, 'utf-8');
 
-  const [xmlKey, pdfKey, imgKey] = await Promise.all([
+  const uploads: Promise<any>[] = [
     s3Service.putObjectCommand({
       type: 'application/xml',
       buffer: xmlBuffer,
       key: `${folder}/${uuid}.xml`,
     }),
     s3Service.putObjectCommand({
-      type: 'application/pdf',
-      buffer: pdfBuffer,
-      key: `${folder}/${uuid}.pdf`,
-    }),
-    s3Service.putObjectCommand({
       type: 'image/jpeg',
       buffer: imgBuffer,
       key: `${folder}/${uuid}.jpg`,
     }),
-  ]);
+  ];
+
+  let pdfKey: any = null;
+  if (pdfBuffer) {
+    uploads.push(
+      s3Service.putObjectCommand({
+        type: 'application/pdf',
+        buffer: pdfBuffer,
+        key: `${folder}/${uuid}.pdf`,
+      }),
+    );
+  }
+
+  const results = await Promise.all(uploads);
+
+  const xmlKey = results[0];
+  const imgKey = results[1];
+  if (pdfBuffer) {
+    pdfKey = results[2];
+  }
 
   return {
     xmlKey,

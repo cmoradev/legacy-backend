@@ -142,7 +142,7 @@ export class CreditNoteStoreController
         request.branchOfficeModuleId,
       );
 
-      const timbrado = await CreditNote({
+      const fullResult = await CreditNote({
         concepts: request.concepts,
         calculations: request.calculations,
         invoice: {
@@ -177,10 +177,10 @@ export class CreditNoteStoreController
         .getMany();
       const creditNoteStore: Partial<CreditNoteStore> = {
         folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
-        uuid: timbrado.data.uuid,
+        uuid: fullResult.uuid,
         businessName: request.receiver.Nombre,
         rfc: request.receiver.Rfc,
-        total: parseFloat(timbrado.Total),
+        total: parseFloat(fullResult.total),
         invoiceType: InvoiceType.expenses,
         status: InvoiceStatus.billed,
         invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
@@ -190,9 +190,9 @@ export class CreditNoteStoreController
       const creditNote = await this.service.saveCreditNote(creditNoteStore);
       response.status(200);
       response.send({
-        uuid: timbrado.data.uuid,
+        uuid: fullResult.uuid,
         invoice: creditNote,
-        stamping: timbrado,
+        stamping: fullResult,
         msg: 'Nota de Crédito timbrada',
       });
     } catch (err) {

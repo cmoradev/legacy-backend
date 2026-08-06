@@ -18,7 +18,7 @@ import {
     ComprobanteImpuestos, ComprobanteImpuestosTraslado,
     ComprobanteCfdiRelacionados, ComprobanteCfdiRelacionadosCfdiRelacionado, TipoRelacionEnum, FormaPagoEnum, MonedaEnum, TipoComprobanteEnum, MetodoPagoEnum
 } from "@munyaal/cfdi";
-import { FullGenerateXml, getFolderComprobantes } from "./generateInvoice";
+import { FullGenerateXml, FullGenerateResult, getFolderComprobantes } from "./generateInvoice";
 import { Concept, Decimal } from "@munyaal/calculations";
 import { getMoreDatails } from "../../../../common/point-of-sale/utils";
 import { sanitizeStringToXml } from "../../sanitizeStringToXml";
@@ -36,7 +36,7 @@ interface CreditNoteTelweb {
     s3Service?: S3Service
 }
 
-export async function CreditNote(payload: CreditNoteTelweb) {
+export async function CreditNote(payload: CreditNoteTelweb): Promise<FullGenerateResult> {
     const { env, settingsBranchOffice, invoice, receiver, relations = [],
         concepts, type, calculations, s3Service } = payload
     const { instancePath, xslt } = env;

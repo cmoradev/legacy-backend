@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AcademyChargePaymentsController } from './academy-charge-payments.controller';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
+import { AcademyChargePaymentsBillingService } from './academy-charge-payments-billing.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { AcademyChargePayments } from './entities/academy-charge-payments.entity';
@@ -38,8 +39,8 @@ import { StorageModule } from 'src/common/storage/storage.module';
         StorageModule
     ],
     controllers: [AcademyChargePaymentsController],
-    providers: [AcademyChargePaymentsService, SmartWeb],
-    exports: [AcademyChargePaymentsService],
+    providers: [AcademyChargePaymentsService, AcademyChargePaymentsBillingService, SmartWeb],
+    exports: [AcademyChargePaymentsService, AcademyChargePaymentsBillingService],
 })
 export class AcademyChargePaymentsModule {
 }
