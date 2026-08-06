@@ -2,7 +2,7 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf, TCreatedPdf } from 'pdfmake/build/pdfmake';
 import { vfs } from 'pdfmake/build/pdfmake';
 import { pdfMake } from 'pdfmake/build/vfs_fonts';
-import { NumeroALetras } from '../../pdf/A117/desing/utils/NumbersToLetter';
+import { NumeroALetras } from '../numbers-to-letter';
 // @ts-ignore
 vfs = pdfMake.vfs;
 
