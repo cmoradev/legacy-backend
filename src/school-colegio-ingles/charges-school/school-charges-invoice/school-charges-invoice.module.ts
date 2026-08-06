@@ -10,6 +10,7 @@ import { BranchOfficeSettingModule } from '../../../system/branch-office-setting
 import { SchoolChargesPaymentsModule } from '../school-charges-payments/school-charges-payments.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { ConfigModule } from '../../../common/config/config.module';
+import { StorageModule } from '../../../common/storage/storage.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SchoolChargesInvoice], ColegioDBNameConnection),
@@ -17,7 +18,8 @@ import { ConfigModule } from '../../../common/config/config.module';
     BranchOfficeModule,
     BranchOfficeSettingModule,
     forwardRef(() => SchoolChargesPaymentsModule),
-    ConfigModule
+    ConfigModule,
+    StorageModule
   ],
   providers: [SchoolChargesInvoiceService, SmartWeb],
   controllers: [SchoolChargesInvoiceController],

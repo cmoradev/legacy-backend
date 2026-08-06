@@ -76,6 +76,11 @@ export class S3Service {
 
   public async getObjectCommand(filename: string): Promise<Buffer> {
     try {
+      if (!this._s3Folder) {
+      throw new BadRequestException(
+        'S3_FOLDER no está configurado. No se pueden obtener archivos sin un folder destino.',
+      );
+    }
       const params: GetObjectCommandInput = {
         Bucket: this.bucketName,
         Key: this._buildKey(filename),

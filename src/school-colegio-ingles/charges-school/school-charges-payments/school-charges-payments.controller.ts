@@ -645,6 +645,7 @@ export class SchoolChargesPaymentsController
         Exportacion: ExportacionEnumMunyaal.E01,
         MetodoPago: MetodoPagoEnum.PUE,
         Moneda: MonedaEnum.MXN,
+        s3Service: this._s3Service
       });
 
       await this.service.updateStampingPayments(

@@ -20,7 +20,6 @@ import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { SchoolChargesInvoiceService } from './school-charges-invoice.service';
 import { Response } from 'express';
 import * as fs from 'fs';
-import { readFileSync } from 'fs';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { FactSw } from '../../../webService/FactSw';
@@ -28,6 +27,7 @@ import { SchoolChargesPaymentsService } from '../school-charges-payments/school-
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
 import { ConfigService } from '../../../common/config/config.service';
+import { S3Service } from '../../../common/storage/s3.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { Public } from '../../../common/docorators/public.decorator';
@@ -78,6 +78,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         readonly schoolChargePayment: SchoolChargesPaymentsService,
         private smartWeb: FactSw,
         private readonly configService: ConfigService,
+        private readonly s3Service: S3Service,
     ) {
     }
 
@@ -98,9 +99,11 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
-            const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.pdf');
-            // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            const uuid = query.uuid.toLowerCase();
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.pdf`,
+            );
+            res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
         } catch (e) {
             res.send({ error: e }).status(400);
         }
@@ -109,8 +112,11 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     @Get('/xml')
     public async xml(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
-            const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/colegio/` + query.uuid + '.xml');
-            res.send({ src: pdf64.toString('base64') });
+            const uuid = query.uuid.toLowerCase();
+            const xmlBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.xml`,
+            );
+            res.send({ src: xmlBuffer.toString('base64') });
         } catch (e) {
             res.send({ error: e }).status(400);
         }
@@ -260,9 +266,16 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                     break;
                 case 'zip':
                     const zip = new AdmZip();
-                    for (const invoce of dataReport) {
-                        zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${invoce.uuid}.pdf`);
-                        zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${invoce.uuid}.xml`);
+                    const filesToDownload = dataReport.map((invoce) => {
+                        const uuid = invoce.uuid.toLowerCase();
+                        return Promise.all([
+                            this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.pdf`).then(buf => ({ name: `${uuid}.pdf`, buffer: buf })),
+                            this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.xml`).then(buf => ({ name: `${uuid}.xml`, buffer: buf })),
+                        ]);
+                    });
+                    const allFiles = await Promise.all(filesToDownload);
+                    for (const pair of allFiles) {
+                        pair.forEach(file => zip.addFile(file.name, file.buffer));
                     }
 
                     const downloadName = `${Date.now()}.zip`;
@@ -287,9 +300,13 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     @Get('/download-xml')
     async getXmlInvoice(@Query() request, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/colegio/${request.UUID}.xml`;
-            response.download(xml);
+            const uuid = request.UUID.toLowerCase();
+            const xmlBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.xml`,
+            );
+            response.set('Content-Type', 'application/xml');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
+            response.send(xmlBuffer);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -297,11 +314,15 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
 
     @Public()
     @Get('/download-pdf')
-    getPdfInvoice(@Query() request, @Res() response) {
+    async getPdfInvoice(@Query() request, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/colegio/${request.UUID}.pdf`;
-            response.download(xml);
+            const uuid = request.UUID.toLowerCase();
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.pdf`,
+            );
+            response.set('Content-Type', 'application/pdf');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
+            response.send(pdfBuffer);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -314,10 +335,17 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     ) {
         try {
             const zip = new AdmZip();
-            params.array.forEach((i: NotInvoiced) => {
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/colegio/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
+            const filesToDownload = params.array.map((i: NotInvoiced) => {
+                const uuid = (i.f_uuid != null ? i.f_uuid : i.p_global_uuid).toLowerCase();
+                return Promise.all([
+                    this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.pdf`).then(buf => ({ name: `${uuid}.pdf`, buffer: buf })),
+                    this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.xml`).then(buf => ({ name: `${uuid}.xml`, buffer: buf })),
+                ]);
             });
+            const allFiles = await Promise.all(filesToDownload);
+            for (const pair of allFiles) {
+                pair.forEach(file => zip.addFile(file.name, file.buffer));
+            }
 
             const downloadName = `${Date.now()}.zip`;
             const data = zip.toBuffer();
