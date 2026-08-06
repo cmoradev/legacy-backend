@@ -13,6 +13,7 @@ import { AcademyChargePaymentsModule } from '../academy-charge-payments/academy-
 import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
 import {AcademyChargeDiscountsModule} from '../academy-charge-discounts/academy-charge-discounts.module';
 import { ConfigModule } from '../../../common/config/config.module';
+import { StorageModule } from 'src/common/storage/storage.module';
 
 @Module({
     imports: [
@@ -22,7 +23,8 @@ import { ConfigModule } from '../../../common/config/config.module';
         BranchOfficeSettingModule,
         AcademyChargeDiscountsModule,
         forwardRef(() => AcademyChargePaymentsModule),
-        ConfigModule
+        ConfigModule,
+        StorageModule
     ],
     controllers: [AcademyChargeInvoiceController],
     providers: [AcademyChargeInvoiceService, SmartWeb],

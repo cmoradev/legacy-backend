@@ -103,51 +103,10 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
         try {
             const uuid = query.uuid.toLowerCase();
-
-            // Intento 1: obtener PDF de S3
-            try {
-                const pdfBuffer = await this.s3Service.getObjectCommand(
-                    `comprobantes/colegio/${uuid}.pdf`,
-                );
-                return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
-            } catch (pdfErr) {
-                // PDF no encontrado → intentar regenerar desde XML
-            }
-
-            // Intento 2: regenerar PDF desde XML almacenado en S3
-            try {
-                const xmlBuffer = await this.s3Service.getObjectCommand(
-                    `comprobantes/colegio/${uuid}.xml`,
-                );
-                const xmlString = xmlBuffer.toString('utf-8');
-
-                // Extraer cadena original SAT del XML timbrado
-                const cadenaMatch = xmlString.match(/tfd:TimbreFiscalDigital[^>]*xsi:schemaLocation="[^"]*"[^>]*cfdi:([^"]*)/);
-                const selloMatch = xmlString.match(/Sello="([^"]*)"/);
-
-                // Usar CfdiPdf para regenerar desde el XML
-                const cadenaOriginalSAT = '';
-                const pdf = new CfdiPdf(xmlString, cadenaOriginalSAT);
-                const buffer = await pdf.getBuffer();
-
-                // Guardar PDF regenerado en S3 para futuras peticiones
-                try {
-                    await this.s3Service.putObjectCommand({
-                        type: 'application/pdf',
-                        buffer,
-                        key: `comprobantes/colegio/${uuid}.pdf`,
-                    });
-                } catch (uploadErr) {
-                    // No bloquear la respuesta si falla la subida
-                    console.warn('No se pudo guardar PDF regenerado en S3:', uploadErr.message);
-                }
-
-                return res.send({ src: 'data:application/pdf;base64,' + buffer.toString('base64') });
-            } catch (xmlErr) {
-                return res.status(404).send({
-                    error: 'No se encontró el PDF ni el XML para regenerarlo',
-                });
-            }
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.pdf`,
+            );
+            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
         } catch (e) {
             res.status(400).send({ error: e });
         }
@@ -362,47 +321,13 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         try {
             const uuid = request.UUID.toLowerCase();
 
-            // Intento 1: obtener PDF de S3
-            try {
-                const pdfBuffer = await this.s3Service.getObjectCommand(
-                    `comprobantes/colegio/${uuid}.pdf`,
-                );
-                response.set('Content-Type', 'application/pdf');
-                response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-                return response.send(pdfBuffer);
-            } catch (pdfErr) {
-                // PDF no encontrado → intentar regenerar desde XML
-            }
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/colegio/${uuid}.pdf`,
+            );
+            response.set('Content-Type', 'application/pdf');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
+            return response.send(pdfBuffer);
 
-            // Intento 2: regenerar PDF desde XML almacenado en S3
-            try {
-                const xmlBuffer = await this.s3Service.getObjectCommand(
-                    `comprobantes/colegio/${uuid}.xml`,
-                );
-                const xmlString = xmlBuffer.toString('utf-8');
-                const pdf = new CfdiPdf(xmlString, '');
-                const buffer = await pdf.getBuffer();
-
-                // Guardar PDF regenerado en S3 para futuras peticiones
-                try {
-                    await this.s3Service.putObjectCommand({
-                        type: 'application/pdf',
-                        buffer,
-                        key: `comprobantes/colegio/${uuid}.pdf`,
-                    });
-                } catch (uploadErr) {
-                    console.warn('No se pudo guardar PDF regenerado en S3:', uploadErr.message);
-                }
-
-                response.set('Content-Type', 'application/pdf');
-                response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-                return response.send(buffer);
-            } catch (xmlErr) {
-                throw new HttpException(
-                    'No se encontró el PDF ni el XML para regenerarlo',
-                    HttpStatus.NOT_FOUND,
-                );
-            }
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }

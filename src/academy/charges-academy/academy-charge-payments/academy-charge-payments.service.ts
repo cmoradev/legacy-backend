@@ -25,10 +25,8 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { RegimenFiscalList, XmlComprobante } from '@signati/core';
-import { readFileSync, writeFileSync } from 'fs';
-import { PDF, XmlToJson } from '@signati/pdf';
-import { A117 } from '../../../pdf/A117/desing/A117';
+import { RegimenFiscalList } from '@signati/core';
+import { readFileSync } from 'fs';
 import {
   roundQuantity,
   sumQuantity,

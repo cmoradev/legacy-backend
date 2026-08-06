@@ -23,21 +23,19 @@ import {
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
 import * as fs from 'fs';
-import { readFileSync } from 'fs';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { CancelInvoiceSwDto } from './dto/cancel.invoice.sw.dto';
 import { MiniStoreSalesPaymentsService } from '../mini-store-sales-payments/mini-store-sales-payments.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { User } from '../../../system/users/entities/user.entity';
-import { PDF } from '@signati/pdf';
 import { ConfigService } from '../../../common/config/config.service';
-import { A117 } from '../../../pdf/A117/desing/A117';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { Public } from '../../../common/docorators/public.decorator';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { In } from 'typeorm';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
     model: {
@@ -76,7 +74,9 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         readonly branchOffice: BranchOfficeService,
         readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
         private readonly configService: ConfigService,
-        private smartWeb: FactSw) {
+        private smartWeb: FactSw,
+        private readonly s3Service: S3Service,
+    ) {
     }
 
     get base(): CrudController<MiniStoreInvoice> {
@@ -123,23 +123,14 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string, rebuild: string }) {
         try {
-            if (query.rebuild === '1' || +query.rebuild === 1) {
-                const logo = readFileSync(`${this.configService.getPath()}logos/tienditalogo.png`);
-                const pathXml = `${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.xml';
-                const desingpdf = new A117(pathXml, {
-                    lugarExpedicion: 'CARRETERA FEDERAL CANCUN TULUM KM 292 MANZANA 24 LOTE 24 FRACCION 4 EJIDO PLAYA',
-                    // lugarExpedicion: branchOfficeSett.address,
-                    logo: `data:image/png;base64, ${logo.toString('base64')}`,
-                });
-                const pdf = new PDF<A117>(desingpdf);
-                await pdf.save(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid);
-            }
-            const pdf64 = fs.readFileSync(`${this.configService.getPath()}comprobantes/tienda/` + query.uuid + '.pdf');
-            // data:application/pdf;filename=generated.pdf;base64,
-            // data:image/png;base64,
-            res.send({ src: `data:application/pdf;base64, ${pdf64.toString('base64')}` });
+            const uuid = query.uuid.toLowerCase();
+
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/tienda/${uuid}.pdf`,
+            );
+            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.status(400).send({ error: e });
         }
     }
 
@@ -272,11 +263,15 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Public()
     @Get('/download-xml/:UUID')
-    getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
+    async getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${UUID}.xml`;
-            response.download(xml);
+            const uuid = UUID.toLowerCase();
+            const xmlBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/tienda/${uuid}.xml`,
+            );
+            response.set('Content-Type', 'application/xml');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
+            response.send(xmlBuffer);
         } catch (e) {
             throw new HttpException(e instanceof Error ? e.message : '', HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -284,15 +279,18 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Public()
     @Get('/download-pdf/:UUID')
-    getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
+    async getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/tienda/${UUID}.pdf`;
-            response.download(xml);
+            const uuid = UUID.toLowerCase();
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/tienda/${uuid}.pdf`,
+            );
+            response.set('Content-Type', 'application/pdf');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
+            response.send(pdfBuffer);
         } catch (e) {
             throw new HttpException(e instanceof Error ? e.message : '', HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
     }
     // eliminar al cambiar los reporte del front
     @Post('report-invoice')

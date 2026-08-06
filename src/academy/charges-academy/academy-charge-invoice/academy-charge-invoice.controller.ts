@@ -28,7 +28,6 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { AcademyChargePaymentsService } from '../academy-charge-payments/academy-charge-payments.service';
 import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { User } from '../../../system/users/entities/user.entity';
-
 import { ReportData } from './dto/reportData.dto';
 import { AcademyChargeDiscountsService } from '../academy-charge-discounts/academy-charge-discounts.service';
 import { Between, In } from 'typeorm';
@@ -41,6 +40,7 @@ import { Public } from '../../../common/docorators/public.decorator';
 import * as AdmZip from 'adm-zip';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
+import { S3Service } from 'src/common/storage/s3.service';
 
 @Crud({
     model: {
@@ -91,6 +91,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
         private smartWeb: FactSw,
         private readonly configService: ConfigService,
+        private readonly s3Service: S3Service,
     ) {
     }
 
@@ -141,12 +142,17 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
     @Get(':id/pdf')
     public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
+        
         try {
-            const pdf64 = readFileSync(`${this.configService.getPath()}comprobantes/academias/` + query.uuid + '.pdf');
-            // data:application/pdf;filename=generated.pdf;base64,
-            res.send({ src: 'data:application/pdf;base64,' + pdf64.toString('base64') });
+            const uuid = query.uuid.toLowerCase();
+
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/academias/${uuid}.pdf`,
+            );
+            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
+           
         } catch (e) {
-            res.send({ error: e }).status(400);
+            res.status(400).send({ error: e });
         }
     }
 
@@ -415,11 +421,15 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
     @Public()
     @Get('/download-pdf')
-    getPdfInvoice(@Query('UUID') UUID: string, @Res() response) {
+    async getPdfInvoice(@Query('UUID') UUID: string, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/academias/${UUID}.pdf`;
-            response.download(xml);
+            const uuid = UUID.toLowerCase();
+            const pdfBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/academias/${uuid}.pdf`,
+            );
+            response.set('Content-Type', 'application/pdf');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
+            response.send(pdfBuffer);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -427,11 +437,15 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
 
     @Public()
     @Get('/download-xml')
-    getXmlInvoiceUUID(@Param('UUID') UUID: string, @Res() response) {
+    async getXmlInvoiceUUID(@Query('UUID') UUID: string, @Res() response) {
         try {
-            const workPath = this.configService.getPath();
-            const xml = `${workPath}/comprobantes/academias/${UUID}.xml`;
-            response.download(xml);
+            const uuid = UUID.toLowerCase();
+            const xmlBuffer = await this.s3Service.getObjectCommand(
+                `comprobantes/academias/${uuid}.xml`,
+            );
+            response.set('Content-Type', 'application/xml');
+            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
+            response.send(xmlBuffer);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -444,10 +458,17 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     ) {
         try {
             const zip = new AdmZip();
-            params.array.forEach((i: NotInvoiced) => {
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/academias/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
+            const filesToDownload = params.array.map((i: NotInvoiced) => {
+                const uuid = (i.f_uuid != null ? i.f_uuid : i.p_global_uuid).toLowerCase();
+                return Promise.all([
+                    this.s3Service.getObjectCommand(`comprobantes/academias/${uuid}.pdf`).then(buf => ({ name: `${uuid}.pdf`, buffer: buf })),
+                    this.s3Service.getObjectCommand(`comprobantes/academias/${uuid}.xml`).then(buf => ({ name: `${uuid}.xml`, buffer: buf })),
+                ]);
             });
+            const allFiles = await Promise.all(filesToDownload);
+            for (const pair of allFiles) {
+                pair.forEach(file => zip.addFile(file.name, file.buffer));
+            }
 
             const downloadName = `${Date.now()}.zip`;
             const data = zip.toBuffer();

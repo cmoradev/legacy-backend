@@ -207,11 +207,15 @@ export class CreditNoteStoreController
   }
 
   @Get('/download-pdf')
-  getPdfInvoice(@Query() request, @Res() response) {
+  async getPdfInvoice(@Query() request, @Res() response) {
     try {
-      const workPath = this.configService.getPath();
-      const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.pdf`;
-      response.download(xml);
+      const uuid = request.UUID.toLowerCase();
+      const pdfBuffer = await this._s3Service.getObjectCommand(
+        `comprobantes/notas-credito/${uuid}.pdf`,
+      );
+      response.set('Content-Type', 'application/pdf');
+      response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
+      response.send(pdfBuffer);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -220,9 +224,13 @@ export class CreditNoteStoreController
   @Get('/download-xml')
   async getXmlInvoice(@Query() request, @Res() response) {
     try {
-      const workPath = this.configService.getPath();
-      const xml = `${workPath}/comprobantes/notas-credito/${request.UUID}.xml`;
-      response.download(xml);
+      const uuid = request.UUID.toLowerCase();
+      const xmlBuffer = await this._s3Service.getObjectCommand(
+        `comprobantes/notas-credito/${uuid}.xml`,
+      );
+      response.set('Content-Type', 'application/xml');
+      response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
+      response.send(xmlBuffer);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
