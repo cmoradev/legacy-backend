@@ -3,7 +3,7 @@ import { SystemTypeExtraChargesEnum } from '../../system/system-type-extra-charg
 import { TypeChargeApplicationEnum } from '../../system/system-extra-charges/enums/system-extra-charges.enum';
 import { Detalles, ExtraCharges, FacturaDetalles, InvoiceModules, Payment } from './types.pos';
 import { ivaFromFinalAmount } from '../numbers';
-import { ObjetoImpEnum } from '@signati/core';
+import { ObjetoImpEnum } from '@munyaal/cfdi';
 import { getMoreDatails } from './utils';
 export const mulQuantity = (price: number | string, quantity: number | string, decimal: number = -2) => {
     return +round(mul(price, quantity, { returnString: true }), decimal, { returnString: true, trim: false });
@@ -298,7 +298,7 @@ export const ConceptsPriceByPaymentBillig = <T extends Detalles>(payload: {
                 },
             },
             // @ts-ignore
-            objectoImp: detail.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto,
+            objectoImp: detail.objetoImp || ObjetoImpEnum.OI01,
             unitPrice,
             discountTotal: discountBase,
             importe,

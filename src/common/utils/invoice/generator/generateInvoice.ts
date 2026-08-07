@@ -1,8 +1,4 @@
-import {    
-    FormaPago,
-    XmlIeduAttribute
-} from '@signati/core';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
+import { ConceptoComplementoIeduElement } from '@munyaal/cfdi';
 import { sumQuantity } from '../../../point-of-sale/point-of-sale';
 import * as moment from 'moment-timezone';
 import { sanitizeStringToXml } from '../../sanitizeStringToXml';
@@ -33,7 +29,7 @@ export type GlobalInvoiceParams = {
     branchOfficeConfig: BranchOfficeSetting,
     env: Environment,
     folio: string,
-    wayPayment: FormaPago | FormaPagoEnum;
+    wayPayment: FormaPagoEnum;
     details: InvoiceDetails;
     infoGlobal: {
         periodicity: PeriodicityEnum;
@@ -49,7 +45,7 @@ export interface InvoiceModule extends CFDIWebtel {
     TipoDeComprobante: TipoComprobanteEnum;
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
-    student?: XmlIeduAttribute;
+    student?: ConceptoComplementoIeduElement;
     s3Service?: S3Service;
 }
 
@@ -148,7 +144,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<Ful
             Importe: Importe.toString(),
             ObjetoImp: ObjetoImp as ObjetoImpEnumMunyaal
         });
-        if (type !== InvoiceModules.SCHOOL && cts.concept.ObjetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
+        if (type !== InvoiceModules.SCHOOL && cts.concept.ObjetoImp === ObjetoImpEnumMunyaal.OI02) {
             const impuestos = new ComprobanteConceptoImpuestos();
 
             const traslados = new ComprobanteConceptoImpuestosTraslado({

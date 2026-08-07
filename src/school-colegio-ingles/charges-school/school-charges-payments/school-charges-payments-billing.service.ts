@@ -8,7 +8,6 @@ import { QuerySchoolPaymentBilling } from '../../school-payments/interfaces/Invo
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
@@ -22,7 +21,6 @@ import {
   InvoiceStepError,
 } from '../../../common/utils/invoice/generator/generateInvoice';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import {
   ConceptsPriceByPaymentBilligCalculation,
 } from '../../../common/calculations/calculation';
@@ -33,6 +31,10 @@ import {
   MetodoPagoEnum,
   MonedaEnum,
   TipoComprobanteEnum,
+  FormaPagoEnum,
+  ObjetoImpEnum,
+  RegimenFiscalEnum,
+  UsoCfdiEnum,
 } from '@munyaal/cfdi';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -284,9 +286,9 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
       const receptor = {
         Nombre: query.receiver.businessName,
         Rfc: query.receiver.rfc,
-        UsoCFDI: query.usoCfdi.value,
+        UsoCFDI: query.usoCfdi.value as UsoCfdiEnum,
         DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-        RegimenFiscalReceptor: query.receiver.keyRegimen,
+        RegimenFiscalReceptor: query.receiver.keyRegimen as RegimenFiscalEnum,
       };
 
       const studentMetada = await this.studentsService.getIEDUMetadata(query.student.id);
@@ -314,7 +316,7 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
         env,
         informacionGlobal: query.informacionGlobal,
         receptor,
-        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+        codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPagoEnum,
         TipoDeComprobante: TipoComprobanteEnum.I,
         Exportacion: ExportacionEnumMunyaal.E01,
         MetodoPago: MetodoPagoEnum.PUE,
@@ -387,7 +389,7 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
 
       const details = getDetailsPaymentsGlobal(
         concepts,
-        ObjetoImpEnum.NoobjetoDeimpuesto,
+        ObjetoImpEnum.OI01,
         0,
       );
 

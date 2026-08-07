@@ -62,3 +62,9 @@ declare module 'sw-sdk-nodejs' {
     // tslint:disable-next-line:max-classes-per-file
     export function AccountBalance(): void;
 }
+
+declare module 'pdfmake/build/vfs_fonts' {
+    export const pdfMake: {
+        vfs: { [file: string]: string };
+    };
+}

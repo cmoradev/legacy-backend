@@ -12,7 +12,7 @@ import {
     Res
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { XmlReceptorAttribute } from '@signati/core';
+import { AttributesComprobanteReceptorElement } from '@munyaal/cfdi';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 import { ConfigService } from '../common/config/config.service';
 import { FactSw } from '../webService/FactSw';
@@ -76,7 +76,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     async generateCreditNote(
         @Body() request: {
             invoice: InvoiceSat,
-            receiver: Partial<XmlReceptorAttribute>,
+            receiver: Partial<AttributesComprobanteReceptorElement>,
             concepts: any[],
             calculations: any,
             invoicesRelations: any[],

@@ -1,6 +1,6 @@
 import { Detalles, ExtraCharges, InvoiceModules, Payment } from '../point-of-sale/types.pos';
 import { getMoreDatails } from '../point-of-sale/utils';
-import { ObjetoImpEnum } from '@signati/core';
+import { ObjetoImpEnum } from '@munyaal/cfdi';
 import { calculateInvoicePrices, Concept, ChargeTypeEnum, Charge, ChargeApplicationEnum, FountTypeEnum, TaxPercentageEnum, ConceptAmountDetailsResult, Decimal } from '@munyaal/calculations'
 import { ConceptReceipt, ConceptSchoolAndAcademy, DataInvoice, dataInvoiceInit } from './TypesCalculation';
 import { sanitizeStringToXml } from '../utils/sanitizeStringToXml';
@@ -69,12 +69,12 @@ export const ConceptsPriceByPaymentBilligCalculation = <T extends Detalles>(payl
                     ValorUnitario: concept.fiscalPrices.unitPrice?.toFixed(6),
                     Importe: concept.fiscalPrices.amount.toFixed(6),
                     Descuento: concept.fiscalPrices.discount.toFixed(6),
-                    ObjetoImp: conceptDetails.objetoImp || ObjetoImpEnum.NoobjetoDeimpuesto
+                    ObjetoImp: conceptDetails.objetoImp || ObjetoImpEnum.OI01
                 },
                 base: '',
                 import: ''
             };
-            if (ivaByDetail !== 0 && conceptDetails.objetoImp === ObjetoImpEnum.SíObjetoDeImpuesto) {
+            if (ivaByDetail !== 0 && conceptDetails.objetoImp === ObjetoImpEnum.OI02) {
                 cpt.base = concept.fiscalPrices.baseTax.toFixed(6);
                 cpt.import = concept.fiscalPrices.tax.toFixed(6);
             }

@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { CFDI, Comprobante, Concepts, Emisor, ExportacionEnum, FormaPago, Impuestos, MetodoPago, ObjetoImpEnum, Receptor, Relacionado } from '@signati/core';
 import { getRepository } from 'typeorm';
 import { ConfigService } from './common/config/config.service';
 import { ColegioDBNameConnection } from './common/databases/colegiodb.service';

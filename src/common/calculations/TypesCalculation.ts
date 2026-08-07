@@ -1,4 +1,4 @@
-import { XmlConceptoAttributes } from '@signati/core';
+import { AttributesComprobanteConceptoElement } from '@munyaal/cfdi';
 import { ChargesDetails } from '../point-of-sale/types.pos';
 const zero = '0.00';
 const zeroD = 0.00;
@@ -14,7 +14,7 @@ export interface DataInvoice{
     }
     concepts: {
         conceptsInvoice: {
-            concept: XmlConceptoAttributes,
+            concept: AttributesComprobanteConceptoElement,
             base: string,
             import: string
         }[]

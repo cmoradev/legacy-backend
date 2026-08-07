@@ -1,4 +1,4 @@
-import { FormaPago, FormaPagoType, XmlReceptorAttribute } from "@signati/core";
+import { AttributesComprobanteReceptorElement, FormaPagoEnum } from "@munyaal/cfdi";
 import { InformacionGlobal } from "../../mini-store/store-sales/mini-store-sales-payments/interface/InvoiceMiniStore.interface";
 import { BranchOfficeSetting } from "../../system/branch-office-setting/entities/branch-office-setting.entity";
 import { SystemTypeExtraChargesEnum } from "../../system/system-type-extra-charges/entities/system-type-extra-charges.entity";
@@ -53,9 +53,9 @@ export type RelateParams = {
 export interface CFDIWebtel extends DataInvoice {
     serie: string;
     folio: string;
-    codigoFormaPago: FormaPago | FormaPagoType;
+    codigoFormaPago: FormaPagoEnum;
     emisor: BranchOfficeSetting;
-    receptor: XmlReceptorAttribute;
+    receptor: AttributesComprobanteReceptorElement;
     env: Environment;
     informacionGlobal?: InformacionGlobal;
     importeImpuesto?: number;

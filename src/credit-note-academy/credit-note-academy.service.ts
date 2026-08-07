@@ -1,7 +1,7 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { FormaPago, FormaPagoType, MetodoPago, MetodoPagoType, TipoComprobante, TypeComprobante, XmlCdfi } from '@signati/core';
+import { FormaPagoEnum, MetodoPagoEnum, TipoComprobanteEnum } from '@munyaal/cfdi';
 import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
 import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
@@ -43,7 +43,7 @@ export interface InvoiceSat {
     Folio: string;
     Fecha: string;
     Sello: string;
-    FormaPago: FormaPago | FormaPagoType;
+    FormaPago: FormaPagoEnum;
     NoCertificado: string;
     Certificado: string;s
     condicionesDePago?: string;
@@ -51,8 +51,8 @@ export interface InvoiceSat {
     Descuento: string;
     Moneda: string;
     Total: string;
-    TipoDeComprobante: TipoComprobante | TypeComprobante;
-    MetodoPago: MetodoPago | MetodoPagoType;
+    TipoDeComprobante: TipoComprobanteEnum;
+    MetodoPago: MetodoPagoEnum;
     LugarExpedicion: string;
     Impuesto: string;
     TasaOCuota: string;

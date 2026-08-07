@@ -20,12 +20,12 @@ import {
   NotInvoiced,
   VWPaymentExtraCharge,
 } from '../../../common/interface/not-invoiced.interface';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import { FormaPagoEnum } from '@munyaal/cfdi';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
-import { RegimenFiscalList } from '@signati/core';
+import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { readFileSync } from 'fs';
 import {
   roundQuantity,
@@ -465,7 +465,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     return data;
   }
 
-  public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPago> {
+  public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPagoEnum> {
     const ids = payments.map<number>((value) => value.p_id);
 
     const data = await this.connection.query(`
@@ -765,8 +765,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
 
     Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
 
-    const regimen = RegimenFiscalList.find(
-      (f) => f.value === branchOfficeSett.regime,
+    const regimen = catRegimenFiscal.find(
+      (f) => f.key === String(branchOfficeSett.regime),
     );
 
     if (regimen !== undefined) {
@@ -775,7 +775,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
         rfc: branchOfficeSett.rfc,
         regimen:
           branchOfficeSett.regime + ' - ' + regimen !== undefined
-            ? regimen!.descripcion.toUpperCase()
+            ? regimen!.description.toUpperCase()
             : '',
         expedido: branchOfficeSett.address,
       });

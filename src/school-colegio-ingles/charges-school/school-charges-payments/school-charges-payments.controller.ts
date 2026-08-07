@@ -21,7 +21,7 @@ import { InvoiceMethodsPaymentsService } from '../../../invoice/invoice-methods-
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { SchoolChargesInvoiceService } from '../school-charges-invoice/school-charges-invoice.service';
-import { RegimenFiscalList } from '@signati/core';
+import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { FactSw } from '../../../webService/FactSw';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
@@ -667,14 +667,14 @@ export class SchoolChargesPaymentsController
       Receip.addFolio2(result.charge.folio);
       Receip.addDate(moment(result.charge.createdAt).format('YYYY-MM-DD'));
       Receip.addDate2(moment(result.charge.createdAt).format('YYYY-MM-DD'));
-      const regimen = RegimenFiscalList.find(
-        (f) => f.value === branchOfficeSett.regime,
+      const regimen = catRegimenFiscal.find(
+        (f) => f.key === String(branchOfficeSett.regime),
       );
       Receip.addEmisor({
         name: branchOfficeSett.businessName,
         rfc: branchOfficeSett.rfc,
         regimen:
-          branchOfficeSett.regime + ' - ' + regimen!.descripcion.toUpperCase(),
+          branchOfficeSett.regime + ' - ' + regimen!.description.toUpperCase(),
         expedido: branchOfficeSett.address,
       });
       const name = `${student.name} ${student.lastNameFather} ${student.lastNameMother} `;

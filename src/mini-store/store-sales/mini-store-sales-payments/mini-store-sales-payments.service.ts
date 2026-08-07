@@ -24,9 +24,9 @@ import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-inv
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import { FormaPagoEnum } from '@munyaal/cfdi';
+import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { readFileSync } from 'fs';
-import { RegimenFiscalList } from '@signati/core';
 import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -428,7 +428,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         return data
     }
 
-    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPago> {
+    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPagoEnum> {
         const ids = payments.map<number>((value) => value.p_id);
 
         const data = await this.connection.query(`
@@ -693,8 +693,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
 
         Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
 
-        const regimen = RegimenFiscalList.find(
-            (f) => f.value === branchOfficeSett.regime,
+        const regimen = catRegimenFiscal.find(
+            (f) => f.key === String(branchOfficeSett.regime),
         );
 
         if (regimen !== undefined) {
@@ -702,7 +702,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 name: branchOfficeSett.businessName,
                 rfc: branchOfficeSett.rfc,
                 regimen:
-                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.description.toUpperCase() : '',
                 expedido: branchOfficeSett.address,
             });
         }

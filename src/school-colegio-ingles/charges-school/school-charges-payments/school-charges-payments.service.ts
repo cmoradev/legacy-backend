@@ -17,13 +17,13 @@ import * as moment from 'moment';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
 import { SimpleReportCollege } from './reports/simple.report';
 import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import { FormaPagoEnum } from '@munyaal/cfdi';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
-import { RegimenFiscalList } from '@signati/core';
+import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { readFileSync } from 'fs';
 import { ConfigService } from '../../../common/config/config.service';
 import * as nodemailer from 'nodemailer';
@@ -404,7 +404,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         return data
     }
 
-    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPago> {
+    public async getWayPayment(payments: NotInvoiced[]): Promise<FormaPagoEnum> {
         const ids = payments.map<number>((value) => value.p_id);
 
         const data = await this.connection.query(`
@@ -533,8 +533,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
         Receip.addDate(moment(result.payment.createdAt).format('YYYY-MM-DD'));
 
-        const regimen = RegimenFiscalList.find(
-            (f) => f.value === branchOfficeSett.regime,
+        const regimen = catRegimenFiscal.find(
+            (f) => f.key === String(branchOfficeSett.regime),
         );
 
         if (regimen !== undefined) {
@@ -542,7 +542,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
                 name: branchOfficeSett.businessName,
                 rfc: branchOfficeSett.rfc,
                 regimen:
-                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.descripcion.toUpperCase() : '',
+                    branchOfficeSett.regime + ' - ' + regimen !== undefined ? regimen!.description.toUpperCase() : '',
                 expedido: branchOfficeSett.address,
             });
         }

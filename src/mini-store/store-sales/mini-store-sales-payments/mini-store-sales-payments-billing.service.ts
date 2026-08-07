@@ -8,7 +8,16 @@ import { QueryBilling } from './interface/InvoiceMiniStore.interface';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
+import {
+    ExportacionEnum as ExportacionEnumMunyaal,
+    MetodoPagoEnum,
+    MonedaEnum,
+    TipoComprobanteEnum,
+    FormaPagoEnum,
+    ObjetoImpEnum,
+    RegimenFiscalEnum,
+    UsoCfdiEnum,
+} from '@munyaal/cfdi';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
@@ -26,12 +35,6 @@ import {
 } from '../../../common/calculations/calculation';
 import { Environment } from '../../../common/point-of-sale/types.pos';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import {
-    ExportacionEnum as ExportacionEnumMunyaal,
-    MetodoPagoEnum,
-    MonedaEnum,
-    TipoComprobanteEnum,
-} from '@munyaal/cfdi';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -40,7 +43,6 @@ import { Inject, forwardRef } from '@nestjs/common';
 import { MiniStoreSalesPaymentsService } from './mini-store-sales-payments.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 
 export interface BillingResponse {
@@ -282,9 +284,9 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
         const receptor = {
             Nombre: query.receiver.businessName,
             Rfc: query.receiver.rfc,
-            UsoCFDI: query.usoCfdi.value,
+            UsoCFDI: query.usoCfdi.value as UsoCfdiEnum,
             DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-            RegimenFiscalReceptor: query.receiver.keyRegimen,
+            RegimenFiscalReceptor: query.receiver.keyRegimen as RegimenFiscalEnum,
         };
 
         const env: Environment = {
@@ -302,7 +304,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
             env,
             informacionGlobal: query.informacionGlobal,
             receptor,
-            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPagoEnum,
             TipoDeComprobante: TipoComprobanteEnum.I,
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
@@ -386,7 +388,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
 
         response.concepts = concepts;
 
-        const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.SíObjetoDeImpuesto);
+        const details = getDetailsPaymentsGlobal(concepts, ObjetoImpEnum.OI02);
 
         const wayPayment = await this.service.getWayPayment(concepts);
 

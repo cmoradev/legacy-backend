@@ -4,7 +4,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.entity';
 import { MiniStoreWarehouseOrdersService } from './mini-store-warehouse-orders.service';
 import { orderRecipe } from './reports/ordersRecipe';
-import { AlignmentType } from 'docx';
 import { add, mul, round } from 'exact-math';
 import { BranchOfficeSettingService } from '../../system/branch-office-setting/branch-office-setting.service';
 import { BranchOfficeService } from '../../system/branch-office/branch-office.service';
@@ -71,8 +70,8 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
                 returnString: true,
                 trim: false,
             });
-            prod.push({ text: i.toString(), align: AlignmentType.CENTER });
-            prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
+            prod.push({ text: i.toString(), alignment: 'center' });
+            prod.push({ text: product.miniStoreProduct.name, alignment: 'left' });
             prod.push({ text: product.requestedAmount.toString() });
             prod.push({ text: product.miniStoreProduct.unity });
             prod.push({ text: product.receivedAmount.toString() });
@@ -121,8 +120,8 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
                 returnString: true,
                 trim: false,
             });
-            prod.push({ text: i.toString(), align: AlignmentType.CENTER });
-            prod.push({ text: product.miniStoreProduct.name, align: AlignmentType.LEFT });
+            prod.push({ text: i.toString(), alignment: 'center' });
+            prod.push({ text: product.miniStoreProduct.name, alignment: 'left' });
             prod.push({ text: product.requestedAmount.toString() });
             prod.push({ text: product.miniStoreProduct.unity });
             prod.push({ text: product.receivedAmount.toString() });

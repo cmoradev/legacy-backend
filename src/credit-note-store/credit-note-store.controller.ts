@@ -13,7 +13,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { XmlReceptorAttribute } from '@signati/core';
+import { AttributesComprobanteReceptorElement } from '@munyaal/cfdi';
 import { ConfigService } from '../common/config/config.service';
 import { InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
 import { MiniStoreInvoice } from '../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
@@ -83,7 +83,7 @@ export class CreditNoteStoreController
     @Body()
     request: {
       invoice: InvoiceSat;
-      receiver: Partial<XmlReceptorAttribute>;
+      receiver: Partial<AttributesComprobanteReceptorElement>;
       concepts: any[];
       calculations: any;
       invoicesRelations: RelateParams[];

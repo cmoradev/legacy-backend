@@ -8,7 +8,6 @@ import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity';
 import { User } from '../../../system/users/entities/user.entity';
 import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/entities/invoice-method-payment.entity';
-import { FormaPago } from '@signati/core/lib/signati/types/Catalogs/FormaPago';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
 import { BranchOfficeSetting } from '../../../system/branch-office-setting/entities/branch-office-setting.entity';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
@@ -27,10 +26,14 @@ import {
 import { Environment } from '../../../common/point-of-sale/types.pos';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import {
-    ExportacionEnum as ExportacionEnumMunyaal,
-    MetodoPagoEnum,
-    MonedaEnum,
-    TipoComprobanteEnum,
+  ExportacionEnum as ExportacionEnumMunyaal,
+  MetodoPagoEnum,
+  MonedaEnum,
+  TipoComprobanteEnum,
+  FormaPagoEnum,
+  ObjetoImpEnum,
+  RegimenFiscalEnum,
+  UsoCfdiEnum,
 } from '@munyaal/cfdi';
 import { AcademyChargeInvoiceService } from '../academy-charge-invoice/academy-charge-invoice.service';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
@@ -38,7 +41,6 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { S3Service } from '../../../common/storage/s3.service';
 import { Inject, forwardRef } from '@nestjs/common';
 import { AcademyChargePaymentsService } from './academy-charge-payments.service';
-import { ObjetoImpEnum } from '@signati/core/lib/signati/types/Tags/concepts.interface';
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
@@ -283,9 +285,9 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
         const receptor = {
             Nombre: query.receiver.businessName,
             Rfc: query.receiver.rfc,
-            UsoCFDI: query.usoCfdi.value,
+            UsoCFDI: query.usoCfdi.value as UsoCfdiEnum,
             DomicilioFiscalReceptor: query.receiver.domicilioFiscalReceptor,
-            RegimenFiscalReceptor: query.receiver.keyRegimen,
+            RegimenFiscalReceptor: query.receiver.keyRegimen as RegimenFiscalEnum,
         };
 
         const env: Environment = {
@@ -303,7 +305,7 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
             env,
             informacionGlobal: query.informacionGlobal,
             receptor,
-            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPago,
+            codigoFormaPago: result.highestPayment.codePaymentMethod as FormaPagoEnum,
             TipoDeComprobante: TipoComprobanteEnum.I,
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
@@ -385,7 +387,7 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
 
         const details = getDetailsPaymentsGlobal(
             concepts,
-            ObjetoImpEnum.SíObjetoDeImpuesto,
+            ObjetoImpEnum.OI02,
         );
 
         const wayPayment = await this.service.getWayPayment(concepts);
