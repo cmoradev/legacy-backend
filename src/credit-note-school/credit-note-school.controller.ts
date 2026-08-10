@@ -32,6 +32,7 @@ import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoice
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
 import { S3Service } from 'src/common/storage/s3.service';
+import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
     model: {
@@ -60,7 +61,8 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         readonly schoolChargesInvoiceService: SchoolChargesInvoiceService,
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private _s3Service: S3Service
+        private _s3Service: S3Service,
+        private _comprobanteDownloadService: ComprobanteDownloadService
         ) {
     }
 
@@ -182,33 +184,15 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
     @Public()
     @Get('/download-pdf')
     async getPdfInvoice(@Query() request, @Res() response) {
-        try {
-            const uuid = request.UUID.toLowerCase();
-            const pdfBuffer = await this._s3Service.getObjectCommand(
-                `comprobantes/notas-credito/${uuid}.pdf`,
-            );
-            response.set('Content-Type', 'application/pdf');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-            response.send(pdfBuffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', request.UUID, 'pdf');
+        this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-xml')
     async getXmlInvoice(@Query() request, @Res() response) {
-        try {
-            const uuid = request.UUID.toLowerCase();
-            const xmlBuffer = await this._s3Service.getObjectCommand(
-                `comprobantes/notas-credito/${uuid}.xml`,
-            );
-            response.set('Content-Type', 'application/xml');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
-            response.send(xmlBuffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', request.UUID, 'xml');
+        this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Post('/send-credit-note')
@@ -238,7 +222,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
             const pdfBuffer = await this._s3Service.getObjectCommand(
                 `comprobantes/notas-credito/${uuid}.pdf`,
             );
-            res.send({ src: `data:application/pdf;base64, ${pdfBuffer.toString('base64')}` });
+            res.send({ src: `data:application/pdf;base64,${pdfBuffer.toString('base64')}` });
         } catch (e) {
             res.send({ error: e }).status(400);
         }

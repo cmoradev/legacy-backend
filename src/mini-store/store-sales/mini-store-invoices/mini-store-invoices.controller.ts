@@ -36,6 +36,7 @@ import { Public } from '../../../common/docorators/public.decorator';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { In } from 'typeorm';
 import { S3Service } from 'src/common/storage/s3.service';
+import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
     model: {
@@ -76,6 +77,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
         private readonly configService: ConfigService,
         private smartWeb: FactSw,
         private readonly s3Service: S3Service,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
     ) {
     }
 
@@ -264,33 +266,15 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     @Public()
     @Get('/download-xml/:UUID')
     async getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
-        try {
-            const uuid = UUID.toLowerCase();
-            const xmlBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/tienda/${uuid}.xml`,
-            );
-            response.set('Content-Type', 'application/xml');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
-            response.send(xmlBuffer);
-        } catch (e) {
-            throw new HttpException(e instanceof Error ? e.message : '', HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'xml');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-pdf/:UUID')
     async getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
-        try {
-            const uuid = UUID.toLowerCase();
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/tienda/${uuid}.pdf`,
-            );
-            response.set('Content-Type', 'application/pdf');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-            response.send(pdfBuffer);
-        } catch (e) {
-            throw new HttpException(e instanceof Error ? e.message : '', HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'pdf');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
     // eliminar al cambiar los reporte del front
     @Post('report-invoice')

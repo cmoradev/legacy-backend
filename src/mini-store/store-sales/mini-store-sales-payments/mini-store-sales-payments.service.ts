@@ -515,7 +515,6 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             }
         }
         try {
-            console.log(queryString)
             return this.connection.query(queryString);
         } catch (e) {
             throw new NotFoundException(

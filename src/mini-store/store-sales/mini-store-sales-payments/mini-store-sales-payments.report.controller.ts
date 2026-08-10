@@ -14,9 +14,8 @@ import { IQueryReportStorePayment } from './types/IReports';
 import { getRangeDates } from '../mini-store-sales/reports/helpers';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
-import * as AdmZip from 'adm-zip';
-import { ConfigService } from '../../../common/config/config.service';
 import { getDataFullMatrizAndData, PaymentExcel, reportPaymentByClient } from '../../../common/utils/report/index';
+import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 // eliminar al cambiar los reporte del front
 import { GenerateMatrizByPayment } from './utils/generate-matriz-by-payment';
 
@@ -28,7 +27,7 @@ export class MiniStoreSalesPaymentsReportController {
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
         readonly user: UsersService,
-        private readonly configService: ConfigService,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
     ) {
     }
 
@@ -139,18 +138,8 @@ export class MiniStoreSalesPaymentsReportController {
                       }
     ) {
         try {
-            const zip = new AdmZip();
-            params.array.forEach((i: NotInvoiced) => {
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.pdf`);
-                zip.addLocalFile(`${this.configService.getPath()}comprobantes/tienda/${i.f_uuid != null ? i.f_uuid : i.p_global_uuid}.xml`);
-            });
-
-            const downloadName = `${Date.now()}.zip`;
-            const data = zip.toBuffer();
-            res.set('Content-Type', 'application/octet-stream');
-            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
-            res.set('Content-Length', data.length.toString());
-            res.send(data);
+            const buffer = await this.comprobanteDownloadService.createZip('tienda', params.array);
+            this.comprobanteDownloadService.sendZip(res, buffer);
         } catch (e) {
             res.status(500);
             res.send(e.message);

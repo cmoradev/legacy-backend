@@ -28,6 +28,7 @@ import { CancelInvoiceSwDto } from '../../../mini-store/store-sales/mini-store-i
 import { User } from '../../../system/users/entities/user.entity';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
 import { CfdiPdf } from '@munyaal/cfdi-pdf';
@@ -82,6 +83,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         private smartWeb: FactSw,
         private readonly configService: ConfigService,
         private readonly s3Service: S3Service,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
     ) {
     }
 
@@ -302,35 +304,15 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     @Public()
     @Get('/download-xml')
     async getXmlInvoice(@Query() request, @Res() response) {
-        try {
-            const uuid = request.UUID.toLowerCase();
-            const xmlBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/colegio/${uuid}.xml`,
-            );
-            response.set('Content-Type', 'application/xml');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
-            response.send(xmlBuffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', request.UUID, 'xml');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-pdf')
     async getPdfInvoice(@Query() request, @Res() response) {
-        try {
-            const uuid = request.UUID.toLowerCase();
-
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/colegio/${uuid}.pdf`,
-            );
-            response.set('Content-Type', 'application/pdf');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-            return response.send(pdfBuffer);
-
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', request.UUID, 'pdf');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Post('zip-invoices')
@@ -339,28 +321,10 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     }
     ) {
         try {
-            const zip = new AdmZip();
-            const filesToDownload = params.array.map((i: NotInvoiced) => {
-                const uuid = (i.f_uuid != null ? i.f_uuid : i.p_global_uuid).toLowerCase();
-                return Promise.all([
-                    this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.pdf`).then(buf => ({ name: `${uuid}.pdf`, buffer: buf })),
-                    this.s3Service.getObjectCommand(`comprobantes/colegio/${uuid}.xml`).then(buf => ({ name: `${uuid}.xml`, buffer: buf })),
-                ]);
-            });
-            const allFiles = await Promise.all(filesToDownload);
-            for (const pair of allFiles) {
-                pair.forEach(file => zip.addFile(file.name, file.buffer));
-            }
-
-            const downloadName = `${Date.now()}.zip`;
-            const data = zip.toBuffer();
-            res.set('Content-Type', 'application/octet-stream');
-            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
-            res.set('Content-Length', data.length.toString());
-            res.send(data);
+            const buffer = await this.comprobanteDownloadService.createZip('colegio', params.array);
+            this.comprobanteDownloadService.sendZip(res, buffer);
         } catch (e) {
-            res.status(500);
-            res.send(e.message);
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

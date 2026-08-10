@@ -37,10 +37,10 @@ import { ConfigService } from '../../../common/config/config.service';
 import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBillig } from '../../../common/point-of-sale/point-of-sale';
 import { Public } from '../../../common/docorators/public.decorator';
-import * as AdmZip from 'adm-zip';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { S3Service } from 'src/common/storage/s3.service';
+import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
     model: {
@@ -92,6 +92,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
         private smartWeb: FactSw,
         private readonly configService: ConfigService,
         private readonly s3Service: S3Service,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
     ) {
     }
 
@@ -422,33 +423,15 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     @Public()
     @Get('/download-pdf')
     async getPdfInvoice(@Query('UUID') UUID: string, @Res() response) {
-        try {
-            const uuid = UUID.toLowerCase();
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/academias/${uuid}.pdf`,
-            );
-            response.set('Content-Type', 'application/pdf');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.pdf"`);
-            response.send(pdfBuffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('academias', UUID, 'pdf');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-xml')
     async getXmlInvoiceUUID(@Query('UUID') UUID: string, @Res() response) {
-        try {
-            const uuid = UUID.toLowerCase();
-            const xmlBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/academias/${uuid}.xml`,
-            );
-            response.set('Content-Type', 'application/xml');
-            response.set('Content-Disposition', `attachment; filename="${uuid}.xml"`);
-            response.send(xmlBuffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        const file = await this.comprobanteDownloadService.downloadFile('academias', UUID, 'xml');
+        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Post('zip-invoices')
@@ -457,28 +440,10 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     }
     ) {
         try {
-            const zip = new AdmZip();
-            const filesToDownload = params.array.map((i: NotInvoiced) => {
-                const uuid = (i.f_uuid != null ? i.f_uuid : i.p_global_uuid).toLowerCase();
-                return Promise.all([
-                    this.s3Service.getObjectCommand(`comprobantes/academias/${uuid}.pdf`).then(buf => ({ name: `${uuid}.pdf`, buffer: buf })),
-                    this.s3Service.getObjectCommand(`comprobantes/academias/${uuid}.xml`).then(buf => ({ name: `${uuid}.xml`, buffer: buf })),
-                ]);
-            });
-            const allFiles = await Promise.all(filesToDownload);
-            for (const pair of allFiles) {
-                pair.forEach(file => zip.addFile(file.name, file.buffer));
-            }
-
-            const downloadName = `${Date.now()}.zip`;
-            const data = zip.toBuffer();
-            res.set('Content-Type', 'application/octet-stream');
-            res.set('Content-Disposition', `attachment; filename=${downloadName}`);
-            res.set('Content-Length', data.length.toString());
-            res.send(data);
+            const buffer = await this.comprobanteDownloadService.createZip('academias', params.array);
+            this.comprobanteDownloadService.sendZip(res, buffer);
         } catch (e) {
-            res.status(500);
-            res.send(e.message);
+            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

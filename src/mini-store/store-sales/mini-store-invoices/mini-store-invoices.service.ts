@@ -113,7 +113,6 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
-        console.table([{email: currentBranch.Email, pasword: currentBranch.EmailPass}])
         const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
         const mailOptions: Mail.Options = {
             to: email,
