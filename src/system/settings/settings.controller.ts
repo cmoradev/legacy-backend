@@ -12,13 +12,12 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import * as fs from 'fs';
+import { memoryStorage } from 'multer';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Company } from './entities/company.entity';
 import { SettingsService } from './settings.service';
 import { Public } from '../../common/docorators/public.decorator';
-import { ConfigService } from '../../common/config/config.service';
+import { S3Service } from '../../common/storage/s3.service';
 
 @Crud({
     model: {
@@ -38,7 +37,7 @@ import { ConfigService } from '../../common/config/config.service';
 export class SettingsController implements CrudController<Company> {
     constructor(
         public service: SettingsService,
-        private readonly configService: ConfigService,
+        private readonly s3Service: S3Service,
     ) {
     }
 
@@ -54,42 +53,21 @@ export class SettingsController implements CrudController<Company> {
 
     @Post('upload-logo')
     @UseInterceptors(FileInterceptor('logo', {
-        storage: diskStorage({
-            destination: (req, file, cb) => {
-                const uploadsPath = process.env.UPLOADS_PATH || '/var/www/uploads';
-                const tempDir = `${uploadsPath}/temp`;
-                try { fs.mkdirSync(tempDir, { recursive: true }); } catch (e) { /* exists */ }
-                cb(null, tempDir);
-            },
-            filename(req, file, cb): void {
-                const uniqueName = +new Date();
-                cb(null, uniqueName + file.originalname);
-            },
-        }),
+        storage: memoryStorage(),
     }))
     async uploadLogo(@UploadedFile() logo, @Query() params, @Res() res, @Req() req) {
         if (!params.companyID) {
             res.status(500).send({
                 error: 'UNDEFINED_COMPANY_ID',
             });
+            return;
         }
-        const uploadsPath = this.configService.getUploadsPath();
-        const companyPaths = [
-            `${uploadsPath}/${params.companyID}/`,
-            `${uploadsPath}/${params.companyID}/images/`,
-        ];
-        for (const path of companyPaths) {
-            try {
-                await fs.promises.mkdir(path);
-            } catch (e) {
-                // err
-            }
-        }
-        fs.rename(
-            logo.path,
-            `${uploadsPath}/${params.companyID}/images/` + logo.filename,
-            (err) => { /* err */ }
-        );
+        const filename = +new Date() + logo.originalname;
+        await this.s3Service.putObjectCommand({
+            type: logo.mimetype,
+            buffer: logo.buffer,
+            key: `uploads/${params.companyID}/images/${filename}`,
+        });
         let urlHost = '';
         if (req.headers['x-forwarded-host']) {
             urlHost = `${req.protocol}://${req.headers['x-forwarded-host']}`;
@@ -97,7 +75,7 @@ export class SettingsController implements CrudController<Company> {
             urlHost = `http://${req.headers.host}`;
         }
 
-        const downloadURL = `${urlHost}/system/settings/files/logo?companyID=${params.companyID}&logoName=${logo.filename}`;
+        const downloadURL = `${urlHost}/system/settings/files/logo?companyID=${params.companyID}&logoName=${filename}`;
         res.send({ downloadURL });
     }
 
@@ -108,16 +86,16 @@ export class SettingsController implements CrudController<Company> {
             res.status(500).send({
                 error: 'UNDEFINED_COMPANY_ID',
             });
+            return;
         }
         if (!params.logoName) {
             res.status(500).send({
                 error: 'UNDEFINED_LOGO_NAME',
             });
+            return;
         }
-        const uploadsPath = this.configService.getUploadsPath();
-        const companyPath = `${uploadsPath}/${params.companyID}/images`;
         try {
-            const logo = await fs.promises.readFile(`${companyPath}/${params.logoName}`);
+            const logo = await this.s3Service.getObjectCommand(`uploads/${params.companyID}/images/${params.logoName}`);
             res.send(logo);
         } catch (e) {
             res.status(500).send({
