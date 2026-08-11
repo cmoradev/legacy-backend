@@ -26,6 +26,7 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { readFileSync } from 'fs';
 import { ConfigService } from '../../../common/config/config.service';
+import { S3Service } from '../../../common/storage/s3.service';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
@@ -61,7 +62,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         @InjectRepository(InvoiceMethodPayment, ColegioDBNameConnection) readonly invoiceMethodPaymentRepository: Repository<InvoiceMethodPayment>,
         private readonly configService: ConfigService,
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly s3Service: S3Service
     ) {
         super(repo);
     }
@@ -464,7 +466,9 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
+        const folder = 'comprobantes/tienda';
+        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
+        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -474,11 +478,11 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
-                    path: `${pathInvoice}.xml`,
+                    content: xmlBuffer,
                 },
                 {
                     filename: uuid.toUpperCase() + '.pdf',
-                    path: `${pathInvoice}.pdf`,
+                    content: pdfBuffer,
                 },
             ],
         };

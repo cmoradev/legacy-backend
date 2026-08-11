@@ -33,7 +33,7 @@ interface CreditNoteTelweb {
     type: InvoiceModules;
     calculations: any;
     concepts: any[];
-    s3Service?: S3Service
+    s3Service: S3Service
 }
 
 export async function CreditNote(payload: CreditNoteTelweb): Promise<FullGenerateResult> {
@@ -50,10 +50,7 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<FullGenerat
         pathCertificate: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
     })
 
-    let folder = getFolderComprobantes(env.instancePath, undefined, true);
-    CFDIService.overridePaths({
-        pathXmlFolder: folder
-    });
+    let folder = getFolderComprobantes(undefined, true);
 
     const comprobante = new Comprobante({
         Version: '4.0',
@@ -154,7 +151,7 @@ export async function CreditNote(payload: CreditNoteTelweb): Promise<FullGenerat
         })
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath, s3Service)
+    return FullGenerateXml(comprobante, CFDIService, folder, s3Service)
 }
 
 const generateConceptsCreditNote = (type: InvoiceModules, calculations: any, concepts: any[], isGlobal: boolean) => {

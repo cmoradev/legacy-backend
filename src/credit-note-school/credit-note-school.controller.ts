@@ -27,7 +27,7 @@ import { BranchOffice } from '../system/branch-office/entities/branch-office.ent
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
 import { InvoiceModules, RelateParams } from '../common/point-of-sale/types.pos';
 import { SchoolChargesInvoiceService } from '../school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.service';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
@@ -295,12 +295,11 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         +status === 202
       ) {
         
-        writeFileSync(
-          `${this.configService.getPath()}comprobantes/notas-credito/` +
-            invoice.uuid.toUpperCase() +
-            '-acuse.xml',
-          result.data.acuse,
-        );
+        await this._s3Service.putObjectCommand({
+          type: 'application/xml',
+          buffer: Buffer.from(result.data.acuse),
+          key: `comprobantes/notas-credito/${invoice.uuid.toUpperCase()}-acuse.xml`,
+        });
 
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {

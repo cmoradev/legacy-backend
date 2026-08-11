@@ -18,6 +18,7 @@ import {
 import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
+import { S3Service } from '../../../common/storage/s3.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced, VWPaymentExtraCharge } from '../../../common/interface/not-invoiced.interface';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
@@ -53,7 +54,8 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly configService: ConfigService,
         @InjectRepository(SalesReturns, ColegioDBNameConnection) readonly salesReturnsRepository: Repository<SalesReturns>,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly s3Service: S3Service
     ) {
         super(repo);
     }
@@ -323,7 +325,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = `${this.configService.getPath()}comprobantes/tienda/` + uuid.toUpperCase();
+        const folder = 'comprobantes/tienda';
+        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
+        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -333,11 +337,11 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
-                    path: `${pathInvoice}.xml`,
+                    content: xmlBuffer,
                 },
                 {
                     filename: uuid.toUpperCase() + '.pdf',
-                    path: `${pathInvoice}.pdf`,
+                    content: pdfBuffer,
                 },
             ],
         };

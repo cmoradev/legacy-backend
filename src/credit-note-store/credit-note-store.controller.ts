@@ -20,7 +20,7 @@ import { MiniStoreInvoice } from '../mini-store/store-sales/mini-store-invoices/
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { CreditNote } from '../common/utils/invoice/generator/creditNote';
 import {
   InvoiceModules,
@@ -286,12 +286,11 @@ export class CreditNoteStoreController
         status === '202' ||
         +status === 202
       ) {
-        writeFileSync(
-          `${this.configService.getPath()}comprobantes/notas-credito/` +
-            invoice.uuid.toUpperCase() +
-            '-acuse.xml',
-          result.data.acuse,
-        );
+        await this._s3Service.putObjectCommand({
+          type: 'application/xml',
+          buffer: Buffer.from(result.data.acuse),
+          key: `comprobantes/notas-credito/${invoice.uuid.toUpperCase()}-acuse.xml`,
+        });
 
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {

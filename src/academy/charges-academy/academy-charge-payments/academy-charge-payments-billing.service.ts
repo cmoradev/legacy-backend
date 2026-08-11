@@ -428,6 +428,7 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
             Exportacion: ExportacionEnumMunyaal.E01,
             MetodoPago: MetodoPagoEnum.PUE,
             Moneda: MonedaEnum.MXN,
+            s3Service: this.s3Service,
         });
 
         response.warnings.push(...fullResult.warnings);

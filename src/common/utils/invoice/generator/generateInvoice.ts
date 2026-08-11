@@ -46,7 +46,7 @@ export interface InvoiceModule extends CFDIWebtel {
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
     student?: ConceptoComplementoIeduElement;
-    s3Service?: S3Service;
+    s3Service: S3Service;
 }
 
 export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<FullGenerateResult> => {
@@ -76,11 +76,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<Ful
         pathCertificate: env.instancePath + 'CSD/' + emisor.cerCSD,
     })
 
-    let folder = getFolderComprobantes(env.instancePath, type);
-
-    CFDIService.overridePaths({
-        pathXmlFolder: folder
-    });
+    let folder = getFolderComprobantes(type);
 
 
     const comprobante = new ComprobanteCfdi({
@@ -183,7 +179,7 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<Ful
         comprobante.Impuestos = impuestos;
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath,s3Service)
+    return FullGenerateXml(comprobante, CFDIService, folder, s3Service)
 
 };
 
@@ -193,7 +189,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
     TipoDeComprobante: TipoComprobanteEnum;
     Exportacion: ExportacionEnumMunyaal;
     MetodoPago: MetodoPagoEnum;
-    s3Service?: S3Service
+    s3Service: S3Service
 }): Promise<FullGenerateResult> => {
     const { details, branchOfficeConfig, env, folio, wayPayment, infoGlobal, percentageTax, type, Moneda, TipoDeComprobante, Exportacion, MetodoPago, s3Service } = params;
 
@@ -212,11 +208,7 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         pathCertificate: `${instancePath}CSD/${cerCSD}`,
     })
 
-    let folder = getFolderComprobantes(instancePath, type);
-
-    CFDIService.overridePaths({
-        pathXmlFolder: folder
-    });
+    let folder = getFolderComprobantes(type);
 
     const comprobante = new ComprobanteCfdi({
         Version: '4.0',
@@ -309,23 +301,23 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
         comprobante.Impuestos = impuestos;
     }
 
-    return FullGenerateXml(comprobante, CFDIService, folder, env.instancePath, s3Service)
+    return FullGenerateXml(comprobante, CFDIService, folder, s3Service)
 }
 
-export const getFolderComprobantes = (path: string, type?: InvoiceModules, isCredit?: boolean) => {
-    let folder = `${path}comprobantes/`;
+export const getFolderComprobantes = (type?: InvoiceModules, isCredit?: boolean) => {
+    const folder = 'comprobantes';
     if (isCredit) {
-        return folder + 'notas-credito/'
+        return `${folder}/notas-credito`;
     } else {
         switch (type) {
             case InvoiceModules.ACADEMY:
-                return folder + 'academias/'
+                return `${folder}/academias`;
             case InvoiceModules.SCHOOL:
-                return folder + 'colegio/'
+                return `${folder}/colegio`;
             case InvoiceModules.STORE:
-                return folder + 'tienda/'
+                return `${folder}/tienda`;
             default:
-                return folder
+                return folder;
         }
     }
 }
@@ -338,8 +330,6 @@ export interface InvoiceStepError {
 
 export interface FullGenerateResult {
   stamped: boolean;
-  xmlSaved: boolean;
-  pdfGenerated: boolean;
   s3Uploaded: boolean;
   uuid?: string;
   timbrado?: StampV4;
@@ -350,44 +340,29 @@ export interface FullGenerateResult {
 export const FullGenerateXml = async (
   comprobante: ComprobanteCfdi,
   CFDIService: any,
-  path: string,
-  instancePath: string,
-  s3Service?: S3Service,
+  folder: string,
+  s3Service: S3Service,
 ): Promise<FullGenerateResult> => {
   const result: FullGenerateResult = {
     stamped: false,
-    xmlSaved: false,
-    pdfGenerated: false,
     s3Uploaded: false,
     warnings: [],
   };
 
-  // ── PASO 1: Sellado + Timbrado (CRÍTICO — si falla, se propaga) ──
+  // ── STEP 1: Sign + Stamp (CRITICAL) ──
   const xml = await CFDIService.getXMLSellado(comprobante);
   const sw = new FactSw();
   const timbrado = await sw.facturar(xml);
   result.stamped = true;
-
-  // ── PASO 2: Guardar XML timbrado (CRÍTICO — si falla, se propaga) ──
-  await CFDIService.saveXml(
-    timbrado.data.cfdi,
-    timbrado.data.uuid.toUpperCase(),
-  );
-  result.xmlSaved = true;
-
   result.uuid = timbrado.data.uuid.toUpperCase();
   result.timbrado = timbrado;
   result.total = comprobante.Total;
 
-  // ── PASO 3: Generar PDF (NO CRÍTICO) ──
-  let pdf: CfdiPdf;
+  // ── STEP 2: Generate PDF buffer (NON-CRITICAL — if it fails, we still upload XML) ──
+  let pdfBuffer: Buffer | null = null;
   try {
-    pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
-    await pdf.createDocument(
-      `${timbrado.data.uuid.toUpperCase()}`,
-      `${path}`,
-    );
-    result.pdfGenerated = true;
+    const pdf = new CfdiPdf(timbrado.data.cfdi, timbrado.data.cadenaOriginalSAT);
+    pdfBuffer = await pdf.getBuffer();
   } catch (err) {
     result.warnings.push({
       step: 'pdf',
@@ -396,21 +371,20 @@ export const FullGenerateXml = async (
     });
   }
 
-  // ── PASO 4: Subir archivos a S3 (NO CRÍTICO) ──
-  if (instancePath && s3Service) {
+  // ── STEP 3: Upload all files to S3 (CRITICAL — sole storage) ──
+  
+  
     try {
-      const pdfBuffer =
-        pdf && result.pdfGenerated ? await pdf.getBuffer() : null;
-      await _saveFiles(s3Service, pdfBuffer, timbrado.data, path, instancePath);
+      await _saveFiles(s3Service, pdfBuffer, timbrado.data, folder);
       result.s3Uploaded = true;
     } catch (err) {
-      result.warnings.push({
-        step: 's3',
-        message: err.message,
-        stack: err.stack,
+        result.warnings.push({
+            step: 's3',
+            message: err.message,
+            stack: err.stack,
       });
     }
-  }
+  
 
   return result;
 };
@@ -419,16 +393,9 @@ const _saveFiles = async (
   s3Service: S3Service,
   pdfBuffer: Buffer | null,
   data: TDF,
-  path: string,
-  instancePath: string,
+  folder: string,
 ) => {
   const { qrCode, cfdi, uuid } = data;
-
-  const STORAGE_ROOT = instancePath;
-
-  const folder = path
-    .replace(new RegExp(`^${STORAGE_ROOT}/?`), '')
-    .replace(/\/+$/, '');
 
   const imgBuffer = Buffer.from(qrCode, 'base64');
   const xmlBuffer = Buffer.from(cfdi, 'utf-8');
@@ -446,7 +413,6 @@ const _saveFiles = async (
     }),
   ];
 
-  let pdfKey: any = null;
   if (pdfBuffer) {
     uploads.push(
       s3Service.putObjectCommand({
@@ -457,20 +423,5 @@ const _saveFiles = async (
     );
   }
 
-  const results = await Promise.all(uploads);
-
-  const xmlKey = results[0];
-  const imgKey = results[1];
-  if (pdfBuffer) {
-    pdfKey = results[2];
-  }
-
-  return {
-    xmlKey,
-    xmlBuffer,
-    pdfKey,
-    pdfBuffer,
-    imgKey,
-    imgBuffer,
-  };
+  await Promise.all(uploads);
 };

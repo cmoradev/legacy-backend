@@ -174,7 +174,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
             const status = responseSmartWeb.data.uuid[invoice.uuid];
 
             if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-                fs.writeFileSync(`${this.configService.getPath()}comprobantes/colegio/` + invoice.uuid + '-acuse.xml', responseSmartWeb.data.acuse);
+                await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(responseSmartWeb.data.acuse), key: `comprobantes/colegio/${invoice.uuid}-acuse.xml` });
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
                         const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);

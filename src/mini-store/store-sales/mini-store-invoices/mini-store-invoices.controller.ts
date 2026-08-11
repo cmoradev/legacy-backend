@@ -175,7 +175,7 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
              * 4.- Rechazado
              */
             if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-                fs.writeFileSync(`${this.configService.getPath()}comprobantes/tienda/` + invoice.uuid + '-acuse.xml', result.data.acuse);
+                await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(result.data.acuse), key: `comprobantes/tienda/${invoice.uuid}-acuse.xml` });
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {

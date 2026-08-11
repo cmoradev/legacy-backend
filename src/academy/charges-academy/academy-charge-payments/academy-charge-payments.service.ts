@@ -15,6 +15,7 @@ import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { ConfigService } from '../../../common/config/config.service';
+import { S3Service } from '../../../common/storage/s3.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {
   NotInvoiced,
@@ -63,7 +64,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     readonly invoiceRepository: Repository<AcademyChargeInvoice>,
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
     private readonly configService: ConfigService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly s3Service: S3Service
   ) {
     super(repo);
   }
@@ -334,9 +336,13 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
         pass: currentBranch.EmailPass,
       },
     });
-    const pathInvoice =
-      `${this.configService.getPath()}comprobantes/academias/` +
-      uuid.toUpperCase();
+    const folder = 'comprobantes/academias';
+    const xmlBuffer = await this.s3Service.getObjectCommand(
+      `${folder}/${uuid.toUpperCase()}.xml`,
+    );
+    const pdfBuffer = await this.s3Service.getObjectCommand(
+      `${folder}/${uuid.toUpperCase()}.pdf`,
+    );
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,
@@ -347,11 +353,11 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
-          path: `${pathInvoice}.xml`,
+          content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
-          path: `${pathInvoice}.pdf`,
+          content: pdfBuffer,
         },
       ],
     };

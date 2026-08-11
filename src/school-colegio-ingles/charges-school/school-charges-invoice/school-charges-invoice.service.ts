@@ -11,6 +11,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
 import { ConfigService } from '../../../common/config/config.service';
+import { S3Service } from '../../../common/storage/s3.service';
 import * as moment from 'moment';
 
 @Injectable()
@@ -20,6 +21,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       readonly repo: Repository<SchoolChargesInvoice>,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
     private readonly configService: ConfigService,
+    private readonly s3Service: S3Service,
   ) {
     super(repo);
   }
@@ -81,7 +83,9 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
         pass: currentBranch.EmailPass,
       },
     });
-    const pathInvoice = `${this.configService.getPath()}comprobantes/colegio/` + uuid.toUpperCase();
+    const folder = 'comprobantes/colegio';
+    const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
+    const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,
@@ -91,11 +95,11 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
-          path: `${pathInvoice}.xml`,
+          content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
-          path: `${pathInvoice}.pdf`,
+          content: pdfBuffer,
         },
       ],
     };
@@ -114,7 +118,10 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
         pass: currentBranch.EmailPass,
       },
     });
-    const pathInvoice = `${this.configService.getPath()}comprobantes/colegio/` + uuid.toUpperCase();
+    const folder = 'comprobantes/colegio';
+    const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
+    const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
+    const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
     const mailOptions: Mail.Options = {
       to: email,
       from: currentBranch.Email,
@@ -132,15 +139,15 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
-          path: `${pathInvoice}.xml`,
+          content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
-          path: `${pathInvoice}.pdf`,
+          content: pdfBuffer,
         },
         {
-          filename: `${uuid}-acuse.xml`,
-          path: pathInvoice + '-acuse.xml',
+          filename: `${uuid.toUpperCase()}-acuse.xml`,
+          content: acuseBuffer,
         },
       ],
     };

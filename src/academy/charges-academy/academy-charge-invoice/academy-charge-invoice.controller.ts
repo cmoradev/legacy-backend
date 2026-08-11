@@ -21,7 +21,7 @@ import {
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
 import { Response } from 'express';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { FactSw } from '../../../webService/FactSw';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -196,7 +196,7 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
              * 4.- Rechazado
              */
             if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-                writeFileSync(`${this.configService.getPath()}comprobantes/academias/` + invoice.uuid + '-acuse.xml', result.data.acuse);
+                await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(result.data.acuse), key: `comprobantes/academias/${invoice.uuid}-acuse.xml` });
 
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {

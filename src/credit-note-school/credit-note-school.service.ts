@@ -9,6 +9,7 @@ import { CreditNoteSchool } from './entities/credit-note-school.entity';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { ConfigService } from '../common/config/config.service';
+import { S3Service } from '../common/storage/s3.service';
 
 @Injectable()
 export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool> {
@@ -16,7 +17,8 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
         @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection) readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
         @InjectRepository(CreditNoteSchool, ColegioDBNameConnection) readonly repo: Repository<CreditNoteSchool>,
         @InjectRepository(BranchOffice, ColegioDBNameConnection) readonly branchOfficeRepository: Repository<BranchOffice>,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly s3Service: S3Service
     ) {
         super(repo);
     }
@@ -108,7 +110,10 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
                 pass: currentBranch.EmailPass,
             },
         });
-        const pathInvoice = `${this.configService.getPath()}comprobantes/notas-credito/` + uuid.toUpperCase();
+        const folder = 'comprobantes/notas-credito';
+        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
+        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
+        const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -126,15 +131,15 @@ export class CreditNoteSchoolService extends TypeOrmCrudService<CreditNoteSchool
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
-                    path: `${pathInvoice}.xml`,
+                    content: xmlBuffer,
                 },
                 {
                     filename: uuid.toUpperCase() + '.pdf',
-                    path: `${pathInvoice}.pdf`,
+                    content: pdfBuffer,
                 },
                 {
-                    filename: `${uuid}-acuse.xml`,
-                    path: pathInvoice + '-acuse.xml',
+                    filename: `${uuid.toUpperCase()}-acuse.xml`,
+                    content: acuseBuffer,
                 },
             ],
         };
