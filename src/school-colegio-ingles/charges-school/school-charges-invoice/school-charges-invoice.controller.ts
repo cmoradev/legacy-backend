@@ -303,15 +303,31 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
 
     @Public()
     @Get('/download-xml')
-    async getXmlInvoice(@Query() request, @Res() response) {
-        const file = await this.comprobanteDownloadService.downloadFile('colegio', request.UUID, 'xml');
+    async getXmlInvoice(
+        @Query('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', UUID, 'xml', {
+            regenerate,
+            cadenaOriginal,
+        });
         this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-pdf')
-    async getPdfInvoice(@Query() request, @Res() response) {
-        const file = await this.comprobanteDownloadService.downloadFile('colegio', request.UUID, 'pdf');
+    async getPdfInvoice(
+        @Query('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', UUID, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
         this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 

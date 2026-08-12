@@ -265,15 +265,31 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
 
     @Public()
     @Get('/download-xml/:UUID')
-    async getXmlInvoice(@Param('UUID') UUID: string, @Res() response) {
-        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'xml');
+    async getXmlInvoice(
+        @Param('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'xml', {
+            regenerate,
+            cadenaOriginal,
+        });
         this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Public()
     @Get('/download-pdf/:UUID')
-    async getPdfInvoice(@Param('UUID') UUID: string, @Res() response) {
-        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'pdf');
+    async getPdfInvoice(
+        @Param('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
         this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
     // eliminar al cambiar los reporte del front

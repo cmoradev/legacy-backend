@@ -357,6 +357,7 @@ export const FullGenerateXml = async (
   result.uuid = timbrado.data.uuid.toUpperCase();
   result.timbrado = timbrado;
   result.total = comprobante.Total;
+  /*
 
   // ── STEP 2: Generate PDF buffer (NON-CRITICAL — if it fails, we still upload XML) ──
   let pdfBuffer: Buffer | null = null;
@@ -384,6 +385,8 @@ export const FullGenerateXml = async (
             stack: err.stack,
       });
     }
+
+    */
   
 
   return result;

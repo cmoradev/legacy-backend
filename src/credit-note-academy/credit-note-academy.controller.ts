@@ -180,14 +180,30 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
     }
 
     @Get('/download-pdf')
-    async getPdfInvoice(@Query() request, @Res() response) {
-        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', request.UUID, 'pdf');
+    async getPdfInvoice(
+        @Query('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', UUID, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
         this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
     @Get('/download-xml')
-    async getXmlInvoice(@Query() request, @Res() response) {
-        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', request.UUID, 'xml');
+    async getXmlInvoice(
+        @Query('UUID') UUID: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+        @Res() response,
+    ) {
+        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', UUID, 'xml', {
+            regenerate,
+            cadenaOriginal,
+        });
         this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
     }
 
