@@ -9,7 +9,6 @@ import {
     Post,
     Put,
     Query,
-    Req,
     Res
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -123,17 +122,17 @@ export class MiniStoreInvoicesController implements CrudController<MiniStoreInvo
     }
 
     @Get(':id/pdf')
-    public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string, rebuild: string }) {
-        try {
-            const uuid = query.uuid.toLowerCase();
-
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/tienda/${uuid}.pdf`,
-            );
-            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
-        } catch (e) {
-            res.status(400).send({ error: e });
-        }
+    public async pdf(
+        @Res() res: Response,
+        @Query('uuid') uuid: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('tienda', uuid, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
+        return res.send({ src: 'data:application/pdf;base64,' + file.buffer.toString('base64') });
     }
 
     @Post('cancel-invoice')

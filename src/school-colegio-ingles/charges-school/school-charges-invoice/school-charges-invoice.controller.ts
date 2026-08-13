@@ -9,7 +9,6 @@ import {
     ParseIntPipe,
     Post, Put,
     Query,
-    Req,
     Res
 } from '@nestjs/common';
 import {
@@ -31,7 +30,6 @@ import { S3Service } from '../../../common/storage/s3.service';
 import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import { ReportInvoice } from '../../../mini-store/store-sales/mini-store-invoices/reports/invoice.report';
 import * as AdmZip from 'adm-zip';
-import { CfdiPdf } from '@munyaal/cfdi-pdf';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
 import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
@@ -102,29 +100,31 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
     }
 
     @Get(':id/pdf')
-    public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
-        try {
-            const uuid = query.uuid.toLowerCase();
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/colegio/${uuid}.pdf`,
-            );
-            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
-        } catch (e) {
-            res.status(400).send({ error: e });
-        }
+    public async pdf(
+        @Res() res: Response,
+        @Query('uuid') uuid: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', uuid, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
+        return res.send({ src: 'data:application/pdf;base64,' + file.buffer.toString('base64') });
     }
 
     @Get('/xml')
-    public async xml(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
-        try {
-            const uuid = query.uuid.toLowerCase();
-            const xmlBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/colegio/${uuid}.xml`,
-            );
-            res.send({ src: xmlBuffer.toString('base64') });
-        } catch (e) {
-            res.send({ error: e }).status(400);
-        }
+    public async xml(
+        @Res() res: Response,
+        @Query('uuid') uuid: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('colegio', uuid, 'xml', {
+            regenerate,
+            cadenaOriginal,
+        });
+        return res.send({ src: file.buffer.toString('base64') });
     }
 
     @Post('/send-invoice')

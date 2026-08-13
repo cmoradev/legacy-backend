@@ -9,7 +9,6 @@ import {
     ParseIntPipe,
     Post, Put,
     Query,
-    Req,
     Res,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
@@ -232,16 +231,17 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
     }
 
     @Get(':id/pdf')
-    public async pdf(@Req() req, @Res() res, @Query() query: { uuid: string }) {
-        try {
-            const uuid = query.uuid.toLowerCase();
-            const pdfBuffer = await this._s3Service.getObjectCommand(
-                `comprobantes/notas-credito/${uuid}.pdf`,
-            );
-            res.send({ src: `data:application/pdf;base64,${pdfBuffer.toString('base64')}` });
-        } catch (e) {
-            res.send({ error: e }).status(400);
-        }
+    public async pdf(
+        @Res() res,
+        @Query('uuid') uuid: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+    ) {
+        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', uuid, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
+        res.send({ src: `data:application/pdf;base64,${file.buffer.toString('base64')}` });
     }
 
     @Post('cancel-invoice')

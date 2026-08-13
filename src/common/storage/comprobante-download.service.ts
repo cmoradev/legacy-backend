@@ -114,7 +114,6 @@ export class ComprobanteDownloadService {
     cadenaOriginal?: string,
   ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
     try {
-      console.warn('regenerando archivos')
       if (ext === 'xml') {
         return await this.regenerateXml(folder, uuid, contentType, cadenaOriginal);
       }
@@ -302,16 +301,19 @@ export class ComprobanteDownloadService {
     contentType: string,
     filename: string,
   ): void {
+    const body = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
     res.set('Content-Type', contentType);
     res.set('Content-Disposition', `attachment; filename="${filename}"`);
-    res.send(buffer);
+    res.set('Content-Length', body.length.toString());
+    res.end(body);
   }
 
   sendZip(res: Response, buffer: Buffer): void {
+    const body = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
     const downloadName = `${Date.now()}.zip`;
     res.set('Content-Type', 'application/octet-stream');
     res.set('Content-Disposition', `attachment; filename=${downloadName}`);
-    res.set('Content-Length', buffer.length.toString());
-    res.send(buffer);
+    res.set('Content-Length', body.length.toString());
+    res.end(body);
   }
 }

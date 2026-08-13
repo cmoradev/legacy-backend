@@ -8,7 +8,6 @@ import {
     Post,
     Put,
     Query,
-    Req,
     Res
 } from '@nestjs/common';
 import {
@@ -142,19 +141,17 @@ export class AcademyChargeInvoiceController implements CrudController<AcademyCha
     }
 
     @Get(':id/pdf')
-    public async pdf(@Req() req, @Res() res: Response, @Query() query: { uuid: string }) {
-        
-        try {
-            const uuid = query.uuid.toLowerCase();
-
-            const pdfBuffer = await this.s3Service.getObjectCommand(
-                `comprobantes/academias/${uuid}.pdf`,
-            );
-            return res.send({ src: 'data:application/pdf;base64,' + pdfBuffer.toString('base64') });
-           
-        } catch (e) {
-            res.status(400).send({ error: e });
-        }
+    public async pdf(
+        @Res() res: Response,
+        @Query('uuid') uuid: string,
+        @Query('regenerate') regenerate: boolean,
+        @Query('cadenaOriginal') cadenaOriginal: string,
+    ) {
+        const file = await this.comprobanteDownloadService.downloadFile('academias', uuid, 'pdf', {
+            regenerate,
+            cadenaOriginal,
+        });
+        return res.send({ src: 'data:application/pdf;base64,' + file.buffer.toString('base64') });
     }
 
     @Post('cancel-invoice')
