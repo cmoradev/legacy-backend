@@ -7,10 +7,11 @@ import { IncomeService } from './income-service';
 import { InvoiceService } from './invoice-service';
 import { GroupService } from './group-service';
 import { ConfigModule } from 'src/common/config/config.module';
+import { StorageModule } from 'src/common/storage/storage.module';
 import { AcademyDebitService } from './academy-debit-service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([]), ConfigModule],
+  imports: [TypeOrmModule.forFeature([]), ConfigModule, StorageModule],
   controllers: [AcademyReportsController],
   providers: [
     AcademyIncomeService,

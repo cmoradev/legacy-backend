@@ -99,7 +99,7 @@ export class ComprobanteDownloadService {
         code: 'CFDI_NOT_STAMPED',
         canRegenerate: false,
         message:
-          'No se encontró el comprobante timbrado para el UUID. Contacta al equipo de soporte y desarrollo.',
+          'No se encontró el comprobante timbrado para el UUID. Contacta al equipo de soporte y desarrollo. O intente más tarde.',
         data: { uuid },
       };
       throw new HttpException(errRes, HttpStatus.NOT_FOUND);
@@ -130,7 +130,7 @@ export class ComprobanteDownloadService {
         code: 'CFDI_REGENERATE_ERROR',
         canRegenerate: false,
         message:
-          'No se pudo regenerar el archivo. Contacta al equipo de soporte y desarrollo.',
+          'No se pudo regenerar el archivo. Contacta al equipo de soporte y desarrollo. O intente más tarde.',
         data: { uuid },
       };
       throw new HttpException(errRes, HttpStatus.INTERNAL_SERVER_ERROR);

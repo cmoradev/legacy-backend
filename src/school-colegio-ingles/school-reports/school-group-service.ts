@@ -3,9 +3,7 @@ import { Connection } from 'typeorm';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
-import { ConfigService } from 'src/common/config/config.service';
-import { Configuration } from 'src/common/config/config.keys';
-import { fileExists } from 'src/helpers';
+import { S3Service } from 'src/common/storage/s3.service';
 import { endOfDay, startOfDay } from 'date-fns';
 import { SchoolGroupQuery as GroupQuery } from './dto';
 import {
@@ -19,8 +17,8 @@ const esMx = require('moment/locale/es-mx');
 
 export class SchoolGroupService {
   constructor(
-    private readonly configService: ConfigService,
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
+    private readonly s3Service: S3Service,
   ) {
     moment?.updateLocale('es', esMx);
   }
@@ -127,21 +125,15 @@ export class SchoolGroupService {
         ? monthNameStart
         : `${monthNameStart} - ${monthNameEnd}`;
 
-    const ASSETS_FOLDER = this.configService.get(Configuration.ASSETS_PATH);
-
     let imageColegio: any = null;
 
-    if (!!ASSETS_FOLDER) {
-      const pathColegioLogo = `${ASSETS_FOLDER}colegio_logo.png`;
+    const logoColegio = await this.s3Service.getLogo('logos/colegiologo.png');
 
-      const isExistsColegioLogo = await fileExists(pathColegioLogo);
-
-      if (isExistsColegioLogo) {
-        imageColegio = excel.book.addImage({
-          filename: pathColegioLogo,
-          extension: 'png',
-        });
-      }
+    if (logoColegio) {
+      imageColegio = excel.book.addImage({
+        buffer: logoColegio,
+        extension: 'png',
+      });
     }
 
     grades.forEach((grade, index) => {
@@ -343,21 +335,15 @@ export class SchoolGroupService {
         ? monthNameStart
         : `${monthNameStart} - ${monthNameEnd}`;
 
-    const ASSETS_FOLDER = this.configService.get(Configuration.ASSETS_PATH);
-
     let imageColegio: any = null;
 
-    if (!!ASSETS_FOLDER) {
-      const pathColegioLogo = `${ASSETS_FOLDER}colegio_logo.png`;
+    const logoColegio = await this.s3Service.getLogo('logos/colegiologo.png');
 
-      const isExistsColegioLogo = await fileExists(pathColegioLogo);
-
-      if (isExistsColegioLogo) {
-        imageColegio = excel.book.addImage({
-          filename: pathColegioLogo,
-          extension: 'png',
-        });
-      }
+    if (logoColegio) {
+      imageColegio = excel.book.addImage({
+        buffer: logoColegio,
+        extension: 'png',
+      });
     }
 
     groups.forEach((group, index) => {

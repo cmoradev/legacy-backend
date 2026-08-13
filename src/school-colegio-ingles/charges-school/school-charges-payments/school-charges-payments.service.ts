@@ -24,7 +24,6 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-charges-invoice.entity';
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
-import { readFileSync } from 'fs';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
 import * as nodemailer from 'nodemailer';
@@ -45,7 +44,6 @@ import { SchoolPayment } from '../../school-payments/entities/school-payment.ent
 import { Decimal } from '@munyaal/calculations';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
-import { getImagePath } from 'src/helpers';
 import { getHighestPayment } from './utils';
 
 
@@ -518,13 +516,9 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
         Receip.setType(InvoiceModules.SCHOOL);
 
-        const path = await getImagePath(
-            this.configService.getPath(),
-            `logos/colegiologo.png`,
-        );
+        const logo = await this.s3Service.getLogo('logos/colegiologo.png');
 
-        if (path) {
-            const logo = readFileSync(path);
+        if (logo) {
             Receip.addLogo({
                 width: 100,
                 height: 100,

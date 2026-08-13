@@ -27,7 +27,6 @@ import { InvoiceGlobalEnum } from '../../../common/enums/InvoiceGlobal.enum';
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
-import { readFileSync } from 'fs';
 import {
   roundQuantity,
   sumQuantity,
@@ -46,7 +45,6 @@ import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/e
 import { Decimal } from '@munyaal/calculations';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
-import { getImagePath } from 'src/helpers';
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
   AcademyChargePayments
@@ -753,13 +751,9 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
 
     Receip.addLabel();
 
-    const path = await getImagePath(
-        this.configService.getPath(),
-        `logos/academiaslogo.png`,
-    );
+    const logo = await this.s3Service.getLogo('logos/academiaslogo.png');
 
-    if (path) {
-        const logo = readFileSync(path);
+    if (logo) {
         Receip.addLogo({
             width: 100,
             height: 100,

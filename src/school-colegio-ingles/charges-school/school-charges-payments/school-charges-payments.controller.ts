@@ -55,9 +55,7 @@ import { convertPaymentsReportCollege } from './reports/payments.util';
 import { AttachmentsType } from '../../../types';
 import { roundQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { ReciboDouble } from '../../../common/pdfmake/ReciboDouble';
-import { readFileSync } from 'fs';
 import * as moment from 'moment';
-import { getImagePath } from '../../../helpers/index';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { S3Service } from 'src/common/storage/s3.service';
@@ -649,13 +647,9 @@ export class SchoolChargesPaymentsController
 
       const Receip = new ReciboDouble();
 
-      const path = await getImagePath(
-        this.configService.getPath(),
-        `logos/colegiologo.png`,
-      );
+      const logo = await this._s3Service.getLogo('logos/colegiologo.png');
 
-      if (path) {
-        const logo = readFileSync(path);
+      if (logo) {
         Receip.addLogo({
           width: 100,
           height: 100,

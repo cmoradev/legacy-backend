@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SchoolIncomeService } from './school-income-service';
 import { ConfigModule } from 'src/common/config/config.module';
+import { StorageModule } from 'src/common/storage/storage.module';
 import { SchoolReportsController } from './school-reports-controller';
 import { SchoolInvoiceService } from './school-invoice-service';
 import { SchoolIncomeGroupService } from './school-income-group-service';
@@ -10,7 +11,7 @@ import { SchoolBankStatementService } from './school-bank-statement-service';
 import { SchoolDebitService } from './school-debit-service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([]), ConfigModule],
+  imports: [TypeOrmModule.forFeature([]), ConfigModule, StorageModule],
   controllers: [SchoolReportsController],
   providers: [
     SchoolIncomeService,

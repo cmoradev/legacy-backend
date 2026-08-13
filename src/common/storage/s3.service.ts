@@ -74,6 +74,15 @@ export class S3Service {
     }
   }
 
+  public async getLogo(path: string): Promise<Buffer | null> {
+    try {
+      return await this.getObjectCommand(path);
+    } catch (error) {
+      console.warn(`Logo no encontrado en S3: ${path}`);
+      return null;
+    }
+  }
+
   public async getObjectCommand(filename: string): Promise<Buffer> {
     try {
       if (!this._s3Folder) {

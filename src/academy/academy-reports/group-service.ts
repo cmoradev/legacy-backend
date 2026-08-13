@@ -6,16 +6,14 @@ import { academiasQuery, inscripcionesQuery } from './query';
 import * as moment from 'moment';
 import { ExcelDocument } from 'src/reports';
 import { AcademyDetailsRow, GroupRow, InscriptionDetailsRow } from './types';
-import { ConfigService } from 'src/common/config/config.service';
-import { Configuration } from 'src/common/config/config.keys';
-import { fileExists } from 'src/helpers';
+import { S3Service } from 'src/common/storage/s3.service';
 import { endOfDay, startOfDay } from 'date-fns';
 const esMx = require('moment/locale/es-mx');
 
 export class GroupService {
   constructor(
-    private readonly configService: ConfigService,
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
+    private readonly s3Service: S3Service,
   ) {
     moment?.updateLocale('es', esMx);
   }
@@ -53,33 +51,25 @@ export class GroupService {
         ? monthNameStart
         : `${monthNameStart} - ${monthNameEnd}`;
 
-    const ASSETS_FOLDER = this.configService.get(Configuration.ASSETS_PATH);
-
     let imageColegio: any = null;
     let imageAcademia: any = null;
 
-    if (!!ASSETS_FOLDER) {
-      const pathColegioLogo = `${ASSETS_FOLDER}colegio_logo.png`;
+    const logoColegio = await this.s3Service.getLogo('logos/colegiologo.png');
 
-      const isExistsColegioLogo = await fileExists(pathColegioLogo);
+    if (logoColegio) {
+      imageColegio = excel.book.addImage({
+        buffer: logoColegio,
+        extension: 'png',
+      });
+    }
 
-      if (isExistsColegioLogo) {
-        imageColegio = excel.book.addImage({
-          filename: pathColegioLogo,
-          extension: 'png',
-        });
-      }
+    const logoAcademia = await this.s3Service.getLogo('logos/academiaslogo.png');
 
-      const pathAcademiaLogo = `${ASSETS_FOLDER}academias_logo.png`;
-
-      const isExistsAcademiaLogo = await fileExists(pathAcademiaLogo);
-
-      if (isExistsAcademiaLogo) {
-        imageAcademia = excel.book.addImage({
-          filename: pathAcademiaLogo,
-          extension: 'png',
-        });
-      }
+    if (logoAcademia) {
+      imageAcademia = excel.book.addImage({
+        buffer: logoAcademia,
+        extension: 'png',
+      });
     }
 
     groups.forEach((group, index) => {

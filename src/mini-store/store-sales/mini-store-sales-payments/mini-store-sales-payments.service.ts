@@ -27,7 +27,6 @@ import { BranchOfficeSetting } from '../../../system/branch-office-setting/entit
 import { InvoiceStatus } from '../../../invoice/types/invoice-status';
 import { FormaPagoEnum } from '@munyaal/cfdi';
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
-import { readFileSync } from 'fs';
 import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { Decimal } from '@munyaal/calculations';
 import { MiniStoreSaleDetail } from '../mini-store-sales-details/entities/mini-store-sale-detail.entity';
@@ -41,7 +40,6 @@ import { ReceiptTemplate } from "../../../templates/receipt";
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import moment = require('moment');
-import { getImagePath } from 'src/helpers';
 
 @Injectable()
 export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreSalePayment> {
@@ -678,13 +676,9 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
             Receip.addLabelQuote();
         }
 
-        const path = await getImagePath(
-            this.configService.getPath(),
-            `logos/tienditalogo.png`,
-        );
+        const logo = await this.s3Service.getLogo('logos/tienditalogo.png');
 
-        if (path) {
-            const logo = readFileSync(path);
+        if (logo) {
             Receip.addLogo({
                 width: 100,
                 height: 100,
