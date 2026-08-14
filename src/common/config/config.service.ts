@@ -40,12 +40,9 @@ export class ConfigService {
       DB_PASSWORD: Joi.string(),
       DB_PORT: Joi.number(),
       DB_HOST: Joi.string(),
-      DB_SYNCHRONIZE: Joi.boolean(),
       API_MAIL: Joi.string(),
       API_MAIL_PASSWORD: Joi.string(),
       INVOICES_PATH: Joi.string(),
-      ASSETS_PATH: Joi.string(),
-      UPLOADS_PATH: Joi.string(),
       S3_ACCESS_KEY_ID: Joi.string().required(),
       S3_SECRET_ACCESS_KEY: Joi.string().required(),
       S3_REGION: Joi.string().required(),
@@ -111,14 +108,6 @@ export class ConfigService {
   }
 
   /**
-   * Retorna si la sincronización de la base de datos está habilitada
-   * @return boolean
-   */
-  get isSynchronizeDBEnabled(): boolean {
-    return Boolean(this.envConfig.DB_SYNCHRONIZE);
-  }
-
-  /**
    * Obtener un valor de las variables de entorno
    * @param key
    * @return T
@@ -133,10 +122,6 @@ export class ConfigService {
 
   public getXsltPath(): string {
     return path.join(process.cwd(), 'xslt', '4.0', 'cadenaoriginal.xslt');
-  }
-
-  public getUploadsPath(): string {
-    return this.envConfig.UPLOADS_PATH as string;
   }
 
   /**
