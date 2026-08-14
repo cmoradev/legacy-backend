@@ -39,15 +39,16 @@ interface CreditNoteTelweb {
 export async function CreditNote(payload: CreditNoteTelweb): Promise<FullGenerateResult> {
     const { env, settingsBranchOffice, invoice, receiver, relations = [],
         concepts, type, calculations, s3Service } = payload
-    const { instancePath, xslt } = env;
+    const { instancePath } = env;
 
     const isGlobal = receiver.rfc == 'XEXX010101000' || receiver.rfc == 'XAXX010101000';
 
     const CFDIService = initializeCfdi({
-        pathXsltCfdi40: xslt,
-        password: settingsBranchOffice.password,
-        pathKey: `${instancePath}CSD/${settingsBranchOffice.keyCSD}`,
-        pathCertificate: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
+        certificate: {
+            cerPath: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
+            keyPath: `${instancePath}CSD/${settingsBranchOffice.keyCSD}`,
+            password: settingsBranchOffice.password,
+        },
     })
 
     let folder = getFolderComprobantes(undefined, true);

@@ -291,7 +291,6 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
 
         const env: Environment = {
             instancePath: this.configService.getPath(),
-            xslt: this.configService.getXsltPath(),
         };
 
         // ── 5. Timbrar (CRÍTICO — si falla, lanza excepción) ──
@@ -402,7 +401,6 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
 
         const env: Environment = {
             instancePath: this.configService.getPath(),
-            xslt: this.configService.getXsltPath(),
         };
 
         // ── 2. Timbrar (CRÍTICO — si falla, lanza excepción) ──

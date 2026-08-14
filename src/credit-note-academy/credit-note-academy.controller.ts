@@ -29,6 +29,7 @@ import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoice
 import { BranchOfficeService } from '../system/branch-office/branch-office.service';
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
 import { S3Service } from 'src/common/storage/s3.service';
+import { cfdiErrorToHttpException } from '../common/utils/invoice/cfdi-errors';
 import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
@@ -127,7 +128,6 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
                 settingsBranchOffice: branchOfficeSetting,
                 env: {
                     instancePath: workPath,
-                    xslt: this.configService.getXsltPath()
                 },
                 type: InvoiceModules.ACADEMY,
                 s3Service: this._s3Service
@@ -170,7 +170,7 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             });
         } catch (err) {
             console.log(err)
-            throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw cfdiErrorToHttpException(err);
         }
     }
 

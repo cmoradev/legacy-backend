@@ -303,7 +303,6 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
 
       const env: Environment = {
         instancePath: this.configService.getPath(),
-        xslt: this.configService.getXsltPath(),
       };
 
       // ── 5. Timbrar (CRÍTICO — si falla, lanza excepción) ──
@@ -407,7 +406,6 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
         details,
         env: {
           instancePath: this.configService.getPath(),
-          xslt: this.configService.getXsltPath(),
         },
         folio: invoice.folio,
         infoGlobal: {

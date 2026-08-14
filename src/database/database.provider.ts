@@ -1,11 +1,9 @@
 // Modules
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConnectionOptions } from 'typeorm';
 // Services
 import { ConfigService } from './../common/config/config.service';
 import { ConfigModule } from './../common/config/config.module';
 import { ColegioDBNameConnection } from './../common/databases/colegiodb.service';
-// Enum
 
 
 export const databaseProviders = [
@@ -22,7 +20,6 @@ export const databaseProviders = [
                password: config.get<string>('DB_PASSWORD'),
                database: config.get<string>('DB_DBNAME'),
                entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-               synchronize: config.isSynchronizeDBEnabled,
                migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
                subscribers: [__dirname + '/../**/*.subscriber{.ts,.js}'],
                cli: {

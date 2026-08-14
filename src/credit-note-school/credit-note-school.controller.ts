@@ -32,6 +32,7 @@ import { BranchOfficeService } from '../system/branch-office/branch-office.servi
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
 import { S3Service } from 'src/common/storage/s3.service';
 import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
+import { cfdiErrorToHttpException } from '../common/utils/invoice/cfdi-errors';
 
 @Crud({
     model: {
@@ -129,7 +130,6 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 settingsBranchOffice: branchOfficeSetting,
                 env: {
                     instancePath: workPath,
-                    xslt: this.configService.getXsltPath()
                 },
                 type: InvoiceModules.SCHOOL,
                 s3Service: this._s3Service
@@ -171,7 +171,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
                 msg: 'Nota de Crédito timbrada',
             });
         } catch (err) {
-            throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw cfdiErrorToHttpException(err);
         }
     }
 

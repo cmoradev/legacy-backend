@@ -292,7 +292,6 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
 
         const env: Environment = {
             instancePath: this.configService.getPath(),
-            xslt: this.configService.getXsltPath(),
         };
 
         // ── 5. Timbrar (CRÍTICO — si falla, lanza excepción) ──
@@ -407,7 +406,6 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
 
         const env: Environment = {
             instancePath: this.configService.getPath(),
-            xslt: this.configService.getXsltPath(),
         };
 
         // ── 1. Timbrar (CRÍTICO — si falla, lanza excepción) ──

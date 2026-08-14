@@ -32,12 +32,12 @@ import { ConfigService } from '../../../common/config/config.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {
-  Environment,
   InvoiceModules,
 } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { IQueryReportAcademiaPayment } from './types/IReports';
 import { getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
+import { cfdiErrorToHttpException } from '../../../common/utils/invoice/cfdi-errors';
 import {
   getDataFullMatrizAndData,
   PaymentExcel,
@@ -76,10 +76,6 @@ import { S3Service } from 'src/common/storage/s3.service';
 @Controller()
 export class AcademyChargePaymentsController
   implements CrudController<AcademyChargePayments> {
-  private env: Environment = {
-    instancePath: this.configService.getPath(),
-    xslt: this.configService.getXsltPath(),
-  };
 
   constructor(
     readonly service: AcademyChargePaymentsService,
@@ -173,8 +169,9 @@ export class AcademyChargePaymentsController
       }
     } catch (e) {
       console.log(e);
-      res.status(400);
-      res.send(e);
+      const exception = cfdiErrorToHttpException(e);
+      res.status(exception.getStatus());
+      res.send(exception.getResponse());
     }
   }
 
@@ -330,8 +327,9 @@ export class AcademyChargePaymentsController
       response.send(result);
     } catch (e) {
       console.log(e);
-      response.status(400);
-      response.send(e);
+      const exception = cfdiErrorToHttpException(e);
+      response.status(exception.getStatus());
+      response.send(exception.getResponse());
     }
   }
 

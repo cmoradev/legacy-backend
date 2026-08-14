@@ -80,8 +80,8 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
             },
         });
         const folder = 'comprobantes/academias';
-        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
-        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
+        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
+        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -115,8 +115,8 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<AcademyCharg
             },
         });
         const folder = 'comprobantes/academias';
-        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.xml`);
-        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}.pdf`);
+        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
+        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
         const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
         const mailOptions: Mail.Options = {
             to: email,

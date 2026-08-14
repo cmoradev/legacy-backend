@@ -42,7 +42,6 @@ export interface FacturaDetalles {
 
 export interface Environment {
     instancePath: string
-    xslt: string
 }
 
 export type RelateParams = {

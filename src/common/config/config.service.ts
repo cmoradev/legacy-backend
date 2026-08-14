@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
 import { connections } from './config.env';
-import * as path from 'path';
 
 export interface EnvConfig {
   [key: string]: any;
@@ -118,10 +117,6 @@ export class ConfigService {
 
   public getPath(): string {
     return this.envConfig.INVOICES_PATH as string;
-  }
-
-  public getXsltPath(): string {
-    return path.join(process.cwd(), 'xslt', '4.0', 'cadenaoriginal.xslt');
   }
 
   /**

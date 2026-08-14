@@ -16,7 +16,6 @@ import { Crud, CrudController } from '@nestjsx/crud';
 import { AttributesComprobanteReceptorElement } from '@munyaal/cfdi';
 import { ConfigService } from '../common/config/config.service';
 import { InvoiceSat } from '../credit-note-academy/credit-note-academy.service';
-import { MiniStoreInvoice } from '../mini-store/store-sales/mini-store-invoices/entities/mini-store-invoice.entity';
 import { FactSw } from '../webService/FactSw';
 import { CreditNoteStoreService } from './credit-note-store.service';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
@@ -36,6 +35,7 @@ import { BranchOfficeService } from '../system/branch-office/branch-office.servi
 import { BranchOfficeSettingService } from '../system/branch-office-setting/branch-office-setting.service';
 import { S3Service } from 'src/common/storage/s3.service';
 import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
+import { cfdiErrorToHttpException } from '../common/utils/invoice/cfdi-errors';
 
 @Crud({
   model: {
@@ -158,7 +158,6 @@ export class CreditNoteStoreController
         settingsBranchOffice: branchOfficeSetting,
         env: {
           instancePath: workPath,
-          xslt: this.configService.getXsltPath(),
         },
         type: InvoiceModules.STORE,
         s3Service: this._s3Service
@@ -199,7 +198,7 @@ export class CreditNoteStoreController
       });
     } catch (err) {
       console.log(err);
-      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw cfdiErrorToHttpException(err);
     }
   }
 

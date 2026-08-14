@@ -3,7 +3,7 @@
 # init-storage.sh
 #
 # Crea de forma idempotente la estructura de directorios que la aplicación
-# ERP API utiliza para almacenar facturas, comprobantes, archivos XSLT, CSD,
+# ERP API utiliza para almacenar facturas, comprobantes, CSD,
 # logos y otros recursos.
 #
 # Características:
@@ -28,13 +28,6 @@ STORAGE_DIR="${PROJECT_DIR}/storage"
 # Lista de subdirectorios (relativos a storage/) que deben existir.
 SUBDIRS=(
   "CSD"
-  "xslt"
-  "comprobantes/academias"
-  "comprobantes/colegio"
-  "comprobantes/tienda"
-  "comprobantes/notas-credito"
-  "logos"
-  "uploads"
 )
 
 echo "Inicializando storage en: ${STORAGE_DIR}"

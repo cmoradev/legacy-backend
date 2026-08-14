@@ -35,7 +35,6 @@ import {
   PaymentExtraCharge,
 } from '../../../common/interface/not-invoiced.interface';
 import {
-  Environment,
   InvoiceModules,
 } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
@@ -59,6 +58,7 @@ import * as moment from 'moment';
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { S3Service } from 'src/common/storage/s3.service';
+import { cfdiErrorToHttpException } from '../../../common/utils/invoice/cfdi-errors';
 import { SchoolChargesPaymentsBillingService } from './school-charges-payments-billing.service';
 
 @Crud({
@@ -87,10 +87,6 @@ import { SchoolChargesPaymentsBillingService } from './school-charges-payments-b
 @Controller()
 export class SchoolChargesPaymentsController
   implements CrudController<SchoolChargePayment> {
-  private env: Environment = {
-    instancePath: this.configService.getPath(),
-    xslt: this.configService.getXsltPath(),
-  };
 
   constructor(
     readonly service: SchoolChargesPaymentsService,
@@ -100,8 +96,6 @@ export class SchoolChargesPaymentsController
     readonly branchOffice: BranchOfficeService,
     readonly studentService: StudentsService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
-    private smartWeb: FactSw,
-    private readonly configService: ConfigService,
     private _s3Service: S3Service
   ) {}
 
@@ -173,8 +167,9 @@ export class SchoolChargesPaymentsController
       }
     } catch (e) {
       console.log(e);
-      response.status(400);
-      response.send(e);
+      const exception = cfdiErrorToHttpException(e);
+      response.status(exception.getStatus());
+      response.send(exception.getResponse());
     }
   }
 
@@ -480,8 +475,9 @@ export class SchoolChargesPaymentsController
       response.send(result);
     } catch (e) {
       console.log(e);
-      response.status(400);
-      response.send(e);
+      const exception = cfdiErrorToHttpException(e);
+      response.status(exception.getStatus());
+      response.send(exception.getResponse());
     }
   }
 

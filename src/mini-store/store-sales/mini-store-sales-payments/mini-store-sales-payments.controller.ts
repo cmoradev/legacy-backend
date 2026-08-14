@@ -3,7 +3,6 @@ import {
     Controller,
     Delete,
     Get,
-    NotFoundException,
     Param,
     ParseIntPipe,
     Post,
@@ -21,7 +20,6 @@ import {
     InvoiceMethodsPaymentsService
 } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.service';
 import { QueryBilling } from './interface/InvoiceMiniStore.interface';
-import { FactSw } from '../../../webService/FactSw';
 import { MiniStoreInvoice } from '../mini-store-invoices/entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from '../mini-store-invoices/mini-store-invoices.service';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
@@ -29,12 +27,12 @@ import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface'
 import { BranchOfficeService } from '../../../system/branch-office/branch-office.service';
 import { ConfigService } from '../../../common/config/config.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import { Environment, InvoiceModules } from '../../../common/point-of-sale/types.pos';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { MiniStoreSale } from '../mini-store-sales/entities/mini-store-sale.entity';
 import { AttachmentsType } from "../../../types";
 import { CancellationDto } from 'src/common/dto/Cancellation.dto';
-import { S3Service } from 'src/common/storage/s3.service';
+import { cfdiErrorToHttpException } from '../../../common/utils/invoice/cfdi-errors';
 
 @Crud({
     model: {
@@ -58,10 +56,6 @@ import { S3Service } from 'src/common/storage/s3.service';
 })
 @Controller()
 export class MiniStoreSalesPaymentsController implements CrudController<MiniStoreSalePayment> {
-    private env: Environment = {
-        instancePath: this.configService.getPath(),
-        xslt: this.configService.getXsltPath()
-    };
 
     constructor(
         readonly service: MiniStoreSalesPaymentsService,
@@ -70,9 +64,7 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
         readonly miniStoreInvoicesService: MiniStoreInvoicesService,
         readonly branchOffice: BranchOfficeService,
         readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private smartWeb: FactSw,
         private readonly configService: ConfigService,
-        private _s3Service: S3Service
     ) {
     }
 
@@ -102,8 +94,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             }
         } catch (e) {
             console.log(e);
-            response.status(400);
-            response.send(e);
+            const exception = cfdiErrorToHttpException(e);
+            response.status(exception.getStatus());
+            response.send(exception.getResponse());
         }
     }
 
@@ -233,8 +226,9 @@ export class MiniStoreSalesPaymentsController implements CrudController<MiniStor
             response.send(result);
         } catch (e) {
             console.log(e);
-            response.status(400);
-            response.send(e);
+            const exception = cfdiErrorToHttpException(e);
+            response.status(exception.getStatus());
+            response.send(exception.getResponse());
         }
     }
 

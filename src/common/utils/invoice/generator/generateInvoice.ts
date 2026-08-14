@@ -24,6 +24,7 @@ import {
 import { FactSw, StampV4, TDF } from '../../../../webService/FactSw';
 import { CfdiPdf } from "@munyaal/cfdi-pdf"
 import { S3Service } from 'src/common/storage/s3.service';
+import { cfdiErrorToHttpException, normalizeCfdiError } from '../cfdi-errors';
 
 export type GlobalInvoiceParams = {
     branchOfficeConfig: BranchOfficeSetting,
@@ -70,10 +71,11 @@ export const GenerateInvoiceMunyaal = async (params: InvoiceModule): Promise<Ful
         s3Service
     } = params;
     const CFDIService = initializeCfdi({
-        pathXsltCfdi40: env.xslt,
-        password: emisor.password,
-        pathKey: env.instancePath + 'CSD/' + emisor.keyCSD,
-        pathCertificate: env.instancePath + 'CSD/' + emisor.cerCSD,
+        certificate: {
+            cerPath: env.instancePath + 'CSD/' + emisor.cerCSD,
+            keyPath: env.instancePath + 'CSD/' + emisor.keyCSD,
+            password: emisor.password,
+        },
     })
 
     let folder = getFolderComprobantes(type);
@@ -195,17 +197,18 @@ export const GenerateGlobalInvoiceMunyaal = async (params: GlobalInvoiceParams &
 
     const { keyCSD, cerCSD, serieFacturacion, password } = branchOfficeConfig;
 
-    const { instancePath, xslt } = env;
+    const { instancePath } = env;
 
     const { discount, taxes, total, subtotal, details: concepts } = details;
 
     const { periodicity, month, year } = infoGlobal;
 
     const CFDIService = initializeCfdi({
-        pathXsltCfdi40: env.xslt,
-        password: password,
-        pathKey: `${instancePath}CSD/${keyCSD}`,
-        pathCertificate: `${instancePath}CSD/${cerCSD}`,
+        certificate: {
+            cerPath: `${instancePath}CSD/${cerCSD}`,
+            keyPath: `${instancePath}CSD/${keyCSD}`,
+            password: password,
+        },
     })
 
     let folder = getFolderComprobantes(type);
@@ -350,7 +353,17 @@ export const FullGenerateXml = async (
   };
 
   // ── STEP 1: Sign + Stamp (CRITICAL) ──
-  const xml = await CFDIService.getXMLSellado(comprobante);
+  let xml: string;
+  try {
+    xml = await CFDIService.getXMLSellado(comprobante);
+  } catch (err) {
+    result.warnings.push({
+      step: 'stamping',
+      message: normalizeCfdiError(err).message,
+      stack: err.stack,
+    });
+    throw cfdiErrorToHttpException(err);
+  }
   const sw = new FactSw();
   const timbrado = await sw.facturar(xml);
   result.stamped = true;
@@ -399,6 +412,7 @@ const _saveFiles = async (
   folder: string,
 ) => {
   const { qrCode, cfdi, uuid } = data;
+  const keyUuid = uuid.toLowerCase();
 
   const imgBuffer = Buffer.from(qrCode, 'base64');
   const xmlBuffer = Buffer.from(cfdi, 'utf-8');
@@ -407,12 +421,12 @@ const _saveFiles = async (
     s3Service.putObjectCommand({
       type: 'application/xml',
       buffer: xmlBuffer,
-      key: `${folder}/${uuid}.xml`,
+      key: `${folder}/${keyUuid}.xml`,
     }),
     s3Service.putObjectCommand({
       type: 'image/jpeg',
       buffer: imgBuffer,
-      key: `${folder}/${uuid}.jpg`,
+      key: `${folder}/${keyUuid}.jpg`,
     }),
   ];
 
@@ -421,7 +435,7 @@ const _saveFiles = async (
       s3Service.putObjectCommand({
         type: 'application/pdf',
         buffer: pdfBuffer,
-        key: `${folder}/${uuid}.pdf`,
+        key: `${folder}/${keyUuid}.pdf`,
       }),
     );
   }
