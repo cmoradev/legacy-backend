@@ -43,6 +43,7 @@ import { StudentsService } from '../../students/students.service';
 import { S3Service } from '../../../common/storage/s3.service';
 import { Inject, forwardRef } from '@nestjs/common';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
+import { BillingLock } from '../../../common/utils/invoice/billing-lock';
 
 export interface BillingResponse {
   stamping: boolean;
@@ -227,8 +228,16 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
 
     /**
      * Orquestador principal del proceso de facturación.
+     * Serializa la facturación del mismo pago para evitar doble timbrado.
      */
     async processBilling(query: QuerySchoolPaymentBilling): Promise<BillingResponse> {
+      return BillingLock.acquire(
+        `school:${query.chargePaymentId}`,
+        () => this.processBillingLocked(query),
+      );
+    }
+
+    private async processBillingLocked(query: QuerySchoolPaymentBilling): Promise<BillingResponse> {
       const response: BillingResponse = {
         stamping: false,
         msg: '',
@@ -353,21 +362,23 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
         response.invoice = invoiceRecord;
       }
 
-      // ── 7. Enviar correo (NO CRÍTICO) ──
-      try {
-        await this.schoolChargeInvoiceService.sendMail(
+      // ── 7. Enviar correo (NO CRÍTICO — no debe bloquear la respuesta) ──
+      this.schoolChargeInvoiceService
+        .sendMail(
           currentOffice,
           fullResult.uuid,
           query.receiver.email,
-        );
-        response.emailSent = true;
-      } catch (err) {
-        response.warnings.push({
-          step: 'email',
-          message: `Error al enviar correo: ${err.message}`,
-          stack: err.stack,
+        )
+        .then(() => {
+          response.emailSent = true;
+        })
+        .catch((err) => {
+          response.warnings.push({
+            step: 'email',
+            message: `Error al enviar correo: ${err.message}`,
+            stack: err.stack,
+          });
         });
-      }
 
       response.stamping = true;
       response.msg = 'Pago Facturado';

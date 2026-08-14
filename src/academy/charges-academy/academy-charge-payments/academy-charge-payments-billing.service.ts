@@ -44,6 +44,7 @@ import { AcademyChargePaymentsService } from './academy-charge-payments.service'
 import { getDetailsPaymentsGlobal } from '../../../common/point-of-sale/utils';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { NotInvoiced } from '../../../common/interface/not-invoiced.interface';
+import { BillingLock } from '../../../common/utils/invoice/billing-lock';
 
 export interface BillingResponse {
     stamping: boolean;
@@ -228,8 +229,16 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
 
     /**
      * Orquestador principal del proceso de facturación.
+     * Serializa la facturación del mismo pago para evitar doble timbrado.
      */
     async processBilling(query: QueryBillingAcademy): Promise<BillingResponse> {
+        return BillingLock.acquire(
+            `academy:${query.chargePaymentId}`,
+            () => this.processBillingLocked(query),
+        );
+    }
+
+    private async processBillingLocked(query: QueryBillingAcademy): Promise<BillingResponse> {
         const response: BillingResponse = {
             stamping: false,
             msg: '',
@@ -341,21 +350,23 @@ export class AcademyChargePaymentsBillingService extends TypeOrmCrudService<
             response.invoice = invoiceRecord;
         }
 
-        // ── 7. Enviar correo (NO CRÍTICO) ──
-        try {
-            await this.academyChargeInvoiceService.sendMail(
+        // ── 7. Enviar correo (NO CRÍTICO — no debe bloquear la respuesta) ──
+        this.academyChargeInvoiceService
+            .sendMail(
                 currentOffice,
                 fullResult.uuid,
                 query.receiver.email,
-            );
-            response.emailSent = true;
-        } catch (err) {
-            response.warnings.push({
-                step: 'email',
-                message: `Error al enviar correo: ${err.message}`,
-                stack: err.stack,
+            )
+            .then(() => {
+                response.emailSent = true;
+            })
+            .catch((err) => {
+                response.warnings.push({
+                    step: 'email',
+                    message: `Error al enviar correo: ${err.message}`,
+                    stack: err.stack,
+                });
             });
-        }
 
         response.stamping = true;
         response.msg = 'Pago Facturado';

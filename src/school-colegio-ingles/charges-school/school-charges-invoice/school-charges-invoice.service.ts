@@ -78,6 +78,9 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
       auth: {
         user: currentBranch.Email,
         pass: currentBranch.EmailPass,
@@ -113,6 +116,9 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
       auth: {
         user: currentBranch.Email,
         pass: currentBranch.EmailPass,
