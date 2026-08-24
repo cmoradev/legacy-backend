@@ -29,9 +29,7 @@ export class ConfigService {
    */
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
-      API_PORT: Joi.number().default(3000),
       APP_NAME: Joi.string(),
-      API_AUTH_ENABLED: Joi.boolean().default(true),
       API_SECRET: Joi.string(),
       DB_DBNAME_CONNECTION: Joi.string(),
       DB_DBNAME: Joi.string(),
@@ -96,14 +94,6 @@ export class ConfigService {
    */
   get isProduction(): boolean {
     return this.nodeEnvironment().isProduction === true;
-  }
-
-  /**
-   * Retorna si la autenticación de la API está habilitada
-   * @return boolean
-   */
-  get isApiAuthEnabled(): boolean {
-    return Boolean(this.envConfig.API_AUTH_ENABLED);
   }
 
   /**

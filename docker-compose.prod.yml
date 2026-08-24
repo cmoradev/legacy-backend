@@ -5,14 +5,12 @@ services:
       dockerfile: Dockerfile.prod
     container_name: erp-api-prod
     ports:
-      - "${API_PORT:-3000}:3000"
+      - "4000:3000"
     volumes:
       - ./public:/app/public
       - erp-storage:/app/storage
     environment:
       - NODE_ENV=production
-      - API_PORT=3000
-      - API_AUTH_ENABLED=${API_AUTH_ENABLED:-true}
       - API_SECRET=${API_SECRET}
       - API_MAIL=${API_MAIL}
       - API_MAIL_PASSWORD=${API_MAIL_PASSWORD}

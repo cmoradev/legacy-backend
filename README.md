@@ -110,7 +110,7 @@ Por defecto la API expone el puerto configurado en `API_PORT` (3000 si no se
 define). Una vez levantado el contenedor, la aplicación está disponible en:
 
 ```
-http://localhost:${API_PORT}
+http://localhost:3000
 ```
 
 ### Ver los logs
