@@ -38,7 +38,7 @@ async function bootstrap() {
     ? SwaggerModule.setup('api', app, document)
     : null;
   await app.listen(3000);
-  logger.log(`Application is running in ${environment.toUpperCase()} on: ${await app.getUrl()}`);
+  logger.log(`Application is running on: ${await app.getUrl()}`);
 
 }
 
