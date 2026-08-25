@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-munyaal-app
+  namespace: legacy
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: developers@munyaal.app
+    privateKeySecretRef:
+      name: letsencrypt-munyaal-app
+    solvers:
+      - dns01:
+          digitalocean:
+            tokenSecretRef:
+              name: dodns-secret
+              key: token

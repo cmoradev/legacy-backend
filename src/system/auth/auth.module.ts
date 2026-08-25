@@ -18,52 +18,44 @@ import { AuthAccessTokensModule } from '../auth-access-tokens/auth-access-tokens
 import { ConfigService } from '../../common/config/config.service';
 
 @Module({
-    imports: [
-        UsersModule,
-        SettingsModule,
-        ConfigModule,
-        AuthAccessTokensModule,
-        PassportModule.register({
-            defaultStrategy: 'jwt',
-            property: 'user',
-            session: false,
-        }),
-        JwtModule.registerAsync({
-            useClass: JwtConfigService,
-            imports: [ConfigModule],
-        }),
-        TypeOrmModule.forFeature([Department, Role, BranchOffice], ColegioDBNameConnection),
-    ],
-    providers: [
-        AuthService,
-        LocalStrategy,
-        JwtStrategy,
-    ],
-    exports: [
-        PassportModule,
-        LocalStrategy,
-        JwtStrategy,
-        AuthService,
-    ],
-    controllers: [AuthController],
+  imports: [
+    UsersModule,
+    SettingsModule,
+    ConfigModule,
+    AuthAccessTokensModule,
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      property: 'user',
+      session: false,
+    }),
+    JwtModule.registerAsync({
+      useClass: JwtConfigService,
+      imports: [ConfigModule],
+    }),
+    TypeOrmModule.forFeature(
+      [Department, Role, BranchOffice],
+      ColegioDBNameConnection,
+    ),
+  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [PassportModule, LocalStrategy, JwtStrategy, AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {
-    constructor(
-        private readonly configService: ConfigService,
-    ) {
-    }
+  constructor(private readonly configService: ConfigService) {}
 
-    public initialize(app: INestApplication) {
-        app.use(session({
-            secret: this.configService.get<string>('API_SECRET'),
-            resave: false,
-            cookie: {
-                httpOnly: !!this.configService.isProduction,
-                secure: !!this.configService.isProduction,
-                maxAge: 1000 * 60 * 60 * 24 * 7,
-            },
-            saveUninitialized: false,
-        }));
-
-    }
+  public initialize(app: INestApplication) {
+    app.use(
+      session({
+        secret: this.configService.get<string>('API_SECRET'),
+        resave: false,
+        cookie: {
+          httpOnly: !!this.configService.isProduction,
+          secure: !!this.configService.isProduction,
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+        },
+        saveUninitialized: false,
+      }),
+    );
+  }
 }

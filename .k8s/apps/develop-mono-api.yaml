@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: develop-mono-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/version: '1c18c55'
+    app.kubernetes.io/part-of: develop
+  name: develop-mono-api
+  namespace: legacy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: develop-mono-api
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: develop-mono-api
+        app.kubernetes.io/component: api
+        app.kubernetes.io/version: '1c18c55'
+        app.kubernetes.io/part-of: develop
+    spec:
+      containers:
+        - image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:1c18c55
+          name: develop-mono-api
+          ports:
+            - name: http
+              containerPort: 3000
+          resources:
+            limits:
+              cpu: 100m
+              memory: 224Mi
+            requests:
+              cpu: 75m
+              memory: 160Mi
+          envFrom:
+            - secretRef:
+                name: auth-secret
+            - secretRef:
+                name: aws-s3-secret
+            - secretRef:
+                name: email-secret
+            - secretRef:
+                name: db-develop-secret
+          env:
+            - name: INVOICES_PATH
+              value: /app/storage/develop
+            - name: S3_FOLDER
+              value: develop
+          volumeMounts:
+            - name: csd-volume
+              mountPath: /app/storage
+      volumes:
+        - name: csd-volume
+          persistentVolumeClaim:
+            claimName: csd-templates-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csd-templates-pvc
+  namespace: legacy
+spec:
+  storageClassName: nfs-rwx-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: develop-mono-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: develop
+  name: develop-mono-api
+  namespace: legacy
+spec:
+  ports:
+    - name: 80-3000
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/name: develop-mono-api
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: develop-mono-api
+  namespace: legacy
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api-legacy-demo.munyaal.app
+      http:
+        paths:
+          - backend:
+              service:
+                name: develop-mono-api
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - api-legacy-demo.munyaal.app
+      secretName: munyaal-app-lts

@@ -4,13 +4,12 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
-    constructor(readonly configService: ConfigService) {
-    }
+  constructor(readonly configService: ConfigService) {}
 
-    createJwtOptions(): JwtModuleOptions {
-        return {
-            secret: this.configService.get('API_SECRET'),
-            signOptions: { expiresIn: '7d' },
-        };
-    }
+  createJwtOptions(): JwtModuleOptions {
+    return {
+      secret: this.configService.get('API_SECRET'),
+      signOptions: { expiresIn: '7d' },
+    };
+  }
 }

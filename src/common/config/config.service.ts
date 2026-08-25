@@ -16,8 +16,10 @@ export class ConfigService {
     if (filePath && fs.existsSync(filePath)) {
       const config = dotenv.parse(fs.readFileSync(filePath));
       this.envConfig = this.validateInput(config);
+      console.log(this.envConfig)
     } else {
       this.envConfig = this.validateInput(process.env as EnvConfig);
+      console.log(this.envConfig)
     }
   }
 
