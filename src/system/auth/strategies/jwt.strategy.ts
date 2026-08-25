@@ -10,7 +10,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     readonly authService: AuthService,
     readonly configService: ConfigService,
   ) {
-    console.log('API_SECRET: ',configService.get('API_SECRET'))
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: true,
@@ -19,7 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('Payload: ', payload)
     return payload;
   }
 }

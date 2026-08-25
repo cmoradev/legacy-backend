@@ -96,13 +96,5 @@ export class ImportSeed implements Seeder {
             }
         }
 
-
-        console.log('TOTAL DE PRODUCTOS: ', data.length)
-        console.log('')
-        console.log('ENCONTRADOS: ', updated)
-        console.log('NO ENCONTRADOS: ', created)
-
-        console.log(JSON.stringify(classifications, null, 3))
-
     }
 }

@@ -474,7 +474,7 @@ export class SchoolChargesPaymentsController
       response.status(200);
       response.send(result);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       const exception = cfdiErrorToHttpException(e);
       response.status(exception.getStatus());
       response.send(exception.getResponse());
