@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Query, Res, UseGuards } from '@nestjs/comm
 import { MiniStoreDashBoardService } from './mini-store-dash-board.service';
 import { Response } from 'express';
 import { MyIngresDto } from './dto/myIngres.dto';
-import { JwtGuard } from '../../system/auth/guards/jwt.guard';
 
 @Controller()
 export class MiniStoreDashBoardController {

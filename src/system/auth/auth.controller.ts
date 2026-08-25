@@ -19,7 +19,6 @@ import { JwtGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/login.guard';
 import { AuthAccessTokensService } from '../auth-access-tokens/auth-access-tokens.service';
 import * as moment from 'moment';
-import { RefreshGuard } from './guards/refresh.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Public } from '../../common/docorators/public.decorator';

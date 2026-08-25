@@ -6,18 +6,20 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(readonly authService: AuthService, readonly configService: ConfigService) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: true,
-            secretOrKey: configService.get('API_SECRET'),
-        });
-    }
+  constructor(
+    readonly authService: AuthService,
+    readonly configService: ConfigService,
+  ) {
+    console.log('API_SECRET: ',configService.get('API_SECRET'))
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: true,
+      secretOrKey: configService.get('API_SECRET'),
+    });
+  }
 
-    async validate(payload: any) {
-        /*if (Date.now() >= payload.exp * 1000) {
-             throw  new UnauthorizedException('Expired token');
-         }*/
-        return payload;
-    }
+  async validate(payload: any) {
+    console.log('Payload: ', payload)
+    return payload;
+  }
 }
