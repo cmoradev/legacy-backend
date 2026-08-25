@@ -24,18 +24,18 @@ spec:
         app.kubernetes.io/part-of: develop
     spec:
       containers:
-        - image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:1c18c55
+        - image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:f202705
           name: develop-mono-api
           ports:
             - name: http
               containerPort: 3000
           resources:
             limits:
-              cpu: 100m
-              memory: 224Mi
+              cpu: 140m
+              memory: 320Mi
             requests:
-              cpu: 75m
-              memory: 160Mi
+              cpu: 100m
+              memory: 256Mi
           envFrom:
             - secretRef:
                 name: auth-secret
@@ -46,6 +46,8 @@ spec:
             - secretRef:
                 name: db-develop-secret
           env:
+            - name: NODE_ENV
+              value: development
             - name: INVOICES_PATH
               value: /app/storage/develop/
             - name: S3_FOLDER

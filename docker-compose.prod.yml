@@ -1,6 +1,6 @@
 services:
   erp-api:
-    image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:1c18c55
+    image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:f202705
     container_name: erp-api-prod
     ports:
       - "4000:3000"
