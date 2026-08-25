@@ -47,7 +47,7 @@ spec:
                 name: db-develop-secret
           env:
             - name: INVOICES_PATH
-              value: /app/storage/develop
+              value: /app/storage/develop/
             - name: S3_FOLDER
               value: develop
           volumeMounts:
@@ -57,19 +57,6 @@ spec:
         - name: csd-volume
           persistentVolumeClaim:
             claimName: csd-templates-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: csd-templates-pvc
-  namespace: legacy
-spec:
-  storageClassName: nfs-rwx-storage
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
