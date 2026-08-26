@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: herbart-mono-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/version: '1c18c55'
+    app.kubernetes.io/part-of: herbart
+  name: herbart-mono-api
+  namespace: legacy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: herbart-mono-api
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: herbart-mono-api
+        app.kubernetes.io/component: api
+        app.kubernetes.io/version: '1c18c55'
+        app.kubernetes.io/part-of: herbart
+    spec:
+      containers:
+        - image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:f202705
+          name: herbart-mono-api
+          ports:
+            - name: http
+              containerPort: 3000
+          resources:
+            limits:
+              cpu: 140m
+              memory: 320Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          envFrom:
+            - secretRef:
+                name: auth-secret
+            - secretRef:
+                name: aws-s3-secret
+            - secretRef:
+                name: email-secret
+            - secretRef:
+                name: db-herbart-secret
+          env:
+            - name: INVOICES_PATH
+              value: /app/storage/herbart/
+            - name: S3_FOLDER
+              value: herbart
+          volumeMounts:
+            - name: csd-volume
+              mountPath: /app/storage
+      volumes:
+        - name: csd-volume
+          persistentVolumeClaim:
+            claimName: csd-templates-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: herbart-mono-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: herbart
+  name: herbart-mono-api
+  namespace: legacy
+spec:
+  ports:
+    - name: 80-3000
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/name: herbart-mono-api
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: herbart-mono-api
+  namespace: legacy
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api-legacy-herbart.munyaal.app
+      http:
+        paths:
+          - backend:
+              service:
+                name: herbart-mono-api
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - api-legacy-herbart.munyaal.app
+      secretName: munyaal-app-lts
