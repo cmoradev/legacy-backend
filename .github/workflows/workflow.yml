@@ -36,6 +36,15 @@ jobs:
           - namespace: legacy
             deploy: develop-mono-api
             container: develop-mono-api
+          - namespace: legacy
+            deploy: cipdc-mono-api
+            container: cipdc-mono-api
+          - namespace: legacy
+            deploy: citul-mono-api
+            container: citul-mono-api
+          - namespace: legacy
+            deploy: herbart-mono-api
+            container: herbart-mono-api
     steps:
       # Checkout main branch with github task
       - name: 'Checkout main'

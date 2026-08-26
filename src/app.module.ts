@@ -6,8 +6,6 @@ import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { RouterModule } from 'nest-router';
 import { AcademyModule } from './academy/academy.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from './common/config/config.module';
 import { ColegioDBNameConnection, ColegioDBService } from './common/databases/colegiodb.service';
 import { CreditNoteAcademyModule } from './credit-note-academy/credit-note-academy.module';
@@ -49,8 +47,7 @@ TypeOrmCrudService.prototype.getJoinType = function (s: string) {
     CreditNoteStoreModule,
     TransactionModule,
   ],
-  controllers: [AppController],
-  providers: [AppService,
+  providers: [
     {
       provide: APP_GUARD,
       useClass: JwtGuard,

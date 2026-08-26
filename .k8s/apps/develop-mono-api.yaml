@@ -42,8 +42,6 @@ spec:
             - secretRef:
                 name: aws-s3-secret
             - secretRef:
-                name: email-secret
-            - secretRef:
                 name: db-develop-secret
           env:
             - name: NODE_ENV

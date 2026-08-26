@@ -109,7 +109,6 @@ export class AuthService {
     email: string,
     passw: string,
   ): Promise<Partial<User> | null> {
-
     const user:
       | User
       | undefined = await this.usersService.repo
@@ -164,93 +163,24 @@ export class AuthService {
     };
   }
 
-  async sendMailForgotPassword(
-    email: string,
-    token: string,
-    clientUrl: string,
-  ) {
-    const environment = process.env.NODE_ENV || 'development';
-    const envFile = `${environment}.env`;
-    let processEnv: any;
-    if (fs.existsSync(envFile)) {
-      processEnv = dotenv.parse(fs.readFileSync(envFile));
-    } else {
-      processEnv = process.env;
-    }
-    const transporter = nodemailer.createTransport({
-      service: 'gmail.com',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: processEnv.API_MAIL,
-        pass: processEnv.API_MAIL_PASSWORD,
-      },
-    });
-    const mailOptions: Mail.Options = {
-      to: email,
-      from: processEnv.API_MAIL,
-      subject: 'Recuperación de contraseña',
-      html: `
-      <div>
-        <h2>Recuperación de contraseña</h2>
-         <p>
-            Ha solicitado recuperar su contraseña.
-            Si fue usted haga click en el enlace que se encuentra debajo. De lo contrario, ignore este correo.
-        </p>
-        <a href='${clientUrl}/reset-password/${token}'>Recuperar contraseña</a>
-      </div>
-      `,
-    };
-    await transporter.sendMail(mailOptions);
-  }
-
-  async forgotPassword(forgotPassword: ForgotPasswordDto) {
+  async validateAdminPassword(validate: ValidateAdminPasswordDto) {
     try {
       const user = await this.usersService.findOne({
         where: {
-          email: forgotPassword.email,
+          email: validate.email,
+          role: { id: 1 },
         },
       });
-
-      if (!user) throw new BadRequestException('User not found');
-      const jwt = this.generateJWT(user, 300);
-      await this.tokensService.saveToken({
-        name: 'Forgot Token',
-        userId: user.id,
-        jwt: jwt.access_token,
-        isActive: true,
-        refresh: false,
-        revoked: false,
-        clientId: 1,
-        expiresAt: moment().add(5, 'minutes').toDate(),
-      });
-      await this.sendMailForgotPassword(
-        user.email,
-        jwt.access_token,
-        forgotPassword.clientUrl,
-      );
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.error(e.message);
-    }
-  }
-
-  async validateAdminPassword(validate: ValidateAdminPasswordDto){
-    try {
-      const user = await this.usersService.findOne({
-        where: {
-          email: validate.email, role: { id: 1}
-        }
-      })
       if (!user) throw new UnauthorizedException('User not found');
-      
-      return bcrypt.compareSync(validate.password, user.password.replace('$2y$', '$2a$'))
+
+      return bcrypt.compareSync(
+        validate.password,
+        user.password.replace('$2y$', '$2a$'),
+      );
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
-
 
   async validateUserCancellation(payload: CancellationDto) {
     const { userID, adminEmail, adminPassword } = payload;
@@ -271,7 +201,9 @@ export class AuthService {
       });
 
       if (!isValid) {
-        throw new UnauthorizedException('Credenciales de administrador incorrecta');
+        throw new UnauthorizedException(
+          'Credenciales de administrador incorrecta',
+        );
       }
     }
 

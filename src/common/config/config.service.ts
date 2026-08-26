@@ -37,8 +37,6 @@ export class ConfigService {
       DB_PASSWORD: Joi.string(),
       DB_PORT: Joi.number(),
       DB_HOST: Joi.string(),
-      API_MAIL: Joi.string(),
-      API_MAIL_PASSWORD: Joi.string(),
       INVOICES_PATH: Joi.string(),
       S3_ACCESS_KEY_ID: Joi.string().required(),
       S3_SECRET_ACCESS_KEY: Joi.string().required(),

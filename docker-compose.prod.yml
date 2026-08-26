@@ -10,8 +10,6 @@ services:
     environment:
       - NODE_ENV=production
       - API_SECRET=${API_SECRET}
-      - API_MAIL=${API_MAIL}
-      - API_MAIL_PASSWORD=${API_MAIL_PASSWORD}
       - DB_DBNAME_CONNECTION=${DB_DBNAME_CONNECTION}
       - DB_DBNAME=${DB_DBNAME}
       - DB_USERNAME=${DB_USERNAME}

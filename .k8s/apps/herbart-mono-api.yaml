@@ -42,8 +42,6 @@ spec:
             - secretRef:
                 name: aws-s3-secret
             - secretRef:
-                name: email-secret
-            - secretRef:
                 name: db-herbart-secret
           env:
             - name: INVOICES_PATH

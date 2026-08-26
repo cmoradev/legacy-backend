@@ -103,15 +103,7 @@ export class AuthController {
   public checkMySession(@Req() req, @Res() res: Response) {
     res.status(201).json(req.user);
   }
-
-  @Public()
-  @Post('forgot-password')
-  public async forgotPassword(
-    @Body(new ValidationPipe()) forgotPassword: ForgotPasswordDto,
-  ): Promise<void> {
-    await this.authService.forgotPassword(forgotPassword);
-  }
-
+  
   @Public()
   @Get('reset-password')
   public resetPassword(@Req() req, @Res() res: Response) {
