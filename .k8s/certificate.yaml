@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: munyaal.app
+  name: softlinker.app
   namespace: legacy
 spec:
-  commonName: '*.munyaal.app'
+  commonName: '*.softlinker.app'
   dnsNames:
-    - munyaal.app
-    - '*.munyaal.app'
+    - softlinker.app
+    - '*.softlinker.app'
   issuerRef:
     kind: Issuer
-    name: letsencrypt-munyaal-app
-  secretName: munyaal-app-lts
+    name: letsencrypt-softlinker-app
+  secretName: softlinker-app-lts

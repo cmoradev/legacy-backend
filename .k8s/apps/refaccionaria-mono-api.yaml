@@ -2,30 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/name: herbart-mono-api
+    app.kubernetes.io/name: refaccionaria-mono-api
     app.kubernetes.io/component: api
-    app.kubernetes.io/version: '1c18c55'
-    app.kubernetes.io/part-of: herbart
-  name: herbart-mono-api
+    app.kubernetes.io/version: '02e2872'
+    app.kubernetes.io/part-of: refaccionaria
+  name: refaccionaria-mono-api
   namespace: legacy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: herbart-mono-api
+      app.kubernetes.io/name: refaccionaria-mono-api
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: herbart-mono-api
+        app.kubernetes.io/name: refaccionaria-mono-api
         app.kubernetes.io/component: api
-        app.kubernetes.io/version: '1c18c55'
-        app.kubernetes.io/part-of: herbart
+        app.kubernetes.io/version: '02e2872'
+        app.kubernetes.io/part-of: refaccionaria
     spec:
       containers:
-        - image: registry.digitalocean.com/munyaal-docr/legacy/mono-api:f202705
-          name: herbart-mono-api
+        - image: registry.digitalocean.com/softmora/legacy/backend:02e2872
+          name: refaccionaria-mono-api
           ports:
             - name: http
               containerPort: 3000
@@ -42,28 +42,28 @@ spec:
             - secretRef:
                 name: aws-s3-secret
             - secretRef:
-                name: db-herbart-secret
+                name: db-refaccionaria-secret
           env:
             - name: INVOICES_PATH
-              value: /app/storage/herbart/
+              value: /app/storage/refaccionaria/
             - name: S3_FOLDER
-              value: herbart
+              value: refaccionaria
           volumeMounts:
-            - name: csd-volume
+            - name: csd-legacy
               mountPath: /app/storage
       volumes:
-        - name: csd-volume
+        - name: csd-legacy
           persistentVolumeClaim:
-            claimName: csd-templates-pvc
+            claimName: csd-legacy-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: herbart-mono-api
+    app.kubernetes.io/name: refaccionaria-mono-api
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: herbart
-  name: herbart-mono-api
+    app.kubernetes.io/part-of: refaccionaria
+  name: refaccionaria-mono-api
   namespace: legacy
 spec:
   ports:
@@ -72,28 +72,28 @@ spec:
       protocol: TCP
       targetPort: 3000
   selector:
-    app.kubernetes.io/name: herbart-mono-api
+    app.kubernetes.io/name: refaccionaria-mono-api
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: herbart-mono-api
+  name: refaccionaria-mono-api
   namespace: legacy
 spec:
   ingressClassName: nginx
   rules:
-    - host: api-legacy-herbart.munyaal.app
+    - host: api-legacy-refaccionaria.softlinker.app
       http:
         paths:
           - backend:
               service:
-                name: herbart-mono-api
+                name: refaccionaria-mono-api
                 port:
                   number: 80
             path: /
             pathType: Prefix
   tls:
     - hosts:
-        - api-legacy-herbart.munyaal.app
-      secretName: munyaal-app-lts
+        - api-legacy-refaccionaria.softlinker.app
+      secretName: softlinker-app-lts

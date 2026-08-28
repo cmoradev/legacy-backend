@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-munyaal-app
+  name: letsencrypt-softlinker-app
   namespace: legacy
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: developers@munyaal.app
+    email: calebmoradev@gmail.com
     privateKeySecretRef:
-      name: letsencrypt-munyaal-app
+      name: letsencrypt-softlinker-app
     solvers:
       - dns01:
           digitalocean:
