@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: csd-templates-pvc
+  name: csd-legacy-pvc
   namespace: legacy
 spec:
   storageClassName: nfs-rwx-storage
