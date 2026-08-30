@@ -39,7 +39,7 @@ export class ComprobanteDownloadService {
     ext: 'pdf' | 'xml',
     options?: DownloadOptions,
   ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
-    const lowerUuid = uuid.toLowerCase();
+    const lowerUuid = uuid.toUpperCase();
     const key = `comprobantes/${folder}/${lowerUuid}.${ext}`;
     const contentType =
       ext === 'pdf' ? 'application/pdf' : 'application/xml';
@@ -51,8 +51,6 @@ export class ComprobanteDownloadService {
         throw error;
       }
       
-      console.log('options', options)
-
       if (!options?.regenerate) {
         return this.handleMissingOnFirstRequest(lowerUuid, ext);
       }
