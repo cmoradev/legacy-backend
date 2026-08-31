@@ -98,11 +98,6 @@ export const GenerateInvoiceMunyaal = async (
       password: emisor.password,
     },
   });
-  console.log({
-    cerPath: env.instancePath + 'CSD/' + emisor.cerCSD,
-    keyPath: env.instancePath + 'CSD/' + emisor.keyCSD,
-    password: emisor.password,
-  });
 
   let folder = getFolderComprobantes(type);
 
@@ -262,11 +257,6 @@ export const GenerateGlobalInvoiceMunyaal = async (
       keyPath: `${instancePath}CSD/${keyCSD}`,
       password: password,
     },
-  });
-  console.log({
-    cerPath: `${instancePath}CSD/${cerCSD}`,
-    keyPath: `${instancePath}CSD/${keyCSD}`,
-    password: password,
   });
 
   let folder = getFolderComprobantes(type);
@@ -428,6 +418,10 @@ export const FullGenerateXml = async (
   try {
     xml = await CFDIService.getXMLSellado(comprobante);
   } catch (err) {
+    console.log(
+      'ESTE ES EL ERROR DE FACTURACION: ',
+      JSON.stringify(err, null, 3),
+    );
     result.warnings.push({
       step: 'stamping',
       message: normalizeCfdiError(err).message,

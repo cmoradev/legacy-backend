@@ -69,11 +69,7 @@ export async function CreditNote(
 
   const isGlobal =
     receiver.rfc == 'XEXX010101000' || receiver.rfc == 'XAXX010101000';
-  console.log({
-    cerPath: `${instancePath}CSD/${settingsBranchOffice.cerCSD}`,
-    keyPath: `${instancePath}CSD/${settingsBranchOffice.keyCSD}`,
-    password: settingsBranchOffice.password,
-  });
+¿¿
 
   const CFDIService = initializeCfdi({
     certificate: {
