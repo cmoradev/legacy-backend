@@ -164,7 +164,6 @@ const TotalWithCalculation = <T extends Detalles>(payload: {
   detailsWithPaymentApplied: ConceptAmountDetailsResult;
   detailsWithoutPaymentApplied: ConceptAmountDetailsResult;
 } => {
-  console.log('payload: ', JSON.stringify(payload, null, 3));
   const { details, type, payment } = payload;
   const concepts: Concept[] = details.map((d) => {
     const charges: Charge[] = getChargeDetails(d, type);
@@ -178,10 +177,7 @@ const TotalWithCalculation = <T extends Detalles>(payload: {
   });
   console.log(
     JSON.stringify({
-      payment: {
-        amount: payment.quantity,
-        change: payment.change,
-      },
+        details,
       concepts,
     }),
   );
