@@ -177,8 +177,19 @@ const TotalWithCalculation = <T extends Detalles>(payload: {
   });
   console.log(
     JSON.stringify({
-        details,
+      payment: {
+        amount: payment.quantity,
+        change: payment.change,
+      },
       concepts,
+      fountType:
+        type === InvoiceModules.ACADEMY
+          ? FountTypeEnum.DISCOUNT_ON_DISCOUNT
+          : FountTypeEnum.TRADITIONAL,
+      ivaPercentage:
+        type === InvoiceModules.SCHOOL
+          ? TaxPercentageEnum.T0
+          : TaxPercentageEnum.T16,
     }),
   );
   return calculateInvoicePrices({
