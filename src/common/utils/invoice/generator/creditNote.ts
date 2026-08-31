@@ -69,7 +69,7 @@ export async function CreditNote(
 
   const isGlobal =
     receiver.rfc == 'XEXX010101000' || receiver.rfc == 'XAXX010101000';
-¿¿
+
 
   const CFDIService = initializeCfdi({
     certificate: {
