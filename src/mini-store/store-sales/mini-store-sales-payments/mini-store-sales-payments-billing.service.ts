@@ -250,7 +250,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
 
         // ── 1. Obtener datos base ──
         const result = await this.service.findSaleByPayment(query);
-        console.log(result);
+
         const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
@@ -302,7 +302,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
         const env: Environment = {
             instancePath: this.configService.getPath(),
         };
-        console.log(invoiceDetails);
+
         // ── 5. Timbrar (CRÍTICO — si falla, lanza excepción) ──
         const fullResult: FullGenerateResult = await GenerateInvoiceMunyaal({
             type: InvoiceModules.STORE,
