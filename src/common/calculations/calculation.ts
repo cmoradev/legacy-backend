@@ -176,7 +176,15 @@ const TotalWithCalculation = <T extends Detalles>(payload: {
       charges,
     } as Concept;
   });
-
+  console.log(
+    JSON.stringify({
+      payment: {
+        amount: payment.quantity,
+        change: payment.change,
+      },
+      concepts,
+    }),
+  );
   return calculateInvoicePrices({
     payment: {
       amount: payment.quantity,
