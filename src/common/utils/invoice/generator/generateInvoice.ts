@@ -98,17 +98,7 @@ export const GenerateInvoiceMunyaal = async (
       password: emisor.password,
     },
   });
-  const CFDIService2 = initializeCfdi({
-    certificate: {
-      cerPath: env.instancePath + 'CSD/' + emisor.cerCSD,
-      keyPath: env.instancePath + 'CSD/' + emisor.keyCSD,
-      password: emisor.password,
-    },
-    behavior: {
-      certify: false,
-      seal: false,
-    },
-  });
+
   let folder = getFolderComprobantes(type);
 
   const comprobante = new ComprobanteCfdi({
@@ -223,9 +213,7 @@ export const GenerateInvoiceMunyaal = async (
 
     comprobante.Impuestos = impuestos;
   }
-  const xml = CFDIService2.getXML(comprobante);
-  const cad = CFDIService2.generateCadenaOriginal(comprobante)
-  console.log(cad, xml);
+
   return FullGenerateXml(comprobante, CFDIService, folder, s3Service);
 };
 

@@ -301,7 +301,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
         const env: Environment = {
             instancePath: this.configService.getPath(),
         };
-
+        console.log(invoiceDetails);
         // ── 5. Timbrar (CRÍTICO — si falla, lanza excepción) ──
         const fullResult: FullGenerateResult = await GenerateInvoiceMunyaal({
             type: InvoiceModules.STORE,
