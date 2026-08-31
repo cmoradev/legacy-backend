@@ -768,15 +768,15 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<MiniStoreS
                 throw new BadRequestException('El pago ya está cancelado');
             }
 
-            const { reasonCancellation} = payload;
+            const { reasonCancellation, userID} = payload;
 
-            const user = await this.authService.validateUserCancellation(payload);
+            // const user = await this.authService.validateUserCancellation(payload);
 
             const result = await this.repo.update({id}, {
                 reasonCancellation,
                 dateCancellation: new Date(),
                 paymentStatus: PaymentStatus.Cancelled,
-                agentCanceling: {id: user.id}
+                agentCanceling: {id: userID}
             });
 
             if(result && result.affected && result.affected > 0) {
