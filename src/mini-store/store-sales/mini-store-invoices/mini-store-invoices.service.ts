@@ -18,7 +18,7 @@ import { BranchOffice } from '../../../system/branch-office/entities/branch-offi
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { ConfigService } from '../../../common/config/config.service';
-import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoice> {
@@ -28,9 +28,27 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
         readonly userService: UsersService,
         readonly serviceInvoiceCompany: BranchOfficeSettingService,
         private readonly configService: ConfigService,
-        private readonly s3Service: S3Service,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
     ) {
         super(repo);
+    }
+
+    private async requireBufferFromS3(
+        folder: string,
+        uuid: string,
+        suffix: string,
+    ): Promise<Buffer> {
+        const buffer = await this.comprobanteDownloadService.getObjectCaseInsensitive(
+            folder,
+            uuid,
+            suffix,
+        );
+        if (!buffer) {
+            throw new NotFoundException(
+                `Archivo no encontrado en S3: comprobantes/${folder}/${uuid}${suffix}`,
+            );
+        }
+        return buffer;
     }
 
     public async softDeleteOne(id: number) {
@@ -118,9 +136,9 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
-        const folder = 'comprobantes/tienda';
-        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
-        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
+        const folder = 'tienda';
+        const xmlBuffer = await this.requireBufferFromS3(folder, uuid, '.xml');
+        const pdfBuffer = await this.requireBufferFromS3(folder, uuid, '.pdf');
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -156,10 +174,10 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                 pass: currentBranch.EmailPass,
             },
         });
-        const folder = 'comprobantes/tienda';
-        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
-        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
-        const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
+        const folder = 'tienda';
+        const xmlBuffer = await this.requireBufferFromS3(folder, uuid, '.xml');
+        const pdfBuffer = await this.requireBufferFromS3(folder, uuid, '.pdf');
+        const acuseBuffer = await this.requireBufferFromS3(folder, uuid, '-acuse.xml');
         const mailOptions: Mail.Options = {
             to: email,
             from: currentBranch.Email,
@@ -169,10 +187,10 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
                     <h4>Motivo de cancelación: </h4>
                      <p>${body}</p>
                     <p>Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.</p>
-                    <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, 
+                    <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas,
                      transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.</p>
                      <p>En caso de ser cancelable sin autorizacion se le adjuntara el acuse de cancelación.</p>
-                    <br> 
+                    <br>
                     </div>`,
             attachments: [
                 {

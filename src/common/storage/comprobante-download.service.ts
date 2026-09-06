@@ -39,7 +39,7 @@ export class ComprobanteDownloadService {
     return `comprobantes/${folder}/${normalized}.${ext}`;
   }
 
-  private async tryGetObject(key: string): Promise<Buffer | null> {
+  async tryGetObject(key: string): Promise<Buffer | null> {
     try {
       return await this.s3Service.getObjectCommand(key);
     } catch (error) {
@@ -48,6 +48,21 @@ export class ComprobanteDownloadService {
       }
       throw error;
     }
+  }
+
+  async getObjectCaseInsensitive(
+    folder: string,
+    uuid: string,
+    suffix: string,
+  ): Promise<Buffer | null> {
+    const base = `comprobantes/${folder}/`;
+    const lower = await this.tryGetObject(
+      `${base}${uuid.toLowerCase()}${suffix}`,
+    );
+    if (lower) {
+      return lower;
+    }
+    return this.tryGetObject(`${base}${uuid.toUpperCase()}${suffix}`);
   }
 
   async downloadFile(
