@@ -39,7 +39,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1103.0",
     "@hapi/joi": "^17.1.1",
-    "@munyaal/calculations": "^1.1.4",
+    "@munyaal/calculations": "^1.0.14",
     "@munyaal/cfdi": "^1.0.0",
     "@munyaal/cfdi-catalogs": "^1.0.1",
     "@munyaal/cfdi-pdf": "^1.0.8",

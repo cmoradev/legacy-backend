@@ -250,6 +250,7 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<Min
 
         // ── 1. Obtener datos base ──
         const result = await this.service.findSaleByPayment(query);
+
         const invoiceDetails = ConceptsPriceByPaymentBilligCalculation({
             payment: result.payment,
             details: result.sale.miniStoreSaleDetails,
