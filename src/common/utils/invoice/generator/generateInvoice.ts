@@ -367,7 +367,7 @@ export const FullGenerateXml = async (
   const sw = new FactSw();
   const timbrado = await sw.facturar(xml);
   result.stamped = true;
-  result.uuid = timbrado.data.uuid.toUpperCase();
+  result.uuid = timbrado.data.uuid;
   result.timbrado = timbrado;
   result.total = comprobante.Total;
   
@@ -412,7 +412,6 @@ const _saveFiles = async (
   folder: string,
 ) => {
   const { qrCode, cfdi, uuid } = data;
-  const keyUuid = uuid.toLowerCase();
 
   const imgBuffer = Buffer.from(qrCode, 'base64');
   const xmlBuffer = Buffer.from(cfdi, 'utf-8');
@@ -421,12 +420,12 @@ const _saveFiles = async (
     s3Service.putObjectCommand({
       type: 'application/xml',
       buffer: xmlBuffer,
-      key: `${folder}/${keyUuid}.xml`,
+      key: `${folder}/${uuid}.xml`,
     }),
     s3Service.putObjectCommand({
       type: 'image/jpeg',
       buffer: imgBuffer,
-      key: `${folder}/${keyUuid}.jpg`,
+      key: `${folder}/${uuid}.jpg`,
     }),
   ];
 
@@ -435,7 +434,7 @@ const _saveFiles = async (
       s3Service.putObjectCommand({
         type: 'application/pdf',
         buffer: pdfBuffer,
-        key: `${folder}/${keyUuid}.pdf`,
+        key: `${folder}/${uuid}.pdf`,
       }),
     );
   }
