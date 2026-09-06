@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { Response } from 'express';
 import * as AdmZip from 'adm-zip';
 import { CfdiPdf } from '@munyaal/cfdi-pdf';
@@ -33,37 +28,62 @@ export class ComprobanteDownloadService {
     private readonly factSw: FactSw,
   ) {}
 
+  private buildKey(
+    folder: string,
+    uuid: string,
+    ext: 'pdf' | 'xml',
+    caseVariant: 'lower' | 'upper' = 'lower',
+  ): string {
+    const normalized =
+      caseVariant === 'upper' ? uuid.toUpperCase() : uuid.toLowerCase();
+    return `comprobantes/${folder}/${normalized}.${ext}`;
+  }
+
+  private async tryGetObject(key: string): Promise<Buffer | null> {
+    try {
+      return await this.s3Service.getObjectCommand(key);
+    } catch (error) {
+      if (error?.name === 'NoSuchKey' || error?.Code === 'NoSuchKey') {
+        return null;
+      }
+      throw error;
+    }
+  }
+
   async downloadFile(
     folder: string,
     uuid: string,
     ext: 'pdf' | 'xml',
     options?: DownloadOptions,
   ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
-    const lowerUuid = uuid;
-    const key = `comprobantes/${folder}/${lowerUuid}.${ext}`;
-    const contentType =
-      ext === 'pdf' ? 'application/pdf' : 'application/xml';
-    try {
-      const buffer = await this.s3Service.getObjectCommand(key);
-      return { buffer, contentType, filename: `${lowerUuid}.${ext}` };
-    } catch (error) {
-      if (error?.name !== 'NoSuchKey' && error?.Code !== 'NoSuchKey') {
-        throw error;
-      }
-      
-      if (!options?.regenerate) {
-        return this.handleMissingOnFirstRequest(lowerUuid, ext);
-      }
+    const contentType = ext === 'pdf' ? 'application/pdf' : 'application/xml';
+    const filename = `${uuid}.${ext}`;
 
-
-      return this.regenerateFile(
-        folder,
-        lowerUuid,
-        ext,
-        contentType,
-        options.cadenaOriginal,
-      );
+    const lowerBuffer = await this.tryGetObject(
+      this.buildKey(folder, uuid, ext, 'lower'),
+    );
+    if (lowerBuffer) {
+      return { buffer: lowerBuffer, contentType, filename };
     }
+
+    const upperBuffer = await this.tryGetObject(
+      this.buildKey(folder, uuid, ext, 'upper'),
+    );
+    if (upperBuffer) {
+      return { buffer: upperBuffer, contentType, filename };
+    }
+
+    if (!options?.regenerate) {
+      return this.handleMissingOnFirstRequest(uuid, ext);
+    }
+
+    return this.regenerateFile(
+      folder,
+      uuid,
+      ext,
+      contentType,
+      options.cadenaOriginal,
+    );
   }
 
   private async handleMissingOnFirstRequest(
@@ -90,7 +110,10 @@ export class ComprobanteDownloadService {
         throw error;
       }
 
-      this.logger.warn(`UUID no encontrado en el servicio de timbrado: ${uuid}`, error);
+      this.logger.warn(
+        `UUID no encontrado en el servicio de timbrado: ${uuid}`,
+        error,
+      );
 
       const errRes: DownloadErrorResponse = {
         status: 'error',
@@ -113,15 +136,28 @@ export class ComprobanteDownloadService {
   ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
     try {
       if (ext === 'xml') {
-        return await this.regenerateXml(folder, uuid, contentType, cadenaOriginal);
+        return await this.regenerateXml(
+          folder,
+          uuid,
+          contentType,
+          cadenaOriginal,
+        );
       }
-      return await this.regeneratePdf(folder, uuid, contentType, cadenaOriginal);
+      return await this.regeneratePdf(
+        folder,
+        uuid,
+        contentType,
+        cadenaOriginal,
+      );
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
       }
 
-      this.logger.warn(`Error al regenerar ${ext.toUpperCase()} para el UUID ${uuid}`, error);
+      this.logger.warn(
+        `Error al regenerar ${ext.toUpperCase()} para el UUID ${uuid}`,
+        error,
+      );
 
       const errRes: DownloadErrorResponse = {
         status: 'error',
@@ -167,20 +203,20 @@ export class ComprobanteDownloadService {
     contentType: string,
     cadenaOriginal?: string,
   ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
-    const xmlKey = `comprobantes/${folder}/${uuid}.xml`;
-    let xml: string;
-    let xmlFromS3 = true;
+    const xmlKey = this.buildKey(folder, uuid, 'xml');
+    const pdfKey = this.buildKey(folder, uuid, 'pdf');
 
-    try {
-      const xmlBuffer = await this.s3Service.getObjectCommand(xmlKey);
+    const xmlBuffer = await this.tryGetObject(xmlKey);
+    let xml: string;
+    let xmlFromS3: boolean;
+
+    if (xmlBuffer) {
       xml = xmlBuffer.toString('utf-8');
-    } catch (error) {
-      if (error?.name !== 'NoSuchKey' && error?.Code !== 'NoSuchKey') {
-        throw error;
-      }
-      xmlFromS3 = false;
+      xmlFromS3 = true;
+    } else {
       const stamped = await this.factSw.getXmlByUuid(uuid);
       xml = stamped.xml;
+      xmlFromS3 = false;
     }
 
     const cadena =
@@ -191,7 +227,7 @@ export class ComprobanteDownloadService {
       this.s3Service.putObjectCommand({
         type: 'application/pdf',
         buffer: pdfBuffer,
-        key: `comprobantes/${folder}/${uuid}.pdf`,
+        key: pdfKey,
       }),
     ];
 
@@ -200,7 +236,7 @@ export class ComprobanteDownloadService {
         this.s3Service.putObjectCommand({
           type: 'application/xml',
           buffer: Buffer.from(xml, 'utf-8'),
-          key: `comprobantes/${folder}/${uuid}.xml`,
+          key: xmlKey,
         }),
       );
     }
@@ -210,7 +246,10 @@ export class ComprobanteDownloadService {
     return { buffer: pdfBuffer, contentType, filename: `${uuid}.pdf` };
   }
 
-  private async generatePdf(xml: string, cadenaOriginal: string): Promise<Buffer> {
+  private async generatePdf(
+    xml: string,
+    cadenaOriginal: string,
+  ): Promise<Buffer> {
     const pdf = new CfdiPdf(xml, cadenaOriginal);
     return pdf.getBuffer();
   }
@@ -260,7 +299,10 @@ export class ComprobanteDownloadService {
     const skippedFiles: string[] = [];
 
     for (const i of items) {
-      const uuid = (i.f_uuid != null ? i.f_uuid : i.p_global_uuid).toLowerCase();
+      const uuid = (i.f_uuid != null
+        ? i.f_uuid
+        : i.p_global_uuid
+      ).toLowerCase();
       const pdfKey = `comprobantes/${folder}/${uuid}.pdf`;
       const xmlKey = `comprobantes/${folder}/${uuid}.xml`;
 
@@ -286,7 +328,11 @@ export class ComprobanteDownloadService {
 
     if (skippedFiles.length > 0) {
       this.logger.warn(
-        `Se omitieron ${skippedFiles.length} archivo(s) del ZIP por no encontrarse en S3: ${skippedFiles.join(', ')}`,
+        `Se omitieron ${
+          skippedFiles.length
+        } archivo(s) del ZIP por no encontrarse en S3: ${skippedFiles.join(
+          ', ',
+        )}`,
       );
     }
 
