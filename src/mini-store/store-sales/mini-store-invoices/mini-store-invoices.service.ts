@@ -123,6 +123,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<MiniStoreInvoic
     }
 
     async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
+        console.log('sendMail', currentBranch.Email, currentBranch.EmailPass, email);
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             host: 'smtp.gmail.com',
