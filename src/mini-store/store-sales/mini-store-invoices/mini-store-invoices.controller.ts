@@ -1,23 +1,24 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpException, HttpStatus,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Query,
-    Res
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import {
-    Crud,
-    CrudController,
-    Override,
-    CrudRequest,
-    ParsedRequest
+  Crud,
+  CrudController,
+  Override,
+  CrudRequest,
+  ParsedRequest,
 } from '@nestjsx/crud';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { MiniStoreInvoicesService } from './mini-store-invoices.service';
@@ -38,277 +39,352 @@ import { S3Service } from 'src/common/storage/s3.service';
 import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
-    model: {
-        type: MiniStoreInvoice,
+  model: {
+    type: MiniStoreInvoice,
+  },
+  query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
     },
-    query: {
-        filter: {
-            deletedAt: {
-                $eq: null,
-            },
-        },
-        limit: 10,
-        join: {
-            miniStoreSalePayment: { eager: false },
-            miniStoreSale: { eager: false },
-            'miniStoreSale.miniStoreSaleDetails': {
-                alias: 'miniStoreSale_miniStoreSaleDetails',
-                eager: false
-            },
-            'miniStoreSale.miniStoreSaleDetails.extraCharges': {
-                alias: 'miniStoreSale_miniStoreSaleDetails_extraCharges',
-                eager: false
-            },
-            'miniStoreSale.student': { eager: false },
-            agentBilling: { eager: false },
-            agentCanceling: { eager: false },
-            creditNotesStore: { eager: false}
-        },
+    limit: 10,
+    join: {
+      miniStoreSalePayment: { eager: false },
+      miniStoreSale: { eager: false },
+      'miniStoreSale.miniStoreSaleDetails': {
+        alias: 'miniStoreSale_miniStoreSaleDetails',
+        eager: false,
+      },
+      'miniStoreSale.miniStoreSaleDetails.extraCharges': {
+        alias: 'miniStoreSale_miniStoreSaleDetails_extraCharges',
+        eager: false,
+      },
+      'miniStoreSale.student': { eager: false },
+      agentBilling: { eager: false },
+      agentCanceling: { eager: false },
+      creditNotesStore: { eager: false },
     },
+  },
 })
 @Controller()
-export class MiniStoreInvoicesController implements CrudController<MiniStoreInvoice> {
+export class MiniStoreInvoicesController
+  implements CrudController<MiniStoreInvoice> {
+  constructor(
+    readonly service: MiniStoreInvoicesService,
+    readonly branchOfficeSettingService: BranchOfficeSettingService,
+    readonly branchOffice: BranchOfficeService,
+    readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
+    private readonly configService: ConfigService,
+    private smartWeb: FactSw,
+    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
+  ) {}
 
-    constructor(readonly service: MiniStoreInvoicesService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        readonly branchOffice: BranchOfficeService,
-        readonly miniStoreSalesPaymentsService: MiniStoreSalesPaymentsService,
-        private readonly configService: ConfigService,
-        private smartWeb: FactSw,
-        private readonly s3Service: S3Service,
-        private readonly comprobanteDownloadService: ComprobanteDownloadService,
-    ) {
+  get base(): CrudController<MiniStoreInvoice> {
+    return this;
+  }
+
+  @Override('getOneBase')
+  async getOneAndDoStuff(@ParsedRequest() req: CrudRequest) {
+    const invoice = await this.base.getOneBase(req);
+    const { miniStoreSalePayment, miniStoreSale } = invoice;
+    const { miniStoreSaleDetails } = miniStoreSale;
+    if (miniStoreSalePayment && miniStoreSale && miniStoreSaleDetails) {
+      const factor = ConceptsPriceByPaymentBillig({
+        payment: miniStoreSalePayment,
+        details: miniStoreSaleDetails,
+        type: InvoiceModules.STORE,
+      });
+      const { detalles } = factor;
+      // @ts-ignore
+      invoice.detalles = detalles;
+      detalles.map((detalle) => {
+        const findIndex = miniStoreSaleDetails.findIndex(
+          (mssd) => mssd.id === detalle.id,
+        );
+        if (findIndex > -1) {
+          // @ts-ignore
+          miniStoreSaleDetails[findIndex].sat = detalle;
+        }
+      });
     }
+    return invoice;
+  }
 
-    get base(): CrudController<MiniStoreInvoice> {
-        return this;
-    }
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
 
-    @Override('getOneBase')
-    async getOneAndDoStuff(
-        @ParsedRequest() req: CrudRequest,
-    ) {
-        const invoice = await this.base.getOneBase(req);
-        const { miniStoreSalePayment, miniStoreSale } = invoice
-        const { miniStoreSaleDetails } = miniStoreSale
-        if (miniStoreSalePayment && miniStoreSale && miniStoreSaleDetails) {
-            const factor = ConceptsPriceByPaymentBillig({
-                payment: miniStoreSalePayment,
-                details: miniStoreSaleDetails,
-                type: InvoiceModules.STORE
-            });
-            const { detalles } = factor
-            // @ts-ignore
-            invoice.detalles = detalles
-            detalles.map((detalle) => {
-                const findIndex = miniStoreSaleDetails.findIndex((mssd) => mssd.id === detalle.id)
-                if (findIndex > -1) {
-                    // @ts-ignore
-                    miniStoreSaleDetails[findIndex].sat = detalle
-                }
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
+  }
+
+  @Get(':id/pdf')
+  public async pdf(
+    @Res() res: Response,
+    @Query('uuid') uuid: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'tienda',
+      uuid,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    return res.send({
+      src: 'data:application/pdf;base64,' + file.buffer.toString('base64'),
+    });
+  }
+
+  @Post('cancel-invoice')
+  async cancelInvoiceSwSmartweb(
+    @Body() cancelInvoiceSw: CancelInvoiceSwDto,
+    @Res() res: Response,
+  ) {
+    try {
+      const invoice = await this.service.findOne({
+        where: {
+          id: cancelInvoiceSw.invoiceId,
+        },
+        relations: ['miniStoreSalePayment'],
+      });
+
+      const currentBranch = await this.branchOffice.findBranch(
+        cancelInvoiceSw.branchOfficeId,
+      );
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: cancelInvoiceSw.branchOfficeSettingId,
+        },
+      });
+
+      const cer = fs
+        .readFileSync(
+          `${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD,
+        )
+        .toString('base64');
+      const key = fs
+        .readFileSync(
+          `${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD,
+        )
+        .toString('base64');
+
+      const result = await this.smartWeb.cancelarCSD({
+        rfc: branchOfficeSett.rfc,
+        password: branchOfficeSett.password,
+        uuid: invoice.uuid,
+        cer,
+        key,
+        motivo: cancelInvoiceSw.motivo,
+        folioSustitucion: cancelInvoiceSw.folioSustitucion,
+      });
+
+      const status = result.data.uuid[invoice.uuid];
+      /** Nuevos estados para la venta:
+       * 0.- Sin facturar
+       * 1.- Facturado
+       * 2.- Cancelado
+       * 3.- En cola
+       * 4.- Rechazado
+       */
+      if (
+        status === '201' ||
+        +status === 201 ||
+        status === '202' ||
+        +status === 202
+      ) {
+        await this.s3Service.putObjectCommand({
+          type: 'application/xml',
+          buffer: Buffer.from(result.data.acuse),
+          key: `comprobantes/tienda/${invoice.uuid}-acuse.xml`,
+        });
+
+        if (cancelInvoiceSw.sendMail) {
+          for (const email of cancelInvoiceSw.mails) {
+            const sendMails = this.service.sendMailCancelacion(
+              currentBranch,
+              invoice.uuid,
+              email,
+              cancelInvoiceSw.subject,
+              cancelInvoiceSw.body,
+            );
+          }
+        }
+
+        invoice.status = 2;
+        invoice.reasonCancellation = cancelInvoiceSw.reason;
+        invoice.cancellationDate = new Date();
+        invoice.motivo = cancelInvoiceSw.motivo;
+        invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
+        invoice.agentCanceling = {
+          id: cancelInvoiceSw.cashierId,
+        } as User;
+
+        const updateInvoice = await this.service.updateInvoice(invoice);
+
+        if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
+          const payments = await this.miniStoreSalesPaymentsService.find({
+            where: { globalUuid: invoice.uuid },
+          });
+
+          const ids = payments.map((value) => value.id);
+
+          const updatePay = await this.miniStoreSalesPaymentsService.repo.update(
+            { id: In(ids) },
+            { stamping: 0, globalUuid: null },
+          );
+
+          res
+            .send({
+              msg: 'Cancelado',
+              payment: updatePay,
+              invoice: updateInvoice,
             })
+            .status(200);
+        } else {
+          const payment = await this.miniStoreSalesPaymentsService.findOne({
+            where: {
+              id: invoice.miniStoreSalePayment.id,
+            },
+          });
+
+          payment.stamping = 0;
+
+          const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(
+            payment,
+          );
+
+          res
+            .send({
+              msg: 'Cancelado',
+              payment: updatePay,
+              invoice: updateInvoice,
+            })
+            .status(200);
         }
-        return invoice
+      }
+      if (status === '203' || +status === 203) {
+        res
+          .send({
+            msg: 'Error',
+            payment: '',
+            invoice: '',
+          })
+          .status(400);
+      }
+      if (status === '205' || +status === 205) {
+        res
+          .send({
+            msg: 'Error',
+            payment: '',
+            invoice: '',
+          })
+          .status(400);
+      }
+    } catch (e) {
+      console.warn(e);
+      res.status(400).send(e);
     }
+  }
 
-    @Delete('soft-deleted/:id')
-    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softDeleteOne(id);
+  @Post('/send-invoice')
+  async sendMail(
+    @Body()
+    data: {
+      email: string;
+      uuid: string;
+      branchOfficeId: number;
+      branchOfficeSettingId: number;
+    },
+    @Res() resp: Response,
+  ) {
+    try {
+      const message = this.service.sendMail(data.uuid, data.email);
+      resp.status(200);
+      resp.send(message);
+    } catch (e) {
+      resp.status(404);
+      resp.send(e instanceof Error ? e.message : '');
     }
+  }
 
-    @Put('soft-restore/:id')
-    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softRestoreOne(id);
+  @Public()
+  @Get('/download-xml/:UUID')
+  async getXmlInvoice(
+    @Param('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'tienda',
+      UUID,
+      'xml',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this.comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+
+  @Public()
+  @Get('/download-pdf/:UUID')
+  async getPdfInvoice(
+    @Param('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'tienda',
+      UUID,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this.comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+  // eliminar al cambiar los reporte del front
+  @Post('report-invoice')
+  public async reportInvoice(
+    @Res() response,
+    @Query()
+    query: {
+      startDate: string;
+      endDate: string;
+      billingAgent: string;
+      status: string;
+      data: string;
+    },
+  ) {
+    try {
+      const dataReport = await this.service.reportInvoice(query);
+      response.status(200);
+      response.send(dataReport);
+    } catch (e) {
+      console.log(e);
+      response.status(404);
+      response.send(e instanceof Error ? e.message : '');
     }
-
-    @Get(':id/pdf')
-    public async pdf(
-        @Res() res: Response,
-        @Query('uuid') uuid: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('tienda', uuid, 'pdf', {
-            regenerate,
-            cadenaOriginal,
-        });
-        return res.send({ src: 'data:application/pdf;base64,' + file.buffer.toString('base64') });
-    }
-
-    @Post('cancel-invoice')
-    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
-        try {
-            const invoice = await this.service.findOne({
-                where: {
-                    id: cancelInvoiceSw.invoiceId,
-                },
-                relations: ['miniStoreSalePayment'],
-            });
-
-            const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
-            const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-                where: {
-                    id: cancelInvoiceSw.branchOfficeSettingId,
-                },
-            });
-
-            const cer = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
-            const key = fs.readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
-
-            const result = await this.smartWeb.cancelarCSD({
-                rfc: branchOfficeSett.rfc,
-                password: branchOfficeSett.password,
-                uuid: invoice.uuid,
-                cer,
-                key,
-                motivo: cancelInvoiceSw.motivo,
-                folioSustitucion: cancelInvoiceSw.folioSustitucion
-            });
-
-            const status = result.data.uuid[invoice.uuid];
-            /** Nuevos estados para la venta:
-             * 0.- Sin facturar
-             * 1.- Facturado
-             * 2.- Cancelado
-             * 3.- En cola
-             * 4.- Rechazado
-             */
-            if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-                await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(result.data.acuse), key: `comprobantes/tienda/${invoice.uuid}-acuse.xml` });
-
-                if (cancelInvoiceSw.sendMail) {
-                    for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
-                    }
-                }
-
-                invoice.status = 2;
-                invoice.reasonCancellation = cancelInvoiceSw.reason;
-                invoice.cancellationDate = new Date();
-                invoice.motivo = cancelInvoiceSw.motivo;
-                invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
-                invoice.agentCanceling = {
-                    id: cancelInvoiceSw.cashierId,
-                } as User;
-
-                const updateInvoice = await this.service.updateInvoice(invoice);
-
-                if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
-                    const payments = await this.miniStoreSalesPaymentsService.find({ where: { globalUuid: invoice.uuid } })
-
-                    const ids = payments.map(value => value.id)
-
-                    const updatePay = await this.miniStoreSalesPaymentsService.repo.update({ id: In(ids) }, { stamping: 0, globalUuid: null });
-
-                    res.send({
-                        msg: 'Cancelado',
-                        payment: updatePay,
-                        invoice: updateInvoice,
-                    }).status(200)
-                } else {
-                    const payment = await this.miniStoreSalesPaymentsService.findOne({
-                        where: {
-                            id: invoice.miniStoreSalePayment.id,
-                        },
-                    });
-
-                    payment.stamping = 0;
-
-                    const updatePay = await this.miniStoreSalesPaymentsService.updatePayment(payment);
-
-                    res.send({
-                        msg: 'Cancelado',
-                        payment: updatePay,
-                        invoice: updateInvoice,
-                    }).status(200)
-                }
-            }
-            if (status === '203' || +status === 203) {
-                res.send({
-                    msg: 'Error',
-                    payment: '',
-                    invoice: '',
-                }).status(400);
-            }
-            if (status === '205' || +status === 205) {
-                res.send({
-                    msg: 'Error',
-                    payment: '',
-                    invoice: '',
-                }).status(400);
-            }
-
-        } catch (e) {
-            console.warn(e)
-            res.status(400).send(e);
-        }
-    }
-
-    @Post('/send-invoice')
-    async sendMail(@Body() data: {
-        email: string;
-        uuid: string;
-        branchOfficeId: number;
-        branchOfficeSettingId: number;
-    }, @Res() resp: Response) {
-        try {
-            const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
-            const message = this.service.sendMail(currentBranch, data.uuid, data.email);
-            resp.status(200);
-            resp.send(message);
-        } catch (e) {
-            resp.status(404);
-            resp.send(e instanceof Error ? e.message : '');
-        }
-    }
-
-    @Public()
-    @Get('/download-xml/:UUID')
-    async getXmlInvoice(
-        @Param('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'xml', {
-            regenerate,
-            cadenaOriginal,
-        });
-        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
-    }
-
-    @Public()
-    @Get('/download-pdf/:UUID')
-    async getPdfInvoice(
-        @Param('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('tienda', UUID, 'pdf', {
-            regenerate,
-            cadenaOriginal,
-        });
-        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
-    }
-    // eliminar al cambiar los reporte del front
-    @Post('report-invoice')
-    public async reportInvoice(@Res() response, @Query() query: {
-        startDate: string,
-        endDate: string,
-        billingAgent: string,
-        status: string,
-        data: string,
-    }) {
-        try {
-            const dataReport = await this.service.reportInvoice(query);
-            response.status(200);
-            response.send(dataReport);
-        } catch (e) {
-            console.log(e)
-            response.status(404);
-            response.send(e instanceof Error ? e.message : '');
-        }
-
-    }
+  }
 }

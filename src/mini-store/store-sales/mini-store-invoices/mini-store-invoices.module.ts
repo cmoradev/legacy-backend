@@ -11,19 +11,21 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 import { ConfigModule } from '../../../common/config/config.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { TransportsModule } from 'src/common/transports';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
-        UsersModule,
-        BranchOfficeModule,
-        BranchOfficeSettingModule,
-        MiniStoreSalesPaymentsModule,
-        ConfigModule,
-        StorageModule
-    ],
-    exports: [MiniStoreInvoicesService],
-    providers: [MiniStoreInvoicesService, SmartWeb],
-    controllers: [MiniStoreInvoicesController],
+  imports: [
+    TypeOrmModule.forFeature([MiniStoreInvoice], ColegioDBNameConnection),
+    UsersModule,
+    BranchOfficeModule,
+    BranchOfficeSettingModule,
+    MiniStoreSalesPaymentsModule,
+    ConfigModule,
+    StorageModule,
+    TransportsModule
+  ],
+  exports: [MiniStoreInvoicesService],
+  providers: [MiniStoreInvoicesService, SmartWeb],
+  controllers: [MiniStoreInvoicesController],
 })
-export class MiniStoreInvoicesModule {
-}
+export class MiniStoreInvoicesModule {}

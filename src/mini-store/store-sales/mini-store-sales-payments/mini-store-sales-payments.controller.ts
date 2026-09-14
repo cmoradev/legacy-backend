@@ -286,7 +286,6 @@ export class MiniStoreSalesPaymentsController
       }
 
       const result = await this.miniStoreInvoicesService.sendMail(
-        currentOffice,
         query.uuid,
         query.email,
       );
