@@ -30,8 +30,8 @@ export class S3Service {
       region: this._config.getS3Region(),
     });
 
-    this._bucketName = this._config.getS3BucketName();
-    this._s3Folder = this._config.getS3Folder();
+    this._bucketName = this._config.s3BucketName;
+    this._s3Folder = this._config.s3Folder;
   }
 
   get client(): S3Client {

@@ -43,6 +43,7 @@ export class ConfigService {
       S3_REGION: Joi.string().required(),
       S3_BUCKET_NAME: Joi.string().required(),
       S3_FOLDER: Joi.string().allow('').default(''),
+      AMQP_SERVERS: Joi.string().allow('').default(''),
     }).unknown(true);
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
@@ -131,19 +132,32 @@ export class ConfigService {
     return this.envConfig.S3_REGION as string;
   }
 
-  /**
-   * Retorna el nombre del bucket de S3
-   * @return string
-   */
   public getS3BucketName(): string {
     return this.envConfig.S3_BUCKET_NAME as string;
   }
 
-  /**
-   * Retorna el folder/prefijo dentro del bucket de S3
-   * @return string
-   */
   public getS3Folder(): string {
-    return this.envConfig.S3_FOLDER as string;
+    return `${this.envConfig.S3_FOLDER || ''}`;
+  }
+
+  public get s3BucketName(): string {
+    return `${this.envConfig.S3_BUCKET_NAME || ''}`;
+  }
+
+  public get s3Folder(): string {
+    return `${this.envConfig.S3_FOLDER || ''}`;
+  }
+
+  public get amqpServers(): string[] {
+    const raw = `${this.envConfig.AMQP_SERVERS || ''}`;
+
+    if (!raw) {
+      return [];
+    }
+
+    return raw
+      .split(',')
+      .map((url) => url.trim())
+      .filter(Boolean);
   }
 }
