@@ -579,10 +579,6 @@ export class SchoolChargesPaymentsController
         },
       });
 
-      const branchOffice = await this.branchOffice.findBranch(
-        query.branchOfficeId,
-      );
-
       const receipt = await this.service.createReceipt(
         result,
         branchOfficeSett,
@@ -603,13 +599,15 @@ export class SchoolChargesPaymentsController
 
       attachments.push({ filename, content });
 
-      const data = this.service.sendReceipt(
-        branchOffice,
+      const data = await this.service.sendReceipt(
         attachments,
         query.email,
       );
 
-      res.send(data);
+      res.send({
+        emailSent: data.published,
+        error: data.error ? data.error.message : null,
+      });
     } catch (e) {
       console.warn(e);
 

@@ -259,7 +259,6 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
         typeConcept: 'Invoice',
       });
 
-      const currentOffice = await this.branchOfficeService.findBranch(query.branchOfficeId);
       const branchOfficeSett = await this.branchOfficeSettingService.findOne({
         where: { id: query.branchOfficeSettingId },
       });
@@ -365,19 +364,18 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
       // ── 7. Enviar correo (NO CRÍTICO — no debe bloquear la respuesta) ──
       this.schoolChargeInvoiceService
         .sendMail(
-          currentOffice,
           fullResult.uuid,
           query.receiver.email,
         )
-        .then(() => {
-          response.emailSent = true;
-        })
-        .catch((err) => {
-          response.warnings.push({
-            step: 'email',
-            message: `Error al enviar correo: ${err.message}`,
-            stack: err.stack,
-          });
+        .then((result) => {
+          response.emailSent = result.published;
+          if (!result.published && result.error) {
+            response.warnings.push({
+              step: 'email',
+              message: `Error al enviar correo: ${result.error.message}`,
+              stack: result.error.stack,
+            });
+          }
         });
 
       response.stamping = true;
@@ -457,18 +455,16 @@ export class SchoolChargesPaymentsBillingService extends TypeOrmCrudService<Scho
       }
 
       let emailSent = false;
-      try {
-        await this.schoolChargeInvoiceService.sendMail(
-          branchOffice,
-          fullResult.uuid,
-          branchOfficeConfig.email,
-        );
-        emailSent = true;
-      } catch (err) {
+      const mailResult = await this.schoolChargeInvoiceService.sendMail(
+        fullResult.uuid,
+        branchOfficeConfig.email,
+      );
+      emailSent = mailResult.published;
+      if (!emailSent && mailResult.error) {
         warnings.push({
           step: 'email',
-          message: `Error al enviar correo: ${err.message}`,
-          stack: err.stack,
+          message: `Error al enviar correo: ${mailResult.error.message}`,
+          stack: mailResult.error.stack,
         });
       }
 

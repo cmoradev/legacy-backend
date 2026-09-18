@@ -5,14 +5,11 @@ import { Repository } from 'typeorm';
 import { SchoolChargesInvoice } from './entities/school-charges-invoice.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import * as nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
 import * as moment from 'moment';
+import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
 
 @Injectable()
 export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolChargesInvoice> {
@@ -20,8 +17,8 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     @InjectRepository(SchoolChargesInvoice, ColegioDBNameConnection)
       readonly repo: Repository<SchoolChargesInvoice>,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
-    private readonly configService: ConfigService,
     private readonly s3Service: S3Service,
+    private readonly mailService: MailService,
   ) {
     super(repo);
   }
@@ -72,92 +69,74 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     return await this.repo.findOne({ id: result.id });
   }
 
-  async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-      auth: {
-        user: currentBranch.Email,
-        pass: currentBranch.EmailPass,
-      },
-    });
+  async sendMail(uuid: string, email: string) {
     const folder = 'comprobantes/colegio';
     const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
     const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
-    const mailOptions: Mail.Options = {
+
+    return this.mailService.sendEmail({
       to: email,
-      from: currentBranch.Email,
       subject: 'Comprobantes de pago CFDI',
-      text: 'CFDI',
-      html: '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br></div>',
+      template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
+      context: {
+        greeting: 'Gracias por su pago',
+        description:
+          'Adjuntos, le enviamos su factura electrónica y archivo XML',
+      },
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
+          contentType: 'application/xml',
           content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
+          contentType: 'application/pdf',
           content: pdfBuffer,
         },
       ],
-    };
-    return await transporter.sendMail(mailOptions);
-
+    });
   }
 
-  async sendMailCancelacion(currentBranch: BranchOffice, uuid: string, email: string, subject: string, body: string) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-      auth: {
-        user: currentBranch.Email,
-        pass: currentBranch.EmailPass,
-      },
-    });
+  async sendMailCancelacion(uuid: string, email: string, subject: string, body: string) {
     const folder = 'comprobantes/colegio';
     const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
     const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
     const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
-    const mailOptions: Mail.Options = {
+
+    return this.mailService.sendEmail({
       to: email,
-      from: currentBranch.Email,
-      subject, // 'Tienda - Solicitud de cancelación del Comprobantes de pago CFDI',
-      html: `<div>
-                    <h2>Notificación de cancelación de CFDI</h2><br>
-                    <h4>Motivo de cancelación: </h4>
-                     <p>${body}</p>
-                    <p>Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.</p>
-                    <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, 
-                     transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.</p>
-                     <p>En caso de ser cancelable sin autorizacion se le adjuntara el acuse de cancelación.</p>
-                    <br> 
-                    </div>`,
+      subject,
+      template: MAIL_TEMPLATES.CFDI_CANCELLATION_NOTIFICATION,
+      context: {
+        title: 'Notificación de cancelación de CFDI',
+        reasonLabel: 'Motivo de cancelación',
+        reason: body,
+        description:
+          'Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.',
+        deadlineNotice:
+          'Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.',
+        acuseNotice:
+          'En caso de ser cancelable sin autorización se le adjuntará el acuse de cancelación.',
+      },
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
+          contentType: 'application/xml',
           content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
+          contentType: 'application/pdf',
           content: pdfBuffer,
         },
         {
           filename: `${uuid.toUpperCase()}-acuse.xml`,
+          contentType: 'application/xml',
           content: acuseBuffer,
         },
       ],
-    };
-    return await transporter.sendMail(mailOptions);
+    });
   }
 
   async reportInvoices(query: {

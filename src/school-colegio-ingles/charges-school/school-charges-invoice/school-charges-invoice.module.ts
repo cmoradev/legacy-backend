@@ -11,6 +11,7 @@ import { SchoolChargesPaymentsModule } from '../school-charges-payments/school-c
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { ConfigModule } from '../../../common/config/config.module';
 import { StorageModule } from '../../../common/storage/storage.module';
+import { MailModule } from '../../../common/mail';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SchoolChargesInvoice], ColegioDBNameConnection),
@@ -19,7 +20,8 @@ import { StorageModule } from '../../../common/storage/storage.module';
     BranchOfficeSettingModule,
     forwardRef(() => SchoolChargesPaymentsModule),
     ConfigModule,
-    StorageModule
+    StorageModule,
+    MailModule
   ],
   providers: [SchoolChargesInvoiceService, SmartWeb],
   controllers: [SchoolChargesInvoiceController],

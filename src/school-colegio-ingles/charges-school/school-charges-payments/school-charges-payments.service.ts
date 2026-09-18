@@ -26,8 +26,6 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
-import * as nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { IQueryReportSchoolPayment } from './types/IReport';
@@ -45,6 +43,7 @@ import { Decimal } from '@munyaal/calculations';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { getHighestPayment } from './utils';
+import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
 
 
 @Injectable()
@@ -61,7 +60,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         private readonly configService: ConfigService,
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly authService: AuthService,
-        private readonly s3Service: S3Service
+        private readonly s3Service: S3Service,
+        private readonly mailService: MailService
     ) {
         super(repo);
     }
@@ -453,38 +453,33 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         }
     }
 
-    async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: currentBranch.Email,
-                pass: currentBranch.EmailPass,
-            },
-        });
+    async sendMail(uuid: string, email: string) {
         const folder = 'comprobantes/tienda';
         const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
         const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
-        const mailOptions: Mail.Options = {
+
+        return this.mailService.sendEmail({
             to: email,
-            from: currentBranch.Email,
             subject: 'Tienda  - Comprobantes de pago CFDI',
-            text: 'CFDI',
-            html: '<div> <h2>Gracias por su compra</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br></div>',
+            template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
+            context: {
+                greeting: 'Gracias por su compra',
+                description:
+                    'Adjuntos, le enviamos su factura electrónica y archivo XML',
+            },
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
+                    contentType: 'application/xml',
                     content: xmlBuffer,
                 },
                 {
                     filename: uuid.toUpperCase() + '.pdf',
+                    contentType: 'application/pdf',
                     content: pdfBuffer,
                 },
             ],
-        };
-        return await transporter.sendMail(mailOptions);
+        });
     }
 
     public async detailsInvoiceByUuid(params: {
@@ -590,27 +585,19 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         return Receip
     }
 
-    async sendReceipt(branch: BranchOffice, attachments: AttachmentsType[], email: string) {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: branch.Email,
-                pass: branch.EmailPass,
-            },
-        });
-
-        const mailOptions: Mail.Options = {
+    async sendReceipt(attachments: AttachmentsType[], email: string) {
+        return this.mailService.sendEmail({
             to: email,
-            from: branch.Email,
             subject: 'Confirmación de Pago y Envío de Comprobante',
-            html: ReceiptTemplate,
-            attachments,
-        };
-
-        return await transporter.sendMail(mailOptions);
+            template: MAIL_TEMPLATES.PAYMENT_RECEIPT,
+            context: {
+                html: ReceiptTemplate,
+            },
+            attachments: attachments.map((attachment) => ({
+                filename: attachment.filename,
+                content: attachment.content,
+            })),
+        });
     }
 
     public async cancelPayment(id: number, payload: CancellationDto) {

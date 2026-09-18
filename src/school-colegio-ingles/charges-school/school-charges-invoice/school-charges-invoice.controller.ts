@@ -135,8 +135,12 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
         branchOfficeSettingId: number;
     }) {
         try {
-            const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
-            const message = this.service.sendMail(currentBranch, data.uuid, data.email);
+            const message = await this.service.sendMail(data.uuid, data.email);
+            return {
+                ok: message.published,
+                emailSent: message.published,
+                error: message.error ? message.error.message : null,
+            };
         } catch (e) {
             return e;
         }
@@ -152,7 +156,6 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 relations: ['schoolChargePayment'],
             });
 
-            const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
             const branchOfficeSett = await this.branchOfficeSettingService.findOne({
                 where: {
                     id: cancelInvoiceSw.branchOfficeSettingId,
@@ -177,7 +180,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(responseSmartWeb.data.acuse), key: `comprobantes/colegio/${invoice.uuid}-acuse.xml` });
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                        this.service.sendMailCancelacion(invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
                     }
                 }
                 invoice.status = 2;

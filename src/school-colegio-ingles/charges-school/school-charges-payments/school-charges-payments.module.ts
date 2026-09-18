@@ -2,7 +2,6 @@ import { forwardRef, Module } from '@nestjs/common';
 import { SchoolChargesPaymentsService } from './school-charges-payments.service';
 import { SchoolChargesPaymentsController } from './school-charges-payments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SchoolChargesMethodsPayments } from '../school-charges-methods-payments/entities/school-charges-methods-payments.entity';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { SchoolChargePayment } from './entities/school-charge-payment.entity';
 import { SchoolCharge } from '../school-charges/entities/school-charge.entity';
@@ -12,7 +11,6 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
 import { InvoiceMethodsPaymentsModule } from '../../../invoice/invoice-methods-payments/invoice-methods-payments.module';
 import { User } from '../../../system/users/entities/user.entity';
-import { ChargesSchoolModule } from '../charges-school.module';
 import { SchoolPaymentsModule } from '../../school-payments/school-payments.module';
 import { SchoolChargesInvoiceModule } from '../school-charges-invoice/school-charges-invoice.module';
 import { ConfigModule } from '../../../common/config/config.module';
@@ -23,6 +21,7 @@ import { SchoolChargesDetailsModule } from '../school-charges-details/school-cha
 import { SchoolChargesDetailsExtraChargesModule } from '../school-charges-details-extra-charges/school-charges-details-extra-charges.module';
 import { AuthModule } from '../../../system/auth/auth.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../../../common/mail';
 import { SchoolChargesPaymentsBillingService } from './school-charges-payments-billing.service';
 
 @Module({
@@ -40,7 +39,8 @@ import { SchoolChargesPaymentsBillingService } from './school-charges-payments-b
     ConfigModule,
     StudentsModule,
     AuthModule,
-    StorageModule
+    StorageModule,
+    MailModule
   ],
   providers: [SchoolChargesPaymentsService, SchoolChargesPaymentsBillingService, SmartWeb],
   controllers: [SchoolChargesPaymentsController],
