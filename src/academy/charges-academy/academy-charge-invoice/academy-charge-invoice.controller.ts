@@ -1,21 +1,23 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get, HttpException, HttpStatus,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Query,
-    Res
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Res,
 } from '@nestjs/common';
 import {
-    Crud,
-    CrudController,
-    Override,
-    CrudRequest,
-    ParsedRequest
+  Crud,
+  CrudController,
+  Override,
+  CrudRequest,
+  ParsedRequest,
 } from '@nestjsx/crud';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { AcademyChargeInvoiceService } from './academy-charge-invoice.service';
@@ -42,423 +44,505 @@ import { S3Service } from 'src/common/storage/s3.service';
 import { ComprobanteDownloadService } from 'src/common/storage/comprobante-download.service';
 
 @Crud({
-    model: {
-        type: AcademyChargeInvoice,
+  model: {
+    type: AcademyChargeInvoice,
+  },
+  query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
     },
-    query: {
-        filter: {
-            deletedAt: {
-                $eq: null,
-            },
-        },
-        limit: 10,
-        join: {
-            academyChargePayment: {eager: false},
-            academyCharge: {eager: false},
-            'academyCharge.chargesDetails': {
-                alias: 'academyCharge_chargesDetails',
-                eager: false,
-            },
-            'academyCharge.chargesDetails.extraCharges': {
-                alias: 'academyCharge_chargesDetails_extraCharges',
-                eager: false,
-            },
-            'academyCharge.schoolStudent': { eager: false },
-            agentBilling: {eager: false},
-            agentCanceling: {eager: false},
-            creditNotesAcademy: { eager: false}
-        },
+    limit: 10,
+    join: {
+      academyChargePayment: { eager: false },
+      academyCharge: { eager: false },
+      'academyCharge.chargesDetails': {
+        alias: 'academyCharge_chargesDetails',
+        eager: false,
+      },
+      'academyCharge.chargesDetails.extraCharges': {
+        alias: 'academyCharge_chargesDetails_extraCharges',
+        eager: false,
+      },
+      'academyCharge.schoolStudent': { eager: false },
+      agentBilling: { eager: false },
+      agentCanceling: { eager: false },
+      creditNotesAcademy: { eager: false },
     },
-    params: {
-        id: {
-            primary: true,
-            disabled: true,
-        },
-        UUID: {
-            type: 'string',
-            disabled: false
-        },
+  },
+  params: {
+    id: {
+      primary: true,
+      disabled: true,
     },
+    UUID: {
+      type: 'string',
+      disabled: false,
+    },
+  },
 })
 @Controller()
-export class AcademyChargeInvoiceController implements CrudController<AcademyChargeInvoice> {
-    constructor(
-        readonly service: AcademyChargeInvoiceService,
-        readonly branchOffice: BranchOfficeService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        readonly academyChargePaymentsService: AcademyChargePaymentsService,
-        readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
-        private smartWeb: FactSw,
-        private readonly configService: ConfigService,
-        private readonly s3Service: S3Service,
-        private readonly comprobanteDownloadService: ComprobanteDownloadService,
-    ) {
-    }
+export class AcademyChargeInvoiceController
+  implements CrudController<AcademyChargeInvoice> {
+  constructor(
+    readonly service: AcademyChargeInvoiceService,
+    readonly branchOffice: BranchOfficeService,
+    readonly branchOfficeSettingService: BranchOfficeSettingService,
+    readonly academyChargePaymentsService: AcademyChargePaymentsService,
+    readonly academyChargeDiscountsService: AcademyChargeDiscountsService,
+    private smartWeb: FactSw,
+    private readonly configService: ConfigService,
+    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
+  ) {}
 
-    get base(): CrudController<AcademyChargeInvoice> {
-        return this;
-    }
+  get base(): CrudController<AcademyChargeInvoice> {
+    return this;
+  }
 
-    @Override('getOneBase')
-    async getOneAndDoStuff(
-        @ParsedRequest() req: CrudRequest,
-    ) {
-        if(req.parsed.search.$and.length > 2){
-            return this.base.getManyBase(req)
+  @Override('getOneBase')
+  async getOneAndDoStuff(@ParsedRequest() req: CrudRequest) {
+    if (req.parsed.search.$and.length > 2) {
+      return this.base.getManyBase(req);
+    }
+    const invoice = await this.base.getOneBase(req);
+    const { academyChargePayment, academyCharge } = invoice;
+    const { chargesDetails } = academyCharge;
+    if (academyChargePayment && academyCharge && chargesDetails) {
+      const factor = ConceptsPriceByPaymentBillig({
+        payment: academyChargePayment,
+        details: chargesDetails,
+        type: InvoiceModules.ACADEMY,
+      });
+      const { detalles } = factor;
+      // @ts-ignore
+      invoice.detalles = detalles;
+      detalles.map((detalle) => {
+        const findIndex = chargesDetails.findIndex(
+          (mssd) => mssd.id === detalle.id,
+        );
+        if (findIndex > -1) {
+          // @ts-ignore
+          chargesDetails[findIndex].sat = detalle;
         }
-        const invoice = await this.base.getOneBase(req);
-        const { academyChargePayment, academyCharge } = invoice
-        const { chargesDetails } = academyCharge
-        if (academyChargePayment && academyCharge && chargesDetails) {
-            const factor = ConceptsPriceByPaymentBillig({
-                payment: academyChargePayment,
-                details: chargesDetails,
-                type: InvoiceModules.ACADEMY
-            });
-            const { detalles } = factor
-            // @ts-ignore
-            invoice.detalles = detalles
-            detalles.map((detalle) => {
-                const findIndex = chargesDetails.findIndex((mssd) => mssd.id === detalle.id)
-                if (findIndex > -1) {
-                    // @ts-ignore
-                    chargesDetails[findIndex].sat = detalle
-                }
+      });
+    }
+    return invoice;
+  }
+
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
+
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
+  }
+
+  @Get(':id/pdf')
+  public async pdf(
+    @Res() res: Response,
+    @Query('uuid') uuid: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'academias',
+      uuid,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    return res.send({
+      src: 'data:application/pdf;base64,' + file.buffer.toString('base64'),
+    });
+  }
+
+  @Post('cancel-invoice')
+  async cancelInvoiceSwSmartweb(
+    @Body() cancelInvoiceSw: CancelInvoiceSwDto,
+    @Res() res: Response,
+  ) {
+    try {
+      const invoice = await this.service.findOne({
+        where: {
+          id: cancelInvoiceSw.invoiceId,
+        },
+        relations: ['academyChargePayment'],
+      });
+
+      const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+        where: {
+          id: cancelInvoiceSw.branchOfficeSettingId,
+        },
+      });
+
+      const cer = readFileSync(
+        `${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD,
+      ).toString('base64');
+      const key = readFileSync(
+        `${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD,
+      ).toString('base64');
+
+      const result = await this.smartWeb.cancelarCSD({
+        rfc: branchOfficeSett.rfc,
+        password: branchOfficeSett.password,
+        uuid: invoice.uuid,
+        cer,
+        key,
+        motivo: cancelInvoiceSw.motivo,
+        folioSustitucion: cancelInvoiceSw.folioSustitucion,
+      });
+
+      const status = result.data.uuid[invoice.uuid];
+      /** Nuevos estados para la venta:
+       * 0.- Sin facturar
+       * 1.- Facturado
+       * 2.- Cancelado
+       * 3.- En cola
+       * 4.- Rechazado
+       */
+      if (
+        status === '201' ||
+        +status === 201 ||
+        status === '202' ||
+        +status === 202
+      ) {
+        await this.s3Service.putObjectCommand({
+          type: 'application/xml',
+          buffer: Buffer.from(result.data.acuse),
+          key: `comprobantes/academias/${invoice.uuid}-acuse.xml`,
+        });
+
+        if (cancelInvoiceSw.sendMail) {
+          for (const email of cancelInvoiceSw.mails) {
+            const sendMails = this.service.sendMailCancelacion(
+              invoice.uuid,
+              email,
+              cancelInvoiceSw.subject,
+              cancelInvoiceSw.body,
+            );
+          }
+        }
+
+        invoice.status = 2;
+        invoice.reasonCancellation = cancelInvoiceSw.reason;
+        invoice.cancellationDate = new Date();
+        invoice.motivo = cancelInvoiceSw.motivo;
+        invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
+        invoice.agentCanceling = {
+          id: cancelInvoiceSw.cashierId,
+        } as User;
+
+        const updateInvoice = await this.service.updateInvoice(invoice);
+
+        if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
+          const payments = await this.academyChargePaymentsService.find({
+            where: { globalUuid: invoice.uuid },
+          });
+
+          const ids = payments.map((value) => value.id);
+
+          const updatePay = await this.academyChargePaymentsService.repo.update(
+            { id: In(ids) },
+            { stamping: 0, globalUuid: null },
+          );
+
+          res
+            .send({
+              msg: 'Cancelado',
+              payment: updatePay,
+              invoice: updateInvoice,
             })
-        }
-        return invoice
-    }
-
-
-    @Delete('soft-deleted/:id')
-    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softDeleteOne(id);
-    }
-
-    @Put('soft-restore/:id')
-    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softRestoreOne(id);
-    }
-
-    @Get(':id/pdf')
-    public async pdf(
-        @Res() res: Response,
-        @Query('uuid') uuid: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('academias', uuid, 'pdf', {
-            regenerate,
-            cadenaOriginal,
-        });
-        return res.send({ src: 'data:application/pdf;base64,' + file.buffer.toString('base64') });
-    }
-
-    @Post('cancel-invoice')
-    async cancelInvoiceSwSmartweb(@Body() cancelInvoiceSw: CancelInvoiceSwDto, @Res() res: Response) {
-        try {
-            const invoice = await this.service.findOne({
-                where: {
-                    id: cancelInvoiceSw.invoiceId,
-                },
-                relations: ['academyChargePayment'],
-            });
-            const currentBranch = await this.branchOffice.findBranch(cancelInvoiceSw.branchOfficeId);
-
-            const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-                where: {
-                    id: cancelInvoiceSw.branchOfficeSettingId,
-                },
-            });
-
-            const cer = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD).toString('base64');
-            const key = readFileSync(`${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD).toString('base64');
-
-            const result = await this.smartWeb.cancelarCSD({
-                rfc: branchOfficeSett.rfc,
-                password: branchOfficeSett.password,
-                uuid: invoice.uuid,
-                cer,
-                key,
-                motivo: cancelInvoiceSw.motivo,
-                folioSustitucion: cancelInvoiceSw.folioSustitucion
-            });
-
-            const status = result.data.uuid[invoice.uuid];
-            /** Nuevos estados para la venta:
-             * 0.- Sin facturar
-             * 1.- Facturado
-             * 2.- Cancelado
-             * 3.- En cola
-             * 4.- Rechazado
-             */
-            if (status === '201' || +status === 201 || status === '202' || +status === 202) {
-                await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(result.data.acuse), key: `comprobantes/academias/${invoice.uuid}-acuse.xml` });
-
-                if (cancelInvoiceSw.sendMail) {
-                    for (const email of cancelInvoiceSw.mails) {
-                        const sendMails = this.service.sendMailCancelacion(currentBranch, invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
-                    }
-                }
-
-                invoice.status = 2;
-                invoice.reasonCancellation = cancelInvoiceSw.reason;
-                invoice.cancellationDate = new Date();
-                invoice.motivo = cancelInvoiceSw.motivo;
-                invoice.folioSustitucion = cancelInvoiceSw.folioSustitucion;
-                invoice.agentCanceling = {
-                    id: cancelInvoiceSw.cashierId,
-                } as User;
-
-                const updateInvoice = await this.service.updateInvoice(invoice);
-
-                if (invoice.isGlobal == InvoiceGlobalEnum.IS_GLOBAL) {
-                    const payments = await this.academyChargePaymentsService.find({ where: { globalUuid: invoice.uuid } })
-
-                    const ids = payments.map(value => value.id)
-
-                    const updatePay = await this.academyChargePaymentsService.repo.update({ id: In(ids) }, { stamping: 0, globalUuid: null });
-
-                    res.send({
-                        msg: 'Cancelado',
-                        payment: updatePay,
-                        invoice: updateInvoice,
-                    }).status(200)
-                } else {
-                    const payment = await this.academyChargePaymentsService.findOne({
-                        where: {
-                            id: invoice.academyChargePayment.id,
-                        },
-                    });
-
-                    payment.stamping = 0;
-
-                    const updatePay = await this.academyChargePaymentsService.updatePayment(payment);
-
-                    res.send({
-                        msg: 'Cancelado',
-                        payment: updatePay,
-                        invoice: updateInvoice,
-                    }).status(200)
-                }
-            }
-            if (status === '203' || +status === 203) {
-                res.send({
-                    msg: 'Error',
-                    payment: '',
-                    invoice: '',
-                }).status(400);
-            }
-            if (status === '205' || +status === 205) {
-                res.send({
-                    msg: 'Error',
-                    payment: '',
-                    invoice: '',
-                }).status(400);
-            }
-
-        } catch (e) {
-            res.status(400).send(e);
-        }
-    }
-
-
-    @Post('/send-invoice')
-    async sendMail(@Body() data: {
-        email: string;
-        uuid: string;
-        branchOfficeId: number;
-        branchOfficeSettingId: number;
-    }) {
-        try {
-
-            const currentBranch = await this.branchOffice.findBranch(data.branchOfficeId);
-            const message = this.service.sendMail(currentBranch, data.uuid, data.email);
-        } catch (e) {
-            return e;
-        }
-    }
-
-    @Post('/report')
-    public async getReportGlobal(@Body() request: ReportData, @Res() res: Response) {
-
-        const branchOfficeSett = await this.branchOfficeSettingService.findOne({
-            where: {
-                id: request.branchOfficeId,
-            },
-        });
-
-        let whereParamsBilled = {};
-        let whereParamsUnBilled = {};
-        let whereParamsCancelled = {};
-
-        if (request.idUsuario === 'all') {
-            whereParamsBilled = {
-                status: 1,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
-            whereParamsUnBilled = {
-                status: 0,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
-            whereParamsCancelled = {
-                status: 2,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
+            .status(200);
         } else {
-            whereParamsBilled = {
-                agentBilling: request.idUsuario,
-                status: 1,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
-            whereParamsUnBilled = {
-                agentBilling: request.idUsuario,
-                status: 0,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
-            whereParamsCancelled = {
-                agentCanceling: request.idUsuario,
-                status: 2,
-                createdAt: Between(
-                    Moment(request.startDate).startOf('day').toDate(),
-                    Moment(request.endDate).endOf('day').toDate()),
-            };
-        }
-
-        // Billed
-        const invoiceBilled = await this.service.repo.find({
-            where: whereParamsBilled,
-            relations: [
-                'agentBilling',
-                'academyChargePayment',
-                'agentCanceling',
-                'academyCharge',
-                'academyCharge.schoolStudent',
-                'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges',
-            ],
-        });
-
-        // Unbilled
-        const invoiceUnBilled = await this.service.repo.find({
-            where: whereParamsUnBilled,
-            relations: [
-                'agentBilling',
-                'academyChargePayment',
-                'agentCanceling',
-                'academyCharge',
-                'academyCharge.schoolStudent',
-                'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges',
-            ],
-        });
-
-        // Cancelled
-
-        const invoiceCancelled = await this.service.repo.find({
-            where: whereParamsCancelled,
-            relations: [
-                'agentBilling',
-                'agentCanceling',
-                'academyChargePayment',
-                'academyCharge',
-                'academyCharge.schoolStudent',
-                'academyCharge.chargesDetails',
-                'academyCharge.chargesDetails.extraCharges',
-            ],
-        });
-
-        const workSheets = [
-            { name: 'Facturas Pagadas', data: invoiceBilled },
-            { name: 'Pagos No Facturados', data: invoiceUnBilled },
-            { name: 'Facturas Canceladas', data: invoiceCancelled },
-        ];
-
-        let workbook = null;
-        let b64Encoding = '';
-        let buffer = null;
-
-        if (request.file) {
-            workbook = new ReportInvoice().generateReport(workSheets, request, branchOfficeSett);
-
-            const dateName = new Date();
-            const fileName = dateName.toTimeString() + '.xlsx';
-            const result = await workbook.xlsx.writeBuffer({ filename: fileName });
-            buffer = Buffer.from(result);
-            b64Encoding = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
-        }
-
-        const data = {
-            facturado: {
-                rows: invoiceBilled,
+          const payment = await this.academyChargePaymentsService.findOne({
+            where: {
+              id: invoice.academyChargePayment.id,
             },
-            nofacturado: {
-                rows: invoiceUnBilled,
-            },
-            cancelados: {
-                rows: invoiceCancelled,
-            },
-            file: '',
-        };
+          });
 
-        if (request.file) {
-            data.file = b64Encoding + buffer.toString('base64');
+          payment.stamping = 0;
+
+          const updatePay = await this.academyChargePaymentsService.updatePayment(
+            payment,
+          );
+
+          res
+            .send({
+              msg: 'Cancelado',
+              payment: updatePay,
+              invoice: updateInvoice,
+            })
+            .status(200);
         }
-        res.send({ success: true, data });
+      }
+      if (status === '203' || +status === 203) {
+        res
+          .send({
+            msg: 'Error',
+            payment: '',
+            invoice: '',
+          })
+          .status(400);
+      }
+      if (status === '205' || +status === 205) {
+        res
+          .send({
+            msg: 'Error',
+            payment: '',
+            invoice: '',
+          })
+          .status(400);
+      }
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  }
+
+  @Post('/send-invoice')
+  async sendMail(
+    @Body()
+    data: {
+      email: string;
+      uuid: string;
+      branchOfficeId: number;
+      branchOfficeSettingId: number;
+    },
+  ) {
+    try {
+      const message = await this.service.sendMail(data.uuid, data.email);
+      return {
+        ok: message.published,
+        emailSent: message.published,
+        error: message.error ? message.error.message : null,
+      };
+    } catch (e) {
+      return e;
+    }
+  }
+
+  @Post('/report')
+  public async getReportGlobal(
+    @Body() request: ReportData,
+    @Res() res: Response,
+  ) {
+    const branchOfficeSett = await this.branchOfficeSettingService.findOne({
+      where: {
+        id: request.branchOfficeId,
+      },
+    });
+
+    let whereParamsBilled = {};
+    let whereParamsUnBilled = {};
+    let whereParamsCancelled = {};
+
+    if (request.idUsuario === 'all') {
+      whereParamsBilled = {
+        status: 1,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
+      whereParamsUnBilled = {
+        status: 0,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
+      whereParamsCancelled = {
+        status: 2,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
+    } else {
+      whereParamsBilled = {
+        agentBilling: request.idUsuario,
+        status: 1,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
+      whereParamsUnBilled = {
+        agentBilling: request.idUsuario,
+        status: 0,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
+      whereParamsCancelled = {
+        agentCanceling: request.idUsuario,
+        status: 2,
+        createdAt: Between(
+          Moment(request.startDate).startOf('day').toDate(),
+          Moment(request.endDate).endOf('day').toDate(),
+        ),
+      };
     }
 
-    @Public()
-    @Get('/download-pdf')
-    async getPdfInvoice(
-        @Query('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('academias', UUID, 'pdf', {
-            regenerate,
-            cadenaOriginal,
-        });
-        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
+    // Billed
+    const invoiceBilled = await this.service.repo.find({
+      where: whereParamsBilled,
+      relations: [
+        'agentBilling',
+        'academyChargePayment',
+        'agentCanceling',
+        'academyCharge',
+        'academyCharge.schoolStudent',
+        'academyCharge.chargesDetails',
+        'academyCharge.chargesDetails.extraCharges',
+      ],
+    });
+
+    // Unbilled
+    const invoiceUnBilled = await this.service.repo.find({
+      where: whereParamsUnBilled,
+      relations: [
+        'agentBilling',
+        'academyChargePayment',
+        'agentCanceling',
+        'academyCharge',
+        'academyCharge.schoolStudent',
+        'academyCharge.chargesDetails',
+        'academyCharge.chargesDetails.extraCharges',
+      ],
+    });
+
+    // Cancelled
+
+    const invoiceCancelled = await this.service.repo.find({
+      where: whereParamsCancelled,
+      relations: [
+        'agentBilling',
+        'agentCanceling',
+        'academyChargePayment',
+        'academyCharge',
+        'academyCharge.schoolStudent',
+        'academyCharge.chargesDetails',
+        'academyCharge.chargesDetails.extraCharges',
+      ],
+    });
+
+    const workSheets = [
+      { name: 'Facturas Pagadas', data: invoiceBilled },
+      { name: 'Pagos No Facturados', data: invoiceUnBilled },
+      { name: 'Facturas Canceladas', data: invoiceCancelled },
+    ];
+
+    let workbook = null;
+    let b64Encoding = '';
+    let buffer = null;
+
+    if (request.file) {
+      workbook = new ReportInvoice().generateReport(
+        workSheets,
+        request,
+        branchOfficeSett,
+      );
+
+      const dateName = new Date();
+      const fileName = dateName.toTimeString() + '.xlsx';
+      const result = await workbook.xlsx.writeBuffer({ filename: fileName });
+      buffer = Buffer.from(result);
+      b64Encoding =
+        'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
     }
 
-    @Public()
-    @Get('/download-xml')
-    async getXmlInvoiceUUID(
-        @Query('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this.comprobanteDownloadService.downloadFile('academias', UUID, 'xml', {
-            regenerate,
-            cadenaOriginal,
-        });
-        this.comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
-    }
+    const data = {
+      facturado: {
+        rows: invoiceBilled,
+      },
+      nofacturado: {
+        rows: invoiceUnBilled,
+      },
+      cancelados: {
+        rows: invoiceCancelled,
+      },
+      file: '',
+    };
 
-    @Post('zip-invoices')
-    async zipInvoices(@Res() res: Response, @Body() params: {
-        array: NotInvoiced[]
+    if (request.file) {
+      data.file = b64Encoding + buffer.toString('base64');
     }
-    ) {
-        try {
-            const buffer = await this.comprobanteDownloadService.createZip('academias', params.array);
-            this.comprobanteDownloadService.sendZip(res, buffer);
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    res.send({ success: true, data });
+  }
+
+  @Public()
+  @Get('/download-pdf')
+  async getPdfInvoice(
+    @Query('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'academias',
+      UUID,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this.comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+
+  @Public()
+  @Get('/download-xml')
+  async getXmlInvoiceUUID(
+    @Query('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this.comprobanteDownloadService.downloadFile(
+      'academias',
+      UUID,
+      'xml',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this.comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+
+  @Post('zip-invoices')
+  async zipInvoices(
+    @Res() res: Response,
+    @Body()
+    params: {
+      array: NotInvoiced[];
+    },
+  ) {
+    try {
+      const buffer = await this.comprobanteDownloadService.createZip(
+        'academias',
+        params.array,
+      );
+      this.comprobanteDownloadService.sendZip(res, buffer);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
 }
-
-

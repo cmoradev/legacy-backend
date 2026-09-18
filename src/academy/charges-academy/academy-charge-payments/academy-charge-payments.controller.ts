@@ -31,9 +31,7 @@ import { AcademyCharge } from '../academy-charge/entities/academy-charge.entity'
 import { ConfigService } from '../../../common/config/config.service';
 import { Public } from '../../../common/docorators/public.decorator';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
-import {
-  InvoiceModules,
-} from '../../../common/point-of-sale/types.pos';
+import { InvoiceModules } from '../../../common/point-of-sale/types.pos';
 import { ConceptsPriceByPaymentBilligCalculation } from '../../../common/calculations/calculation';
 import { IQueryReportAcademiaPayment } from './types/IReports';
 import { getRangeDates } from '../../../mini-store/store-sales/mini-store-sales/reports/helpers';
@@ -76,7 +74,6 @@ import { S3Service } from 'src/common/storage/s3.service';
 @Controller()
 export class AcademyChargePaymentsController
   implements CrudController<AcademyChargePayments> {
-
   constructor(
     readonly service: AcademyChargePaymentsService,
     readonly serviceBilling: AcademyChargePaymentsBillingService,
@@ -85,7 +82,7 @@ export class AcademyChargePaymentsController
     readonly branchOffice: BranchOfficeService,
     readonly branchOfficeSettingService: BranchOfficeSettingService,
     private readonly configService: ConfigService,
-    private _s3Service: S3Service
+    private _s3Service: S3Service,
   ) {}
 
   get base(): CrudController<AcademyChargePayments> {
@@ -204,10 +201,6 @@ export class AcademyChargePaymentsController
         },
       });
 
-      const branchOffice = await this.branchOffice.findBranch(
-        query.branchOfficeId,
-      );
-
       const receipt = await this.service.createReceipt(
         result,
         branchOfficeSett,
@@ -228,13 +221,12 @@ export class AcademyChargePaymentsController
 
       attachments.push({ filename, content });
 
-      const data = this.service.sendReceipt(
-        branchOffice,
-        attachments,
-        query.email,
-      );
+      const data = await this.service.sendReceipt(attachments, query.email);
 
-      res.send(data);
+      res.send({
+        emailSent: data.published,
+        error: data.error ? data.error.message : null,
+      });
     } catch (e) {
       console.warn(e);
 

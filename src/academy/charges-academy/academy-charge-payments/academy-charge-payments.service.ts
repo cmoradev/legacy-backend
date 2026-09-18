@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
@@ -11,8 +16,6 @@ import { InvoiceMethodPayment } from '../../../invoice/invoice-methods-payments/
 import { SimpleReportAcademy } from './reports/simple.report';
 import { QueryBillingAcademy } from './types/InvoiceAcademy.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import * as nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import { AcademyChargeMethodsPayments } from '../academy-charge-methods-payments/entities/academy-charge-methods-payments.entity';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
@@ -45,6 +48,8 @@ import { AcademyInscriptionConcepts } from '../../academy-inscription-concepts/e
 import { Decimal } from '@munyaal/calculations';
 import { SalePaymentDto } from '../../../common/dto/sale-payment.dto';
 import { saleDetailsCalculations } from '../../../common/utils/report/sales.calculation';
+import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
+
 @Injectable()
 export class AcademyChargePaymentsService extends TypeOrmCrudService<
   AcademyChargePayments
@@ -63,7 +68,8 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     @InjectConnection(ColegioDBNameConnection) private connection: Connection,
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
-    private readonly s3Service: S3Service
+    private readonly s3Service: S3Service,
+    private readonly mailService: MailService,
   ) {
     super(repo);
   }
@@ -323,17 +329,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     return await this.repo.save(payment);
   }
 
-  async sendMail(currentBranch: BranchOffice, uuid: string, email: string) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: currentBranch.Email,
-        pass: currentBranch.EmailPass,
-      },
-    });
+  async sendMail(uuid: string, email: string) {
     const folder = 'comprobantes/academias';
     const xmlBuffer = await this.s3Service.getObjectCommand(
       `${folder}/${uuid.toUpperCase()}.xml`,
@@ -341,25 +337,29 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     const pdfBuffer = await this.s3Service.getObjectCommand(
       `${folder}/${uuid.toUpperCase()}.pdf`,
     );
-    const mailOptions: Mail.Options = {
+
+    return this.mailService.sendEmail({
       to: email,
-      from: currentBranch.Email,
       subject: 'Academias  - Comprobantes de pago CFDI',
-      text: 'CFDI',
-      html:
-        '<div> <h2>Gracias por su pago</h2><br><p>Adjuntos, le enviamos su factura electrónica y archivo XML</p><br><br></div>',
+      template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
+      context: {
+        greeting: 'Gracias por su pago',
+        description:
+          'Adjuntos, le enviamos su factura electrónica y archivo XML',
+      },
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
+          contentType: 'application/xml',
           content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
+          contentType: 'application/pdf',
           content: pdfBuffer,
         },
       ],
-    };
-    return await transporter.sendMail(mailOptions);
+    });
   }
 
   async countTotalPayments(
@@ -711,31 +711,19 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     return await result.getMany();
   }
 
-  async sendReceipt(
-    branch: BranchOffice,
-    attachments: AttachmentsType[],
-    email: string,
-  ) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: branch.Email,
-        pass: branch.EmailPass,
-      },
-    });
-
-    const mailOptions: Mail.Options = {
+  async sendReceipt(attachments: AttachmentsType[], email: string) {
+    return this.mailService.sendEmail({
       to: email,
-      from: branch.Email,
       subject: 'Confirmación de Pago y Envío de Comprobante',
-      html: ReceiptTemplate,
-      attachments,
-    };
-
-    return await transporter.sendMail(mailOptions);
+      template: MAIL_TEMPLATES.PAYMENT_RECEIPT,
+      context: {
+        html: ReceiptTemplate,
+      },
+      attachments: attachments.map((attachment) => ({
+        filename: attachment.filename,
+        content: attachment.content,
+      })),
+    });
   }
 
   public async createReceipt(
@@ -744,7 +732,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     invoiceFind: any,
     invoiceDetails: any,
   ) {
-
     const Receip = new Recibo();
 
     Receip.setType(InvoiceModules.ACADEMY);
@@ -754,11 +741,11 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
     const logo = await this.s3Service.getLogo('logos/academiaslogo.png');
 
     if (logo) {
-        Receip.addLogo({
-            width: 100,
-            height: 100,
-            image: `data:image/png;base64, ${logo.toString('base64')}`,
-        });
+      Receip.addLogo({
+        width: 100,
+        height: 100,
+        image: `data:image/png;base64, ${logo.toString('base64')}`,
+      });
     }
 
     Receip.addFolio(result.payment.folio);
@@ -836,60 +823,71 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
   }
 
   public async cancelPayment(id: number, payload: CancellationDto) {
-  
-          try {
-  
-              const object = await this.findOne(id);
-  
-              if (!object) {
-                  throw new NotFoundException('Pago academia no encontrado')
-              }
-  
-              if (object.paymentStatus === PaymentStatus.Cancelled) {
-                  throw new BadRequestException('El pago ya está cancelado');
-              }
-  
-              const { reasonCancellation} = payload;
+    try {
+      const object = await this.findOne(id);
 
-              const user = await this.authService.validateUserCancellation(payload);
-
-              return await this.connection.transaction(async (manager) => {
-                              
-                  const conceptIds = await ConceptsByDetailsSale({id, type: 'payment', tpv: InvoiceModules.ACADEMY, manager})
-  
-                  await manager.update(
-                      AcademyInscriptionConcepts,
-                      {id: In(conceptIds)},
-                      { 
-                          paymentStatus: PaymentStatus.Abonar,
-                          paidDate: new Date()
-                      }
-                  );
-  
-                  const result = await this.repo.update({id}, {
-                    reasonCancellation,
-                    dateCancellation: new Date(),
-                    paymentStatus: PaymentStatus.Cancelled,
-                    cashierChargeCancellation: {id: user.id}
-                });
-  
-                  if(result && result.affected && result.affected > 0) {
-                      return id;
-                  }else {
-                      throw new BadRequestException(`Error al cancelar el pago academias ${id}`);    
-                  }
-              });
-  
-          } catch (e) {
-              if (e?.status === 401) throw new UnauthorizedException('Credenciales de administrador incorrecta');
-  
-              console.error(`Error al cancelar pago academias ${id}: ${e}`);
-  
-              throw new BadRequestException(`Error al cancelar el pago academias ${id}`);
-          }
+      if (!object) {
+        throw new NotFoundException('Pago academia no encontrado');
       }
-    
-    public async addPayment(
+
+      if (object.paymentStatus === PaymentStatus.Cancelled) {
+        throw new BadRequestException('El pago ya está cancelado');
+      }
+
+      const { reasonCancellation } = payload;
+
+      const user = await this.authService.validateUserCancellation(payload);
+
+      return await this.connection.transaction(async (manager) => {
+        const conceptIds = await ConceptsByDetailsSale({
+          id,
+          type: 'payment',
+          tpv: InvoiceModules.ACADEMY,
+          manager,
+        });
+
+        await manager.update(
+          AcademyInscriptionConcepts,
+          { id: In(conceptIds) },
+          {
+            paymentStatus: PaymentStatus.Abonar,
+            paidDate: new Date(),
+          },
+        );
+
+        const result = await this.repo.update(
+          { id },
+          {
+            reasonCancellation,
+            dateCancellation: new Date(),
+            paymentStatus: PaymentStatus.Cancelled,
+            cashierChargeCancellation: { id: user.id },
+          },
+        );
+
+        if (result && result.affected && result.affected > 0) {
+          return id;
+        } else {
+          throw new BadRequestException(
+            `Error al cancelar el pago academias ${id}`,
+          );
+        }
+      });
+    } catch (e) {
+      if (e?.status === 401)
+        throw new UnauthorizedException(
+          'Credenciales de administrador incorrecta',
+        );
+
+      console.error(`Error al cancelar pago academias ${id}: ${e}`);
+
+      throw new BadRequestException(
+        `Error al cancelar el pago academias ${id}`,
+      );
+    }
+  }
+
+  public async addPayment(
     payload: SalePaymentDto,
   ): Promise<AcademyChargePayments> {
     try {
@@ -916,7 +914,10 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
           );
         }
 
-        const totalPayment = Decimal.sub(payload.quantity, payload.change).toNumber();
+        const totalPayment = Decimal.sub(
+          payload.quantity,
+          payload.change,
+        ).toNumber();
 
         const previousPayments = charge.chargesPayments.filter(
           (p) => p.paymentStatus === PaymentStatus.PaiOut,
@@ -924,7 +925,10 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
 
         let previousTotal = 0;
         previousPayments.forEach((p) => {
-          previousTotal = Decimal.sum(previousTotal,  Decimal.sub(p.quantity, p.change)).toNumber();
+          previousTotal = Decimal.sum(
+            previousTotal,
+            Decimal.sub(p.quantity, p.change),
+          ).toNumber();
         });
 
         const saleInvoiceDetails = saleDetailsCalculations({
@@ -939,7 +943,10 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
           0,
         );
 
-        const methodsTotal = Decimal.sub(methodsSubTotal, payload.change).toNumber();
+        const methodsTotal = Decimal.sub(
+          methodsSubTotal,
+          payload.change,
+        ).toNumber();
 
         if (methodsTotal !== totalPayment) {
           throw new BadRequestException(
@@ -997,7 +1004,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
           newPayment,
         );
 
-        
         const conceptIds = charge.chargesDetails
           .filter(
             (d) =>
@@ -1006,9 +1012,7 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
           .map((d) => d.academyInscriptionConcept.id);
 
         if (conceptIds.length > 0) {
-          
           if (newTotalPaid >= saleTotal) {
-            
             await manager.update(
               AcademyInscriptionConcepts,
               { id: In(conceptIds) },
@@ -1018,7 +1022,6 @@ export class AcademyChargePaymentsService extends TypeOrmCrudService<
               },
             );
           } else {
-            
             await manager.update(
               AcademyInscriptionConcepts,
               { id: In(conceptIds) },

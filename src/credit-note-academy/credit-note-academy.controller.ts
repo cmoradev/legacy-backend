@@ -283,7 +283,6 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {
             const sendMails = this.service.sendMailCancelacion(
-              currentBranch,
               invoice.uuid,
               email,
               cancelInvoiceSw.subject,

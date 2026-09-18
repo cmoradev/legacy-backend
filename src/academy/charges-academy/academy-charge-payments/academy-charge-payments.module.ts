@@ -18,6 +18,7 @@ import { ConfigModule } from '../../../common/config/config.module';
 import { AcademyChargeInvoice } from '../academy-charge-invoice/entities/academy-charge-invoice.entity';
 import { AuthModule } from '../../../system/auth/auth.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../../../common/mail';
 
 @Module({
     imports: [
@@ -36,7 +37,8 @@ import { StorageModule } from 'src/common/storage/storage.module';
         AcademyChargeModule,
         ConfigModule,
         AuthModule,
-        StorageModule
+        StorageModule,
+        MailModule
     ],
     controllers: [AcademyChargePaymentsController],
     providers: [AcademyChargePaymentsService, AcademyChargePaymentsBillingService, SmartWeb],

@@ -7,28 +7,27 @@ import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { UsersModule } from '../../../system/users/users.module';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../../../system/branch-office-setting/branch-office-setting.module';
-import { MiniStoreSalesPaymentsModule } from '../../../mini-store/store-sales/mini-store-sales-payments/mini-store-sales-payments.module';
 import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { AcademyChargePaymentsModule } from '../academy-charge-payments/academy-charge-payments.module';
-import { MiniStoreInvoicesModule } from '../../../mini-store/store-sales/mini-store-invoices/mini-store-invoices.module';
-import {AcademyChargeDiscountsModule} from '../academy-charge-discounts/academy-charge-discounts.module';
+import { AcademyChargeDiscountsModule } from '../academy-charge-discounts/academy-charge-discounts.module';
 import { ConfigModule } from '../../../common/config/config.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../../../common/mail';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection),
-        UsersModule,
-        BranchOfficeModule,
-        BranchOfficeSettingModule,
-        AcademyChargeDiscountsModule,
-        forwardRef(() => AcademyChargePaymentsModule),
-        ConfigModule,
-        StorageModule
-    ],
-    controllers: [AcademyChargeInvoiceController],
-    providers: [AcademyChargeInvoiceService, SmartWeb],
-    exports: [AcademyChargeInvoiceService],
+  imports: [
+    TypeOrmModule.forFeature([AcademyChargeInvoice], ColegioDBNameConnection),
+    UsersModule,
+    BranchOfficeModule,
+    BranchOfficeSettingModule,
+    AcademyChargeDiscountsModule,
+    forwardRef(() => AcademyChargePaymentsModule),
+    ConfigModule,
+    StorageModule,
+    MailModule,
+  ],
+  controllers: [AcademyChargeInvoiceController],
+  providers: [AcademyChargeInvoiceService, SmartWeb],
+  exports: [AcademyChargeInvoiceService],
 })
-export class AcademyChargeInvoiceModule {
-}
+export class AcademyChargeInvoiceModule {}
