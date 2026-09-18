@@ -5,7 +5,7 @@ import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.ser
 import { Repository } from 'typeorm';
 import { AcademyChargeInvoice } from './entities/academy-charge-invoice.entity';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
-import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<
   constructor(
     @InjectRepository(AcademyChargeInvoice, ColegioDBNameConnection)
     readonly repo: Repository<AcademyChargeInvoice>,
-    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
     private readonly mailService: MailService,
   ) {
     super(repo);
@@ -73,12 +73,16 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<
   }
 
   async sendMail(uuid: string, email: string) {
-    const folder = 'comprobantes/academias';
-    const xmlBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.xml`,
+    const folder = 'academias';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
     );
-    const pdfBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.pdf`,
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
     );
 
     return this.mailService.sendEmail({
@@ -111,15 +115,21 @@ export class AcademyChargeInvoiceService extends TypeOrmCrudService<
     subject: string,
     body: string,
   ) {
-    const folder = 'comprobantes/academias';
-    const xmlBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.xml`,
+    const folder = 'academias';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
     );
-    const pdfBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.pdf`,
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
     );
-    const acuseBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toUpperCase()}-acuse.xml`,
+    const acuseBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '-acuse.xml',
     );
 
     return this.mailService.sendEmail({

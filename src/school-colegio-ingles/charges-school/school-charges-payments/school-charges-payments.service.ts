@@ -26,6 +26,7 @@ import { SchoolChargesInvoice } from '../school-charges-invoice/entities/school-
 import { catRegimenFiscal } from '@munyaal/cfdi-catalogs';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import { roundQuantity, sumQuantity } from '../../../common/point-of-sale/point-of-sale';
 import { IQueryReportSchoolPayment } from './types/IReport';
@@ -61,6 +62,7 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
         @InjectConnection(ColegioDBNameConnection) private connection: Connection,
         private readonly authService: AuthService,
         private readonly s3Service: S3Service,
+        private readonly comprobanteDownloadService: ComprobanteDownloadService,
         private readonly mailService: MailService
     ) {
         super(repo);
@@ -454,9 +456,17 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     }
 
     async sendMail(uuid: string, email: string) {
-        const folder = 'comprobantes/tienda';
-        const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
-        const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
+        const folder = 'colegio';
+        const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+            folder,
+            uuid,
+            '.xml',
+        );
+        const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+            folder,
+            uuid,
+            '.pdf',
+        );
 
         return this.mailService.sendEmail({
             to: email,

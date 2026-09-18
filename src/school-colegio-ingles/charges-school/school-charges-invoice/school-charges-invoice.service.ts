@@ -7,7 +7,7 @@ import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.ser
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { InvoiceProcessorCollege } from './utils/invoice.processor';
 import { BranchOfficeSettingService } from '../../../system/branch-office-setting/branch-office-setting.service';
-import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import * as moment from 'moment';
 import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
 
@@ -17,7 +17,7 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
     @InjectRepository(SchoolChargesInvoice, ColegioDBNameConnection)
       readonly repo: Repository<SchoolChargesInvoice>,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
-    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
     private readonly mailService: MailService,
   ) {
     super(repo);
@@ -70,9 +70,17 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
   }
 
   async sendMail(uuid: string, email: string) {
-    const folder = 'comprobantes/colegio';
-    const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
-    const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
+    const folder = 'colegio';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
+    );
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
+    );
 
     return this.mailService.sendEmail({
       to: email,
@@ -99,10 +107,22 @@ export class SchoolChargesInvoiceService extends TypeOrmCrudService<SchoolCharge
   }
 
   async sendMailCancelacion(uuid: string, email: string, subject: string, body: string) {
-    const folder = 'comprobantes/colegio';
-    const xmlBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.xml`);
-    const pdfBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toLowerCase()}.pdf`);
-    const acuseBuffer = await this.s3Service.getObjectCommand(`${folder}/${uuid.toUpperCase()}-acuse.xml`);
+    const folder = 'colegio';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
+    );
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
+    );
+    const acuseBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '-acuse.xml',
+    );
 
     return this.mailService.sendEmail({
       to: email,

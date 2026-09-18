@@ -35,24 +35,6 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
     super(repo);
   }
 
-  private async requireBufferFromS3(
-    folder: string,
-    uuid: string,
-    suffix: string,
-  ): Promise<Buffer> {
-    const buffer = await this.comprobanteDownloadService.getObjectCaseInsensitive(
-      folder,
-      uuid,
-      suffix,
-    );
-    if (!buffer) {
-      throw new NotFoundException(
-        `Archivo no encontrado en S3: comprobantes/${folder}/${uuid}${suffix}`,
-      );
-    }
-    return buffer;
-  }
-
   public async softDeleteOne(id: number) {
     const object = await this.findOne(id);
     if (!object) {
@@ -134,8 +116,16 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
   }
 
   async sendMail(uuid: string, email: string) {
-    const xmlBuffer = await this.requireBufferFromS3('tienda', uuid, '.xml');
-    const pdfBuffer = await this.requireBufferFromS3('tienda', uuid, '.pdf');
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      'tienda',
+      uuid,
+      '.xml',
+    );
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      'tienda',
+      uuid,
+      '.pdf',
+    );
 
     return this.mailService.sendEmail({
       to: email,
@@ -163,9 +153,17 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
     body: string,
   ) {
     const folder = 'tienda';
-    const xmlBuffer = await this.requireBufferFromS3(folder, uuid, '.xml');
-    const pdfBuffer = await this.requireBufferFromS3(folder, uuid, '.pdf');
-    const acuseBuffer = await this.requireBufferFromS3(
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
+    );
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
+    );
+    const acuseBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
       folder,
       uuid,
       '-acuse.xml',

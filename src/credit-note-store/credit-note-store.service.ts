@@ -5,8 +5,7 @@ import { Repository } from 'typeorm';
 import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
 import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
 import { CreditNoteStore } from './entities/credit-note-store.entity';
-import { ConfigService } from '../common/config/config.service';
-import { S3Service } from '../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../common/storage/comprobante-download.service';
 import { MAIL_TEMPLATES, MailService } from '../common/mail';
 
 @Injectable()
@@ -18,8 +17,7 @@ export class CreditNoteStoreService extends TypeOrmCrudService<
     readonly repo: Repository<CreditNoteStore>,
     @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection)
     readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
-    private readonly configService: ConfigService,
-    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
     private readonly mailService: MailService,
   ) {
     super(repo);
@@ -75,15 +73,21 @@ export class CreditNoteStoreService extends TypeOrmCrudService<
     subject: string,
     body: string,
   ) {
-    const folder = 'comprobantes/notas-credito';
-    const xmlBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.xml`,
+    const folder = 'notas-credito';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
     );
-    const pdfBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.pdf`,
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
     );
-    const acuseBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toUpperCase()}-acuse.xml`,
+    const acuseBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '-acuse.xml',
     );
 
     return this.mailService.sendEmail({

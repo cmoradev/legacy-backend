@@ -11,8 +11,7 @@ import { ColegioDBNameConnection } from '../common/databases/colegiodb.service';
 import { BranchOfficeSetting } from '../system/branch-office-setting/entities/branch-office-setting.entity';
 import { CreditNoteAcademy } from './entities/credit-note-academy.entity';
 import { ConfigService } from '../common/config/config.service';
-import { S3Service } from '../common/storage/s3.service';
-import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
+import { ComprobanteDownloadService } from '../common/storage/comprobante-download.service';
 import { MAIL_TEMPLATES, MailService } from '../common/mail';
 
 export interface ConceptWithTaxes {
@@ -74,7 +73,7 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<
     @InjectRepository(BranchOfficeSetting, ColegioDBNameConnection)
     readonly branchOfficeSettingRepository: Repository<BranchOfficeSetting>,
     private readonly configService: ConfigService,
-    private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
     private readonly mailService: MailService,
   ) {
     super(repo);
@@ -130,15 +129,21 @@ export class CreditNoteAcademyService extends TypeOrmCrudService<
     subject: string,
     body: string,
   ) {
-    const folder = 'comprobantes/notas-credito';
-    const xmlBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.xml`,
+    const folder = 'notas-credito';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
     );
-    const pdfBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.pdf`,
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
     );
-    const acuseBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toUpperCase()}-acuse.xml`,
+    const acuseBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '-acuse.xml',
     );
 
     return this.mailService.sendEmail({

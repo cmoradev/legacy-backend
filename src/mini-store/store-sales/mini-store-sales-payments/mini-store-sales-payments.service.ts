@@ -23,6 +23,7 @@ import { CommissionsReport } from './reports/commissions.report';
 import { CellRow } from './utils/generate-matriz-by-payment';
 import { ConfigService } from '../../../common/config/config.service';
 import { S3Service } from '../../../common/storage/s3.service';
+import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
 import { NotInvoicedDto } from '../../../common/dto/not-invoiced.dto';
 import {
   NotInvoiced,
@@ -73,6 +74,7 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<
     readonly salesReturnsRepository: Repository<SalesReturns>,
     private readonly authService: AuthService,
     private readonly s3Service: S3Service,
+    private readonly comprobanteDownloadService: ComprobanteDownloadService,
     private readonly mailService: MailService,
   ) {
     super(repo);
@@ -366,12 +368,16 @@ export class MiniStoreSalesPaymentsService extends TypeOrmCrudService<
   }
 
   async sendMail(uuid: string, email: string) {
-    const folder = 'comprobantes/tienda';
-    const xmlBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.xml`,
+    const folder = 'tienda';
+    const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.xml',
     );
-    const pdfBuffer = await this.s3Service.getObjectCommand(
-      `${folder}/${uuid.toLowerCase()}.pdf`,
+    const pdfBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
+      folder,
+      uuid,
+      '.pdf',
     );
 
     return this.mailService.sendEmail({

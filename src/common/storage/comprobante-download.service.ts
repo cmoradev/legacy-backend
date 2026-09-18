@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Response } from 'express';
 import * as AdmZip from 'adm-zip';
 import { CfdiPdf } from '@munyaal/cfdi-pdf';
@@ -39,13 +45,33 @@ export class ComprobanteDownloadService {
     return `comprobantes/${folder}/${normalized}.${ext}`;
   }
 
+  private isNotFoundError(error: any): boolean {
+    if (!error) {
+      return false;
+    }
+    if (error.name === 'NoSuchKey' || error.Code === 'NoSuchKey') {
+      return true;
+    }
+    if (error.name === 'NotFound' || error.Code === 'NotFound') {
+      return true;
+    }
+    const status = error?.$metadata?.httpStatusCode;
+    if (status === 404) {
+      return true;
+    }
+    return false;
+  }
+
   async tryGetObject(key: string): Promise<Buffer | null> {
     try {
       return await this.s3Service.getObjectCommand(key);
     } catch (error) {
-      if (error?.name === 'NoSuchKey' || error?.Code === 'NoSuchKey') {
+      if (this.isNotFoundError(error)) {
         return null;
       }
+      this.logger.error(
+        `Error retrieving object from S3 (key=${key}): ${error?.message}`,
+      );
       throw error;
     }
   }
@@ -56,13 +82,41 @@ export class ComprobanteDownloadService {
     suffix: string,
   ): Promise<Buffer | null> {
     const base = `comprobantes/${folder}/`;
-    const lower = await this.tryGetObject(
-      `${base}${uuid.toLowerCase()}${suffix}`,
+    const uuidLower = uuid.toLowerCase();
+    const uuidUpper = uuid.toUpperCase();
+    const suffixLower = suffix.toLowerCase();
+    const suffixUpper = suffix.toUpperCase();
+
+    const variants = Array.from(
+      new Set([
+        `${base}${uuidLower}${suffixLower}`,
+        `${base}${uuidLower}${suffixUpper}`,
+        `${base}${uuidUpper}${suffixLower}`,
+        `${base}${uuidUpper}${suffixUpper}`,
+      ]),
     );
-    if (lower) {
-      return lower;
+
+    for (const variant of variants) {
+      const buffer = await this.tryGetObject(variant);
+      if (buffer) {
+        return buffer;
+      }
     }
-    return this.tryGetObject(`${base}${uuid.toUpperCase()}${suffix}`);
+    return null;
+  }
+
+  async requireObjectCaseInsensitive(
+    folder: string,
+    uuid: string,
+    suffix: string,
+  ): Promise<Buffer> {
+    const buffer = await this.getObjectCaseInsensitive(folder, uuid, suffix);
+    if (!buffer) {
+      throw new NotFoundException(
+        `Archivo no encontrado en S3: comprobantes/${folder}/${uuid}${suffix}`,
+      );
+    }
+    return buffer;
   }
 
   async downloadFile(
