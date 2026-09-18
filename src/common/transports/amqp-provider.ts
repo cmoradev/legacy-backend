@@ -7,6 +7,18 @@ export enum AmqpTails {
 }
 
 export class RMQModule {
+  /**
+   * Configura un cliente RMQ contra el broker declarado en
+   * `ConfigService.amqpServers` y lo enlaza con la cola indicada.
+   *
+   * Opciones relevantes para la durabilidad de los mensajes:
+   * - `queueOptions.durable: true` garantiza que la cola sobreviva a un
+   *   reinicio del broker.
+   * - `persistent: true` marca cada mensaje como persistente, de modo
+   *   que RabbitMQ lo escribe a disco antes de confirmar la publicación.
+   *   Combinado con la cola durable, asegura que los eventos de correo
+   *   no se pierdan si el broker se reinicia mientras están en vuelo.
+   */
   static forFeature(queue: AmqpTails) {
     return ClientsModule.registerAsync([
       {
@@ -27,6 +39,7 @@ export class RMQModule {
             options: {
               urls: amqpServers,
               queue: queue,
+              persistent: true,
               queueOptions: {
                 durable: true,
               },
