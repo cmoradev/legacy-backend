@@ -274,9 +274,6 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<
       typeConcept: 'Invoice',
     });
 
-    const currentOffice = await this.branchOfficeService.findBranch(
-      query.branchOfficeId,
-    );
     const branchOfficeSett = await this.branchOfficeSettingService.findOne({
       where: { id: query.branchOfficeSettingId },
     });
