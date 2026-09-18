@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcrypt';
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -15,13 +14,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { PayloadToken } from '../../common/types/jwt';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import * as moment from 'moment';
 import { AuthAccessTokensService } from '../auth-access-tokens/auth-access-tokens.service';
-import * as nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
-import * as dotenv from 'dotenv';
-import * as fs from 'fs';
 import { ValidateAdminPasswordDto } from './dto/validate-admin-password.dto';
 import { CancellationDto } from '../../common/dto/Cancellation.dto';
 
