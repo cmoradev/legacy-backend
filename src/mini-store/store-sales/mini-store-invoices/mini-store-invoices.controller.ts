@@ -156,9 +156,6 @@ export class MiniStoreInvoicesController
         relations: ['miniStoreSalePayment'],
       });
 
-      const currentBranch = await this.branchOffice.findBranch(
-        cancelInvoiceSw.branchOfficeId,
-      );
       const branchOfficeSett = await this.branchOfficeSettingService.findOne({
         where: {
           id: cancelInvoiceSw.branchOfficeSettingId,
@@ -209,7 +206,6 @@ export class MiniStoreInvoicesController
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {
             const sendMails = this.service.sendMailCancelacion(
-              currentBranch,
               invoice.uuid,
               email,
               cancelInvoiceSw.subject,
@@ -306,9 +302,13 @@ export class MiniStoreInvoicesController
     @Res() resp: Response,
   ) {
     try {
-      const message = this.service.sendMail(data.uuid, data.email);
+      const message = await this.service.sendMail(data.uuid, data.email);
       resp.status(200);
-      resp.send(message);
+      resp.send({
+        ok: message.published,
+        emailSent: message.published,
+        error: message.error ? message.error.message : null,
+      });
     } catch (e) {
       resp.status(404);
       resp.send(e instanceof Error ? e.message : '');

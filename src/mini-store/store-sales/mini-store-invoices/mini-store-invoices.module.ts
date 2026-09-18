@@ -11,7 +11,7 @@ import { SmartWeb } from '../../../Provider/swsmart.provider';
 import { BranchOfficeModule } from '../../../system/branch-office/branch-office.module';
 import { ConfigModule } from '../../../common/config/config.module';
 import { StorageModule } from 'src/common/storage/storage.module';
-import { TransportsModule } from 'src/common/transports';
+import { MailModule } from '../../../common/mail';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { TransportsModule } from 'src/common/transports';
     MiniStoreSalesPaymentsModule,
     ConfigModule,
     StorageModule,
-    TransportsModule
+    MailModule
   ],
   exports: [MiniStoreInvoicesService],
   providers: [MiniStoreInvoicesService, SmartWeb],

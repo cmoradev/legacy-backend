@@ -381,15 +381,15 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<
     // ── 7. Enviar correo (NO CRÍTICO — no debe bloquear la respuesta) ──
     this.miniStoreInvoicesService
       .sendMail(fullResult.uuid, query.receiver.email)
-      .then(() => {
-        response.emailSent = true;
-      })
-      .catch((err) => {
-        response.warnings.push({
-          step: 'email',
-          message: `Error al enviar correo: ${err.message}`,
-          stack: err.stack,
-        });
+      .then((mailResult) => {
+        response.emailSent = mailResult.published;
+        if (!mailResult.published && mailResult.error) {
+          response.warnings.push({
+            step: 'email',
+            message: `Error al enviar correo: ${mailResult.error.message}`,
+            stack: mailResult.error.stack,
+          });
+        }
       });
 
     response.stamping = true;
@@ -493,18 +493,28 @@ export class MiniStoreSalesPaymentsBillingService extends TypeOrmCrudService<
     }
 
     // ── 4. Enviar correo (NO CRÍTICO) ──
-    try {
-      await this.service.sendMail(
-        branchOffice,
-        fullResult.uuid,
-        branchOfficeConfig.email,
-      );
-      response.emailSent = true;
-    } catch (err) {
+    // El contrato `MailDispatchResult` resuelve con `published: true` solo
+    // cuando el broker confirma la publicación. Cualquier fallo se reporta
+    // como `published: false` con `error`, por lo que el resultado debe
+    // inspeccionarse explícitamente; un `try/catch` aquí nunca se gatillaría.
+    const mailResult = await this.service.sendMail(
+      fullResult.uuid,
+      branchOfficeConfig.email,
+    );
+    response.emailSent = mailResult.published;
+    if (!mailResult.published) {
+      const message = mailResult.error
+        ? `Error al enviar correo: ${mailResult.error.message}`
+        : 'No se pudo publicar el correo en el broker';
+      const stack = mailResult.error?.stack;
+      console.warn(`[processGlobalBilling] ${message}`);
+      if (stack) {
+        console.warn(stack);
+      }
       response.warnings.push({
         step: 'email',
-        message: `Error al enviar correo: ${err.message}`,
-        stack: err.stack,
+        message,
+        stack,
       });
     }
 

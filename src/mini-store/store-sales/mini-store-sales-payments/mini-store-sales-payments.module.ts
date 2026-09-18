@@ -17,10 +17,10 @@ import { BranchOfficeModule } from '../../../system/branch-office/branch-office.
 import { MiniStoreSalesPaymentsReportController } from './mini-store-sales-payments.report.controller';
 import { UsersModule } from '../../../system/users/users.module';
 import { ConfigModule } from '../../../common/config/config.module';
-// eliminar al cambiar los reporte del front
 import { SalesReturns } from '../mini-store-sales-returns/entities/sales-returns.entity';
 import { AuthModule } from '../../../system/auth/auth.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../../../common/mail';
 @Module({
     imports: [
         TypeOrmModule.forFeature([
@@ -38,7 +38,8 @@ import { StorageModule } from 'src/common/storage/storage.module';
         UsersModule,
         ConfigModule,
         AuthModule,
-        StorageModule
+        StorageModule,
+        MailModule
     ],
     exports: [
         MiniStoreSalesPaymentsService,

@@ -10,8 +10,7 @@ import { BranchOfficeService } from '../../system/branch-office/branch-office.se
 import { ivaFromFinalAmount } from '../../common/numbers';
 import * as moment from 'moment';
 import { TableCell } from 'pdfmake/interfaces';
-import * as fs from 'fs';
-import * as nodemailer from 'nodemailer';
+import { MailService, MAIL_TEMPLATES } from '../../common/mail';
 import { pdfMailDto } from './dto/pdfMail.dto';
 
 @Crud({
@@ -40,6 +39,7 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
         readonly service: MiniStoreWarehouseOrdersService,
         readonly serviceInvoiceCompany: BranchOfficeSettingService,
         readonly branchOfficeService: BranchOfficeService,
+        private readonly mailService: MailService,
     ) {
     }
 
@@ -146,58 +146,30 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
             subtotal: ivaFromFinalAmount(total).amountWithOutIva,
         });
 
-        const dir = '/tmp';
-        const tempName = Math.random().toString(36).substring(7) + '.pdf';
+        const fileName = `orden-pedido-${order.folio}.pdf`;
 
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' });
-        } else {
-            fs.writeFileSync(`${dir}/${tempName}`, bufferPdf, { encoding: 'base64' });
-        }
-
-        const currentBranch = await this.branchOfficeService.findBranch(requestData.currentBranch);
-        const emailResponse = await this.sendOrderPdf({
-            emisorMail: `smtps://${currentBranch.Email}:${currentBranch.EmailPass}@smtp.gmail.com`,
-            fileName: tempName,
-            receptorEmail: requestData.mail,
-        });
-
-        try {
-            fs.unlinkSync(`${dir}/${tempName}`);
-        } catch (err) {
-            // handle the error
-        }
-
-        if (emailResponse && emailResponse.accepted && emailResponse.accepted.length > 0) {
-            res.send({ response: true });
-        } else {
-            res.send({ response: false });
-        }
-    }
-
-    public async sendOrderPdf(options: { emisorMail: string, fileName: string, receptorEmail: string }) {
-
-        const { emisorMail, fileName, receptorEmail } = options;
-
-        const transporter = nodemailer.createTransport(emisorMail);
-        const mailOptions = {
-            transporterName: emisorMail,
-            to: receptorEmail,
-            from: 'developers@colegioinglesplaya.com',
+        const sent = await this.mailService.sendEmail({
+            to: requestData.mail,
             subject: 'Orden de Pedido',
-            text: 'PDF con la orden de pedido',
-            html: '<div> Por este medio adjuntamos la orden de pedido. Saludos. </div>',
+            template: MAIL_TEMPLATES.WAREHOUSE_ORDER,
+            context: {
+                description:
+                    'Por este medio adjuntamos la orden de pedido. Saludos.',
+            },
             attachments: [
                 {
-                    filename: `${fileName}`,
-                    path: `/tmp/${fileName}`,
+                    filename: fileName,
+                    contentType: 'application/pdf',
+                    content: Buffer.from(bufferPdf, 'base64'),
                 },
             ],
-        };
+        });
 
-        return await transporter.sendMail(mailOptions);
-
+        res.send({
+            response: sent.published,
+            emailSent: sent.published,
+            error: sent.error ? sent.error.message : null,
+        });
     }
 
     public unitProd(unitMeasurement: number) {

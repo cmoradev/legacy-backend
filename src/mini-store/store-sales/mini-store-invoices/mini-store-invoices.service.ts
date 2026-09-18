@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { MiniStoreInvoice } from './entities/mini-store-invoice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,12 +15,9 @@ import { BranchOfficeSettingService } from '../../../system/branch-office-settin
 import { ColegioDBNameConnection } from '../../../common/databases/colegiodb.service';
 import { StatusInvoce } from '../../../invoice/interface/StatusInvoce.interface';
 import { BranchOffice } from '../../../system/branch-office/entities/branch-office.entity';
-import * as nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import { ConfigService } from '../../../common/config/config.service';
 import { ComprobanteDownloadService } from '../../../common/storage/comprobante-download.service';
-import { ClientProxy } from '@nestjs/microservices';
-import { AmqpTails } from 'src/common/transports';
+import { MAIL_TEMPLATES, MailService } from '../../../common/mail';
 
 @Injectable()
 export class MiniStoreInvoicesService extends TypeOrmCrudService<
@@ -33,7 +30,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
     readonly userService: UsersService,
     readonly serviceInvoiceCompany: BranchOfficeSettingService,
     private readonly comprobanteDownloadService: ComprobanteDownloadService,
-    @Inject(AmqpTails.MAIL_QUEUE) private readonly clientProxy: ClientProxy,
+    private readonly mailService: MailService,
   ) {
     super(repo);
   }
@@ -140,12 +137,10 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
     const xmlBuffer = await this.requireBufferFromS3('tienda', uuid, '.xml');
     const pdfBuffer = await this.requireBufferFromS3('tienda', uuid, '.pdf');
 
-    this.clientProxy.emit('send.one.email', {
+    return this.mailService.sendEmail({
       to: email,
       subject: 'Factura Electrónica CFDI',
-      template: 'cfdi/issued-notification',
-      lang: 'es',
-      context: {},
+      template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
@@ -159,32 +154,14 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
         },
       ],
     });
-  
-    return {
-      ok: true,
-    };
   }
 
   async sendMailCancelacion(
-    currentBranch: BranchOffice,
     uuid: string,
     email: string,
     subject: string,
     body: string,
   ) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-      auth: {
-        user: currentBranch.Email,
-        pass: currentBranch.EmailPass,
-      },
-    });
     const folder = 'tienda';
     const xmlBuffer = await this.requireBufferFromS3(folder, uuid, '.xml');
     const pdfBuffer = await this.requireBufferFromS3(folder, uuid, '.pdf');
@@ -193,36 +170,40 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
       uuid,
       '-acuse.xml',
     );
-    const mailOptions: Mail.Options = {
+
+    return this.mailService.sendEmail({
       to: email,
-      from: currentBranch.Email,
-      subject, // 'Tienda - Solicitud de cancelación del Comprobantes de pago CFDI',
-      html: `<div>
-                    <h2>Notificación de cancelación de CFDI</h2><br>
-                    <h4>Motivo de cancelación: </h4>
-                     <p>${body}</p>
-                    <p>Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.</p>
-                    <p>Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas,
-                     transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.</p>
-                     <p>En caso de ser cancelable sin autorizacion se le adjuntara el acuse de cancelación.</p>
-                    <br>
-                    </div>`,
+      subject,
+      template: MAIL_TEMPLATES.CFDI_CANCELLATION_NOTIFICATION,
+      context: {
+        title: 'Notificación de cancelación de CFDI',
+        reasonLabel: 'Motivo de cancelación',
+        reason: body,
+        description:
+          'Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.',
+        deadlineNotice:
+          'Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.',
+        acuseNotice:
+          'En caso de ser cancelable sin autorización se le adjuntará el acuse de cancelación.',
+      },
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
+          contentType: 'application/xml',
           content: xmlBuffer,
         },
         {
           filename: uuid.toUpperCase() + '.pdf',
+          contentType: 'application/pdf',
           content: pdfBuffer,
         },
         {
           filename: `${uuid.toUpperCase()}-acuse.xml`,
+          contentType: 'application/xml',
           content: acuseBuffer,
         },
       ],
-    };
-    return await transporter.sendMail(mailOptions);
+    });
   }
 
   // eliminar al cambiar los reporte del front

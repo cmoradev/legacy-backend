@@ -6,12 +6,14 @@ import { MiniStoreWarehouseOrder } from './entities/mini-store-warehouse-order.e
 import { ColegioDBNameConnection } from '../../common/databases/colegiodb.service';
 import { BranchOfficeSettingModule } from '../../system/branch-office-setting/branch-office-setting.module';
 import { BranchOfficeModule } from "../../system/branch-office/branch-office.module";
+import { MailModule } from '../../common/mail';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([MiniStoreWarehouseOrder], ColegioDBNameConnection),
         BranchOfficeSettingModule,
-        BranchOfficeModule
+        BranchOfficeModule,
+        MailModule
     ],
     exports: [MiniStoreWarehouseOrdersService],
     controllers: [MiniStoreWarehouseOrdersController],
