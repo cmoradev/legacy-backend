@@ -62,8 +62,8 @@ export const MAIL_EVENT_PATTERN = 'send.one.email';
  * on the consumer side; do NOT create local template files for them.
  */
 export const MAIL_TEMPLATES = {
-  CFDI_ISSUED_NOTIFICATION: 'cfdi/issued-notification',
-  CFDI_CANCELLATION_NOTIFICATION: 'cfdi/cancellation-notification',
-  PAYMENT_RECEIPT: 'payments/payment-receipt',
-  WAREHOUSE_ORDER: 'mini-store/warehouse-order',
+  CFDI_ISSUED_NOTIFICATION: 'legacy/cfdi-issued-notification',
+  CFDI_CANCELLATION_NOTIFICATION: 'legacy/cfdi-cancellation-notification',
+  PAYMENT_RECEIPT: 'legacy/payment-receipt',
+  WAREHOUSE_ORDER: 'legacy/warehouse-order',
 };
