@@ -79,7 +79,6 @@ export class MailService {
       subject: options.subject,
       template: options.template,
       lang: options.lang ?? 'es',
-      context: options.context ?? {},
       attachments,
     };
   }

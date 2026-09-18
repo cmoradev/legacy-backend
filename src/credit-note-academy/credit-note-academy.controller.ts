@@ -285,8 +285,6 @@ export class CreditNoteAcademyController implements CrudController<CreditNoteAca
             const sendMails = this.service.sendMailCancelacion(
               invoice.uuid,
               email,
-              cancelInvoiceSw.subject,
-              cancelInvoiceSw.body,
             );
           }
         }

@@ -180,7 +180,7 @@ export class SchoolChargesInvoiceController implements CrudController<SchoolChar
                 await this.s3Service.putObjectCommand({ type: 'application/xml', buffer: Buffer.from(responseSmartWeb.data.acuse), key: `comprobantes/colegio/${invoice.uuid}-acuse.xml` });
                 if (cancelInvoiceSw.sendMail) {
                     for (const email of cancelInvoiceSw.mails) {
-                        this.service.sendMailCancelacion(invoice.uuid, email, cancelInvoiceSw.subject, cancelInvoiceSw.body);
+                        this.service.sendMailCancelacion(invoice.uuid, email);
                     }
                 }
                 invoice.status = 2;

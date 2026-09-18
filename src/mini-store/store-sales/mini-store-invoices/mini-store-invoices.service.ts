@@ -129,8 +129,8 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
 
     return this.mailService.sendEmail({
       to: email,
-      subject: 'Factura Electrónica CFDI',
-      template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
+      subject: 'Factura electrónica CFDI',
+      template: MAIL_TEMPLATES.CFDI_ISSUED,
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',
@@ -146,12 +146,7 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
     });
   }
 
-  async sendMailCancelacion(
-    uuid: string,
-    email: string,
-    subject: string,
-    body: string,
-  ) {
+  async sendMailCancelacion(uuid: string, email: string) {
     const folder = 'tienda';
     const xmlBuffer = await this.comprobanteDownloadService.requireObjectCaseInsensitive(
       folder,
@@ -171,19 +166,8 @@ export class MiniStoreInvoicesService extends TypeOrmCrudService<
 
     return this.mailService.sendEmail({
       to: email,
-      subject,
-      template: MAIL_TEMPLATES.CFDI_CANCELLATION_NOTIFICATION,
-      context: {
-        title: 'Notificación de cancelación de CFDI',
-        reasonLabel: 'Motivo de cancelación',
-        reason: body,
-        description:
-          'Adjuntos, le enviamos la factura electrónica y archivo XML que ha sido enviados a su buzón tributario para cancelación.',
-        deadlineNotice:
-          'Desde su buzón podrá autorizar o declinar la cancelación del CFDI, cuenta con 72 horas, transcurrido ese lapso de tiempo se tomará como positivo y se procederá con la cancelación.',
-        acuseNotice:
-          'En caso de ser cancelable sin autorización se le adjuntará el acuse de cancelación.',
-      },
+      subject: 'Notificación de cancelación de CFDI',
+      template: MAIL_TEMPLATES.CFDI_CANCELLATION,
       attachments: [
         {
           filename: uuid.toUpperCase() + '.xml',

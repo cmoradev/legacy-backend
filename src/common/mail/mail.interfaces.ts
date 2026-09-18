@@ -15,10 +15,10 @@ export interface MailAttachmentPayload {
  * - `template` must reference one of the keys declared in {@link MAIL_TEMPLATES}
  *   so the external mail consumer knows which renderer to apply.
  * - `lang` defaults to `es` when omitted.
- * - `context` is forwarded to the template renderer. When `context.html`
- *   is provided, it MUST be a pre-rendered HTML string (the consumer
- *   is responsible for sanitization and final wrapping); the local
- *   service does not interpret or escape it.
+ * - `context` remains part of the wire contract for backward compatibility
+ *   with the external mail consumer, but internal callers MUST NOT set it:
+ *   all canonical templates render their body on the consumer side and
+ *   forwarding a `context` here would be ignored.
  * - `attachments` is an optional list of files to bundle with the email.
  */
 export interface MailSendOptions {
@@ -58,12 +58,19 @@ export const MAIL_EVENT_PATTERN = 'send.one.email';
  * is the single source of truth so backend callers never embed raw
  * template strings inline.
  *
+ * The KEY names (`CFDI_ISSUED`, `CFDI_CANCELLATION`, `PAYMENT_RECEIPT`,
+ * `PURCHASE_ORDER`) are the canonical identifiers inside this codebase.
+ * The VALUES are the external template identifiers resolved by the
+ * mail consumer; they are intentionally kept on the `legacy/...` paths
+ * until the consumer ships the new renderer names, so we do not break
+ * any in-flight message while the migration is staged.
+ *
  * NOTE: This module only declares identifiers. Template definitions live
  * on the consumer side; do NOT create local template files for them.
  */
 export const MAIL_TEMPLATES = {
-  CFDI_ISSUED_NOTIFICATION: 'legacy/cfdi-issued-notification',
-  CFDI_CANCELLATION_NOTIFICATION: 'legacy/cfdi-cancellation-notification',
+  CFDI_ISSUED: 'legacy/cfdi-issued-notification',
+  CFDI_CANCELLATION: 'legacy/cfdi-cancellation-notification',
   PAYMENT_RECEIPT: 'legacy/payment-receipt',
-  WAREHOUSE_ORDER: 'legacy/warehouse-order',
+  PURCHASE_ORDER: 'legacy/warehouse-order',
 };

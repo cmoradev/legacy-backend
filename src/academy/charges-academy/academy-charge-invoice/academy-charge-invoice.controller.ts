@@ -223,8 +223,6 @@ export class AcademyChargeInvoiceController
             const sendMails = this.service.sendMailCancelacion(
               invoice.uuid,
               email,
-              cancelInvoiceSw.subject,
-              cancelInvoiceSw.body,
             );
           }
         }

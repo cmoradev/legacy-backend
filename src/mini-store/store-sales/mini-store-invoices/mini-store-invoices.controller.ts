@@ -208,8 +208,6 @@ export class MiniStoreInvoicesController
             const sendMails = this.service.sendMailCancelacion(
               invoice.uuid,
               email,
-              cancelInvoiceSw.subject,
-              cancelInvoiceSw.body,
             );
           }
         }

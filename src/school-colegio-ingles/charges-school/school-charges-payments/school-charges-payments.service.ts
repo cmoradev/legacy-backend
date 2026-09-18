@@ -34,7 +34,6 @@ import { IQueryReportSaleTodayOp } from '../../../mini-store/store-sales/mini-st
 import { InvoiceModules } from "../../../common/point-of-sale/types.pos";
 import { Recibo } from "../../../common/pdfmake/Recibo";
 import { AttachmentsType } from "../../../types";
-import { ReceiptTemplate } from "../../../templates/receipt";
 import { CancellationDto } from '../../../common/dto/Cancellation.dto';
 import { AuthService } from '../../../system/auth/auth.service';
 import { PaymentStatus } from '../../../common/enums/PaymentStatus';
@@ -470,13 +469,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
 
         return this.mailService.sendEmail({
             to: email,
-            subject: 'Tienda  - Comprobantes de pago CFDI',
-            template: MAIL_TEMPLATES.CFDI_ISSUED_NOTIFICATION,
-            context: {
-                greeting: 'Gracias por su compra',
-                description:
-                    'Adjuntos, le enviamos su factura electrónica y archivo XML',
-            },
+            subject: 'Factura electrónica CFDI',
+            template: MAIL_TEMPLATES.CFDI_ISSUED,
             attachments: [
                 {
                     filename: uuid.toUpperCase() + '.xml',
@@ -598,11 +592,8 @@ export class SchoolChargesPaymentsService extends TypeOrmCrudService<SchoolCharg
     async sendReceipt(attachments: AttachmentsType[], email: string) {
         return this.mailService.sendEmail({
             to: email,
-            subject: 'Confirmación de Pago y Envío de Comprobante',
+            subject: 'Confirmación de pago',
             template: MAIL_TEMPLATES.PAYMENT_RECEIPT,
-            context: {
-                html: ReceiptTemplate,
-            },
             attachments: attachments.map((attachment) => ({
                 filename: attachment.filename,
                 content: attachment.content,

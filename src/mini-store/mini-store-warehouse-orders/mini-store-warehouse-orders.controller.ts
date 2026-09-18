@@ -150,12 +150,8 @@ export class MiniStoreWarehouseOrdersController implements CrudController<MiniSt
 
         const sent = await this.mailService.sendEmail({
             to: requestData.mail,
-            subject: 'Orden de Pedido',
-            template: MAIL_TEMPLATES.WAREHOUSE_ORDER,
-            context: {
-                description:
-                    'Por este medio adjuntamos la orden de pedido. Saludos.',
-            },
+            subject: 'Orden de compra',
+            template: MAIL_TEMPLATES.PURCHASE_ORDER,
             attachments: [
                 {
                     filename: fileName,

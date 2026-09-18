@@ -390,8 +390,6 @@ export class CreditNoteSchoolController
             const sendMails = this.service.sendMailCancelacion(
               invoice.uuid,
               email,
-              cancelInvoiceSw.subject,
-              cancelInvoiceSw.body,
             );
           }
         }
