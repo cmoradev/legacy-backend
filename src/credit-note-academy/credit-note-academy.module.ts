@@ -11,11 +11,12 @@ import { AcademyChargeInvoiceModule } from '../academy/charges-academy/academy-c
 import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../common/mail';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CreditNoteAcademy, BranchOfficeSetting], ColegioDBNameConnection),
-    ConfigModule, AcademyChargeInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule],
+    ConfigModule, AcademyChargeInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule, MailModule],
   controllers: [CreditNoteAcademyController],
   providers: [CreditNoteAcademyService, SmartWeb],
   exports: [CreditNoteAcademyService],

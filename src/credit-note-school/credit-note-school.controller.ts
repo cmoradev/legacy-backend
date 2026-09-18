@@ -1,15 +1,16 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpException,
-    HttpStatus,
-    Param,
-    ParseIntPipe,
-    Post, Put,
-    Query,
-    Res,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Res,
 } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { AttributesComprobanteReceptorElement } from '@munyaal/cfdi';
@@ -24,7 +25,10 @@ import { InvoiceStatus } from '../invoice/types/invoice-status';
 import { User } from '../system/users/entities/user.entity';
 import { BranchOffice } from '../system/branch-office/entities/branch-office.entity';
 import { InvoiceType } from '../mini-store/store-sales/mini-store-invoices/enums/invoice-type.enum';
-import { InvoiceModules, RelateParams } from '../common/point-of-sale/types.pos';
+import {
+  InvoiceModules,
+  RelateParams,
+} from '../common/point-of-sale/types.pos';
 import { SchoolChargesInvoiceService } from '../school-colegio-ingles/charges-school/school-charges-invoice/school-charges-invoice.service';
 import { readFileSync } from 'fs';
 import { CancelInvoiceSwDto } from '../mini-store/store-sales/mini-store-invoices/dto/cancel.invoice.sw.dto';
@@ -35,216 +39,284 @@ import { ComprobanteDownloadService } from 'src/common/storage/comprobante-downl
 import { cfdiErrorToHttpException } from '../common/utils/invoice/cfdi-errors';
 
 @Crud({
-    model: {
-        type: CreditNoteSchool,
+  model: {
+    type: CreditNoteSchool,
+  },
+  query: {
+    filter: {
+      deletedAt: {
+        $eq: null,
+      },
     },
-    query: {
-        filter: {
-            deletedAt: {
-                $eq: null
-            },
-        },
-        limit: 10,
-        join: {
-            invoiceBranchOffice: {},
-            agentBilling: {},
-            agentCanceling: {},
-            invoicesSchool: {}
-        }
-    }
+    limit: 10,
+    join: {
+      invoiceBranchOffice: {},
+      agentBilling: {},
+      agentCanceling: {},
+      invoicesSchool: {},
+    },
+  },
 })
 @Controller('credit-note-school')
-export class CreditNoteSchoolController implements CrudController<CreditNoteSchool>{
-    constructor(readonly service: CreditNoteSchoolService,
-        readonly smartWebService: FactSw,
-        readonly configService: ConfigService,
-        readonly schoolChargesInvoiceService: SchoolChargesInvoiceService,
-        readonly branchOffice: BranchOfficeService,
-        readonly branchOfficeSettingService: BranchOfficeSettingService,
-        private _s3Service: S3Service,
-        private _comprobanteDownloadService: ComprobanteDownloadService
-        ) {
-    }
+export class CreditNoteSchoolController
+  implements CrudController<CreditNoteSchool> {
+  constructor(
+    readonly service: CreditNoteSchoolService,
+    readonly smartWebService: FactSw,
+    readonly configService: ConfigService,
+    readonly schoolChargesInvoiceService: SchoolChargesInvoiceService,
+    readonly branchOffice: BranchOfficeService,
+    readonly branchOfficeSettingService: BranchOfficeSettingService,
+    private _s3Service: S3Service,
+    private _comprobanteDownloadService: ComprobanteDownloadService,
+  ) {}
 
-    @Delete('soft-deleted/:id')
-    public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softDeleteOne(id);
-    }
+  @Delete('soft-deleted/:id')
+  public async softDeleteOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softDeleteOne(id);
+  }
 
-    @Put('soft-restore/:id')
-    public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
-        return await this.service.softRestoreOne(id);
-    }
+  @Put('soft-restore/:id')
+  public async softRestoreOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.softRestoreOne(id);
+  }
 
-    @Post('generate/credit-note')
-    async generateCreditNote(
-        @Body() request: {
-            invoice: InvoiceSat,
-            receiver: Partial<AttributesComprobanteReceptorElement>,
-            concepts: any[],
-            calculations: any,
-            invoicesRelations: RelateParams[],
-            branchOfficeId: string | number,
-            branchOfficeModuleId: string | number,
-            userCreatorId: string | number
+  @Post('generate/credit-note')
+  async generateCreditNote(
+    @Body()
+    request: {
+      invoice: InvoiceSat;
+      receiver: Partial<AttributesComprobanteReceptorElement>;
+      concepts: any[];
+      calculations: any;
+      invoicesRelations: RelateParams[];
+      branchOfficeId: string | number;
+      branchOfficeModuleId: string | number;
+      userCreatorId: string | number;
+    },
+    @Res() response,
+  ) {
+    if (!request) {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
+    if (!request.invoice) {
+      throw new HttpException(
+        'Invoice data is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!request.receiver) {
+      throw new HttpException(
+        'Receiver data is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (
+      typeof request.concepts === 'undefined' ||
+      request.concepts.length === 0
+    ) {
+      throw new HttpException(
+        'Must send al least one concept',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!request.branchOfficeId) {
+      throw new HttpException(
+        'branchOfficeId data is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!request.branchOfficeModuleId) {
+      throw new HttpException(
+        'branchOfficeModuleId data is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!request.userCreatorId) {
+      throw new HttpException(
+        'userCreatorId data is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    try {
+      const workPath = this.configService.getPath();
+      const branchOfficeSetting = await this.service.branchOfficeSetting(
+        request.branchOfficeId,
+        request.branchOfficeModuleId,
+      );
+      const fullResult = await CreditNote({
+        concepts: request.concepts,
+        calculations: request.calculations,
+        invoice: {
+          ...request.invoice,
+          SubTotal: request.calculations.subtotal,
+          Descuento: request.calculations.discounts,
+          Total: request.calculations.total,
         },
-        @Res() response
-    ){
+        receiver: request.receiver,
+        relations: request.invoicesRelations,
+        settingsBranchOffice: branchOfficeSetting,
+        env: {
+          instancePath: workPath,
+        },
+        type: InvoiceModules.SCHOOL,
+        s3Service: this._s3Service,
+      });
 
-
-        if (!request) {
-            throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.invoice) {
-            throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.receiver) {
-            throw new HttpException('Receiver data is required', HttpStatus.BAD_REQUEST);
-        }
-        if (typeof request.concepts === 'undefined' || request.concepts.length === 0) {
-            throw new HttpException('Must send al least one concept', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.branchOfficeId) {
-            throw new HttpException('branchOfficeId data is required', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.branchOfficeModuleId) {
-            throw new HttpException('branchOfficeModuleId data is required', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.userCreatorId) {
-            throw new HttpException('userCreatorId data is required', HttpStatus.BAD_REQUEST);
-        }
-        try {
-            const workPath = this.configService.getPath();
-            const branchOfficeSetting = await this.service.branchOfficeSetting(request.branchOfficeId, request.branchOfficeModuleId)
-            const fullResult = await CreditNote({
-                concepts: request.concepts,
-                calculations: request.calculations,
-                invoice: {
-                    ...request.invoice,
-                    SubTotal: request.calculations.subtotal,
-                    Descuento: request.calculations.discounts,
-                    Total: request.calculations.total,
-                },
-                receiver: request.receiver,
-                relations: request.invoicesRelations,
-                settingsBranchOffice: branchOfficeSetting,
-                env: {
-                    instancePath: workPath,
-                },
-                type: InvoiceModules.SCHOOL,
-                s3Service: this._s3Service
-            });
-
-            const uuids: string[] = [];
-            request.invoicesRelations.forEach((d)=>{
-                return d.documents.forEach((dd)=>{
-                    uuids.push(dd)
-                })
-            })
-            const invoices = await this.schoolChargesInvoiceService.repo.createQueryBuilder('invoices')
-            .select([
-                'invoices.id'
-            ])
-            .where('invoices.uuid IN (:...uuids)', {
-                uuids: uuids,
-            })
-            .getMany();
-
-            const creditNoteSchool: Partial<CreditNoteSchool> = {
-                folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
-                uuid: fullResult.uuid,
-                businessName: request.receiver.Nombre,
-                rfc: request.receiver.Rfc,
-                total: parseFloat(fullResult.total),
-                invoiceType: InvoiceType.expenses,
-                status: InvoiceStatus.billed,
-                invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
-                agentBilling: { id: request.userCreatorId } as User,
-                invoicesSchool: invoices,
-            }
-            const creditNote = await this.service.saveCreditNote(creditNoteSchool);
-            response.status(200);
-            response.send({
-                uuid: fullResult.uuid,
-                invoice: creditNote,
-                stamping: fullResult,
-                msg: 'Nota de Crédito timbrada',
-            });
-        } catch (err) {
-            throw cfdiErrorToHttpException(err);
-        }
-    }
-
-    @Get('/folio')
-    async getFolio() {
-        return await this.service.getLastFolio()
-    }
-
-    @Public()
-    @Get('/download-pdf')
-    async getPdfInvoice(
-        @Query('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', UUID, 'pdf', {
-            regenerate,
-            cadenaOriginal,
+      const uuids: string[] = [];
+      request.invoicesRelations.forEach((d) => {
+        return d.documents.forEach((dd) => {
+          uuids.push(dd);
         });
-        this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
-    }
+      });
+      const invoices = await this.schoolChargesInvoiceService.repo
+        .createQueryBuilder('invoices')
+        .select(['invoices.id'])
+        .where('invoices.uuid IN (:...uuids)', {
+          uuids: uuids,
+        })
+        .getMany();
 
-    @Public()
-    @Get('/download-xml')
-    async getXmlInvoice(
-        @Query('UUID') UUID: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-        @Res() response,
-    ) {
-        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', UUID, 'xml', {
-            regenerate,
-            cadenaOriginal,
-        });
-        this._comprobanteDownloadService.sendFile(response, file.buffer, file.contentType, file.filename);
+      const creditNoteSchool: Partial<CreditNoteSchool> = {
+        folio: `${request.invoice.Serie}-${request.invoice.Folio}`,
+        uuid: fullResult.uuid,
+        businessName: request.receiver.Nombre,
+        rfc: request.receiver.Rfc,
+        total: parseFloat(fullResult.total),
+        invoiceType: InvoiceType.expenses,
+        status: InvoiceStatus.billed,
+        invoiceBranchOffice: { id: request.branchOfficeId } as BranchOffice,
+        agentBilling: { id: request.userCreatorId } as User,
+        invoicesSchool: invoices,
+      };
+      const creditNote = await this.service.saveCreditNote(creditNoteSchool);
+      response.status(200);
+      response.send({
+        uuid: fullResult.uuid,
+        invoice: creditNote,
+        stamping: fullResult,
+        msg: 'Nota de Crédito timbrada',
+      });
+    } catch (err) {
+      throw cfdiErrorToHttpException(err);
     }
+  }
 
-    @Post('/send-credit-note')
-    async sendMail(@Body() request, @Res() response) {
-        if (!request.branchOfficeId) {
-            throw new HttpException('branchOfficeId is required', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.email) {
-            throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
-        }
-        if (!request.invoice) {
-            throw new HttpException('uuid invoice is required', HttpStatus.BAD_REQUEST);
-        }
-        try {
-            const invoice = `${this.configService.getPath()}comprobantes/notas-credito/` + request.invoice.toUpperCase();
-            await this.service.sendMail(request.branchOfficeId, request.email, invoice, request.invoice);
-            response.status(HttpStatus.CREATED).send();
-        } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+  @Get('/folio')
+  async getFolio() {
+    return await this.service.getLastFolio();
+  }
+
+  @Public()
+  @Get('/download-pdf')
+  async getPdfInvoice(
+    @Query('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this._comprobanteDownloadService.downloadFile(
+      'notas-credito',
+      UUID,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this._comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+
+  @Public()
+  @Get('/download-xml')
+  async getXmlInvoice(
+    @Query('UUID') UUID: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+    @Res() response,
+  ) {
+    const file = await this._comprobanteDownloadService.downloadFile(
+      'notas-credito',
+      UUID,
+      'xml',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    this._comprobanteDownloadService.sendFile(
+      response,
+      file.buffer,
+      file.contentType,
+      file.filename,
+    );
+  }
+
+  @Post('/send-credit-note')
+  async sendMail(@Body() request, @Res() response) {
+    if (!request.branchOfficeId) {
+      throw new HttpException(
+        'branchOfficeId is required',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-
-    @Get(':id/pdf')
-    public async pdf(
-        @Res() res,
-        @Query('uuid') uuid: string,
-        @Query('regenerate') regenerate: boolean,
-        @Query('cadenaOriginal') cadenaOriginal: string,
-    ) {
-        const file = await this._comprobanteDownloadService.downloadFile('notas-credito', uuid, 'pdf', {
-            regenerate,
-            cadenaOriginal,
-        });
-        res.send({ src: `data:application/pdf;base64,${file.buffer.toString('base64')}` });
+    if (!request.email) {
+      throw new HttpException('email is required', HttpStatus.BAD_REQUEST);
     }
+    if (!request.invoice) {
+      throw new HttpException(
+        'uuid invoice is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    try {
+      const invoice =
+        `${this.configService.getPath()}comprobantes/notas-credito/` +
+        request.invoice.toUpperCase();
+      const mailResult = await this.service.sendMail(
+        request.email,
+        invoice,
+        request.invoice,
+      );
+      if (!mailResult.published) {
+        const reason =
+          mailResult.error?.message ??
+          'No se pudo publicar el correo en el broker';
+        throw new HttpException(reason, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      response.status(HttpStatus.CREATED).send();
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
-    @Post('cancel-invoice')
+  @Get(':id/pdf')
+  public async pdf(
+    @Res() res,
+    @Query('uuid') uuid: string,
+    @Query('regenerate') regenerate: boolean,
+    @Query('cadenaOriginal') cadenaOriginal: string,
+  ) {
+    const file = await this._comprobanteDownloadService.downloadFile(
+      'notas-credito',
+      uuid,
+      'pdf',
+      {
+        regenerate,
+        cadenaOriginal,
+      },
+    );
+    res.send({
+      src: `data:application/pdf;base64,${file.buffer.toString('base64')}`,
+    });
+  }
+
+  @Post('cancel-invoice')
   async cancelInvoiceSwSmartweb(
     @Body() cancelInvoiceSw: CancelInvoiceSwDto,
     @Res() res,
@@ -260,10 +332,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         .getMany();
 
       if (typeof results === 'undefined' || results.length === 0) {
-        throw new HttpException(
-          'Not Found Invoice',
-          HttpStatus.NOT_FOUND,
-        );
+        throw new HttpException('Not Found Invoice', HttpStatus.NOT_FOUND);
       }
 
       const invoice = results[0];
@@ -303,14 +372,13 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
        * 3.- En cola
        * 4.- Rechazado
        */
-      
+
       if (
         status === '201' ||
         +status === 201 ||
         status === '202' ||
         +status === 202
       ) {
-        
         await this._s3Service.putObjectCommand({
           type: 'application/xml',
           buffer: Buffer.from(result.data.acuse),
@@ -320,7 +388,6 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
         if (cancelInvoiceSw.sendMail) {
           for (const email of cancelInvoiceSw.mails) {
             const sendMails = this.service.sendMailCancelacion(
-              currentBranch,
               invoice.uuid,
               email,
               cancelInvoiceSw.subject,
@@ -329,20 +396,19 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
           }
         }
 
-        const objUpdate =  {
+        const objUpdate = {
           status: 2,
           reasonCancellation: cancelInvoiceSw.reason,
           cancellationDate: new Date(),
           agentCanceling: {
             id: cancelInvoiceSw.cashierId,
           } as User,
-        }
+        };
 
         const updateInvoice = await this.service.repo.update(
-          { id: invoice.id }, objUpdate
-         ,
+          { id: invoice.id },
+          objUpdate,
         );
-        
 
         res
           .send({
@@ -353,7 +419,7 @@ export class CreditNoteSchoolController implements CrudController<CreditNoteScho
               invoicesSchool: invoice.invoicesSchool.map((i) => {
                 return { id: i.id };
               }),
-            },            
+            },
           })
           .status(200);
       }

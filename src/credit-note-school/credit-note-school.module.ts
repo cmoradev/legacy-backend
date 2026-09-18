@@ -12,13 +12,23 @@ import { SchoolChargesInvoiceModule } from '../school-colegio-ingles/charges-sch
 import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../common/mail';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CreditNoteSchool, BranchOfficeSetting, BranchOffice], ColegioDBNameConnection), ConfigModule,
-  SchoolChargesInvoiceModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule
+  imports: [
+    TypeOrmModule.forFeature(
+      [CreditNoteSchool, BranchOfficeSetting, BranchOffice],
+      ColegioDBNameConnection,
+    ),
+    ConfigModule,
+    SchoolChargesInvoiceModule,
+    BranchOfficeModule,
+    BranchOfficeSettingModule,
+    StorageModule,
+    MailModule,
   ],
   controllers: [CreditNoteSchoolController],
   providers: [CreditNoteSchoolService, SmartWeb],
-  exports: [CreditNoteSchoolService]
+  exports: [CreditNoteSchoolService],
 })
 export class CreditNoteSchoolModule {}

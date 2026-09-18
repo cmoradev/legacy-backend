@@ -11,10 +11,11 @@ import { MiniStoreInvoicesModule } from '../mini-store/store-sales/mini-store-in
 import { BranchOfficeModule } from '../system/branch-office/branch-office.module';
 import { BranchOfficeSettingModule } from '../system/branch-office-setting/branch-office-setting.module';
 import { StorageModule } from 'src/common/storage/storage.module';
+import { MailModule } from '../common/mail';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CreditNoteStore, BranchOfficeSetting], ColegioDBNameConnection), ConfigModule,
-    MiniStoreInvoicesModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule
+    MiniStoreInvoicesModule, BranchOfficeModule, BranchOfficeSettingModule, StorageModule, MailModule
   ],
   controllers: [CreditNoteStoreController],
   providers: [CreditNoteStoreService, SmartWeb],
