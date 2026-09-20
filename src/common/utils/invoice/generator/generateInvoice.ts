@@ -213,7 +213,7 @@ export const GenerateInvoiceMunyaal = async (
 
     comprobante.Impuestos = impuestos;
   }
-
+  await CFDIService.getXML(comprobante)
   return FullGenerateXml(comprobante, CFDIService, folder, s3Service);
 };
 
