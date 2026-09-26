@@ -8,6 +8,7 @@ import { RouterModule } from 'nest-router';
 import { AcademyModule } from './academy/academy.module';
 import { ConfigModule } from './common/config/config.module';
 import { ColegioDBNameConnection, ColegioDBService } from './common/databases/colegiodb.service';
+import './common/pdfmake/pdfmake-init';
 import { CreditNoteAcademyModule } from './credit-note-academy/credit-note-academy.module';
 import { CreditNoteSchoolModule } from './credit-note-school/credit-note-school.module';
 import { CreditNoteStoreModule } from './credit-note-store/credit-note-store.module';

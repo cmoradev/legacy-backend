@@ -1,10 +1,8 @@
-import { createPdf, vfs } from 'pdfmake/build/pdfmake';
-import { pdfMake } from 'pdfmake/build/vfs_fonts';
+import { createPdf } from 'pdfmake/build/pdfmake';
+import '../../../common/pdfmake/pdfmake-init';
 import { BufferOptions, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { readFileSync } from 'fs';
 import { rootPath } from '../../../common/utils';
-// @ts-ignore
-vfs = pdfMake.vfs;
 
 export class TransactionsReport {
     docDefinition: Partial<TDocumentDefinitions> | any = {
@@ -256,7 +254,7 @@ export class TransactionsReport {
             alignment: 'left',
         };
         const doc = createPdf(this.docDefinition);
-        return new Promise(async (resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
 
             doc!.getBase64((result) => {
                 resolve(result);

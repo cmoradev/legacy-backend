@@ -66,5 +66,6 @@ declare module 'sw-sdk-nodejs' {
 declare module 'pdfmake/build/vfs_fonts' {
     export const pdfMake: {
         vfs: { [file: string]: string };
+        fonts?: { [family: string]: unknown };
     };
 }

@@ -1,10 +1,17 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf, TCreatedPdf } from 'pdfmake/build/pdfmake';
-import { vfs } from 'pdfmake/build/pdfmake';
-import { pdfMake } from 'pdfmake/build/vfs_fonts';
+import './pdfmake-init';
 import { NumeroALetras } from '../numbers-to-letter';
-// @ts-ignore
-vfs = pdfMake.vfs;
+
+// pdfmake 0.1.72 expone sus renderizadores (`getBase64`, `getBlob`, etc.)
+// unicamente como callbacks `(result) => void`, sin canal de error. Si el
+// render falla asincronicamente (carga de fuentes, IO, etc.), el callback
+// nunca se dispara y la promesa queda colgada de forma indefinida.
+// Como red de seguridad minimamente invasiva, envolvemos cada callback
+// en un temporizador que rechaza la promesa si el render no termina en un
+// plazo razonable. El valor se mantiene deliberadamente generoso para no
+// interferir con PDFs pesados bajo carga normal.
+const RENDER_TIMEOUT_MS = 30000;
 
 export class ReciboDouble {
     private docDefinition: TDocumentDefinitions | any = {
@@ -1123,44 +1130,79 @@ export class ReciboDouble {
             ])
         }
     }
-    public async getBlob<TCP, B>(options?: B): Promise<Blob> {
-        return new Promise(async (resolve, reject) => {
-            const doc = await this.getDocument();
-            // @ts-ignore
-            doc.getBlob((result) => {
-                resolve(result)
-            }, options)
+    public getBlob<B>(options?: B): Promise<Blob> {
+        return new Promise<Blob>((resolve, reject) => {
+            const timeoutHandle = setTimeout(() => {
+                reject(new Error(`pdfmake render timed out after ${RENDER_TIMEOUT_MS}ms`));
+            }, RENDER_TIMEOUT_MS);
+            this.getDocument()
+                .then((doc) => {
+                    doc.getBlob((result: Blob) => {
+                        clearTimeout(timeoutHandle);
+                        resolve(result);
+                    }, options);
+                })
+                .catch((err) => {
+                    clearTimeout(timeoutHandle);
+                    reject(err);
+                });
         });
     }
 
-    public async getBase64<B>(options?: B): Promise<string> {
-
-        return new Promise(async (resolve, reject) => {
-            const doc = await this.getDocument();
-            // @ts-ignore
-            doc!.getBase64((result) => {
-                resolve(result)
-            }, options)
+    public getBase64<B>(options?: B): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const timeoutHandle = setTimeout(() => {
+                reject(new Error(`pdfmake render timed out after ${RENDER_TIMEOUT_MS}ms`));
+            }, RENDER_TIMEOUT_MS);
+            this.getDocument()
+                .then((doc) => {
+                    doc.getBase64((result: string) => {
+                        clearTimeout(timeoutHandle);
+                        resolve(result);
+                    }, options);
+                })
+                .catch((err) => {
+                    clearTimeout(timeoutHandle);
+                    reject(err);
+                });
         });
     }
 
-    public async getBuffer<B>(options?: B): Promise<Buffer> {
-        return new Promise(async (resolve, reject) => {
-            const doc = await this.getDocument();
-            // @ts-ignore
-            doc!.getBuffer((result) => {
-                resolve(result)
-            }, options)
+    public getBuffer<B>(options?: B): Promise<Buffer> {
+        return new Promise<Buffer>((resolve, reject) => {
+            const timeoutHandle = setTimeout(() => {
+                reject(new Error(`pdfmake render timed out after ${RENDER_TIMEOUT_MS}ms`));
+            }, RENDER_TIMEOUT_MS);
+            this.getDocument()
+                .then((doc) => {
+                    doc.getBuffer((result: Buffer) => {
+                        clearTimeout(timeoutHandle);
+                        resolve(result);
+                    }, options);
+                })
+                .catch((err) => {
+                    clearTimeout(timeoutHandle);
+                    reject(err);
+                });
         });
     }
 
-    public async getDataUrl<B>(options?: B): Promise<string> {
-        return new Promise(async (resolve, reject) => {
-            const doc = await this.getDocument();
-            // @ts-ignore
-            doc!.getDataUrl((result) => {
-                resolve(result)
-            }, options)
+    public getDataUrl<B>(options?: B): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const timeoutHandle = setTimeout(() => {
+                reject(new Error(`pdfmake render timed out after ${RENDER_TIMEOUT_MS}ms`));
+            }, RENDER_TIMEOUT_MS);
+            this.getDocument()
+                .then((doc) => {
+                    doc.getDataUrl((result: string) => {
+                        clearTimeout(timeoutHandle);
+                        resolve(result);
+                    }, options);
+                })
+                .catch((err) => {
+                    clearTimeout(timeoutHandle);
+                    reject(err);
+                });
         });
     }
 

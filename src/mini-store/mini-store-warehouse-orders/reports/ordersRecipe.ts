@@ -1,9 +1,6 @@
 import { TableCell, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf } from 'pdfmake/build/pdfmake';
-import { pdfMake } from 'pdfmake/build/vfs_fonts';
-
-// @ts-ignore
-createPdf.vfs = pdfMake.vfs;
+import '../../../common/pdfmake/pdfmake-init';
 
 export async function orderRecipe(options: {
     applicant: string,
@@ -310,7 +307,7 @@ export async function orderRecipe(options: {
     };
 
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         const pdf1 = createPdf(docDefinition);
             pdf1.getBase64((result) => {
                 resolve(result);
