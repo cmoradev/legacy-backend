@@ -1,12 +1,24 @@
 import { Size, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { createPdf, TCreatedPdf } from 'pdfmake/build/pdfmake';
-import { vfs } from 'pdfmake/build/pdfmake';
 import { pdfMake } from 'pdfmake/build/vfs_fonts';
 import { NumeroALetras } from '../numbers-to-letter';
 import { InvoiceModules } from '../point-of-sale/types.pos';
 
-// @ts-ignore
-vfs = pdfMake.vfs;
+// Registra la familia Roboto usando los archivos expuestos por
+// `pdfmake/build/vfs_fonts` (Roboto-Regular, Roboto-Medium,
+// Roboto-Italic y Roboto-MediumItalic). Sin esta declaración explícita
+// pdfmake no puede resolver las variantes bold/italics al renderizar
+// y termina lanzando un error no controlado desde `getBase64()`.
+(global as any).pdfMake = (global as any).pdfMake || {};
+(global as any).pdfMake.vfs = pdfMake.vfs;
+(global as any).pdfMake.fonts = {
+    Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf',
+    },
+};
 
 export class Recibo {
 
@@ -785,12 +797,16 @@ export class Recibo {
 
     public async getBase64<B>(options?: B): Promise<string> {
 
-        return new Promise(async (resolve, reject) => {
-            const doc = await this.getDocument();
-            // @ts-ignore
-            doc!.getBase64((result) => {
-                resolve(result)
-            }, options)
+        return new Promise<string>(async (resolve, reject) => {
+            try {
+                const doc = await this.getDocument();
+                // @ts-ignore
+                doc!.getBase64((result) => {
+                    resolve(result)
+                }, options)
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
