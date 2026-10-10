@@ -172,7 +172,7 @@ export class MiniStoreInvoicesController
         )
         .toString('base64');
 
-      console.log(cer, key);
+  
 
       const result = await this.smartWeb.cancelarCSD({
         rfc: branchOfficeSett.rfc,
@@ -183,8 +183,9 @@ export class MiniStoreInvoicesController
         motivo: cancelInvoiceSw.motivo,
         folioSustitucion: cancelInvoiceSw.folioSustitucion,
       });
-
-      const status = result.data.uuid[invoice.uuid];
+      const uuid = result.data.uuid;
+      const status = uuid[invoice.uuid] ?? uuid[invoice.uuid.toUpperCase()] ?? uuid[invoice.uuid.toLowerCase()];
+      console.log(status)
       /** Nuevos estados para la venta:
        * 0.- Sin facturar
        * 1.- Facturado
