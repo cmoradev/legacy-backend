@@ -262,10 +262,11 @@ export class FactSw {
         this.token,
         params,
         (err, data) => {
+          console.log(JSON.stringify({ err, data }));
+
           if (data) {
             resolve(data);
           } else {
-            console.log(JSON.stringify({ err, data }));
             reject(err);
           }
         },
