@@ -148,6 +148,7 @@ export class MiniStoreInvoicesController
     @Body() cancelInvoiceSw: CancelInvoiceSwDto,
     @Res() res: Response,
   ) {
+    console.log(cancelInvoiceSw);
     try {
       const invoice = await this.service.findOne({
         where: {
@@ -155,13 +156,15 @@ export class MiniStoreInvoicesController
         },
         relations: ['miniStoreSalePayment'],
       });
-
+      console.log(invoice);
       const branchOfficeSett = await this.branchOfficeSettingService.findOne({
         where: {
           id: cancelInvoiceSw.branchOfficeSettingId,
         },
       });
+      console.log(branchOfficeSett);
 
+      console.log(`${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD)
       const cer = fs
         .readFileSync(
           `${this.configService.getPath()}CSD/` + branchOfficeSett.cerCSD,
@@ -172,6 +175,7 @@ export class MiniStoreInvoicesController
           `${this.configService.getPath()}CSD/` + branchOfficeSett.keyCSD,
         )
         .toString('base64');
+
 
       const result = await this.smartWeb.cancelarCSD({
         rfc: branchOfficeSett.rfc,
